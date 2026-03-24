@@ -20,8 +20,8 @@
         }
 
         html {
-            background: #181717;
-            color: #F9F7F6;
+            background: #F0EDEA;
+            color: #1A1A1A;
             font-family: 'Google Sans Text', 'Google Sans', system-ui, -apple-system, sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -43,244 +43,295 @@
         main {
             max-width: 760px;
             margin: 0 auto;
-            padding: 88px 0;
+            padding: 72px 0 96px;
         }
 
-        .content {
-            display: flex;
-            flex-direction: column;
-            gap: 80px;
-        }
+        /* ——— Hero ——— */
 
-        /* ——— Header ——— */
-
-        .header {
-            display: flex;
-            flex-direction: column;
-            gap: 44px;
-        }
-
-        .identity {
-            display: flex;
-            align-items: center;
-            gap: 16px;
+        .hero {
+            padding: 0 8px;
+            margin-bottom: 40px;
         }
 
         .avatar {
-            width: 64px;
-            height: 64px;
-            border-radius: 16px;
+            width: 80px;
+            height: 80px;
+            border-radius: 22px;
             object-fit: cover;
-            flex-shrink: 0;
+            margin-bottom: 28px;
         }
 
-        .identity-text {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .name {
+        .hero-title {
             font-weight: 500;
-            font-size: 20px;
-            line-height: 1.4;
+            font-size: 32px;
+            line-height: 1.25;
+            margin-bottom: 4px;
+            letter-spacing: -0.01em;
         }
 
-        .role {
+        .hero-title span {
+            color: #9B9896;
+        }
+
+        .hero-sub {
             font-weight: 400;
-            font-size: 16px;
+            font-size: 17px;
             line-height: 1.5;
+            color: #6B6B6B;
+            max-width: 580px;
+            margin-top: 16px;
         }
 
-        .intro {
+        .hero-badges {
             display: flex;
-            flex-direction: column;
-            gap: 32px;
+            align-items: center;
+            gap: 10px;
+            margin-top: 24px;
+            flex-wrap: wrap;
         }
 
-        .hero-text {
-            font-weight: 400;
-            font-size: 28px;
-            line-height: 1.1;
-        }
-
-        .sub-text {
-            font-weight: 400;
-            font-size: 16px;
-            line-height: 1.4;
-        }
-
-        /* ——— Sections ——— */
-
-        .sections {
-            display: flex;
-            flex-direction: column;
-            gap: 72px;
-        }
-
-        .section {
-            display: flex;
-            gap: 80px;
-        }
-
-        .section--about {
-            padding: 32px 0;
-        }
-
-        .section-label {
-            width: 120px;
-            flex-shrink: 0;
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: #fff;
+            border: 1px solid #E5E2DF;
+            border-radius: 100px;
+            font-size: 14px;
             font-weight: 500;
-            font-size: 12px;
-            line-height: 1.1;
-            text-transform: uppercase;
-            color: #8E8C8A;
-            padding-top: 3px;
+            color: #1A1A1A;
         }
 
-        .section-content {
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #34C759;
+            flex-shrink: 0;
+        }
+
+        /* ——— Bento Grid ——— */
+
+        .bento {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            transition: box-shadow 0.25s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+        }
+
+        .card--full {
+            grid-column: 1 / -1;
+        }
+
+        .card-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #9B9896;
+            margin-bottom: 20px;
+        }
+
+        .card-label svg {
+            width: 14px;
+            height: 14px;
+            opacity: 0.5;
+        }
+
+        /* ——— Experience Card ——— */
+
+        .exp-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .exp-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .exp-dot-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 7px;
+            flex-shrink: 0;
+        }
+
+        .exp-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #D4D1CE;
+            flex-shrink: 0;
+        }
+
+        .exp-dot--active {
+            background: #4FAAFF;
+        }
+
+        .exp-info {
             flex: 1;
             min-width: 0;
         }
 
-        /* ——— List Items ——— */
+        .exp-company {
+            font-weight: 500;
+            font-size: 15px;
+            line-height: 1.3;
+            color: #1A1A1A;
+        }
 
-        .list {
+        .exp-role {
+            font-size: 14px;
+            color: #9B9896;
+            line-height: 1.4;
+        }
+
+        .exp-year {
+            font-size: 13px;
+            color: #C0BDBA;
+            font-weight: 400;
+            white-space: nowrap;
+            padding-top: 3px;
+        }
+
+        /* ——— Skills Card ——— */
+
+        .skills-chips {
             display: flex;
-            flex-direction: column;
+            flex-wrap: wrap;
             gap: 8px;
         }
 
-        .list-item {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .item-title {
-            font-weight: 500;
-            font-size: 16px;
-            line-height: 1.2;
-        }
-
-        .detail-row {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .detail-text {
-            font-weight: 400;
-            font-size: 16px;
-            line-height: 1.3;
-            white-space: nowrap;
-        }
-
-        .separator {
-            flex: 1;
-            height: 1px;
-            background: #686868;
-            min-width: 8px;
-        }
-
-        .badge {
+        .chip {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 4px 12px;
-            border: 1px solid #F9F7F6;
+            padding: 8px 16px;
+            background: #F5F3F0;
             border-radius: 100px;
-            white-space: nowrap;
-            font-weight: 400;
-            font-size: 16px;
-            line-height: 1.3;
+            font-size: 14px;
+            font-weight: 500;
+            color: #1A1A1A;
         }
 
-        .badge--current {
-            border-color: #494949;
-            gap: 10px;
-        }
-
-        .badge-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #4FAAFF;
-            flex-shrink: 0;
-        }
-
-        /* ——— Skills ——— */
-
-        .skills-text {
-            font-weight: 700;
-            font-size: 18px;
-            line-height: 1.2;
-        }
-
-        /* ——— Awards ——— */
+        /* ——— Awards Card ——— */
 
         .awards-list {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
         }
 
-        .award-item {
+        .award-row {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+        }
+
+        .award-icon {
+            font-size: 13px;
+            flex-shrink: 0;
+            width: 20px;
+            text-align: center;
+            color: #C0BDBA;
+        }
+
+        .award-text {
+            font-size: 14px;
             font-weight: 500;
-            font-size: 16px;
-            line-height: 1.2;
+            line-height: 1.4;
+            color: #1A1A1A;
         }
 
-        /* ——— About ——— */
+        /* ——— About Card ——— */
 
         .about-text {
-            font-weight: 400;
-            font-size: 16px;
-            line-height: 1.4;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #4A4A4A;
         }
 
-        /* ——— Contacts ——— */
+        /* ——— Contacts Card ——— */
 
-        .contact-badge {
+        .contacts-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .contact-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .contact-label {
+            font-size: 14px;
+            color: #9B9896;
+            width: 90px;
+            flex-shrink: 0;
+        }
+
+        .contact-sep {
+            flex: 1;
+            height: 1px;
+            background: #ECEAE7;
+            min-width: 8px;
+        }
+
+        .contact-link {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 4px 12px;
-            border: 1px solid #F9F7F6;
+            gap: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #1A1A1A;
+            padding: 5px 14px;
+            background: #F5F3F0;
             border-radius: 100px;
-            white-space: nowrap;
-            font-weight: 400;
-            font-size: 16px;
-            line-height: 1.3;
-            color: #F9F7F6;
-            text-decoration: none;
+            transition: background 0.2s ease;
             cursor: pointer;
-            transition: opacity 0.2s ease;
+            border: none;
+            font-family: inherit;
             position: relative;
         }
 
-        .contact-badge:hover {
-            opacity: 0.7;
+        .contact-link:hover {
+            background: #ECEAE7;
         }
 
-        .copy-btn {
-            background: none;
-            border: none;
-            padding: 0;
-            margin: 0;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            color: inherit;
-            line-height: 0;
+        .contact-link svg {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
         }
 
         .copied-toast {
             position: absolute;
-            top: -34px;
+            top: -32px;
             left: 50%;
             transform: translateX(-50%);
-            background: #F9F7F6;
-            color: #181717;
+            background: #1A1A1A;
+            color: #fff;
             font-size: 12px;
             font-weight: 500;
             padding: 4px 10px;
@@ -299,171 +350,181 @@
 
         @media (max-width: 820px) {
             main {
-                padding: 64px 32px;
+                padding: 48px 16px 72px;
             }
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 600px) {
             main {
-                padding: 48px 20px;
+                padding: 32px 12px 64px;
             }
 
-            .content {
-                gap: 56px;
+            .hero {
+                padding: 0 4px;
+                margin-bottom: 28px;
             }
 
-            .header {
-                gap: 32px;
+            .hero-title {
+                font-size: 26px;
             }
 
-            .hero-text {
-                font-size: 22px;
-            }
-
-            .sections {
-                gap: 48px;
-            }
-
-            .section {
-                flex-direction: column;
-                gap: 12px;
-            }
-
-            .section--about {
-                padding: 0;
-            }
-
-            .section-label {
-                width: auto;
-                padding-top: 0;
-            }
-
-            .detail-row {
+            .bento {
+                grid-template-columns: 1fr;
                 gap: 10px;
             }
 
-            .separator {
-                min-width: 4px;
+            .card {
+                border-radius: 16px;
+                padding: 20px;
+            }
+
+            .contact-label {
+                width: 70px;
             }
         }
     </style>
 </head>
 <body>
     <main>
-        <div class="content">
-            <header class="header">
-                <div class="identity">
-                    <img class="avatar" src="assets/avatar.png" alt="Андрей Антошкин" width="64" height="64">
-                    <div class="identity-text">
-                        <h1 class="name">Андрей Антошкин</h1>
-                        <p class="role">Product Design Engineer</p>
+        <header class="hero">
+            <img class="avatar" src="assets/avatar.png" alt="Андрей Антошкин" width="80" height="80">
+            <h1 class="hero-title">Андрей Антошкин — Product Design Engineer. <span>Создаю дизайн&#8209;системы, инструменты и&nbsp;AI&#8209;решения, которые усиливают команды.</span></h1>
+            <p class="hero-sub">Сейчас в Яндекс Маркете — развиваю B2B дизайн-систему.<br>Фокус: дизайн-инфраструктура, AI-процессы и инструменты на стыке дизайна и разработки.</p>
+            <div class="hero-badges">
+                <span class="status-badge"><span class="status-dot"></span> Яндекс Маркет</span>
+            </div>
+        </header>
+
+        <div class="bento">
+            <!-- Experience -->
+            <div class="card">
+                <span class="card-label">
+                    <svg viewBox="0 0 16 16" fill="none"><path d="M5.33 2.67h5.34c.93 0 1.4 0 1.75.18.31.16.56.41.72.72.18.35.18.82.18 1.76v5.34c0 .93 0 1.4-.18 1.75a1.63 1.63 0 0 1-.72.72c-.35.18-.82.18-1.75.18H5.33c-.93 0-1.4 0-1.75-.18a1.63 1.63 0 0 1-.72-.72c-.18-.35-.18-.82-.18-1.75V5.33c0-.94 0-1.41.18-1.76.16-.31.41-.56.72-.72.35-.18.82-.18 1.75-.18Z" stroke="currentColor" stroke-width="1.2"/><path d="M5.33 2.67V1.33M10.67 2.67V1.33M2 5.33h12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+                    Опыт
+                </span>
+                <div class="exp-list">
+                    <div class="exp-item">
+                        <div class="exp-dot-col"><span class="exp-dot exp-dot--active"></span></div>
+                        <div class="exp-info">
+                            <div class="exp-company">Яндекс Маркет</div>
+                            <div class="exp-role">Product Designer — Design Systems</div>
+                        </div>
+                        <div class="exp-year">сейчас</div>
+                    </div>
+                    <div class="exp-item">
+                        <div class="exp-dot-col"><span class="exp-dot"></span></div>
+                        <div class="exp-info">
+                            <div class="exp-company">Сбер</div>
+                            <div class="exp-role">Design System Lead</div>
+                        </div>
+                        <div class="exp-year">2022 — 2024</div>
+                    </div>
+                    <div class="exp-item">
+                        <div class="exp-dot-col"><span class="exp-dot"></span></div>
+                        <div class="exp-info">
+                            <div class="exp-company">Открытие</div>
+                            <div class="exp-role">Senior Product Designer</div>
+                        </div>
+                        <div class="exp-year">2020 — 2021</div>
+                    </div>
+                    <div class="exp-item">
+                        <div class="exp-dot-col"><span class="exp-dot"></span></div>
+                        <div class="exp-info">
+                            <div class="exp-company">МТС</div>
+                            <div class="exp-role">Product Designer</div>
+                        </div>
+                        <div class="exp-year">2019 — 2020</div>
                     </div>
                 </div>
-                <div class="intro">
-                    <p class="hero-text">Создаю дизайн-системы, инструменты и&nbsp;AI-решения, которые усиливают команды.</p>
-                    <p class="sub-text">Сейчас в Яндекс Маркете — развиваю B2B дизайн-систему.<br>Фокус: дизайн-инфраструктура, AI-процессы и инструменты на стыке дизайна и разработки.</p>
+            </div>
+
+            <!-- Awards -->
+            <div class="card">
+                <span class="card-label">
+                    <svg viewBox="0 0 16 16" fill="none"><path d="M8 10.33 4.7 12.2l.87-3.73L2.67 5.8l3.8-.33L8 2l1.53 3.47 3.8.33-2.9 2.67.87 3.73L8 10.33Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+                    Awards
+                </span>
+                <div class="awards-list">
+                    <div class="award-row">
+                        <span class="award-icon">◆</span>
+                        <span class="award-text">Red Dot ×2 — Mobile Design & UX</span>
+                    </div>
+                    <div class="award-row">
+                        <span class="award-icon">◆</span>
+                        <span class="award-text">iF Design Award — User Experience</span>
+                    </div>
+                    <div class="award-row">
+                        <span class="award-icon">◆</span>
+                        <span class="award-text">Best For Life Design ×2 — HR Platform</span>
+                    </div>
+                    <div class="award-row">
+                        <span class="award-icon">◆</span>
+                        <span class="award-text">InterComm Award — HR Tools</span>
+                    </div>
+                    <div class="award-row">
+                        <span class="award-icon">◆</span>
+                        <span class="award-text">Definition Hackathon — 2 место + спецприз</span>
+                    </div>
+                    <div class="award-row">
+                        <span class="award-icon">◆</span>
+                        <span class="award-text">Spline 3D Retro Future — Top 25</span>
+                    </div>
                 </div>
-            </header>
+            </div>
 
-            <div class="sections">
-                <section class="section">
-                    <h2 class="section-label">Опыт</h2>
-                    <div class="section-content">
-                        <div class="list">
-                            <div class="list-item">
-                                <span class="item-title">Яндекс Маркет</span>
-                                <div class="detail-row">
-                                    <span class="detail-text">Product Designer — Design Systems</span>
-                                    <span class="separator"></span>
-                                    <span class="badge badge--current"><span class="badge-dot"></span>Я тут</span>
-                                </div>
-                            </div>
-                            <div class="list-item">
-                                <span class="item-title">Сбер</span>
-                                <div class="detail-row">
-                                    <span class="detail-text">Design System Lead</span>
-                                    <span class="separator"></span>
-                                    <span class="badge">2022 — 2024</span>
-                                </div>
-                            </div>
-                            <div class="list-item">
-                                <span class="item-title">Открытие</span>
-                                <div class="detail-row">
-                                    <span class="detail-text">Senior Product Designer</span>
-                                    <span class="separator"></span>
-                                    <span class="badge">2020 — 2021</span>
-                                </div>
-                            </div>
-                            <div class="list-item">
-                                <span class="item-title">МТС</span>
-                                <div class="detail-row">
-                                    <span class="detail-text">Product Designer</span>
-                                    <span class="separator"></span>
-                                    <span class="badge">2019 — 2020</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+            <!-- Skills -->
+            <div class="card">
+                <span class="card-label">
+                    <svg viewBox="0 0 16 16" fill="none"><path d="m6 12 4-8M4.67 5 2 8l2.67 3M11.33 5 14 8l-2.67 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    Skills & Stack
+                </span>
+                <div class="skills-chips">
+                    <span class="chip">Figma</span>
+                    <span class="chip">Cursor</span>
+                    <span class="chip">React / Next.js</span>
+                    <span class="chip">LLMs</span>
+                    <span class="chip">APIs</span>
+                </div>
+            </div>
 
-                <section class="section">
-                    <h2 class="section-label">Skills &amp; Stack</h2>
-                    <div class="section-content">
-                        <p class="skills-text">Figma · Cursor · React / Next.js · LLMs · APIs</p>
-                    </div>
-                </section>
+            <!-- About -->
+            <div class="card">
+                <span class="card-label">
+                    <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.33" r="2.67" stroke="currentColor" stroke-width="1.2"/><path d="M3.33 14c0-2.58 2.09-4.67 4.67-4.67s4.67 2.09 4.67 4.67" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+                    Обо мне
+                </span>
+                <p class="about-text">Я Product Design Engineer. Создаю масштабируемые системы и инструменты, которые помогают командам быстрее запускать продукты.<br><br>Работаю на стыке дизайн-систем, B2B-платформ и AI-инструментов — упрощаю сложное и ускоряю разработку. Верю в ясность, системность и сильную связку дизайна с разработкой.<br><br>Провожу внутренние воркшопы и исследую, как AI меняет роль дизайнеров и развитие дизайн-систем.</p>
+            </div>
 
-                <section class="section">
-                    <h2 class="section-label">Awards</h2>
-                    <div class="section-content">
-                        <div class="awards-list">
-                            <span class="award-item">Red Dot ×2 — Mobile Design &amp; UX</span>
-                            <span class="award-item">iF Design Award — User Experience</span>
-                            <span class="award-item">Best For Life Design ×2 — HR Platform</span>
-                            <span class="award-item">InterComm Award — HR Tools</span>
-                            <span class="award-item">Definition Hackathon — 2 место + спецприз</span>
-                            <span class="award-item">Spline 3D Retro Future — Top 25</span>
-                        </div>
+            <!-- Contacts -->
+            <div class="card card--full">
+                <span class="card-label">
+                    <svg viewBox="0 0 16 16" fill="none"><path d="M2 4.67A1.33 1.33 0 0 1 3.33 3.33h9.34A1.33 1.33 0 0 1 14 4.67v6.66a1.33 1.33 0 0 1-1.33 1.34H3.33A1.33 1.33 0 0 1 2 11.33V4.67Z" stroke="currentColor" stroke-width="1.2"/><path d="m2 4.67 6 4 6-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    Контакты
+                </span>
+                <div class="contacts-grid">
+                    <div class="contact-row">
+                        <span class="contact-label">Email</span>
+                        <span class="contact-sep"></span>
+                        <button class="contact-link" id="email-badge" type="button">
+                            <span>andrew.antoshkin@gmail.com</span>
+                            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5 2H9.73333C11.2268 2 11.9735 2 12.544 2.29065C13.0457 2.54631 13.4537 2.95426 13.7094 3.45603C14 4.02646 14 4.77319 14 6.26667V11M4.13333 14H9.53333C10.2801 14 10.6534 14 10.9387 13.8547C11.1895 13.7268 11.3935 13.5229 11.5213 13.272C11.6667 12.9868 11.6667 12.6134 11.6667 11.8667V6.46667C11.6667 5.71993 11.6667 5.34656 11.5213 5.06135C11.3935 4.81046 11.1895 4.60649 10.9387 4.47866C10.6534 4.33333 10.2801 4.33333 9.53333 4.33333H4.13333C3.3866 4.33333 3.01323 4.33333 2.72801 4.47866C2.47713 4.60649 2.27316 4.81046 2.14532 5.06135C2 5.34656 2 5.71993 2 6.46667V11.8667C2 12.6134 2 12.9868 2.14532 13.272C2.27316 13.5229 2.47713 13.7268 2.72801 13.8547C3.01323 14 3.3866 14 4.13333 14Z" stroke="#9B9896" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span class="copied-toast">Скопировано</span>
+                        </button>
                     </div>
-                </section>
-
-                <section class="section section--about">
-                    <h2 class="section-label">обо мне</h2>
-                    <div class="section-content">
-                        <p class="about-text">Я Product Design Engineer.<br><br>Создаю масштабируемые системы и инструменты, которые помогают командам быстрее запускать продукты.<br><br>Работаю на стыке дизайн-систем, B2B-платформ и AI-инструментов — упрощаю сложное и ускоряю разработку.<br><br>Верю в ясность, системность и сильную связку дизайна с разработкой.<br><br>Провожу внутренние воркшопы и исследую, как AI меняет роль дизайнеров и развитие дизайн-систем.</p>
+                    <div class="contact-row">
+                        <span class="contact-label">Telegram</span>
+                        <span class="contact-sep"></span>
+                        <a class="contact-link" href="https://t.me/andrewaitken" target="_blank" rel="noopener noreferrer">@andrewaitken</a>
                     </div>
-                </section>
-
-                <section class="section">
-                    <h2 class="section-label">контакты</h2>
-                    <div class="section-content">
-                        <div class="list">
-                            <div class="detail-row">
-                                <span class="detail-text">Email</span>
-                                <span class="separator"></span>
-                                <span class="contact-badge" id="email-badge" role="button" tabindex="0">
-                                    <span>andrew.antoshkin@gmail.com</span>
-                                    <button class="copy-btn" aria-label="Скопировать email" type="button">
-                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M5 2H9.73333C11.2268 2 11.9735 2 12.544 2.29065C13.0457 2.54631 13.4537 2.95426 13.7094 3.45603C14 4.02646 14 4.77319 14 6.26667V11M4.13333 14H9.53333C10.2801 14 10.6534 14 10.9387 13.8547C11.1895 13.7268 11.3935 13.5229 11.5213 13.272C11.6667 12.9868 11.6667 12.6134 11.6667 11.8667V6.46667C11.6667 5.71993 11.6667 5.34656 11.5213 5.06135C11.3935 4.81046 11.1895 4.60649 10.9387 4.47866C10.6534 4.33333 10.2801 4.33333 9.53333 4.33333H4.13333C3.3866 4.33333 3.01323 4.33333 2.72801 4.47866C2.47713 4.60649 2.27316 4.81046 2.14532 5.06135C2 5.34656 2 5.71993 2 6.46667V11.8667C2 12.6134 2 12.9868 2.14532 13.272C2.27316 13.5229 2.47713 13.7268 2.72801 13.8547C3.01323 14 3.3866 14 4.13333 14Z" stroke="#F9F7F6" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                    </button>
-                                    <span class="copied-toast">Скопировано</span>
-                                </span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="detail-text">Telegram</span>
-                                <span class="separator"></span>
-                                <a class="contact-badge" href="https://t.me/andrewaitken" target="_blank" rel="noopener noreferrer">@andrewaitken</a>
-                            </div>
-                            <div class="detail-row">
-                                <span class="detail-text">TG Channel</span>
-                                <span class="separator"></span>
-                                <a class="contact-badge" href="https://t.me/antoshkinai" target="_blank" rel="noopener noreferrer">@antoshkinai</a>
-                            </div>
-                        </div>
+                    <div class="contact-row">
+                        <span class="contact-label">TG Channel</span>
+                        <span class="contact-sep"></span>
+                        <a class="contact-link" href="https://t.me/antoshkinai" target="_blank" rel="noopener noreferrer">@antoshkinai</a>
                     </div>
-                </section>
+                </div>
             </div>
         </div>
     </main>
