@@ -217,6 +217,13 @@
         .award-icon { font-size: 0.8125rem; flex-shrink: 0; width: 20px; text-align: center; color: var(--text-faint); }
         .award-text { font-size: 0.875rem; font-weight: 500; line-height: 1.4; color: var(--text); }
 
+        /* ——— Value List ——— */
+
+        .value-list { display: flex; flex-direction: column; gap: 12px; }
+        .value-row { display: flex; align-items: baseline; gap: 10px; }
+        .value-icon { font-size: 0.875rem; flex-shrink: 0; width: 20px; text-align: center; color: var(--text-faint); }
+        .value-text { font-size: 0.875rem; font-weight: 400; line-height: 1.5; color: var(--text); }
+
         /* ——— About ——— */
 
         .about-text { font-size: 0.875rem; line-height: 1.57; color: var(--about); }
@@ -454,12 +461,12 @@
                     <img class="avatar" src="assets/avatar.png" alt="Андрей Антошкин" width="64" height="64">
                     <div class="hero-identity-text">
                         <span class="hero-name">Андрей Антошкин</span>
-                        <span class="hero-role">Product Design Engineer</span>
+                        <span class="hero-role">Проектирую и собираю AI&#8209;продукты</span>
                     </div>
                 </div>
                 <div class="hero-body">
-                    <h1 class="hero-headline">Создаю дизайн&#8209;системы, инструменты и&nbsp;AI&#8209;решения, которые усиливают команды.</h1>
-                    <p class="hero-sub">Сейчас в Яндекс Маркете — развиваю B2B дизайн-систему.<br>Фокус: дизайн-инфраструктура, AI-процессы и инструменты на стыке дизайна и разработки.</p>
+                    <h1 class="hero-headline">От идеи → к&nbsp;работающей системе → к&nbsp;результату</h1>
+                    <p class="hero-sub">Создаю продукты, которые автоматизируют сложные процессы и&nbsp;заменяют ручной труд</p>
                 </div>
             </div>
             <!-- Experience -->
@@ -508,42 +515,62 @@
                 </div>
             </div>
 
-            <!-- Skills -->
+            <!-- Что я делаю -->
             <div class="card">
                 <span class="card-label">
                     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 11h11a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2Zm0-9h11v7H2V2ZM22 0h-3a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h3a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm0 9h-3V2h3v7ZM5 13H2a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h3a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2Zm0 9H2v-7h3v7ZM22 13H11a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2Zm0 9H11v-7h11v7Z"/></svg>
-                    Skills & Stack
+                    Что я делаю
                 </span>
+                <div class="value-list">
+                    <div class="value-row"><span class="value-icon">→</span><span class="value-text">Проектирую дизайн-системы — компоненты, токены, процессы</span></div>
+                    <div class="value-row"><span class="value-icon">→</span><span class="value-text">Строю инфраструктуру, которая ускоряет команды</span></div>
+                    <div class="value-row"><span class="value-icon">→</span><span class="value-text">Автоматизирую рутину через AI-инструменты</span></div>
+                    <div class="value-row"><span class="value-icon">→</span><span class="value-text">Связываю дизайн с разработкой на уровне системы</span></div>
+                </div>
+            </div>
+
+            <!-- Где полезен -->
+            <div class="card">
+                <span class="card-label">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a6 6 0 1 0 0-12 6 6 0 0 0 0 12Zm0-10a4 4 0 1 1 0 8 4 4 0 0 1 0-8ZM12 14a9.01 9.01 0 0 0-9 9 1 1 0 1 0 2 0 7 7 0 0 1 14 0 1 1 0 1 0 2 0 9.01 9.01 0 0 0-9-9Z"/></svg>
+                    Где полезен
+                </span>
+                <div class="value-list">
+                    <div class="value-row"><span class="value-icon">—</span><span class="value-text">Когда нужно собрать продукт с нуля</span></div>
+                    <div class="value-row"><span class="value-icon">—</span><span class="value-text">Когда есть идея, но нет системы реализации</span></div>
+                    <div class="value-row"><span class="value-icon">—</span><span class="value-text">Когда процессы дорогие и их нужно автоматизировать</span></div>
+                    <div class="value-row"><span class="value-icon">—</span><span class="value-text">Когда важно быстро проверить гипотезу и выйти в прод</span></div>
+                </div>
+            </div>
+
+            <!-- Инструменты -->
+            <div class="card">
+                <span class="card-label">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="m22.207 2.794-1-1a2.07 2.07 0 0 0-2.828 0L16.1 4.072A6.98 6.98 0 0 0 12 3a7.03 7.03 0 0 0-5.458 2.629L.335 11.836a1.146 1.146 0 0 0 0 1.621l3.207 3.207-3.189 3.189a1 1 0 1 0 1.414 1.414l3.189-3.189 3.207 3.207a1.15 1.15 0 0 0 1.621 0l6.207-6.207A7.03 7.03 0 0 0 19 12a6.98 6.98 0 0 0-1.072-3.728l2.279-2.278a2 2 0 0 0 0-2.828ZM9.474 16.474 5.526 12.526 7.849 10.2A5 5 0 0 1 12 8.999a5.01 5.01 0 0 1 4.474 2.768L9.474 16.474Z"/></svg>
+                    Инструменты
+                </span>
+                <div class="skills-group">
+                    <div class="skills-group-label">AI & Code</div>
+                    <div class="skills-chips">
+                        <span class="chip">Cursor</span><span class="chip">Claude</span><span class="chip">GPT</span>
+                        <span class="chip">API</span><span class="chip">Автоматизация</span>
+                    </div>
+                </div>
                 <div class="skills-group">
                     <div class="skills-group-label">Design</div>
                     <div class="skills-chips">
-                        <span class="chip">Figma</span><span class="chip">Design Systems</span><span class="chip">UI / UX</span>
-                        <span class="chip">Prototyping</span><span class="chip">Storybook</span><span class="chip">Design Tokens</span>
-                    </div>
-                </div>
-                <div class="skills-group">
-                    <div class="skills-group-label">Code</div>
-                    <div class="skills-chips">
-                        <span class="chip">React</span><span class="chip">Next.js</span><span class="chip">TypeScript</span>
-                        <span class="chip">HTML / CSS</span><span class="chip">Git</span>
-                    </div>
-                </div>
-                <div class="skills-group">
-                    <div class="skills-group-label">AI & Automation</div>
-                    <div class="skills-chips">
-                        <span class="chip">Cursor</span><span class="chip">LLMs / GPT</span>
-                        <span class="chip">APIs</span><span class="chip">Prompt Engineering</span>
+                        <span class="chip">Figma</span><span class="chip">Design Systems</span><span class="chip">Прототипирование</span>
                     </div>
                 </div>
             </div>
 
-            <!-- About -->
+            <!-- Обо мне -->
             <div class="card">
                 <span class="card-label">
                     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a6 6 0 1 0 0-12 6 6 0 0 0 0 12Zm0-10a4 4 0 1 1 0 8 4 4 0 0 1 0-8ZM12 14a9.01 9.01 0 0 0-9 9 1 1 0 1 0 2 0 7 7 0 0 1 14 0 1 1 0 1 0 2 0 9.01 9.01 0 0 0-9-9Z"/></svg>
                     Обо мне
                 </span>
-                <p class="about-text"><strong>Я Product Design Engineer.</strong> Создаю масштабируемые системы и инструменты, которые помогают командам быстрее запускать продукты.<br><br>Работаю на стыке дизайн-систем, B2B-платформ и AI-инструментов — упрощаю сложное и ускоряю разработку. Верю в ясность, системность и сильную связку дизайна с разработкой.<br><br>Провожу внутренние воркшопы и исследую, как AI меняет роль дизайнеров и развитие дизайн-систем.</p>
+                <p class="about-text">Работаю на стыке дизайна, разработки и AI. Понимаю архитектуру и собираю рабочие продукты через AI — Cursor, LLM, API, автоматизация.<br><br>Фокус — системы, которые реально работают и масштабируются.</p>
             </div>
 
             <!-- Contacts -->
