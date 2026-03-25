@@ -71,11 +71,11 @@
             max-width: 760px;
             margin: 0 auto;
             padding: 72px 0 96px;
-            transition: margin 0.4s cubic-bezier(.4,0,.2,1), max-width 0.4s cubic-bezier(.4,0,.2,1);
+            transition: transform 0.4s cubic-bezier(.4,0,.2,1);
         }
 
         body.panel-open main {
-            margin-right: 340px;
+            transform: translateX(-170px);
         }
 
         /* ——— Hero ——— */
@@ -290,12 +290,14 @@
         }
 
         .settings-panel {
-            position: fixed; top: 0; right: 0; width: 320px; height: 100vh;
-            background: var(--card); border-left: 1px solid var(--border);
-            transform: translateX(100%);
+            position: fixed; top: 8px; right: 8px; bottom: 8px; width: 320px;
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 16px;
+            transform: translateX(calc(100% + 8px));
             transition: transform 0.4s cubic-bezier(.4,0,.2,1), background 0.3s, border-color 0.3s;
             z-index: 1002; overflow-y: auto; overscroll-behavior: contain;
             display: flex; flex-direction: column;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.08);
         }
 
         body.panel-open .settings-panel { transform: translateX(0); }
@@ -429,7 +431,7 @@
 
         @media (max-width: 820px) {
             main { padding: 48px 16px 72px; }
-            body.panel-open main { margin-right: 0; }
+            body.panel-open main { transform: none; }
             .settings-overlay { display: block; }
             body.panel-open .settings-overlay { opacity: 1; pointer-events: auto; }
         }
@@ -441,7 +443,7 @@
             .bento { grid-template-columns: 1fr; }
             .card { padding: 20px; }
             .contact-label { width: 70px; }
-            .settings-panel { width: 100%; }
+            .settings-panel { width: calc(100% - 16px); }
             .settings-fab { bottom: 16px; right: 16px; width: 44px; height: 44px; }
         }
     </style>
@@ -452,9 +454,6 @@
             <img class="avatar" src="assets/avatar.png" alt="Андрей Антошкин" width="80" height="80">
             <h1 class="hero-title">Андрей Антошкин — Product Design Engineer. <span>Создаю дизайн&#8209;системы, инструменты и&nbsp;AI&#8209;решения, которые усиливают команды.</span></h1>
             <p class="hero-sub">Сейчас в Яндекс Маркете — развиваю B2B дизайн-систему.<br>Фокус: дизайн-инфраструктура, AI-процессы и инструменты на стыке дизайна и разработки.</p>
-            <div class="hero-badges">
-                <span class="status-badge"><span class="status-dot"></span> Яндекс Маркет</span>
-            </div>
         </header>
 
         <div class="bento">
@@ -609,13 +608,12 @@
             <div>
                 <div class="sp-section-label">Цвет фона</div>
                 <div class="sp-swatches" id="sp-swatches">
-                    <button class="sp-swatch active" data-color="#F0EDEA" style="background:#F0EDEA"></button>
-                    <button class="sp-swatch" data-color="#E2DDD8" style="background:#E2DDD8"></button>
-                    <button class="sp-swatch" data-color="#D6E3ED" style="background:#D6E3ED"></button>
-                    <button class="sp-swatch" data-color="#D8E8D2" style="background:#D8E8D2"></button>
-                    <button class="sp-swatch" data-color="#EDE0D1" style="background:#EDE0D1"></button>
-                    <button class="sp-swatch" data-color="#E0D4ED" style="background:#E0D4ED"></button>
-                    <button class="sp-swatch" data-color="#141414" style="background:#141414"></button>
+                    <button class="sp-swatch active" data-color="" style="background:#F0EDEA"></button>
+                    <button class="sp-swatch" data-color="" style="background:#E2DDD8"></button>
+                    <button class="sp-swatch" data-color="" style="background:#D6E3ED"></button>
+                    <button class="sp-swatch" data-color="" style="background:#D8E8D2"></button>
+                    <button class="sp-swatch" data-color="" style="background:#EDE0D1"></button>
+                    <button class="sp-swatch" data-color="" style="background:#E0D4ED"></button>
                     <button class="sp-swatch sp-swatch--custom">
                         <input type="color" id="sp-custom-color" value="#F0EDEA">
                     </button>
@@ -684,9 +682,18 @@
             fontsize: 100
         };
 
+        var PALETTES = {
+            light: ['#F0EDEA', '#E2DDD8', '#D6E3ED', '#D8E8D2', '#EDE0D1', '#E0D4ED'],
+            dark:  ['#141414', '#1E1A17', '#151D28', '#152218', '#251C13', '#1F1528']
+        };
+
         function get(key) { return localStorage.getItem('sp_' + key); }
         function set(key, val) { localStorage.setItem('sp_' + key, val); }
         function clear() { Object.keys(DEFAULTS).forEach(function (k) { localStorage.removeItem('sp_' + k); }); }
+
+        function currentTheme() {
+            return root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+        }
 
         /* ——— Panel Toggle ——— */
 
@@ -697,23 +704,6 @@
         fab.addEventListener('click', togglePanel);
         closeBtn.addEventListener('click', togglePanel);
         overlay.addEventListener('click', togglePanel);
-
-        /* ——— Theme ——— */
-
-        var themeBtns = panel.querySelectorAll('.sp-theme-btn');
-
-        function applyTheme(theme) {
-            if (theme === 'dark') root.setAttribute('data-theme', 'dark');
-            else root.removeAttribute('data-theme');
-            themeBtns.forEach(function (b) { b.classList.toggle('active', b.dataset.theme === theme); });
-        }
-
-        themeBtns.forEach(function (btn) {
-            btn.addEventListener('click', function () {
-                applyTheme(btn.dataset.theme);
-                set('theme', btn.dataset.theme);
-            });
-        });
 
         /* ——— Background Color ——— */
 
@@ -731,6 +721,38 @@
             root.style.setProperty('--bg', color);
         }
 
+        function updateSwatchPalette(theme) {
+            var colors = PALETTES[theme] || PALETTES.light;
+            swatches.forEach(function (s, i) {
+                if (i < colors.length) {
+                    s.dataset.color = colors[i];
+                    s.style.background = colors[i];
+                }
+            });
+            customInput.value = colors[0];
+        }
+
+        function switchThemeBg(theme) {
+            updateSwatchPalette(theme);
+            var savedBg = get('bg');
+            var otherPalette = PALETTES[theme === 'dark' ? 'light' : 'dark'];
+            if (!savedBg || otherPalette.indexOf(savedBg) !== -1) {
+                var defaultBg = PALETTES[theme][0];
+                applyBg(defaultBg);
+                set('bg', defaultBg);
+                clearSwatchActive();
+                swatches[0].classList.add('active');
+            } else {
+                applyBg(savedBg);
+                clearSwatchActive();
+                var found = false;
+                swatches.forEach(function (s) {
+                    if (s.dataset.color === savedBg) { s.classList.add('active'); found = true; }
+                });
+                if (!found) customSwatch.classList.add('active');
+            }
+        }
+
         swatches.forEach(function (swatch) {
             swatch.addEventListener('click', function () {
                 var color = swatch.dataset.color;
@@ -746,6 +768,24 @@
             set('bg', customInput.value);
             clearSwatchActive();
             customSwatch.classList.add('active');
+        });
+
+        /* ——— Theme ——— */
+
+        var themeBtns = panel.querySelectorAll('.sp-theme-btn');
+
+        function applyTheme(theme, resetBg) {
+            if (theme === 'dark') root.setAttribute('data-theme', 'dark');
+            else root.removeAttribute('data-theme');
+            themeBtns.forEach(function (b) { b.classList.toggle('active', b.dataset.theme === theme); });
+            if (resetBg !== false) switchThemeBg(theme);
+        }
+
+        themeBtns.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                applyTheme(btn.dataset.theme);
+                set('theme', btn.dataset.theme);
+            });
         });
 
         /* ——— Font ——— */
@@ -800,7 +840,6 @@
         document.getElementById('sp-reset').addEventListener('click', function () {
             clear();
             applyTheme(DEFAULTS.theme);
-            applyBg(DEFAULTS.bg);
             applyFont(DEFAULTS.font);
             root.style.setProperty('--radius', DEFAULTS.radius + 'px');
             root.style.setProperty('--gap', DEFAULTS.gap + 'px');
@@ -813,22 +852,22 @@
             fontsizeInput.value = DEFAULTS.fontsize;
             fontsizeVal.textContent = DEFAULTS.fontsize + '%';
 
-            clearSwatchActive();
-            swatches[0].classList.add('active');
             fontChips.forEach(function (c) { c.classList.remove('active'); });
             fontChips[0].classList.add('active');
         });
 
         /* ——— Restore from localStorage ——— */
 
-        var savedTheme = get('theme');
+        var savedTheme = get('theme') || DEFAULTS.theme;
         var savedBg = get('bg');
         var savedFont = get('font');
         var savedRadius = get('radius');
         var savedGap = get('gap');
         var savedFontsize = get('fontsize');
 
-        if (savedTheme) applyTheme(savedTheme);
+        applyTheme(savedTheme, false);
+        updateSwatchPalette(savedTheme);
+
         if (savedBg) {
             applyBg(savedBg);
             clearSwatchActive();
@@ -837,7 +876,12 @@
                 if (s.dataset.color === savedBg) { s.classList.add('active'); found = true; }
             });
             if (!found) customSwatch.classList.add('active');
+        } else {
+            applyBg(PALETTES[savedTheme][0]);
+            clearSwatchActive();
+            swatches[0].classList.add('active');
         }
+
         if (savedFont) {
             applyFont(savedFont);
             fontChips.forEach(function (c) {
