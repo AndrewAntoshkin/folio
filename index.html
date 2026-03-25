@@ -344,8 +344,15 @@
             display: flex; align-items: center; justify-content: center; gap: 6px;
         }
 
-        .sp-theme-btn.active { background: var(--card); color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+        .sp-theme-btn.active, .sp-lang-btn.active { background: var(--card); color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
         .sp-theme-btn svg { width: 14px; height: 14px; }
+
+        .sp-lang-btn {
+            flex: 1; padding: 8px 0; border: none; background: transparent;
+            font-size: 0.8125rem; font-weight: 500; color: var(--text-muted);
+            cursor: pointer; transition: background 0.2s, color 0.2s;
+            display: flex; align-items: center; justify-content: center;
+        }
 
         /* Color Swatches */
 
@@ -458,37 +465,37 @@
                 <div class="hero-identity">
                     <img class="avatar" src="assets/avatar.png" alt="Андрей Антошкин" width="64" height="64">
                     <div class="hero-identity-text">
-                        <span class="hero-name">Андрей Антошкин</span>
+                        <span class="hero-name" data-i18n="hero_name">Андрей Антошкин</span>
                         <span class="hero-role">Product Design Engineer</span>
                     </div>
                 </div>
                 <div class="hero-body">
-                    <h1 class="hero-headline">Создаю дизайн&#8209;системы, инструменты и&nbsp;AI&#8209;решения, которые усиливают команды.</h1>
-                    <p class="hero-sub">Сейчас в Яндекс Маркете — развиваю B2B дизайн-систему.<br>Фокус: дизайн-инфраструктура, AI-процессы и инструменты на стыке дизайна и разработки.</p>
+                    <h1 class="hero-headline" data-i18n="hero_headline">Создаю дизайн&#8209;системы, инструменты и&nbsp;AI&#8209;решения, которые усиливают команды.</h1>
+                    <p class="hero-sub" data-i18n="hero_sub">Сейчас в Яндекс Маркете — развиваю B2B дизайн-систему.<br>Фокус: дизайн-инфраструктура, AI-процессы и инструменты на стыке дизайна и разработки.</p>
                 </div>
             </div>
             <!-- Experience -->
             <div class="card">
-                <span class="card-label">Опыт</span>
+                <span class="card-label" data-i18n="label_exp">Опыт</span>
                 <div class="exp-list">
                     <div class="exp-item">
                         <div class="exp-dot-col"><span class="exp-dot exp-dot--active"></span></div>
-                        <div class="exp-info"><div class="exp-company">Яндекс Маркет</div><div class="exp-role">Product Designer — Design Systems</div></div>
-                        <div class="exp-year">сейчас</div>
+                        <div class="exp-info"><div class="exp-company" data-i18n="exp1_company">Яндекс Маркет</div><div class="exp-role">Product Designer — Design Systems</div></div>
+                        <div class="exp-year" data-i18n="exp1_year">сейчас</div>
                     </div>
                     <div class="exp-item">
                         <div class="exp-dot-col"><span class="exp-dot"></span></div>
-                        <div class="exp-info"><div class="exp-company">Сбер</div><div class="exp-role">Design System Lead</div></div>
+                        <div class="exp-info"><div class="exp-company" data-i18n="exp2_company">Сбер</div><div class="exp-role">Design System Lead</div></div>
                         <div class="exp-year">2022 — 2024</div>
                     </div>
                     <div class="exp-item">
                         <div class="exp-dot-col"><span class="exp-dot"></span></div>
-                        <div class="exp-info"><div class="exp-company">Открытие</div><div class="exp-role">Senior Product Designer</div></div>
+                        <div class="exp-info"><div class="exp-company" data-i18n="exp3_company">Открытие</div><div class="exp-role">Senior Product Designer</div></div>
                         <div class="exp-year">2020 — 2021</div>
                     </div>
                     <div class="exp-item">
                         <div class="exp-dot-col"><span class="exp-dot"></span></div>
-                        <div class="exp-info"><div class="exp-company">МТС</div><div class="exp-role">Product Designer</div></div>
+                        <div class="exp-info"><div class="exp-company" data-i18n="exp4_company">МТС</div><div class="exp-role">Product Designer</div></div>
                         <div class="exp-year">2019 — 2020</div>
                     </div>
                 </div>
@@ -502,60 +509,60 @@
                     <div class="award-row"><span class="award-icon">◆</span><span class="award-text">iF Design Award — User Experience</span></div>
                     <div class="award-row"><span class="award-icon">◆</span><span class="award-text">Best For Life Design ×2 — HR Platform</span></div>
                     <div class="award-row"><span class="award-icon">◆</span><span class="award-text">InterComm Award — HR Tools</span></div>
-                    <div class="award-row"><span class="award-icon">◆</span><span class="award-text">Definition Hackathon — 2 место + спецприз</span></div>
+                    <div class="award-row"><span class="award-icon">◆</span><span class="award-text" data-i18n="award5">Definition Hackathon — 2 место + спецприз</span></div>
                     <div class="award-row"><span class="award-icon">◆</span><span class="award-text">Spline 3D Retro Future — Top 25</span></div>
                 </div>
             </div>
 
             <!-- Что я делаю -->
             <div class="card">
-                <span class="card-label">Что я делаю</span>
+                <span class="card-label" data-i18n="label_do">Что я делаю</span>
                 <div class="value-list">
-                    <div class="value-row"><span class="value-icon">→</span><span class="value-text">Проектирую дизайн-системы — компоненты, токены, процессы</span></div>
-                    <div class="value-row"><span class="value-icon">→</span><span class="value-text">Строю инфраструктуру, которая ускоряет команды</span></div>
-                    <div class="value-row"><span class="value-icon">→</span><span class="value-text">Автоматизирую рутину через AI-инструменты</span></div>
-                    <div class="value-row"><span class="value-icon">→</span><span class="value-text">Связываю дизайн с разработкой на уровне системы</span></div>
+                    <div class="value-row"><span class="value-icon">→</span><span class="value-text" data-i18n="do1">Проектирую дизайн-системы — компоненты, токены, процессы</span></div>
+                    <div class="value-row"><span class="value-icon">→</span><span class="value-text" data-i18n="do2">Строю инфраструктуру, которая ускоряет команды</span></div>
+                    <div class="value-row"><span class="value-icon">→</span><span class="value-text" data-i18n="do3">Автоматизирую рутину через AI-инструменты</span></div>
+                    <div class="value-row"><span class="value-icon">→</span><span class="value-text" data-i18n="do4">Связываю дизайн с разработкой на уровне системы</span></div>
                 </div>
             </div>
 
             <!-- Где полезен -->
             <div class="card">
-                <span class="card-label">Где полезен</span>
+                <span class="card-label" data-i18n="label_value">Где полезен</span>
                 <div class="value-list">
-                    <div class="value-row"><span class="value-icon">—</span><span class="value-text">Когда нужно собрать продукт с нуля</span></div>
-                    <div class="value-row"><span class="value-icon">—</span><span class="value-text">Когда есть идея, но нет системы реализации</span></div>
-                    <div class="value-row"><span class="value-icon">—</span><span class="value-text">Когда процессы дорогие и их нужно автоматизировать</span></div>
-                    <div class="value-row"><span class="value-icon">—</span><span class="value-text">Когда важно быстро проверить гипотезу и выйти в прод</span></div>
+                    <div class="value-row"><span class="value-icon">—</span><span class="value-text" data-i18n="val1">Когда нужно собрать продукт с нуля</span></div>
+                    <div class="value-row"><span class="value-icon">—</span><span class="value-text" data-i18n="val2">Когда есть идея, но нет системы реализации</span></div>
+                    <div class="value-row"><span class="value-icon">—</span><span class="value-text" data-i18n="val3">Когда процессы дорогие и их нужно автоматизировать</span></div>
+                    <div class="value-row"><span class="value-icon">—</span><span class="value-text" data-i18n="val4">Когда важно быстро проверить гипотезу и выйти в прод</span></div>
                 </div>
             </div>
 
             <!-- Инструменты -->
             <div class="card">
-                <span class="card-label">Инструменты</span>
+                <span class="card-label" data-i18n="label_tools">Инструменты</span>
                 <div class="skills-group">
                     <div class="skills-group-label">AI & Code</div>
                     <div class="skills-chips">
                         <span class="chip">Cursor</span><span class="chip">Claude</span><span class="chip">GPT</span>
-                        <span class="chip">API</span><span class="chip">Автоматизация</span>
+                        <span class="chip">API</span><span class="chip" data-i18n="chip_auto">Автоматизация</span>
                     </div>
                 </div>
                 <div class="skills-group">
                     <div class="skills-group-label">Design</div>
                     <div class="skills-chips">
-                        <span class="chip">Figma</span><span class="chip">Design Systems</span><span class="chip">Прототипирование</span>
+                        <span class="chip">Figma</span><span class="chip">Design Systems</span><span class="chip" data-i18n="chip_proto">Прототипирование</span>
                     </div>
                 </div>
             </div>
 
             <!-- Обо мне -->
             <div class="card">
-                <span class="card-label">Обо мне</span>
-                <p class="about-text">Работаю на стыке дизайна, разработки и AI. Понимаю архитектуру и собираю рабочие продукты через AI — Cursor, LLM, API, автоматизация.<br><br>Фокус — системы, которые реально работают и масштабируются.</p>
+                <span class="card-label" data-i18n="label_about">Обо мне</span>
+                <p class="about-text" data-i18n="about_text">Работаю на стыке дизайна, разработки и AI. Понимаю архитектуру и собираю рабочие продукты через AI — Cursor, LLM, API, автоматизация.<br><br>Фокус — системы, которые реально работают и масштабируются.</p>
             </div>
 
             <!-- Contacts -->
             <div class="card card--full">
-                <span class="card-label">Контакты</span>
+                <span class="card-label" data-i18n="label_contacts">Контакты</span>
                 <div class="contacts-grid">
                     <div class="contact-row">
                         <span class="contact-label">Email</span>
@@ -563,7 +570,7 @@
                         <button class="contact-link" id="email-badge" type="button">
                             <span>andrew.antoshkin@gmail.com</span>
                             <svg viewBox="0 0 24 24" fill="currentColor" style="opacity:.4"><path d="M15 20H5a5 5 0 0 1-5-5V5a5 5 0 0 1 5-5h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5ZM5 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V5a3 3 0 0 0-3-3H5Zm19 17V6a1 1 0 1 0-2 0v13a3 3 0 0 1-3 3H6a1 1 0 1 0 0 2h13a5 5 0 0 0 5-5Z"/></svg>
-                            <span class="copied-toast">Скопировано</span>
+                            <span class="copied-toast" data-i18n="copied">Скопировано</span>
                         </button>
                     </div>
                     <div class="contact-row">
@@ -592,7 +599,7 @@
     <!-- Settings Panel -->
     <aside class="settings-panel" id="settings-panel">
         <div class="sp-header">
-            <span class="sp-title">Настройки</span>
+            <span class="sp-title" data-i18n="sp_title">Настройки</span>
             <button class="sp-close" id="sp-close" type="button" aria-label="Закрыть">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
             </button>
@@ -600,7 +607,7 @@
         <div class="sp-body">
             <!-- Theme -->
             <div>
-                <div class="sp-section-label">Тема</div>
+                <div class="sp-section-label" data-i18n="sp_theme">Тема</div>
                 <div class="sp-theme-pill">
                     <button class="sp-theme-btn active" data-theme="light" type="button">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
@@ -613,9 +620,18 @@
                 </div>
             </div>
 
+            <!-- Language -->
+            <div>
+                <div class="sp-section-label" data-i18n="sp_lang">Язык</div>
+                <div class="sp-theme-pill">
+                    <button class="sp-lang-btn active" data-lang="ru" type="button">Рус</button>
+                    <button class="sp-lang-btn" data-lang="en" type="button">Eng</button>
+                </div>
+            </div>
+
             <!-- Background Color -->
             <div>
-                <div class="sp-section-label">Цвет фона</div>
+                <div class="sp-section-label" data-i18n="sp_bg">Цвет фона</div>
                 <div class="sp-swatches" id="sp-swatches">
                     <button class="sp-swatch active" data-color="" style="background:#F0EDEA"></button>
                     <button class="sp-swatch" data-color="" style="background:#E2DDD8"></button>
@@ -631,7 +647,7 @@
 
             <!-- Font -->
             <div>
-                <div class="sp-section-label">Шрифт</div>
+                <div class="sp-section-label" data-i18n="sp_font">Шрифт</div>
                 <div class="sp-font-chips" id="sp-fonts">
                     <button class="sp-font-chip active" data-font="'Google Sans Text', system-ui, sans-serif" style="font-family:'Google Sans Text',sans-serif" type="button">Google Sans</button>
                     <button class="sp-font-chip" data-font="'Inter', system-ui, sans-serif" style="font-family:'Inter',sans-serif" type="button">Inter</button>
@@ -643,7 +659,7 @@
 
             <!-- Border Radius -->
             <div>
-                <div class="sp-section-label">Скругления</div>
+                <div class="sp-section-label" data-i18n="sp_radius">Скругления</div>
                 <div class="sp-range-row">
                     <input class="sp-range" id="sp-radius" type="range" min="0" max="32" value="20">
                     <span class="sp-range-val" id="sp-radius-val">20px</span>
@@ -652,7 +668,7 @@
 
             <!-- Grid Gap -->
             <div>
-                <div class="sp-section-label">Отступы сетки</div>
+                <div class="sp-section-label" data-i18n="sp_gap">Отступы сетки</div>
                 <div class="sp-range-row">
                     <input class="sp-range" id="sp-gap" type="range" min="4" max="24" value="12">
                     <span class="sp-range-val" id="sp-gap-val">12px</span>
@@ -661,7 +677,7 @@
 
             <!-- Font Size -->
             <div>
-                <div class="sp-section-label">Размер текста</div>
+                <div class="sp-section-label" data-i18n="sp_fontsize">Размер текста</div>
                 <div class="sp-range-row">
                     <input class="sp-range" id="sp-fontsize" type="range" min="85" max="120" value="100">
                     <span class="sp-range-val" id="sp-fontsize-val">100%</span>
@@ -669,7 +685,7 @@
             </div>
 
             <!-- Reset -->
-            <button class="sp-reset" id="sp-reset" type="button">Сбросить настройки</button>
+            <button class="sp-reset" id="sp-reset" type="button" data-i18n="sp_reset">Сбросить настройки</button>
         </div>
     </aside>
 
@@ -688,7 +704,67 @@
             font: "'Google Sans Text', system-ui, sans-serif",
             radius: 20,
             gap: 12,
-            fontsize: 100
+            fontsize: 100,
+            lang: 'ru'
+        };
+
+        var I18N = {
+            en: {
+                hero_name: 'Andrey Antoshkin',
+                hero_headline: 'I build design\u2011systems, tools and\u00A0AI\u2011solutions that empower teams.',
+                hero_sub: 'Currently at Yandex Market\u00A0\u2014 building a B2B design system.<br>Focus: design infrastructure, AI\u2011driven processes, and tools at the intersection of design and engineering.',
+                label_exp: 'Experience',
+                exp1_company: 'Yandex Market', exp1_year: 'present',
+                exp2_company: 'Sber', exp3_company: 'Otkritie', exp4_company: 'MTS',
+                label_do: 'What I do',
+                do1: 'Design systems\u00A0\u2014 components, tokens, processes',
+                do2: 'Build infrastructure that accelerates teams',
+                do3: 'Automate routine with AI tools',
+                do4: 'Bridge design and engineering at the systems level',
+                label_value: 'Where I help',
+                val1: 'When you need to build a product from scratch',
+                val2: 'When there\u2019s an idea but no system to execute it',
+                val3: 'When processes are expensive and need automation',
+                val4: 'When you need to validate fast and ship to production',
+                label_tools: 'Tools',
+                chip_auto: 'Automation', chip_proto: 'Prototyping',
+                label_about: 'About me',
+                about_text: 'I work at the intersection of design, engineering and AI. I understand architecture and build working products through AI\u00A0\u2014 Cursor, LLM, API, automation.<br><br>Focus\u00A0\u2014 systems that actually work and scale.',
+                label_contacts: 'Contacts',
+                award5: 'Definition Hackathon\u00A0\u2014 2nd place + special prize',
+                copied: 'Copied',
+                sp_title: 'Settings', sp_lang: 'Language', sp_theme: 'Theme',
+                sp_bg: 'Background', sp_font: 'Font', sp_radius: 'Corners',
+                sp_gap: 'Grid gap', sp_fontsize: 'Text size', sp_reset: 'Reset settings'
+            },
+            ru: {
+                hero_name: 'Андрей Антошкин',
+                hero_headline: 'Создаю дизайн\u2011системы, инструменты и\u00A0AI\u2011решения, которые усиливают команды.',
+                hero_sub: 'Сейчас в Яндекс Маркете\u00A0\u2014 развиваю B2B дизайн-систему.<br>Фокус: дизайн-инфраструктура, AI-процессы и инструменты на стыке дизайна и разработки.',
+                label_exp: 'Опыт',
+                exp1_company: 'Яндекс Маркет', exp1_year: 'сейчас',
+                exp2_company: 'Сбер', exp3_company: 'Открытие', exp4_company: 'МТС',
+                label_do: 'Что я делаю',
+                do1: 'Проектирую дизайн-системы — компоненты, токены, процессы',
+                do2: 'Строю инфраструктуру, которая ускоряет команды',
+                do3: 'Автоматизирую рутину через AI-инструменты',
+                do4: 'Связываю дизайн с разработкой на уровне системы',
+                label_value: 'Где полезен',
+                val1: 'Когда нужно собрать продукт с нуля',
+                val2: 'Когда есть идея, но нет системы реализации',
+                val3: 'Когда процессы дорогие и их нужно автоматизировать',
+                val4: 'Когда важно быстро проверить гипотезу и выйти в прод',
+                label_tools: 'Инструменты',
+                chip_auto: 'Автоматизация', chip_proto: 'Прототипирование',
+                label_about: 'Обо мне',
+                about_text: 'Работаю на стыке дизайна, разработки и AI. Понимаю архитектуру и собираю рабочие продукты через AI — Cursor, LLM, API, автоматизация.<br><br>Фокус — системы, которые реально работают и масштабируются.',
+                label_contacts: 'Контакты',
+                award5: 'Definition Hackathon — 2 место + спецприз',
+                copied: 'Скопировано',
+                sp_title: 'Настройки', sp_lang: 'Язык', sp_theme: 'Тема',
+                sp_bg: 'Цвет фона', sp_font: 'Шрифт', sp_radius: 'Скругления',
+                sp_gap: 'Отступы сетки', sp_fontsize: 'Размер текста', sp_reset: 'Сбросить настройки'
+            }
         };
 
         var PALETTES = {
@@ -797,6 +873,27 @@
             });
         });
 
+        /* ——— Language ——— */
+
+        var langBtns = panel.querySelectorAll('.sp-lang-btn');
+
+        function applyLang(lang) {
+            root.setAttribute('lang', lang);
+            var strings = I18N[lang] || I18N.ru;
+            document.querySelectorAll('[data-i18n]').forEach(function (el) {
+                var key = el.dataset.i18n;
+                if (strings[key] !== undefined) el.innerHTML = strings[key];
+            });
+            langBtns.forEach(function (b) { b.classList.toggle('active', b.dataset.lang === lang); });
+        }
+
+        langBtns.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                applyLang(btn.dataset.lang);
+                set('lang', btn.dataset.lang);
+            });
+        });
+
         /* ——— Font ——— */
 
         var fontChips = document.querySelectorAll('.sp-font-chip');
@@ -849,6 +946,7 @@
         document.getElementById('sp-reset').addEventListener('click', function () {
             clear();
             applyTheme(DEFAULTS.theme);
+            applyLang(DEFAULTS.lang);
             applyFont(DEFAULTS.font);
             root.style.setProperty('--radius', DEFAULTS.radius + 'px');
             root.style.setProperty('--gap', DEFAULTS.gap + 'px');
@@ -868,6 +966,7 @@
         /* ——— Restore from localStorage ——— */
 
         var savedTheme = get('theme') || DEFAULTS.theme;
+        var savedLang = get('lang') || DEFAULTS.lang;
         var savedBg = get('bg');
         var savedFont = get('font');
         var savedRadius = get('radius');
@@ -875,6 +974,7 @@
         var savedFontsize = get('fontsize');
 
         applyTheme(savedTheme, false);
+        applyLang(savedLang);
         updateSwatchPalette(savedTheme);
 
         if (savedBg) {
