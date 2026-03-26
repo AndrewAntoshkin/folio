@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design.md — how to describe a design system for AI agents</title>
+    <meta name="description" content="How to structure a design system in a format that AI agents can use. Tokens, components, patterns, audit.">
+    <meta property="og:title" content="Design.md — how to describe a design system for AI agents">
+    <meta property="og:description" content="How to structure a design system in a format that AI agents can use.">
+    <meta property="og:type" content="article">
+    <link rel="icon" type="image/png" href="assets/avatar.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta name="color-scheme" content="light dark">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        @view-transition {
+            navigation: auto;
+        }
+
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+            animation: 250ms ease both crossfade;
+        }
+
+        ::view-transition-old(root) {
+            animation-name: crossfade-out;
+        }
+
+        ::view-transition-new(article-body) {
+            animation: 500ms cubic-bezier(0.22, 1, 0.36, 1) both slide-fade-in;
+            animation-delay: 150ms;
+        }
+
+        ::view-transition-old(article-body) {
+            animation: 200ms ease both crossfade-out;
+        }
+
+        @keyframes crossfade {
+            from { opacity: 0; }
+        }
+
+        @keyframes crossfade-out {
+            to { opacity: 0; }
+        }
+
+        @keyframes slide-fade-in {
+            from { opacity: 0; transform: translateY(20px); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            ::view-transition-group(*),
+            ::view-transition-old(*),
+            ::view-transition-new(*) {
+                animation: none !important;
+            }
+        }
+
+        :root {
+            --bg: #fafafa;
+            --text: #0a0a0a;
+            --text-sub: #52525b;
+            --text-muted: #737373;
+            --border: #e4e4e7;
+            --code-bg: #f4f4f5;
+            --code-border: rgba(0, 0, 0, 0.08);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0c0c0c;
+                --text: #f5f5f5;
+                --text-sub: #d4d4d8;
+                --text-muted: #8f8e8d;
+                --border: #27272a;
+                --code-bg: #18181b;
+                --code-border: rgba(255, 255, 255, 0.05);
+            }
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-size: 1rem;
+            line-height: 1.618;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body { min-height: 100vh; }
+        a { color: inherit; }
+
+        main {
+            width: min(592px, 100% - 32px);
+            margin: 0 auto;
+            padding-top: clamp(2rem, 0.56rem + 5.56vw, 5rem);
+            padding-bottom: clamp(2rem, 0.56rem + 5.56vw, 5rem);
+        }
+
+        .back {
+            display: inline-block;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 48px;
+            transition: color 0.2s;
+        }
+
+        .back:hover { color: var(--text); }
+
+        article h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        .date {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            display: block;
+        }
+
+        article h2 {
+            font-size: 1.125rem;
+            font-weight: 500;
+            line-height: 1.4;
+            margin-top: 2rem;
+            margin-bottom: 0;
+            color: var(--text);
+        }
+
+        article h3 {
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.5;
+            margin-top: 1.5rem;
+            margin-bottom: 0;
+        }
+
+        article p {
+            font-size: 1rem;
+            color: var(--text-sub);
+            margin-top: 1.5rem;
+        }
+
+        article p:first-of-type { margin-top: 0; }
+
+        article a {
+            color: var(--text);
+            text-decoration: underline;
+            text-decoration-color: color-mix(in srgb, currentColor, transparent 75%);
+            text-underline-offset: 0.3em;
+            text-decoration-thickness: 1px;
+            transition: text-decoration-color 0.17s ease-out;
+        }
+
+        article a:hover { text-decoration-color: currentColor; }
+
+        article strong { font-weight: 600; color: var(--text); }
+
+        article ul, article ol {
+            margin-top: 1rem;
+            padding-left: 1.25rem;
+        }
+
+        article li {
+            font-size: 1rem;
+            color: var(--text-sub);
+            margin-top: 0.25rem;
+        }
+
+        article li strong { color: var(--text); }
+
+        article code {
+            font-family: 'SF Mono', 'Fira Code', 'Fira Mono', monospace;
+            font-size: 0.8125rem;
+            background: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        article pre {
+            margin-top: 1rem;
+            background: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 0.625rem;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+            font-size: 0.875rem;
+            line-height: 1.618;
+            color: var(--text);
+        }
+
+        hr {
+            margin-top: 3rem;
+            border: none;
+            border-top: 1px solid var(--border);
+        }
+
+        footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 24px;
+            font-size: 1rem;
+            line-height: normal;
+        }
+
+        .footer-copy {
+            color: var(--text-muted);
+        }
+
+        .lang-switch {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .lang-switch a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+
+        .lang-switch a:hover {
+            color: var(--text);
+        }
+
+        .lang-switch .active {
+            color: var(--text);
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <a href="en.html" class="back">&larr; Andrew Antoshkin</a>
+
+        <article style="view-transition-name: article-body">
+            <h1 style="view-transition-name: article-1">Design.md&nbsp;&mdash; how to describe a design system for AI&nbsp;agents</h1>
+            <span class="date">March 2026</span>
+
+            <p>AI agents&nbsp;&mdash; Claude, GPT, Cursor&nbsp;&mdash; are increasingly writing UI code. But they have a fundamental problem: they don't know your design system. Every session starts from scratch. Every visual decision is a guess.</p>
+
+            <p>Design.md solves this. It's a structured design system specification that AI reads at the start of every session. Instead of guessing&nbsp;&mdash; it looks things up.</p>
+
+            <h2>The problem: 200 reasonable guesses</h2>
+
+            <p>When AI writes an interface, it makes hundreds of micro-decisions: what padding for a card, what shade of blue for a link, what border radius for a button. Each decision looks fine. But 200 &ldquo;reasonable guesses&rdquo; don't add up to a consistent design.</p>
+
+            <p><a href="https://hvpandya.com/llm-design-systems" target="_blank" rel="noopener">Hardik Pandya</a> precisely describes three LLM limitations:</p>
+
+            <ol>
+                <li><strong>Value fabrication.</strong> AI doesn't look up your tokens&nbsp;&mdash; it generates plausible ones. If the system has <code>--space-200</code>&nbsp;= 8px, AI will write <code>padding: 12px</code> because 12 is a reasonable number. It's not wrong. It's just not yours.</li>
+                <li><strong>No memory between sessions.</strong> Every new session starts from zero. AI doesn't remember that yesterday it used <code>#2563EB</code> for links. Today it picks a different blue. By the fifth session, you have three different blues in one prototype.</li>
+                <li><strong>Can't read design intent from code.</strong> AI sees component APIs: import Button, pass <code>appearance="primary"</code>. But it doesn't understand when to use a modal instead of an inline message, or what spacing to put between sections. That knowledge lives in designers' heads.</li>
+            </ol>
+
+            <h2>What is Design.md</h2>
+
+            <p>Design.md is a file in the repository root that describes your design system in a format suitable for AI. For Cursor, it lives in <code>.cursor/rules/</code>. For Claude&nbsp;&mdash; in CLAUDE.md. For any agent&nbsp;&mdash; in the session context.</p>
+
+            <p>The idea is simple: AI shouldn't decide &ldquo;which blue to use for a link.&rdquo; It should find <code>var(--color-link)</code> in the spec.</p>
+
+            <p><a href="https://airops-style-guide.vercel.app/" target="_blank" rel="noopener">AirOps</a> went further&nbsp;&mdash; their brand guideline has two representations: a live visual guideline for humans and a structured instruction for AI agents. One source of truth, two consumption formats.</p>
+
+            <h2>What to include</h2>
+
+            <h3>Tokens</h3>
+
+            <p>A complete map of CSS variables with values and context. Not just <code>--color-primary: #2563EB</code>, but when and where to use it:</p>
+
+<pre><code>## Colors
+
+- `--color-text`: #171717 — primary text
+- `--color-text-sub`: #525252 — secondary text, descriptions
+- `--color-link`: #2563EB — links and interactive elements
+- `--color-bg`: #fafafa — page background
+- `--color-border`: #e5e5e5 — dividers and borders
+
+## Spacing (base 4px)
+
+- `--space-100`: 4px — minimum, between icon and text
+- `--space-200`: 8px — inside component
+- `--space-300`: 12px — between related elements
+- `--space-400`: 16px — standard padding
+- `--space-600`: 24px — between blocks
+- `--space-800`: 32px — between sections</code></pre>
+
+            <h3>Components</h3>
+
+            <p>For each component: when to use, when not to use, which tokens are involved, what states exist:</p>
+
+<pre><code>## Button
+
+When: primary action on the page
+When NOT: navigation (use Link)
+
+Variants: primary | secondary | ghost
+Sizes: sm (32px) | md (40px) | lg (48px)
+
+Tokens:
+- Background: var(--color-primary)
+- Text: var(--color-on-primary)
+- Border radius: var(--radius-md)
+- Padding: var(--space-300) var(--space-400)
+
+States: default, hover, active, focus, disabled</code></pre>
+
+            <h3>Patterns</h3>
+
+            <p>Layout rules that AI can't derive from code: spacing between sections, grid behavior, responsiveness principles. This is what usually lives in designers' heads and is never written down.</p>
+
+            <h2>Three-layer token architecture</h2>
+
+            <p>Hardik Pandya proposes a three-layer structure that protects against drift:</p>
+
+            <ol>
+                <li><strong>Upstream tokens</strong> from the design system: <code>--ds-text: #171717</code></li>
+                <li><strong>Project aliases</strong> with reference and fallback: <code>--color-text: var(--ds-text, #171717)</code></li>
+                <li><strong>Components</strong> use only aliases: <code>color: var(--color-text)</code></li>
+            </ol>
+
+            <p>The alias is a protective layer. If the upstream system renames a token, you change one alias. Dark theme, high contrast, any future theme&nbsp;&mdash; resolves automatically through the chain.</p>
+
+            <h2>Audit: catching what AI missed</h2>
+
+            <p>Design.md gives AI the right answers. The audit script catches cases where AI guessed anyway. A simple script scans CSS files for hardcoded values and suggests the specific token:</p>
+
+<pre><code>src/components/Nav.css
+  L42: color: #2563EB → use var(--color-link)
+  L78: padding: 12px → use var(--space-300)
+
+Errors: 2 | Warnings: 0</code></pre>
+
+            <p>The script returns exit code 1 on errors&nbsp;&mdash; can be added to CI. Zero violations = safe to merge.</p>
+
+            <h2>How to maintain</h2>
+
+            <p>The spec lives in the repository next to the code, not in a Figma comment or Notion. When a component changes in a PR, the spec is in the same diff. Three rules:</p>
+
+            <ul>
+                <li><strong>New component</strong>&nbsp;&mdash; write the spec before or during development</li>
+                <li><strong>Design system update</strong>&nbsp;&mdash; update the affected sections of Design.md</li>
+                <li><strong>Audit in CI</strong>&nbsp;&mdash; the script automatically checks every PR</li>
+            </ul>
+
+            <p>A small accurate spec is better than a large outdated one.</p>
+
+            <h2>Result</h2>
+
+            <p>Your tenth AI session delivers the same visual quality as the first. AI doesn't guess&nbsp;&mdash; it looks up. Doesn't fabricate&nbsp;&mdash; references. Doesn't drift&nbsp;&mdash; gets checked by audit.</p>
+
+            <p>Design.md is not documentation. It's infrastructure.</p>
+        </article>
+
+        <hr>
+
+        <footer>
+            <span class="footer-copy">2026. Antoshkin AI</span>
+            <div class="lang-switch">
+                <a href="design-md.html">Ru</a>
+                <span class="active">En</span>
+            </div>
+        </footer>
+    </main>
+</body>
+</html>

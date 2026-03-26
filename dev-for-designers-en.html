@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why design system designers should understand development</title>
+    <meta name="description" content="Components, slots, tokens, Code Connect — why understanding code makes a design system designer stronger.">
+    <meta property="og:title" content="Why design system designers should understand development">
+    <meta property="og:description" content="Why understanding code makes a design system designer stronger.">
+    <meta property="og:type" content="article">
+    <link rel="icon" type="image/png" href="assets/avatar.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta name="color-scheme" content="light dark">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        @view-transition {
+            navigation: auto;
+        }
+
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+            animation: 250ms ease both crossfade;
+        }
+
+        ::view-transition-old(root) {
+            animation-name: crossfade-out;
+        }
+
+        ::view-transition-new(article-body) {
+            animation: 500ms cubic-bezier(0.22, 1, 0.36, 1) both slide-fade-in;
+            animation-delay: 150ms;
+        }
+
+        ::view-transition-old(article-body) {
+            animation: 200ms ease both crossfade-out;
+        }
+
+        @keyframes crossfade {
+            from { opacity: 0; }
+        }
+
+        @keyframes crossfade-out {
+            to { opacity: 0; }
+        }
+
+        @keyframes slide-fade-in {
+            from { opacity: 0; transform: translateY(20px); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            ::view-transition-group(*),
+            ::view-transition-old(*),
+            ::view-transition-new(*) {
+                animation: none !important;
+            }
+        }
+
+        :root {
+            --bg: #fafafa;
+            --text: #0a0a0a;
+            --text-sub: #52525b;
+            --text-muted: #737373;
+            --border: #e4e4e7;
+            --code-bg: #f4f4f5;
+            --code-border: rgba(0, 0, 0, 0.08);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0c0c0c;
+                --text: #f5f5f5;
+                --text-sub: #d4d4d8;
+                --text-muted: #8f8e8d;
+                --border: #27272a;
+                --code-bg: #18181b;
+                --code-border: rgba(255, 255, 255, 0.05);
+            }
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-size: 1rem;
+            line-height: 1.618;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body { min-height: 100vh; }
+        a { color: inherit; }
+
+        main {
+            width: min(592px, 100% - 32px);
+            margin: 0 auto;
+            padding-top: clamp(2rem, 0.56rem + 5.56vw, 5rem);
+            padding-bottom: clamp(2rem, 0.56rem + 5.56vw, 5rem);
+        }
+
+        .back {
+            display: inline-block;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 48px;
+            transition: color 0.2s;
+        }
+
+        .back:hover { color: var(--text); }
+
+        article h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        .date {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            display: block;
+        }
+
+        article h2 {
+            font-size: 1.125rem;
+            font-weight: 500;
+            line-height: 1.4;
+            margin-top: 2rem;
+            margin-bottom: 0;
+            color: var(--text);
+        }
+
+        article p {
+            font-size: 1rem;
+            color: var(--text-sub);
+            margin-top: 1.5rem;
+        }
+
+        article p:first-of-type { margin-top: 0; }
+
+        article a {
+            color: var(--text);
+            text-decoration: underline;
+            text-decoration-color: color-mix(in srgb, currentColor, transparent 75%);
+            text-underline-offset: 0.3em;
+            text-decoration-thickness: 1px;
+            transition: text-decoration-color 0.17s ease-out;
+        }
+
+        article a:hover { text-decoration-color: currentColor; }
+
+        article strong { font-weight: 600; color: var(--text); }
+
+        article ul, article ol {
+            margin-top: 1rem;
+            padding-left: 1.25rem;
+        }
+
+        article li {
+            font-size: 1rem;
+            color: var(--text-sub);
+            margin-top: 0.25rem;
+        }
+
+        article li strong { color: var(--text); }
+
+        article code {
+            font-family: 'SF Mono', 'Fira Code', 'Fira Mono', monospace;
+            font-size: 0.8125rem;
+            background: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        article pre {
+            margin-top: 1rem;
+            background: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 0.625rem;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+            font-size: 0.875rem;
+            line-height: 1.618;
+            color: var(--text);
+        }
+
+        hr {
+            margin-top: 3rem;
+            border: none;
+            border-top: 1px solid var(--border);
+        }
+
+        footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 24px;
+            font-size: 1rem;
+            line-height: normal;
+        }
+
+        .footer-copy {
+            color: var(--text-muted);
+        }
+
+        .lang-switch {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .lang-switch a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+
+        .lang-switch a:hover {
+            color: var(--text);
+        }
+
+        .lang-switch .active {
+            color: var(--text);
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <a href="en.html" class="back">&larr; Andrew Antoshkin</a>
+
+        <article style="view-transition-name: article-body">
+            <h1 style="view-transition-name: article-2">Why design system designers should understand development</h1>
+            <span class="date">March 2026</span>
+
+            <p>Design systems live at the intersection of design and code. A component in Figma and a component in React are different objects with different architectures. A designer who understands both sides creates systems that actually work&nbsp;&mdash; not just in mockups.</p>
+
+            <h2>The gap that costs you</h2>
+
+            <p>A designer creates a component in Figma: variants, props, styles. A developer receives it and translates it into code. Between these two versions is a gap. And the wider it is, the more expensive every iteration becomes.</p>
+
+            <p>A designer who doesn't understand code risks building components that can't be implemented without workarounds, require dozens of variants instead of composition, and don't scale when new use cases appear. The developer adapts, the designer doesn't recognize the result&nbsp;&mdash; and trust in the system erodes.</p>
+
+            <h2>Components: props and composition</h2>
+
+            <p>In code, a component is a function that accepts parameters and returns an interface. A button with an icon isn't a separate variant. It's a button that accepts an icon as a parameter:</p>
+
+<pre><code>&lt;Button icon={&lt;IconPlus /&gt;}&gt;
+  Add
+&lt;/Button&gt;</code></pre>
+
+            <p>One button, infinite combinations. In Figma, for a long time each combination required a separate variant or instance swap. The library grew, maintenance got harder.</p>
+
+            <p>Understanding this principle changes how you design: instead of &ldquo;what variants to create,&rdquo; you think &ldquo;what parameters does the component accept.&rdquo;</p>
+
+            <h2>Slots: design catches up with code</h2>
+
+            <p>In 2025, Figma released <a href="https://www.figma.com/blog/supercharge-your-design-system-with-slots/" target="_blank" rel="noopener">slots</a>&nbsp;&mdash; a fundamental change. Slots let you insert any content inside a component without detaching. A modal accepts any content. A card&nbsp;&mdash; any set of elements. A list&nbsp;&mdash; any number of items.</p>
+
+            <p>This is exactly how components work in code. A React <code>&lt;Modal&gt;</code> component accepts <code>children</code>&nbsp;&mdash; any content inside. Slots in Figma are <code>children</code> in design.</p>
+
+            <p><a href="https://nathanacurtis.substack.com/p/implementing-slots-in-a-figma-library" target="_blank" rel="noopener">Nathan Curtis</a> describes migrating to slots as an architectural decision, not just replacing one element with another. For each component you need to decide: where to keep props and where to use a slot. What content to show by default. How to constrain what can be inserted. These are decisions that require understanding both design and code.</p>
+
+            <h2>Tokens: more than just colors</h2>
+
+            <p>CSS variables&nbsp;&mdash; <code>--color-primary</code>, <code>--space-200</code>&nbsp;&mdash; aren't synonyms for HEX codes. They're an abstraction layer that lets you switch themes with a single toggle, support dark mode without touching components, and ensure consistency automatically.</p>
+
+<pre><code>:root {
+  --color-text: #171717;
+  --color-bg: #fafafa;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-text: #ededed;
+    --color-bg: #0a0a0a;
+  }
+}</code></pre>
+
+            <p>Components reference variables, not specific values. The theme changes&nbsp;&mdash; components pick it up automatically.</p>
+
+            <p>A designer who understands how this works creates tokens that map to code without translation. Not &ldquo;Primary Blue 500,&rdquo; but <code>--color-interactive</code>&nbsp;&mdash; with a clear purpose and the right level of abstraction.</p>
+
+            <h2>Code Connect: the bridge gets shorter</h2>
+
+            <p>Figma <a href="https://www.figma.com/blog/supercharge-your-design-system-with-slots/" target="_blank" rel="noopener">Code Connect</a> links a Figma component directly to its code implementation. A developer opens Dev Mode and sees not abstract Figma props, but the real component code.</p>
+
+            <p>Slots are supported in Code Connect&nbsp;&mdash; engineers immediately see how a slotted component maps to production. Handoff becomes predictable.</p>
+
+            <p>A designer who understands code can verify that their component maps correctly to the implementation, describe the component in terms developers understand, and participate in review&nbsp;&mdash; not as a syntax reviewer, but as an interface expert.</p>
+
+            <h2>AI as a bridge</h2>
+
+            <p>A separate topic is AI tools. Cursor and Claude let designers prototype in code without deep framework knowledge. You describe a component&nbsp;&mdash; AI writes the code. But to evaluate the result, steer AI, and fix details, you need to understand the basics.</p>
+
+            <p>This isn't about &ldquo;learning to write production code.&rdquo; It's about enough understanding to test ideas before handing off to development and speak the same language as engineers.</p>
+
+            <h2>Practical benefits</h2>
+
+            <ul>
+                <li><strong>Better components.</strong> You design with an understanding of the platform's capabilities and constraints.</li>
+                <li><strong>Faster communication.</strong> You speak the same language as developers. &ldquo;Let's make this a slot&rdquo; instead of &ldquo;I need to be able to put anything here.&rdquo;</li>
+                <li><strong>Fewer iterations.</strong> Components are implemented closer to the intent on the first try.</li>
+                <li><strong>AI prototyping.</strong> Claude and Cursor become designer tools, not just developer tools.</li>
+            </ul>
+
+            <h2>Where to start</h2>
+
+            <p>You don't need to learn React or write production code. Four steps are enough:</p>
+
+            <ul>
+                <li><strong>HTML and CSS</strong>&nbsp;&mdash; understand how interfaces are built in the browser</li>
+                <li><strong>CSS variables</strong>&nbsp;&mdash; understand tokens at the implementation level</li>
+                <li><strong>DevTools</strong>&nbsp;&mdash; learn to inspect components in the browser</li>
+                <li><strong>Cursor + Claude</strong>&nbsp;&mdash; use AI for rapid prototyping</li>
+            </ul>
+
+            <p>Design systems are moving toward a full merger of design and code. Slots, Code Connect, AI agents&nbsp;&mdash; everything is closing the gap. A designer who understands both sides isn't just more useful. They build systems that outlast any tool change.</p>
+        </article>
+
+        <hr>
+
+        <footer>
+            <span class="footer-copy">2026. Antoshkin AI</span>
+            <div class="lang-switch">
+                <a href="dev-for-designers.html">Ru</a>
+                <span class="active">En</span>
+            </div>
+        </footer>
+    </main>
+</body>
+</html>

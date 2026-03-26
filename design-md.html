@@ -207,6 +207,39 @@
             border: none;
             border-top: 1px solid var(--border);
         }
+
+        footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 24px;
+            font-size: 1rem;
+            line-height: normal;
+        }
+
+        .footer-copy {
+            color: var(--text-muted);
+        }
+
+        .lang-switch {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .lang-switch a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+
+        .lang-switch a:hover {
+            color: var(--text);
+        }
+
+        .lang-switch .active {
+            color: var(--text);
+        }
     </style>
 </head>
 <body>
@@ -332,6 +365,14 @@
         </article>
 
         <hr>
+
+        <footer>
+            <span class="footer-copy">2026. Antoshkin AI</span>
+            <div class="lang-switch">
+                <span class="active">Ru</span>
+                <a href="design-md-en.html">En</a>
+            </div>
+        </footer>
     </main>
 </body>
 </html>
