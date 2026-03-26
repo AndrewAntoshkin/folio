@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Андрей Антошкин — Product Design Engineer</title>
+    <meta name="description" content="Product Design Engineer. Создаю дизайн-системы, инструменты и AI-решения, которые усиливают команды.">
+    <meta property="og:title" content="Андрей Антошкин — Product Design Engineer">
+    <meta property="og:description" content="Создаю дизайн-системы, инструменты и AI-решения, которые усиливают команды.">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/png" href="assets/avatar.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Text:wght@400;500;700&family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDEA;
+            --card: #FFFFFF;
+            --text: #1A1A1A;
+            --text-sub: #6B6B6B;
+            --text-muted: #9B9896;
+            --text-faint: #C0BDBA;
+            --chip: #F5F3F0;
+            --border: #E5E2DF;
+            --sep: #ECEAE7;
+            --shadow: rgba(0,0,0,0.06);
+            --dot: #D4D1CE;
+            --about: #4A4A4A;
+            --toast-bg: #1A1A1A;
+            --toast-text: #fff;
+            --radius: 20px;
+            --gap: 12px;
+            --font: 'Google Sans Text', system-ui, sans-serif;
+            --font-scale: 1;
+        }
+
+        [data-theme="dark"] {
+            --bg: #141414;
+            --card: #1E1E1E;
+            --text: #F0EDEA;
+            --text-sub: #9B9896;
+            --text-muted: #6B6B6B;
+            --text-faint: #4A4A4A;
+            --chip: #2A2A2A;
+            --border: #333;
+            --sep: #2E2E2E;
+            --shadow: rgba(0,0,0,0.25);
+            --dot: #444;
+            --about: #9B9896;
+            --toast-bg: #F0EDEA;
+            --toast-text: #1A1A1A;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font);
+            font-size: calc(16px * var(--font-scale));
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body { min-height: 100vh; overflow-x: hidden; }
+        a { color: inherit; text-decoration: none; }
+        button { font-family: inherit; }
+
+        main {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 72px 0 96px;
+            transition: transform 0.4s cubic-bezier(.4,0,.2,1);
+        }
+
+        body.panel-open main {
+            transform: translateX(-170px);
+        }
+
+        /* ——— Hero Card ——— */
+
+        .card--hero { gap: 32px; }
+
+        .hero-identity {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            border: 2px solid #cfcfcf;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .hero-identity-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hero-name {
+            font-weight: 500;
+            font-size: 1.25rem;
+            line-height: 1.4;
+            color: var(--text);
+        }
+
+        .hero-role {
+            font-weight: 400;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: var(--text);
+        }
+
+        .hero-body {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .hero-headline {
+            font-weight: 500;
+            font-size: 1.5rem;
+            line-height: 1.1;
+            color: var(--text);
+        }
+
+        .hero-sub {
+            font-weight: 400;
+            font-size: 0.875rem;
+            line-height: 1.57;
+            color: var(--text-sub);
+        }
+
+        /* ——— Bento Grid ——— */
+
+        .bento {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--gap);
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            transition: box-shadow 0.25s ease, background 0.3s ease, border-radius 0.3s ease;
+        }
+
+        .card:hover { box-shadow: 0 4px 24px var(--shadow); }
+        .card--full { grid-column: 1 / -1; }
+
+        .card-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .card-label svg { width: 14px; height: 14px; }
+
+        /* ——— Experience ——— */
+
+        .exp-list { display: flex; flex-direction: column; gap: 12px; }
+        .exp-item { display: flex; align-items: flex-start; gap: 12px; }
+
+        .exp-dot-col {
+            display: flex; flex-direction: column; align-items: center;
+            padding-top: 7px; flex-shrink: 0;
+        }
+
+        .exp-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: var(--dot); flex-shrink: 0;
+        }
+
+        .exp-dot--active { background: #4FAAFF; }
+        .exp-info { flex: 1; min-width: 0; }
+        .exp-company { font-weight: 500; font-size: 0.9375rem; line-height: 1.3; color: var(--text); }
+        .exp-role { font-size: 0.875rem; color: var(--text-muted); line-height: 1.4; }
+        .exp-year { font-size: 0.8125rem; color: var(--text-faint); white-space: nowrap; padding-top: 3px; }
+
+        /* ——— Skills ——— */
+
+        .skills-group { margin-bottom: 16px; }
+        .skills-group:last-child { margin-bottom: 0; }
+
+        .skills-group-label {
+            font-size: 0.6875rem; font-weight: 500; text-transform: uppercase;
+            letter-spacing: 0.05em; color: var(--text-faint); margin-bottom: 8px;
+        }
+
+        .skills-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+        .chip {
+            display: inline-flex; align-items: center; padding: 6px 14px;
+            background: var(--chip); border-radius: 100px;
+            font-size: 0.8125rem; font-weight: 500; color: var(--text);
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* ——— Awards ——— */
+
+        .awards-list { display: flex; flex-direction: column; gap: 10px; }
+        .award-row { display: flex; align-items: baseline; gap: 10px; }
+        .award-icon { font-size: 0.8125rem; flex-shrink: 0; width: 20px; text-align: center; color: var(--text-faint); }
+        .award-text { font-size: 0.875rem; font-weight: 500; line-height: 1.4; color: var(--text); }
+
+        /* ——— About ——— */
+
+        .about-text { font-size: 0.875rem; line-height: 1.57; color: var(--about); }
+        .about-text strong { font-weight: 600; }
+
+        /* ——— Contacts ——— */
+
+        .contacts-grid { display: flex; flex-direction: column; gap: 10px; }
+        .contact-row { display: flex; align-items: center; gap: 12px; }
+        .contact-label { font-size: 0.875rem; color: var(--text-muted); width: 90px; flex-shrink: 0; }
+
+        .contact-sep {
+            flex: 1; height: 1px; background: var(--sep); min-width: 8px;
+            transition: background 0.3s;
+        }
+
+        .contact-link {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 0.875rem; font-weight: 500; color: var(--text);
+            padding: 5px 10px; background: var(--chip); border-radius: 100px;
+            transition: background 0.2s ease, color 0.3s;
+            cursor: pointer; border: none; font-family: inherit; position: relative;
+        }
+
+        .contact-link:hover { filter: brightness(0.95); }
+        .contact-link svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+        .copied-toast {
+            position: absolute; top: -32px; left: 50%; transform: translateX(-50%);
+            background: var(--toast-bg); color: var(--toast-text);
+            font-size: 0.75rem; font-weight: 500; padding: 4px 10px;
+            border-radius: 6px; opacity: 0; pointer-events: none;
+            transition: opacity 0.2s ease; white-space: nowrap;
+        }
+
+        .copied-toast.show { opacity: 1; }
+
+        /* ——— Settings FAB ——— */
+
+        .settings-fab {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s cubic-bezier(.4,0,.2,1), background 0.3s, border-color 0.3s, box-shadow 0.3s;
+            z-index: 1000;
+        }
+
+        .settings-fab:hover { transform: scale(1.1); }
+        .settings-fab svg { width: 22px; height: 22px; transition: transform 0.5s cubic-bezier(.4,0,.2,1); }
+        body.panel-open .settings-fab svg { transform: rotate(90deg); }
+
+        /* ——— Settings Panel ——— */
+
+        .settings-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.3);
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+            z-index: 1001; display: none;
+        }
+
+        .settings-panel {
+            position: fixed; top: 8px; right: 8px; bottom: 8px; width: 320px;
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 16px;
+            transform: translateX(calc(100% + 8px));
+            transition: transform 0.4s cubic-bezier(.4,0,.2,1), background 0.3s, border-color 0.3s;
+            z-index: 1002; overflow-y: auto; overscroll-behavior: contain;
+            display: flex; flex-direction: column;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+        }
+
+        body.panel-open .settings-panel { transform: translateX(0); }
+
+        .sp-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 20px 20px 16px; border-bottom: 1px solid var(--sep);
+            flex-shrink: 0;
+        }
+
+        .sp-title { font-size: 0.875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text); }
+
+        .sp-close {
+            width: 32px; height: 32px; border-radius: 8px; border: none;
+            background: var(--chip); color: var(--text-muted); cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .sp-close:hover { background: var(--sep); }
+        .sp-close svg { width: 16px; height: 16px; }
+
+        .sp-body { padding: 20px; display: flex; flex-direction: column; gap: 28px; flex: 1; }
+
+        .sp-section-label {
+            font-size: 0.6875rem; font-weight: 500; text-transform: uppercase;
+            letter-spacing: 0.06em; color: var(--text-faint); margin-bottom: 10px;
+        }
+
+        /* Theme Toggle Pill */
+
+        .sp-theme-pill {
+            display: flex; border-radius: 10px; overflow: hidden;
+            border: 1px solid var(--border); background: var(--chip);
+        }
+
+        .sp-theme-btn {
+            flex: 1; padding: 8px 0; border: none; background: transparent;
+            font-size: 0.8125rem; font-weight: 500; color: var(--text-muted);
+            cursor: pointer; transition: background 0.2s, color 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+
+        .sp-theme-btn.active { background: var(--card); color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+        .sp-theme-btn svg { width: 14px; height: 14px; }
+
+        /* Color Swatches */
+
+        .sp-swatches {
+            display: flex; flex-wrap: wrap; gap: 8px;
+        }
+
+        .sp-swatch {
+            width: 28px; height: 28px; border-radius: 50%;
+            border: 2px solid transparent; cursor: pointer;
+            transition: transform 0.15s ease, border-color 0.2s ease;
+            padding: 0; outline: none;
+        }
+
+        .sp-swatch:hover { transform: scale(1.15); }
+        .sp-swatch.active { border-color: var(--text); }
+
+        .sp-swatch--custom {
+            overflow: hidden;
+            background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red);
+            position: relative;
+        }
+
+        .sp-swatch--custom input {
+            position: absolute; inset: 0; width: 100%; height: 100%;
+            opacity: 0; cursor: pointer; border: none;
+        }
+
+        /* Font Chips */
+
+        .sp-font-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+        .sp-font-chip {
+            padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border);
+            background: transparent; color: var(--text-muted);
+            font-size: 0.75rem; font-weight: 500; cursor: pointer;
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
+        }
+
+        .sp-font-chip:hover { border-color: var(--text-muted); }
+        .sp-font-chip.active { background: var(--text); color: var(--card); border-color: var(--text); }
+
+        /* Range Sliders */
+
+        .sp-range-row {
+            display: flex; align-items: center; gap: 12px;
+        }
+
+        .sp-range {
+            flex: 1; -webkit-appearance: none; appearance: none;
+            height: 4px; border-radius: 2px; background: var(--sep);
+            outline: none; transition: background 0.3s;
+        }
+
+        .sp-range::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 16px; height: 16px; border-radius: 50%;
+            background: var(--text); cursor: pointer; border: 2px solid var(--card);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+        }
+
+        .sp-range::-moz-range-thumb {
+            width: 16px; height: 16px; border-radius: 50%;
+            background: var(--text); cursor: pointer; border: 2px solid var(--card);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+        }
+
+        .sp-range-val {
+            font-size: 0.75rem; font-weight: 500; color: var(--text-muted);
+            min-width: 36px; text-align: right; font-variant-numeric: tabular-nums;
+        }
+
+        /* Reset Button */
+
+        .sp-reset {
+            width: 100%; padding: 10px; border-radius: 10px;
+            border: 1px solid var(--border); background: transparent;
+            color: var(--text-muted); font-size: 0.8125rem; font-weight: 500;
+            cursor: pointer; transition: background 0.2s, color 0.2s;
+            margin-top: auto;
+        }
+
+        .sp-reset:hover { background: var(--chip); color: var(--text); }
+
+        /* ——— Responsive ——— */
+
+        @media (max-width: 820px) {
+            main { padding: 48px 16px 72px; }
+            body.panel-open main { transform: none; }
+            .settings-overlay { display: block; }
+            body.panel-open .settings-overlay { opacity: 1; pointer-events: auto; }
+        }
+
+        @media (max-width: 600px) {
+            main { padding: 32px 12px 64px; }
+            .hero-headline { font-size: 1.25rem; }
+            .bento { grid-template-columns: 1fr; }
+            .card { padding: 20px; }
+            .contact-label { width: 70px; }
+            .settings-panel { width: calc(100% - 16px); }
+            .settings-fab { bottom: 16px; right: 16px; width: 44px; height: 44px; }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="bento">
+            <!-- Hero Card -->
+            <div class="card card--full card--hero">
+                <div class="hero-identity">
+                    <img class="avatar" src="assets/avatar.png" alt="Андрей Антошкин" width="64" height="64">
+                    <div class="hero-identity-text">
+                        <span class="hero-name">Андрей Антошкин</span>
+                        <span class="hero-role">Product Design Engineer</span>
+                    </div>
+                </div>
+                <div class="hero-body">
+                    <h1 class="hero-headline">Создаю дизайн&#8209;системы, инструменты и&nbsp;AI&#8209;решения, которые усиливают команды.</h1>
+                    <p class="hero-sub">Сейчас в Яндекс Маркете — развиваю B2B дизайн-систему.<br>Фокус: дизайн-инфраструктура, AI-процессы и инструменты на стыке дизайна и разработки.</p>
+                </div>
+            </div>
+            <!-- Experience -->
+            <div class="card">
+                <span class="card-label">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1.1a5 5 0 0 0-3.9-4h-4a5 5 0 0 0-3.9 4H5a5 5 0 0 0-5 5v10a5 5 0 0 0 5 5h14a5 5 0 0 0 5-5V9a5 5 0 0 0-5-5Zm-8-2h2c.618 0 1.22.194 1.725.554a3.01 3.01 0 0 1 1.09 1.446H8.185a3.01 3.01 0 0 1 1.09-1.446A2.99 2.99 0 0 1 11 2ZM5 6h14a3 3 0 0 1 3 3v3H2V9a3 3 0 0 1 3-3Zm14 16H5a3 3 0 0 1-3-3v-5h9v1a1 1 0 0 0 2 0v-1h9v5a3 3 0 0 1-3 3Z"/></svg>
+                    Опыт
+                </span>
+                <div class="exp-list">
+                    <div class="exp-item">
+                        <div class="exp-dot-col"><span class="exp-dot exp-dot--active"></span></div>
+                        <div class="exp-info"><div class="exp-company">Яндекс Маркет</div><div class="exp-role">Product Designer — Design Systems</div></div>
+                        <div class="exp-year">сейчас</div>
+                    </div>
+                    <div class="exp-item">
+                        <div class="exp-dot-col"><span class="exp-dot"></span></div>
+                        <div class="exp-info"><div class="exp-company">Сбер</div><div class="exp-role">Design System Lead</div></div>
+                        <div class="exp-year">2022 — 2024</div>
+                    </div>
+                    <div class="exp-item">
+                        <div class="exp-dot-col"><span class="exp-dot"></span></div>
+                        <div class="exp-info"><div class="exp-company">Открытие</div><div class="exp-role">Senior Product Designer</div></div>
+                        <div class="exp-year">2020 — 2021</div>
+                    </div>
+                    <div class="exp-item">
+                        <div class="exp-dot-col"><span class="exp-dot"></span></div>
+                        <div class="exp-info"><div class="exp-company">МТС</div><div class="exp-role">Product Designer</div></div>
+                        <div class="exp-year">2019 — 2020</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Awards -->
+            <div class="card">
+                <span class="card-label">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.091 16C21.661 15.964 24 12.484 24 9.5a4.5 4.5 0 0 0-.764-2.198 4.49 4.49 0 0 0-2.736-1.72c.136-.387.254-.742.333-1.011a4.5 4.5 0 0 0-.902-3.959A4.49 4.49 0 0 0 17.729 0H6.271a4.49 4.49 0 0 0-2.202.612A4.49 4.49 0 0 0 2.431 5.07c.079.269.2.624.333 1.012A4.49 4.49 0 0 0 0 9.5c0 2.984 2.339 6.464 8.909 6.5.058.304.088.612.091.921V20a3 3 0 0 1-2 2.828V22H6a1 1 0 1 0 0 2h12a1 1 0 1 0 0-2h-.992A3 3 0 0 1 15 20v-3.08c.002-.309.033-.617.091-.92ZM22 9.5c0 2.034-1.609 4.2-6.036 4.47.221-.302.477-.578.762-.821A14.95 14.95 0 0 0 20.453 7.99c.016 0 .03.01.047.01a1.5 1.5 0 0 1 1.5 1.5ZM2 9.5A1.5 1.5 0 0 1 3.5 8l.047-.01A14.95 14.95 0 0 0 7.274 13.15c.285.243.54.518.762.82C3.609 13.7 2 11.534 2 9.5Zm8.513 12.5A3.01 3.01 0 0 0 11 20v-3.079A7.98 7.98 0 0 0 8.569 11.626 16.95 16.95 0 0 1 4.349 4.5a2.5 2.5 0 0 1-.048-1.884 2.5 2.5 0 0 1 2.36-1.559L17.729 2a2.49 2.49 0 0 1 2.27 3.504A16.97 16.97 0 0 1 15.431 11.626 7.98 7.98 0 0 0 13 16.92V20a3.01 3.01 0 0 0 .487 2h-2.974Z"/></svg>
+                    Awards
+                </span>
+                <div class="awards-list">
+                    <div class="award-row"><span class="award-icon">◆</span><span class="award-text">Red Dot ×2 — Mobile Design & UX</span></div>
+                    <div class="award-row"><span class="award-icon">◆</span><span class="award-text">iF Design Award — User Experience</span></div>
+                    <div class="award-row"><span class="award-icon">◆</span><span class="award-text">Best For Life Design ×2 — HR Platform</span></div>
+                    <div class="award-row"><span class="award-icon">◆</span><span class="award-text">InterComm Award — HR Tools</span></div>
+                    <div class="award-row"><span class="award-icon">◆</span><span class="award-text">Definition Hackathon — 2 место + спецприз</span></div>
+                    <div class="award-row"><span class="award-icon">◆</span><span class="award-text">Spline 3D Retro Future — Top 25</span></div>
+                </div>
+            </div>
+
+            <!-- Skills -->
+            <div class="card">
+                <span class="card-label">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 11h11a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2Zm0-9h11v7H2V2ZM22 0h-3a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h3a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm0 9h-3V2h3v7ZM5 13H2a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h3a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2Zm0 9H2v-7h3v7ZM22 13H11a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2Zm0 9H11v-7h11v7Z"/></svg>
+                    Skills & Stack
+                </span>
+                <div class="skills-group">
+                    <div class="skills-group-label">Design</div>
+                    <div class="skills-chips">
+                        <span class="chip">Figma</span><span class="chip">Design Systems</span><span class="chip">UI / UX</span>
+                        <span class="chip">Prototyping</span><span class="chip">Storybook</span><span class="chip">Design Tokens</span>
+                    </div>
+                </div>
+                <div class="skills-group">
+                    <div class="skills-group-label">Code</div>
+                    <div class="skills-chips">
+                        <span class="chip">React</span><span class="chip">Next.js</span><span class="chip">TypeScript</span>
+                        <span class="chip">HTML / CSS</span><span class="chip">Git</span>
+                    </div>
+                </div>
+                <div class="skills-group">
+                    <div class="skills-group-label">AI & Automation</div>
+                    <div class="skills-chips">
+                        <span class="chip">Cursor</span><span class="chip">LLMs / GPT</span>
+                        <span class="chip">APIs</span><span class="chip">Prompt Engineering</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- About -->
+            <div class="card">
+                <span class="card-label">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a6 6 0 1 0 0-12 6 6 0 0 0 0 12Zm0-10a4 4 0 1 1 0 8 4 4 0 0 1 0-8ZM12 14a9.01 9.01 0 0 0-9 9 1 1 0 1 0 2 0 7 7 0 0 1 14 0 1 1 0 1 0 2 0 9.01 9.01 0 0 0-9-9Z"/></svg>
+                    Обо мне
+                </span>
+                <p class="about-text"><strong>Я Product Design Engineer.</strong> Создаю масштабируемые системы и инструменты, которые помогают командам быстрее запускать продукты.<br><br>Работаю на стыке дизайн-систем, B2B-платформ и AI-инструментов — упрощаю сложное и ускоряю разработку. Верю в ясность, системность и сильную связку дизайна с разработкой.<br><br>Провожу внутренние воркшопы и исследую, как AI меняет роль дизайнеров и развитие дизайн-систем.</p>
+            </div>
+
+            <!-- Contacts -->
+            <div class="card card--full">
+                <span class="card-label">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 1H5a5 5 0 0 0-5 5v12a5 5 0 0 0 5 5h14a5 5 0 0 0 5-5V6a5 5 0 0 0-5-5ZM5 3h14a3 3 0 0 1 2.78 1.887L14.122 12.546a3.01 3.01 0 0 1-4.244 0L2.22 4.887A3 3 0 0 1 5 3Zm14 18H5a3 3 0 0 1-3-3V7.5l6.464 6.46a5.01 5.01 0 0 0 7.072 0L22 7.5V18a3 3 0 0 1-3 3Z"/></svg>
+                    Контакты
+                </span>
+                <div class="contacts-grid">
+                    <div class="contact-row">
+                        <span class="contact-label">Email</span>
+                        <span class="contact-sep"></span>
+                        <button class="contact-link" id="email-badge" type="button">
+                            <span>andrew.antoshkin@gmail.com</span>
+                            <svg viewBox="0 0 24 24" fill="currentColor" style="opacity:.4"><path d="M15 20H5a5 5 0 0 1-5-5V5a5 5 0 0 1 5-5h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5ZM5 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V5a3 3 0 0 0-3-3H5Zm19 17V6a1 1 0 1 0-2 0v13a3 3 0 0 1-3 3H6a1 1 0 1 0 0 2h13a5 5 0 0 0 5-5Z"/></svg>
+                            <span class="copied-toast">Скопировано</span>
+                        </button>
+                    </div>
+                    <div class="contact-row">
+                        <span class="contact-label">Telegram</span>
+                        <span class="contact-sep"></span>
+                        <a class="contact-link" href="https://t.me/andrewaitken" target="_blank" rel="noopener noreferrer">@andrewaitken</a>
+                    </div>
+                    <div class="contact-row">
+                        <span class="contact-label">TG Channel</span>
+                        <span class="contact-sep"></span>
+                        <a class="contact-link" href="https://t.me/antoshkinai" target="_blank" rel="noopener noreferrer">@antoshkinai</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Settings FAB -->
+    <button class="settings-fab" id="settings-fab" type="button" aria-label="Настройки стиля">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
+    </button>
+
+    <!-- Settings Overlay (mobile) -->
+    <div class="settings-overlay" id="settings-overlay"></div>
+
+    <!-- Settings Panel -->
+    <aside class="settings-panel" id="settings-panel">
+        <div class="sp-header">
+            <span class="sp-title">Настройки</span>
+            <button class="sp-close" id="sp-close" type="button" aria-label="Закрыть">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <div class="sp-body">
+            <!-- Theme -->
+            <div>
+                <div class="sp-section-label">Тема</div>
+                <div class="sp-theme-pill">
+                    <button class="sp-theme-btn active" data-theme="light" type="button">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                        Light
+                    </button>
+                    <button class="sp-theme-btn" data-theme="dark" type="button">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79Z"/></svg>
+                        Dark
+                    </button>
+                </div>
+            </div>
+
+            <!-- Background Color -->
+            <div>
+                <div class="sp-section-label">Цвет фона</div>
+                <div class="sp-swatches" id="sp-swatches">
+                    <button class="sp-swatch active" data-color="" style="background:#F0EDEA"></button>
+                    <button class="sp-swatch" data-color="" style="background:#E2DDD8"></button>
+                    <button class="sp-swatch" data-color="" style="background:#D6E3ED"></button>
+                    <button class="sp-swatch" data-color="" style="background:#D8E8D2"></button>
+                    <button class="sp-swatch" data-color="" style="background:#EDE0D1"></button>
+                    <button class="sp-swatch" data-color="" style="background:#E0D4ED"></button>
+                    <button class="sp-swatch sp-swatch--custom">
+                        <input type="color" id="sp-custom-color" value="#F0EDEA">
+                    </button>
+                </div>
+            </div>
+
+            <!-- Font -->
+            <div>
+                <div class="sp-section-label">Шрифт</div>
+                <div class="sp-font-chips" id="sp-fonts">
+                    <button class="sp-font-chip active" data-font="'Google Sans Text', system-ui, sans-serif" style="font-family:'Google Sans Text',sans-serif" type="button">Google Sans</button>
+                    <button class="sp-font-chip" data-font="'Inter', system-ui, sans-serif" style="font-family:'Inter',sans-serif" type="button">Inter</button>
+                    <button class="sp-font-chip" data-font="'JetBrains Mono', monospace" style="font-family:'JetBrains Mono',monospace" type="button">JetBrains</button>
+                    <button class="sp-font-chip" data-font="'Space Grotesk', system-ui, sans-serif" style="font-family:'Space Grotesk',sans-serif" type="button">Space Grotesk</button>
+                    <button class="sp-font-chip" data-font="'IBM Plex Sans', system-ui, sans-serif" style="font-family:'IBM Plex Sans',sans-serif" type="button">IBM Plex</button>
+                </div>
+            </div>
+
+            <!-- Border Radius -->
+            <div>
+                <div class="sp-section-label">Скругления</div>
+                <div class="sp-range-row">
+                    <input class="sp-range" id="sp-radius" type="range" min="0" max="32" value="20">
+                    <span class="sp-range-val" id="sp-radius-val">20px</span>
+                </div>
+            </div>
+
+            <!-- Grid Gap -->
+            <div>
+                <div class="sp-section-label">Отступы сетки</div>
+                <div class="sp-range-row">
+                    <input class="sp-range" id="sp-gap" type="range" min="4" max="24" value="12">
+                    <span class="sp-range-val" id="sp-gap-val">12px</span>
+                </div>
+            </div>
+
+            <!-- Font Size -->
+            <div>
+                <div class="sp-section-label">Размер текста</div>
+                <div class="sp-range-row">
+                    <input class="sp-range" id="sp-fontsize" type="range" min="85" max="120" value="100">
+                    <span class="sp-range-val" id="sp-fontsize-val">100%</span>
+                </div>
+            </div>
+
+            <!-- Reset -->
+            <button class="sp-reset" id="sp-reset" type="button">Сбросить настройки</button>
+        </div>
+    </aside>
+
+    <script>
+    (function () {
+        var root = document.documentElement;
+        var body = document.body;
+        var fab = document.getElementById('settings-fab');
+        var panel = document.getElementById('settings-panel');
+        var overlay = document.getElementById('settings-overlay');
+        var closeBtn = document.getElementById('sp-close');
+
+        var DEFAULTS = {
+            theme: 'light',
+            bg: '#F0EDEA',
+            font: "'Google Sans Text', system-ui, sans-serif",
+            radius: 20,
+            gap: 12,
+            fontsize: 100
+        };
+
+        var PALETTES = {
+            light: ['#F0EDEA', '#E2DDD8', '#D6E3ED', '#D8E8D2', '#EDE0D1', '#E0D4ED'],
+            dark:  ['#141414', '#1E1A17', '#151D28', '#152218', '#251C13', '#1F1528']
+        };
+
+        function get(key) { return localStorage.getItem('sp_' + key); }
+        function set(key, val) { localStorage.setItem('sp_' + key, val); }
+        function clear() { Object.keys(DEFAULTS).forEach(function (k) { localStorage.removeItem('sp_' + k); }); }
+
+        function currentTheme() {
+            return root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+        }
+
+        /* ——— Panel Toggle ——— */
+
+        function togglePanel() {
+            body.classList.toggle('panel-open');
+        }
+
+        fab.addEventListener('click', togglePanel);
+        closeBtn.addEventListener('click', togglePanel);
+        overlay.addEventListener('click', togglePanel);
+
+        /* ——— Background Color ——— */
+
+        var swatchContainer = document.getElementById('sp-swatches');
+        var swatches = swatchContainer.querySelectorAll('.sp-swatch:not(.sp-swatch--custom)');
+        var customSwatch = swatchContainer.querySelector('.sp-swatch--custom');
+        var customInput = document.getElementById('sp-custom-color');
+
+        function clearSwatchActive() {
+            swatches.forEach(function (s) { s.classList.remove('active'); });
+            customSwatch.classList.remove('active');
+        }
+
+        function applyBg(color) {
+            root.style.setProperty('--bg', color);
+        }
+
+        function updateSwatchPalette(theme) {
+            var colors = PALETTES[theme] || PALETTES.light;
+            swatches.forEach(function (s, i) {
+                if (i < colors.length) {
+                    s.dataset.color = colors[i];
+                    s.style.background = colors[i];
+                }
+            });
+            customInput.value = colors[0];
+        }
+
+        function switchThemeBg(theme) {
+            updateSwatchPalette(theme);
+            var savedBg = get('bg');
+            var otherPalette = PALETTES[theme === 'dark' ? 'light' : 'dark'];
+            if (!savedBg || otherPalette.indexOf(savedBg) !== -1) {
+                var defaultBg = PALETTES[theme][0];
+                applyBg(defaultBg);
+                set('bg', defaultBg);
+                clearSwatchActive();
+                swatches[0].classList.add('active');
+            } else {
+                applyBg(savedBg);
+                clearSwatchActive();
+                var found = false;
+                swatches.forEach(function (s) {
+                    if (s.dataset.color === savedBg) { s.classList.add('active'); found = true; }
+                });
+                if (!found) customSwatch.classList.add('active');
+            }
+        }
+
+        swatches.forEach(function (swatch) {
+            swatch.addEventListener('click', function () {
+                var color = swatch.dataset.color;
+                applyBg(color);
+                set('bg', color);
+                clearSwatchActive();
+                swatch.classList.add('active');
+            });
+        });
+
+        customInput.addEventListener('input', function () {
+            applyBg(customInput.value);
+            set('bg', customInput.value);
+            clearSwatchActive();
+            customSwatch.classList.add('active');
+        });
+
+        /* ——— Theme ——— */
+
+        var themeBtns = panel.querySelectorAll('.sp-theme-btn');
+
+        function applyTheme(theme, resetBg) {
+            if (theme === 'dark') root.setAttribute('data-theme', 'dark');
+            else root.removeAttribute('data-theme');
+            themeBtns.forEach(function (b) { b.classList.toggle('active', b.dataset.theme === theme); });
+            if (resetBg !== false) switchThemeBg(theme);
+        }
+
+        themeBtns.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                applyTheme(btn.dataset.theme);
+                set('theme', btn.dataset.theme);
+            });
+        });
+
+        /* ——— Font ——— */
+
+        var fontChips = document.querySelectorAll('.sp-font-chip');
+
+        function applyFont(font) {
+            root.style.setProperty('--font', font);
+        }
+
+        fontChips.forEach(function (chip) {
+            chip.addEventListener('click', function () {
+                applyFont(chip.dataset.font);
+                set('font', chip.dataset.font);
+                fontChips.forEach(function (c) { c.classList.remove('active'); });
+                chip.classList.add('active');
+            });
+        });
+
+        /* ——— Range Sliders ——— */
+
+        var radiusInput = document.getElementById('sp-radius');
+        var radiusVal = document.getElementById('sp-radius-val');
+        var gapInput = document.getElementById('sp-gap');
+        var gapVal = document.getElementById('sp-gap-val');
+        var fontsizeInput = document.getElementById('sp-fontsize');
+        var fontsizeVal = document.getElementById('sp-fontsize-val');
+
+        radiusInput.addEventListener('input', function () {
+            var v = radiusInput.value;
+            root.style.setProperty('--radius', v + 'px');
+            radiusVal.textContent = v + 'px';
+            set('radius', v);
+        });
+
+        gapInput.addEventListener('input', function () {
+            var v = gapInput.value;
+            root.style.setProperty('--gap', v + 'px');
+            gapVal.textContent = v + 'px';
+            set('gap', v);
+        });
+
+        fontsizeInput.addEventListener('input', function () {
+            var v = fontsizeInput.value;
+            root.style.setProperty('--font-scale', (v / 100).toFixed(2));
+            fontsizeVal.textContent = v + '%';
+            set('fontsize', v);
+        });
+
+        /* ——— Reset ——— */
+
+        document.getElementById('sp-reset').addEventListener('click', function () {
+            clear();
+            applyTheme(DEFAULTS.theme);
+            applyFont(DEFAULTS.font);
+            root.style.setProperty('--radius', DEFAULTS.radius + 'px');
+            root.style.setProperty('--gap', DEFAULTS.gap + 'px');
+            root.style.setProperty('--font-scale', '1');
+
+            radiusInput.value = DEFAULTS.radius;
+            radiusVal.textContent = DEFAULTS.radius + 'px';
+            gapInput.value = DEFAULTS.gap;
+            gapVal.textContent = DEFAULTS.gap + 'px';
+            fontsizeInput.value = DEFAULTS.fontsize;
+            fontsizeVal.textContent = DEFAULTS.fontsize + '%';
+
+            fontChips.forEach(function (c) { c.classList.remove('active'); });
+            fontChips[0].classList.add('active');
+        });
+
+        /* ——— Restore from localStorage ——— */
+
+        var savedTheme = get('theme') || DEFAULTS.theme;
+        var savedBg = get('bg');
+        var savedFont = get('font');
+        var savedRadius = get('radius');
+        var savedGap = get('gap');
+        var savedFontsize = get('fontsize');
+
+        applyTheme(savedTheme, false);
+        updateSwatchPalette(savedTheme);
+
+        if (savedBg) {
+            applyBg(savedBg);
+            clearSwatchActive();
+            var found = false;
+            swatches.forEach(function (s) {
+                if (s.dataset.color === savedBg) { s.classList.add('active'); found = true; }
+            });
+            if (!found) customSwatch.classList.add('active');
+        } else {
+            applyBg(PALETTES[savedTheme][0]);
+            clearSwatchActive();
+            swatches[0].classList.add('active');
+        }
+
+        if (savedFont) {
+            applyFont(savedFont);
+            fontChips.forEach(function (c) {
+                c.classList.toggle('active', c.dataset.font === savedFont);
+            });
+        }
+        if (savedRadius) {
+            root.style.setProperty('--radius', savedRadius + 'px');
+            radiusInput.value = savedRadius;
+            radiusVal.textContent = savedRadius + 'px';
+        }
+        if (savedGap) {
+            root.style.setProperty('--gap', savedGap + 'px');
+            gapInput.value = savedGap;
+            gapVal.textContent = savedGap + 'px';
+        }
+        if (savedFontsize) {
+            root.style.setProperty('--font-scale', (savedFontsize / 100).toFixed(2));
+            fontsizeInput.value = savedFontsize;
+            fontsizeVal.textContent = savedFontsize + '%';
+        }
+
+        /* ——— Email Copy ——— */
+
+        document.getElementById('email-badge').addEventListener('click', function () {
+            navigator.clipboard.writeText('andrew.antoshkin@gmail.com').then(function () {
+                var toast = document.querySelector('.copied-toast');
+                toast.classList.add('show');
+                setTimeout(function () { toast.classList.remove('show'); }, 1500);
+            });
+        });
+    })();
+    </script>
+</body>
+</html>

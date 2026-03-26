@@ -11,30 +11,15 @@
     <link rel="icon" type="image/png" href="assets/avatar.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Text:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #fafafa;
-            --text: #171717;
-            --text-sub: #525252;
-            --text-muted: #a3a3a3;
-            --border: #e5e5e5;
-            --link-line: #d4d4d4;
-            --code-bg: #f5f5f5;
-            --hover-bg: rgba(0, 0, 0, 0.03);
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #0a0a0a;
-                --text: #ededed;
-                --text-sub: #a3a3a3;
-                --text-muted: #525252;
-                --border: #262626;
-                --link-line: #404040;
-                --code-bg: #171717;
-                --hover-bg: rgba(255, 255, 255, 0.04);
-            }
+            --bg: #09090b;
+            --text: #fafafa;
+            --text-sub: #d4d4d8;
+            --text-muted: #a1a1aa;
+            --border: #27272a;
+            --code-bg: #18181b;
         }
 
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -42,8 +27,9 @@
         html {
             background: var(--bg);
             color: var(--text);
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            font-size: 16px;
+            font-family: 'Google Sans Text', system-ui, -apple-system, sans-serif;
+            font-size: 1rem;
+            line-height: 1.618;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
@@ -52,9 +38,9 @@
         a { color: inherit; }
 
         main {
-            max-width: 600px;
+            max-width: 37rem;
             margin: 0 auto;
-            padding: 80px 20px 80px;
+            padding: clamp(2rem, 0.56rem + 5.56vw, 5rem) clamp(1.5rem, 1.26rem + 0.93vw, 2rem) clamp(4rem, 3.04rem + 3.7vw, 6rem);
         }
 
         .back {
@@ -77,25 +63,25 @@
         }
 
         .date {
-            font-size: 0.8125rem;
+            font-size: 1rem;
             color: var(--text-muted);
-            margin-bottom: 40px;
+            margin-bottom: 2.5rem;
             display: block;
         }
 
         article h2 {
             font-size: 1.125rem;
-            font-weight: 600;
+            font-weight: 500;
             line-height: 1.4;
-            margin-top: 40px;
-            margin-bottom: 12px;
+            margin-top: 2rem;
+            margin-bottom: 0;
+            color: var(--text);
         }
 
         article p {
-            font-size: 0.9375rem;
-            line-height: 1.75;
+            font-size: 1rem;
             color: var(--text-sub);
-            margin-top: 16px;
+            margin-top: 1.5rem;
         }
 
         article p:first-of-type { margin-top: 0; }
@@ -103,26 +89,25 @@
         article a {
             color: var(--text);
             text-decoration: underline;
-            text-decoration-color: var(--link-line);
-            text-underline-offset: 3px;
+            text-decoration-color: color-mix(in srgb, currentColor, transparent 75%);
+            text-underline-offset: 0.3em;
             text-decoration-thickness: 1px;
-            transition: text-decoration-color 0.2s;
+            transition: text-decoration-color 0.17s ease-out;
         }
 
-        article a:hover { text-decoration-color: var(--text); }
+        article a:hover { text-decoration-color: currentColor; }
 
         article strong { font-weight: 600; color: var(--text); }
 
         article ul, article ol {
-            margin-top: 12px;
-            padding-left: 20px;
+            margin-top: 1rem;
+            padding-left: 1.25rem;
         }
 
         article li {
-            font-size: 0.9375rem;
-            line-height: 1.75;
+            font-size: 1rem;
             color: var(--text-sub);
-            margin-top: 4px;
+            margin-top: 0.25rem;
         }
 
         article li strong { color: var(--text); }
@@ -136,31 +121,26 @@
         }
 
         article pre {
-            margin-top: 16px;
+            margin-top: 1rem;
             background: var(--code-bg);
-            border-radius: 8px;
-            padding: 16px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 0.625rem;
+            padding: 1rem;
             overflow-x: auto;
         }
 
         article pre code {
             background: none;
             padding: 0;
-            font-size: 0.8125rem;
-            line-height: 1.7;
-            color: var(--text-sub);
+            font-size: 0.875rem;
+            line-height: 1.618;
+            color: var(--text);
         }
 
         hr {
-            margin-top: 48px;
+            margin-top: 3rem;
             border: none;
             border-top: 1px solid var(--border);
-        }
-
-        @media (max-width: 600px) {
-            main { padding: 60px 20px 60px; }
-            article h1 { font-size: 1.25rem; }
-            .back { margin-bottom: 32px; }
         }
     </style>
 </head>
