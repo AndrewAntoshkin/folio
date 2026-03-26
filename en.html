@@ -18,20 +18,21 @@
             navigation: auto;
         }
 
-        ::view-transition-old(root) {
-            animation: 300ms ease both slide-down;
-        }
-
+        ::view-transition-old(root),
         ::view-transition-new(root) {
-            animation: 300ms ease both fade-in;
+            animation: 250ms ease both crossfade;
         }
 
-        @keyframes slide-down {
-            to { transform: translateY(100%); }
+        ::view-transition-old(root) {
+            animation-name: crossfade-out;
         }
 
-        @keyframes fade-in {
-            from { opacity: 0.5; transform: scale(0.98); }
+        @keyframes crossfade {
+            from { opacity: 0; }
+        }
+
+        @keyframes crossfade-out {
+            to { opacity: 0; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -472,7 +473,7 @@
                 <li>
                     <a class="entry" href="design-md.html">
                         <div class="entry-body">
-                            <span class="entry-title">Design.md — how to describe a design system for AI agents</span>
+                            <span class="entry-title" style="view-transition-name: article-1">Design.md — how to describe a design system for AI agents</span>
                             <span class="entry-meta">Mar 2026</span>
                         </div>
                     </a>
@@ -480,7 +481,7 @@
                 <li>
                     <a class="entry" href="dev-for-designers.html">
                         <div class="entry-body">
-                            <span class="entry-title">Why design system designers should understand development</span>
+                            <span class="entry-title" style="view-transition-name: article-2">Why design system designers should understand development</span>
                             <span class="entry-meta">Mar 2026</span>
                         </div>
                     </a>

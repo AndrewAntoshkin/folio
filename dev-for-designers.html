@@ -18,20 +18,33 @@
             navigation: auto;
         }
 
-        ::view-transition-old(root) {
-            animation: 300ms ease both fade-out;
-        }
-
+        ::view-transition-old(root),
         ::view-transition-new(root) {
-            animation: 300ms ease both slide-up;
+            animation: 250ms ease both crossfade;
         }
 
-        @keyframes fade-out {
-            to { opacity: 0.5; transform: scale(0.98); }
+        ::view-transition-old(root) {
+            animation-name: crossfade-out;
         }
 
-        @keyframes slide-up {
-            from { transform: translateY(100%); }
+        ::view-transition-new(article-body) {
+            animation: 400ms ease both slide-fade-in;
+        }
+
+        ::view-transition-old(article-body) {
+            animation: 250ms ease both crossfade-out;
+        }
+
+        @keyframes crossfade {
+            from { opacity: 0; }
+        }
+
+        @keyframes crossfade-out {
+            to { opacity: 0; }
+        }
+
+        @keyframes slide-fade-in {
+            from { opacity: 0; transform: translateY(12px); }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -190,8 +203,8 @@
     <main>
         <a href="/" class="back">&larr; Андрей Антошкин</a>
 
-        <article>
-            <h1>Зачем дизайнеру дизайн&#8209;систем разбираться в&nbsp;разработке</h1>
+        <article style="view-transition-name: article-body">
+            <h1 style="view-transition-name: article-2">Зачем дизайнеру дизайн&#8209;систем разбираться в&nbsp;разработке</h1>
             <span class="date">Март 2026</span>
 
             <p>Дизайн-системы живут на&nbsp;стыке дизайна и&nbsp;кода. Компонент в&nbsp;Figma и&nbsp;компонент в&nbsp;React&nbsp;&mdash; это разные объекты с&nbsp;разной архитектурой. Дизайнер, который понимает обе стороны, проектирует системы, которые реально работают&nbsp;&mdash; не&nbsp;только в&nbsp;макете.</p>
