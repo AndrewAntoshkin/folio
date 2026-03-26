@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Зачем дизайнеру дизайн-систем разбираться в разработке</title>
+    <meta name="description" content="Компоненты, слоты, токены, Code Connect — почему понимание кода делает дизайнера дизайн-систем сильнее.">
+    <meta property="og:title" content="Зачем дизайнеру дизайн-систем разбираться в разработке">
+    <meta property="og:description" content="Почему понимание кода делает дизайнера дизайн-систем сильнее.">
+    <meta property="og:type" content="article">
+    <link rel="icon" type="image/png" href="assets/avatar.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #fafafa;
+            --text: #171717;
+            --text-sub: #525252;
+            --text-muted: #a3a3a3;
+            --border: #e5e5e5;
+            --link-line: #d4d4d4;
+            --code-bg: #f5f5f5;
+            --hover-bg: rgba(0, 0, 0, 0.03);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0a0a0a;
+                --text: #ededed;
+                --text-sub: #a3a3a3;
+                --text-muted: #525252;
+                --border: #262626;
+                --link-line: #404040;
+                --code-bg: #171717;
+                --hover-bg: rgba(255, 255, 255, 0.04);
+            }
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body { min-height: 100vh; }
+        a { color: inherit; }
+
+        main {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 80px 20px 80px;
+        }
+
+        .back {
+            display: inline-block;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 48px;
+            transition: color 0.2s;
+        }
+
+        .back:hover { color: var(--text); }
+
+        article h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        .date {
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            display: block;
+        }
+
+        article h2 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            line-height: 1.4;
+            margin-top: 40px;
+            margin-bottom: 12px;
+        }
+
+        article p {
+            font-size: 0.9375rem;
+            line-height: 1.75;
+            color: var(--text-sub);
+            margin-top: 16px;
+        }
+
+        article p:first-of-type { margin-top: 0; }
+
+        article a {
+            color: var(--text);
+            text-decoration: underline;
+            text-decoration-color: var(--link-line);
+            text-underline-offset: 3px;
+            text-decoration-thickness: 1px;
+            transition: text-decoration-color 0.2s;
+        }
+
+        article a:hover { text-decoration-color: var(--text); }
+
+        article strong { font-weight: 600; color: var(--text); }
+
+        article ul, article ol {
+            margin-top: 12px;
+            padding-left: 20px;
+        }
+
+        article li {
+            font-size: 0.9375rem;
+            line-height: 1.75;
+            color: var(--text-sub);
+            margin-top: 4px;
+        }
+
+        article li strong { color: var(--text); }
+
+        article code {
+            font-family: 'SF Mono', 'Fira Code', 'Fira Mono', monospace;
+            font-size: 0.8125rem;
+            background: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        article pre {
+            margin-top: 16px;
+            background: var(--code-bg);
+            border-radius: 8px;
+            padding: 16px 20px;
+            overflow-x: auto;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+            font-size: 0.8125rem;
+            line-height: 1.7;
+            color: var(--text-sub);
+        }
+
+        hr {
+            margin-top: 48px;
+            border: none;
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 600px) {
+            main { padding: 60px 20px 60px; }
+            article h1 { font-size: 1.25rem; }
+            .back { margin-bottom: 32px; }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <a href="/" class="back">&larr; Андрей Антошкин</a>
+
+        <article>
+            <h1>Зачем дизайнеру дизайн&#8209;систем разбираться в&nbsp;разработке</h1>
+            <span class="date">Март 2026</span>
+
+            <p>Дизайн-системы живут на&nbsp;стыке дизайна и&nbsp;кода. Компонент в&nbsp;Figma и&nbsp;компонент в&nbsp;React&nbsp;&mdash; это разные объекты с&nbsp;разной архитектурой. Дизайнер, который понимает обе стороны, проектирует системы, которые реально работают&nbsp;&mdash; не&nbsp;только в&nbsp;макете.</p>
+
+            <h2>Разрыв, который дорого стоит</h2>
+
+            <p>Дизайнер создаёт компонент в&nbsp;Figma: варианты, пропсы, стили. Разработчик получает его и&nbsp;переводит в&nbsp;код. Между этими двумя версиями&nbsp;&mdash; разрыв. И&nbsp;чем больше он, тем дороже каждая итерация.</p>
+
+            <p>Дизайнер, который не&nbsp;понимает код, рискует проектировать компоненты, которые невозможно реализовать без костылей, требуют десятков вариантов вместо композиции, не&nbsp;масштабируются при добавлении новых случаев. Разработчик адаптирует, дизайнер не&nbsp;узнаёт результат&nbsp;&mdash; и&nbsp;доверие к&nbsp;системе падает.</p>
+
+            <h2>Компоненты: пропсы и&nbsp;композиция</h2>
+
+            <p>В&nbsp;коде компонент&nbsp;&mdash; это функция, которая принимает параметры и&nbsp;возвращает интерфейс. Кнопка с&nbsp;иконкой&nbsp;&mdash; не&nbsp;отдельный вариант. Это кнопка, которая принимает иконку как параметр:</p>
+
+<pre><code>&lt;Button icon={&lt;IconPlus /&gt;}&gt;
+  Добавить
+&lt;/Button&gt;</code></pre>
+
+            <p>Одна кнопка, бесконечное количество комбинаций. В&nbsp;Figma долгое время для каждой комбинации нужен был отдельный вариант или instance swap. Библиотека разрасталась, поддержка усложнялась.</p>
+
+            <p>Понимание этого принципа меняет то, как вы проектируете: вместо &laquo;какие варианты создать&raquo; вы думаете &laquo;какие параметры компонент принимает&raquo;.</p>
+
+            <h2>Слоты: дизайн догоняет код</h2>
+
+            <p>В&nbsp;2025&nbsp;году Figma выпустила <a href="https://www.figma.com/blog/supercharge-your-design-system-with-slots/" target="_blank" rel="noopener">слоты</a>&nbsp;&mdash; и&nbsp;это фундаментальное изменение. Слоты позволяют вставлять любой контент внутрь компонента без открепления. Модалка принимает любое содержимое. Карточка&nbsp;&mdash; любой набор элементов. Список&nbsp;&mdash; любое количество пунктов.</p>
+
+            <p>Это именно то, как компоненты работают в&nbsp;коде. React-компонент <code>&lt;Modal&gt;</code> принимает <code>children</code>&nbsp;&mdash; любой контент внутри. Слоты в&nbsp;Figma&nbsp;&mdash; это <code>children</code> в&nbsp;дизайне.</p>
+
+            <p><a href="https://nathanacurtis.substack.com/p/implementing-slots-in-a-figma-library" target="_blank" rel="noopener">Nathan Curtis</a> описывает миграцию на&nbsp;слоты как архитектурное решение, а&nbsp;не&nbsp;просто замену одного элемента другим. Для каждого компонента нужно решить: где оставить пропсы, а&nbsp;где дать слот. Какой контент показывать по&nbsp;умолчанию. Как ограничить, что можно вставить. Это решения, которые требуют понимания и&nbsp;дизайна, и&nbsp;кода.</p>
+
+            <h2>Токены: не&nbsp;просто цвета</h2>
+
+            <p>CSS-переменные&nbsp;&mdash; <code>--color-primary</code>, <code>--space-200</code>&nbsp;&mdash; это не&nbsp;синонимы HEX-кодов. Это слой абстракции, который позволяет менять тему одним переключением, поддерживать тёмный режим без правок в&nbsp;компонентах, обеспечивать консистентность автоматически.</p>
+
+<pre><code>:root {
+  --color-text: #171717;
+  --color-bg: #fafafa;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-text: #ededed;
+    --color-bg: #0a0a0a;
+  }
+}</code></pre>
+
+            <p>Компоненты ссылаются на&nbsp;переменные, а&nbsp;не&nbsp;на&nbsp;конкретные значения. Тема меняется&nbsp;&mdash; компоненты подхватывают автоматически.</p>
+
+            <p>Дизайнер, который понимает, как это работает, проектирует токены, которые ложатся в&nbsp;код без трансляции. Не&nbsp;&laquo;Primary Blue 500&raquo;, а&nbsp;<code>--color-interactive</code>&nbsp;&mdash; с&nbsp;понятным назначением и&nbsp;правильным уровнем абстракции.</p>
+
+            <h2>Code Connect: мост становится короче</h2>
+
+            <p>Figma <a href="https://www.figma.com/blog/supercharge-your-design-system-with-slots/" target="_blank" rel="noopener">Code Connect</a> связывает компонент в&nbsp;Figma напрямую с&nbsp;его реализацией в&nbsp;коде. Разработчик открывает Dev Mode и&nbsp;видит не&nbsp;абстрактные пропсы из&nbsp;Figma, а&nbsp;реальный код компонента.</p>
+
+            <p>Слоты поддерживаются в&nbsp;Code Connect&nbsp;&mdash; инженеры сразу видят, как компонент со&nbsp;слотами маппится на&nbsp;production. Хэндофф становится предсказуемым.</p>
+
+            <p>Дизайнер, который понимает код, может проверить, что его компонент корректно маппится на&nbsp;реализацию, описать компонент в&nbsp;терминах, понятных разработчику, и&nbsp;участвовать в&nbsp;ревью&nbsp;&mdash; не&nbsp;как рецензент синтаксиса, а&nbsp;как эксперт по&nbsp;интерфейсу.</p>
+
+            <h2>AI как мост</h2>
+
+            <p>Отдельная тема&nbsp;&mdash; AI-инструменты. Cursor и&nbsp;Claude позволяют дизайнеру прототипировать в&nbsp;коде без глубокого знания фреймворков. Вы&nbsp;описываете компонент&nbsp;&mdash; AI пишет код. Но&nbsp;чтобы оценить результат, направить AI и&nbsp;поправить детали, нужно понимать основы.</p>
+
+            <p>Это не&nbsp;про &laquo;научиться писать production-код&raquo;. Это про достаточное понимание, чтобы проверять идеи до&nbsp;передачи в&nbsp;разработку и&nbsp;говорить с&nbsp;инженерами на&nbsp;одном языке.</p>
+
+            <h2>Практическая польза</h2>
+
+            <ul>
+                <li><strong>Лучшие компоненты.</strong> Вы&nbsp;проектируете с&nbsp;пониманием возможностей и&nbsp;ограничений платформы.</li>
+                <li><strong>Быстрее коммуникация.</strong> Вы&nbsp;говорите с&nbsp;разработчиками на&nbsp;одном языке. &laquo;Давай сделаем это через слот&raquo; вместо &laquo;мне нужно, чтобы сюда можно было вставить что угодно&raquo;.</li>
+                <li><strong>Меньше итераций.</strong> Компоненты реализуются ближе к&nbsp;замыслу с&nbsp;первого раза.</li>
+                <li><strong>Прототипирование через AI.</strong> Claude и&nbsp;Cursor становятся инструментами дизайнера, а&nbsp;не&nbsp;только разработчика.</li>
+            </ul>
+
+            <h2>С&nbsp;чего начать</h2>
+
+            <p>Не нужно учить React или писать production-код. Достаточно четырёх шагов:</p>
+
+            <ul>
+                <li><strong>HTML и&nbsp;CSS</strong>&nbsp;&mdash; понять, как строится интерфейс в&nbsp;браузере</li>
+                <li><strong>CSS-переменные</strong>&nbsp;&mdash; понять токены на&nbsp;уровне реализации</li>
+                <li><strong>DevTools</strong>&nbsp;&mdash; научиться инспектировать компоненты в&nbsp;браузере</li>
+                <li><strong>Cursor + Claude</strong>&nbsp;&mdash; использовать AI для быстрого прототипирования</li>
+            </ul>
+
+            <p>Дизайн-системы движутся к&nbsp;полному слиянию дизайна и&nbsp;кода. Слоты, Code Connect, AI-агенты&nbsp;&mdash; всё сокращает разрыв. Дизайнер, который понимает обе стороны, не&nbsp;просто полезнее. Он&nbsp;проектирует системы, которые переживают смену инструментов.</p>
+        </article>
+
+        <hr>
+    </main>
+</body>
+</html>

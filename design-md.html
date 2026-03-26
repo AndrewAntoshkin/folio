@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design.md — как описать дизайн-систему для AI-агентов</title>
+    <meta name="description" content="Как структурировать дизайн-систему в формате, который AI-агенты могут использовать. Токены, компоненты, паттерны, аудит.">
+    <meta property="og:title" content="Design.md — как описать дизайн-систему для AI-агентов">
+    <meta property="og:description" content="Как структурировать дизайн-систему в формате, который AI-агенты могут использовать.">
+    <meta property="og:type" content="article">
+    <link rel="icon" type="image/png" href="assets/avatar.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #fafafa;
+            --text: #171717;
+            --text-sub: #525252;
+            --text-muted: #a3a3a3;
+            --border: #e5e5e5;
+            --link-line: #d4d4d4;
+            --code-bg: #f5f5f5;
+            --hover-bg: rgba(0, 0, 0, 0.03);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0a0a0a;
+                --text: #ededed;
+                --text-sub: #a3a3a3;
+                --text-muted: #525252;
+                --border: #262626;
+                --link-line: #404040;
+                --code-bg: #171717;
+                --hover-bg: rgba(255, 255, 255, 0.04);
+            }
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body { min-height: 100vh; }
+        a { color: inherit; }
+
+        main {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 80px 20px 80px;
+        }
+
+        .back {
+            display: inline-block;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 48px;
+            transition: color 0.2s;
+        }
+
+        .back:hover { color: var(--text); }
+
+        article h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        .date {
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            display: block;
+        }
+
+        article h2 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            line-height: 1.4;
+            margin-top: 40px;
+            margin-bottom: 12px;
+        }
+
+        article h3 {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            line-height: 1.5;
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        article p {
+            font-size: 0.9375rem;
+            line-height: 1.75;
+            color: var(--text-sub);
+            margin-top: 16px;
+        }
+
+        article p:first-of-type { margin-top: 0; }
+
+        article a {
+            color: var(--text);
+            text-decoration: underline;
+            text-decoration-color: var(--link-line);
+            text-underline-offset: 3px;
+            text-decoration-thickness: 1px;
+            transition: text-decoration-color 0.2s;
+        }
+
+        article a:hover { text-decoration-color: var(--text); }
+
+        article strong { font-weight: 600; color: var(--text); }
+
+        article ul, article ol {
+            margin-top: 12px;
+            padding-left: 20px;
+        }
+
+        article li {
+            font-size: 0.9375rem;
+            line-height: 1.75;
+            color: var(--text-sub);
+            margin-top: 4px;
+        }
+
+        article li strong { color: var(--text); }
+
+        article code {
+            font-family: 'SF Mono', 'Fira Code', 'Fira Mono', monospace;
+            font-size: 0.8125rem;
+            background: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        article pre {
+            margin-top: 16px;
+            background: var(--code-bg);
+            border-radius: 8px;
+            padding: 16px 20px;
+            overflow-x: auto;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+            font-size: 0.8125rem;
+            line-height: 1.7;
+            color: var(--text-sub);
+        }
+
+        hr {
+            margin-top: 48px;
+            border: none;
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 600px) {
+            main { padding: 60px 20px 60px; }
+            article h1 { font-size: 1.25rem; }
+            .back { margin-bottom: 32px; }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <a href="/" class="back">&larr; Андрей Антошкин</a>
+
+        <article>
+            <h1>Design.md&nbsp;&mdash; как описать дизайн&#8209;систему для&nbsp;AI&#8209;агентов</h1>
+            <span class="date">Март 2026</span>
+
+            <p>AI-агенты&nbsp;&mdash; Claude, GPT, Cursor&nbsp;&mdash; всё чаще пишут UI-код. Но у&nbsp;них есть фундаментальная проблема: они не&nbsp;знают вашу дизайн-систему. Каждая сессия начинается с&nbsp;нуля. Каждое визуальное решение&nbsp;&mdash; догадка.</p>
+
+            <p>Design.md решает это. Это структурированная спецификация дизайн-системы, которую AI читает в&nbsp;начале каждой сессии. Вместо догадок&nbsp;&mdash; поиск по&nbsp;документу.</p>
+
+            <h2>Проблема: 200 разумных догадок</h2>
+
+            <p>Когда AI пишет интерфейс, он принимает сотни микрорешений: какой отступ у&nbsp;карточки, какой оттенок синего для ссылки, какой радиус скругления у&nbsp;кнопки. Каждое решение выглядит нормально. Но 200 &laquo;нормальных догадок&raquo; не&nbsp;складываются в&nbsp;консистентный дизайн.</p>
+
+            <p><a href="https://hvpandya.com/llm-design-systems" target="_blank" rel="noopener">Hardik Pandya</a> точно описывает три ограничения LLM:</p>
+
+            <ol>
+                <li><strong>Фабрикация значений.</strong> AI не&nbsp;ищет ваши токены&nbsp;&mdash; он генерирует правдоподобные. Если в&nbsp;системе <code>--space-200</code>&nbsp;= 8px, AI напишет <code>padding: 12px</code>, потому что 12&nbsp;&mdash; разумное число. Оно не&nbsp;неправильное. Оно просто не&nbsp;ваше.</li>
+                <li><strong>Нет памяти между сессиями.</strong> Каждая новая сессия начинается с&nbsp;нуля. AI не&nbsp;помнит, что вчера использовал <code>#2563EB</code> для ссылок. Сегодня он выберет другой синий. К&nbsp;пятой сессии у&nbsp;вас три разных синих в&nbsp;одном прототипе.</li>
+                <li><strong>Не&nbsp;читает дизайн-намерение из&nbsp;кода.</strong> AI видит API компонентов: импортировать Button, передать <code>appearance="primary"</code>. Но&nbsp;он не&nbsp;понимает, когда использовать модалку вместо инлайн-сообщения, или какой отступ ставить между секциями. Это знание живёт в&nbsp;головах дизайнеров.</li>
+            </ol>
+
+            <h2>Что такое Design.md</h2>
+
+            <p>Design.md&nbsp;&mdash; файл в&nbsp;корне репозитория, который описывает вашу дизайн-систему в&nbsp;формате, пригодном для AI. Для Cursor он живёт в&nbsp;<code>.cursor/rules/</code>. Для Claude&nbsp;&mdash; в&nbsp;CLAUDE.md. Для любого агента&nbsp;&mdash; в&nbsp;контексте сессии.</p>
+
+            <p>Идея простая: AI не&nbsp;должен решать &laquo;какой синий использовать для ссылки&raquo;. Он&nbsp;должен найти <code>var(--color-link)</code> в&nbsp;спецификации.</p>
+
+            <p><a href="https://airops-style-guide.vercel.app/" target="_blank" rel="noopener">AirOps</a> пошли дальше&nbsp;&mdash; их бренд-гайдлайн имеет два представления: живой визуальный гайдлайн для людей и&nbsp;структурированная инструкция для AI-агентов. Один источник правды, два формата потребления.</p>
+
+            <h2>Что включать</h2>
+
+            <h3>Токены</h3>
+
+            <p>Полная карта CSS-переменных с&nbsp;значениями и&nbsp;контекстом. Не&nbsp;просто <code>--color-primary: #2563EB</code>, а&nbsp;когда и&nbsp;где его использовать:</p>
+
+<pre><code>## Цвета
+
+- `--color-text`: #171717 — основной текст
+- `--color-text-sub`: #525252 — вторичный текст, описания
+- `--color-link`: #2563EB — ссылки и интерактивные элементы
+- `--color-bg`: #fafafa — фон страницы
+- `--color-border`: #e5e5e5 — разделители и границы
+
+## Отступы (base 4px)
+
+- `--space-100`: 4px — минимальный, между иконкой и текстом
+- `--space-200`: 8px — внутри компонента
+- `--space-300`: 12px — между связанными элементами
+- `--space-400`: 16px — стандартный padding
+- `--space-600`: 24px — между блоками
+- `--space-800`: 32px — между секциями</code></pre>
+
+            <h3>Компоненты</h3>
+
+            <p>Для каждого компонента: когда использовать, когда не&nbsp;использовать, какие токены задействованы, какие состояния есть:</p>
+
+<pre><code>## Button
+
+Когда: основное действие на странице
+Когда НЕ: навигация (используй Link)
+
+Варианты: primary | secondary | ghost
+Размеры: sm (32px) | md (40px) | lg (48px)
+
+Токены:
+- Фон: var(--color-primary)
+- Текст: var(--color-on-primary)
+- Скругление: var(--radius-md)
+- Паддинг: var(--space-300) var(--space-400)
+
+Состояния: default, hover, active, focus, disabled</code></pre>
+
+            <h3>Паттерны</h3>
+
+            <p>Правила компоновки, которые AI не&nbsp;может вывести из&nbsp;кода: отступы между секциями, поведение сетки, принципы адаптивности. Это то, что обычно живёт в&nbsp;головах дизайнеров и&nbsp;нигде не&nbsp;записано.</p>
+
+            <h2>Трёхслойная архитектура токенов</h2>
+
+            <p>Hardik Pandya предлагает структуру из&nbsp;трёх слоёв, которая защищает от&nbsp;дрейфа:</p>
+
+            <ol>
+                <li><strong>Upstream-токены</strong> из&nbsp;дизайн-системы: <code>--ds-text: #171717</code></li>
+                <li><strong>Алиасы проекта</strong> со&nbsp;ссылкой и&nbsp;фолбэком: <code>--color-text: var(--ds-text, #171717)</code></li>
+                <li><strong>Компоненты</strong> используют только алиасы: <code>color: var(--color-text)</code></li>
+            </ol>
+
+            <p>Алиас&nbsp;&mdash; это защитный слой. Если upstream-система переименует токен, вы меняете один алиас. Тёмная тема, высокий контраст, любая будущая тема&nbsp;&mdash; разрешаются автоматически через цепочку.</p>
+
+            <h2>Аудит: ловить то, что AI пропустил</h2>
+
+            <p>Design.md даёт AI правильные ответы. Аудит-скрипт ловит случаи, когда AI всё равно догадался. Простой скрипт сканирует CSS-файлы на&nbsp;захардкоженные значения и&nbsp;предлагает конкретный токен:</p>
+
+<pre><code>src/components/Nav.css
+  L42: color: #2563EB → используй var(--color-link)
+  L78: padding: 12px → используй var(--space-300)
+
+Ошибок: 2 | Предупреждений: 0</code></pre>
+
+            <p>Скрипт возвращает exit code 1 при ошибках&nbsp;&mdash; можно поставить в&nbsp;CI. Ноль нарушений = можно мержить.</p>
+
+            <h2>Как поддерживать</h2>
+
+            <p>Спецификация живёт в&nbsp;репозитории рядом с&nbsp;кодом, не&nbsp;в&nbsp;Figma-комментарии и&nbsp;не&nbsp;в&nbsp;Notion. Когда компонент меняется в&nbsp;PR, спецификация&nbsp;&mdash; в&nbsp;том&nbsp;же диффе. Три правила:</p>
+
+            <ul>
+                <li><strong>Новый компонент</strong>&nbsp;&mdash; пиши спеку до&nbsp;или во&nbsp;время разработки</li>
+                <li><strong>Обновление дизайн-системы</strong>&nbsp;&mdash; обнови затронутые секции Design.md</li>
+                <li><strong>Аудит в&nbsp;CI</strong>&nbsp;&mdash; скрипт автоматически проверяет каждый PR</li>
+            </ul>
+
+            <p>Маленькая точная спецификация лучше большой устаревшей.</p>
+
+            <h2>Результат</h2>
+
+            <p>Ваша десятая AI-сессия даёт такое&nbsp;же визуальное качество, как первая. AI не&nbsp;угадывает&nbsp;&mdash; ищет. Не&nbsp;фабрикует&nbsp;&mdash; ссылается. Не&nbsp;дрейфует&nbsp;&mdash; проверяется аудитом.</p>
+
+            <p>Design.md&nbsp;&mdash; это не&nbsp;документация. Это инфраструктура.</p>
+        </article>
+
+        <hr>
+    </main>
+</body>
+</html>
