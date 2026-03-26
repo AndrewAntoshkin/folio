@@ -188,6 +188,80 @@
             margin-top: 1px;
         }
 
+        .exp-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .exp-item {
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 0 16px;
+        }
+
+        .exp-company {
+            font-size: 0.9375rem;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .exp-year {
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+            margin-left: auto;
+            white-space: nowrap;
+        }
+
+        .exp-role {
+            width: 100%;
+            font-size: 0.875rem;
+            color: var(--text-sub);
+            line-height: 1.5;
+        }
+
+        .about-text {
+            font-size: 0.9375rem;
+            font-weight: 400;
+            line-height: 1.7;
+            color: var(--text-sub);
+        }
+
+        .contacts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .contact-row {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            font-size: 0.9375rem;
+            line-height: 1.5;
+        }
+
+        .contact-label {
+            color: var(--text-muted);
+            font-size: 0.8125rem;
+            width: 72px;
+            flex-shrink: 0;
+        }
+
+        .contact-row a {
+            color: var(--text);
+            text-decoration: underline;
+            text-decoration-color: var(--link-line);
+            text-underline-offset: 3px;
+            text-decoration-thickness: 1px;
+            transition: text-decoration-color 0.2s;
+        }
+
+        .contact-row a:hover {
+            text-decoration-color: var(--text);
+        }
+
         hr {
             margin-top: 56px;
             border: none;
@@ -216,6 +290,32 @@
             <p>Дизайнер в&nbsp;<a href="https://market.yandex.ru" target="_blank" rel="noopener">Яндекс&nbsp;Маркете</a>&nbsp;&mdash; строю B2B дизайн-систему. До&nbsp;этого руководил дизайн-системой в&nbsp;<a href="https://www.sber.ru" target="_blank" rel="noopener">Сбере</a>.</p>
             <p>Пишите в&nbsp;<a href="https://t.me/andrewaitken" target="_blank" rel="noopener">Telegram</a> или на&nbsp;<a href="mailto:andrew.antoshkin@gmail.com">почту</a>.</p>
         </div>
+
+        <section>
+            <h2>Опыт</h2>
+            <div class="exp-list">
+                <div class="exp-item">
+                    <span class="exp-company">Яндекс Маркет</span>
+                    <span class="exp-year">сейчас</span>
+                    <span class="exp-role">Product Designer — Design Systems</span>
+                </div>
+                <div class="exp-item">
+                    <span class="exp-company">Сбер</span>
+                    <span class="exp-year">2022 — 2024</span>
+                    <span class="exp-role">Design System Lead</span>
+                </div>
+                <div class="exp-item">
+                    <span class="exp-company">Открытие</span>
+                    <span class="exp-year">2020 — 2021</span>
+                    <span class="exp-role">Senior Product Designer</span>
+                </div>
+                <div class="exp-item">
+                    <span class="exp-company">МТС</span>
+                    <span class="exp-year">2019 — 2020</span>
+                    <span class="exp-role">Product Designer</span>
+                </div>
+            </div>
+        </section>
 
         <section>
             <h2>Проекты</h2>
@@ -251,6 +351,29 @@
                     </a>
                 </li>
             </ol>
+        </section>
+
+        <section>
+            <h2>Обо мне</h2>
+            <p class="about-text">7+ лет в&nbsp;продуктовом дизайне. Работаю на&nbsp;стыке дизайна, разработки и&nbsp;AI. Прототипирую в&nbsp;коде, собираю рабочие продукты через Claude и&nbsp;Cursor. Фокус&nbsp;&mdash; системы, которые реально работают и&nbsp;масштабируются.</p>
+        </section>
+
+        <section>
+            <h2>Контакты</h2>
+            <div class="contacts-list">
+                <div class="contact-row">
+                    <span class="contact-label">Email</span>
+                    <a href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-label">Telegram</span>
+                    <a href="https://t.me/andrewaitken" target="_blank" rel="noopener">@andrewaitken</a>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-label">Канал</span>
+                    <a href="https://t.me/aiantoshkin" target="_blank" rel="noopener">@aiantoshkin</a>
+                </div>
+            </div>
         </section>
 
         <hr>
