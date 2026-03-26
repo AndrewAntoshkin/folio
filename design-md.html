@@ -14,6 +14,34 @@
     <meta name="color-scheme" content="light dark">
     <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Text:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        @view-transition {
+            navigation: auto;
+        }
+
+        ::view-transition-old(root) {
+            animation: 300ms ease both slide-down;
+        }
+
+        ::view-transition-new(root) {
+            animation: 300ms ease both fade-in;
+        }
+
+        @keyframes slide-down {
+            to { transform: translateY(100%); }
+        }
+
+        @keyframes fade-in {
+            from { opacity: 0.5; transform: scale(0.98); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            ::view-transition-group(*),
+            ::view-transition-old(*),
+            ::view-transition-new(*) {
+                animation: none !important;
+            }
+        }
+
         :root {
             --bg: #fafafa;
             --text: #09090b;
