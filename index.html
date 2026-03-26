@@ -12,25 +12,27 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <meta name="color-scheme" content="light dark">
-    <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Text:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #fafafa;
-            --text: #09090b;
-            --text-sub: #52525b;
-            --text-muted: #71717a;
+            --text: #0a0a0a;
+            --text-muted: #737373;
             --border: #e4e4e7;
+            --card-border: #e2e2e2;
             --hover-bg: rgba(0, 0, 0, 0.04);
+            --avatar-border: rgba(80, 80, 80, 0.5);
         }
 
         @media (prefers-color-scheme: dark) {
             :root {
-                --bg: #09090b;
-                --text: #fafafa;
-                --text-sub: #d4d4d8;
-                --text-muted: #a1a1aa;
+                --bg: #0c0c0c;
+                --text: #f5f5f5;
+                --text-muted: #8f8e8d;
                 --border: #27272a;
+                --card-border: #2d2d2d;
                 --hover-bg: rgba(255, 255, 255, 0.04);
+                --avatar-border: rgba(207, 207, 207, 0.5);
             }
         }
 
@@ -43,7 +45,7 @@
         html {
             background: var(--bg);
             color: var(--text);
-            font-family: 'Google Sans Text', system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
             font-size: 1rem;
             line-height: 1.618;
             -webkit-font-smoothing: antialiased;
@@ -65,39 +67,61 @@
             padding: clamp(2rem, 0.56rem + 5.56vw, 5rem) clamp(1.5rem, 1.26rem + 0.93vw, 2rem) clamp(4rem, 3.04rem + 3.7vw, 6rem);
         }
 
-        header {
-            margin-bottom: 2rem;
+        .hero {
+            display: flex;
+            flex-direction: column;
+            gap: 36px;
+            margin-bottom: 48px;
         }
 
-        header h1 {
+        .hero-identity {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            border: 2px solid var(--avatar-border);
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .hero-text {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 0;
+        }
+
+        .hero-text h1 {
             font-size: 1rem;
             font-weight: 500;
-            line-height: 1.5;
+            line-height: normal;
         }
 
         .role {
-            font-size: 1rem;
+            font-size: 0.875rem;
             font-weight: 400;
-            line-height: 1.5;
-            color: var(--text-sub);
+            line-height: 1.25rem;
+            color: var(--text-muted);
         }
 
         .intro {
-            margin-top: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
         }
 
         .intro p {
             font-size: 1rem;
             font-weight: 400;
-            color: var(--text-sub);
-        }
-
-        .intro p + p {
-            margin-top: 1.5rem;
+            line-height: 1.625rem;
         }
 
         .intro a {
-            color: var(--text);
             text-decoration: underline;
             text-decoration-color: color-mix(in srgb, currentColor, transparent 75%);
             text-underline-offset: 0.3em;
@@ -110,14 +134,89 @@
         }
 
         section {
-            margin-top: 3rem;
+            margin-top: 48px;
         }
 
         section h2 {
             font-size: 1rem;
             font-weight: 500;
-            line-height: 1.5;
-            margin-bottom: 1.5rem;
+            line-height: normal;
+            margin-bottom: 24px;
+        }
+
+        .exp-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .exp-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .exp-info {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .exp-company {
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: normal;
+        }
+
+        .exp-role {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            line-height: 1.25rem;
+        }
+
+        .exp-year {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            line-height: 1.25rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .project-card {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 16px;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            text-decoration: none;
+            color: inherit;
+            transition: background 0.15s;
+        }
+
+        .project-card:hover {
+            background: var(--hover-bg);
+        }
+
+        .project-title {
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.5rem;
+        }
+
+        .project-desc {
+            font-size: 0.875rem;
+            font-weight: 400;
+            line-height: 1.25rem;
+            color: var(--text-muted);
         }
 
         .entries {
@@ -168,65 +267,22 @@
             display: block;
             font-size: 1rem;
             font-weight: 500;
-            line-height: 1.5;
-            color: var(--text);
-        }
-
-        .entry-desc {
-            display: block;
-            font-size: 1rem;
-            font-weight: 400;
-            line-height: 1.618;
-            color: var(--text-muted);
-            margin-top: 2px;
+            line-height: 1.5rem;
         }
 
         .entry-meta {
             display: block;
-            font-size: 1rem;
+            font-size: 0.875rem;
             font-weight: 400;
-            line-height: 1.618;
+            line-height: 1.25rem;
             color: var(--text-muted);
             margin-top: 2px;
-        }
-
-        .exp-list {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .exp-item {
-            display: flex;
-            align-items: baseline;
-            flex-wrap: wrap;
-            gap: 0 16px;
-        }
-
-        .exp-company {
-            font-size: 1rem;
-            font-weight: 500;
-            line-height: 1.5;
-        }
-
-        .exp-year {
-            font-size: 1rem;
-            color: var(--text-muted);
-            margin-left: auto;
-            white-space: nowrap;
-        }
-
-        .exp-role {
-            width: 100%;
-            font-size: 1rem;
-            color: var(--text-sub);
-            line-height: 1.618;
         }
 
         .about-text {
             font-size: 1rem;
             font-weight: 400;
-            color: var(--text-sub);
+            line-height: 1.625rem;
         }
 
         .contacts-list {
@@ -240,7 +296,7 @@
             align-items: baseline;
             gap: 12px;
             font-size: 1rem;
-            line-height: 1.5;
+            line-height: normal;
         }
 
         .contact-label {
@@ -264,78 +320,88 @@
         }
 
         hr {
-            margin-top: 3rem;
+            margin-top: 48px;
             border: none;
             border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 600px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <main>
-        <header>
-            <h1>Андрей Антошкин</h1>
-            <p class="role">Product Design Engineer</p>
-        </header>
-
-        <div class="intro">
-            <p>Дизайнер в&nbsp;<a href="https://market.yandex.ru" target="_blank" rel="noopener">Яндекс&nbsp;Маркете</a>&nbsp;&mdash; строю B2B дизайн-систему. До&nbsp;этого руководил дизайн-системой в&nbsp;<a href="https://www.sber.ru" target="_blank" rel="noopener">Сбере</a>.</p>
-            <p>Пишите в&nbsp;<a href="https://t.me/andrewaitken" target="_blank" rel="noopener">Telegram</a> или на&nbsp;<a href="mailto:andrew.antoshkin@gmail.com">почту</a>.</p>
+        <div class="hero">
+            <div class="hero-identity">
+                <img class="avatar" src="assets/avatar.png" alt="Андрей Антошкин" width="44" height="44">
+                <div class="hero-text">
+                    <h1>Андрей Антошкин</h1>
+                    <p class="role">Product Design Engineer</p>
+                </div>
+            </div>
+            <div class="intro">
+                <p>Дизайнер в&nbsp;<a href="https://market.yandex.ru" target="_blank" rel="noopener">Яндекс&nbsp;Маркете</a>&nbsp;&mdash; строю B2B дизайн-систему. До&nbsp;этого руководил дизайн-системой в&nbsp;<a href="https://www.sber.ru" target="_blank" rel="noopener">Сбере</a>.</p>
+                <p>Пишите в&nbsp;<a href="https://t.me/andrewaitken" target="_blank" rel="noopener">Telegram</a> или на&nbsp;<a href="mailto:andrew.antoshkin@gmail.com">почту</a>.</p>
+            </div>
         </div>
 
         <section>
             <h2>Опыт</h2>
             <div class="exp-list">
                 <div class="exp-item">
-                    <span class="exp-company">Яндекс Маркет</span>
+                    <div class="exp-info">
+                        <span class="exp-company">Яндекс Маркет</span>
+                        <span class="exp-role">Product Designer — Design Systems</span>
+                    </div>
                     <span class="exp-year">сейчас</span>
-                    <span class="exp-role">Product Designer — Design Systems</span>
                 </div>
                 <div class="exp-item">
-                    <span class="exp-company">Сбер</span>
+                    <div class="exp-info">
+                        <span class="exp-company">Сбер</span>
+                        <span class="exp-role">Design System Lead</span>
+                    </div>
                     <span class="exp-year">2022 — 2024</span>
-                    <span class="exp-role">Design System Lead</span>
                 </div>
                 <div class="exp-item">
-                    <span class="exp-company">Открытие</span>
+                    <div class="exp-info">
+                        <span class="exp-company">Открытие</span>
+                        <span class="exp-role">Senior Product Designer</span>
+                    </div>
                     <span class="exp-year">2020 — 2021</span>
-                    <span class="exp-role">Senior Product Designer</span>
                 </div>
                 <div class="exp-item">
-                    <span class="exp-company">МТС</span>
+                    <div class="exp-info">
+                        <span class="exp-company">МТС</span>
+                        <span class="exp-role">Product Designer</span>
+                    </div>
                     <span class="exp-year">2019 — 2020</span>
-                    <span class="exp-role">Product Designer</span>
                 </div>
             </div>
         </section>
 
         <section>
             <h2>Проекты</h2>
-            <ol class="entries">
-                <li>
-                    <a class="entry" href="https://t.me/aiantoshkin" target="_blank" rel="noopener">
-                        <div class="entry-body">
-                            <span class="entry-title">AI &amp; Дизайн-системы</span>
-                            <span class="entry-desc">Канал про&nbsp;AI&#8209;инструменты, дизайн&#8209;системы и&nbsp;автоматизацию процессов.</span>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="entry" href="https://github.com/AndrewAntoshkin/designmd" target="_blank" rel="noopener">
-                        <div class="entry-body">
-                            <span class="entry-title">designmd</span>
-                            <span class="entry-desc">Генератор AI&#8209;читаемых спецификаций из&nbsp;токенов дизайн&#8209;системы.</span>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="entry" href="https://github.com/AndrewAntoshkin/token-audit" target="_blank" rel="noopener">
-                        <div class="entry-body">
-                            <span class="entry-title">token-audit</span>
-                            <span class="entry-desc">Сканирует CSS и&nbsp;находит захардкоженные значения, которые должны быть токенами.</span>
-                        </div>
-                    </a>
-                </li>
-            </ol>
+            <div class="projects-grid">
+                <a class="project-card" href="https://t.me/aiantoshkin" target="_blank" rel="noopener">
+                    <span class="project-title">AI &amp; Дизайн&#8209;системы</span>
+                    <span class="project-desc">Канал про&nbsp;AI&#8209;инструменты, дизайн&#8209;системы и&nbsp;автоматизацию процессов.</span>
+                </a>
+                <a class="project-card" href="https://github.com/AndrewAntoshkin/designmd" target="_blank" rel="noopener">
+                    <span class="project-title">designmd</span>
+                    <span class="project-desc">Генератор AI&#8209;читаемых спецификаций из&nbsp;токенов дизайн&#8209;системы.</span>
+                </a>
+                <a class="project-card" href="https://github.com/AndrewAntoshkin/token-audit" target="_blank" rel="noopener">
+                    <span class="project-title">token-audit</span>
+                    <span class="project-desc">Сканирует CSS и&nbsp;находит захардкоженные значения, которые должны быть токенами.</span>
+                </a>
+                <a class="project-card" href="https://des2bildr.ru" target="_blank" rel="noopener">
+                    <span class="project-title">Designer → Builder</span>
+                    <span class="project-desc">Практикум для дизайнеров на&nbsp;стыке дизайна и&nbsp;разработки.</span>
+                </a>
+            </div>
         </section>
 
         <section>
