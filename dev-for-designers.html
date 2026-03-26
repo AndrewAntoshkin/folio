@@ -11,15 +11,29 @@
     <link rel="icon" type="image/png" href="assets/avatar.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta name="color-scheme" content="light dark">
     <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Text:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #09090b;
-            --text: #fafafa;
-            --text-sub: #d4d4d8;
-            --text-muted: #a1a1aa;
-            --border: #27272a;
-            --code-bg: #18181b;
+            --bg: #fafafa;
+            --text: #09090b;
+            --text-sub: #52525b;
+            --text-muted: #71717a;
+            --border: #e4e4e7;
+            --code-bg: #f4f4f5;
+            --code-border: rgba(0, 0, 0, 0.08);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #09090b;
+                --text: #fafafa;
+                --text-sub: #d4d4d8;
+                --text-muted: #a1a1aa;
+                --border: #27272a;
+                --code-bg: #18181b;
+                --code-border: rgba(255, 255, 255, 0.05);
+            }
         }
 
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -123,7 +137,7 @@
         article pre {
             margin-top: 1rem;
             background: var(--code-bg);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--code-border);
             border-radius: 0.625rem;
             padding: 1rem;
             overflow-x: auto;
