@@ -22,6 +22,7 @@
             --card-border: #e2e2e2;
             --hover-bg: rgba(0, 0, 0, 0.04);
             --avatar-border: rgba(80, 80, 80, 0.5);
+            --badge-border: #b0b0b0;
         }
 
         @media (prefers-color-scheme: dark) {
@@ -33,6 +34,7 @@
                 --card-border: #2d2d2d;
                 --hover-bg: rgba(255, 255, 255, 0.04);
                 --avatar-border: rgba(207, 207, 207, 0.5);
+                --badge-border: #7c7c7c;
             }
         }
 
@@ -207,16 +209,36 @@
             background: var(--hover-bg);
         }
 
+        .project-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
         .project-title {
             font-size: 1rem;
             font-weight: 500;
             line-height: 1.5rem;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .project-badge {
+            font-size: 0.75rem;
+            font-weight: 400;
+            line-height: 0.875rem;
+            padding: 4px 6px;
+            border: 1px solid var(--badge-border);
+            border-radius: 8px;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .project-desc {
             font-size: 0.875rem;
             font-weight: 400;
-            line-height: 1.25rem;
+            line-height: 1.125rem;
             color: var(--text-muted);
         }
 
@@ -386,21 +408,33 @@
         <section>
             <h2>Проекты</h2>
             <div class="projects-grid">
-                <a class="project-card" href="https://t.me/aiantoshkin" target="_blank" rel="noopener">
-                    <span class="project-title">AI &amp; Дизайн&#8209;системы</span>
-                    <span class="project-desc">Канал про&nbsp;AI&#8209;инструменты, дизайн&#8209;системы и&nbsp;автоматизацию процессов.</span>
+                <a class="project-card" href="https://github.com/AndrewAntoshkin/ds-health" target="_blank" rel="noopener">
+                    <div class="project-header">
+                        <span class="project-title">ds-health</span>
+                        <span class="project-badge">repo</span>
+                    </div>
+                    <span class="project-desc">Веб-тул: вставляешь URL живого сайта&nbsp;&mdash; получаешь визуальный отчёт о&nbsp;&laquo;здоровье&raquo; дизайн&#8209;системы</span>
                 </a>
-                <a class="project-card" href="https://github.com/AndrewAntoshkin/designmd" target="_blank" rel="noopener">
-                    <span class="project-title">designmd</span>
-                    <span class="project-desc">Генератор AI&#8209;читаемых спецификаций из&nbsp;токенов дизайн&#8209;системы.</span>
+                <a class="project-card" href="https://github.com/AndrewAntoshkin/figma-to-design-md" target="_blank" rel="noopener">
+                    <div class="project-header">
+                        <span class="project-title">figma-to-design-md</span>
+                        <span class="project-badge">tool</span>
+                    </div>
+                    <span class="project-desc">Figma&#8209;плагин, который вытаскивает переменные и&nbsp;стили из&nbsp;Figma&#8209;файла и&nbsp;генерирует Design.md / SKILL.md для AI&#8209;агентов</span>
                 </a>
-                <a class="project-card" href="https://github.com/AndrewAntoshkin/token-audit" target="_blank" rel="noopener">
-                    <span class="project-title">token-audit</span>
-                    <span class="project-desc">Сканирует CSS и&nbsp;находит захардкоженные значения, которые должны быть токенами.</span>
+                <a class="project-card" href="https://github.com/AndrewAntoshkin/awesome-ds-for-ai" target="_blank" rel="noopener">
+                    <div class="project-header">
+                        <span class="project-title">awesome-ds-for-ai</span>
+                        <span class="project-badge">repo</span>
+                    </div>
+                    <span class="project-desc">Курируемая коллекция .cursor/rules/ и&nbsp;CLAUDE.md специально для дизайн&#8209;систем</span>
                 </a>
                 <a class="project-card" href="https://des2bildr.ru" target="_blank" rel="noopener">
-                    <span class="project-title">Designer → Builder</span>
-                    <span class="project-desc">Практикум для дизайнеров на&nbsp;стыке дизайна и&nbsp;разработки.</span>
+                    <div class="project-header">
+                        <span class="project-title">Designer2Builder</span>
+                        <span class="project-badge">system</span>
+                    </div>
+                    <span class="project-desc">Практикум для дизайнеров на&nbsp;стыке дизайна и&nbsp;разработки</span>
                 </a>
             </div>
         </section>
