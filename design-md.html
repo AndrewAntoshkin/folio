@@ -100,12 +100,26 @@
             padding-bottom: clamp(2rem, 0.56rem + 5.56vw, 5rem);
         }
 
+        .back-bar {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            padding: 16px 0 24px;
+            margin: 0 -16px;
+            padding-left: 16px;
+            padding-right: 16px;
+            background: linear-gradient(to bottom, var(--bg) 50%, transparent);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            mask-image: linear-gradient(to bottom, black 60%, transparent);
+            -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent);
+        }
+
         .back {
             display: inline-block;
             font-size: 0.875rem;
             color: var(--text-muted);
             text-decoration: none;
-            margin-bottom: 48px;
             transition: color 0.2s;
         }
 
@@ -244,7 +258,9 @@
 </head>
 <body>
     <main>
-        <a href="/" class="back">&larr; Андрей Антошкин</a>
+        <div class="back-bar">
+            <a href="/" class="back">&larr; Назад</a>
+        </div>
 
         <article style="view-transition-name: article-body">
             <h1 style="view-transition-name: article-1">Design.md&nbsp;&mdash; как описать дизайн&#8209;систему для&nbsp;AI&#8209;агентов</h1>
