@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <meta name="color-scheme" content="light dark">
-    <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Text:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         @view-transition {
             navigation: auto;
@@ -58,9 +58,9 @@
 
         :root {
             --bg: #fafafa;
-            --text: #09090b;
+            --text: #0a0a0a;
             --text-sub: #52525b;
-            --text-muted: #71717a;
+            --text-muted: #737373;
             --border: #e4e4e7;
             --code-bg: #f4f4f5;
             --code-border: rgba(0, 0, 0, 0.08);
@@ -68,10 +68,10 @@
 
         @media (prefers-color-scheme: dark) {
             :root {
-                --bg: #09090b;
-                --text: #fafafa;
+                --bg: #0c0c0c;
+                --text: #f5f5f5;
                 --text-sub: #d4d4d8;
-                --text-muted: #a1a1aa;
+                --text-muted: #8f8e8d;
                 --border: #27272a;
                 --code-bg: #18181b;
                 --code-border: rgba(255, 255, 255, 0.05);
@@ -83,7 +83,7 @@
         html {
             background: var(--bg);
             color: var(--text);
-            font-family: 'Google Sans Text', system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
             font-size: 1rem;
             line-height: 1.618;
             -webkit-font-smoothing: antialiased;
@@ -94,9 +94,10 @@
         a { color: inherit; }
 
         main {
-            max-width: 37rem;
+            width: min(592px, 100% - 32px);
             margin: 0 auto;
-            padding: clamp(2rem, 0.56rem + 5.56vw, 5rem) clamp(1.5rem, 1.26rem + 0.93vw, 2rem) clamp(4rem, 3.04rem + 3.7vw, 6rem);
+            padding-top: clamp(2rem, 0.56rem + 5.56vw, 5rem);
+            padding-bottom: clamp(2rem, 0.56rem + 5.56vw, 5rem);
         }
 
         .back {
