@@ -104,18 +104,56 @@
             position: sticky;
             top: 0;
             z-index: 10;
-            padding: 16px 0 40px;
+            padding: 16px 16px 48px;
             margin: 0 -16px;
-            padding-left: 16px;
-            padding-right: 16px;
-            -webkit-backdrop-filter: blur(16px) saturate(180%);
-            backdrop-filter: blur(16px) saturate(180%);
-            background: linear-gradient(to bottom, color-mix(in srgb, var(--bg), transparent 5%) 0%, color-mix(in srgb, var(--bg), transparent 40%) 40%, transparent 100%);
-            mask-image: linear-gradient(to bottom, black 30%, transparent);
-            -webkit-mask-image: linear-gradient(to bottom, black 30%, transparent);
+        }
+
+        .back-blur {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .back-blur:nth-child(1) {
+            -webkit-backdrop-filter: blur(1px);
+            backdrop-filter: blur(1px);
+            -webkit-mask-image: linear-gradient(to bottom, black, transparent 25%);
+            mask-image: linear-gradient(to bottom, black, transparent 25%);
+        }
+
+        .back-blur:nth-child(2) {
+            -webkit-backdrop-filter: blur(2px);
+            backdrop-filter: blur(2px);
+            -webkit-mask-image: linear-gradient(to bottom, black 12%, transparent 40%);
+            mask-image: linear-gradient(to bottom, black 12%, transparent 40%);
+        }
+
+        .back-blur:nth-child(3) {
+            -webkit-backdrop-filter: blur(4px);
+            backdrop-filter: blur(4px);
+            -webkit-mask-image: linear-gradient(to bottom, black 25%, transparent 60%);
+            mask-image: linear-gradient(to bottom, black 25%, transparent 60%);
+        }
+
+        .back-blur:nth-child(4) {
+            -webkit-backdrop-filter: blur(8px) saturate(180%);
+            backdrop-filter: blur(8px) saturate(180%);
+            -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+        }
+
+        .back-bar::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(to bottom, var(--bg) 0%, transparent 70%);
+            opacity: 0.7;
         }
 
         .back {
+            position: relative;
+            z-index: 1;
             display: inline-block;
             font-size: 0.875rem;
             color: var(--text-muted);
@@ -259,6 +297,10 @@
 <body>
     <main>
         <div class="back-bar">
+            <div class="back-blur"></div>
+            <div class="back-blur"></div>
+            <div class="back-blur"></div>
+            <div class="back-blur"></div>
             <a href="/" class="back">&larr; Назад</a>
         </div>
 
