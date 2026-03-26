@@ -238,6 +238,12 @@
             background: var(--hover-bg);
         }
 
+        .project-card.disabled {
+            opacity: 0.45;
+            pointer-events: none;
+            cursor: default;
+        }
+
         .project-header {
             display: flex;
             align-items: flex-start;
@@ -457,13 +463,13 @@
                     </div>
                     <span class="project-desc">Curated collection of .cursor/rules/ and CLAUDE.md specifically for design systems</span>
                 </a>
-                <a class="project-card" href="https://des2bildr.ru" target="_blank" rel="noopener">
+                <div class="project-card disabled">
                     <div class="project-header">
                         <span class="project-title">Designer2Builder</span>
                         <span class="project-badge">soon</span>
                     </div>
                     <span class="project-desc">A hands-on program for designers at the intersection of design and development</span>
-                </a>
+                </div>
             </div>
         </section>
 
