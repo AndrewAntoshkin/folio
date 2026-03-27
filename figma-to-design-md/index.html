@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>figma-to-design-md — Generate AI-readable specs from Figma</title>
+<meta name="description" content="CLI that extracts variables, styles, and components from Figma and generates markdown specs for AI agents.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:#1c1c1b;color:#e5e5e5;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.shell{display:flex;min-height:100vh}
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:240px;background:#171716;border-right:1px dotted #333;display:flex;flex-direction:column;padding:20px 16px 16px;z-index:100;overflow-y:auto}
+.sidebar-inner{flex:1}
+.brand{font-size:14px;font-weight:500;color:#e5e5e5;display:block}
+.byline{font-size:12px;color:#6b6b6b;margin:1px 0 24px}
+.byline a{color:#888}
+.nav-section{margin-bottom:16px}
+.nav-label{font-size:11px;font-weight:500;color:#6b6b6b;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.nav-item{display:block;font-size:13px;font-weight:500;color:#a1a1aa;padding:5px 8px;border-radius:6px;margin-left:-8px}
+.nav-item.active{color:#e5e5e5;background:#2a2a29}
+.sidebar-install{font-size:12px;color:#555;font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace}
+.spacer{width:240px;flex-shrink:0}
+main{flex:1;display:flex;justify-content:center;padding:64px 32px 80px}
+article{max-width:672px;width:100%}
+h1{font-size:32px;font-weight:600;color:#e5e5e5;letter-spacing:-.03em;margin-bottom:12px}
+.lead{font-size:16px;color:#a1a1aa;line-height:1.6;margin-bottom:40px}
+h2{font-size:20px;font-weight:600;color:#e5e5e5;letter-spacing:-.03em;margin-bottom:12px}
+h3{font-size:16px;font-weight:600;color:#d4d4d4;margin:24px 0 8px}
+.body{font-size:16px;color:#a1a1aa;line-height:1.6;margin-bottom:16px}
+section{margin-bottom:48px;scroll-margin-top:32px}
+.code-wrap{background:#212121;border:1px solid #2f2f2e;border-radius:10px;overflow:hidden}
+pre{margin:0;padding:16px 20px;font-size:13px;font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;color:#a1a1aa;line-height:1.7;overflow-x:auto}
+.ic{font-size:14px;font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;background:#2a2a29;border:1px solid #333;border-radius:6px;padding:2px 4px;color:#d4d4d4}
+.tbl{background:#212121;border:1px solid #2f2f2e;border-radius:10px;overflow:hidden}
+.tbl-head{display:flex;padding:10px 16px;border-bottom:1px solid #2f2f2e;font-size:11px;font-weight:500;color:#6b6b6b;text-transform:uppercase;letter-spacing:.04em}
+.tbl-head span,.tbl-row span{flex:1}
+.tbl-head span:first-child,.tbl-row span:first-child{flex:2}
+.tbl-head span:last-child,.tbl-row span:last-child{flex:3}
+.tbl-row{display:flex;padding:10px 16px;border-bottom:1px solid #2f2f2e;font-size:12px;color:#a1a1aa;align-items:flex-start}
+.tbl-row:last-child{border-bottom:none}
+.tbl-row .prop{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;color:#93c5fd;font-size:13px}
+.tbl-row .type{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;color:#a78bfa;font-size:12px}
+.preview{background:#212121;border:1px solid #2f2f2e;border-radius:10px;padding:24px;margin-bottom:16px;font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;font-size:13px;color:#a1a1aa;line-height:1.6;white-space:pre;overflow-x:auto}
+.fl{display:flex;flex-direction:column;gap:10px}
+.f-row{display:flex;gap:12px;align-items:flex-start;padding:12px 16px;background:#212121;border:1px solid #2f2f2e;border-radius:10px}
+.f-dot{width:12px;height:12px;border-radius:3px;flex-shrink:0;margin-top:3px}
+.f-title{font-size:13px;font-weight:500;color:#e5e5e5;margin-bottom:2px}
+.f-desc{font-size:12px;color:#6b6b6b;line-height:1.4}
+.page-nav{display:flex;justify-content:space-between;align-items:flex-start;padding-top:32px;border-top:1px dotted #333;margin-top:24px}
+.pn-link{display:flex;flex-direction:column;gap:2px}
+.pn-hint{font-size:13px;color:#6b6b6b}
+.pn-title{font-size:14px;font-weight:500;color:#e5e5e5}
+.tree{color:#a1a1aa;line-height:1.8}
+.tree .dir{color:#93c5fd}.tree .file{color:#d4d4d4}.tree .comment{color:#6b6b6b}
+@media(max-width:800px){.sidebar{display:none}.spacer{display:none}main{padding:32px 16px 48px}}
+</style>
+</head>
+<body>
+<div class="shell">
+<nav class="sidebar">
+  <div class="sidebar-inner">
+    <a href="/figma-to-design-md/" class="brand">figma-to-design-md</a>
+    <p class="byline">by <a href="https://antoshkin.tech">Andrew Antoshkin</a></p>
+    <div class="nav-section">
+      <p class="nav-label">Basics</p>
+      <a href="#getting-started" class="nav-item active">Getting Started</a>
+      <a href="#cli" class="nav-item">CLI Options</a>
+    </div>
+    <div class="nav-section">
+      <p class="nav-label">Examples</p>
+      <a href="#output" class="nav-item">Output Structure</a>
+      <a href="#foundations" class="nav-item">Foundations</a>
+      <a href="#components" class="nav-item">Components</a>
+      <a href="#gaps" class="nav-item">Gap Detection</a>
+      <a href="#pipeline" class="nav-item">Pipeline</a>
+    </div>
+    <div class="nav-section">
+      <p class="nav-label">Links</p>
+      <a href="https://github.com/AndrewAntoshkin/figma-to-design-md" target="_blank" rel="noopener" class="nav-item">GitHub</a>
+      <a href="https://www.npmjs.com/package/figma-to-design-md" target="_blank" rel="noopener" class="nav-item">npm</a>
+    </div>
+  </div>
+  <code class="sidebar-install">npx figma-to-design-md</code>
+</nav>
+<div class="spacer"></div>
+<main>
+<article>
+
+<h1>Getting Started</h1>
+<p class="lead">Extract variables, styles, and components from Figma via REST API and generate markdown specs that AI agents can consume directly.</p>
+
+<section>
+<h2>How It Works</h2>
+<div class="preview"><span class="tree">Figma file ──▶ figma-to-design-md ──▶ <span class="dir">specs/</span>
+                                        ├── <span class="file">design-system.md</span>
+                                        ├── <span class="dir">foundations/</span>
+                                        │   ├── <span class="file">colors.md</span>
+                                        │   ├── <span class="file">typography.md</span>
+                                        │   ├── <span class="file">spacing.md</span>
+                                        │   └── <span class="file">radii.md</span>
+                                        ├── <span class="dir">components/</span>
+                                        │   ├── <span class="file">README.md</span>
+                                        │   ├── <span class="file">button.md</span>
+                                        │   └── ...
+                                        └── <span class="file">gaps.md</span></span></div>
+</section>
+
+<section>
+<h2>Installation</h2>
+<div class="code-wrap"><pre><span style="color:#6b6b6b"># Run directly</span>
+npx figma-to-design-md extract --file &lt;key&gt; --token &lt;token&gt;
+
+<span style="color:#6b6b6b"># Or install globally</span>
+npm i -g figma-to-design-md</pre></div>
+</section>
+
+<section>
+<h2>Setup</h2>
+<h3>1. Get a Figma token</h3>
+<p class="body">Open <a href="https://www.figma.com/settings" target="_blank" style="color:#93c5fd;text-decoration:underline">Figma Settings</a> → Personal access tokens → Create with <strong>File content: Read-only</strong> scope.</p>
+
+<h3>2. Get the file key</h3>
+<p class="body">From any Figma URL:</p>
+<div class="code-wrap"><pre>https://www.figma.com/design/<span style="color:#93c5fd">ABC123xyz</span>/My-Design-System
+                              <span style="color:#93c5fd">^^^^^^^^^^^</span>
+                              this is the file key</pre></div>
+
+<h3>3. Run</h3>
+<div class="code-wrap"><pre>figma-to-design-md extract \
+  --file ABC123xyz \
+  --token figd_xxx</pre></div>
+</section>
+
+<!-- CLI -->
+<section id="cli">
+<h2>CLI Options</h2>
+<div class="tbl">
+  <div class="tbl-head"><span>Flag</span><span>Default</span><span>Description</span></div>
+  <div class="tbl-row"><span class="prop">--file &lt;key&gt;</span><span>—</span><span>Figma file key (required)</span></div>
+  <div class="tbl-row"><span class="prop">--token &lt;token&gt;</span><span>$FIGMA_TOKEN</span><span>Figma personal access token</span></div>
+  <div class="tbl-row"><span class="prop">--out &lt;dir&gt;</span><span>./specs</span><span>Output directory</span></div>
+  <div class="tbl-row"><span class="prop">--mode &lt;mode&gt;</span><span>full</span><span>full | foundations | components</span></div>
+  <div class="tbl-row"><span class="prop">--node &lt;id&gt;</span><span>—</span><span>Scope to a specific page/frame</span></div>
+  <div class="tbl-row"><span class="prop">--version</span><span></span><span>Print version</span></div>
+  <div class="tbl-row"><span class="prop">--help</span><span></span><span>Print help</span></div>
+</div>
+</section>
+
+<!-- Output -->
+<section id="output">
+<h2>Output Structure</h2>
+
+<h3>design-system.md</h3>
+<p class="body">Top-level overview with counts and links to all detailed files.</p>
+
+<h3>foundations/*.md</h3>
+<div class="tbl">
+  <div class="tbl-head"><span>File</span><span>Contents</span></div>
+  <div class="tbl-row"><span class="prop">colors.md</span><span>All COLOR variables + FILL styles in markdown tables</span></div>
+  <div class="tbl-row"><span class="prop">typography.md</span><span>Font-related variables + TEXT styles</span></div>
+  <div class="tbl-row"><span class="prop">spacing.md</span><span>Variables matching space, gap, padding, margin</span></div>
+  <div class="tbl-row"><span class="prop">radii.md</span><span>Variables matching radius, round, corner</span></div>
+</div>
+<p class="body" style="margin-top:12px">Variables with multiple modes (e.g., Light / Dark) show all values.</p>
+</section>
+
+<!-- Foundations -->
+<section id="foundations">
+<h2>Foundations Example</h2>
+<p class="body">What a generated <code class="ic">colors.md</code> looks like:</p>
+<div class="preview"><span class="tree"># Colors
+
+## Variables (12 tokens)
+
+| Name              | Collection  | Light     | Dark      |
+|-------------------|------------|-----------|-----------|
+| color/primary     | Theme      | #3b82f6   | #60a5fa   |
+| color/secondary   | Theme      | #6366f1   | #818cf8   |
+| color/bg          | Theme      | #fafafa   | #0a0a0a   |
+| color/text        | Theme      | #0a0a0a   | #f5f5f5   |
+| color/muted       | Theme      | #737373   | #a3a3a3   |
+
+## Styles (3 styles)
+
+| Name            | Type  |
+|-----------------|-------|
+| Primary Fill    | FILL  |
+| Background      | FILL  |
+| Text Default    | FILL  |</span></div>
+</section>
+
+<!-- Components -->
+<section id="components">
+<h2>Components Example</h2>
+<p class="body">What a generated component file looks like:</p>
+<div class="preview"><span class="tree"># Button
+
+> Primary action element with label and optional icon.
+
+- **Figma node:** 123:456
+- **Type:** COMPONENT_SET
+
+## Variants
+
+| Property | Values            |
+|----------|-------------------|
+| Size     | sm, md, lg        |
+| Style    | primary, outline  |
+| State    | default, hover    |
+
+## Usage
+
+_Add usage guidelines here._</span></div>
+</section>
+
+<!-- Gaps -->
+<section id="gaps">
+<h2>Gap Detection</h2>
+<p class="body">The tool automatically detects potential issues and writes them to <code class="ic">gaps.md</code>:</p>
+<div class="fl">
+  <div class="f-row"><div class="f-dot" style="background:#fbbf24"></div><div><div class="f-title">Missing descriptions</div><p class="f-desc">Components without Figma descriptions — agents can't understand intent</p></div></div>
+  <div class="f-row"><div class="f-dot" style="background:#fb923c"></div><div><div class="f-title">No tokens found</div><p class="f-desc">File has no local variables — specs will be incomplete</p></div></div>
+  <div class="f-row"><div class="f-dot" style="background:#f87171"></div><div><div class="f-title">Undocumented components</div><p class="f-desc">Components exist but lack descriptions for agent consumption</p></div></div>
+</div>
+</section>
+
+<!-- Pipeline -->
+<section id="pipeline">
+<h2>Pipeline</h2>
+<p class="body">Combine with <a href="/design-system-ai-starter/" style="color:#93c5fd;text-decoration:underline">design-system-ai-starter</a> for a full workflow:</p>
+<div class="preview"><span class="tree"><span style="color:#93c5fd">1.</span> Extract from Figma     → figma-to-design-md
+<span style="color:#93c5fd">2.</span> Generate agent rules  → design-system-ai-starter
+<span style="color:#93c5fd">3.</span> AI writes UI code     → Cursor / Claude / Copilot
+<span style="color:#93c5fd">4.</span> Check live consistency → <a href="/ds-health/" style="color:#93c5fd">ds-health</a></span></div>
+</section>
+
+<div class="page-nav">
+  <div></div>
+  <a href="https://github.com/AndrewAntoshkin/figma-to-design-md" target="_blank" class="pn-link"><span class="pn-hint">View on</span><span class="pn-title">GitHub →</span></a>
+</div>
+
+</article>
+</main>
+</div>
+</body>
+</html>

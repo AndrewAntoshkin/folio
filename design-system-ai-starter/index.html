@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>design-system-ai-starter — Make your design system AI-readable</title>
+<meta name="description" content="CLI for turning real design systems into specs that AI coding agents can reliably follow.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:#1c1c1b;color:#e5e5e5;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.shell{display:flex;min-height:100vh}
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:240px;background:#171716;border-right:1px dotted #333;display:flex;flex-direction:column;padding:20px 16px 16px;z-index:100;overflow-y:auto}
+.sidebar-inner{flex:1}
+.brand{font-size:14px;font-weight:500;color:#e5e5e5;display:block}
+.byline{font-size:12px;color:#6b6b6b;margin:1px 0 24px}
+.byline a{color:#888}
+.nav-section{margin-bottom:16px}
+.nav-label{font-size:11px;font-weight:500;color:#6b6b6b;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.nav-item{display:block;font-size:13px;font-weight:500;color:#a1a1aa;padding:5px 8px;border-radius:6px;margin-left:-8px}
+.nav-item.active{color:#e5e5e5;background:#2a2a29}
+.sidebar-install{font-size:12px;color:#555;font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace}
+.spacer{width:240px;flex-shrink:0}
+main{flex:1;display:flex;justify-content:center;padding:64px 32px 80px}
+article{max-width:672px;width:100%}
+h1{font-size:32px;font-weight:600;color:#e5e5e5;letter-spacing:-.03em;margin-bottom:12px}
+.lead{font-size:16px;color:#a1a1aa;line-height:1.6;margin-bottom:40px}
+h2{font-size:20px;font-weight:600;color:#e5e5e5;letter-spacing:-.03em;margin-bottom:12px}
+h3{font-size:16px;font-weight:600;color:#d4d4d4;margin:24px 0 8px}
+.body{font-size:16px;color:#a1a1aa;line-height:1.6;margin-bottom:16px}
+section{margin-bottom:48px;scroll-margin-top:32px}
+.code-wrap{background:#212121;border:1px solid #2f2f2e;border-radius:10px;overflow:hidden}
+pre{margin:0;padding:16px 20px;font-size:13px;font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;color:#a1a1aa;line-height:1.7;overflow-x:auto}
+.ic{font-size:14px;font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;background:#2a2a29;border:1px solid #333;border-radius:6px;padding:2px 4px;color:#d4d4d4}
+kbd{display:inline-block;padding:1px 5px;font-size:12px;font-family:ui-monospace,SFMono-Regular,monospace;background:#2a2a29;border:1px solid #3a3a39;border-radius:4px;color:#d4d4d4}
+.tbl{background:#212121;border:1px solid #2f2f2e;border-radius:10px;overflow:hidden}
+.tbl-head{display:flex;padding:10px 16px;border-bottom:1px solid #2f2f2e;font-size:11px;font-weight:500;color:#6b6b6b;text-transform:uppercase;letter-spacing:.04em}
+.tbl-head span,.tbl-row span{flex:1}
+.tbl-head span:first-child,.tbl-row span:first-child{flex:2}
+.tbl-head span:last-child,.tbl-row span:last-child{flex:3}
+.tbl-row{display:flex;padding:10px 16px;border-bottom:1px solid #2f2f2e;font-size:12px;color:#a1a1aa;align-items:flex-start}
+.tbl-row:last-child{border-bottom:none}
+.tbl-row .prop{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;color:#93c5fd;font-size:13px}
+.tbl-row .type{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;color:#a78bfa;font-size:12px}
+.preview{background:#212121;border:1px solid #2f2f2e;border-radius:10px;padding:24px;margin-bottom:16px;font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;font-size:13px;color:#a1a1aa;line-height:1.6;white-space:pre;overflow-x:auto}
+.fl{display:flex;flex-direction:column;gap:10px}
+.f-row{display:flex;gap:12px;align-items:flex-start;padding:12px 16px;background:#212121;border:1px solid #2f2f2e;border-radius:10px}
+.f-dot{width:12px;height:12px;border-radius:3px;flex-shrink:0;margin-top:3px}
+.f-title{font-size:13px;font-weight:500;color:#e5e5e5;margin-bottom:2px}
+.f-desc{font-size:12px;color:#6b6b6b;line-height:1.4}
+.page-nav{display:flex;justify-content:space-between;align-items:flex-start;padding-top:32px;border-top:1px dotted #333;margin-top:24px}
+.pn-link{display:flex;flex-direction:column;gap:2px}
+.pn-hint{font-size:13px;color:#6b6b6b}
+.pn-title{font-size:14px;font-weight:500;color:#e5e5e5}
+.tree{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;font-size:13px;color:#a1a1aa;line-height:1.8}
+.tree .dir{color:#93c5fd}.tree .file{color:#d4d4d4}.tree .comment{color:#6b6b6b}
+@media(max-width:800px){.sidebar{display:none}.spacer{display:none}main{padding:32px 16px 48px}}
+</style>
+</head>
+<body>
+<div class="shell">
+<nav class="sidebar">
+  <div class="sidebar-inner">
+    <a href="/design-system-ai-starter/" class="brand">design-system-ai-starter</a>
+    <p class="byline">by <a href="https://antoshkin.tech">Andrew Antoshkin</a></p>
+    <div class="nav-section">
+      <p class="nav-label">Basics</p>
+      <a href="#getting-started" class="nav-item active">Getting Started</a>
+      <a href="#commands" class="nav-item">Commands</a>
+    </div>
+    <div class="nav-section">
+      <p class="nav-label">Examples</p>
+      <a href="#before-after" class="nav-item">Before / After</a>
+      <a href="#css-tokens" class="nav-item">CSS Tokens</a>
+      <a href="#json-tokens" class="nav-item">JSON Tokens</a>
+      <a href="#output" class="nav-item">Output Structure</a>
+      <a href="#pipeline" class="nav-item">Pipeline</a>
+    </div>
+    <div class="nav-section">
+      <p class="nav-label">Links</p>
+      <a href="https://github.com/AndrewAntoshkin/design-system-ai-starter" target="_blank" rel="noopener" class="nav-item">GitHub</a>
+      <a href="https://www.npmjs.com/package/design-system-ai-starter" target="_blank" rel="noopener" class="nav-item">npm</a>
+    </div>
+  </div>
+  <code class="sidebar-install">npx design-system-ai-starter</code>
+</nav>
+<div class="spacer"></div>
+<main>
+<article>
+
+<!-- Getting Started -->
+<h1>Getting Started</h1>
+<p class="lead">Turn your real design system into specs that AI coding agents can reliably follow. Works with CSS variables, JSON tokens, and DTCG format.</p>
+
+<section>
+<h2>The Problem</h2>
+<p class="body">AI agents are good at implementation, but weak at consistency. They commonly:</p>
+<div class="fl">
+  <div class="f-row"><div class="f-dot" style="background:#f87171"></div><div><div class="f-title">Invent values</div><p class="f-desc">Pick 12px instead of your spacing token, or a plausible blue instead of your semantic link color</p></div></div>
+  <div class="f-row"><div class="f-dot" style="background:#fbbf24"></div><div><div class="f-title">Miss composition rules</div><p class="f-desc">Understand a component API but not when and how to combine components</p></div></div>
+  <div class="f-row"><div class="f-dot" style="background:#fb923c"></div><div><div class="f-title">Lose context</div><p class="f-desc">Drift between sessions — each conversation starts from scratch</p></div></div>
+  <div class="f-row"><div class="f-dot" style="background:#22c55e"></div><div><div class="f-title">This tool fixes it</div><p class="f-desc">Creates a stable, local, project-readable source of truth for agents</p></div></div>
+</div>
+</section>
+
+<section>
+<h2>Installation</h2>
+<p class="body">Run directly with npx or install globally.</p>
+<div class="code-wrap"><pre>npx design-system-ai-starter init .</pre></div>
+</section>
+
+<section>
+<h2>Quick Start</h2>
+<p class="body">Three commands to go from zero to AI-readable specs:</p>
+<div class="code-wrap"><pre><span style="color:#6b6b6b"># 1. Scaffold the structure</span>
+npx design-system-ai-starter init .
+
+<span style="color:#6b6b6b"># 2. Sync your real tokens</span>
+npx design-system-ai-starter sync-tokens \
+  --input ./tokens.css --target .
+
+<span style="color:#6b6b6b"># 3. Verify everything is in place</span>
+npx design-system-ai-starter doctor .</pre></div>
+</section>
+
+<section>
+<h2>Who This Is For</h2>
+<div class="fl">
+  <div class="f-row"><div class="f-dot" style="background:#3b82f6"></div><div><div class="f-title">Design systems teams</div><p class="f-desc">With existing tokens or theme files that agents should respect</p></div></div>
+  <div class="f-row"><div class="f-dot" style="background:#8b5cf6"></div><div><div class="f-title">Frontend teams using AI</div><p class="f-desc">Cursor, Claude Code, Copilot — any agent that writes UI code</p></div></div>
+  <div class="f-row"><div class="f-dot" style="background:#ec4899"></div><div><div class="f-title">Product teams</div><p class="f-desc">That want AI to stop inventing colors, spacing, and component behavior</p></div></div>
+</div>
+</section>
+
+<!-- Commands -->
+<section id="commands">
+<h2>CLI Commands</h2>
+
+<h3>init</h3>
+<p class="body">Scaffolds the AI-readable structure into an existing project.</p>
+<div class="code-wrap"><pre>npx design-system-ai-starter init .</pre></div>
+<div class="tbl">
+  <div class="tbl-head"><span>File</span><span>Purpose</span></div>
+  <div class="tbl-row"><span class="prop">.cursor/rules/design-system.mdc</span><span>Cursor agent rule</span></div>
+  <div class="tbl-row"><span class="prop">CLAUDE.design-system.md</span><span>Claude Code guide</span></div>
+  <div class="tbl-row"><span class="prop">AGENTS.design-system.md</span><span>Generic agent guide</span></div>
+  <div class="tbl-row"><span class="prop">specs/foundations/*.md</span><span>Color, spacing, typography, radius, motion</span></div>
+  <div class="tbl-row"><span class="prop">specs/tokens/token-reference.md</span><span>Full token list</span></div>
+  <div class="tbl-row"><span class="prop">specs/components/_template.md</span><span>Component spec template</span></div>
+</div>
+
+<h3>sync-tokens</h3>
+<p class="body">Reads your real token source and updates markdown specs.</p>
+<div class="code-wrap"><pre>npx design-system-ai-starter sync-tokens \
+  --input ./tokens.css --target .</pre></div>
+<div class="tbl">
+  <div class="tbl-head"><span>Flag</span><span>Description</span></div>
+  <div class="tbl-row"><span class="prop">--input &lt;file&gt;</span><span>Path to CSS or JSON token file</span></div>
+  <div class="tbl-row"><span class="prop">--target &lt;dir&gt;</span><span>Project directory with specs/</span></div>
+</div>
+
+<h3>doctor</h3>
+<p class="body">Checks if all AI-readable files exist and are complete.</p>
+<div class="code-wrap"><pre>npx design-system-ai-starter doctor .</pre></div>
+<div class="preview">OK   Cursor rule: .cursor/rules/design-system.mdc
+OK   Claude guide: CLAUDE.design-system.md
+OK   Token reference: specs/tokens/token-reference.md
+OK   Color foundation: specs/foundations/color.md
+OK   Spacing foundation: specs/foundations/spacing.md
+OK   Typography foundation: specs/foundations/typography.md
+
+WARN No detected tokens in specs/foundations/motion.md
+WARN No component specs found beyond the template
+
+Doctor checks passed with 2 warning(s).</div>
+</section>
+
+<section>
+<h2>Supported Inputs</h2>
+<div class="tbl">
+  <div class="tbl-head"><span>Format</span><span>Example</span></div>
+  <div class="tbl-row"><span class="prop">CSS variables</span><span>tokens.css with --color-primary: #3b82f6</span></div>
+  <div class="tbl-row"><span class="prop">DTCG JSON</span><span>{ "$value": "#3b82f6", "$type": "color" }</span></div>
+  <div class="tbl-row"><span class="prop">Custom JSON</span><span>{ "value": "#3b82f6", "type": "color" }</span></div>
+  <div class="tbl-row"><span class="prop">Name/value arrays</span><span>[{ "name": "primary", "value": "#3b82f6" }]</span></div>
+</div>
+</section>
+
+<!-- Before / After -->
+<section id="before-after">
+<h2>Before / After</h2>
+<p class="body">You already have tokens. This tool creates the agent-readable layer on top.</p>
+
+<h3>Before</h3>
+<div class="preview"><span class="tree"><span class="dir">app/</span>
+  <span class="dir">styles/</span>
+    <span class="file">tokens.css</span>        <span class="comment">← your tokens exist</span>
+  <span class="dir">src/</span>
+    <span class="dir">components/</span>      <span class="comment">← but agents can't read them</span></span></div>
+
+<h3>After</h3>
+<div class="preview"><span class="tree"><span class="dir">app/</span>
+  <span class="file">.cursor/rules/design-system.mdc</span>  <span class="comment">← Cursor reads this</span>
+  <span class="file">CLAUDE.design-system.md</span>          <span class="comment">← Claude reads this</span>
+  <span class="file">AGENTS.design-system.md</span>          <span class="comment">← any agent reads this</span>
+  <span class="dir">specs/</span>
+    <span class="dir">foundations/</span>
+      <span class="file">color.md</span>                     <span class="comment">← 5 color tokens</span>
+      <span class="file">spacing.md</span>                   <span class="comment">← 6 spacing tokens</span>
+      <span class="file">typography.md</span>                <span class="comment">← 6 typography tokens</span>
+    <span class="dir">tokens/</span>
+      <span class="file">token-reference.md</span>           <span class="comment">← full token list</span>
+    <span class="dir">components/</span>
+      <span class="file">_template.md</span>                 <span class="comment">← fill per component</span></span></div>
+</section>
+
+<!-- CSS Tokens -->
+<section id="css-tokens">
+<h2>CSS Token Example</h2>
+<p class="body">Input file with CSS custom properties:</p>
+<div class="code-wrap"><pre>:root {
+  --color-primary: #3b82f6;
+  --color-secondary: #6366f1;
+  --color-text: #0a0a0a;
+  --color-bg: #fafafa;
+  --color-muted: #737373;
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 2rem;
+  --font-size-display: 3rem;
+}</pre></div>
+<p class="body">Run sync-tokens → get structured markdown with tables, categories, and agent-readable format.</p>
+</section>
+
+<!-- JSON Tokens -->
+<section id="json-tokens">
+<h2>JSON Token Example</h2>
+<p class="body">DTCG-format token file:</p>
+<div class="code-wrap"><pre>{
+  "color": {
+    "primary": {
+      "$value": "#3b82f6",
+      "$type": "color"
+    },
+    "bg": {
+      "$value": "#fafafa",
+      "$type": "color"
+    }
+  },
+  "spacing": {
+    "sm": {
+      "$value": "8px",
+      "$type": "dimension"
+    },
+    "md": {
+      "$value": "16px",
+      "$type": "dimension"
+    }
+  }
+}</pre></div>
+</section>
+
+<!-- Output Structure -->
+<section id="output">
+<h2>Output Structure</h2>
+<p class="body">What each generated file contains:</p>
+<div class="tbl">
+  <div class="tbl-head"><span>File</span><span>Contents</span></div>
+  <div class="tbl-row"><span class="prop">specs/foundations/color.md</span><span>Markdown table of all color tokens with names and values</span></div>
+  <div class="tbl-row"><span class="prop">specs/foundations/spacing.md</span><span>Spacing scale with token names and pixel values</span></div>
+  <div class="tbl-row"><span class="prop">specs/foundations/typography.md</span><span>Font sizes, weights, line-heights</span></div>
+  <div class="tbl-row"><span class="prop">specs/foundations/radius.md</span><span>Border-radius tokens</span></div>
+  <div class="tbl-row"><span class="prop">specs/foundations/motion.md</span><span>Duration and easing tokens</span></div>
+  <div class="tbl-row"><span class="prop">specs/tokens/token-reference.md</span><span>Complete flat list of all tokens</span></div>
+  <div class="tbl-row"><span class="prop">.cursor/rules/design-system.mdc</span><span>Cursor agent rule referencing specs</span></div>
+  <div class="tbl-row"><span class="prop">CLAUDE.design-system.md</span><span>Claude-specific instructions with token paths</span></div>
+</div>
+</section>
+
+<!-- Pipeline -->
+<section id="pipeline">
+<h2>Pipeline</h2>
+<p class="body">Pairs with <code class="ic">figma-to-design-md</code> for a full Figma-to-AI pipeline:</p>
+<div class="preview"><span class="tree">Figma ──▶ <a href="/figma-to-design-md/" style="color:#93c5fd">figma-to-design-md</a> ──▶ specs/
+                                   │
+                                   ▼
+         design-system-ai-starter ──▶ .cursor/rules/
+                                      CLAUDE.md
+                                      AGENTS.md
+                                        │
+                                        ▼
+                                 AI agent uses specs
+                                 when writing code</span></div>
+</section>
+
+<div class="page-nav">
+  <div></div>
+  <a href="https://github.com/AndrewAntoshkin/design-system-ai-starter" target="_blank" class="pn-link"><span class="pn-hint">View on</span><span class="pn-title">GitHub →</span></a>
+</div>
+
+</article>
+</main>
+</div>
+</body>
+</html>

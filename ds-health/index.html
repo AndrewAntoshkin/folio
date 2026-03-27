@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ds-health — Design system health checker</title>
+<meta name="description" content="Analyze live websites for design-system consistency. Get health scores, priority issues, and actionable recommendations.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:#1c1c1b;color:#e5e5e5;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.shell{display:flex;min-height:100vh}
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:240px;background:#171716;border-right:1px dotted #333;display:flex;flex-direction:column;padding:20px 16px 16px;z-index:100;overflow-y:auto}
+.sidebar-inner{flex:1}
+.brand{font-size:14px;font-weight:500;color:#e5e5e5;display:block}
+.byline{font-size:12px;color:#6b6b6b;margin:1px 0 24px}
+.byline a{color:#888}
+.nav-section{margin-bottom:16px}
+.nav-label{font-size:11px;font-weight:500;color:#6b6b6b;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.nav-item{display:block;font-size:13px;font-weight:500;color:#a1a1aa;padding:5px 8px;border-radius:6px;margin-left:-8px}
+.nav-item.active{color:#e5e5e5;background:#2a2a29}
+.sidebar-install{font-size:12px;color:#555;font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace}
+.spacer{width:240px;flex-shrink:0}
+main{flex:1;display:flex;justify-content:center;padding:64px 32px 80px}
+article{max-width:672px;width:100%}
+h1{font-size:32px;font-weight:600;color:#e5e5e5;letter-spacing:-.03em;margin-bottom:12px}
+.lead{font-size:16px;color:#a1a1aa;line-height:1.6;margin-bottom:40px}
+h2{font-size:20px;font-weight:600;color:#e5e5e5;letter-spacing:-.03em;margin-bottom:12px}
+h3{font-size:16px;font-weight:600;color:#d4d4d4;margin:24px 0 8px}
+.body{font-size:16px;color:#a1a1aa;line-height:1.6;margin-bottom:16px}
+section{margin-bottom:48px;scroll-margin-top:32px}
+.code-wrap{background:#212121;border:1px solid #2f2f2e;border-radius:10px;overflow:hidden}
+pre{margin:0;padding:16px 20px;font-size:13px;font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;color:#a1a1aa;line-height:1.7;overflow-x:auto}
+.ic{font-size:14px;font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;background:#2a2a29;border:1px solid #333;border-radius:6px;padding:2px 4px;color:#d4d4d4}
+.tbl{background:#212121;border:1px solid #2f2f2e;border-radius:10px;overflow:hidden}
+.tbl-head{display:flex;padding:10px 16px;border-bottom:1px solid #2f2f2e;font-size:11px;font-weight:500;color:#6b6b6b;text-transform:uppercase;letter-spacing:.04em}
+.tbl-head span,.tbl-row span{flex:1}
+.tbl-head span:first-child,.tbl-row span:first-child{flex:2}
+.tbl-head span:last-child,.tbl-row span:last-child{flex:3}
+.tbl-row{display:flex;padding:10px 16px;border-bottom:1px solid #2f2f2e;font-size:12px;color:#a1a1aa;align-items:flex-start}
+.tbl-row:last-child{border-bottom:none}
+.tbl-row .prop{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;color:#93c5fd;font-size:13px}
+.preview{background:#212121;border:1px solid #2f2f2e;border-radius:10px;padding:24px;margin-bottom:16px;font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;font-size:13px;color:#a1a1aa;line-height:1.6;white-space:pre;overflow-x:auto}
+.fl{display:flex;flex-direction:column;gap:10px}
+.f-row{display:flex;gap:12px;align-items:flex-start;padding:12px 16px;background:#212121;border:1px solid #2f2f2e;border-radius:10px}
+.f-dot{width:12px;height:12px;border-radius:3px;flex-shrink:0;margin-top:3px}
+.f-title{font-size:13px;font-weight:500;color:#e5e5e5;margin-bottom:2px}
+.f-desc{font-size:12px;color:#6b6b6b;line-height:1.4}
+.page-nav{display:flex;justify-content:space-between;align-items:flex-start;padding-top:32px;border-top:1px dotted #333;margin-top:24px}
+.pn-link{display:flex;flex-direction:column;gap:2px}
+.pn-hint{font-size:13px;color:#6b6b6b}
+.pn-title{font-size:14px;font-weight:500;color:#e5e5e5}
+.score-bar{display:flex;gap:12px;margin-bottom:16px}
+.score-item{flex:1;background:#171716;border:1px solid #2f2f2e;border-radius:10px;padding:16px;text-align:center}
+.score-value{font-size:28px;font-weight:600;margin-bottom:4px}
+.score-label{font-size:11px;color:#6b6b6b;text-transform:uppercase;letter-spacing:.04em}
+.score-green{color:#4ade80}.score-yellow{color:#fbbf24}.score-red{color:#f87171}
+@media(max-width:800px){.sidebar{display:none}.spacer{display:none}main{padding:32px 16px 48px}.score-bar{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<div class="shell">
+<nav class="sidebar">
+  <div class="sidebar-inner">
+    <a href="/ds-health/" class="brand">ds-health</a>
+    <p class="byline">by <a href="https://antoshkin.tech">Andrew Antoshkin</a></p>
+    <div class="nav-section">
+      <p class="nav-label">Basics</p>
+      <a href="#getting-started" class="nav-item active">Getting Started</a>
+      <a href="#api" class="nav-item">API</a>
+    </div>
+    <div class="nav-section">
+      <p class="nav-label">Examples</p>
+      <a href="#healthy" class="nav-item">Healthy Site</a>
+      <a href="#fragmented" class="nav-item">Fragmented Site</a>
+      <a href="#report" class="nav-item">Reading Reports</a>
+      <a href="#scores" class="nav-item">Score Guide</a>
+      <a href="#pipeline" class="nav-item">Pipeline</a>
+    </div>
+    <div class="nav-section">
+      <p class="nav-label">Links</p>
+      <a href="https://github.com/AndrewAntoshkin/ds-health" target="_blank" rel="noopener" class="nav-item">GitHub</a>
+    </div>
+  </div>
+  <code class="sidebar-install">git clone → npm start</code>
+</nav>
+<div class="spacer"></div>
+<main>
+<article>
+
+<h1>Getting Started</h1>
+<p class="lead">Paste a URL, get a design system health report. Analyzes colors, typography, spacing, and radius on any live website using a real browser.</p>
+
+<section>
+<h2>What It Measures</h2>
+<div class="fl">
+  <div class="f-row"><div class="f-dot" style="background:#3b82f6"></div><div><div class="f-title">Colors</div><p class="f-desc">How many text and background colors exist. Rewards fewer unique values and CSS variable usage.</p></div></div>
+  <div class="f-row"><div class="f-dot" style="background:#8b5cf6"></div><div><div class="f-title">Typography</div><p class="f-desc">Font families, sizes, and weights in visible text. Fewer means more controlled.</p></div></div>
+  <div class="f-row"><div class="f-dot" style="background:#22c55e"></div><div><div class="f-title">Spacing</div><p class="f-desc">How many distinct padding and gap values appear. Converging to a scale is ideal.</p></div></div>
+  <div class="f-row"><div class="f-dot" style="background:#fb923c"></div><div><div class="f-title">Radius</div><p class="f-desc">Distinct non-zero border-radius values. Fewer = more consistent corners.</p></div></div>
+</div>
+</section>
+
+<section>
+<h2>Run Locally</h2>
+<div class="code-wrap"><pre>git clone https://github.com/AndrewAntoshkin/ds-health.git
+cd ds-health
+npm install
+npm start</pre></div>
+<p class="body">Open <code class="ic">http://localhost:3000</code>. If the port is busy:</p>
+<div class="code-wrap"><pre>PORT=3002 npm start</pre></div>
+<p class="body">If Playwright can't find a browser:</p>
+<div class="code-wrap"><pre>npx playwright install chromium</pre></div>
+</section>
+
+<section>
+<h2>How It Works</h2>
+<p class="body">The tool loads the page in a real Chromium browser (via Playwright), samples visible elements, reads their computed styles, and generates a health report with scores, signals, and recommendations.</p>
+<div class="preview">URL → Playwright (Chromium) → getComputedStyle() on sampled elements
+  → Count unique colors, fonts, spacing, radii
+  → Score each category (0–100)
+  → Generate executive summary + priorities + recommendations</div>
+</section>
+
+<!-- API -->
+<section id="api">
+<h2>API</h2>
+
+<h3>POST /api/analyze</h3>
+<div class="code-wrap"><pre>curl -X POST http://localhost:3000/api/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"url": "https://example.com"}'</pre></div>
+
+<h3>Request</h3>
+<div class="tbl">
+  <div class="tbl-head"><span>Field</span><span>Type</span><span>Description</span></div>
+  <div class="tbl-row"><span class="prop">url</span><span>string</span><span>Public HTTP/HTTPS URL to analyze</span></div>
+</div>
+
+<h3>Response</h3>
+<div class="tbl">
+  <div class="tbl-head"><span>Field</span><span>Type</span><span>Description</span></div>
+  <div class="tbl-row"><span class="prop">health.overall</span><span>number</span><span>0–100 average score</span></div>
+  <div class="tbl-row"><span class="prop">health.color</span><span>number</span><span>Color consistency score</span></div>
+  <div class="tbl-row"><span class="prop">health.typography</span><span>number</span><span>Typography consistency score</span></div>
+  <div class="tbl-row"><span class="prop">health.spacing</span><span>number</span><span>Spacing consistency score</span></div>
+  <div class="tbl-row"><span class="prop">health.radius</span><span>number</span><span>Radius consistency score</span></div>
+  <div class="tbl-row"><span class="prop">health.label</span><span>string</span><span>"Healthy", "Mostly consistent", etc.</span></div>
+  <div class="tbl-row"><span class="prop">executiveSummary</span><span>string</span><span>Plain-English interpretation</span></div>
+  <div class="tbl-row"><span class="prop">priorities</span><span>array</span><span>What to fix first</span></div>
+  <div class="tbl-row"><span class="prop">recommendations</span><span>array</span><span>Actionable next steps</span></div>
+  <div class="tbl-row"><span class="prop">signals</span><span>array</span><span>Individual observations</span></div>
+  <div class="tbl-row"><span class="prop">topValues</span><span>object</span><span>Most common values per category</span></div>
+</div>
+
+<h3>GET /health</h3>
+<p class="body">Returns <code class="ic">{ "ok": true }</code> — use for uptime checks.</p>
+</section>
+
+<!-- Healthy Site -->
+<section id="healthy">
+<h2>Healthy Site Example</h2>
+<p class="body">Result from analyzing <code class="ic">barvian.me</code> — a disciplined, minimalist site:</p>
+<div class="score-bar">
+  <div class="score-item"><div class="score-value score-green">100</div><div class="score-label">Color</div></div>
+  <div class="score-item"><div class="score-value score-green">100</div><div class="score-label">Typography</div></div>
+  <div class="score-item"><div class="score-value score-green">100</div><div class="score-label">Spacing</div></div>
+  <div class="score-item"><div class="score-value score-green">100</div><div class="score-label">Radius</div></div>
+</div>
+<div class="preview">{
+  "elementsSampled": 69,
+  "textNodesSampled": 41,
+  "cssVariables": 4,
+  "textColors": 3,
+  "backgroundColors": 3,
+  "fontFamilies": 1,
+  "fontSizes": 1,
+  "fontWeights": 2,
+  "spacingValues": 4,
+  "radiusValues": 1
+}
+
+Executive summary:
+"This page looks healthy. 4 CSS variables were
+detected, and no major consistency issues stood
+out in the sampled page."</div>
+</section>
+
+<!-- Fragmented Site -->
+<section id="fragmented">
+<h2>Fragmented Site Example</h2>
+<p class="body">A page with many competing values — typical of legacy UIs or rapid prototyping:</p>
+<div class="score-bar">
+  <div class="score-item"><div class="score-value score-yellow">65</div><div class="score-label">Color</div></div>
+  <div class="score-item"><div class="score-value score-red">45</div><div class="score-label">Typography</div></div>
+  <div class="score-item"><div class="score-value score-yellow">70</div><div class="score-label">Spacing</div></div>
+  <div class="score-item"><div class="score-value score-green">90</div><div class="score-label">Radius</div></div>
+</div>
+<div class="preview">Priority issues:
+  ⚠ 14 text colors detected — consider consolidating
+  ⚠ 4 font families in use — reduce to 1–2
+  ⚠ 8 font sizes found — align to a type scale
+  ⚠ No CSS variables detected — consider tokenizing
+
+Recommendations:
+  → Audit text colors and create a semantic palette
+  → Standardize on 1–2 font families
+  → Define a spacing scale (4, 8, 12, 16, 24, 32)
+  → Introduce CSS custom properties for tokens</div>
+</section>
+
+<!-- Reading Reports -->
+<section id="report">
+<h2>Reading Reports</h2>
+<p class="body">The most useful pattern: <strong>score first</strong>, then summary, then priorities, then supporting values.</p>
+<div class="tbl">
+  <div class="tbl-head"><span>Section</span><span>What it tells you</span></div>
+  <div class="tbl-row"><span class="prop">Overall health</span><span>Average of 4 category scores — quick pass/fail signal</span></div>
+  <div class="tbl-row"><span class="prop">Executive summary</span><span>Plain-English conclusion for stakeholders</span></div>
+  <div class="tbl-row"><span class="prop">Priority issues</span><span>What's worth fixing first — biggest impact items</span></div>
+  <div class="tbl-row"><span class="prop">Recommendations</span><span>Practical cleanup steps you can assign to a sprint</span></div>
+  <div class="tbl-row"><span class="prop">Signals</span><span>Individual observations — raw evidence behind the score</span></div>
+  <div class="tbl-row"><span class="prop">Top values</span><span>Most common colors/sizes/spacing — where consolidation helps most</span></div>
+  <div class="tbl-row"><span class="prop">Normalized groups</span><span>Near-identical values collapsed into cleaner buckets</span></div>
+</div>
+</section>
+
+<!-- Score Guide -->
+<section id="scores">
+<h2>Score Guide</h2>
+<div class="tbl">
+  <div class="tbl-head"><span>Range</span><span>Label</span><span>Meaning</span></div>
+  <div class="tbl-row"><span class="prop" style="color:#4ade80">90–100</span><span>Healthy</span><span>Tightly controlled — few colors, restrained typography, small spacing set</span></div>
+  <div class="tbl-row"><span class="prop" style="color:#fbbf24">70–89</span><span>Mostly consistent</span><span>Some fragmentation or a few one-off values</span></div>
+  <div class="tbl-row"><span class="prop" style="color:#fb923c">50–69</span><span>Needs attention</span><span>Visual system may be drifting — needs a closer look</span></div>
+  <div class="tbl-row"><span class="prop" style="color:#f87171">0–49</span><span>Fragmented</span><span>Too many competing values — likely no token layer</span></div>
+</div>
+</section>
+
+<!-- Pipeline -->
+<section id="pipeline">
+<h2>Pipeline</h2>
+<p class="body">Use ds-health as the verification step in your design system workflow:</p>
+<div class="preview"><span style="color:#93c5fd">1.</span> Define tokens          → <a href="/design-system-ai-starter/" style="color:#93c5fd">design-system-ai-starter</a>
+<span style="color:#93c5fd">2.</span> Extract from Figma     → <a href="/figma-to-design-md/" style="color:#93c5fd">figma-to-design-md</a>
+<span style="color:#93c5fd">3.</span> AI writes UI code      → Cursor / Claude / Copilot
+<span style="color:#93c5fd">4.</span> Check live consistency  → <strong style="color:#e5e5e5">ds-health</strong>  ← you are here</div>
+</section>
+
+<div class="page-nav">
+  <div></div>
+  <a href="https://github.com/AndrewAntoshkin/ds-health" target="_blank" class="pn-link"><span class="pn-hint">View on</span><span class="pn-title">GitHub →</span></a>
+</div>
+
+</article>
+</main>
+</div>
+</body>
+</html>
