@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Design.md — how to describe a design system for AI agents</title>
-    <meta name="description" content="How to structure a design system in a format that AI agents can use. Tokens, components, patterns, audit.">
-    <meta property="og:title" content="Design.md — how to describe a design system for AI agents">
-    <meta property="og:description" content="How to structure a design system in a format that AI agents can use.">
+    <title>Cursor + Figma: setting up a designer's environment</title>
+    <meta name="description" content="Step-by-step Cursor IDE setup, essential tools, and connecting Figma via MCP. From zero to a working design-to-code flow.">
+    <meta property="og:title" content="Cursor + Figma: setting up a designer's environment">
+    <meta property="og:description" content="Step-by-step Cursor setup and connecting Figma via MCP for designers.">
     <meta property="og:type" content="article">
     <link rel="icon" type="image/png" href="assets/avatar.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -305,121 +305,150 @@
         </div>
 
         <article style="view-transition-name: article-body">
-            <h1 style="view-transition-name: article-1">Design.md: how to describe a design system for AI&nbsp;agents</h1>
+            <h1 style="view-transition-name: article-3">Cursor + Figma: setting up a designer's environment</h1>
             <span class="date">March 2026</span>
 
-            <p>AI agents (Claude, GPT, Cursor) are increasingly writing UI code. But they have a fundamental problem: they don't know your design system. Every session starts from scratch. Every visual decision is a guess.</p>
+            <p>You're a designer who wants to turn mockups into code. Not learn React from scratch, not become a frontend developer, but drop a link to a Figma node and get a working component. Cursor + Figma MCP makes this possible. This article is a step-by-step setup from zero to a working flow.</p>
 
-            <p>Design.md solves this. It's a structured design system specification that AI reads at the start of every session. Instead of guessing, it looks things up.</p>
+            <h2>Why Cursor, not VS&nbsp;Code</h2>
 
-            <h2>The problem: 200 reasonable guesses</h2>
+            <p>VS&nbsp;Code is a great editor. Cursor is VS&nbsp;Code with AI built in. The difference matters: in VS&nbsp;Code you install a copilot extension and get suggestions. In Cursor, AI is a full agent that reads your project, creates files, runs commands, and connects to external services via MCP.</p>
 
-            <p>When AI writes an interface, it makes hundreds of micro-decisions: what padding for a card, what shade of blue for a link, what border radius for a button. Each decision looks fine. But 200 &ldquo;reasonable guesses&rdquo; don't add up to a consistent design.</p>
+            <p>For a designer this means you talk to the IDE in plain language, drop a Figma link, and AI fetches the mockup, analyzes the structure, and generates code that fits your project. Not autocomplete, but a complete workflow.</p>
 
-            <p><a href="https://hvpandya.com/llm-design-systems" target="_blank" rel="noopener">Hardik Pandya</a> precisely describes three LLM limitations:</p>
+            <h2>Step 1. Installation</h2>
 
-            <ol>
-                <li><strong>Value fabrication.</strong> AI doesn't look up your tokens. It generates plausible ones. If the system has <code>--space-200</code>&nbsp;= 8px, AI will write <code>padding: 12px</code> because 12 is a reasonable number. It's not wrong. It's just not yours.</li>
-                <li><strong>No memory between sessions.</strong> Every new session starts from zero. AI doesn't remember that yesterday it used <code>#2563EB</code> for links. Today it picks a different blue. By the fifth session, you have three different blues in one prototype.</li>
-                <li><strong>Can't read design intent from code.</strong> AI sees component APIs: import Button, pass <code>appearance="primary"</code>. But it doesn't understand when to use a modal instead of an inline message, or what spacing to put between sections. That knowledge lives in designers' heads.</li>
-            </ol>
+            <p>Download Cursor from <a href="https://cursor.com" target="_blank" rel="noopener">cursor.com</a>. Standard installation: dmg on Mac, exe on Windows. On first launch Cursor will offer to import VS&nbsp;Code settings. Accept if you've used it before.</p>
 
-            <h2>What is Design.md</h2>
-
-            <p>Design.md is a file in the repository root that describes your design system in a format suitable for AI. For Cursor, it lives in <code>.cursor/rules/</code>. For Claude, in CLAUDE.md. For any agent, in the session context.</p>
-
-            <p>The idea is simple: AI shouldn't decide &ldquo;which blue to use for a link.&rdquo; It should find <code>var(--color-link)</code> in the spec.</p>
-
-            <p><a href="https://airops-style-guide.vercel.app/" target="_blank" rel="noopener">AirOps</a> went further: their brand guideline has two representations: a live visual guideline for humans and a structured instruction for AI agents. One source of truth, two consumption formats.</p>
-
-            <h2>What to include</h2>
-
-            <h3>Tokens</h3>
-
-            <p>A complete map of CSS variables with values and context. Not just <code>--color-primary: #2563EB</code>, but when and where to use it:</p>
-
-<pre><code>## Colors
-
-- `--color-text`: #171717 — primary text
-- `--color-text-sub`: #525252 — secondary text, descriptions
-- `--color-link`: #2563EB — links and interactive elements
-- `--color-bg`: #fafafa — page background
-- `--color-border`: #e5e5e5 — dividers and borders
-
-## Spacing (base 4px)
-
-- `--space-100`: 4px — minimum, between icon and text
-- `--space-200`: 8px — inside component
-- `--space-300`: 12px — between related elements
-- `--space-400`: 16px — standard padding
-- `--space-600`: 24px — between blocks
-- `--space-800`: 32px — between sections</code></pre>
-
-            <h3>Components</h3>
-
-            <p>For each component: when to use, when not to use, which tokens are involved, what states exist:</p>
-
-<pre><code>## Button
-
-When: primary action on the page
-When NOT: navigation (use Link)
-
-Variants: primary | secondary | ghost
-Sizes: sm (32px) | md (40px) | lg (48px)
-
-Tokens:
-- Background: var(--color-primary)
-- Text: var(--color-on-primary)
-- Border radius: var(--radius-md)
-- Padding: var(--space-300) var(--space-400)
-
-States: default, hover, active, focus, disabled</code></pre>
-
-            <h3>Patterns</h3>
-
-            <p>Layout rules that AI can't derive from code: spacing between sections, grid behavior, responsiveness principles. This is what usually lives in designers' heads and is never written down.</p>
-
-            <h2>Three-layer token architecture</h2>
-
-            <p>Hardik Pandya proposes a three-layer structure that protects against drift:</p>
-
-            <ol>
-                <li><strong>Upstream tokens</strong> from the design system: <code>--ds-text: #171717</code></li>
-                <li><strong>Project aliases</strong> with reference and fallback: <code>--color-text: var(--ds-text, #171717)</code></li>
-                <li><strong>Components</strong> use only aliases: <code>color: var(--color-text)</code></li>
-            </ol>
-
-            <p>The alias is a protective layer. If the upstream system renames a token, you change one alias. Dark theme, high contrast, any future theme: all resolve automatically through the chain.</p>
-
-            <h2>Audit: catching what AI missed</h2>
-
-            <p>Design.md gives AI the right answers. The audit script catches cases where AI guessed anyway. A simple script scans CSS files for hardcoded values and suggests the specific token:</p>
-
-<pre><code>src/components/Nav.css
-  L42: color: #2563EB → use var(--color-link)
-  L78: padding: 12px → use var(--space-300)
-
-Errors: 2 | Warnings: 0</code></pre>
-
-            <p>The script returns exit code 1 on errors and can be added to CI. Zero violations = safe to merge.</p>
-
-            <h2>How to maintain</h2>
-
-            <p>The spec lives in the repository next to the code, not in a Figma comment or Notion. When a component changes in a PR, the spec is in the same diff. Three rules:</p>
+            <p>After installation, open settings (<code>Cmd + ,</code>) and check three things:</p>
 
             <ul>
-                <li><strong>New component</strong>: write the spec before or during development</li>
-                <li><strong>Design system update</strong>: update the affected sections of Design.md</li>
-                <li><strong>Audit in CI</strong>: the script automatically checks every PR</li>
+                <li><strong>Theme.</strong> Cursor supports all VS&nbsp;Code themes. For a designer used to Figma, the default dark theme works well</li>
+                <li><strong>Font.</strong> Use a monospace font in the terminal and editor: JetBrains Mono, SF Mono, or Fira Code</li>
+                <li><strong>Auto Save.</strong> Enable <code>Files: Auto Save</code> in <code>afterDelay</code> mode to avoid losing changes</li>
             </ul>
 
-            <p>A small accurate spec is better than a large outdated one.</p>
+            <h2>Step 2. Terminal and basic tools</h2>
 
-            <h2>Result</h2>
+            <p>The terminal is a text interface to your computer. Sounds scary, but for our flow you only need about five commands. In Cursor the terminal opens with <code>Ctrl + `</code>.</p>
 
-            <p>Your tenth AI session delivers the same visual quality as the first. AI doesn't guess, it looks up. Doesn't fabricate, it references. Doesn't drift, it gets checked by audit.</p>
+            <h3>Node.js</h3>
 
-            <p>Design.md is not documentation. It's infrastructure.</p>
+            <p>Node.js is a runtime for JavaScript outside the browser. Many developer tools run on it. Install the LTS version from <a href="https://nodejs.org" target="_blank" rel="noopener">nodejs.org</a>. After installation, verify in the terminal:</p>
+
+<pre><code>node --version
+npm --version</code></pre>
+
+            <p>If both commands return a version number, everything works.</p>
+
+            <h3>Git</h3>
+
+            <p>Git is a version control system. For a designer, think of it as &ldquo;version history&rdquo; in Figma, but for code. On Mac, Git comes preinstalled. On Windows, install from <a href="https://git-scm.com" target="_blank" rel="noopener">git-scm.com</a>.</p>
+
+            <p>The minimum set of commands you'll need:</p>
+
+<pre><code>git clone &lt;url&gt;        # download a project
+git add .              # stage all changes
+git commit -m "text"   # save a snapshot
+git push               # push to GitHub</code></pre>
+
+            <p>But even these commands Cursor can run for you. Just ask &ldquo;commit and push the changes.&rdquo;</p>
+
+            <h2>Step 3. Cursor Rules: project memory</h2>
+
+            <p>Cursor Rules are files in the <code>.cursor/rules/</code> folder that AI reads at the start of every session. They provide your project's context: which technologies are used, which components exist, which patterns to follow.</p>
+
+            <p>If you've read my previous article <a href="design-md-en.html">Design.md</a>, this is exactly where the design system spec lives. Create a file <code>.cursor/rules/design-system.md</code>:</p>
+
+<pre><code># Design system
+
+## Stack
+- HTML, CSS (no frameworks)
+- CSS variables for tokens
+- Vanilla JavaScript
+
+## Tokens
+- Primary text: var(--text) — #0a0a0a / #f5f5f5
+- Secondary: var(--text-muted) — #737373 / #8f8e8d
+- Background: var(--bg) — #fafafa / #0c0c0c
+
+## Rules
+- Max content width: 592px
+- Font: Inter
+- Spacing multiples of 4px</code></pre>
+
+            <p>Now every time you ask Cursor to write code, it knows your tokens, your stack, and your rules. It doesn't guess, it reads.</p>
+
+            <h2>Step 4. Connecting Figma via MCP</h2>
+
+            <p>MCP (Model Context Protocol) is a protocol that lets AI agents connect to external services. Figma released an official MCP server, and this changes everything: Cursor gets direct access to your mockups.</p>
+
+            <h3>Setup</h3>
+
+            <p>Open Cursor settings: <code>Cmd + Shift + P</code> &rarr; &ldquo;Cursor Settings&rdquo; &rarr; MCP tab. Click &ldquo;Add new global MCP server&rdquo; and add the configuration:</p>
+
+<pre><code>{
+  "mcpServers": {
+    "Figma": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "figma-developer-mcp",
+        "--figma-api-key=YOUR_KEY"
+      ]
+    }
+  }
+}</code></pre>
+
+            <p>Where to get the API key: open <a href="https://www.figma.com/developers/api#access-tokens" target="_blank" rel="noopener">Figma &rarr; Settings &rarr; Personal Access Tokens</a>. Create a token with file access, copy it, and paste in place of <code>YOUR_KEY</code>.</p>
+
+            <p>After saving, Cursor will restart the MCP server. A green indicator should appear next to Figma in the server list.</p>
+
+            <h3>What this gives you</h3>
+
+            <p>Now you can drop a link to any Figma node into Cursor, and it will receive:</p>
+
+            <ul>
+                <li><strong>A screenshot</strong> of the node for visual context</li>
+                <li><strong>Structure:</strong> layers, auto-layout, spacing, colors</li>
+                <li><strong>Code reference:</strong> React + Tailwind by default, but AI adapts to your stack</li>
+                <li><strong>Code Connect:</strong> if components are linked to code, AI gets the real components from your codebase</li>
+            </ul>
+
+            <h2>Step 5. First request</h2>
+
+            <p>Everything is set up. Open Figma, select a node (frame, component, section), copy the link: right-click &rarr; &ldquo;Copy link to selection.&rdquo; Open the chat in Cursor (<code>Cmd + L</code>) and type:</p>
+
+<pre><code>Build this component
+https://figma.com/design/xxx/yyy?node-id=123-456</code></pre>
+
+            <p>Cursor will fetch all node information from Figma via MCP, check your Cursor Rules, see the stack and tokens, and generate code that fits your project.</p>
+
+            <p>Don't like the result? Keep the conversation going: &ldquo;make the padding bigger,&rdquo; &ldquo;change the font to Inter,&rdquo; &ldquo;add dark mode.&rdquo; AI remembers the context within a session and makes incremental changes.</p>
+
+            <h2>One-click deploy</h2>
+
+            <p>Code is written. How do you show it to the world? The simplest path is GitHub Pages. If your project is on GitHub, just ask Cursor:</p>
+
+<pre><code>Commit and push all changes</code></pre>
+
+            <p>Go to your repository settings on GitHub &rarr; Pages &rarr; select the <code>main</code> branch. In a minute your site will be live at <code>username.github.io/repo</code>.</p>
+
+            <p>For more complex projects there's <a href="https://vercel.com" target="_blank" rel="noopener">Vercel</a>: connect your repository and every push automatically deploys a new version. Free for personal projects.</p>
+
+            <h2>What's next</h2>
+
+            <p>You have a working environment: an IDE with an AI agent that knows your design system and has direct access to Figma. This is not a replacement for a developer. It's a tool that lets designers test ideas in code, build prototypes from real components, and deploy them independently.</p>
+
+            <p>Three things to try first:</p>
+
+            <ul>
+                <li><strong>Build your portfolio site</strong> as a single-page with your work</li>
+                <li><strong>Build a design system component</strong> by dropping a Figma link to a button or card and getting HTML + CSS</li>
+                <li><strong>Write Cursor Rules for your project</strong> describing tokens, patterns, and rules so AI doesn't guess but knows</li>
+            </ul>
+
+            <p>The gap between design and code is shrinking. Cursor + Figma MCP is one of the shortest bridges.</p>
         </article>
 
         <hr>
@@ -427,7 +456,7 @@ Errors: 2 | Warnings: 0</code></pre>
         <footer>
             <span class="footer-copy">2026. Antoshkin AI</span>
             <div class="lang-switch">
-                <a href="design-md.html">Ru</a>
+                <a href="cursor-figma.html">Ru</a>
                 <span class="active">En</span>
             </div>
         </footer>

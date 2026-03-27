@@ -308,42 +308,42 @@
             <h1 style="view-transition-name: article-3">Cursor + Figma: настройка окружения для&nbsp;дизайнера</h1>
             <span class="date">Март 2026</span>
 
-            <p>Вы&nbsp;дизайнер, который хочет превращать макеты в&nbsp;код. Не&nbsp;учить React с&nbsp;нуля, не&nbsp;становиться фронтендером&nbsp;&mdash; а&nbsp;скинуть ссылку на&nbsp;Figma-нод и&nbsp;получить рабочий компонент. Cursor + Figma MCP делают это возможным. Эта статья&nbsp;&mdash; пошаговая настройка от&nbsp;нуля до&nbsp;работающего флоу.</p>
+            <p>Вы&nbsp;дизайнер, который хочет превращать макеты в&nbsp;код. Не&nbsp;учить React с&nbsp;нуля, не&nbsp;становиться фронтендером, а&nbsp;скинуть ссылку на&nbsp;Figma-нод и&nbsp;получить рабочий компонент. Cursor + Figma MCP делают это возможным. Эта статья: пошаговая настройка от&nbsp;нуля до&nbsp;работающего флоу.</p>
 
             <h2>Почему Cursor, а&nbsp;не&nbsp;VS&nbsp;Code</h2>
 
-            <p>VS&nbsp;Code&nbsp;&mdash; отличный редактор. Cursor&nbsp;&mdash; это VS&nbsp;Code с&nbsp;AI внутри. Разница принципиальная: в&nbsp;VS&nbsp;Code вы&nbsp;ставите расширение-копайлот и&nbsp;получаете подсказки. В&nbsp;Cursor AI&nbsp;&mdash; полноценный агент, который читает ваш проект, создаёт файлы, запускает команды и&nbsp;подключается к&nbsp;внешним сервисам через MCP.</p>
+            <p>VS&nbsp;Code: отличный редактор. Cursor: это VS&nbsp;Code с&nbsp;AI внутри. Разница принципиальная: в&nbsp;VS&nbsp;Code вы&nbsp;ставите расширение-копайлот и&nbsp;получаете подсказки. В&nbsp;Cursor AI полноценный агент, который читает ваш проект, создаёт файлы, запускает команды и&nbsp;подключается к&nbsp;внешним сервисам через MCP.</p>
 
-            <p>Для дизайнера это означает: вы&nbsp;общаетесь с&nbsp;IDE на&nbsp;русском языке, кидаете ссылку на&nbsp;Figma&nbsp;&mdash; и&nbsp;AI сам достаёт макет, анализирует структуру, генерирует код в&nbsp;стиле вашего проекта. Не&nbsp;автокомплит, а&nbsp;полноценный рабочий процесс.</p>
+            <p>Для дизайнера это означает: вы&nbsp;общаетесь с&nbsp;IDE на&nbsp;русском языке, кидаете ссылку на&nbsp;Figma, и&nbsp;AI сам достаёт макет, анализирует структуру, генерирует код в&nbsp;стиле вашего проекта. Не&nbsp;автокомплит, а&nbsp;полноценный рабочий процесс.</p>
 
             <h2>Шаг 1. Установка</h2>
 
-            <p>Скачайте Cursor с&nbsp;<a href="https://cursor.com" target="_blank" rel="noopener">cursor.com</a>. Установка стандартная&nbsp;&mdash; dmg на&nbsp;Mac, exe на&nbsp;Windows. При первом запуске Cursor предложит импортировать настройки из&nbsp;VS&nbsp;Code&nbsp;&mdash; соглашайтесь, если пользовались.</p>
+            <p>Скачайте Cursor с&nbsp;<a href="https://cursor.com" target="_blank" rel="noopener">cursor.com</a>. Установка стандартная: dmg на&nbsp;Mac, exe на&nbsp;Windows. При первом запуске Cursor предложит импортировать настройки из&nbsp;VS&nbsp;Code, соглашайтесь, если пользовались.</p>
 
             <p>После установки откройте настройки (<code>Cmd + ,</code>) и&nbsp;проверьте три вещи:</p>
 
             <ul>
                 <li><strong>Тема.</strong> Cursor поддерживает все темы VS&nbsp;Code. Для дизайнера, привыкшего к&nbsp;Figma, комфортной будет тёмная тема по&nbsp;умолчанию</li>
                 <li><strong>Шрифт.</strong> В&nbsp;терминале и&nbsp;редакторе лучше поставить моноширинный шрифт: JetBrains Mono, SF Mono или Fira Code</li>
-                <li><strong>Auto Save.</strong> Включите <code>Files: Auto Save</code> в&nbsp;режим <code>afterDelay</code>&nbsp;&mdash; это избавит от&nbsp;потери изменений</li>
+                <li><strong>Auto Save.</strong> Включите <code>Files: Auto Save</code> в&nbsp;режим <code>afterDelay</code>, это избавит от&nbsp;потери изменений</li>
             </ul>
 
             <h2>Шаг 2. Терминал и&nbsp;базовые инструменты</h2>
 
-            <p>Терминал&nbsp;&mdash; это текстовый интерфейс к&nbsp;вашему компьютеру. Звучит страшно, но&nbsp;для нашего флоу вам нужно знать буквально пять команд. В&nbsp;Cursor терминал открывается через <code>Ctrl + `</code>.</p>
+            <p>Терминал: текстовый интерфейс к&nbsp;вашему компьютеру. Звучит страшно, но&nbsp;для нашего флоу вам нужно знать буквально пять команд. В&nbsp;Cursor терминал открывается через <code>Ctrl + `</code>.</p>
 
             <h3>Node.js</h3>
 
-            <p>Node.js&nbsp;&mdash; среда для запуска JavaScript вне браузера. Многие инструменты разработчика работают на&nbsp;нём. Установите LTS-версию с&nbsp;<a href="https://nodejs.org" target="_blank" rel="noopener">nodejs.org</a>. После установки проверьте в&nbsp;терминале:</p>
+            <p>Node.js: среда для запуска JavaScript вне браузера. Многие инструменты разработчика работают на&nbsp;нём. Установите LTS-версию с&nbsp;<a href="https://nodejs.org" target="_blank" rel="noopener">nodejs.org</a>. После установки проверьте в&nbsp;терминале:</p>
 
 <pre><code>node --version
 npm --version</code></pre>
 
-            <p>Если обе команды вернули номер версии&nbsp;&mdash; всё работает.</p>
+            <p>Если обе команды вернули номер версии, всё работает.</p>
 
             <h3>Git</h3>
 
-            <p>Git&nbsp;&mdash; система контроля версий. Для дизайнера это как &laquo;история версий&raquo; в&nbsp;Figma, только для кода. На&nbsp;Mac Git уже предустановлен. На&nbsp;Windows установите с&nbsp;<a href="https://git-scm.com" target="_blank" rel="noopener">git-scm.com</a>.</p>
+            <p>Git: система контроля версий. Для дизайнера это как &laquo;история версий&raquo; в&nbsp;Figma, только для кода. На&nbsp;Mac Git уже предустановлен. На&nbsp;Windows установите с&nbsp;<a href="https://git-scm.com" target="_blank" rel="noopener">git-scm.com</a>.</p>
 
             <p>Минимальный набор команд, которые вам пригодятся:</p>
 
@@ -352,13 +352,13 @@ git add .              # подготовить все изменения
 git commit -m "текст"  # сохранить снимок
 git push               # отправить на GitHub</code></pre>
 
-            <p>Но даже эти команды Cursor может выполнять за&nbsp;вас&nbsp;&mdash; достаточно попросить &laquo;закоммить и&nbsp;запуши изменения&raquo;.</p>
+            <p>Но даже эти команды Cursor может выполнять за&nbsp;вас, достаточно попросить &laquo;закоммить и&nbsp;запуши изменения&raquo;.</p>
 
-            <h2>Шаг 3. Cursor Rules&nbsp;&mdash; память проекта</h2>
+            <h2>Шаг 3. Cursor Rules: память проекта</h2>
 
-            <p>Cursor Rules&nbsp;&mdash; файлы в&nbsp;папке <code>.cursor/rules/</code>, которые AI читает в&nbsp;начале каждой сессии. Это контекст вашего проекта: какие технологии используются, какие компоненты есть, какие паттерны соблюдать.</p>
+            <p>Cursor Rules: файлы в&nbsp;папке <code>.cursor/rules/</code>, которые AI читает в&nbsp;начале каждой сессии. Это контекст вашего проекта: какие технологии используются, какие компоненты есть, какие паттерны соблюдать.</p>
 
-            <p>Если вы&nbsp;читали мою предыдущую статью <a href="design-md.html">Design.md</a>&nbsp;&mdash; это именно то&nbsp;место, где живёт спецификация дизайн-системы. Создайте файл <code>.cursor/rules/design-system.md</code>:</p>
+            <p>Если вы&nbsp;читали мою предыдущую статью <a href="design-md.html">Design.md</a>, это именно то&nbsp;место, где живёт спецификация дизайн-системы. Создайте файл <code>.cursor/rules/design-system.md</code>:</p>
 
 <pre><code># Дизайн-система
 
@@ -377,11 +377,11 @@ git push               # отправить на GitHub</code></pre>
 - Шрифт: Inter
 - Отступы кратны 4px</code></pre>
 
-            <p>Теперь каждый раз, когда вы&nbsp;просите Cursor написать код, он&nbsp;знает ваши токены, ваш стек и&nbsp;ваши правила. Не&nbsp;догадывается&nbsp;&mdash; читает.</p>
+            <p>Теперь каждый раз, когда вы&nbsp;просите Cursor написать код, он&nbsp;знает ваши токены, ваш стек и&nbsp;ваши правила. Не&nbsp;догадывается, а&nbsp;читает.</p>
 
             <h2>Шаг 4. Подключение Figma через MCP</h2>
 
-            <p>MCP (Model Context Protocol)&nbsp;&mdash; протокол, через который AI-агент подключается к&nbsp;внешним сервисам. Figma выпустила официальный MCP-сервер, и&nbsp;это меняет всё: Cursor получает прямой доступ к&nbsp;вашим макетам.</p>
+            <p>MCP (Model Context Protocol): протокол, через который AI-агент подключается к&nbsp;внешним сервисам. Figma выпустила официальный MCP-сервер, и&nbsp;это меняет всё: Cursor получает прямой доступ к&nbsp;вашим макетам.</p>
 
             <h3>Настройка</h3>
 
@@ -400,19 +400,19 @@ git push               # отправить на GitHub</code></pre>
   }
 }</code></pre>
 
-            <p>Где взять API-ключ: откройте <a href="https://www.figma.com/developers/api#access-tokens" target="_blank" rel="noopener">Figma &rarr; Settings &rarr; Personal Access Tokens</a>. Создайте токен с&nbsp;доступом к&nbsp;файлам&nbsp;&mdash; скопируйте и&nbsp;вставьте вместо <code>YOUR_KEY</code>.</p>
+            <p>Где взять API-ключ: откройте <a href="https://www.figma.com/developers/api#access-tokens" target="_blank" rel="noopener">Figma &rarr; Settings &rarr; Personal Access Tokens</a>. Создайте токен с&nbsp;доступом к&nbsp;файлам. Скопируйте и&nbsp;вставьте вместо <code>YOUR_KEY</code>.</p>
 
             <p>После сохранения Cursor перезапустит MCP-сервер. В&nbsp;списке серверов напротив Figma должен появиться зелёный индикатор.</p>
 
             <h3>Что это даёт</h3>
 
-            <p>Теперь вы&nbsp;можете скинуть Cursor ссылку на&nbsp;любой нод в&nbsp;Figma&nbsp;&mdash; и&nbsp;он&nbsp;получит:</p>
+            <p>Теперь вы&nbsp;можете скинуть Cursor ссылку на&nbsp;любой нод в&nbsp;Figma, и&nbsp;он&nbsp;получит:</p>
 
             <ul>
                 <li><strong>Скриншот</strong> нода для визуального контекста</li>
-                <li><strong>Структуру</strong>&nbsp;&mdash; слои, автолейаут, отступы, цвета</li>
-                <li><strong>Код-референс</strong>&nbsp;&mdash; React + Tailwind по&nbsp;умолчанию, но&nbsp;AI адаптирует под ваш стек</li>
-                <li><strong>Code Connect</strong>&nbsp;&mdash; если компоненты привязаны к&nbsp;коду, AI получит реальные компоненты из&nbsp;вашей кодовой базы</li>
+                <li><strong>Структуру</strong>: слои, автолейаут, отступы, цвета</li>
+                <li><strong>Код-референс</strong>: React + Tailwind по&nbsp;умолчанию, но&nbsp;AI адаптирует под ваш стек</li>
+                <li><strong>Code Connect</strong>: если компоненты привязаны к&nbsp;коду, AI получит реальные компоненты из&nbsp;вашей кодовой базы</li>
             </ul>
 
             <h2>Шаг 5. Первый запрос</h2>
@@ -422,33 +422,33 @@ git push               # отправить на GitHub</code></pre>
 <pre><code>Сверстай этот компонент
 https://figma.com/design/xxx/yyy?node-id=123-456</code></pre>
 
-            <p>Cursor через MCP заберёт из&nbsp;Figma всю информацию о&nbsp;ноде, посмотрит ваши Cursor Rules, увидит стек и&nbsp;токены&nbsp;&mdash; и&nbsp;сгенерирует код, который вписывается в&nbsp;ваш проект.</p>
+            <p>Cursor через MCP заберёт из&nbsp;Figma всю информацию о&nbsp;ноде, посмотрит ваши Cursor Rules, увидит стек и&nbsp;токены, и&nbsp;сгенерирует код, который вписывается в&nbsp;ваш проект.</p>
 
             <p>Не&nbsp;понравился результат? Продолжайте разговор: &laquo;сделай отступ больше&raquo;, &laquo;поменяй шрифт на&nbsp;Inter&raquo;, &laquo;добавь тёмную тему&raquo;. AI помнит контекст в&nbsp;рамках сессии и&nbsp;вносит правки инкрементально.</p>
 
             <h2>Деплой в&nbsp;один клик</h2>
 
-            <p>Код написан&nbsp;&mdash; как показать миру? Самый простой путь&nbsp;&mdash; GitHub Pages. Если ваш проект на&nbsp;GitHub, просто попросите Cursor:</p>
+            <p>Код написан, как показать миру? Самый простой путь: GitHub Pages. Если ваш проект на&nbsp;GitHub, просто попросите Cursor:</p>
 
 <pre><code>Закоммить и запуши все изменения</code></pre>
 
             <p>Зайдите в&nbsp;настройки репозитория на&nbsp;GitHub &rarr; Pages &rarr; выберите ветку <code>main</code>. Через минуту ваш сайт будет доступен по&nbsp;адресу <code>username.github.io/repo</code>.</p>
 
-            <p>Для более сложных проектов есть <a href="https://vercel.com" target="_blank" rel="noopener">Vercel</a>&nbsp;&mdash; подключаете репозиторий, и&nbsp;каждый пуш автоматически деплоит новую версию. Бесплатно для персональных проектов.</p>
+            <p>Для более сложных проектов есть <a href="https://vercel.com" target="_blank" rel="noopener">Vercel</a>: подключаете репозиторий, и&nbsp;каждый пуш автоматически деплоит новую версию. Бесплатно для персональных проектов.</p>
 
             <h2>Что дальше</h2>
 
-            <p>У&nbsp;вас готово рабочее окружение: IDE с&nbsp;AI-агентом, который знает вашу дизайн-систему и&nbsp;имеет прямой доступ к&nbsp;Figma. Это не&nbsp;замена разработчику&nbsp;&mdash; это инструмент, который позволяет дизайнеру проверять идеи в&nbsp;коде, собирать прототипы из&nbsp;реальных компонентов и&nbsp;деплоить их&nbsp;самостоятельно.</p>
+            <p>У&nbsp;вас готово рабочее окружение: IDE с&nbsp;AI-агентом, который знает вашу дизайн-систему и&nbsp;имеет прямой доступ к&nbsp;Figma. Это не&nbsp;замена разработчику. Это инструмент, который позволяет дизайнеру проверять идеи в&nbsp;коде, собирать прототипы из&nbsp;реальных компонентов и&nbsp;деплоить их&nbsp;самостоятельно.</p>
 
             <p>Три вещи, которые стоит попробовать первыми:</p>
 
             <ul>
-                <li><strong>Сверстать свой портфолио-сайт</strong>&nbsp;&mdash; одностраничник с&nbsp;вашими работами</li>
-                <li><strong>Собрать компонент из&nbsp;дизайн-системы</strong>&nbsp;&mdash; скинуть Cursor ссылку на&nbsp;кнопку или карточку и&nbsp;получить HTML + CSS</li>
-                <li><strong>Написать Cursor Rules для своего проекта</strong>&nbsp;&mdash; описать токены, паттерны и&nbsp;правила, чтобы AI не&nbsp;догадывался, а&nbsp;знал</li>
+                <li><strong>Сверстать свой портфолио-сайт</strong>: одностраничник с&nbsp;вашими работами</li>
+                <li><strong>Собрать компонент из&nbsp;дизайн-системы</strong>: скинуть Cursor ссылку на&nbsp;кнопку или карточку и&nbsp;получить HTML + CSS</li>
+                <li><strong>Написать Cursor Rules для своего проекта</strong>: описать токены, паттерны и&nbsp;правила, чтобы AI не&nbsp;догадывался, а&nbsp;знал</li>
             </ul>
 
-            <p>Разрыв между дизайном и&nbsp;кодом сокращается. Cursor + Figma MCP&nbsp;&mdash; один из&nbsp;самых коротких мостов.</p>
+            <p>Разрыв между дизайном и&nbsp;кодом сокращается. Cursor + Figma MCP: один из&nbsp;самых коротких мостов.</p>
         </article>
 
         <hr>
@@ -457,6 +457,7 @@ https://figma.com/design/xxx/yyy?node-id=123-456</code></pre>
             <span class="footer-copy">2026. Antoshkin AI</span>
             <div class="lang-switch">
                 <span class="active">Ru</span>
+                <a href="cursor-figma-en.html">En</a>
             </div>
         </footer>
     </main>

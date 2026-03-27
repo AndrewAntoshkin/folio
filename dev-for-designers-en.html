@@ -308,13 +308,13 @@
             <h1 style="view-transition-name: article-2">Why design system designers should understand development</h1>
             <span class="date">March 2026</span>
 
-            <p>Design systems live at the intersection of design and code. A component in Figma and a component in React are different objects with different architectures. A designer who understands both sides creates systems that actually work&nbsp;&mdash; not just in mockups.</p>
+            <p>Design systems live at the intersection of design and code. A component in Figma and a component in React are different objects with different architectures. A designer who understands both sides creates systems that actually work, not just in mockups.</p>
 
             <h2>The gap that costs you</h2>
 
             <p>A designer creates a component in Figma: variants, props, styles. A developer receives it and translates it into code. Between these two versions is a gap. And the wider it is, the more expensive every iteration becomes.</p>
 
-            <p>A designer who doesn't understand code risks building components that can't be implemented without workarounds, require dozens of variants instead of composition, and don't scale when new use cases appear. The developer adapts, the designer doesn't recognize the result&nbsp;&mdash; and trust in the system erodes.</p>
+            <p>A designer who doesn't understand code risks building components that can't be implemented without workarounds, require dozens of variants instead of composition, and don't scale when new use cases appear. The developer adapts, the designer doesn't recognize the result, and trust in the system erodes.</p>
 
             <h2>Components: props and composition</h2>
 
@@ -330,15 +330,15 @@
 
             <h2>Slots: design catches up with code</h2>
 
-            <p>In 2025, Figma released <a href="https://www.figma.com/blog/supercharge-your-design-system-with-slots/" target="_blank" rel="noopener">slots</a>&nbsp;&mdash; a fundamental change. Slots let you insert any content inside a component without detaching. A modal accepts any content. A card&nbsp;&mdash; any set of elements. A list&nbsp;&mdash; any number of items.</p>
+            <p>In 2025, Figma released <a href="https://www.figma.com/blog/supercharge-your-design-system-with-slots/" target="_blank" rel="noopener">slots</a>, a fundamental change. Slots let you insert any content inside a component without detaching. A modal accepts any content. A card accepts any set of elements. A list accepts any number of items.</p>
 
-            <p>This is exactly how components work in code. A React <code>&lt;Modal&gt;</code> component accepts <code>children</code>&nbsp;&mdash; any content inside. Slots in Figma are <code>children</code> in design.</p>
+            <p>This is exactly how components work in code. A React <code>&lt;Modal&gt;</code> component accepts <code>children</code>, any content inside. Slots in Figma are <code>children</code> in design.</p>
 
             <p><a href="https://nathanacurtis.substack.com/p/implementing-slots-in-a-figma-library" target="_blank" rel="noopener">Nathan Curtis</a> describes migrating to slots as an architectural decision, not just replacing one element with another. For each component you need to decide: where to keep props and where to use a slot. What content to show by default. How to constrain what can be inserted. These are decisions that require understanding both design and code.</p>
 
             <h2>Tokens: more than just colors</h2>
 
-            <p>CSS variables&nbsp;&mdash; <code>--color-primary</code>, <code>--space-200</code>&nbsp;&mdash; aren't synonyms for HEX codes. They're an abstraction layer that lets you switch themes with a single toggle, support dark mode without touching components, and ensure consistency automatically.</p>
+            <p>CSS variables like <code>--color-primary</code> and <code>--space-200</code> aren't synonyms for HEX codes. They're an abstraction layer that lets you switch themes with a single toggle, support dark mode without touching components, and ensure consistency automatically.</p>
 
 <pre><code>:root {
   --color-text: #171717;
@@ -352,21 +352,21 @@
   }
 }</code></pre>
 
-            <p>Components reference variables, not specific values. The theme changes&nbsp;&mdash; components pick it up automatically.</p>
+            <p>Components reference variables, not specific values. The theme changes, components pick it up automatically.</p>
 
-            <p>A designer who understands how this works creates tokens that map to code without translation. Not &ldquo;Primary Blue 500,&rdquo; but <code>--color-interactive</code>&nbsp;&mdash; with a clear purpose and the right level of abstraction.</p>
+            <p>A designer who understands how this works creates tokens that map to code without translation. Not &ldquo;Primary Blue 500,&rdquo; but <code>--color-interactive</code>, with a clear purpose and the right level of abstraction.</p>
 
             <h2>Code Connect: the bridge gets shorter</h2>
 
             <p>Figma <a href="https://www.figma.com/blog/supercharge-your-design-system-with-slots/" target="_blank" rel="noopener">Code Connect</a> links a Figma component directly to its code implementation. A developer opens Dev Mode and sees not abstract Figma props, but the real component code.</p>
 
-            <p>Slots are supported in Code Connect&nbsp;&mdash; engineers immediately see how a slotted component maps to production. Handoff becomes predictable.</p>
+            <p>Slots are supported in Code Connect, and engineers immediately see how a slotted component maps to production. Handoff becomes predictable.</p>
 
-            <p>A designer who understands code can verify that their component maps correctly to the implementation, describe the component in terms developers understand, and participate in review&nbsp;&mdash; not as a syntax reviewer, but as an interface expert.</p>
+            <p>A designer who understands code can verify that their component maps correctly to the implementation, describe the component in terms developers understand, and participate in review, not as a syntax reviewer, but as an interface expert.</p>
 
             <h2>AI as a bridge</h2>
 
-            <p>A separate topic is AI tools. Cursor and Claude let designers prototype in code without deep framework knowledge. You describe a component&nbsp;&mdash; AI writes the code. But to evaluate the result, steer AI, and fix details, you need to understand the basics.</p>
+            <p>A separate topic is AI tools. Cursor and Claude let designers prototype in code without deep framework knowledge. You describe a component, and AI writes the code. But to evaluate the result, steer AI, and fix details, you need to understand the basics.</p>
 
             <p>This isn't about &ldquo;learning to write production code.&rdquo; It's about enough understanding to test ideas before handing off to development and speak the same language as engineers.</p>
 
@@ -384,13 +384,13 @@
             <p>You don't need to learn React or write production code. Four steps are enough:</p>
 
             <ul>
-                <li><strong>HTML and CSS</strong>&nbsp;&mdash; understand how interfaces are built in the browser</li>
-                <li><strong>CSS variables</strong>&nbsp;&mdash; understand tokens at the implementation level</li>
-                <li><strong>DevTools</strong>&nbsp;&mdash; learn to inspect components in the browser</li>
-                <li><strong>Cursor + Claude</strong>&nbsp;&mdash; use AI for rapid prototyping</li>
+                <li><strong>HTML and CSS</strong>: understand how interfaces are built in the browser</li>
+                <li><strong>CSS variables</strong>: understand tokens at the implementation level</li>
+                <li><strong>DevTools</strong>: learn to inspect components in the browser</li>
+                <li><strong>Cursor + Claude</strong>: use AI for rapid prototyping</li>
             </ul>
 
-            <p>Design systems are moving toward a full merger of design and code. Slots, Code Connect, AI agents&nbsp;&mdash; everything is closing the gap. A designer who understands both sides isn't just more useful. They build systems that outlast any tool change.</p>
+            <p>Design systems are moving toward a full merger of design and code. Slots, Code Connect, AI agents: everything is closing the gap. A designer who understands both sides isn't just more useful. They build systems that outlast any tool change.</p>
         </article>
 
         <hr>
