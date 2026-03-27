@@ -324,6 +324,9 @@
             color: var(--text-muted);
         }
 
+        .entries:has(.entry:hover) .entry:not(:hover) {
+            opacity: 0.32;
+        }
 
         .entries-pager {
             display: flex;
@@ -522,14 +525,6 @@
                         <div class="entry-body">
                             <span class="entry-title" style="view-transition-name: article-1">Design.md&nbsp;&mdash; как описать дизайн&#8209;систему для&nbsp;AI&#8209;агентов</span>
                             <span class="entry-meta">Март 2026</span>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="entry" href="#">
-                        <div class="entry-body">
-                            <span class="entry-title" style="view-transition-name: article-3">Как создать адаптивный UI для голосовых помощников</span>
-                            <span class="entry-meta">Апрель 2026</span>
                         </div>
                     </a>
                 </li>
