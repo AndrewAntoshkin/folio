@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+        (function(){
+            if(localStorage.getItem('lang'))return;
+            if(navigator.language.startsWith('ru'))location.replace('/');
+        })();
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Andrew Antoshkin — Product Design Engineer</title>
@@ -596,7 +602,7 @@
         <footer>
             <img class="footer-logo" src="assets/antoshkin-tech-logo.svg" alt="antoshkin.tech">
             <div class="lang-switch">
-                <a href="/">Ru</a>
+                <a href="/" onclick="localStorage.setItem('lang','ru')">Ru</a>
                 <span class="active">En</span>
             </div>
         </footer>
