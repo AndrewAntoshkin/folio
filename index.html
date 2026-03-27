@@ -52,6 +52,14 @@
             --hover-bg: rgba(0, 0, 0, 0.04);
             --avatar-border: rgba(80, 80, 80, 0.5);
             --badge-border: #b0b0b0;
+            --overlay: rgba(10, 10, 10, 0.2);
+            --panel-bg: #ffffff;
+            --panel-muted-bg: #f5f5f5;
+            --chip-border: #d4d4d8;
+            --chip-dot-design: #84cc16;
+            --chip-dot-dev: #a855f7;
+            --chip-dot-video: #eab308;
+            --chip-dot-other: #ef4444;
         }
 
         @media (prefers-color-scheme: dark) {
@@ -64,6 +72,14 @@
                 --hover-bg: rgba(255, 255, 255, 0.04);
                 --avatar-border: rgba(207, 207, 207, 0.5);
                 --badge-border: #7c7c7c;
+                --overlay: rgba(0, 0, 0, 0.32);
+                --panel-bg: #09090b;
+                --panel-muted-bg: #1b1b1b;
+                --chip-border: #444;
+                --chip-dot-design: #84cc16;
+                --chip-dot-dev: #a855f7;
+                --chip-dot-video: #eab308;
+                --chip-dot-other: #f87171;
             }
         }
 
@@ -85,6 +101,10 @@
 
         body {
             min-height: 100vh;
+        }
+
+        body.sheet-open {
+            overflow: hidden;
         }
 
         a {
@@ -279,53 +299,38 @@
 
         .entries {
             list-style: none;
-            counter-reset: entries;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
         }
 
         .entries li {
-            counter-increment: entries;
-        }
-
-        .entries li + li {
-            margin-top: 2px;
+            list-style: none;
         }
 
         .entry {
             display: flex;
-            align-items: baseline;
-            padding: 10px 12px;
-            margin-left: -12px;
-            margin-right: -12px;
+            align-items: center;
+            gap: 24px;
             border-radius: 8px;
-            transition: background 0.15s;
+            transition: opacity 0.15s ease, color 0.15s ease;
             text-decoration: none;
             color: inherit;
-        }
-
-        .entry:hover {
-            background: var(--hover-bg);
-        }
-
-        .entry::before {
-            content: counter(entries) ".";
-            flex-shrink: 0;
-            width: 24px;
-            font-size: 0.875rem;
-            font-weight: 400;
-            color: var(--text-muted);
-            font-variant-numeric: tabular-nums;
         }
 
         .entry-body {
             flex: 1;
             min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
         }
 
         .entry-title {
             display: block;
-            font-size: 1rem;
+            font-size: 0.875rem;
             font-weight: 500;
-            line-height: 1.5rem;
+            line-height: 1.375rem;
         }
 
         .entry-meta {
@@ -334,7 +339,209 @@
             font-weight: 400;
             line-height: 1.25rem;
             color: var(--text-muted);
-            margin-top: 2px;
+        }
+
+        .entry-arrow {
+            flex-shrink: 0;
+            color: var(--text-muted);
+            opacity: 0;
+            transition: opacity 0.15s ease, color 0.15s ease;
+        }
+
+        .entry:hover .entry-arrow,
+        .entry:focus-visible .entry-arrow {
+            opacity: 1;
+            color: var(--text);
+        }
+
+        .entries:hover .entry:not(:hover) {
+            opacity: 0.32;
+        }
+
+        .entries:hover .entry:not(:hover) .entry-arrow {
+            opacity: 0;
+        }
+
+        .entries-section {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .entries-more {
+            width: fit-content;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px 6px;
+            border-radius: 8px;
+            border: 1px solid var(--badge-border);
+            background: transparent;
+            color: var(--text);
+            font: inherit;
+            font-size: 0.75rem;
+            line-height: 0.875rem;
+            cursor: pointer;
+            transition: background 0.15s ease, border-color 0.15s ease;
+        }
+
+        .entries-more:hover,
+        .entries-more:focus-visible {
+            background: var(--hover-bg);
+        }
+
+        .sheet-backdrop {
+            position: fixed;
+            inset: 0;
+            background: var(--overlay);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .sheet-backdrop.is-open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .side-sheet {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: min(608px, 100vw);
+            height: 100dvh;
+            padding: 32px;
+            border-left: 1px solid var(--card-border);
+            background: var(--panel-bg);
+            color: var(--text);
+            transform: translateX(100%);
+            transition: transform 0.24s ease;
+            z-index: 10;
+            overflow-y: auto;
+        }
+
+        .side-sheet.is-open {
+            transform: translateX(0);
+        }
+
+        .sheet-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .sheet-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .sheet-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 8px 6px 10px;
+            border: 1px solid var(--chip-border);
+            border-radius: 999px;
+            font-size: 0.75rem;
+            line-height: 0.875rem;
+            color: var(--text);
+        }
+
+        .sheet-chip-dot,
+        .sheet-entry-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 999px;
+            flex-shrink: 0;
+        }
+
+        .dot-design { background: var(--chip-dot-design); }
+        .dot-dev { background: var(--chip-dot-dev); }
+        .dot-video { background: var(--chip-dot-video); }
+        .dot-other { background: var(--chip-dot-other); }
+
+        .sheet-close {
+            width: 26px;
+            height: 26px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 0;
+            border-radius: 8px;
+            background: var(--panel-muted-bg);
+            color: var(--text);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .sheet-close:hover,
+        .sheet-close:focus-visible {
+            background: var(--hover-bg);
+        }
+
+        .sheet-groups {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .sheet-group {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .sheet-group-title {
+            font-size: 0.875rem;
+            font-weight: 500;
+            line-height: 1.25rem;
+            color: var(--text-muted);
+        }
+
+        .sheet-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .sheet-entry {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: inherit;
+            text-decoration: none;
+            transition: opacity 0.15s ease;
+        }
+
+        .sheet-entry-body {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sheet-entry-title {
+            flex: 1;
+            min-width: 0;
+            font-size: 0.875rem;
+            line-height: 1.375rem;
+        }
+
+        .sheet-entry-meta {
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .sheet-list:hover .sheet-entry:not(:hover) {
+            opacity: 0.32;
         }
 
         .about-text {
@@ -420,6 +627,10 @@
             .projects-grid {
                 grid-template-columns: 1fr;
             }
+
+            .side-sheet {
+                padding: 24px;
+            }
         }
     </style>
 </head>
@@ -473,8 +684,8 @@
             </div>
         </section>
 
-        <section>
-            <h2>Статьи</h2>
+        <section class="entries-section">
+            <h2>Собираю полезное</h2>
             <ol class="entries">
                 <li>
                     <a class="entry" href="design-md.html">
@@ -482,6 +693,7 @@
                             <span class="entry-title" style="view-transition-name: article-1">Design.md&nbsp;&mdash; как описать дизайн&#8209;систему для&nbsp;AI&#8209;агентов</span>
                             <span class="entry-meta">Мар 2026</span>
                         </div>
+                        <span class="entry-arrow" aria-hidden="true">→</span>
                     </a>
                 </li>
                 <li>
@@ -490,9 +702,11 @@
                             <span class="entry-title" style="view-transition-name: article-2">Зачем дизайнеру дизайн&#8209;систем разбираться в&nbsp;разработке</span>
                             <span class="entry-meta">Мар 2026</span>
                         </div>
+                        <span class="entry-arrow" aria-hidden="true">→</span>
                     </a>
                 </li>
             </ol>
+            <button class="entries-more" type="button" data-sheet-open>Смотреть всё</button>
         </section>
 
         <section>
@@ -562,5 +776,147 @@
             </div>
         </footer>
     </main>
+
+    <div class="sheet-backdrop" data-sheet-backdrop hidden></div>
+    <aside class="side-sheet" data-side-sheet aria-hidden="true" aria-label="Статьи и ссылки">
+        <div class="sheet-header">
+            <div class="sheet-filters" aria-label="Категории">
+                <span class="sheet-chip"><span class="sheet-chip-dot dot-design"></span>design</span>
+                <span class="sheet-chip"><span class="sheet-chip-dot dot-dev"></span>dev</span>
+                <span class="sheet-chip"><span class="sheet-chip-dot dot-video"></span>video</span>
+                <span class="sheet-chip"><span class="sheet-chip-dot dot-other"></span>другое</span>
+            </div>
+            <button class="sheet-close" type="button" data-sheet-close aria-label="Закрыть">×</button>
+        </div>
+
+        <div class="sheet-groups">
+            <section class="sheet-group" aria-labelledby="sheet-group-2026">
+                <h2 class="sheet-group-title" id="sheet-group-2026">2026</h2>
+                <ul class="sheet-list">
+                    <li>
+                        <a class="sheet-entry" href="design-md.html">
+                            <span class="sheet-entry-dot dot-design" aria-hidden="true"></span>
+                            <span class="sheet-entry-body">
+                                <span class="sheet-entry-title">Design.md&nbsp;&mdash; как описать дизайн&#8209;систему для&nbsp;AI&#8209;агентов</span>
+                                <span class="sheet-entry-meta">Март</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="sheet-entry" href="dev-for-designers.html">
+                            <span class="sheet-entry-dot dot-dev" aria-hidden="true"></span>
+                            <span class="sheet-entry-body">
+                                <span class="sheet-entry-title">Зачем дизайнеру дизайн&#8209;систем разбираться в&nbsp;разработке</span>
+                                <span class="sheet-entry-meta">Март</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="sheet-entry" href="https://vc.ru/design/1619446-kak-sozdat-adaptivnyi-ui-dlya-golosovyh-pomoshnikov" target="_blank" rel="noopener">
+                            <span class="sheet-entry-dot dot-video" aria-hidden="true"></span>
+                            <span class="sheet-entry-body">
+                                <span class="sheet-entry-title">Как создать адаптивный UI для голосовых помощников</span>
+                                <span class="sheet-entry-meta">Апрель</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="sheet-entry" href="https://www.youtube.com/results?search_query=design+systems+ai" target="_blank" rel="noopener">
+                            <span class="sheet-entry-dot dot-other" aria-hidden="true"></span>
+                            <span class="sheet-entry-body">
+                                <span class="sheet-entry-title">Подборка видео и выступлений про дизайн&#8209;системы и AI</span>
+                                <span class="sheet-entry-meta">Апрель</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="sheet-entry" href="https://www.figma.com/community/search?resource_type=mixed&sort_by=relevancy&q=design%20systems" target="_blank" rel="noopener">
+                            <span class="sheet-entry-dot dot-video" aria-hidden="true"></span>
+                            <span class="sheet-entry-body">
+                                <span class="sheet-entry-title">Полезные ссылки и ресурсы по дизайн&#8209;системам в Figma Community</span>
+                                <span class="sheet-entry-meta">Апрель</span>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="sheet-group" aria-labelledby="sheet-group-2025">
+                <h2 class="sheet-group-title" id="sheet-group-2025">2025</h2>
+                <ul class="sheet-list">
+                    <li>
+                        <a class="sheet-entry" href="https://martinfowler.com/articles/design-system-guide.html" target="_blank" rel="noopener">
+                            <span class="sheet-entry-dot dot-design" aria-hidden="true"></span>
+                            <span class="sheet-entry-body">
+                                <span class="sheet-entry-title">Guide to design systems and product consistency</span>
+                                <span class="sheet-entry-meta">Дек</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="sheet-entry" href="https://developer.mozilla.org/en-US/docs/Web/Accessibility" target="_blank" rel="noopener">
+                            <span class="sheet-entry-dot dot-dev" aria-hidden="true"></span>
+                            <span class="sheet-entry-body">
+                                <span class="sheet-entry-title">MDN Accessibility guide для интерфейсов и компонентов</span>
+                                <span class="sheet-entry-meta">Сен</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="sheet-entry" href="https://www.youtube.com/results?search_query=figma+variables+design+systems" target="_blank" rel="noopener">
+                            <span class="sheet-entry-dot dot-video" aria-hidden="true"></span>
+                            <span class="sheet-entry-body">
+                                <span class="sheet-entry-title">Видео про переменные, токены и масштабирование дизайн&#8209;систем</span>
+                                <span class="sheet-entry-meta">Июн</span>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </div>
+    </aside>
+
+    <script>
+        const body = document.body;
+        const sideSheet = document.querySelector('[data-side-sheet]');
+        const sheetBackdrop = document.querySelector('[data-sheet-backdrop]');
+        const openSheetButton = document.querySelector('[data-sheet-open]');
+        const closeSheetButton = document.querySelector('[data-sheet-close]');
+
+        if (sideSheet && sheetBackdrop && openSheetButton && closeSheetButton) {
+            const openSheet = () => {
+                body.classList.add('sheet-open');
+                sheetBackdrop.hidden = false;
+                requestAnimationFrame(() => {
+                    sideSheet.classList.add('is-open');
+                    sheetBackdrop.classList.add('is-open');
+                    sideSheet.setAttribute('aria-hidden', 'false');
+                });
+            };
+
+            const closeSheet = () => {
+                sideSheet.classList.remove('is-open');
+                sheetBackdrop.classList.remove('is-open');
+                sideSheet.setAttribute('aria-hidden', 'true');
+
+                window.setTimeout(() => {
+                    if (!sideSheet.classList.contains('is-open')) {
+                        sheetBackdrop.hidden = true;
+                        body.classList.remove('sheet-open');
+                    }
+                }, 240);
+            };
+
+            openSheetButton.addEventListener('click', openSheet);
+            closeSheetButton.addEventListener('click', closeSheet);
+            sheetBackdrop.addEventListener('click', closeSheet);
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && sideSheet.classList.contains('is-open')) {
+                    closeSheet();
+                }
+            });
+        }
+    </script>
 </body>
 </html>
