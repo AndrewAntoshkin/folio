@@ -171,11 +171,21 @@
             margin-bottom: 8px;
         }
 
-        .date {
-            font-size: 1rem;
-            color: var(--text-muted);
+        .article-tags {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
             margin-bottom: 2.5rem;
-            display: block;
+        }
+
+        .article-tag {
+            font-size: 12px;
+            line-height: 14px;
+            padding: 4px 10px;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            color: var(--text-muted);
+            white-space: nowrap;
         }
 
         article h2 {
@@ -254,44 +264,37 @@
             color: var(--text);
         }
 
-        hr {
+        .article-nav {
+            display: flex;
+            justify-content: space-between;
             margin-top: 3rem;
-            border: none;
+            padding-top: 1.5rem;
             border-top: 1px solid var(--border);
         }
 
-        footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 24px;
-            font-size: 1rem;
-            line-height: normal;
-        }
-
-        .footer-copy {
-            color: var(--text-muted);
-        }
-
-        .lang-switch {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .lang-switch a {
-            color: var(--text-muted);
+        .article-nav a {
             text-decoration: none;
+            color: inherit;
+            max-width: 48%;
+        }
+
+        .article-nav a:hover .article-nav-title { color: var(--text); }
+
+        .article-nav-label {
+            display: block;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .article-nav-title {
+            display: block;
+            font-size: 1rem;
+            font-weight: 500;
             transition: color 0.15s;
         }
 
-        .lang-switch a:hover {
-            color: var(--text);
-        }
-
-        .lang-switch .active {
-            color: var(--text);
-        }
+        .article-nav .next { margin-left: auto; text-align: right; }
     </style>
 </head>
 <body>
@@ -306,7 +309,10 @@
 
         <article style="view-transition-name: article-body">
             <h1 style="view-transition-name: article-2">Зачем дизайнеру дизайн&#8209;систем разбираться в&nbsp;разработке</h1>
-            <span class="date">Март 2026</span>
+            <div class="article-tags">
+                <span class="article-tag">design systems</span>
+                <span class="article-tag">development</span>
+            </div>
 
             <p>Дизайн-системы живут на&nbsp;стыке дизайна и&nbsp;кода. Компонент в&nbsp;Figma и&nbsp;компонент в&nbsp;React: это разные объекты с&nbsp;разной архитектурой. Дизайнер, который понимает обе стороны, проектирует системы, которые реально работают, не&nbsp;только в&nbsp;макете.</p>
 
@@ -393,6 +399,12 @@
             <p>Дизайн-системы движутся к&nbsp;полному слиянию дизайна и&nbsp;кода. Слоты, Code Connect, AI-агенты: всё это сокращает разрыв. Дизайнер, который понимает обе стороны, не&nbsp;просто полезнее. Он&nbsp;проектирует системы, которые переживают смену инструментов.</p>
         </article>
 
+        <nav class="article-nav">
+            <a href="design-md.html">
+                <span class="article-nav-label">Предыдущая</span>
+                <span class="article-nav-title">Design.md: как описать дизайн&#8209;систему для&nbsp;AI&#8209;агентов</span>
+            </a>
+        </nav>
     </main>
 </body>
 </html>

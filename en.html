@@ -285,11 +285,6 @@
 
         .entries {
             list-style: none;
-            counter-reset: entries;
-        }
-
-        .entries li {
-            counter-increment: entries;
         }
 
         .entries li + li {
@@ -298,7 +293,8 @@
 
         .entry {
             display: flex;
-            align-items: baseline;
+            flex-direction: column;
+            gap: 8px;
             padding: 10px 12px;
             margin-left: -12px;
             margin-right: -12px;
@@ -310,16 +306,6 @@
 
         .entry:hover {
             background: var(--hover-bg);
-        }
-
-        .entry::before {
-            content: counter(entries) ".";
-            flex-shrink: 0;
-            width: 24px;
-            font-size: 0.875rem;
-            font-weight: 400;
-            color: var(--text-muted);
-            font-variant-numeric: tabular-nums;
         }
 
         .entry-body {
@@ -334,13 +320,20 @@
             line-height: 1.5rem;
         }
 
-        .entry-meta {
-            display: block;
-            font-size: 0.875rem;
-            font-weight: 400;
-            line-height: 1.25rem;
+        .entry-tags {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .entry-tag {
+            font-size: 12px;
+            line-height: 14px;
+            padding: 4px 10px;
+            border: 1px solid var(--border);
+            border-radius: 100px;
             color: var(--text-muted);
-            margin-top: 2px;
+            white-space: nowrap;
         }
 
         .about-text {
@@ -510,12 +503,16 @@
 
         <section>
             <h2>Articles</h2>
-            <ol class="entries">
+            <ul class="entries">
                 <li>
                     <a class="entry" href="cursor-figma-en.html">
                         <div class="entry-body">
                             <span class="entry-title" style="view-transition-name: article-3">Cursor + Figma: setting up a designer's environment</span>
-                            <span class="entry-meta">Mar 2026</span>
+                        </div>
+                        <div class="entry-tags">
+                            <span class="entry-tag">cursor</span>
+                            <span class="entry-tag">figma</span>
+                            <span class="entry-tag">mcp</span>
                         </div>
                     </a>
                 </li>
@@ -523,7 +520,11 @@
                     <a class="entry" href="design-md-en.html">
                         <div class="entry-body">
                             <span class="entry-title" style="view-transition-name: article-1">Design.md: how to describe a design system for AI agents</span>
-                            <span class="entry-meta">Mar 2026</span>
+                        </div>
+                        <div class="entry-tags">
+                            <span class="entry-tag">design</span>
+                            <span class="entry-tag">agents</span>
+                            <span class="entry-tag">rules</span>
                         </div>
                     </a>
                 </li>
@@ -531,11 +532,14 @@
                     <a class="entry" href="dev-for-designers-en.html">
                         <div class="entry-body">
                             <span class="entry-title" style="view-transition-name: article-2">Why design system designers should understand development</span>
-                            <span class="entry-meta">Mar 2026</span>
+                        </div>
+                        <div class="entry-tags">
+                            <span class="entry-tag">design systems</span>
+                            <span class="entry-tag">development</span>
                         </div>
                     </a>
                 </li>
-            </ol>
+            </ul>
         </section>
 
         <section>

@@ -171,11 +171,21 @@
             margin-bottom: 8px;
         }
 
-        .date {
-            font-size: 1rem;
-            color: var(--text-muted);
+        .article-tags {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
             margin-bottom: 2.5rem;
-            display: block;
+        }
+
+        .article-tag {
+            font-size: 12px;
+            line-height: 14px;
+            padding: 4px 10px;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            color: var(--text-muted);
+            white-space: nowrap;
         }
 
         article h2 {
@@ -254,44 +264,37 @@
             color: var(--text);
         }
 
-        hr {
+        .article-nav {
+            display: flex;
+            justify-content: space-between;
             margin-top: 3rem;
-            border: none;
+            padding-top: 1.5rem;
             border-top: 1px solid var(--border);
         }
 
-        footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 24px;
-            font-size: 1rem;
-            line-height: normal;
-        }
-
-        .footer-copy {
-            color: var(--text-muted);
-        }
-
-        .lang-switch {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .lang-switch a {
-            color: var(--text-muted);
+        .article-nav a {
             text-decoration: none;
+            color: inherit;
+            max-width: 48%;
+        }
+
+        .article-nav a:hover .article-nav-title { color: var(--text); }
+
+        .article-nav-label {
+            display: block;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .article-nav-title {
+            display: block;
+            font-size: 1rem;
+            font-weight: 500;
             transition: color 0.15s;
         }
 
-        .lang-switch a:hover {
-            color: var(--text);
-        }
-
-        .lang-switch .active {
-            color: var(--text);
-        }
+        .article-nav .next { margin-left: auto; text-align: right; }
     </style>
 </head>
 <body>
@@ -306,7 +309,11 @@
 
         <article style="view-transition-name: article-body">
             <h1 style="view-transition-name: article-1">Design.md: how to describe a design system for AI&nbsp;agents</h1>
-            <span class="date">March 2026</span>
+            <div class="article-tags">
+                <span class="article-tag">design</span>
+                <span class="article-tag">agents</span>
+                <span class="article-tag">rules</span>
+            </div>
 
             <p>AI agents (Claude, GPT, Cursor) are increasingly writing UI code. But they have a fundamental problem: they don't know your design system. Every session starts from scratch. Every visual decision is a guess.</p>
 
@@ -422,6 +429,16 @@ Errors: 2 | Warnings: 0</code></pre>
             <p>Design.md is not documentation. It's infrastructure.</p>
         </article>
 
+        <nav class="article-nav">
+            <a href="cursor-figma-en.html">
+                <span class="article-nav-label">Previous</span>
+                <span class="article-nav-title">Cursor + Figma: setting up a designer's environment</span>
+            </a>
+            <a href="dev-for-designers-en.html" class="next">
+                <span class="article-nav-label">Next</span>
+                <span class="article-nav-title">Why design system designers should understand development</span>
+            </a>
+        </nav>
     </main>
 </body>
 </html>

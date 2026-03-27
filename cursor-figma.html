@@ -171,11 +171,21 @@
             margin-bottom: 8px;
         }
 
-        .date {
-            font-size: 1rem;
-            color: var(--text-muted);
+        .article-tags {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
             margin-bottom: 2.5rem;
-            display: block;
+        }
+
+        .article-tag {
+            font-size: 12px;
+            line-height: 14px;
+            padding: 4px 10px;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            color: var(--text-muted);
+            white-space: nowrap;
         }
 
         article h2 {
@@ -254,44 +264,37 @@
             color: var(--text);
         }
 
-        hr {
+        .article-nav {
+            display: flex;
+            justify-content: space-between;
             margin-top: 3rem;
-            border: none;
+            padding-top: 1.5rem;
             border-top: 1px solid var(--border);
         }
 
-        footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 24px;
-            font-size: 1rem;
-            line-height: normal;
-        }
-
-        .footer-copy {
-            color: var(--text-muted);
-        }
-
-        .lang-switch {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .lang-switch a {
-            color: var(--text-muted);
+        .article-nav a {
             text-decoration: none;
+            color: inherit;
+            max-width: 48%;
+        }
+
+        .article-nav a:hover .article-nav-title { color: var(--text); }
+
+        .article-nav-label {
+            display: block;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .article-nav-title {
+            display: block;
+            font-size: 1rem;
+            font-weight: 500;
             transition: color 0.15s;
         }
 
-        .lang-switch a:hover {
-            color: var(--text);
-        }
-
-        .lang-switch .active {
-            color: var(--text);
-        }
+        .article-nav .next { margin-left: auto; text-align: right; }
     </style>
 </head>
 <body>
@@ -306,7 +309,11 @@
 
         <article style="view-transition-name: article-body">
             <h1 style="view-transition-name: article-3">Cursor + Figma: настройка окружения для&nbsp;дизайнера</h1>
-            <span class="date">Март 2026</span>
+            <div class="article-tags">
+                <span class="article-tag">cursor</span>
+                <span class="article-tag">figma</span>
+                <span class="article-tag">mcp</span>
+            </div>
 
             <p>Вы&nbsp;дизайнер, который хочет превращать макеты в&nbsp;код. Не&nbsp;учить React с&nbsp;нуля, не&nbsp;становиться фронтендером, а&nbsp;скинуть ссылку на&nbsp;Figma-нод и&nbsp;получить рабочий компонент. Cursor + Figma MCP делают это возможным. Эта статья: пошаговая настройка от&nbsp;нуля до&nbsp;работающего флоу.</p>
 
@@ -451,6 +458,13 @@ https://figma.com/design/xxx/yyy?node-id=123-456</code></pre>
             <p>Разрыв между дизайном и&nbsp;кодом сокращается. Cursor + Figma MCP: один из&nbsp;самых коротких мостов.</p>
         </article>
 
+        <nav class="article-nav">
+            <span></span>
+            <a href="design-md.html" class="next">
+                <span class="article-nav-label">Следующая</span>
+                <span class="article-nav-title">Design.md: как описать дизайн&#8209;систему для&nbsp;AI&#8209;агентов</span>
+            </a>
+        </nav>
     </main>
 </body>
 </html>
