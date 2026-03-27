@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+html{scroll-behavior:smooth}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Inter',system-ui,sans-serif;background:#1c1c1b;color:#e5e5e5;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
@@ -69,7 +70,9 @@ pre{margin:0;padding:16px 20px;font-size:13px;font-family:ui-monospace,SFMono-Re
     <p class="byline">by <a href="https://antoshkin.tech">Andrew Antoshkin</a></p>
     <div class="nav-section">
       <p class="nav-label">Basics</p>
-      <a href="#getting-started" class="nav-item active">Getting Started</a>
+      <a href="#measures" class="nav-item active">What It Measures</a>
+      <a href="#run" class="nav-item">Run Locally</a>
+      <a href="#how" class="nav-item">How It Works</a>
       <a href="#api" class="nav-item">API</a>
     </div>
     <div class="nav-section">
@@ -94,7 +97,7 @@ pre{margin:0;padding:16px 20px;font-size:13px;font-family:ui-monospace,SFMono-Re
 <h1>Getting Started</h1>
 <p class="lead">Paste a URL, get a design system health report. Analyzes colors, typography, spacing, and radius on any live website using a real browser.</p>
 
-<section>
+<section id="measures">
 <h2>What It Measures</h2>
 <div class="fl">
   <div class="f-row"><div class="f-dot" style="background:#3b82f6"></div><div><div class="f-title">Colors</div><p class="f-desc">How many text and background colors exist. Rewards fewer unique values and CSS variable usage.</p></div></div>
@@ -104,7 +107,7 @@ pre{margin:0;padding:16px 20px;font-size:13px;font-family:ui-monospace,SFMono-Re
 </div>
 </section>
 
-<section>
+<section id="run">
 <h2>Run Locally</h2>
 <div class="code-wrap"><pre>git clone https://github.com/AndrewAntoshkin/ds-health.git
 cd ds-health
@@ -116,7 +119,7 @@ npm start</pre></div>
 <div class="code-wrap"><pre>npx playwright install chromium</pre></div>
 </section>
 
-<section>
+<section id="how">
 <h2>How It Works</h2>
 <p class="body">The tool loads the page in a real Chromium browser (via Playwright), samples visible elements, reads their computed styles, and generates a health report with scores, signals, and recommendations.</p>
 <div class="preview">URL → Playwright (Chromium) → getComputedStyle() on sampled elements
@@ -258,5 +261,33 @@ Recommendations:
 </article>
 </main>
 </div>
+<script>
+(function(){
+  const sections = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('.sidebar .nav-item[href^="#"]');
+  if (!sections.length || !links.length) return;
+  const map = {};
+  links.forEach(a => { const id = a.getAttribute('href').slice(1); if (id) map[id] = a; });
+  function activate(id) {
+    links.forEach(a => a.classList.remove('active'));
+    if (map[id]) map[id].classList.add('active');
+  }
+  const obs = new IntersectionObserver(entries => {
+    for (const e of entries) {
+      if (e.isIntersecting) { activate(e.target.id); break; }
+    }
+  }, { rootMargin: '-20% 0px -60% 0px' });
+  sections.forEach(s => obs.observe(s));
+  const firstLink = links[0];
+  if (firstLink) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY < 200) {
+        links.forEach(a => a.classList.remove('active'));
+        firstLink.classList.add('active');
+      }
+    });
+  }
+})();
+</script>
 </body>
 </html>

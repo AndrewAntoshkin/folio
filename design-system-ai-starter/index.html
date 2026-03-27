@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+html{scroll-behavior:smooth}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Inter',system-ui,sans-serif;background:#1c1c1b;color:#e5e5e5;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
@@ -68,8 +69,12 @@ kbd{display:inline-block;padding:1px 5px;font-size:12px;font-family:ui-monospace
     <p class="byline">by <a href="https://antoshkin.tech">Andrew Antoshkin</a></p>
     <div class="nav-section">
       <p class="nav-label">Basics</p>
-      <a href="#getting-started" class="nav-item active">Getting Started</a>
+      <a href="#problem" class="nav-item active">The Problem</a>
+      <a href="#install" class="nav-item">Installation</a>
+      <a href="#quickstart" class="nav-item">Quick Start</a>
+      <a href="#who" class="nav-item">Who This Is For</a>
       <a href="#commands" class="nav-item">Commands</a>
+      <a href="#inputs" class="nav-item">Supported Inputs</a>
     </div>
     <div class="nav-section">
       <p class="nav-label">Examples</p>
@@ -95,7 +100,7 @@ kbd{display:inline-block;padding:1px 5px;font-size:12px;font-family:ui-monospace
 <h1>Getting Started</h1>
 <p class="lead">Turn your real design system into specs that AI coding agents can reliably follow. Works with CSS variables, JSON tokens, and DTCG format.</p>
 
-<section>
+<section id="problem">
 <h2>The Problem</h2>
 <p class="body">AI agents are good at implementation, but weak at consistency. They commonly:</p>
 <div class="fl">
@@ -106,13 +111,13 @@ kbd{display:inline-block;padding:1px 5px;font-size:12px;font-family:ui-monospace
 </div>
 </section>
 
-<section>
+<section id="install">
 <h2>Installation</h2>
 <p class="body">Run directly with npx or install globally.</p>
 <div class="code-wrap"><pre>npx design-system-ai-starter init .</pre></div>
 </section>
 
-<section>
+<section id="quickstart">
 <h2>Quick Start</h2>
 <p class="body">Three commands to go from zero to AI-readable specs:</p>
 <div class="code-wrap"><pre><span style="color:#6b6b6b"># 1. Scaffold the structure</span>
@@ -126,7 +131,7 @@ npx design-system-ai-starter sync-tokens \
 npx design-system-ai-starter doctor .</pre></div>
 </section>
 
-<section>
+<section id="who">
 <h2>Who This Is For</h2>
 <div class="fl">
   <div class="f-row"><div class="f-dot" style="background:#3b82f6"></div><div><div class="f-title">Design systems teams</div><p class="f-desc">With existing tokens or theme files that agents should respect</p></div></div>
@@ -178,7 +183,7 @@ WARN No component specs found beyond the template
 Doctor checks passed with 2 warning(s).</div>
 </section>
 
-<section>
+<section id="inputs">
 <h2>Supported Inputs</h2>
 <div class="tbl">
   <div class="tbl-head"><span>Format</span><span>Example</span></div>
@@ -314,5 +319,33 @@ Doctor checks passed with 2 warning(s).</div>
 </article>
 </main>
 </div>
+<script>
+(function(){
+  const sections = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('.sidebar .nav-item[href^="#"]');
+  if (!sections.length || !links.length) return;
+  const map = {};
+  links.forEach(a => { const id = a.getAttribute('href').slice(1); if (id) map[id] = a; });
+  function activate(id) {
+    links.forEach(a => a.classList.remove('active'));
+    if (map[id]) map[id].classList.add('active');
+  }
+  const obs = new IntersectionObserver(entries => {
+    for (const e of entries) {
+      if (e.isIntersecting) { activate(e.target.id); break; }
+    }
+  }, { rootMargin: '-20% 0px -60% 0px' });
+  sections.forEach(s => obs.observe(s));
+  const firstLink = links[0];
+  if (firstLink) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY < 200) {
+        links.forEach(a => a.classList.remove('active'));
+        firstLink.classList.add('active');
+      }
+    });
+  }
+})();
+</script>
 </body>
 </html>

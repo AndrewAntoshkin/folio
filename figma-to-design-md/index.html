@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+html{scroll-behavior:smooth}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Inter',system-ui,sans-serif;background:#1c1c1b;color:#e5e5e5;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
@@ -67,7 +68,9 @@ pre{margin:0;padding:16px 20px;font-size:13px;font-family:ui-monospace,SFMono-Re
     <p class="byline">by <a href="https://antoshkin.tech">Andrew Antoshkin</a></p>
     <div class="nav-section">
       <p class="nav-label">Basics</p>
-      <a href="#getting-started" class="nav-item active">Getting Started</a>
+      <a href="#how" class="nav-item active">How It Works</a>
+      <a href="#install" class="nav-item">Installation</a>
+      <a href="#setup" class="nav-item">Setup</a>
       <a href="#cli" class="nav-item">CLI Options</a>
     </div>
     <div class="nav-section">
@@ -93,7 +96,7 @@ pre{margin:0;padding:16px 20px;font-size:13px;font-family:ui-monospace,SFMono-Re
 <h1>Getting Started</h1>
 <p class="lead">Extract variables, styles, and components from Figma via REST API and generate markdown specs that AI agents can consume directly.</p>
 
-<section>
+<section id="how">
 <h2>How It Works</h2>
 <div class="preview"><span class="tree">Figma file ──▶ figma-to-design-md ──▶ <span class="dir">specs/</span>
                                         ├── <span class="file">design-system.md</span>
@@ -109,7 +112,7 @@ pre{margin:0;padding:16px 20px;font-size:13px;font-family:ui-monospace,SFMono-Re
                                         └── <span class="file">gaps.md</span></span></div>
 </section>
 
-<section>
+<section id="install">
 <h2>Installation</h2>
 <div class="code-wrap"><pre><span style="color:#6b6b6b"># Run directly</span>
 npx figma-to-design-md extract --file &lt;key&gt; --token &lt;token&gt;
@@ -118,7 +121,7 @@ npx figma-to-design-md extract --file &lt;key&gt; --token &lt;token&gt;
 npm i -g figma-to-design-md</pre></div>
 </section>
 
-<section>
+<section id="setup">
 <h2>Setup</h2>
 <h3>1. Get a Figma token</h3>
 <p class="body">Open <a href="https://www.figma.com/settings" target="_blank" style="color:#93c5fd;text-decoration:underline">Figma Settings</a> → Personal access tokens → Create with <strong>File content: Read-only</strong> scope.</p>
@@ -246,5 +249,33 @@ _Add usage guidelines here._</span></div>
 </article>
 </main>
 </div>
+<script>
+(function(){
+  const sections = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('.sidebar .nav-item[href^="#"]');
+  if (!sections.length || !links.length) return;
+  const map = {};
+  links.forEach(a => { const id = a.getAttribute('href').slice(1); if (id) map[id] = a; });
+  function activate(id) {
+    links.forEach(a => a.classList.remove('active'));
+    if (map[id]) map[id].classList.add('active');
+  }
+  const obs = new IntersectionObserver(entries => {
+    for (const e of entries) {
+      if (e.isIntersecting) { activate(e.target.id); break; }
+    }
+  }, { rootMargin: '-20% 0px -60% 0px' });
+  sections.forEach(s => obs.observe(s));
+  const firstLink = links[0];
+  if (firstLink) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY < 200) {
+        links.forEach(a => a.classList.remove('active'));
+        firstLink.classList.add('active');
+      }
+    });
+  }
+})();
+</script>
 </body>
 </html>
