@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ds-coverage — Measure design system adoption</title>
+<meta name="description" content="CLI tool to measure design system component adoption across your codebase. Find used, unused, and duplicated components.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+html{scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:#1c1c1b;color:#e5e5e5;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.shell{display:flex;min-height:100vh}
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:240px;background:#171716;border-right:1px dotted #333;display:flex;flex-direction:column;padding:20px 16px 16px;z-index:100;overflow-y:auto}
+.sidebar-inner{flex:1}
+.brand{font-size:14px;font-weight:500;color:#e5e5e5;display:block}
+.byline{font-size:12px;color:#6b6b6b;margin:1px 0 24px}
+.byline a{color:#888}
+.nav-section{margin-bottom:16px}
+.nav-label{font-size:11px;font-weight:500;color:#6b6b6b;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.nav-item{display:block;font-size:13px;font-weight:500;color:#a1a1aa;padding:5px 8px;border-radius:6px;margin-left:-8px}
+.nav-item.active{color:#e5e5e5;background:#2a2a29}
+.sidebar-install{font-size:12px;color:#555;font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace}
+.spacer{width:240px;flex-shrink:0}
+main{flex:1;display:flex;justify-content:center;padding:64px 32px 80px}
+article{max-width:672px;width:100%}
+h1{font-size:32px;font-weight:600;color:#e5e5e5;letter-spacing:-.03em;margin-bottom:12px}
+.lead{font-size:16px;color:#a1a1aa;line-height:1.6;margin-bottom:40px}
+h2{font-size:20px;font-weight:600;color:#e5e5e5;letter-spacing:-.03em;margin-bottom:12px}
+h3{font-size:16px;font-weight:600;color:#d4d4d4;margin:24px 0 8px}
+.body{font-size:16px;color:#a1a1aa;line-height:1.6;margin-bottom:16px}
+section{margin-bottom:48px;scroll-margin-top:32px}
+.code-wrap{background:#212121;border:1px solid #2f2f2e;border-radius:10px;overflow:hidden}
+pre{margin:0;padding:16px 20px;font-size:13px;font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;color:#a1a1aa;line-height:1.7;overflow-x:auto}
+.ic{font-size:14px;font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;background:#2a2a29;border:1px solid #333;border-radius:6px;padding:2px 4px;color:#d4d4d4}
+.tbl{background:#212121;border:1px solid #2f2f2e;border-radius:10px;overflow:hidden}
+.tbl-head{display:flex;padding:10px 16px;border-bottom:1px solid #2f2f2e;font-size:11px;font-weight:500;color:#6b6b6b;text-transform:uppercase;letter-spacing:.04em}
+.tbl-head span,.tbl-row span{flex:1}
+.tbl-head span:first-child,.tbl-row span:first-child{flex:2}
+.tbl-head span:last-child,.tbl-row span:last-child{flex:3}
+.tbl-row{display:flex;padding:10px 16px;border-bottom:1px solid #2f2f2e;font-size:12px;color:#a1a1aa;align-items:flex-start}
+.tbl-row:last-child{border-bottom:none}
+.tbl-row .prop{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;color:#93c5fd;font-size:13px}
+.preview{background:#212121;border:1px solid #2f2f2e;border-radius:10px;padding:24px;margin-bottom:16px;font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;font-size:13px;color:#a1a1aa;line-height:1.6;white-space:pre;overflow-x:auto}
+.fl{display:flex;flex-direction:column;gap:10px}
+.f-row{display:flex;gap:12px;align-items:flex-start;padding:12px 16px;background:#212121;border:1px solid #2f2f2e;border-radius:10px}
+.f-dot{width:12px;height:12px;border-radius:3px;flex-shrink:0;margin-top:3px}
+.f-title{font-size:13px;font-weight:500;color:#e5e5e5;margin-bottom:2px}
+.f-desc{font-size:12px;color:#6b6b6b;line-height:1.4}
+.page-nav{display:flex;justify-content:space-between;align-items:flex-start;padding-top:32px;border-top:1px dotted #333;margin-top:24px}
+.pn-link{display:flex;flex-direction:column;gap:2px}
+.pn-hint{font-size:13px;color:#6b6b6b}
+.pn-title{font-size:14px;font-weight:500;color:#e5e5e5}
+.score-bar{display:flex;gap:12px;margin-bottom:16px}
+.score-item{flex:1;background:#171716;border:1px solid #2f2f2e;border-radius:10px;padding:16px;text-align:center}
+.score-value{font-size:28px;font-weight:600;margin-bottom:4px}
+.score-label{font-size:11px;color:#6b6b6b;text-transform:uppercase;letter-spacing:.04em}
+.score-green{color:#4ade80}.score-yellow{color:#fbbf24}.score-red{color:#f87171}
+@media(max-width:800px){.sidebar{display:none}.spacer{display:none}main{padding:32px 16px 48px}.score-bar{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<div class="shell">
+<nav class="sidebar">
+  <div class="sidebar-inner">
+    <a href="/ds-coverage/" class="brand">ds-coverage</a>
+    <p class="byline">by <a href="https://antoshkin.tech">Andrew Antoshkin</a></p>
+    <div class="nav-section">
+      <p class="nav-label">Basics</p>
+      <a href="#why" class="nav-item active">Why</a>
+      <a href="#install" class="nav-item">Installation</a>
+      <a href="#usage" class="nav-item">Usage</a>
+      <a href="#cli" class="nav-item">CLI Options</a>
+    </div>
+    <div class="nav-section">
+      <p class="nav-label">Examples</p>
+      <a href="#metrics" class="nav-item">What It Measures</a>
+      <a href="#output-good" class="nav-item">Healthy Codebase</a>
+      <a href="#output-bad" class="nav-item">Low Adoption</a>
+      <a href="#inventory" class="nav-item">Inventory File</a>
+      <a href="#ci" class="nav-item">CI Integration</a>
+      <a href="#pipeline" class="nav-item">Pipeline</a>
+    </div>
+    <div class="nav-section">
+      <p class="nav-label">Links</p>
+      <a href="https://github.com/AndrewAntoshkin/ds-coverage" target="_blank" rel="noopener" class="nav-item">GitHub</a>
+      <a href="https://www.npmjs.com/package/ds-coverage" target="_blank" rel="noopener" class="nav-item">npm</a>
+    </div>
+  </div>
+  <code class="sidebar-install">npx ds-coverage src/ --ds @acme/ui</code>
+</nav>
+<div class="spacer"></div>
+<main>
+<article>
+
+<h1>Getting Started</h1>
+<p class="lead">Measure how much of your codebase actually uses your design system. Find unused components, duplicates, and adoption gaps.</p>
+
+<section id="why">
+<h2>Why This Exists</h2>
+<p class="body">Adoption is the #1 challenge in design systems. Teams build component libraries but can't prove they're being used. Satisfaction can drop from 68% to 31% within a year while "adoption" metrics look healthy.</p>
+<p class="body">ds-coverage gives you real numbers: which components are imported, how often, and what's being reimplemented locally instead.</p>
+</section>
+
+<section id="install">
+<h2>Installation</h2>
+<div class="code-wrap"><pre><span style="color:#6b6b6b"># Run directly (no install)</span>
+npx ds-coverage src/ --ds @acme/ui
+
+<span style="color:#6b6b6b"># Or install globally</span>
+npm i -g ds-coverage</pre></div>
+</section>
+
+<section id="usage">
+<h2>Usage</h2>
+<div class="code-wrap"><pre><span style="color:#6b6b6b"># Basic scan</span>
+ds-coverage src/ --ds @acme/ui
+
+<span style="color:#6b6b6b"># Multiple packages</span>
+ds-coverage . --ds @acme/ui,@acme/icons
+
+<span style="color:#6b6b6b"># With component inventory (finds unused)</span>
+ds-coverage src/ --ds @acme/ui --inventory components.json
+
+<span style="color:#6b6b6b"># Markdown report</span>
+ds-coverage src/ --ds @acme/ui --format markdown --out coverage.md
+
+<span style="color:#6b6b6b"># CI threshold (fail below 70%)</span>
+ds-coverage src/ --ds @acme/ui --inventory components.json --min 70</pre></div>
+</section>
+
+<section id="cli">
+<h2>CLI Options</h2>
+<div class="tbl">
+  <div class="tbl-head"><span>Flag</span><span>Default</span><span>Description</span></div>
+  <div class="tbl-row"><span class="prop">[path]</span><span>.</span><span>Directory to scan</span></div>
+  <div class="tbl-row"><span class="prop">--ds &lt;packages&gt;</span><span>—</span><span>Comma-separated DS package names (required)</span></div>
+  <div class="tbl-row"><span class="prop">--inventory &lt;file&gt;</span><span>—</span><span>JSON file listing all DS components</span></div>
+  <div class="tbl-row"><span class="prop">--format &lt;type&gt;</span><span>terminal</span><span>terminal | markdown | json</span></div>
+  <div class="tbl-row"><span class="prop">--out &lt;file&gt;</span><span>—</span><span>Write report to file</span></div>
+  <div class="tbl-row"><span class="prop">--min &lt;percent&gt;</span><span>—</span><span>Fail if coverage below threshold</span></div>
+  <div class="tbl-row"><span class="prop">--version</span><span></span><span>Print version</span></div>
+  <div class="tbl-row"><span class="prop">--help</span><span></span><span>Print help</span></div>
+</div>
+</section>
+
+<section id="metrics">
+<h2>What It Measures</h2>
+<div class="fl">
+  <div class="f-row"><div class="f-dot" style="background:#4ade80"></div><div><div class="f-title">Components Used</div><p class="f-desc">How many DS components appear in import statements across the codebase</p></div></div>
+  <div class="f-row"><div class="f-dot" style="background:#93c5fd"></div><div><div class="f-title">Total Imports</div><p class="f-desc">Total number of DS import occurrences — measures adoption depth</p></div></div>
+  <div class="f-row"><div class="f-dot" style="background:#fbbf24"></div><div><div class="f-title">Custom Components</div><p class="f-desc">Local components imported from relative paths — potential DS candidates</p></div></div>
+  <div class="f-row"><div class="f-dot" style="background:#f87171"></div><div><div class="f-title">Duplicates</div><p class="f-desc">Local components with the same name as DS components — likely reimplementations</p></div></div>
+  <div class="f-row"><div class="f-dot" style="background:#a78bfa"></div><div><div class="f-title">Unused Components</div><p class="f-desc">DS components never imported anywhere — deprecation candidates (requires --inventory)</p></div></div>
+</div>
+</section>
+
+<section id="output-good">
+<h2>Healthy Codebase</h2>
+<p class="body">A team that actively uses their design system:</p>
+<div class="score-bar">
+  <div class="score-item"><div class="score-value score-green">34</div><div class="score-label">DS Components</div></div>
+  <div class="score-item"><div class="score-value score-green">87%</div><div class="score-label">Coverage</div></div>
+  <div class="score-item"><div class="score-value score-green">0</div><div class="score-label">Duplicates</div></div>
+</div>
+<div class="preview">  Design System Coverage Report
+  ──────────────────────────────
+
+  Package: @acme/ui
+  Components used:     34 of 39 (87%)
+  Total imports:       412
+  Unused components:   Alert, Breadcrumb, Stepper, Timeline, Tree
+
+  ─────────────────────────────
+  Files scanned:       186
+  DS component uses:   412
+  Custom components:   12
+
+  Top used:
+    Button (142)
+    Text (98)
+    Card (67)
+    Input (45)
+    Badge (38)</div>
+</section>
+
+<section id="output-bad">
+<h2>Low Adoption</h2>
+<p class="body">A codebase where teams bypass the design system:</p>
+<div class="score-bar">
+  <div class="score-item"><div class="score-value score-red">12</div><div class="score-label">DS Components</div></div>
+  <div class="score-item"><div class="score-value score-red">31%</div><div class="score-label">Coverage</div></div>
+  <div class="score-item"><div class="score-value score-red">5</div><div class="score-label">Duplicates</div></div>
+</div>
+<div class="preview">  Package: @acme/ui
+  Components used:     12 of 39 (31%)
+  Total imports:       54
+  Unused components:   27 components never imported
+
+  ─────────────────────────────
+  Files scanned:       340
+  DS component uses:   54
+  Custom components:   89
+  ⚠ Possible dupes:   Button, Modal, Badge, Card, Input
+
+  Least used (1-2 imports):
+    Tooltip (2)
+    Accordion (1)
+    Tabs (1)</div>
+</section>
+
+<section id="inventory">
+<h2>Inventory File</h2>
+<p class="body">To detect unused components, provide a JSON file listing all exports from your DS package:</p>
+
+<h3>Array format</h3>
+<div class="code-wrap"><pre>["Button", "Card", "Modal", "Tooltip", "Badge", "Input", "Select"]</pre></div>
+
+<h3>Object format</h3>
+<div class="code-wrap"><pre>{
+  "components": ["Button", "Card", "Modal", "Tooltip", "Badge"]
+}</pre></div>
+
+<p class="body">You can also point to the index file of your DS package — ds-coverage will parse its exports.</p>
+</section>
+
+<section id="ci">
+<h2>CI Integration</h2>
+<div class="code-wrap"><pre><span style="color:#6b6b6b"># GitHub Actions</span>
+- name: Check DS adoption
+  run: npx ds-coverage src/ --ds @acme/ui --inventory components.json --min 60
+
+<span style="color:#6b6b6b"># Generate PR report</span>
+- name: DS Coverage Report
+  run: npx ds-coverage src/ --ds @acme/ui --format markdown --out coverage.md</pre></div>
+<p class="body"><code class="ic">--min</code> exits with code 1 when coverage is below the threshold.</p>
+</section>
+
+<section id="pipeline">
+<h2>Pipeline</h2>
+<p class="body">ds-coverage is the adoption layer in the design system workflow:</p>
+<div class="preview"><span style="color:#93c5fd">1.</span> Extract from Figma     → <a href="/figma-to-design-md/" style="color:#93c5fd">figma-to-design-md</a>
+<span style="color:#93c5fd">2.</span> Generate agent rules  → <a href="/design-system-ai-starter/" style="color:#93c5fd">design-system-ai-starter</a>
+<span style="color:#93c5fd">3.</span> Enforce in code       → <a href="/ds-lint/" style="color:#93c5fd">ds-lint</a>
+<span style="color:#93c5fd">4.</span> Measure adoption      → <strong style="color:#e5e5e5">ds-coverage</strong>  ← you are here
+<span style="color:#93c5fd">5.</span> Check live site       → <a href="/ds-health/" style="color:#93c5fd">ds-health</a></div>
+</section>
+
+<div class="page-nav">
+  <div></div>
+  <a href="https://github.com/AndrewAntoshkin/ds-coverage" target="_blank" class="pn-link"><span class="pn-hint">View on</span><span class="pn-title">GitHub →</span></a>
+</div>
+
+</article>
+</main>
+</div>
+<script>
+(function(){
+  const sections = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('.sidebar .nav-item[href^="#"]');
+  if (!sections.length || !links.length) return;
+  const map = {};
+  links.forEach(a => { const id = a.getAttribute('href').slice(1); if (id) map[id] = a; });
+  function activate(id) {
+    links.forEach(a => a.classList.remove('active'));
+    if (map[id]) map[id].classList.add('active');
+  }
+  const obs = new IntersectionObserver(entries => {
+    for (const e of entries) {
+      if (e.isIntersecting) { activate(e.target.id); break; }
+    }
+  }, { rootMargin: '-20% 0px -60% 0px' });
+  sections.forEach(s => obs.observe(s));
+  const firstLink = links[0];
+  if (firstLink) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY < 200) {
+        links.forEach(a => a.classList.remove('active'));
+        firstLink.classList.add('active');
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>
