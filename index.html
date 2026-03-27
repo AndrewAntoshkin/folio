@@ -52,14 +52,6 @@
             --hover-bg: rgba(0, 0, 0, 0.04);
             --avatar-border: rgba(80, 80, 80, 0.5);
             --badge-border: #b0b0b0;
-            --overlay: rgba(10, 10, 10, 0.2);
-            --panel-bg: #ffffff;
-            --panel-muted-bg: #f5f5f5;
-            --chip-border: #d4d4d8;
-            --chip-dot-design: #84cc16;
-            --chip-dot-dev: #a855f7;
-            --chip-dot-video: #eab308;
-            --chip-dot-other: #ef4444;
         }
 
         @media (prefers-color-scheme: dark) {
@@ -72,14 +64,6 @@
                 --hover-bg: rgba(255, 255, 255, 0.04);
                 --avatar-border: rgba(207, 207, 207, 0.5);
                 --badge-border: #7c7c7c;
-                --overlay: rgba(0, 0, 0, 0.32);
-                --panel-bg: #09090b;
-                --panel-muted-bg: #1b1b1b;
-                --chip-border: #444;
-                --chip-dot-design: #84cc16;
-                --chip-dot-dev: #a855f7;
-                --chip-dot-video: #eab308;
-                --chip-dot-other: #f87171;
             }
         }
 
@@ -101,7 +85,6 @@
 
         body {
             min-height: 100vh;
-            display: flex;
         }
 
         a {
@@ -110,17 +93,10 @@
         }
 
         main {
-            flex: 1;
-            min-width: 0;
-            max-width: 100%;
-            padding-top: clamp(2rem, 0.56rem + 5.56vw, 5rem);
-            padding-bottom: clamp(2rem, 0.56rem + 5.56vw, 5rem);
-            transition: flex 0.3s ease;
-        }
-
-        .main-inner {
             width: min(592px, 100% - 32px);
             margin: 0 auto;
+            padding-top: clamp(2rem, 0.56rem + 5.56vw, 5rem);
+            padding-bottom: clamp(2rem, 0.56rem + 5.56vw, 5rem);
         }
 
         .hero {
@@ -199,7 +175,7 @@
             line-height: normal;
         }
 
-        main section:not(.entries-section) h2 {
+        main section h2 {
             margin-bottom: 24px;
         }
 
@@ -348,214 +324,42 @@
             color: var(--text-muted);
         }
 
-        .entry-arrow {
-            flex-shrink: 0;
-            color: var(--text-muted);
-            opacity: 0;
-            transition: opacity 0.15s ease, color 0.15s ease;
-        }
 
-        .entry:hover .entry-arrow,
-        .entry:focus-visible .entry-arrow {
-            opacity: 1;
-            color: var(--text);
-        }
-
-        .entries:has(.entry:hover) .entry:not(:hover) {
-            opacity: 0.32;
-        }
-
-        .entries:has(.entry:hover) .entry:not(:hover) .entry-arrow {
-            opacity: 0;
-        }
-
-        .entries-section {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .entries-more {
-            width: fit-content;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 4px 6px;
-            border-radius: 8px;
-            border: 1px solid var(--badge-border);
-            background: transparent;
-            color: var(--text);
-            font: inherit;
-            font-size: 0.75rem;
-            line-height: 0.875rem;
-            cursor: pointer;
-            transition: background 0.15s ease, border-color 0.15s ease;
-        }
-
-        .entries-more:hover,
-        .entries-more:focus-visible {
-            background: var(--hover-bg);
-        }
-
-        .side-sheet {
-            flex: 0 0 0px;
-            overflow: hidden;
-            border-left: 0 solid var(--card-border);
-            background: var(--bg);
-            color: var(--text);
-            transition: flex-basis 0.3s ease, border-left-width 0.3s ease, padding 0.3s ease;
-            height: 100dvh;
-            position: sticky;
-            top: 0;
-            padding: 0;
-        }
-
-        .side-sheet.is-open {
-            flex-basis: min(608px, 50vw);
-            border-left-width: 1px;
-            padding: 32px;
-            overflow-y: auto;
-        }
-
-        .sheet-inner {
-            min-width: min(544px, calc(50vw - 64px));
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .sheet-header {
+        .entries-pager {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 16px;
+            gap: 6px;
+            margin-top: 24px;
         }
 
-        .sheet-filters {
+        .pager-dots {
             display: flex;
-            flex-wrap: wrap;
             gap: 4px;
-        }
-
-        .sheet-chip {
-            display: inline-flex;
             align-items: center;
-            gap: 4px;
-            padding: 8px 8px 8px 10px;
-            border: 1px solid var(--chip-border);
-            border-radius: 999px;
-            font-size: 12px;
-            line-height: 14px;
-            color: var(--text);
-            background: transparent;
-            cursor: pointer;
-            transition: opacity 0.15s ease;
         }
 
-        .sheet-chip.is-inactive {
-            opacity: 0.3;
-        }
-
-        .sheet-chip-dot,
-        .sheet-entry-dot {
+        .pager-dot {
             width: 6px;
             height: 6px;
             border-radius: 999px;
-            flex-shrink: 0;
+            background: var(--text-muted);
+            opacity: 0.3;
         }
 
-        .dot-design { background: var(--chip-dot-design); }
-        .dot-dev { background: var(--chip-dot-dev); }
-        .dot-video { background: var(--chip-dot-video); }
-        .dot-other { background: var(--chip-dot-other); }
+        .pager-dot.active {
+            opacity: 1;
+        }
 
-        .sheet-close {
-            width: 26px;
-            height: 26px;
-            display: inline-flex;
+        .pager-arrows {
+            display: flex;
             align-items: center;
-            justify-content: center;
-            border: 0;
-            border-radius: 8px;
-            background: var(--panel-muted-bg);
-            color: var(--text);
-            cursor: pointer;
-            flex-shrink: 0;
+            gap: 2px;
         }
 
-        .sheet-close:hover,
-        .sheet-close:focus-visible {
-            background: var(--hover-bg);
-        }
-
-        .sheet-groups {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .sheet-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .sheet-group-title {
+        .pager-arrow {
             font-size: 12px;
-            font-weight: 500;
-            line-height: 16px;
+            line-height: 12px;
             color: var(--text-muted);
-        }
-
-        .sheet-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .sheet-entry {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: inherit;
-            text-decoration: none;
-            transition: opacity 0.15s ease;
-        }
-
-        .sheet-entry-body {
-            flex: 1;
-            min-width: 0;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .sheet-entry-title {
-            flex: 1;
-            min-width: 0;
-            font-size: 0.875rem;
-            line-height: 1.375rem;
-        }
-
-        .sheet-entry-meta {
-            font-size: 0.875rem;
-            line-height: 1.25rem;
-            color: var(--text-muted);
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-
-        .sheet-list:has(.sheet-entry:hover) .sheet-entry:not(:hover) {
-            opacity: 0.32;
-        }
-
-        .sheet-entry[hidden] {
-            display: none;
-        }
-
-        .sheet-group[hidden] {
-            display: none;
         }
 
         .about-text {
@@ -641,21 +445,11 @@
             .projects-grid {
                 grid-template-columns: 1fr;
             }
-
-            .side-sheet.is-open {
-                flex-basis: 100vw;
-                padding: 24px;
-            }
-
-            .sheet-inner {
-                min-width: 0;
-            }
         }
     </style>
 </head>
 <body>
     <main>
-        <div class="main-inner">
         <div class="hero">
             <div class="hero-identity">
                 <img class="avatar" src="assets/avatar.png" alt="Андрей Антошкин" width="44" height="44">
@@ -704,29 +498,46 @@
             </div>
         </section>
 
-        <section class="entries-section">
-            <h2>Собираю полезное</h2>
+        <section>
+            <h2>Статьи</h2>
             <ol class="entries">
                 <li>
                     <a class="entry" href="design-md.html">
                         <div class="entry-body">
                             <span class="entry-title" style="view-transition-name: article-1">Design.md&nbsp;&mdash; как описать дизайн&#8209;систему для&nbsp;AI&#8209;агентов</span>
-                            <span class="entry-meta">Мар 2026</span>
+                            <span class="entry-meta">Март 2026</span>
                         </div>
-                        <span class="entry-arrow" aria-hidden="true">→</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="entry" href="#">
+                        <div class="entry-body">
+                            <span class="entry-title" style="view-transition-name: article-3">Как создать адаптивный UI для голосовых помощников</span>
+                            <span class="entry-meta">Апрель 2026</span>
+                        </div>
                     </a>
                 </li>
                 <li>
                     <a class="entry" href="dev-for-designers.html">
                         <div class="entry-body">
                             <span class="entry-title" style="view-transition-name: article-2">Зачем дизайнеру дизайн&#8209;систем разбираться в&nbsp;разработке</span>
-                            <span class="entry-meta">Мар 2026</span>
+                            <span class="entry-meta">Март 2026</span>
                         </div>
-                        <span class="entry-arrow" aria-hidden="true">→</span>
                     </a>
                 </li>
             </ol>
-            <button class="entries-more" type="button" data-sheet-open>Смотреть всё</button>
+            <div class="entries-pager">
+                <div class="pager-dots">
+                    <span class="pager-dot active"></span>
+                    <span class="pager-dot"></span>
+                    <span class="pager-dot"></span>
+                    <span class="pager-dot"></span>
+                </div>
+                <div class="pager-arrows">
+                    <span class="pager-arrow" aria-hidden="true">←</span>
+                    <span class="pager-arrow" aria-hidden="true">→</span>
+                </div>
+            </div>
         </section>
 
         <section>
@@ -795,224 +606,7 @@
                 <a href="en.html">En</a>
             </div>
         </footer>
-        </div>
     </main>
 
-    <aside class="side-sheet" data-side-sheet aria-hidden="true" aria-label="Статьи и ссылки">
-        <div class="sheet-inner">
-        <div class="sheet-header">
-            <div class="sheet-filters" aria-label="Категории">
-                <button class="sheet-chip" type="button" data-filter="design"><span class="sheet-chip-dot dot-design"></span>статья</button>
-                <button class="sheet-chip" type="button" data-filter="dev"><span class="sheet-chip-dot dot-dev"></span>ссылка</button>
-                <button class="sheet-chip" type="button" data-filter="video"><span class="sheet-chip-dot dot-video"></span>видео</button>
-                <button class="sheet-chip" type="button" data-filter="other"><span class="sheet-chip-dot dot-other"></span>другое</button>
-            </div>
-            <button class="sheet-close" type="button" data-sheet-close aria-label="Закрыть">×</button>
-        </div>
-
-        <div class="sheet-groups">
-            <section class="sheet-group" aria-labelledby="sheet-group-2026">
-                <h2 class="sheet-group-title" id="sheet-group-2026">2026</h2>
-                <ul class="sheet-list">
-                    <li>
-                        <a class="sheet-entry" href="design-md.html" data-category="design">
-                            <span class="sheet-entry-dot dot-design" aria-hidden="true"></span>
-                            <span class="sheet-entry-body">
-                                <span class="sheet-entry-title">Design.md&nbsp;&mdash; как описать дизайн&#8209;систему для&nbsp;AI&#8209;агентов</span>
-                                <span class="sheet-entry-meta">Март</span>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="sheet-entry" href="dev-for-designers.html" data-category="dev">
-                            <span class="sheet-entry-dot dot-dev" aria-hidden="true"></span>
-                            <span class="sheet-entry-body">
-                                <span class="sheet-entry-title">Зачем дизайнеру дизайн&#8209;систем разбираться в&nbsp;разработке</span>
-                                <span class="sheet-entry-meta">Март</span>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="sheet-entry" href="https://www.youtube.com/watch?v=eh1xisVETMg" target="_blank" rel="noopener" data-category="video">
-                            <span class="sheet-entry-dot dot-video" aria-hidden="true"></span>
-                            <span class="sheet-entry-body">
-                                <span class="sheet-entry-title">Why It's Important To Make Things That Don't Look Perfect</span>
-                                <span class="sheet-entry-meta">Март</span>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="sheet-entry" href="https://www.aidesignfieldguide.com/articles/nate-parrott" target="_blank" rel="noopener" data-category="design">
-                            <span class="sheet-entry-dot dot-design" aria-hidden="true"></span>
-                            <span class="sheet-entry-body">
-                                <span class="sheet-entry-title">Beyond Prototyping: An Interview with Nate Parrott on AI Design</span>
-                                <span class="sheet-entry-meta">Март</span>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="sheet-entry" href="https://www.youtube.com/watch?v=jRdpVo1b1Ic" target="_blank" rel="noopener" data-category="video">
-                            <span class="sheet-entry-dot dot-video" aria-hidden="true"></span>
-                            <span class="sheet-entry-body">
-                                <span class="sheet-entry-title">The Most Remote Homestead On Earth</span>
-                                <span class="sheet-entry-meta">Фев</span>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="sheet-entry" href="https://www.youtube.com/watch?v=5QLzefF2kZQ" target="_blank" rel="noopener" data-category="video">
-                            <span class="sheet-entry-dot dot-video" aria-hidden="true"></span>
-                            <span class="sheet-entry-body">
-                                <span class="sheet-entry-title">Where The City Meets The Wild&nbsp;&mdash; Copenhagen's integration of nature</span>
-                                <span class="sheet-entry-meta">Фев</span>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="sheet-entry" href="https://www.youtube.com/watch?v=VZ2ZcOzLnGg" target="_blank" rel="noopener" data-category="video">
-                            <span class="sheet-entry-dot dot-video" aria-hidden="true"></span>
-                            <span class="sheet-entry-body">
-                                <span class="sheet-entry-title">A Display Powered by Air: 3D Printed Microfluidic Multiplexing</span>
-                                <span class="sheet-entry-meta">Фев</span>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="sheet-entry" href="https://www.youtube.com/watch?v=-lsFs2615gw" target="_blank" rel="noopener" data-category="video">
-                            <span class="sheet-entry-dot dot-video" aria-hidden="true"></span>
-                            <span class="sheet-entry-body">
-                                <span class="sheet-entry-title">Mission: Impossible &mdash; Dead Reckoning | The Biggest Stunt in Cinema History</span>
-                                <span class="sheet-entry-meta">Фев</span>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="sheet-entry" href="https://peterboeckel.com/writing/displacementofpurpose" target="_blank" rel="noopener" data-category="design">
-                            <span class="sheet-entry-dot dot-design" aria-hidden="true"></span>
-                            <span class="sheet-entry-body">
-                                <span class="sheet-entry-title">The Displacement of Purpose</span>
-                                <span class="sheet-entry-meta">Фев</span>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="sheet-entry" href="https://kateshash.com/blog/brunomunari" target="_blank" rel="noopener" data-category="design">
-                            <span class="sheet-entry-dot dot-design" aria-hidden="true"></span>
-                            <span class="sheet-entry-body">
-                                <span class="sheet-entry-title">Orange as a Product Design Object&nbsp;&mdash; Bruno Munari</span>
-                                <span class="sheet-entry-meta">Янв</span>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="sheet-entry" href="https://www.amazon.de/-/en/gp/product/B09PHJS3JW" target="_blank" rel="noopener" data-category="other">
-                            <span class="sheet-entry-dot dot-other" aria-hidden="true"></span>
-                            <span class="sheet-entry-body">
-                                <span class="sheet-entry-title">The Motern Method by Matt Farley</span>
-                                <span class="sheet-entry-meta">Янв</span>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="sheet-entry" href="https://www.youtube.com/watch?v=vjDYfvPW4mA" target="_blank" rel="noopener" data-category="video">
-                            <span class="sheet-entry-dot dot-video" aria-hidden="true"></span>
-                            <span class="sheet-entry-body">
-                                <span class="sheet-entry-title">What Everyone Gets Wrong About Planes</span>
-                                <span class="sheet-entry-meta">Янв</span>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="sheet-entry" href="https://onemillionscreenshots.com/" target="_blank" rel="noopener" data-category="other">
-                            <span class="sheet-entry-dot dot-other" aria-hidden="true"></span>
-                            <span class="sheet-entry-body">
-                                <span class="sheet-entry-title">One Million Screenshots</span>
-                                <span class="sheet-entry-meta">Янв</span>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="sheet-entry" href="https://www.youtube.com/watch?v=kfeytgohT6A" target="_blank" rel="noopener" data-category="video">
-                            <span class="sheet-entry-dot dot-video" aria-hidden="true"></span>
-                            <span class="sheet-entry-body">
-                                <span class="sheet-entry-title">Muji &mdash; The Brand That Designed &ldquo;Nothing&rdquo;</span>
-                                <span class="sheet-entry-meta">Янв</span>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="sheet-entry" href="https://www.shaheer.info/" target="_blank" rel="noopener" data-category="other">
-                            <span class="sheet-entry-dot dot-other" aria-hidden="true"></span>
-                            <span class="sheet-entry-body">
-                                <span class="sheet-entry-title">Shaheer Tarar</span>
-                                <span class="sheet-entry-meta">Янв</span>
-                            </span>
-                        </a>
-                    </li>
-                </ul>
-            </section>
-        </div>
-        </div>
-    </aside>
-
-    <script>
-        (() => {
-            const sheet = document.querySelector('[data-side-sheet]');
-            const openBtn = document.querySelector('[data-sheet-open]');
-            const closeBtn = document.querySelector('[data-sheet-close]');
-            if (!sheet || !openBtn || !closeBtn) return;
-
-            const openSheet = () => {
-                sheet.classList.add('is-open');
-                sheet.setAttribute('aria-hidden', 'false');
-            };
-            const closeSheet = () => {
-                sheet.classList.remove('is-open');
-                sheet.setAttribute('aria-hidden', 'true');
-            };
-
-            openBtn.addEventListener('click', openSheet);
-            closeBtn.addEventListener('click', closeSheet);
-            document.addEventListener('keydown', e => {
-                if (e.key === 'Escape' && sheet.classList.contains('is-open')) closeSheet();
-            });
-
-            const chips = sheet.querySelectorAll('[data-filter]');
-            const entries = sheet.querySelectorAll('[data-category]');
-            const groups = sheet.querySelectorAll('.sheet-group');
-            const activeFilters = new Set();
-
-            const applyFilters = () => {
-                const showAll = activeFilters.size === 0;
-
-                chips.forEach(chip => {
-                    chip.classList.toggle('is-inactive', !showAll && !activeFilters.has(chip.dataset.filter));
-                });
-
-                entries.forEach(entry => {
-                    const li = entry.closest('li');
-                    if (!li) return;
-                    li.hidden = !showAll && !activeFilters.has(entry.dataset.category);
-                });
-
-                groups.forEach(group => {
-                    const visible = group.querySelectorAll('.sheet-list li:not([hidden])');
-                    group.hidden = visible.length === 0;
-                });
-            };
-
-            chips.forEach(chip => {
-                chip.addEventListener('click', () => {
-                    const cat = chip.dataset.filter;
-                    if (activeFilters.has(cat)) {
-                        activeFilters.delete(cat);
-                    } else {
-                        activeFilters.add(cat);
-                    }
-                    applyFilters();
-                });
-            });
-        })();
-    </script>
 </body>
 </html>
