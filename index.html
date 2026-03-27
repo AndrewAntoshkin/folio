@@ -358,11 +358,11 @@
             color: var(--text);
         }
 
-        .entries:hover .entry:not(:hover) {
+        .entries:has(.entry:hover) .entry:not(:hover) {
             opacity: 0.32;
         }
 
-        .entries:hover .entry:not(:hover) .entry-arrow {
+        .entries:has(.entry:hover) .entry:not(:hover) .entry-arrow {
             opacity: 0;
         }
 
@@ -439,8 +439,8 @@
             padding: 6px 8px 6px 10px;
             border: 1px solid var(--chip-border);
             border-radius: 999px;
-            font-size: 10px;
-            line-height: 12px;
+            font-size: 12px;
+            line-height: 14px;
             color: var(--text);
             background: transparent;
             cursor: pointer;
@@ -541,7 +541,7 @@
             flex-shrink: 0;
         }
 
-        .sheet-list:hover .sheet-entry:not(:hover) {
+        .sheet-list:has(.sheet-entry:hover) .sheet-entry:not(:hover) {
             opacity: 0.32;
         }
 
@@ -806,8 +806,8 @@
         </div>
 
         <div class="sheet-groups">
-            <section class="sheet-group" aria-labelledby="sheet-group-mar">
-                <h2 class="sheet-group-title" id="sheet-group-mar">Март 2026</h2>
+            <section class="sheet-group" aria-labelledby="sheet-group-2026">
+                <h2 class="sheet-group-title" id="sheet-group-2026">2026</h2>
                 <ul class="sheet-list">
                     <li>
                         <a class="sheet-entry" href="design-md.html" data-category="design">
@@ -854,12 +854,6 @@
                             </span>
                         </a>
                     </li>
-                </ul>
-            </section>
-
-            <section class="sheet-group" aria-labelledby="sheet-group-feb">
-                <h2 class="sheet-group-title" id="sheet-group-feb">Февраль 2026</h2>
-                <ul class="sheet-list">
                     <li>
                         <a class="sheet-entry" href="https://www.youtube.com/watch?v=jRdpVo1b1Ic" target="_blank" rel="noopener" data-category="video">
                             <span class="sheet-entry-dot dot-video" aria-hidden="true"></span>
@@ -905,12 +899,6 @@
                             </span>
                         </a>
                     </li>
-                </ul>
-            </section>
-
-            <section class="sheet-group" aria-labelledby="sheet-group-jan">
-                <h2 class="sheet-group-title" id="sheet-group-jan">Январь 2026</h2>
-                <ul class="sheet-list">
                     <li>
                         <a class="sheet-entry" href="https://kateshash.com/blog/brunomunari" target="_blank" rel="noopener" data-category="design">
                             <span class="sheet-entry-dot dot-design" aria-hidden="true"></span>
