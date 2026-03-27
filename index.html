@@ -242,7 +242,8 @@
         }
 
         .project-card.disabled {
-            opacity: 0.45;
+            background: var(--hover-bg);
+            border-color: transparent;
             pointer-events: none;
             cursor: default;
         }
@@ -498,7 +499,7 @@
                         <span class="project-title">figma-to-design-md</span>
                         <span class="project-badge">tool</span>
                     </div>
-                    <span class="project-desc">CLI&#8209;инструмент: вытаскивает переменные, стили и&nbsp;компоненты из&nbsp;Figma через API и&nbsp;генерирует markdown&#8209;спеки для AI&#8209;агентов</span>
+                    <span class="project-desc">Figma&#8209;плагин, который вытаскивает переменные и&nbsp;стили из&nbsp;Figma&#8209;файла и&nbsp;генерирует Design.md / SKILL.md для AI&#8209;агентов</span>
                 </a>
                 <a class="project-card" href="https://github.com/AndrewAntoshkin/awesome-ds-for-ai" target="_blank" rel="noopener">
                     <div class="project-header">
@@ -507,13 +508,13 @@
                     </div>
                     <span class="project-desc">Курируемая коллекция .cursor/rules/ и&nbsp;CLAUDE.md специально для дизайн&#8209;систем</span>
                 </a>
-                <a class="project-card" href="https://designer2builder.com" target="_blank" rel="noopener">
+                <div class="project-card disabled">
                     <div class="project-header">
-                        <span class="project-title">Designer2Builder</span>
-                        <span class="project-badge">system</span>
+                        <span class="project-title">Designer &rarr; Builder</span>
+                        <span class="project-badge">скоро</span>
                     </div>
                     <span class="project-desc">Практикум для дизайнеров на&nbsp;стыке дизайна и&nbsp;разработки</span>
-                </a>
+                </div>
             </div>
         </section>
 
