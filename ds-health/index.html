@@ -59,12 +59,13 @@ pre{margin:0;padding:14px 16px;font-size:12.5px;font-family:ui-monospace,SFMono-
 .score-value{font-size:24px;font-weight:600;margin-bottom:4px}
 .score-label{font-size:11px;color:#6b6b6b;text-transform:uppercase;letter-spacing:.04em}
 .score-green{color:#4ade80}.score-yellow{color:#fbbf24}.score-red{color:#f87171}
-.menu-btn{display:none;position:absolute;top:12px;right:-52px;z-index:200;width:40px;height:40px;border:1px solid #333;border-radius:8px;background:#171716;color:#e5e5e5;cursor:pointer;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;padding:0}
+.menu-btn{display:none;position:fixed;top:12px;left:12px;z-index:200;width:40px;height:40px;border:1px solid #333;border-radius:8px;background:#171716;color:#e5e5e5;cursor:pointer;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;padding:0;transition:left .25s ease}
+.menu-btn.open{left:252px}
 .menu-btn svg{width:20px;height:20px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round}
 .menu-btn line{transition:transform .25s ease,opacity .2s ease;transform-origin:12px 12px}
-.sidebar.open .menu-btn .line1{transform:rotate(45deg) translate(0px,0px)}
-.sidebar.open .menu-btn .line2{opacity:0}
-.sidebar.open .menu-btn .line3{transform:rotate(-45deg) translate(0px,0px)}
+.menu-btn.open .line1{transform:rotate(45deg)}
+.menu-btn.open .line2{opacity:0}
+.menu-btn.open .line3{transform:rotate(-45deg)}
 .backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:99;-webkit-tap-highlight-color:transparent}
 @media(max-width:800px){
   .menu-btn{display:flex}
@@ -91,10 +92,10 @@ pre{margin:0;padding:14px 16px;font-size:12.5px;font-family:ui-monospace,SFMono-
 </style>
 </head>
 <body>
+<button class="menu-btn" aria-label="Menu"><svg viewBox="0 0 24 24"><line class="line1" x1="3" y1="6" x2="21" y2="6"/><line class="line2" x1="3" y1="12" x2="21" y2="12"/><line class="line3" x1="3" y1="18" x2="21" y2="18"/></svg></button>
 <div class="backdrop"></div>
 <div class="shell">
 <nav class="sidebar">
-  <button class="menu-btn" aria-label="Menu"><svg viewBox="0 0 24 24"><line class="line1" x1="3" y1="6" x2="21" y2="6"/><line class="line2" x1="3" y1="12" x2="21" y2="12"/><line class="line3" x1="3" y1="18" x2="21" y2="18"/></svg></button>
   <div class="sidebar-inner">
     <a href="/ds-health/" class="brand">ds-health</a>
     <p class="byline">by <a href="https://antoshkin.tech">Andrew Antoshkin</a></p>
@@ -320,8 +321,8 @@ Recommendations:
   const btn = document.querySelector('.menu-btn');
   const sidebar = document.querySelector('.sidebar');
   const backdrop = document.querySelector('.backdrop');
-  function toggle() { sidebar.classList.toggle('open'); backdrop.classList.toggle('open'); }
-  function close() { sidebar.classList.remove('open'); backdrop.classList.remove('open'); }
+  function toggle() { sidebar.classList.toggle('open'); backdrop.classList.toggle('open'); btn.classList.toggle('open'); }
+  function close() { sidebar.classList.remove('open'); backdrop.classList.remove('open'); btn.classList.remove('open'); }
   if (btn) btn.addEventListener('click', toggle);
   if (backdrop) backdrop.addEventListener('click', close);
   links.forEach(a => a.addEventListener('click', close));
