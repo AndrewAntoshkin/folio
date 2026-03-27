@@ -30,13 +30,17 @@
         }
 
         .menu-btn {
-            display: none; position: fixed; top: 12px; left: 12px; z-index: 200;
+            display: none; position: absolute; top: 12px; right: -52px; z-index: 200;
             width: 40px; height: 40px; border: 1px solid #333; border-radius: 8px;
-            background: #171716; color: #e5e5e5; font-size: 20px; cursor: pointer;
+            background: #171716; color: #e5e5e5; cursor: pointer;
             align-items: center; justify-content: center;
-            -webkit-tap-highlight-color: transparent;
+            -webkit-tap-highlight-color: transparent; padding: 0;
         }
         .menu-btn svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; }
+        .menu-btn line { transition: transform .25s ease, opacity .2s ease; transform-origin: 12px 12px; }
+        .mobile-sidebar.open .menu-btn .line1 { transform: rotate(45deg); }
+        .mobile-sidebar.open .menu-btn .line2 { opacity: 0; }
+        .mobile-sidebar.open .menu-btn .line3 { transform: rotate(-45deg); }
         .menu-btn:active { transform: none; }
         .mobile-backdrop {
             display: none; position: fixed; inset: 0;
@@ -52,15 +56,15 @@
             .spacer-col { display: none; }
             body { overflow-x: hidden; }
             #root { overflow-x: hidden; max-width: 100vw; }
-            main { padding: 56px 16px 48px !important; }
+            main { padding: 52px 16px 48px !important; }
             article { max-width: 100% !important; overflow-x: hidden; }
-            pre { white-space: pre-wrap !important; word-break: break-all !important; font-size: 12px !important; }
+            pre { white-space: pre-wrap !important; word-break: break-all !important; font-size: 11px !important; }
             code { word-break: break-all; }
-            h1 { font-size: 24px !important; }
+            h1 { font-size: 20px !important; }
             section > div { max-width: 100%; overflow-x: auto; }
         }
     </style>
-  <script type="module" crossorigin src="/spektr/assets/index-0zaRZ0qT.js"></script>
+  <script type="module" crossorigin src="/spektr/assets/index-B0qBRGfX.js"></script>
 </head>
 <body>
     <div id="root"></div>
