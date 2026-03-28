@@ -443,47 +443,223 @@
             }
         }
 
-        .spektr-hint {
+        .bottom-bar {
             position: fixed;
-            bottom: 16px;
+            bottom: var(--space-md);
             left: 50%;
             transform: translateX(-50%);
+            display: flex;
+            gap: var(--space-sm);
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .bottom-pill {
             background: var(--text);
             color: var(--bg);
             font-size: 12px;
             padding: 6px 14px;
-            border-radius: 100px;
+            border-radius: var(--radius-pill);
             display: flex;
             align-items: center;
             gap: 6px;
-            z-index: 100;
             opacity: 0.85;
             transition: opacity 0.2s;
             white-space: nowrap;
             pointer-events: auto;
+            cursor: default;
+            border: none;
+            font-family: inherit;
         }
 
-        .spektr-hint:hover { opacity: 1; }
+        .bottom-pill:hover { opacity: 1; }
 
-        .spektr-hint-key {
+        .bottom-pill-key {
             font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
             font-size: 11px;
             background: rgba(128,128,128,0.25);
             padding: 1px 6px;
-            border-radius: 4px;
+            border-radius: var(--radius-sm);
         }
 
-        .spektr-hint-link {
+        .bottom-pill-link {
             color: inherit;
             opacity: 0.5;
             text-decoration: none;
-            margin-left: 4px;
+            margin-left: var(--space-xs);
         }
 
-        .spektr-hint-link:hover { opacity: 1; }
+        .bottom-pill-link:hover { opacity: 1; }
+
+        .bottom-pill-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #22c55e;
+            flex-shrink: 0;
+        }
+
+        button.bottom-pill { cursor: pointer; }
+
+        .dsh-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 380px;
+            background: var(--bg);
+            border-left: 1px solid var(--border);
+            z-index: 200;
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            overflow-y: auto;
+            padding: var(--space-lg);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+        }
+
+        .dsh-panel.open { transform: translateX(0); }
+
+        body.dsh-open main {
+            margin-right: 380px;
+            transition: margin-right 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        main {
+            transition: margin-right 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .dsh-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .dsh-header h3 {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .dsh-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.25rem;
+            cursor: pointer;
+            padding: var(--space-xs);
+            line-height: 1;
+            transition: color 0.15s;
+        }
+
+        .dsh-close:hover { color: var(--text); }
+
+        .dsh-score-ring {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .dsh-score-ring svg {
+            width: 120px;
+            height: 120px;
+        }
+
+        .dsh-score-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .dsh-cats {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .dsh-cat {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+
+        .dsh-cat-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+        }
+
+        .dsh-cat-name { color: var(--text); }
+        .dsh-cat-val { color: var(--text-muted); font-variant-numeric: tabular-nums; }
+
+        .dsh-cat-bar {
+            height: 4px;
+            border-radius: 2px;
+            background: var(--border);
+            overflow: hidden;
+        }
+
+        .dsh-cat-fill {
+            height: 100%;
+            border-radius: 2px;
+            background: #22c55e;
+            transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .dsh-section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: var(--space-sm);
+        }
+
+        .dsh-summary {
+            font-size: 0.875rem;
+            line-height: 1.5;
+            color: var(--text-muted);
+        }
+
+        .dsh-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-sm);
+        }
+
+        .dsh-stat {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .dsh-stat-val {
+            font-size: 1rem;
+            font-weight: 500;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .dsh-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .dsh-powered {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .dsh-powered a {
+            color: var(--text);
+            text-decoration: underline;
+            text-decoration-color: color-mix(in srgb, currentColor, transparent 75%);
+            text-underline-offset: 0.2em;
+        }
 
         @media (max-width: 600px) {
-            .spektr-hint { display: none; }
+            .bottom-bar { display: none; }
+            .dsh-panel { display: none; }
         }
     </style>
 </head>
@@ -661,9 +837,36 @@
             </div>
         </footer>
 
-        <div class="spektr-hint" id="spektrHint">
-            <span class="spektr-hint-key">Alt</span> + hover — element inspector
-            <a href="https://antoshkin.tech/spektr" target="_blank" rel="noopener" class="spektr-hint-link">spektr</a>
+        <div class="bottom-bar">
+            <div class="bottom-pill" id="spektrHint">
+                <span class="bottom-pill-key">Alt</span> + hover — inspector
+                <a href="https://antoshkin.tech/spektr" target="_blank" rel="noopener" class="bottom-pill-link">spektr</a>
+            </div>
+            <button class="bottom-pill" id="dshBtn" type="button">
+                <span class="bottom-pill-dot"></span>
+                ds-health: Healthy
+            </button>
+        </div>
+
+        <div class="dsh-panel" id="dshPanel">
+            <div class="dsh-header">
+                <h3>ds-health</h3>
+                <button class="dsh-close" id="dshClose" type="button">&times;</button>
+            </div>
+            <div class="dsh-score-ring" id="dshRing"></div>
+            <div>
+                <div class="dsh-section-title">Categories</div>
+                <div class="dsh-cats" id="dshCats"></div>
+            </div>
+            <div>
+                <div class="dsh-section-title">Stats</div>
+                <div class="dsh-stats" id="dshStats"></div>
+            </div>
+            <div>
+                <div class="dsh-section-title">Summary</div>
+                <p class="dsh-summary" id="dshSummary"></p>
+            </div>
+            <div class="dsh-powered">Powered by <a href="https://antoshkin.tech/ds-health/" target="_blank" rel="noopener">ds-health</a></div>
         </div>
     </main>
 
@@ -817,6 +1020,74 @@
         document.addEventListener('mousemove', e => {
             document.body.style.cursor = (e.altKey && active) ? 'crosshair' : '';
         });
+    })();
+    </script>
+
+    <script type="application/json" id="dsHealthData">
+    {"health":{"color":100,"typography":100,"spacing":100,"radius":100,"overall":100,"label":"Healthy","labels":{"color":"Healthy","typography":"Healthy","spacing":"Healthy","radius":"Healthy"}},"summary":{"elementsSampled":124,"textNodesSampled":122,"cssVariables":18,"textColors":3,"backgroundColors":4,"fontFamilies":2,"fontSizes":4,"fontWeights":2,"spacingValues":12,"radiusValues":5},"executiveSummary":"This page looks healthy. 18 CSS variables were detected, and no major consistency issues stood out in the sampled page."}
+    </script>
+
+    <script>
+    (() => {
+        const data = JSON.parse(document.getElementById('dsHealthData').textContent);
+        const panel = document.getElementById('dshPanel');
+        const btn = document.getElementById('dshBtn');
+        const close = document.getElementById('dshClose');
+
+        btn.addEventListener('click', () => {
+            panel.classList.add('open');
+            document.body.classList.add('dsh-open');
+        });
+        close.addEventListener('click', () => {
+            panel.classList.remove('open');
+            document.body.classList.remove('dsh-open');
+        });
+
+        const { health, summary } = data;
+        const ring = document.getElementById('dshRing');
+        const r = 52, c = 2 * Math.PI * r;
+        const offset = c - (health.overall / 100) * c;
+        ring.innerHTML = `
+            <svg viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="${r}" fill="none" stroke="var(--border)" stroke-width="8"/>
+                <circle cx="60" cy="60" r="${r}" fill="none" stroke="#22c55e" stroke-width="8"
+                    stroke-dasharray="${c}" stroke-dashoffset="${offset}"
+                    stroke-linecap="round" transform="rotate(-90 60 60)"
+                    style="transition: stroke-dashoffset 0.8s cubic-bezier(0.22,1,0.36,1)"/>
+                <text x="60" y="56" text-anchor="middle" fill="var(--text)" font-size="28" font-weight="500" font-family="Inter, sans-serif">${health.overall}</text>
+                <text x="60" y="74" text-anchor="middle" fill="var(--text-muted)" font-size="11" font-family="Inter, sans-serif">${health.label}</text>
+            </svg>`;
+
+        const cats = document.getElementById('dshCats');
+        const catNames = { color: 'Color', typography: 'Typography', spacing: 'Spacing', radius: 'Radius' };
+        for (const [key, name] of Object.entries(catNames)) {
+            const val = health[key];
+            cats.innerHTML += `
+                <div class="dsh-cat">
+                    <div class="dsh-cat-header">
+                        <span class="dsh-cat-name">${name}</span>
+                        <span class="dsh-cat-val">${val}/100</span>
+                    </div>
+                    <div class="dsh-cat-bar"><div class="dsh-cat-fill" style="width:${val}%"></div></div>
+                </div>`;
+        }
+
+        const stats = document.getElementById('dshStats');
+        const statItems = [
+            [summary.cssVariables, 'CSS variables'],
+            [summary.elementsSampled, 'Elements'],
+            [summary.textColors, 'Text colors'],
+            [summary.backgroundColors, 'Backgrounds'],
+            [summary.fontFamilies, 'Font families'],
+            [summary.fontSizes, 'Font sizes'],
+            [summary.spacingValues, 'Spacing values'],
+            [summary.radiusValues, 'Radius values']
+        ];
+        for (const [val, label] of statItems) {
+            stats.innerHTML += `<div class="dsh-stat"><span class="dsh-stat-val">${val}</span><span class="dsh-stat-label">${label}</span></div>`;
+        }
+
+        document.getElementById('dshSummary').textContent = data.executiveSummary;
     })();
     </script>
 </body>
