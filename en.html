@@ -521,12 +521,12 @@
 
         .dsh-panel.open { transform: translateX(0); }
 
-        body.dsh-open main {
-            transform: translateX(-190px);
+        body {
+            transition: padding-right 0.3s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        main {
-            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        body.dsh-open {
+            padding-right: 380px;
         }
 
         .dsh-header {
