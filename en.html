@@ -459,6 +459,7 @@
             align-items: center;
             gap: 6px;
             white-space: nowrap;
+            transition: background 0.2s, border-color 0.2s, color 0.2s;
         }
 
         .spektr-hint kbd {
@@ -469,6 +470,35 @@
             border-radius: 3px;
             color: var(--text);
         }
+
+        .spektr-hint.active {
+            background: var(--text);
+            border-color: var(--text);
+            color: var(--bg);
+        }
+
+        .spektr-hint.active kbd {
+            background: rgba(255,255,255,0.2);
+            color: var(--bg);
+        }
+
+        .spektr-hint-close {
+            display: none;
+            background: none;
+            border: none;
+            color: inherit;
+            font-size: 14px;
+            line-height: 1;
+            cursor: pointer;
+            padding: 0;
+            margin-left: 2px;
+            opacity: 0.6;
+            transition: opacity 0.15s;
+        }
+
+        .spektr-hint-close:hover { opacity: 1; }
+
+        .spektr-hint.active .spektr-hint-close { display: inline; }
 
         @media (max-width: 600px) {
             .spektr-hint { display: none; }
@@ -649,7 +679,7 @@
             </div>
         </footer>
 
-        <div class="spektr-hint" id="spektrHint"><kbd>Alt</kbd> + hover — element inspector</div>
+        <div class="spektr-hint" id="spektrHint"><kbd>Alt</kbd> + hover — element inspector<button class="spektr-hint-close" id="spektrClose" type="button">&times;</button></div>
     </main>
 
     <script>
@@ -775,18 +805,33 @@
             return s;
         }
 
+        function activate() {
+            active = true;
+            if (hint) hint.classList.add('active');
+        }
+
+        function deactivate() {
+            active = false;
+            pinned = false;
+            clearOverlay();
+            if (hint) hint.classList.remove('active');
+        }
+
+        const closeBtn = document.getElementById('spektrClose');
+        if (closeBtn) closeBtn.addEventListener('click', e => { e.stopPropagation(); deactivate(); });
+
         document.addEventListener('mousemove', e => {
             lastX = e.clientX; lastY = e.clientY;
-            if (e.altKey) { active = true; inspect(lastX, lastY); if (hint) hint.style.display = 'none'; }
+            if (e.altKey) { activate(); inspect(lastX, lastY); }
             else if (!pinned) { active = false; clearOverlay(); }
         });
 
         document.addEventListener('keydown', e => {
-            if (e.key === 'Alt') { active = true; inspect(lastX, lastY); if (hint) hint.style.display = 'none'; }
+            if (e.key === 'Alt') { activate(); inspect(lastX, lastY); }
         });
 
         document.addEventListener('keyup', e => {
-            if (e.key === 'Alt') { active = false; if (!pinned) clearOverlay(); }
+            if (e.key === 'Alt') { if (!pinned) { active = false; clearOverlay(); } }
         });
 
         document.addEventListener('click', e => {
