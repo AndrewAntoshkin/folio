@@ -449,49 +449,61 @@
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: var(--space-sm);
+            gap: 6px;
             z-index: 100;
-            pointer-events: none;
         }
 
-        .bottom-pill {
-            background: var(--text);
-            color: var(--bg);
-            font-size: 12px;
-            padding: 6px 14px;
+        .bottom-chip {
+            position: relative;
+            background: rgba(38, 38, 38, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: var(--text-muted);
+            font-size: 11px;
+            font-family: inherit;
+            padding: 6px 12px;
             border-radius: var(--radius-pill);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: color 0.2s, background 0.2s, border-color 0.2s;
+        }
+
+        .bottom-chip:hover {
+            color: var(--text);
+            background: rgba(38, 38, 38, 0.9);
+            border-color: rgba(255,255,255,0.15);
+        }
+
+        .bottom-chip-preview {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%) translateY(6px);
+            background: rgba(26, 26, 26, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--radius-md);
+            padding: 10px 14px;
+            font-size: 12px;
+            color: var(--text-muted);
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s, transform 0.2s;
             display: flex;
             align-items: center;
-            gap: 6px;
-            opacity: 0.85;
-            transition: opacity 0.2s;
-            white-space: nowrap;
+            gap: 8px;
+        }
+
+        .bottom-chip:hover .bottom-chip-preview {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
             pointer-events: auto;
-            cursor: default;
-            border: none;
-            font-family: inherit;
         }
 
-        .bottom-pill:hover { opacity: 1; }
-
-        .bottom-pill-key {
-            font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
-            font-size: 11px;
-            background: rgba(128,128,128,0.25);
-            padding: 1px 6px;
-            border-radius: var(--radius-sm);
-        }
-
-        .bottom-pill-link {
-            color: inherit;
-            opacity: 0.5;
-            text-decoration: none;
-            margin-left: var(--space-xs);
-        }
-
-        .bottom-pill-link:hover { opacity: 1; }
-
-        .bottom-pill-dot {
+        .bottom-chip-preview .chip-dot {
             width: 6px;
             height: 6px;
             border-radius: 50%;
@@ -499,7 +511,19 @@
             flex-shrink: 0;
         }
 
-        button.bottom-pill { cursor: pointer; }
+        .bottom-chip-preview .chip-key {
+            font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
+            font-size: 10px;
+            background: rgba(128,128,128,0.3);
+            padding: 1px 5px;
+            border-radius: 3px;
+            color: var(--text);
+        }
+
+        .bottom-chip-preview .chip-val {
+            color: var(--text);
+            font-weight: 500;
+        }
 
         .project-card { position: relative; }
 
@@ -891,13 +915,29 @@
         </footer>
 
         <div class="bottom-bar">
-            <div class="bottom-pill" id="spektrHint">
-                <span class="bottom-pill-key">Alt</span> + hover — inspector
-                <a href="https://antoshkin.tech/spektr" target="_blank" rel="noopener" class="bottom-pill-link">spektr</a>
-            </div>
-            <button class="bottom-pill" id="dshBtn" type="button">
-                <span class="bottom-pill-dot"></span>
-                ds-health: Healthy
+            <button class="bottom-chip" data-demo="spektr" type="button">
+                spektr
+                <div class="bottom-chip-preview"><span class="chip-key">Alt</span> + hover — inspector</div>
+            </button>
+            <button class="bottom-chip" data-demo="ds-health" type="button">
+                ds-health
+                <div class="bottom-chip-preview"><span class="chip-dot"></span> <span class="chip-val">100</span> · Healthy</div>
+            </button>
+            <button class="bottom-chip" data-demo="ds-lint" type="button">
+                ds-lint
+                <div class="bottom-chip-preview"><span class="chip-val">8</span> issues → token fixes</div>
+            </button>
+            <button class="bottom-chip" data-demo="ds-coverage" type="button">
+                ds-coverage
+                <div class="bottom-chip-preview"><span class="chip-val">68%</span> adoption</div>
+            </button>
+            <button class="bottom-chip" data-demo="figma-to-design-md" type="button">
+                figma-to-design-md
+                <div class="bottom-chip-preview">Figma → <span class="chip-val">design.md</span></div>
+            </button>
+            <button class="bottom-chip" data-demo="ds-ai-starter" type="button">
+                ds-ai-starter
+                <div class="bottom-chip-preview">tokens → <span class="chip-val">AI specs</span></div>
             </button>
         </div>
 
@@ -919,7 +959,7 @@
 
         let active = false, pinned = false, overlay = null;
         let lastX = 0, lastY = 0;
-        const hint = document.getElementById('spektrHint');
+        const hint = document.querySelector('.bottom-chip[data-demo="spektr"]');
 
         function px(v) { return parseFloat(v) || 0; }
 
@@ -1252,8 +1292,14 @@
             });
         });
 
-        document.getElementById('dshBtn').addEventListener('click', () => {
-            openPanel('ds-health', demos['ds-health']());
+        document.querySelectorAll('.bottom-chip[data-demo]').forEach(chip => {
+            chip.addEventListener('click', () => {
+                const key = chip.dataset.demo;
+                if (key === 'spektr') return;
+                const gen = demos[key];
+                if (!gen) return;
+                openPanel(key, gen());
+            });
         });
     })();
     </script>
