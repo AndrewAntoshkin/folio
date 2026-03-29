@@ -477,15 +477,15 @@
 
         .bottom-chip-preview {
             position: absolute;
-            bottom: calc(100% + 8px);
+            bottom: calc(100% + 10px);
             left: 50%;
             transform: translateX(-50%) translateY(6px);
-            background: rgba(26, 26, 26, 0.85);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            background: rgba(20, 20, 20, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255,255,255,0.1);
-            border-radius: var(--radius-md);
-            padding: 10px 14px;
+            border-radius: var(--radius-lg);
+            padding: 14px 16px;
             font-size: 12px;
             color: var(--text-muted);
             white-space: nowrap;
@@ -493,8 +493,9 @@
             pointer-events: none;
             transition: opacity 0.2s, transform 0.2s;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             gap: 8px;
+            min-width: 200px;
         }
 
         .bottom-chip:hover .bottom-chip-preview {
@@ -503,15 +504,29 @@
             pointer-events: auto;
         }
 
-        .bottom-chip-preview .chip-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #22c55e;
-            flex-shrink: 0;
-        }
+        .prev-row { display: flex; align-items: center; gap: 8px; font-size: 11px; }
+        .prev-label { color: #737373; min-width: 48px; }
+        .prev-val { color: #e5e5e5; font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace; font-size: 11px; }
+        .prev-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 2px 0; }
+        .prev-title { font-size: 11px; color: #737373; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 2px; }
 
-        .bottom-chip-preview .chip-key {
+        .prev-bar-row { display: flex; align-items: center; gap: 8px; font-size: 11px; }
+        .prev-bar-name { color: #a3a3a3; min-width: 56px; }
+        .prev-bar-track { flex: 1; height: 3px; background: rgba(255,255,255,0.06); border-radius: 2px; min-width: 60px; }
+        .prev-bar-fill { height: 100%; border-radius: 2px; }
+        .prev-bar-val { color: #e5e5e5; font-variant-numeric: tabular-nums; min-width: 28px; text-align: right; }
+
+        .prev-ring { display: flex; align-items: center; gap: 12px; }
+        .prev-ring svg { width: 44px; height: 44px; flex-shrink: 0; }
+        .prev-ring-info { display: flex; flex-direction: column; gap: 2px; }
+        .prev-ring-score { font-size: 18px; font-weight: 600; color: #e5e5e5; line-height: 1; }
+        .prev-ring-label { font-size: 11px; color: #22c55e; }
+
+        .prev-tag { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 3px; }
+        .prev-tag-ok { background: rgba(34,197,94,0.15); color: #22c55e; }
+        .prev-tag-warn { background: rgba(251,191,36,0.15); color: #fbbf24; }
+
+        .prev-key {
             font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
             font-size: 10px;
             background: rgba(128,128,128,0.3);
@@ -520,10 +535,10 @@
             color: var(--text);
         }
 
-        .bottom-chip-preview .chip-val {
-            color: var(--text);
-            font-weight: 500;
-        }
+        .prev-file { display: flex; align-items: center; gap: 6px; font-size: 11px; }
+        .prev-file-icon { color: #737373; font-size: 10px; }
+        .prev-file-name { color: #a3a3a3; font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace; }
+        .prev-file-ok { color: #22c55e; margin-left: auto; }
 
         .project-card { position: relative; }
 
@@ -917,27 +932,83 @@
         <div class="bottom-bar">
             <button class="bottom-chip" data-demo="spektr" type="button">
                 spektr
-                <div class="bottom-chip-preview"><span class="chip-key">Alt</span> + hover — inspector</div>
+                <div class="bottom-chip-preview">
+                    <div class="prev-row"><span class="prev-key">Alt</span> + hover any element</div>
+                    <div class="prev-divider"></div>
+                    <div class="prev-row"><span class="prev-label">font</span> <span class="prev-val">14px / 1.5</span></div>
+                    <div class="prev-row"><span class="prev-label">color</span> <span class="prev-val" style="color:#93c5fd">#e5e5e5</span></div>
+                    <div class="prev-row"><span class="prev-label">padding</span> <span class="prev-val">16 24 16 24</span></div>
+                    <div class="prev-row"><span class="prev-label">size</span> <span class="prev-val">320 × 48</span></div>
+                </div>
             </button>
             <button class="bottom-chip" data-demo="ds-health" type="button">
                 ds-health
-                <div class="bottom-chip-preview"><span class="chip-dot"></span> <span class="chip-val">100</span> · Healthy</div>
+                <div class="bottom-chip-preview">
+                    <div class="prev-ring">
+                        <svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="18" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="3"/><circle cx="22" cy="22" r="18" fill="none" stroke="#22c55e" stroke-width="3" stroke-dasharray="113.1" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 22 22)"/><text x="22" y="25" text-anchor="middle" fill="#e5e5e5" font-size="12" font-weight="600" font-family="Inter,sans-serif">100</text></svg>
+                        <div class="prev-ring-info"><span class="prev-ring-score">Healthy</span><span class="prev-ring-label">all categories OK</span></div>
+                    </div>
+                    <div class="prev-divider"></div>
+                    <div class="prev-bar-row"><span class="prev-bar-name">Color</span><div class="prev-bar-track"><div class="prev-bar-fill" style="width:100%;background:#22c55e"></div></div><span class="prev-bar-val">100</span></div>
+                    <div class="prev-bar-row"><span class="prev-bar-name">Type</span><div class="prev-bar-track"><div class="prev-bar-fill" style="width:100%;background:#22c55e"></div></div><span class="prev-bar-val">100</span></div>
+                    <div class="prev-bar-row"><span class="prev-bar-name">Spacing</span><div class="prev-bar-track"><div class="prev-bar-fill" style="width:100%;background:#22c55e"></div></div><span class="prev-bar-val">100</span></div>
+                    <div class="prev-bar-row"><span class="prev-bar-name">Radius</span><div class="prev-bar-track"><div class="prev-bar-fill" style="width:100%;background:#22c55e"></div></div><span class="prev-bar-val">100</span></div>
+                    <div class="prev-divider"></div>
+                    <div class="prev-row"><span class="prev-label">CSS vars</span> <span class="prev-val">18</span></div>
+                    <div class="prev-row"><span class="prev-label">Elements</span> <span class="prev-val">124</span></div>
+                </div>
             </button>
             <button class="bottom-chip" data-demo="ds-lint" type="button">
                 ds-lint
-                <div class="bottom-chip-preview"><span class="chip-val">8</span> issues → token fixes</div>
+                <div class="bottom-chip-preview">
+                    <div class="prev-title">Found</div>
+                    <div class="prev-row" style="gap:6px"><span class="prev-tag prev-tag-warn">8 hardcoded</span> <span style="color:#737373">→</span> <span class="prev-tag prev-tag-ok">8 tokens</span></div>
+                    <div class="prev-divider"></div>
+                    <div class="prev-row"><span class="prev-val" style="color:#737373">Card.css</span> <span class="prev-val" style="color:#fbbf24">3</span></div>
+                    <div class="prev-row"><span class="prev-val" style="color:#737373">Button.css</span> <span class="prev-val" style="color:#fbbf24">2</span></div>
+                    <div class="prev-row"><span class="prev-val" style="color:#737373">Modal.css</span> <span class="prev-val" style="color:#fbbf24">3</span></div>
+                    <div class="prev-divider"></div>
+                    <div class="prev-row"><span class="prev-val" style="color:#737373">#737373</span> <span style="color:#525252">→</span> <span class="prev-val" style="color:#22c55e">var(--text-muted)</span></div>
+                    <div class="prev-row"><span class="prev-val" style="color:#737373">16px</span> <span style="color:#525252">→</span> <span class="prev-val" style="color:#22c55e">var(--space-md)</span></div>
+                </div>
             </button>
             <button class="bottom-chip" data-demo="ds-coverage" type="button">
                 ds-coverage
-                <div class="bottom-chip-preview"><span class="chip-val">68%</span> adoption</div>
+                <div class="bottom-chip-preview">
+                    <div class="prev-title">Component coverage</div>
+                    <div class="prev-bar-row"><span class="prev-bar-name">Button</span><div class="prev-bar-track"><div class="prev-bar-fill" style="width:90%;background:#22c55e"></div></div><span class="prev-bar-val">90%</span></div>
+                    <div class="prev-bar-row"><span class="prev-bar-name">Input</span><div class="prev-bar-track"><div class="prev-bar-fill" style="width:100%;background:#22c55e"></div></div><span class="prev-bar-val">100%</span></div>
+                    <div class="prev-bar-row"><span class="prev-bar-name">Card</span><div class="prev-bar-track"><div class="prev-bar-fill" style="width:82%;background:#22c55e"></div></div><span class="prev-bar-val">82%</span></div>
+                    <div class="prev-bar-row"><span class="prev-bar-name">Modal</span><div class="prev-bar-track"><div class="prev-bar-fill" style="width:12%;background:#fbbf24"></div></div><span class="prev-bar-val" style="color:#fbbf24">12%</span></div>
+                    <div class="prev-bar-row"><span class="prev-bar-name">Tooltip</span><div class="prev-bar-track"><div class="prev-bar-fill" style="width:0%"></div></div><span class="prev-bar-val" style="color:#fbbf24">0%</span></div>
+                    <div class="prev-divider"></div>
+                    <div class="prev-row"><span class="prev-label">Overall</span> <span class="prev-val" style="font-size:13px;font-weight:600">68%</span></div>
+                    <div class="prev-row" style="gap:4px"><span class="prev-tag prev-tag-warn">3 duplicates</span></div>
+                </div>
             </button>
             <button class="bottom-chip" data-demo="figma-to-design-md" type="button">
                 figma-to-design-md
-                <div class="bottom-chip-preview">Figma → <span class="chip-val">design.md</span></div>
+                <div class="bottom-chip-preview">
+                    <div class="prev-title">Extracted from Figma</div>
+                    <div class="prev-file"><span class="prev-file-icon">●</span> <span class="prev-file-name">12 colors</span> <span class="prev-file-ok">✓</span></div>
+                    <div class="prev-file"><span class="prev-file-icon">●</span> <span class="prev-file-name">5 spacings</span> <span class="prev-file-ok">✓</span></div>
+                    <div class="prev-file"><span class="prev-file-icon">●</span> <span class="prev-file-name">6 text styles</span> <span class="prev-file-ok">✓</span></div>
+                    <div class="prev-file"><span class="prev-file-icon">●</span> <span class="prev-file-name">18 components</span> <span class="prev-file-ok">✓</span></div>
+                    <div class="prev-divider"></div>
+                    <div class="prev-row" style="gap:6px"><span style="color:#737373">→</span> <span class="prev-val">design.md</span> <span style="color:#737373;font-size:10px">3.2kb</span></div>
+                </div>
             </button>
             <button class="bottom-chip" data-demo="ds-ai-starter" type="button">
                 ds-ai-starter
-                <div class="bottom-chip-preview">tokens → <span class="chip-val">AI specs</span></div>
+                <div class="bottom-chip-preview">
+                    <div class="prev-title">Generated files</div>
+                    <div class="prev-file"><span class="prev-file-icon">📄</span> <span class="prev-file-name">.cursor/rules/design-system.md</span> <span class="prev-file-ok">✓</span></div>
+                    <div class="prev-file"><span class="prev-file-icon">📄</span> <span class="prev-file-name">CLAUDE.md</span> <span class="prev-file-ok">✓</span></div>
+                    <div class="prev-file"><span class="prev-file-icon">📄</span> <span class="prev-file-name">AGENTS.md</span> <span class="prev-file-ok">✓</span></div>
+                    <div class="prev-file"><span class="prev-file-icon">📄</span> <span class="prev-file-name">copilot-instructions.md</span> <span class="prev-file-ok">✓</span></div>
+                    <div class="prev-divider"></div>
+                    <div class="prev-row"><span class="prev-label">From</span> <span class="prev-val">17 CSS tokens</span></div>
+                </div>
             </button>
         </div>
 
