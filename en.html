@@ -501,7 +501,34 @@
 
         button.bottom-pill { cursor: pointer; }
 
-        .dsh-panel {
+        .project-card { position: relative; }
+
+        .project-play {
+            position: absolute;
+            top: var(--space-sm);
+            right: var(--space-sm);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.15s, color 0.15s, border-color 0.15s;
+            z-index: 2;
+            font-size: 10px;
+            padding: 0;
+            padding-left: 2px;
+        }
+
+        .project-card:hover .project-play { opacity: 1; }
+        .project-play:hover { color: var(--text); border-color: var(--text-muted); }
+
+        .demo-panel {
             position: fixed;
             top: 0;
             right: 0;
@@ -519,17 +546,39 @@
             gap: var(--space-lg);
         }
 
-        .dsh-panel.open { transform: translateX(0); }
+        .demo-panel.open { transform: translateX(0); }
 
         body {
             transition: padding-right 0.3s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        body.dsh-open {
+        body.panel-open {
             padding-right: 380px;
         }
 
-        .dsh-header {
+        .demo-term {
+            background: #1a1a1a;
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #e5e5e5;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        .demo-term .t-prompt { color: #22c55e; }
+        .demo-term .t-cmd { color: #fff; }
+        .demo-term .t-muted { color: #737373; }
+        .demo-term .t-ok { color: #22c55e; }
+        .demo-term .t-warn { color: #fbbf24; }
+        .demo-term .t-val { color: #93c5fd; }
+        .demo-term .t-line { display: block; opacity: 0; animation: termIn 0.15s ease forwards; }
+
+        @keyframes termIn { to { opacity: 1; } }
+
+        .demo-panel .dsh-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -658,7 +707,7 @@
 
         @media (max-width: 600px) {
             .bottom-bar { display: none; }
-            .dsh-panel { display: none; }
+            .demo-panel { display: none; }
         }
     </style>
 </head>
@@ -682,6 +731,7 @@
             <h2>Projects</h2>
             <div class="projects-grid">
                 <a class="project-card" href="https://antoshkin.tech/ds-health/" target="_blank" rel="noopener">
+                    <button class="project-play" data-demo="ds-health" type="button">&#9654;</button>
                     <div class="project-header">
                         <span class="project-title">ds-health</span>
                         <span class="project-badge">repo</span>
@@ -689,6 +739,7 @@
                     <span class="project-desc">Web tool: paste a live site URL, get a visual report on your design system's health</span>
                 </a>
                 <a class="project-card" href="https://antoshkin.tech/figma-to-design-md/" target="_blank" rel="noopener">
+                    <button class="project-play" data-demo="figma-to-design-md" type="button">&#9654;</button>
                     <div class="project-header">
                         <span class="project-title">figma-to-design-md</span>
                         <span class="project-badge">tool</span>
@@ -696,6 +747,7 @@
                     <span class="project-desc">CLI tool that extracts variables, styles and components from Figma via API and generates markdown specs for AI agents</span>
                 </a>
                 <a class="project-card" href="https://antoshkin.tech/design-system-ai-starter/" target="_blank" rel="noopener">
+                    <button class="project-play" data-demo="ds-ai-starter" type="button">&#9654;</button>
                     <div class="project-header">
                         <span class="project-title">design-system-ai-starter</span>
                         <span class="project-badge">cli</span>
@@ -710,6 +762,7 @@
                     <span class="project-desc">React component: Alt+hover any element to see spacing, typography and colors like Figma Inspect</span>
                 </a>
                 <a class="project-card" href="https://antoshkin.tech/ds-lint/" target="_blank" rel="noopener">
+                    <button class="project-play" data-demo="ds-lint" type="button">&#9654;</button>
                     <div class="project-header">
                         <span class="project-title">ds-lint</span>
                         <span class="project-badge">cli</span>
@@ -717,6 +770,7 @@
                     <span class="project-desc">CLI scanner: finds hardcoded colors, spacing and fonts in code, suggests design token replacements</span>
                 </a>
                 <a class="project-card" href="https://antoshkin.tech/ds-coverage/" target="_blank" rel="noopener">
+                    <button class="project-play" data-demo="ds-coverage" type="button">&#9654;</button>
                     <div class="project-header">
                         <span class="project-title">ds-coverage</span>
                         <span class="project-badge">cli</span>
@@ -847,25 +901,12 @@
             </button>
         </div>
 
-        <div class="dsh-panel" id="dshPanel">
+        <div class="demo-panel" id="demoPanel">
             <div class="dsh-header">
-                <h3>ds-health</h3>
-                <button class="dsh-close" id="dshClose" type="button">&times;</button>
+                <h3 id="demoPanelTitle"></h3>
+                <button class="dsh-close" id="demoPanelClose" type="button">&times;</button>
             </div>
-            <div class="dsh-score-ring" id="dshRing"></div>
-            <div>
-                <div class="dsh-section-title">Categories</div>
-                <div class="dsh-cats" id="dshCats"></div>
-            </div>
-            <div>
-                <div class="dsh-section-title">Stats</div>
-                <div class="dsh-stats" id="dshStats"></div>
-            </div>
-            <div>
-                <div class="dsh-section-title">Summary</div>
-                <p class="dsh-summary" id="dshSummary"></p>
-            </div>
-            <div class="dsh-powered">Powered by <a href="https://antoshkin.tech/ds-health/" target="_blank" rel="noopener">ds-health</a></div>
+            <div id="demoPanelBody"></div>
         </div>
     </main>
 
@@ -1028,65 +1069,192 @@
 
     <script>
     (() => {
-        const data = JSON.parse(document.getElementById('dsHealthData').textContent);
-        const panel = document.getElementById('dshPanel');
-        const btn = document.getElementById('dshBtn');
-        const close = document.getElementById('dshClose');
+        const panel = document.getElementById('demoPanel');
+        const title = document.getElementById('demoPanelTitle');
+        const body  = document.getElementById('demoPanelBody');
+        const closeBtn = document.getElementById('demoPanelClose');
 
-        btn.addEventListener('click', () => {
+        const openPanel = (name, html) => {
+            title.textContent = name;
+            body.innerHTML = html;
             panel.classList.add('open');
-            document.body.classList.add('dsh-open');
-        });
-        close.addEventListener('click', () => {
+            document.body.classList.add('panel-open');
+        };
+
+        const closePanel = () => {
             panel.classList.remove('open');
-            document.body.classList.remove('dsh-open');
+            document.body.classList.remove('panel-open');
+        };
+
+        closeBtn.addEventListener('click', closePanel);
+
+        const delay = (ms) => `animation-delay:${ms}ms`;
+
+        const demos = {
+            'ds-health': () => {
+                const data = JSON.parse(document.getElementById('dsHealthData').textContent);
+                const { health, summary } = data;
+                const r = 52, c = 2 * Math.PI * r;
+                const offset = c - (health.overall / 100) * c;
+                const catNames = { color: 'Color', typography: 'Typography', spacing: 'Spacing', radius: 'Radius' };
+                let catsHtml = '';
+                for (const [key, name] of Object.entries(catNames)) {
+                    const val = health[key];
+                    catsHtml += `<div class="dsh-cat"><div class="dsh-cat-header"><span class="dsh-cat-name">${name}</span><span class="dsh-cat-val">${val}/100</span></div><div class="dsh-cat-bar"><div class="dsh-cat-fill" style="width:${val}%"></div></div></div>`;
+                }
+                const statItems = [
+                    [summary.cssVariables, 'CSS variables'],
+                    [summary.elementsSampled, 'Elements'],
+                    [summary.textColors, 'Text colors'],
+                    [summary.backgroundColors, 'Backgrounds'],
+                    [summary.fontFamilies, 'Font families'],
+                    [summary.fontSizes, 'Font sizes'],
+                    [summary.spacingValues, 'Spacing values'],
+                    [summary.radiusValues, 'Radius values']
+                ];
+                let statsHtml = '';
+                for (const [val, label] of statItems) {
+                    statsHtml += `<div class="dsh-stat"><span class="dsh-stat-val">${val}</span><span class="dsh-stat-label">${label}</span></div>`;
+                }
+                return `
+                    <div class="dsh-score-ring">
+                        <svg viewBox="0 0 120 120">
+                            <circle cx="60" cy="60" r="${r}" fill="none" stroke="var(--border)" stroke-width="8"/>
+                            <circle cx="60" cy="60" r="${r}" fill="none" stroke="#22c55e" stroke-width="8" stroke-dasharray="${c}" stroke-dashoffset="${offset}" stroke-linecap="round" transform="rotate(-90 60 60)" style="transition: stroke-dashoffset 0.8s cubic-bezier(0.22,1,0.36,1)"/>
+                            <text x="60" y="56" text-anchor="middle" fill="var(--text)" font-size="28" font-weight="500" font-family="Inter, sans-serif">${health.overall}</text>
+                            <text x="60" y="74" text-anchor="middle" fill="var(--text-muted)" font-size="11" font-family="Inter, sans-serif">${health.label}</text>
+                        </svg>
+                    </div>
+                    <div><div class="dsh-section-title">Categories</div><div class="dsh-cats">${catsHtml}</div></div>
+                    <div><div class="dsh-section-title">Stats</div><div class="dsh-stats">${statsHtml}</div></div>
+                    <div><div class="dsh-section-title">Summary</div><p class="dsh-summary">${data.executiveSummary}</p></div>
+                    <div class="dsh-powered">Powered by <a href="https://antoshkin.tech/ds-health/" target="_blank" rel="noopener">ds-health</a></div>`;
+            },
+            'ds-lint': () => {
+                const lines = [
+                    `<span class="t-prompt">$</span> <span class="t-cmd">ds-lint scan src/components/</span>`,
+                    ``,
+                    `<span class="t-muted">Scanning 14 files...</span>`,
+                    ``,
+                    `<span class="t-muted">src/Card.css</span>`,
+                    `  <span class="t-warn">L4</span>  color: <span class="t-val">#737373</span>      → var(--text-muted)`,
+                    `  <span class="t-warn">L8</span>  padding: <span class="t-val">16px</span>       → var(--space-md)`,
+                    `  <span class="t-warn">L12</span> border-radius: <span class="t-val">8px</span> → var(--radius-md)`,
+                    ``,
+                    `<span class="t-muted">src/Button.css</span>`,
+                    `  <span class="t-warn">L3</span>  background: <span class="t-val">#1a1a1a</span>  → var(--bg-inverse)`,
+                    `  <span class="t-warn">L7</span>  padding: <span class="t-val">8px 16px</span>   → var(--space-sm) var(--space-md)`,
+                    ``,
+                    `<span class="t-muted">src/Modal.css</span>`,
+                    `  <span class="t-warn">L2</span>  border-radius: <span class="t-val">12px</span> → var(--radius-lg)`,
+                    `  <span class="t-warn">L5</span>  gap: <span class="t-val">24px</span>           → var(--space-lg)`,
+                    `  <span class="t-warn">L9</span>  color: <span class="t-val">#e5e5e5</span>      → var(--text)`,
+                    ``,
+                    `<span class="t-ok">✓</span> Found <span class="t-val">8</span> hardcoded values`,
+                    `<span class="t-ok">✓</span> Suggested <span class="t-val">8</span> token replacements`,
+                ];
+                return `<div class="demo-term">${lines.map((l, i) => `<span class="t-line" style="${delay(i * 80)}">${l || '&nbsp;'}</span>`).join('')}</div>
+                    <div class="dsh-powered">Powered by <a href="https://antoshkin.tech/ds-lint/" target="_blank" rel="noopener">ds-lint</a></div>`;
+            },
+            'ds-coverage': () => {
+                const lines = [
+                    `<span class="t-prompt">$</span> <span class="t-cmd">ds-coverage analyze src/</span>`,
+                    ``,
+                    `<span class="t-muted">Analyzing DS components...</span>`,
+                    ``,
+                    `<span class="t-muted">Component        Usage     Coverage</span>`,
+                    `<span class="t-muted">─────────────────────────────────────</span>`,
+                    `Button           <span class="t-val">47/52</span>     <span class="t-ok">90%</span>`,
+                    `Card             <span class="t-val">23/28</span>     <span class="t-ok">82%</span>`,
+                    `Input            <span class="t-val">18/18</span>     <span class="t-ok">100%</span>`,
+                    `Modal            <span class="t-val"> 3/24</span>     <span class="t-warn">12%</span>`,
+                    `Tooltip          <span class="t-val"> 0/15</span>     <span class="t-warn"> 0%</span>`,
+                    `Badge            <span class="t-val">12/12</span>     <span class="t-ok">100%</span>`,
+                    `Avatar           <span class="t-val"> 9/14</span>     <span class="t-ok">64%</span>`,
+                    ``,
+                    `<span class="t-muted">─────────────────────────────────────</span>`,
+                    `<span class="t-ok">✓</span> Overall coverage: <span class="t-val">68%</span>`,
+                    `<span class="t-warn">⚠</span> Found <span class="t-val">3</span> reimplementations`,
+                    `<span class="t-muted">  Modal → src/custom/MyModal.tsx</span>`,
+                    `<span class="t-muted">  Tooltip → src/ui/Tip.tsx</span>`,
+                    `<span class="t-muted">  Tooltip → src/shared/Hint.tsx</span>`,
+                ];
+                return `<div class="demo-term">${lines.map((l, i) => `<span class="t-line" style="${delay(i * 80)}">${l || '&nbsp;'}</span>`).join('')}</div>
+                    <div class="dsh-powered">Powered by <a href="https://antoshkin.tech/ds-coverage/" target="_blank" rel="noopener">ds-coverage</a></div>`;
+            },
+            'figma-to-design-md': () => {
+                const lines = [
+                    `<span class="t-prompt">$</span> <span class="t-cmd">figma-to-design-md --file=abc123</span>`,
+                    ``,
+                    `<span class="t-muted">Connecting to Figma API...</span>`,
+                    `<span class="t-ok">✓</span> Authorized`,
+                    ``,
+                    `<span class="t-muted">Extracting variables...</span>`,
+                    `  <span class="t-ok">✓</span> <span class="t-val">12</span> color tokens`,
+                    `  <span class="t-ok">✓</span> <span class="t-val"> 5</span> spacing tokens`,
+                    `  <span class="t-ok">✓</span> <span class="t-val"> 4</span> radius tokens`,
+                    ``,
+                    `<span class="t-muted">Extracting text styles...</span>`,
+                    `  <span class="t-ok">✓</span> <span class="t-val"> 6</span> text styles`,
+                    ``,
+                    `<span class="t-muted">Extracting components...</span>`,
+                    `  <span class="t-ok">✓</span> <span class="t-val">18</span> components`,
+                    `  <span class="t-ok">✓</span> <span class="t-val"> 4</span> variant sets`,
+                    ``,
+                    `<span class="t-ok">✓</span> Created <span class="t-val">design.md</span> (3.2kb)`,
+                    `<span class="t-muted">  → 45 variables, 6 styles, 18 components</span>`,
+                ];
+                return `<div class="demo-term">${lines.map((l, i) => `<span class="t-line" style="${delay(i * 80)}">${l || '&nbsp;'}</span>`).join('')}</div>
+                    <div class="dsh-powered">Powered by <a href="https://antoshkin.tech/figma-to-design-md/" target="_blank" rel="noopener">figma-to-design-md</a></div>`;
+            },
+            'ds-ai-starter': () => {
+                const lines = [
+                    `<span class="t-prompt">$</span> <span class="t-cmd">ds-ai-starter init --tokens=tokens.css</span>`,
+                    ``,
+                    `<span class="t-muted">Parsing tokens...</span>`,
+                    `  <span class="t-ok">✓</span> <span class="t-val"> 8</span> color tokens`,
+                    `  <span class="t-ok">✓</span> <span class="t-val"> 5</span> spacing tokens`,
+                    `  <span class="t-ok">✓</span> <span class="t-val"> 4</span> radius tokens`,
+                    ``,
+                    `<span class="t-muted">Generating specs...</span>`,
+                    `  <span class="t-ok">✓</span> .cursor/rules/design-system.md`,
+                    `  <span class="t-ok">✓</span> CLAUDE.md`,
+                    `  <span class="t-ok">✓</span> AGENTS.md`,
+                    `  <span class="t-ok">✓</span> .github/copilot-instructions.md`,
+                    ``,
+                    `<span class="t-muted">Contents of design-system.md:</span>`,
+                    `<span class="t-muted">┌─────────────────────────────────┐</span>`,
+                    `<span class="t-muted">│</span> <span class="t-val">## Colors</span>                      <span class="t-muted">│</span>`,
+                    `<span class="t-muted">│</span> --bg: #0a0a0a                   <span class="t-muted">│</span>`,
+                    `<span class="t-muted">│</span> --text: #e5e5e5                 <span class="t-muted">│</span>`,
+                    `<span class="t-muted">│</span> --border: #262626               <span class="t-muted">│</span>`,
+                    `<span class="t-muted">│</span> <span class="t-val">## Spacing</span>                     <span class="t-muted">│</span>`,
+                    `<span class="t-muted">│</span> --space-sm: 8px                 <span class="t-muted">│</span>`,
+                    `<span class="t-muted">│</span> --space-md: 16px                <span class="t-muted">│</span>`,
+                    `<span class="t-muted">│</span> --space-lg: 24px                <span class="t-muted">│</span>`,
+                    `<span class="t-muted">└─────────────────────────────────┘</span>`,
+                    ``,
+                    `<span class="t-ok">✓</span> Done! Files created in project root`,
+                ];
+                return `<div class="demo-term">${lines.map((l, i) => `<span class="t-line" style="${delay(i * 80)}">${l || '&nbsp;'}</span>`).join('')}</div>
+                    <div class="dsh-powered">Powered by <a href="https://antoshkin.tech/design-system-ai-starter/" target="_blank" rel="noopener">design-system-ai-starter</a></div>`;
+            },
+        };
+
+        document.querySelectorAll('.project-play[data-demo]').forEach(btn => {
+            btn.addEventListener('click', e => {
+                e.preventDefault();
+                e.stopPropagation();
+                const key = btn.dataset.demo;
+                const gen = demos[key];
+                if (!gen) return;
+                openPanel(btn.closest('.project-card').querySelector('.project-title').textContent, gen());
+            });
         });
 
-        const { health, summary } = data;
-        const ring = document.getElementById('dshRing');
-        const r = 52, c = 2 * Math.PI * r;
-        const offset = c - (health.overall / 100) * c;
-        ring.innerHTML = `
-            <svg viewBox="0 0 120 120">
-                <circle cx="60" cy="60" r="${r}" fill="none" stroke="var(--border)" stroke-width="8"/>
-                <circle cx="60" cy="60" r="${r}" fill="none" stroke="#22c55e" stroke-width="8"
-                    stroke-dasharray="${c}" stroke-dashoffset="${offset}"
-                    stroke-linecap="round" transform="rotate(-90 60 60)"
-                    style="transition: stroke-dashoffset 0.8s cubic-bezier(0.22,1,0.36,1)"/>
-                <text x="60" y="56" text-anchor="middle" fill="var(--text)" font-size="28" font-weight="500" font-family="Inter, sans-serif">${health.overall}</text>
-                <text x="60" y="74" text-anchor="middle" fill="var(--text-muted)" font-size="11" font-family="Inter, sans-serif">${health.label}</text>
-            </svg>`;
-
-        const cats = document.getElementById('dshCats');
-        const catNames = { color: 'Color', typography: 'Typography', spacing: 'Spacing', radius: 'Radius' };
-        for (const [key, name] of Object.entries(catNames)) {
-            const val = health[key];
-            cats.innerHTML += `
-                <div class="dsh-cat">
-                    <div class="dsh-cat-header">
-                        <span class="dsh-cat-name">${name}</span>
-                        <span class="dsh-cat-val">${val}/100</span>
-                    </div>
-                    <div class="dsh-cat-bar"><div class="dsh-cat-fill" style="width:${val}%"></div></div>
-                </div>`;
-        }
-
-        const stats = document.getElementById('dshStats');
-        const statItems = [
-            [summary.cssVariables, 'CSS variables'],
-            [summary.elementsSampled, 'Elements'],
-            [summary.textColors, 'Text colors'],
-            [summary.backgroundColors, 'Backgrounds'],
-            [summary.fontFamilies, 'Font families'],
-            [summary.fontSizes, 'Font sizes'],
-            [summary.spacingValues, 'Spacing values'],
-            [summary.radiusValues, 'Radius values']
-        ];
-        for (const [val, label] of statItems) {
-            stats.innerHTML += `<div class="dsh-stat"><span class="dsh-stat-val">${val}</span><span class="dsh-stat-label">${label}</span></div>`;
-        }
-
-        document.getElementById('dshSummary').textContent = data.executiveSummary;
+        document.getElementById('dshBtn').addEventListener('click', () => {
+            openPanel('ds-health', demos['ds-health']());
+        });
     })();
     </script>
 </body>
