@@ -572,7 +572,7 @@
             top: 0;
             right: 0;
             bottom: 0;
-            width: 380px;
+            width: var(--panel-w, 480px);
             background: var(--bg);
             border-left: 1px solid var(--border);
             z-index: 200;
@@ -586,14 +586,44 @@
         }
 
         .demo-panel.open { transform: translateX(0); }
+        .demo-panel.resizing { transition: none; }
+
+        .demo-panel-resize {
+            position: absolute;
+            top: 0;
+            left: -3px;
+            bottom: 0;
+            width: 6px;
+            cursor: col-resize;
+            z-index: 201;
+        }
+
+        .demo-panel-resize::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 3px;
+            height: 32px;
+            border-radius: 2px;
+            background: var(--border);
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+
+        .demo-panel-resize:hover::after,
+        .demo-panel.resizing .demo-panel-resize::after { opacity: 1; }
 
         body {
             transition: padding-right 0.3s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         body.panel-open {
-            padding-right: 380px;
+            padding-right: var(--panel-w, 480px);
         }
+
+        body.panel-resizing { transition: none; user-select: none; cursor: col-resize; }
 
         .demo-term {
             background: #1a1a1a;
@@ -1013,6 +1043,7 @@
         </div>
 
         <div class="demo-panel" id="demoPanel">
+            <div class="demo-panel-resize" id="demoPanelResize"></div>
             <div class="dsh-header">
                 <h3 id="demoPanelTitle"></h3>
                 <button class="dsh-close" id="demoPanelClose" type="button">&times;</button>
@@ -1184,6 +1215,9 @@
         const title = document.getElementById('demoPanelTitle');
         const body  = document.getElementById('demoPanelBody');
         const closeBtn = document.getElementById('demoPanelClose');
+        const resizeHandle = document.getElementById('demoPanelResize');
+
+        const setW = (w) => { document.documentElement.style.setProperty('--panel-w', w + 'px'); };
 
         const openPanel = (name, html) => {
             title.textContent = name;
@@ -1198,6 +1232,25 @@
         };
 
         closeBtn.addEventListener('click', closePanel);
+
+        let dragging = false;
+        resizeHandle.addEventListener('mousedown', e => {
+            e.preventDefault();
+            dragging = true;
+            panel.classList.add('resizing');
+            document.body.classList.add('panel-resizing');
+        });
+        document.addEventListener('mousemove', e => {
+            if (!dragging) return;
+            const w = Math.max(360, Math.min(window.innerWidth * 0.7, window.innerWidth - e.clientX));
+            setW(w);
+        });
+        document.addEventListener('mouseup', () => {
+            if (!dragging) return;
+            dragging = false;
+            panel.classList.remove('resizing');
+            document.body.classList.remove('panel-resizing');
+        });
 
         const delay = (ms) => `animation-delay:${ms}ms`;
 
@@ -1243,87 +1296,84 @@
             },
             'ds-lint': () => {
                 const lines = [
-                    `<span class="t-prompt">$</span> <span class="t-cmd">ds-lint scan ./src --tokens=tokens.css</span>`,
+                    `<span class="t-prompt">$</span> <span class="t-cmd">ds-lint scan ./antoshkin.tech</span>`,
                     ``,
-                    `<span class="t-muted">Loading tokens from tokens.css...</span>`,
+                    `<span class="t-muted">Loading tokens (auto-detect :root)...</span>`,
                     `<span class="t-ok">✓</span> <span class="t-val">18</span> tokens (8 colors, 5 spacings, 4 radii, 1 misc)`,
+                    `<span class="t-ok">✓</span> <span class="t-val">2</span> themes (light + dark via prefers-color-scheme)`,
                     ``,
-                    `<span class="t-muted">Scanning 23 files...</span>`,
+                    `<span class="t-muted">Scanning 6 files...</span>`,
                     ``,
-                    `<span class="t-val">src/components/Card.module.css</span>`,
-                    `  <span class="t-warn">L12</span>  color: <span class="t-val">#737373</span>            → <span class="t-ok">var(--text-muted)</span>`,
-                    `  <span class="t-warn">L18</span>  padding: <span class="t-val">16px</span>             → <span class="t-ok">var(--space-md)</span>`,
-                    `  <span class="t-warn">L19</span>  padding-bottom: <span class="t-val">24px</span>     → <span class="t-ok">var(--space-lg)</span>`,
-                    `  <span class="t-warn">L22</span>  border-radius: <span class="t-val">8px</span>       → <span class="t-ok">var(--radius-md)</span>`,
-                    `  <span class="t-warn">L31</span>  gap: <span class="t-val">4px</span>                 → <span class="t-ok">var(--space-xs)</span>`,
+                    `<span class="t-val">index.html</span> <span class="t-muted">(inline &lt;style&gt;)</span>`,
+                    `  <span class="t-ok">✓</span> .bottom-chip      background: <span class="t-val">rgba(38,38,38,0.7)</span>  <span class="t-muted">no token</span>`,
+                    `  <span class="t-ok">✓</span> .demo-term        background: <span class="t-val">#1a1a1a</span>            <span class="t-muted">no token</span>`,
+                    `  <span class="t-ok">✓</span> .demo-term        color: <span class="t-val">#e5e5e5</span>                 <span class="t-muted">no token</span>`,
+                    `  <span class="t-ok">✓</span> .dsh-cat-fill     background: <span class="t-val">#22c55e</span>            <span class="t-muted">no token</span>`,
                     ``,
-                    `<span class="t-val">src/components/Button.module.css</span>`,
-                    `  <span class="t-warn">L3</span>   background: <span class="t-val">#0c0c0c</span>       → <span class="t-ok">var(--bg)</span>`,
-                    `  <span class="t-warn">L5</span>   padding: <span class="t-val">8px 16px</span>         → <span class="t-ok">var(--space-sm) var(--space-md)</span>`,
-                    `  <span class="t-warn">L8</span>   border-radius: <span class="t-val">100px</span>     → <span class="t-ok">var(--radius-pill)</span>`,
-                    `  <span class="t-warn">L14</span>  color: <span class="t-val">#f5f5f5</span>            → <span class="t-ok">var(--text)</span>`,
+                    `<span class="t-val">design-md.html</span>`,
+                    `  <span class="t-ok">✓</span> Clean — all values use tokens`,
                     ``,
-                    `<span class="t-val">src/components/Modal.module.css</span>`,
-                    `  <span class="t-warn">L2</span>   border-radius: <span class="t-val">12px</span>      → <span class="t-ok">var(--radius-lg)</span>`,
-                    `  <span class="t-warn">L5</span>   gap: <span class="t-val">24px</span>                → <span class="t-ok">var(--space-lg)</span>`,
-                    `  <span class="t-warn">L9</span>   border: 1px solid <span class="t-val">#27272a</span> → <span class="t-ok">var(--border)</span>`,
-                    `  <span class="t-warn">L15</span>  padding: <span class="t-val">48px</span>            → <span class="t-ok">var(--space-xl)</span>`,
+                    `<span class="t-val">cursor-figma.html</span>`,
+                    `  <span class="t-ok">✓</span> Clean`,
                     ``,
-                    `<span class="t-val">src/layout/Header.module.css</span>`,
-                    `  <span class="t-warn">L7</span>   background: <span class="t-val">#fafafa</span>       → <span class="t-ok">var(--bg)</span>`,
-                    `  <span class="t-warn">L11</span>  border-bottom: 1px solid <span class="t-val">#e4e4e7</span> → <span class="t-ok">var(--border)</span>`,
+                    `<span class="t-val">dev-for-designers.html</span>`,
+                    `  <span class="t-ok">✓</span> Clean`,
                     ``,
                     `<span class="t-muted">───────────────────────────────────────────</span>`,
-                    `  Files scanned          <span class="t-val">23</span>`,
-                    `  Files with issues      <span class="t-val">4</span>`,
-                    `  Hardcoded values       <span class="t-warn">15</span>`,
-                    `  Token matches          <span class="t-ok">15</span>`,
+                    `  Files scanned          <span class="t-val">6</span>`,
+                    `  Files with issues      <span class="t-val">1</span>`,
+                    `  No token (acceptable)  <span class="t-warn">4</span> <span class="t-muted">UI overlays</span>`,
+                    `  Critical               <span class="t-ok">0</span>`,
                     ``,
-                    `<span class="t-ok">✓</span> Report saved to <span class="t-val">ds-lint-report.json</span>`,
-                    `<span class="t-muted">  Run ds-lint fix --dry-run to preview replacements</span>`,
+                    `<span class="t-ok">✓</span> Site uses tokens correctly`,
+                    `<span class="t-ok">✓</span> Report: <span class="t-val">ds-lint-report.json</span>`,
                 ];
                 return `<div class="demo-term">${lines.map((l, i) => `<span class="t-line" style="${delay(i * 60)}">${l || '&nbsp;'}</span>`).join('')}</div>
                     <div class="dsh-powered">Powered by <a href="https://antoshkin.tech/ds-lint/" target="_blank" rel="noopener">ds-lint</a></div>`;
             },
             'ds-coverage': () => {
                 const lines = [
-                    `<span class="t-prompt">$</span> <span class="t-cmd">ds-coverage analyze ./src --ds=@company/ui</span>`,
+                    `<span class="t-prompt">$</span> <span class="t-cmd">ds-coverage analyze ./antoshkin.tech</span>`,
                     ``,
-                    `<span class="t-muted">Indexing design system @company/ui...</span>`,
-                    `<span class="t-ok">✓</span> <span class="t-val">24</span> components in registry`,
+                    `<span class="t-muted">Indexing DS from :root...</span>`,
+                    `<span class="t-ok">✓</span> <span class="t-val">18</span> tokens, <span class="t-val">8</span> UI patterns`,
                     ``,
-                    `<span class="t-muted">Scanning ./src (148 files)...</span>`,
+                    `<span class="t-muted">Scanning 6 pages...</span>`,
                     ``,
-                    `<span class="t-val">Component         Imports   Total   Coverage</span>`,
-                    `<span class="t-muted">─────────────────────────────────────────────</span>`,
-                    `Button            <span class="t-val">47</span>        52      <span class="t-ok">90%</span>  ██████████░`,
-                    `Input             <span class="t-val">18</span>        18      <span class="t-ok">100%</span> ███████████`,
-                    `Card              <span class="t-val">23</span>        28      <span class="t-ok">82%</span>  █████████░░`,
-                    `Badge             <span class="t-val">12</span>        12      <span class="t-ok">100%</span> ███████████`,
-                    `Avatar            <span class="t-val"> 9</span>        14      <span class="t-ok">64%</span>  ███████░░░░`,
-                    `Select            <span class="t-val"> 6</span>        11      <span class="t-warn">55%</span>  ██████░░░░░`,
-                    `Modal             <span class="t-val"> 3</span>        24      <span class="t-warn">12%</span>  █░░░░░░░░░░`,
-                    `Tooltip           <span class="t-val"> 0</span>        15      <span class="t-warn"> 0%</span>  ░░░░░░░░░░░`,
-                    `Tabs              <span class="t-val"> 0</span>         8      <span class="t-warn"> 0%</span>  ░░░░░░░░░░░`,
+                    `<span class="t-val">Token              Uses      Pages    Coverage</span>`,
+                    `<span class="t-muted">──────────────────────────────────────────────</span>`,
+                    `--bg               <span class="t-val">32</span>        6/6      <span class="t-ok">100%</span> ███████████`,
+                    `--text             <span class="t-val">28</span>        6/6      <span class="t-ok">100%</span> ███████████`,
+                    `--text-muted       <span class="t-val">24</span>        6/6      <span class="t-ok">100%</span> ███████████`,
+                    `--border           <span class="t-val">18</span>        6/6      <span class="t-ok">100%</span> ███████████`,
+                    `--space-md         <span class="t-val">15</span>        6/6      <span class="t-ok">100%</span> ███████████`,
+                    `--space-lg         <span class="t-val">12</span>        6/6      <span class="t-ok">100%</span> ███████████`,
+                    `--space-sm         <span class="t-val">10</span>        6/6      <span class="t-ok">100%</span> ███████████`,
+                    `--radius-md        <span class="t-val"> 8</span>        4/6      <span class="t-ok"> 67%</span> ███████░░░░`,
+                    `--radius-pill      <span class="t-val"> 6</span>        2/6      <span class="t-warn"> 33%</span> ████░░░░░░░`,
+                    `--space-xl         <span class="t-val"> 4</span>        2/6      <span class="t-warn"> 33%</span> ████░░░░░░░`,
+                    `--surface-active   <span class="t-val"> 2</span>        2/6      <span class="t-warn"> 33%</span> ████░░░░░░░`,
                     ``,
-                    `<span class="t-muted">─────────────────────────────────────────────</span>`,
-                    ``,
-                    `<span class="t-val">Reimplementations (custom duplicates):</span>`,
-                    `  <span class="t-warn">⚠</span> Modal     → <span class="t-muted">src/custom/MyModal.tsx</span>`,
-                    `  <span class="t-warn">⚠</span> Modal     → <span class="t-muted">src/shared/Dialog.tsx</span>`,
-                    `  <span class="t-warn">⚠</span> Tooltip   → <span class="t-muted">src/ui/Tip.tsx</span>`,
-                    `  <span class="t-warn">⚠</span> Tooltip   → <span class="t-muted">src/shared/Hint.tsx</span>`,
-                    `  <span class="t-warn">⚠</span> Tabs      → <span class="t-muted">src/components/TabBar.tsx</span>`,
+                    `<span class="t-val">UI Patterns</span>`,
+                    `<span class="t-muted">──────────────────────────────────────────────</span>`,
+                    `ProjectCard       <span class="t-val"> 6</span>  <span class="t-muted">index.html, en.html</span>           <span class="t-ok">✓</span>`,
+                    `EntryLink         <span class="t-val"> 6</span>  <span class="t-muted">index.html, en.html</span>           <span class="t-ok">✓</span>`,
+                    `BottomChip        <span class="t-val"> 6</span>  <span class="t-muted">index.html, en.html</span>           <span class="t-ok">✓</span>`,
+                    `DemoPanel         <span class="t-val"> 1</span>  <span class="t-muted">index.html, en.html</span>           <span class="t-ok">✓</span>`,
+                    `LangSwitch        <span class="t-val"> 1</span>  <span class="t-muted">all pages</span>                    <span class="t-ok">✓</span>`,
+                    `ArticleTag        <span class="t-val"> 9</span>  <span class="t-muted">articles</span>                     <span class="t-ok">✓</span>`,
+                    `ArticleNav        <span class="t-val"> 1</span>  <span class="t-muted">articles</span>                     <span class="t-ok">✓</span>`,
+                    `ExpItem           <span class="t-val"> 4</span>  <span class="t-muted">index.html, en.html</span>           <span class="t-ok">✓</span>`,
                     ``,
                     `<span class="t-muted">───────────────────────────────────────────</span>`,
-                    `  Overall coverage   <span class="t-val">68%</span>`,
-                    `  Components used    <span class="t-val">7</span> of 24`,
-                    `  Unused             <span class="t-warn">17</span>`,
-                    `  Reimplementations  <span class="t-warn">5</span>`,
+                    `  Tokens used      <span class="t-val">18/18</span> (100%)`,
+                    `  UI patterns      <span class="t-val">8/8</span> (100%)`,
+                    `  Duplicates       <span class="t-ok">0</span>`,
+                    `  Unused           <span class="t-ok">0</span>`,
                     ``,
-                    `<span class="t-ok">✓</span> Report: <span class="t-val">ds-coverage-report.json</span>`,
+                    `<span class="t-ok">✓</span> Full design system coverage`,
                 ];
-                return `<div class="demo-term">${lines.map((l, i) => `<span class="t-line" style="${delay(i * 60)}">${l || '&nbsp;'}</span>`).join('')}</div>
+                return `<div class="demo-term">${lines.map((l, i) => `<span class="t-line" style="${delay(i * 55)}">${l || '&nbsp;'}</span>`).join('')}</div>
                     <div class="dsh-powered">Powered by <a href="https://antoshkin.tech/ds-coverage/" target="_blank" rel="noopener">ds-coverage</a></div>`;
             },
             'figma-to-design-md': () => {
@@ -1332,92 +1382,97 @@
                     ``,
                     `<span class="t-muted">Connecting to Figma API...</span>`,
                     `<span class="t-ok">✓</span> Authorized (Personal Access Token)`,
-                    `<span class="t-ok">✓</span> File: <span class="t-val">MDS – Yandex Market Design System</span>`,
+                    `<span class="t-ok">✓</span> File: <span class="t-val">antoshkin.tech – Design System</span>`,
                     ``,
                     `<span class="t-muted">Extracting variables...</span>`,
                     `  <span class="t-ok">✓</span> Collection <span class="t-val">Colors</span>`,
-                    `      text/primary       <span class="t-muted">#1A1A1A</span>`,
-                    `      text/secondary     <span class="t-muted">#737373</span>`,
-                    `      bg/primary         <span class="t-muted">#FFFFFF</span>`,
-                    `      bg/secondary       <span class="t-muted">#F5F5F5</span>`,
-                    `      border/default     <span class="t-muted">#E5E5E5</span>`,
-                    `      accent/primary     <span class="t-muted">#FFCC00</span>`,
-                    `      <span class="t-muted">...42 more variables</span>`,
+                    `      bg                 <span class="t-muted">#fafafa / #0c0c0c</span>`,
+                    `      text               <span class="t-muted">#0a0a0a / #f5f5f5</span>`,
+                    `      text-muted         <span class="t-muted">#737373 / #8f8e8d</span>`,
+                    `      border             <span class="t-muted">#e4e4e7 / #27272a</span>`,
+                    `      card-border        <span class="t-muted">#e2e2e2 / #2d2d2d</span>`,
+                    `      hover-bg           <span class="t-muted">rgba(0,0,0,0.04)</span>`,
+                    `      surface-active     <span class="t-muted">#e8e8e8 / #181818</span>`,
+                    `      badge-border       <span class="t-muted">#b0b0b0 / #7c7c7c</span>`,
                     `  <span class="t-ok">✓</span> Collection <span class="t-val">Spacing</span>`,
-                    `      xs: 4  sm: 8  md: 16  lg: 24  xl: 32  2xl: 48`,
+                    `      xs: 4  sm: 8  md: 16  lg: 24  xl: 48`,
                     `  <span class="t-ok">✓</span> Collection <span class="t-val">Radius</span>`,
-                    `      sm: 4  md: 8  lg: 12  xl: 16  pill: 100`,
+                    `      sm: 4  md: 8  lg: 12  pill: 100`,
                     ``,
                     `<span class="t-muted">Extracting text styles...</span>`,
-                    `  <span class="t-ok">✓</span> Heading/XL        <span class="t-muted">Inter 32/38 Semi</span>`,
-                    `  <span class="t-ok">✓</span> Heading/L         <span class="t-muted">Inter 24/30 Semi</span>`,
-                    `  <span class="t-ok">✓</span> Heading/M         <span class="t-muted">Inter 18/24 Medium</span>`,
-                    `  <span class="t-ok">✓</span> Body/L            <span class="t-muted">Inter 16/24 Regular</span>`,
-                    `  <span class="t-ok">✓</span> Body/M            <span class="t-muted">Inter 14/20 Regular</span>`,
-                    `  <span class="t-ok">✓</span> Body/S            <span class="t-muted">Inter 12/16 Regular</span>`,
-                    `  <span class="t-ok">✓</span> Caption           <span class="t-muted">Inter 11/14 Regular</span>`,
+                    `  <span class="t-ok">✓</span> Heading/H1        <span class="t-muted">Inter 1.5rem/1.618 500</span>`,
+                    `  <span class="t-ok">✓</span> Heading/H2        <span class="t-muted">Inter 0.875rem/1.618 500</span>`,
+                    `  <span class="t-ok">✓</span> Body              <span class="t-muted">Inter 1rem/1.618 400</span>`,
+                    `  <span class="t-ok">✓</span> Body/Small        <span class="t-muted">Inter 0.875rem/1.5 400</span>`,
+                    `  <span class="t-ok">✓</span> Caption           <span class="t-muted">Inter 0.75rem/1.4 400</span>`,
+                    `  <span class="t-ok">✓</span> Mono              <span class="t-muted">SF Mono 12px/1.6 400</span>`,
                     ``,
                     `<span class="t-muted">Extracting components...</span>`,
-                    `  <span class="t-ok">✓</span> Button            <span class="t-muted">4 variants (size × variant)</span>`,
-                    `  <span class="t-ok">✓</span> Input             <span class="t-muted">3 variants (size)</span>`,
-                    `  <span class="t-ok">✓</span> Card              <span class="t-muted">2 variants (elevated, outlined)</span>`,
-                    `  <span class="t-ok">✓</span> Badge             <span class="t-muted">6 variants (color × size)</span>`,
-                    `  <span class="t-ok">✓</span> Avatar            <span class="t-muted">3 variants (size)</span>`,
-                    `  <span class="t-ok">✓</span> Modal             <span class="t-muted">1 variant</span>`,
-                    `  <span class="t-ok">✓</span> Tooltip           <span class="t-muted">2 variants (placement)</span>`,
-                    `  <span class="t-muted">  ...11 more components</span>`,
+                    `  <span class="t-ok">✓</span> ProjectCard       <span class="t-muted">1 variant (default)</span>`,
+                    `  <span class="t-ok">✓</span> EntryLink         <span class="t-muted">1 variant (article)</span>`,
+                    `  <span class="t-ok">✓</span> Badge             <span class="t-muted">3 variants (repo, cli, tool)</span>`,
+                    `  <span class="t-ok">✓</span> BottomChip        <span class="t-muted">2 variants (active, default)</span>`,
+                    `  <span class="t-ok">✓</span> DemoPanel         <span class="t-muted">1 variant (sidebar)</span>`,
+                    `  <span class="t-ok">✓</span> LangSwitch        <span class="t-muted">2 variants (ru, en)</span>`,
+                    `  <span class="t-ok">✓</span> Avatar            <span class="t-muted">1 variant (44px)</span>`,
+                    `  <span class="t-ok">✓</span> ArticleTag        <span class="t-muted">1 variant</span>`,
                     ``,
                     `<span class="t-muted">───────────────────────────────────────────</span>`,
-                    `  Variables      <span class="t-val">62</span> (3 collections)`,
-                    `  Text styles    <span class="t-val"> 7</span>`,
-                    `  Components     <span class="t-val">18</span> (21 variant sets)`,
+                    `  Variables      <span class="t-val">18</span> (3 collections, 2 themes)`,
+                    `  Text styles    <span class="t-val"> 6</span>`,
+                    `  Components     <span class="t-val"> 8</span> (12 variants)`,
                     ``,
-                    `<span class="t-ok">✓</span> Created <span class="t-val">design.md</span> (8.4 KB)`,
+                    `<span class="t-ok">✓</span> Created <span class="t-val">design.md</span> (4.2 KB)`,
                 ];
                 return `<div class="demo-term">${lines.map((l, i) => `<span class="t-line" style="${delay(i * 55)}">${l || '&nbsp;'}</span>`).join('')}</div>
                     <div class="dsh-powered">Powered by <a href="https://antoshkin.tech/figma-to-design-md/" target="_blank" rel="noopener">figma-to-design-md</a></div>`;
             },
             'ds-ai-starter': () => {
                 const lines = [
-                    `<span class="t-prompt">$</span> <span class="t-cmd">ds-ai-starter init --tokens=design-tokens.css</span>`,
+                    `<span class="t-prompt">$</span> <span class="t-cmd">ds-ai-starter init --scan=./antoshkin.tech</span>`,
                     ``,
-                    `<span class="t-muted">Parsing tokens...</span>`,
-                    `<span class="t-ok">✓</span> <span class="t-val">18</span> CSS custom properties found`,
+                    `<span class="t-muted">Scanning :root...</span>`,
+                    `<span class="t-ok">✓</span> <span class="t-val">18</span> CSS custom properties`,
+                    `<span class="t-ok">✓</span> <span class="t-val">2</span> themes (prefers-color-scheme: light/dark)`,
                     ``,
-                    `<span class="t-muted">Analyzing categories:</span>`,
-                    `  <span class="t-val">Colors</span>    --bg, --text, --text-muted, --border,`,
-                    `             --card-border, --hover-bg, --badge-border,`,
-                    `             --surface-active`,
-                    `  <span class="t-val">Spacing</span>   --space-xs: 4px, --space-sm: 8px,`,
-                    `             --space-md: 16px, --space-lg: 24px,`,
-                    `             --space-xl: 48px`,
-                    `  <span class="t-val">Radius</span>    --radius-sm: 4px, --radius-md: 8px,`,
-                    `             --radius-lg: 12px, --radius-pill: 100px`,
-                    `  <span class="t-val">Themes</span>    2 themes detected (light, dark)`,
+                    `<span class="t-muted">Categories:</span>`,
+                    `  <span class="t-val">Colors</span>    --bg            <span class="t-muted">#fafafa / #0c0c0c</span>`,
+                    `             --text          <span class="t-muted">#0a0a0a / #f5f5f5</span>`,
+                    `             --text-muted    <span class="t-muted">#737373 / #8f8e8d</span>`,
+                    `             --border        <span class="t-muted">#e4e4e7 / #27272a</span>`,
+                    `             --card-border   <span class="t-muted">#e2e2e2 / #2d2d2d</span>`,
+                    `             --hover-bg      <span class="t-muted">rgba(0,0,0,0.04)</span>`,
+                    `             --surface-active <span class="t-muted">#e8e8e8 / #181818</span>`,
+                    `             --badge-border  <span class="t-muted">#b0b0b0 / #7c7c7c</span>`,
+                    `  <span class="t-val">Spacing</span>   --space-xs 4px  --space-sm 8px`,
+                    `             --space-md 16px --space-lg 24px`,
+                    `             --space-xl 48px`,
+                    `  <span class="t-val">Radius</span>    --radius-sm 4px  --radius-md 8px`,
+                    `             --radius-lg 12px --radius-pill 100px`,
                     ``,
                     `<span class="t-muted">Generating specs...</span>`,
                     ``,
-                    `  <span class="t-ok">✓</span> <span class="t-val">.cursor/rules/design-system.md</span>`,
-                    `    Cursor Rules: tokens, usage rules,`,
-                    `    light/dark mapping, component examples`,
+                    `  <span class="t-ok">✓</span> <span class="t-val">.cursor/rules/design-system.md</span>  <span class="t-muted">4.2 KB</span>`,
+                    `    Tokens with light/dark mapping, usage`,
+                    `    rules, component examples`,
                     ``,
-                    `  <span class="t-ok">✓</span> <span class="t-val">CLAUDE.md</span>`,
-                    `    Claude Code: full DS spec, principles,`,
-                    `    do/don't examples, component template`,
+                    `  <span class="t-ok">✓</span> <span class="t-val">CLAUDE.md</span>                       <span class="t-muted">3.8 KB</span>`,
+                    `    Full spec: principles, do/don't,`,
+                    `    new component template`,
                     ``,
-                    `  <span class="t-ok">✓</span> <span class="t-val">AGENTS.md</span>`,
-                    `    Codex/Devin: concise rules and linting`,
+                    `  <span class="t-ok">✓</span> <span class="t-val">AGENTS.md</span>                       <span class="t-muted">1.4 KB</span>`,
+                    `    Concise rules for Codex/Devin`,
                     ``,
-                    `  <span class="t-ok">✓</span> <span class="t-val">.github/copilot-instructions.md</span>`,
+                    `  <span class="t-ok">✓</span> <span class="t-val">.github/copilot-instructions.md</span> <span class="t-muted">1.1 KB</span>`,
                     `    Copilot: naming and token instructions`,
                     ``,
                     `<span class="t-muted">───────────────────────────────────────────</span>`,
                     `  Files created     <span class="t-val">4</span>`,
-                    `  Total size        <span class="t-val">12.6 KB</span>`,
+                    `  Total size        <span class="t-val">10.5 KB</span>`,
                     `  Tokens covered    <span class="t-val">18/18</span> (100%)`,
                     `  Themes described  <span class="t-val">2</span> (light + dark)`,
                     ``,
-                    `<span class="t-ok">✓</span> Done! AI agents now understand your DS.`,
+                    `<span class="t-ok">✓</span> AI agents now understand antoshkin.tech DS`,
                 ];
                 return `<div class="demo-term">${lines.map((l, i) => `<span class="t-line" style="${delay(i * 55)}">${l || '&nbsp;'}</span>`).join('')}</div>
                     <div class="dsh-powered">Powered by <a href="https://antoshkin.tech/design-system-ai-starter/" target="_blank" rel="noopener">design-system-ai-starter</a></div>`;
