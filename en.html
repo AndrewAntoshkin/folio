@@ -443,340 +443,35 @@
             }
         }
 
-        .bottom-bar {
+        .spektr-hint {
             position: fixed;
             bottom: var(--space-md);
             left: 50%;
             transform: translateX(-50%);
-            display: flex;
-            gap: 6px;
-            z-index: 100;
-        }
-
-        .bottom-chip {
-            position: relative;
-            background: rgba(38, 38, 38, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.08);
+            background: var(--bg);
+            border: 1px solid var(--border);
             color: var(--text-muted);
             font-size: 11px;
-            font-family: inherit;
-            padding: 6px 12px;
+            padding: 6px 14px;
             border-radius: var(--radius-pill);
-            cursor: pointer;
-            white-space: nowrap;
-            transition: color 0.2s, background 0.2s, border-color 0.2s;
-        }
-
-        .bottom-chip:hover {
-            color: var(--text);
-            background: rgba(38, 38, 38, 0.9);
-            border-color: rgba(255,255,255,0.15);
-        }
-
-        .bottom-chip-preview {
-            position: absolute;
-            bottom: calc(100% + 10px);
-            left: 50%;
-            transform: translateX(-50%) translateY(6px);
-            background: rgba(20, 20, 20, 0.92);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: var(--radius-lg);
-            padding: 14px 16px;
-            font-size: 12px;
-            color: var(--text-muted);
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s, transform 0.2s;
+            z-index: 100;
             display: flex;
-            flex-direction: column;
-            gap: 8px;
-            min-width: 200px;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
         }
 
-        .bottom-chip:hover .bottom-chip-preview {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-            pointer-events: auto;
-        }
-
-        .prev-row { display: flex; align-items: center; gap: 8px; font-size: 11px; }
-        .prev-label { color: #737373; min-width: 48px; }
-        .prev-val { color: #e5e5e5; font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace; font-size: 11px; }
-        .prev-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 2px 0; }
-        .prev-title { font-size: 11px; color: #737373; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 2px; }
-
-        .prev-bar-row { display: flex; align-items: center; gap: 8px; font-size: 11px; }
-        .prev-bar-name { color: #a3a3a3; min-width: 56px; }
-        .prev-bar-track { flex: 1; height: 3px; background: rgba(255,255,255,0.06); border-radius: 2px; min-width: 60px; }
-        .prev-bar-fill { height: 100%; border-radius: 2px; }
-        .prev-bar-val { color: #e5e5e5; font-variant-numeric: tabular-nums; min-width: 28px; text-align: right; }
-
-        .prev-ring { display: flex; align-items: center; gap: 12px; }
-        .prev-ring svg { width: 44px; height: 44px; flex-shrink: 0; }
-        .prev-ring-info { display: flex; flex-direction: column; gap: 2px; }
-        .prev-ring-score { font-size: 18px; font-weight: 600; color: #e5e5e5; line-height: 1; }
-        .prev-ring-label { font-size: 11px; color: #22c55e; }
-
-        .prev-tag { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 3px; }
-        .prev-tag-ok { background: rgba(34,197,94,0.15); color: #22c55e; }
-        .prev-tag-warn { background: rgba(251,191,36,0.15); color: #fbbf24; }
-
-        .prev-key {
+        .spektr-hint kbd {
             font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
             font-size: 10px;
-            background: rgba(128,128,128,0.3);
+            background: var(--surface-active);
             padding: 1px 5px;
             border-radius: 3px;
             color: var(--text);
         }
 
-        .prev-file { display: flex; align-items: center; gap: 6px; font-size: 11px; }
-        .prev-file-icon { color: #737373; font-size: 10px; }
-        .prev-file-name { color: #a3a3a3; font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace; }
-        .prev-file-ok { color: #22c55e; margin-left: auto; }
-
-        .project-card { position: relative; }
-
-        .project-play {
-            position: absolute;
-            top: var(--space-sm);
-            right: var(--space-sm);
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            border: 1px solid var(--border);
-            background: var(--bg);
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            opacity: 0;
-            transition: opacity 0.15s, color 0.15s, border-color 0.15s;
-            z-index: 2;
-            font-size: 10px;
-            padding: 0;
-            padding-left: 2px;
-        }
-
-        .project-card:hover .project-play { opacity: 1; }
-        .project-play:hover { color: var(--text); border-color: var(--text-muted); }
-
-        .demo-panel {
-            position: fixed;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            width: var(--panel-w, 480px);
-            background: var(--bg);
-            border-left: 1px solid var(--border);
-            z-index: 200;
-            transform: translateX(100%);
-            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-            overflow-y: auto;
-            padding: var(--space-lg);
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-lg);
-        }
-
-        .demo-panel.open { transform: translateX(0); }
-        .demo-panel.resizing { transition: none; }
-
-        .demo-panel-resize {
-            position: absolute;
-            top: 0;
-            left: -3px;
-            bottom: 0;
-            width: 6px;
-            cursor: col-resize;
-            z-index: 201;
-        }
-
-        .demo-panel-resize::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 3px;
-            height: 32px;
-            border-radius: 2px;
-            background: var(--border);
-            opacity: 0;
-            transition: opacity 0.15s;
-        }
-
-        .demo-panel-resize:hover::after,
-        .demo-panel.resizing .demo-panel-resize::after { opacity: 1; }
-
-        body {
-            transition: padding-right 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        body.panel-open {
-            padding-right: var(--panel-w, 480px);
-        }
-
-        body.panel-resizing { transition: none; user-select: none; cursor: col-resize; }
-
-        .demo-term {
-            background: #1a1a1a;
-            border-radius: var(--radius-md);
-            padding: var(--space-md);
-            font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
-            font-size: 12px;
-            line-height: 1.6;
-            color: #e5e5e5;
-            overflow-x: auto;
-            white-space: pre;
-        }
-
-        .demo-term .t-prompt { color: #22c55e; }
-        .demo-term .t-cmd { color: #fff; }
-        .demo-term .t-muted { color: #737373; }
-        .demo-term .t-ok { color: #22c55e; }
-        .demo-term .t-warn { color: #fbbf24; }
-        .demo-term .t-val { color: #93c5fd; }
-        .demo-term .t-line { display: block; opacity: 0; animation: termIn 0.15s ease forwards; }
-
-        @keyframes termIn { to { opacity: 1; } }
-
-        .demo-panel .dsh-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .dsh-header h3 {
-            font-size: 1rem;
-            font-weight: 500;
-        }
-
-        .dsh-close {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 1.25rem;
-            cursor: pointer;
-            padding: var(--space-xs);
-            line-height: 1;
-            transition: color 0.15s;
-        }
-
-        .dsh-close:hover { color: var(--text); }
-
-        .dsh-score-ring {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: var(--space-sm);
-        }
-
-        .dsh-score-ring svg {
-            width: 120px;
-            height: 120px;
-        }
-
-        .dsh-score-label {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-        }
-
-        .dsh-cats {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .dsh-cat {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-xs);
-        }
-
-        .dsh-cat-header {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.875rem;
-        }
-
-        .dsh-cat-name { color: var(--text); }
-        .dsh-cat-val { color: var(--text-muted); font-variant-numeric: tabular-nums; }
-
-        .dsh-cat-bar {
-            height: 4px;
-            border-radius: 2px;
-            background: var(--border);
-            overflow: hidden;
-        }
-
-        .dsh-cat-fill {
-            height: 100%;
-            border-radius: 2px;
-            background: #22c55e;
-            transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        .dsh-section-title {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-muted);
-            margin-bottom: var(--space-sm);
-        }
-
-        .dsh-summary {
-            font-size: 0.875rem;
-            line-height: 1.5;
-            color: var(--text-muted);
-        }
-
-        .dsh-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--space-sm);
-        }
-
-        .dsh-stat {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .dsh-stat-val {
-            font-size: 1rem;
-            font-weight: 500;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .dsh-stat-label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-
-        .dsh-powered {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-align: center;
-            margin-top: auto;
-        }
-
-        .dsh-powered a {
-            color: var(--text);
-            text-decoration: underline;
-            text-decoration-color: color-mix(in srgb, currentColor, transparent 75%);
-            text-underline-offset: 0.2em;
-        }
-
         @media (max-width: 600px) {
-            .bottom-bar { display: none; }
-            .demo-panel { display: none; }
+            .spektr-hint { display: none; }
         }
     </style>
 </head>
@@ -800,7 +495,6 @@
             <h2>Projects</h2>
             <div class="projects-grid">
                 <a class="project-card" href="https://antoshkin.tech/ds-health/" target="_blank" rel="noopener">
-                    <button class="project-play" data-demo="ds-health" type="button">&#9654;</button>
                     <div class="project-header">
                         <span class="project-title">ds-health</span>
                         <span class="project-badge">repo</span>
@@ -808,7 +502,6 @@
                     <span class="project-desc">Web tool: paste a live site URL, get a visual report on your design system's health</span>
                 </a>
                 <a class="project-card" href="https://antoshkin.tech/figma-to-design-md/" target="_blank" rel="noopener">
-                    <button class="project-play" data-demo="figma-to-design-md" type="button">&#9654;</button>
                     <div class="project-header">
                         <span class="project-title">figma-to-design-md</span>
                         <span class="project-badge">tool</span>
@@ -816,7 +509,6 @@
                     <span class="project-desc">CLI tool that extracts variables, styles and components from Figma via API and generates markdown specs for AI agents</span>
                 </a>
                 <a class="project-card" href="https://antoshkin.tech/design-system-ai-starter/" target="_blank" rel="noopener">
-                    <button class="project-play" data-demo="ds-ai-starter" type="button">&#9654;</button>
                     <div class="project-header">
                         <span class="project-title">design-system-ai-starter</span>
                         <span class="project-badge">cli</span>
@@ -831,7 +523,6 @@
                     <span class="project-desc">React component: Alt+hover any element to see spacing, typography and colors like Figma Inspect</span>
                 </a>
                 <a class="project-card" href="https://antoshkin.tech/ds-lint/" target="_blank" rel="noopener">
-                    <button class="project-play" data-demo="ds-lint" type="button">&#9654;</button>
                     <div class="project-header">
                         <span class="project-title">ds-lint</span>
                         <span class="project-badge">cli</span>
@@ -839,7 +530,6 @@
                     <span class="project-desc">CLI scanner: finds hardcoded colors, spacing and fonts in code, suggests design token replacements</span>
                 </a>
                 <a class="project-card" href="https://antoshkin.tech/ds-coverage/" target="_blank" rel="noopener">
-                    <button class="project-play" data-demo="ds-coverage" type="button">&#9654;</button>
                     <div class="project-header">
                         <span class="project-title">ds-coverage</span>
                         <span class="project-badge">cli</span>
@@ -959,97 +649,7 @@
             </div>
         </footer>
 
-        <div class="bottom-bar">
-            <button class="bottom-chip" data-demo="spektr" type="button">
-                spektr
-                <div class="bottom-chip-preview">
-                    <div class="prev-row"><span class="prev-key">Alt</span> + hover any element</div>
-                    <div class="prev-divider"></div>
-                    <div class="prev-row"><span class="prev-label">font</span> <span class="prev-val">14px / 1.5</span></div>
-                    <div class="prev-row"><span class="prev-label">color</span> <span class="prev-val" style="color:#93c5fd">#e5e5e5</span></div>
-                    <div class="prev-row"><span class="prev-label">padding</span> <span class="prev-val">16 24 16 24</span></div>
-                    <div class="prev-row"><span class="prev-label">size</span> <span class="prev-val">320 × 48</span></div>
-                </div>
-            </button>
-            <button class="bottom-chip" data-demo="ds-health" type="button">
-                ds-health
-                <div class="bottom-chip-preview">
-                    <div class="prev-ring">
-                        <svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="18" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="3"/><circle cx="22" cy="22" r="18" fill="none" stroke="#22c55e" stroke-width="3" stroke-dasharray="113.1" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 22 22)"/><text x="22" y="25" text-anchor="middle" fill="#e5e5e5" font-size="12" font-weight="600" font-family="Inter,sans-serif">100</text></svg>
-                        <div class="prev-ring-info"><span class="prev-ring-score">Healthy</span><span class="prev-ring-label">all categories OK</span></div>
-                    </div>
-                    <div class="prev-divider"></div>
-                    <div class="prev-bar-row"><span class="prev-bar-name">Color</span><div class="prev-bar-track"><div class="prev-bar-fill" style="width:100%;background:#22c55e"></div></div><span class="prev-bar-val">100</span></div>
-                    <div class="prev-bar-row"><span class="prev-bar-name">Type</span><div class="prev-bar-track"><div class="prev-bar-fill" style="width:100%;background:#22c55e"></div></div><span class="prev-bar-val">100</span></div>
-                    <div class="prev-bar-row"><span class="prev-bar-name">Spacing</span><div class="prev-bar-track"><div class="prev-bar-fill" style="width:100%;background:#22c55e"></div></div><span class="prev-bar-val">100</span></div>
-                    <div class="prev-bar-row"><span class="prev-bar-name">Radius</span><div class="prev-bar-track"><div class="prev-bar-fill" style="width:100%;background:#22c55e"></div></div><span class="prev-bar-val">100</span></div>
-                    <div class="prev-divider"></div>
-                    <div class="prev-row"><span class="prev-label">CSS vars</span> <span class="prev-val">18</span></div>
-                    <div class="prev-row"><span class="prev-label">Elements</span> <span class="prev-val">124</span></div>
-                </div>
-            </button>
-            <button class="bottom-chip" data-demo="ds-lint" type="button">
-                ds-lint
-                <div class="bottom-chip-preview">
-                    <div class="prev-title">Found</div>
-                    <div class="prev-row" style="gap:6px"><span class="prev-tag prev-tag-warn">8 hardcoded</span> <span style="color:#737373">→</span> <span class="prev-tag prev-tag-ok">8 tokens</span></div>
-                    <div class="prev-divider"></div>
-                    <div class="prev-row"><span class="prev-val" style="color:#737373">Card.css</span> <span class="prev-val" style="color:#fbbf24">3</span></div>
-                    <div class="prev-row"><span class="prev-val" style="color:#737373">Button.css</span> <span class="prev-val" style="color:#fbbf24">2</span></div>
-                    <div class="prev-row"><span class="prev-val" style="color:#737373">Modal.css</span> <span class="prev-val" style="color:#fbbf24">3</span></div>
-                    <div class="prev-divider"></div>
-                    <div class="prev-row"><span class="prev-val" style="color:#737373">#737373</span> <span style="color:#525252">→</span> <span class="prev-val" style="color:#22c55e">var(--text-muted)</span></div>
-                    <div class="prev-row"><span class="prev-val" style="color:#737373">16px</span> <span style="color:#525252">→</span> <span class="prev-val" style="color:#22c55e">var(--space-md)</span></div>
-                </div>
-            </button>
-            <button class="bottom-chip" data-demo="ds-coverage" type="button">
-                ds-coverage
-                <div class="bottom-chip-preview">
-                    <div class="prev-title">Component coverage</div>
-                    <div class="prev-bar-row"><span class="prev-bar-name">Button</span><div class="prev-bar-track"><div class="prev-bar-fill" style="width:90%;background:#22c55e"></div></div><span class="prev-bar-val">90%</span></div>
-                    <div class="prev-bar-row"><span class="prev-bar-name">Input</span><div class="prev-bar-track"><div class="prev-bar-fill" style="width:100%;background:#22c55e"></div></div><span class="prev-bar-val">100%</span></div>
-                    <div class="prev-bar-row"><span class="prev-bar-name">Card</span><div class="prev-bar-track"><div class="prev-bar-fill" style="width:82%;background:#22c55e"></div></div><span class="prev-bar-val">82%</span></div>
-                    <div class="prev-bar-row"><span class="prev-bar-name">Modal</span><div class="prev-bar-track"><div class="prev-bar-fill" style="width:12%;background:#fbbf24"></div></div><span class="prev-bar-val" style="color:#fbbf24">12%</span></div>
-                    <div class="prev-bar-row"><span class="prev-bar-name">Tooltip</span><div class="prev-bar-track"><div class="prev-bar-fill" style="width:0%"></div></div><span class="prev-bar-val" style="color:#fbbf24">0%</span></div>
-                    <div class="prev-divider"></div>
-                    <div class="prev-row"><span class="prev-label">Overall</span> <span class="prev-val" style="font-size:13px;font-weight:600">68%</span></div>
-                    <div class="prev-row" style="gap:4px"><span class="prev-tag prev-tag-warn">3 duplicates</span></div>
-                </div>
-            </button>
-            <button class="bottom-chip" data-demo="figma-to-design-md" type="button">
-                figma-to-design-md
-                <div class="bottom-chip-preview">
-                    <div class="prev-title">Extracted from Figma</div>
-                    <div class="prev-file"><span class="prev-file-icon">●</span> <span class="prev-file-name">12 colors</span> <span class="prev-file-ok">✓</span></div>
-                    <div class="prev-file"><span class="prev-file-icon">●</span> <span class="prev-file-name">5 spacings</span> <span class="prev-file-ok">✓</span></div>
-                    <div class="prev-file"><span class="prev-file-icon">●</span> <span class="prev-file-name">6 text styles</span> <span class="prev-file-ok">✓</span></div>
-                    <div class="prev-file"><span class="prev-file-icon">●</span> <span class="prev-file-name">18 components</span> <span class="prev-file-ok">✓</span></div>
-                    <div class="prev-divider"></div>
-                    <div class="prev-row" style="gap:6px"><span style="color:#737373">→</span> <span class="prev-val">design.md</span> <span style="color:#737373;font-size:10px">3.2kb</span></div>
-                </div>
-            </button>
-            <button class="bottom-chip" data-demo="ds-ai-starter" type="button">
-                ds-ai-starter
-                <div class="bottom-chip-preview">
-                    <div class="prev-title">Generated files</div>
-                    <div class="prev-file"><span class="prev-file-icon">📄</span> <span class="prev-file-name">.cursor/rules/design-system.md</span> <span class="prev-file-ok">✓</span></div>
-                    <div class="prev-file"><span class="prev-file-icon">📄</span> <span class="prev-file-name">CLAUDE.md</span> <span class="prev-file-ok">✓</span></div>
-                    <div class="prev-file"><span class="prev-file-icon">📄</span> <span class="prev-file-name">AGENTS.md</span> <span class="prev-file-ok">✓</span></div>
-                    <div class="prev-file"><span class="prev-file-icon">📄</span> <span class="prev-file-name">copilot-instructions.md</span> <span class="prev-file-ok">✓</span></div>
-                    <div class="prev-divider"></div>
-                    <div class="prev-row"><span class="prev-label">From</span> <span class="prev-val">17 CSS tokens</span></div>
-                </div>
-            </button>
-        </div>
-
-        <div class="demo-panel" id="demoPanel">
-            <div class="demo-panel-resize" id="demoPanelResize"></div>
-            <div class="dsh-header">
-                <h3 id="demoPanelTitle"></h3>
-                <button class="dsh-close" id="demoPanelClose" type="button">&times;</button>
-            </div>
-            <div id="demoPanelBody"></div>
-        </div>
+        <div class="spektr-hint" id="spektrHint"><kbd>Alt</kbd> + hover — element inspector</div>
     </main>
 
     <script>
@@ -1061,7 +661,7 @@
 
         let active = false, pinned = false, overlay = null;
         let lastX = 0, lastY = 0;
-        const hint = document.querySelector('.bottom-chip[data-demo="spektr"]');
+        const hint = document.getElementById('spektrHint');
 
         function px(v) { return parseFloat(v) || 0; }
 
@@ -1205,301 +805,5 @@
     })();
     </script>
 
-    <script type="application/json" id="dsHealthData">
-    {"health":{"color":100,"typography":100,"spacing":100,"radius":100,"overall":100,"label":"Healthy","labels":{"color":"Healthy","typography":"Healthy","spacing":"Healthy","radius":"Healthy"}},"summary":{"elementsSampled":124,"textNodesSampled":122,"cssVariables":18,"textColors":3,"backgroundColors":4,"fontFamilies":2,"fontSizes":4,"fontWeights":2,"spacingValues":12,"radiusValues":5},"executiveSummary":"This page looks healthy. 18 CSS variables were detected, and no major consistency issues stood out in the sampled page."}
-    </script>
-
-    <script>
-    (() => {
-        const panel = document.getElementById('demoPanel');
-        const title = document.getElementById('demoPanelTitle');
-        const body  = document.getElementById('demoPanelBody');
-        const closeBtn = document.getElementById('demoPanelClose');
-        const resizeHandle = document.getElementById('demoPanelResize');
-
-        const setW = (w) => { document.documentElement.style.setProperty('--panel-w', w + 'px'); };
-
-        const openPanel = (name, html) => {
-            title.textContent = name;
-            body.innerHTML = html;
-            panel.classList.add('open');
-            document.body.classList.add('panel-open');
-        };
-
-        const closePanel = () => {
-            panel.classList.remove('open');
-            document.body.classList.remove('panel-open');
-        };
-
-        closeBtn.addEventListener('click', closePanel);
-
-        let dragging = false;
-        resizeHandle.addEventListener('mousedown', e => {
-            e.preventDefault();
-            dragging = true;
-            panel.classList.add('resizing');
-            document.body.classList.add('panel-resizing');
-        });
-        document.addEventListener('mousemove', e => {
-            if (!dragging) return;
-            const w = Math.max(360, Math.min(window.innerWidth * 0.7, window.innerWidth - e.clientX));
-            setW(w);
-        });
-        document.addEventListener('mouseup', () => {
-            if (!dragging) return;
-            dragging = false;
-            panel.classList.remove('resizing');
-            document.body.classList.remove('panel-resizing');
-        });
-
-        const delay = (ms) => `animation-delay:${ms}ms`;
-
-        const demos = {
-            'ds-health': () => {
-                const data = JSON.parse(document.getElementById('dsHealthData').textContent);
-                const { health, summary } = data;
-                const r = 52, c = 2 * Math.PI * r;
-                const offset = c - (health.overall / 100) * c;
-                const catNames = { color: 'Color', typography: 'Typography', spacing: 'Spacing', radius: 'Radius' };
-                let catsHtml = '';
-                for (const [key, name] of Object.entries(catNames)) {
-                    const val = health[key];
-                    catsHtml += `<div class="dsh-cat"><div class="dsh-cat-header"><span class="dsh-cat-name">${name}</span><span class="dsh-cat-val">${val}/100</span></div><div class="dsh-cat-bar"><div class="dsh-cat-fill" style="width:${val}%"></div></div></div>`;
-                }
-                const statItems = [
-                    [summary.cssVariables, 'CSS variables'],
-                    [summary.elementsSampled, 'Elements'],
-                    [summary.textColors, 'Text colors'],
-                    [summary.backgroundColors, 'Backgrounds'],
-                    [summary.fontFamilies, 'Font families'],
-                    [summary.fontSizes, 'Font sizes'],
-                    [summary.spacingValues, 'Spacing values'],
-                    [summary.radiusValues, 'Radius values']
-                ];
-                let statsHtml = '';
-                for (const [val, label] of statItems) {
-                    statsHtml += `<div class="dsh-stat"><span class="dsh-stat-val">${val}</span><span class="dsh-stat-label">${label}</span></div>`;
-                }
-                return `
-                    <div class="dsh-score-ring">
-                        <svg viewBox="0 0 120 120">
-                            <circle cx="60" cy="60" r="${r}" fill="none" stroke="var(--border)" stroke-width="8"/>
-                            <circle cx="60" cy="60" r="${r}" fill="none" stroke="#22c55e" stroke-width="8" stroke-dasharray="${c}" stroke-dashoffset="${offset}" stroke-linecap="round" transform="rotate(-90 60 60)" style="transition: stroke-dashoffset 0.8s cubic-bezier(0.22,1,0.36,1)"/>
-                            <text x="60" y="56" text-anchor="middle" fill="var(--text)" font-size="28" font-weight="500" font-family="Inter, sans-serif">${health.overall}</text>
-                            <text x="60" y="74" text-anchor="middle" fill="var(--text-muted)" font-size="11" font-family="Inter, sans-serif">${health.label}</text>
-                        </svg>
-                    </div>
-                    <div><div class="dsh-section-title">Categories</div><div class="dsh-cats">${catsHtml}</div></div>
-                    <div><div class="dsh-section-title">Stats</div><div class="dsh-stats">${statsHtml}</div></div>
-                    <div><div class="dsh-section-title">Summary</div><p class="dsh-summary">${data.executiveSummary}</p></div>
-                    <div class="dsh-powered">Powered by <a href="https://antoshkin.tech/ds-health/" target="_blank" rel="noopener">ds-health</a></div>`;
-            },
-            'ds-lint': () => {
-                const lines = [
-                    `<span class="t-prompt">$</span> <span class="t-cmd">ds-lint scan ./antoshkin.tech</span>`,
-                    ``,
-                    `<span class="t-muted">Loading tokens (auto-detect :root)...</span>`,
-                    `<span class="t-ok">✓</span> <span class="t-val">18</span> tokens (8 colors, 5 spacings, 4 radii, 1 misc)`,
-                    `<span class="t-ok">✓</span> <span class="t-val">2</span> themes (light + dark via prefers-color-scheme)`,
-                    ``,
-                    `<span class="t-muted">Scanning 6 files...</span>`,
-                    ``,
-                    `<span class="t-val">index.html</span> <span class="t-muted">(inline &lt;style&gt;)</span>`,
-                    `  <span class="t-ok">✓</span> .bottom-chip      background: <span class="t-val">rgba(38,38,38,0.7)</span>  <span class="t-muted">no token</span>`,
-                    `  <span class="t-ok">✓</span> .demo-term        background: <span class="t-val">#1a1a1a</span>            <span class="t-muted">no token</span>`,
-                    `  <span class="t-ok">✓</span> .demo-term        color: <span class="t-val">#e5e5e5</span>                 <span class="t-muted">no token</span>`,
-                    `  <span class="t-ok">✓</span> .dsh-cat-fill     background: <span class="t-val">#22c55e</span>            <span class="t-muted">no token</span>`,
-                    ``,
-                    `<span class="t-val">design-md.html</span>`,
-                    `  <span class="t-ok">✓</span> Clean — all values use tokens`,
-                    ``,
-                    `<span class="t-val">cursor-figma.html</span>`,
-                    `  <span class="t-ok">✓</span> Clean`,
-                    ``,
-                    `<span class="t-val">dev-for-designers.html</span>`,
-                    `  <span class="t-ok">✓</span> Clean`,
-                    ``,
-                    `<span class="t-muted">───────────────────────────────────────────</span>`,
-                    `  Files scanned          <span class="t-val">6</span>`,
-                    `  Files with issues      <span class="t-val">1</span>`,
-                    `  No token (acceptable)  <span class="t-warn">4</span> <span class="t-muted">UI overlays</span>`,
-                    `  Critical               <span class="t-ok">0</span>`,
-                    ``,
-                    `<span class="t-ok">✓</span> Site uses tokens correctly`,
-                    `<span class="t-ok">✓</span> Report: <span class="t-val">ds-lint-report.json</span>`,
-                ];
-                return `<div class="demo-term">${lines.map((l, i) => `<span class="t-line" style="${delay(i * 60)}">${l || '&nbsp;'}</span>`).join('')}</div>
-                    <div class="dsh-powered">Powered by <a href="https://antoshkin.tech/ds-lint/" target="_blank" rel="noopener">ds-lint</a></div>`;
-            },
-            'ds-coverage': () => {
-                const lines = [
-                    `<span class="t-prompt">$</span> <span class="t-cmd">ds-coverage analyze ./antoshkin.tech</span>`,
-                    ``,
-                    `<span class="t-muted">Indexing DS from :root...</span>`,
-                    `<span class="t-ok">✓</span> <span class="t-val">18</span> tokens, <span class="t-val">8</span> UI patterns`,
-                    ``,
-                    `<span class="t-muted">Scanning 6 pages...</span>`,
-                    ``,
-                    `<span class="t-val">Token              Uses      Pages    Coverage</span>`,
-                    `<span class="t-muted">──────────────────────────────────────────────</span>`,
-                    `--bg               <span class="t-val">32</span>        6/6      <span class="t-ok">100%</span> ███████████`,
-                    `--text             <span class="t-val">28</span>        6/6      <span class="t-ok">100%</span> ███████████`,
-                    `--text-muted       <span class="t-val">24</span>        6/6      <span class="t-ok">100%</span> ███████████`,
-                    `--border           <span class="t-val">18</span>        6/6      <span class="t-ok">100%</span> ███████████`,
-                    `--space-md         <span class="t-val">15</span>        6/6      <span class="t-ok">100%</span> ███████████`,
-                    `--space-lg         <span class="t-val">12</span>        6/6      <span class="t-ok">100%</span> ███████████`,
-                    `--space-sm         <span class="t-val">10</span>        6/6      <span class="t-ok">100%</span> ███████████`,
-                    `--radius-md        <span class="t-val"> 8</span>        4/6      <span class="t-ok"> 67%</span> ███████░░░░`,
-                    `--radius-pill      <span class="t-val"> 6</span>        2/6      <span class="t-warn"> 33%</span> ████░░░░░░░`,
-                    `--space-xl         <span class="t-val"> 4</span>        2/6      <span class="t-warn"> 33%</span> ████░░░░░░░`,
-                    `--surface-active   <span class="t-val"> 2</span>        2/6      <span class="t-warn"> 33%</span> ████░░░░░░░`,
-                    ``,
-                    `<span class="t-val">UI Patterns</span>`,
-                    `<span class="t-muted">──────────────────────────────────────────────</span>`,
-                    `ProjectCard       <span class="t-val"> 6</span>  <span class="t-muted">index.html, en.html</span>           <span class="t-ok">✓</span>`,
-                    `EntryLink         <span class="t-val"> 6</span>  <span class="t-muted">index.html, en.html</span>           <span class="t-ok">✓</span>`,
-                    `BottomChip        <span class="t-val"> 6</span>  <span class="t-muted">index.html, en.html</span>           <span class="t-ok">✓</span>`,
-                    `DemoPanel         <span class="t-val"> 1</span>  <span class="t-muted">index.html, en.html</span>           <span class="t-ok">✓</span>`,
-                    `LangSwitch        <span class="t-val"> 1</span>  <span class="t-muted">all pages</span>                    <span class="t-ok">✓</span>`,
-                    `ArticleTag        <span class="t-val"> 9</span>  <span class="t-muted">articles</span>                     <span class="t-ok">✓</span>`,
-                    `ArticleNav        <span class="t-val"> 1</span>  <span class="t-muted">articles</span>                     <span class="t-ok">✓</span>`,
-                    `ExpItem           <span class="t-val"> 4</span>  <span class="t-muted">index.html, en.html</span>           <span class="t-ok">✓</span>`,
-                    ``,
-                    `<span class="t-muted">───────────────────────────────────────────</span>`,
-                    `  Tokens used      <span class="t-val">18/18</span> (100%)`,
-                    `  UI patterns      <span class="t-val">8/8</span> (100%)`,
-                    `  Duplicates       <span class="t-ok">0</span>`,
-                    `  Unused           <span class="t-ok">0</span>`,
-                    ``,
-                    `<span class="t-ok">✓</span> Full design system coverage`,
-                ];
-                return `<div class="demo-term">${lines.map((l, i) => `<span class="t-line" style="${delay(i * 55)}">${l || '&nbsp;'}</span>`).join('')}</div>
-                    <div class="dsh-powered">Powered by <a href="https://antoshkin.tech/ds-coverage/" target="_blank" rel="noopener">ds-coverage</a></div>`;
-            },
-            'figma-to-design-md': () => {
-                const lines = [
-                    `<span class="t-prompt">$</span> <span class="t-cmd">figma-to-design-md --file=ozIpyFtjU1Pmm</span>`,
-                    ``,
-                    `<span class="t-muted">Connecting to Figma API...</span>`,
-                    `<span class="t-ok">✓</span> Authorized (Personal Access Token)`,
-                    `<span class="t-ok">✓</span> File: <span class="t-val">antoshkin.tech – Design System</span>`,
-                    ``,
-                    `<span class="t-muted">Extracting variables...</span>`,
-                    `  <span class="t-ok">✓</span> Collection <span class="t-val">Colors</span>`,
-                    `      bg                 <span class="t-muted">#fafafa / #0c0c0c</span>`,
-                    `      text               <span class="t-muted">#0a0a0a / #f5f5f5</span>`,
-                    `      text-muted         <span class="t-muted">#737373 / #8f8e8d</span>`,
-                    `      border             <span class="t-muted">#e4e4e7 / #27272a</span>`,
-                    `      card-border        <span class="t-muted">#e2e2e2 / #2d2d2d</span>`,
-                    `      hover-bg           <span class="t-muted">rgba(0,0,0,0.04)</span>`,
-                    `      surface-active     <span class="t-muted">#e8e8e8 / #181818</span>`,
-                    `      badge-border       <span class="t-muted">#b0b0b0 / #7c7c7c</span>`,
-                    `  <span class="t-ok">✓</span> Collection <span class="t-val">Spacing</span>`,
-                    `      xs: 4  sm: 8  md: 16  lg: 24  xl: 48`,
-                    `  <span class="t-ok">✓</span> Collection <span class="t-val">Radius</span>`,
-                    `      sm: 4  md: 8  lg: 12  pill: 100`,
-                    ``,
-                    `<span class="t-muted">Extracting text styles...</span>`,
-                    `  <span class="t-ok">✓</span> Heading/H1        <span class="t-muted">Inter 1.5rem/1.618 500</span>`,
-                    `  <span class="t-ok">✓</span> Heading/H2        <span class="t-muted">Inter 0.875rem/1.618 500</span>`,
-                    `  <span class="t-ok">✓</span> Body              <span class="t-muted">Inter 1rem/1.618 400</span>`,
-                    `  <span class="t-ok">✓</span> Body/Small        <span class="t-muted">Inter 0.875rem/1.5 400</span>`,
-                    `  <span class="t-ok">✓</span> Caption           <span class="t-muted">Inter 0.75rem/1.4 400</span>`,
-                    `  <span class="t-ok">✓</span> Mono              <span class="t-muted">SF Mono 12px/1.6 400</span>`,
-                    ``,
-                    `<span class="t-muted">Extracting components...</span>`,
-                    `  <span class="t-ok">✓</span> ProjectCard       <span class="t-muted">1 variant (default)</span>`,
-                    `  <span class="t-ok">✓</span> EntryLink         <span class="t-muted">1 variant (article)</span>`,
-                    `  <span class="t-ok">✓</span> Badge             <span class="t-muted">3 variants (repo, cli, tool)</span>`,
-                    `  <span class="t-ok">✓</span> BottomChip        <span class="t-muted">2 variants (active, default)</span>`,
-                    `  <span class="t-ok">✓</span> DemoPanel         <span class="t-muted">1 variant (sidebar)</span>`,
-                    `  <span class="t-ok">✓</span> LangSwitch        <span class="t-muted">2 variants (ru, en)</span>`,
-                    `  <span class="t-ok">✓</span> Avatar            <span class="t-muted">1 variant (44px)</span>`,
-                    `  <span class="t-ok">✓</span> ArticleTag        <span class="t-muted">1 variant</span>`,
-                    ``,
-                    `<span class="t-muted">───────────────────────────────────────────</span>`,
-                    `  Variables      <span class="t-val">18</span> (3 collections, 2 themes)`,
-                    `  Text styles    <span class="t-val"> 6</span>`,
-                    `  Components     <span class="t-val"> 8</span> (12 variants)`,
-                    ``,
-                    `<span class="t-ok">✓</span> Created <span class="t-val">design.md</span> (4.2 KB)`,
-                ];
-                return `<div class="demo-term">${lines.map((l, i) => `<span class="t-line" style="${delay(i * 55)}">${l || '&nbsp;'}</span>`).join('')}</div>
-                    <div class="dsh-powered">Powered by <a href="https://antoshkin.tech/figma-to-design-md/" target="_blank" rel="noopener">figma-to-design-md</a></div>`;
-            },
-            'ds-ai-starter': () => {
-                const lines = [
-                    `<span class="t-prompt">$</span> <span class="t-cmd">ds-ai-starter init --scan=./antoshkin.tech</span>`,
-                    ``,
-                    `<span class="t-muted">Scanning :root...</span>`,
-                    `<span class="t-ok">✓</span> <span class="t-val">18</span> CSS custom properties`,
-                    `<span class="t-ok">✓</span> <span class="t-val">2</span> themes (prefers-color-scheme: light/dark)`,
-                    ``,
-                    `<span class="t-muted">Categories:</span>`,
-                    `  <span class="t-val">Colors</span>    --bg            <span class="t-muted">#fafafa / #0c0c0c</span>`,
-                    `             --text          <span class="t-muted">#0a0a0a / #f5f5f5</span>`,
-                    `             --text-muted    <span class="t-muted">#737373 / #8f8e8d</span>`,
-                    `             --border        <span class="t-muted">#e4e4e7 / #27272a</span>`,
-                    `             --card-border   <span class="t-muted">#e2e2e2 / #2d2d2d</span>`,
-                    `             --hover-bg      <span class="t-muted">rgba(0,0,0,0.04)</span>`,
-                    `             --surface-active <span class="t-muted">#e8e8e8 / #181818</span>`,
-                    `             --badge-border  <span class="t-muted">#b0b0b0 / #7c7c7c</span>`,
-                    `  <span class="t-val">Spacing</span>   --space-xs 4px  --space-sm 8px`,
-                    `             --space-md 16px --space-lg 24px`,
-                    `             --space-xl 48px`,
-                    `  <span class="t-val">Radius</span>    --radius-sm 4px  --radius-md 8px`,
-                    `             --radius-lg 12px --radius-pill 100px`,
-                    ``,
-                    `<span class="t-muted">Generating specs...</span>`,
-                    ``,
-                    `  <span class="t-ok">✓</span> <span class="t-val">.cursor/rules/design-system.md</span>  <span class="t-muted">4.2 KB</span>`,
-                    `    Tokens with light/dark mapping, usage`,
-                    `    rules, component examples`,
-                    ``,
-                    `  <span class="t-ok">✓</span> <span class="t-val">CLAUDE.md</span>                       <span class="t-muted">3.8 KB</span>`,
-                    `    Full spec: principles, do/don't,`,
-                    `    new component template`,
-                    ``,
-                    `  <span class="t-ok">✓</span> <span class="t-val">AGENTS.md</span>                       <span class="t-muted">1.4 KB</span>`,
-                    `    Concise rules for Codex/Devin`,
-                    ``,
-                    `  <span class="t-ok">✓</span> <span class="t-val">.github/copilot-instructions.md</span> <span class="t-muted">1.1 KB</span>`,
-                    `    Copilot: naming and token instructions`,
-                    ``,
-                    `<span class="t-muted">───────────────────────────────────────────</span>`,
-                    `  Files created     <span class="t-val">4</span>`,
-                    `  Total size        <span class="t-val">10.5 KB</span>`,
-                    `  Tokens covered    <span class="t-val">18/18</span> (100%)`,
-                    `  Themes described  <span class="t-val">2</span> (light + dark)`,
-                    ``,
-                    `<span class="t-ok">✓</span> AI agents now understand antoshkin.tech DS`,
-                ];
-                return `<div class="demo-term">${lines.map((l, i) => `<span class="t-line" style="${delay(i * 55)}">${l || '&nbsp;'}</span>`).join('')}</div>
-                    <div class="dsh-powered">Powered by <a href="https://antoshkin.tech/design-system-ai-starter/" target="_blank" rel="noopener">design-system-ai-starter</a></div>`;
-            },
-        };
-
-        document.querySelectorAll('.project-play[data-demo]').forEach(btn => {
-            btn.addEventListener('click', e => {
-                e.preventDefault();
-                e.stopPropagation();
-                const key = btn.dataset.demo;
-                const gen = demos[key];
-                if (!gen) return;
-                openPanel(btn.closest('.project-card').querySelector('.project-title').textContent, gen());
-            });
-        });
-
-        document.querySelectorAll('.bottom-chip[data-demo]').forEach(chip => {
-            chip.addEventListener('click', () => {
-                const key = chip.dataset.demo;
-                if (key === 'spektr') return;
-                const gen = demos[key];
-                if (!gen) return;
-                openPanel(key, gen());
-            });
-        });
-    })();
-    </script>
 </body>
 </html>
