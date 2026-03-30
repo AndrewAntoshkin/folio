@@ -792,6 +792,7 @@
             'color-mix(in srgb, var(--text-muted), transparent 40%)',
             'color-mix(in srgb, var(--text-muted), transparent 70%)',
         ];
+        const COLORS = ['#4285F4', '#EA4335', '#FBBC04', '#34A853', '#FF6D01', '#46BDC6', '#7B61FF'];
 
         const spans = [];
         for (let i = 0; i < COUNT; i++) {
@@ -855,6 +856,16 @@
                 spans[idx].style.color = PALETTE[Math.floor(Math.random() * PALETTE.length)];
             }
         }, 200);
+
+        let coloredIdx = -1;
+        setInterval(() => {
+            if (isHovered) return;
+            if (coloredIdx >= 0) {
+                spans[coloredIdx].style.color = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+            }
+            coloredIdx = Math.floor(Math.random() * COUNT);
+            spans[coloredIdx].style.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+        }, 2000);
     })();
     </script>
 
