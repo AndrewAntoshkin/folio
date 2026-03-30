@@ -52,6 +52,35 @@
         }
         .mobile-backdrop.open { display: block; }
 
+        /* Override React inline styles to match other project pages */
+        [style*="background: rgb(28, 28, 27)"],
+        [style*="background:#1c1c1b"] { background: #0a0a0a !important; }
+
+        [style*="background: rgb(23, 23, 22)"],
+        [style*="background:#171716"] { background: #111 !important; }
+
+        [style*="background: rgb(33, 33, 33)"],
+        [style*="background:#212121"] { background: #141414 !important; }
+
+        [style*="background: rgb(42, 42, 41)"],
+        [style*="background:#2a2a29"] { background: #1a1a1a !important; }
+
+        [style*="border-right: 1px dotted"] { border-right: 1px solid #1a1a1a !important; }
+        [style*="border-top: 1px dotted"] { border-top: 1px solid #1a1a1a !important; }
+
+        [style*="border: 1px solid rgb(47, 47, 46)"],
+        [style*="border:1px solid #2f2f2e"] { border-color: #1e1e1e !important; }
+
+        [style*="border-bottom: 1px solid rgb(47, 47, 46)"] { border-bottom-color: #1e1e1e !important; }
+
+        [style*="border-radius: 10px"] { border-radius: 14px !important; }
+
+        [style*="font-family: Inter"],
+        [style*="font-family: 'Inter'"],
+        [style*="fontFamily"] { font-family: 'Google Sans', system-ui, -apple-system, sans-serif !important; }
+
+        h1 { font-size: 28px !important; font-weight: 500 !important; }
+
         @media (max-width: 800px) {
             .menu-btn { display: flex; }
             .mobile-sidebar { transform: translateX(-100%); transition: transform .25s ease; }
@@ -71,5 +100,45 @@
 </head>
 <body>
     <div id="root"></div>
+    <script>
+    (function patchStyles() {
+        const map = {
+            'rgb(28, 28, 27)': '#0a0a0a',
+            'rgb(23, 23, 22)': '#111',
+            'rgb(33, 33, 33)': '#141414',
+            'rgb(42, 42, 41)': '#1a1a1a',
+        };
+        const borderMap = {
+            'rgb(47, 47, 46)': '#1e1e1e',
+            'rgb(51, 51, 51)': '#1a1a1a',
+        };
+        function patch() {
+            document.querySelectorAll('[style]').forEach(el => {
+                const s = el.style;
+                if (map[s.background] || map[s.backgroundColor]) {
+                    s.backgroundColor = map[s.background] || map[s.backgroundColor];
+                }
+                if (s.borderRight && s.borderRight.includes('dotted')) {
+                    s.borderRight = '1px solid #1a1a1a';
+                }
+                if (s.borderTop && s.borderTop.includes('dotted')) {
+                    s.borderTop = '1px solid #1a1a1a';
+                }
+                for (const [from, to] of Object.entries(borderMap)) {
+                    if (s.borderColor && s.borderColor.includes(from)) s.borderColor = to;
+                    if (s.borderBottomColor && s.borderBottomColor.includes(from)) s.borderBottomColor = to;
+                }
+                if (s.borderRadius === '10px') s.borderRadius = '14px';
+                if (s.fontFamily && s.fontFamily.includes('Inter')) {
+                    s.fontFamily = "'Google Sans', system-ui, -apple-system, sans-serif";
+                }
+            });
+        }
+        const obs = new MutationObserver(patch);
+        obs.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style'] });
+        setTimeout(patch, 100);
+        setTimeout(patch, 500);
+    })();
+    </script>
 </body>
 </html>
