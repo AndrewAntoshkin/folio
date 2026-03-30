@@ -15,11 +15,36 @@
     <meta property="og:description" content="Design Engineer. Дизайн-системы, AI-инструменты и инфраструктура.">
     <meta property="og:type" content="website">
     <link rel="icon" type="image/png" href="assets/avatar.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <meta name="color-scheme" content="light dark">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
     <style>
+        @font-face {
+            font-family: 'Google Sans';
+            src: url('assets/fonts/GoogleSans-Latin.woff2') format('woff2');
+            font-weight: 100 900;
+            font-display: swap;
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        }
+        @font-face {
+            font-family: 'Google Sans';
+            src: url('assets/fonts/GoogleSans-LatinExt.woff2') format('woff2');
+            font-weight: 100 900;
+            font-display: swap;
+            unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+        }
+        @font-face {
+            font-family: 'Google Sans';
+            src: url('assets/fonts/GoogleSans-Cyrillic.woff2') format('woff2');
+            font-weight: 100 900;
+            font-display: swap;
+            unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+        }
+        @font-face {
+            font-family: 'Google Sans';
+            src: url('assets/fonts/GoogleSans-CyrillicExt.woff2') format('woff2');
+            font-weight: 100 900;
+            font-display: swap;
+            unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+        }
         @view-transition {
             navigation: auto;
         }
@@ -59,6 +84,9 @@
             --avatar-border: rgba(80, 80, 80, 0.5);
             --badge-border: #b0b0b0;
             --surface-active: #e8e8e8;
+            --card-bg: #f0f0f0;
+            --card-bg-hover: #e8e8e8;
+            --badge-bg: #e0e0e0;
 
             --space-xs: 4px;
             --space-sm: 8px;
@@ -76,13 +104,16 @@
             :root {
                 --bg: #0c0c0c;
                 --text: #f5f5f5;
-                --text-muted: #8f8e8d;
+                --text-muted: #a1a1a1;
                 --border: #27272a;
                 --card-border: #2d2d2d;
                 --hover-bg: rgba(255, 255, 255, 0.04);
                 --avatar-border: rgba(207, 207, 207, 0.5);
                 --badge-border: #7c7c7c;
                 --surface-active: #181818;
+                --card-bg: #161616;
+                --card-bg-hover: #1c1c1c;
+                --badge-bg: #222;
             }
         }
 
@@ -95,7 +126,7 @@
         html {
             background: var(--bg);
             color: var(--text);
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-family: 'Google Sans', system-ui, -apple-system, sans-serif;
             font-size: 1rem;
             line-height: 1.618;
             -webkit-font-smoothing: antialiased;
@@ -104,6 +135,15 @@
 
         body {
             min-height: 100vh;
+        }
+
+        @keyframes deblur {
+            from { opacity: 0; filter: blur(10px); transform: translateY(6px); }
+            to   { opacity: 1; filter: blur(0);    transform: translateY(0); }
+        }
+        .reveal {
+            opacity: 0;
+            animation: deblur 0.6s ease-out forwards;
         }
 
         a {
@@ -121,8 +161,17 @@
         .hero {
             display: flex;
             flex-direction: column;
-            gap: 36px;
+            gap: 28px;
             margin-bottom: var(--space-xl);
+        }
+
+        .hero-tagline {
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.625rem;
+        }
+        .hero-tagline em {
+            font-style: normal;
         }
 
         .hero-identity {
@@ -169,14 +218,26 @@
             font-size: 1rem;
             font-weight: 400;
             line-height: 1.625rem;
+            color: var(--text-muted);
         }
 
         .intro a {
+            color: var(--text);
             text-decoration: underline;
-            text-decoration-color: color-mix(in srgb, currentColor, transparent 75%);
+            text-decoration-color: color-mix(in srgb, var(--text), transparent 75%);
             text-underline-offset: 0.3em;
             text-decoration-thickness: 1px;
             transition: text-decoration-color 0.17s ease-out;
+        }
+
+        .intro a svg.icon {
+            display: inline-block;
+            width: 0.8em;
+            height: 0.8em;
+            vertical-align: -0.1em;
+            margin-left: 1px;
+            margin-right: 0.15em;
+            fill: currentColor;
         }
 
         .intro a:hover {
@@ -240,62 +301,65 @@
         .projects-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: var(--space-md);
+            gap: 10px;
         }
 
         .project-card {
             display: flex;
             flex-direction: column;
             gap: var(--space-sm);
-            padding: var(--space-md);
-            border: 1px solid var(--card-border);
-            border-radius: var(--radius-lg);
+            padding: 16px;
+            background: var(--card-bg);
+            border: none;
+            border-radius: 16px;
             text-decoration: none;
             color: inherit;
-            transition: background 0.15s;
+            transition: background 0.2s, transform 0.2s;
         }
 
         .project-card:hover {
-            background: var(--hover-bg);
+            background: var(--card-bg-hover);
+            transform: translateY(-1px);
         }
 
         .project-card.disabled {
-            background: var(--hover-bg);
-            border-color: transparent;
+            opacity: 0.5;
             pointer-events: none;
             cursor: default;
         }
 
         .project-header {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             justify-content: space-between;
             gap: var(--space-sm);
         }
 
         .project-title {
-            font-size: 1rem;
+            font-size: 0.9375rem;
             font-weight: 500;
-            line-height: 1.5rem;
+            line-height: 1.4;
             flex: 1;
             min-width: 0;
         }
 
         .project-badge {
-            font-size: 0.75rem;
-            font-weight: 400;
-            line-height: 0.875rem;
-            padding: var(--space-xs) 6px;
-            border: 1px solid var(--badge-border);
-            border-radius: var(--radius-sm);
+            font-size: 0.6875rem;
+            font-weight: 500;
+            line-height: 1;
+            padding: 4px 8px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-muted);
             white-space: nowrap;
             flex-shrink: 0;
         }
 
         .project-desc {
-            font-size: 0.875rem;
+            font-size: 0.8125rem;
             font-weight: 400;
-            line-height: 1.125rem;
+            line-height: 1.4;
             color: var(--text-muted);
         }
 
@@ -493,9 +557,40 @@
             color: var(--text);
         }
 
+        .cross-grid {
+            display: grid;
+            grid-template-columns: repeat(var(--cross-cols), 1fr);
+            gap: 0;
+            user-select: none;
+        }
+
+        .cross-grid span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            aspect-ratio: 1;
+            font-size: 30px;
+            line-height: 1;
+            color: var(--text-muted);
+            transition: color 0.5s ease, transform 0.3s ease, opacity 0.5s ease;
+            cursor: default;
+        }
+
+        .cross-grid.hovered span {
+            color: var(--text-muted) !important;
+        }
+
+        .cross-grid span.near {
+            transform: rotate(45deg);
+            color: var(--text) !important;
+        }
+
         @media (max-width: 600px) {
             .projects-grid {
                 grid-template-columns: 1fr;
+            }
+            .cross-grid span {
+                font-size: 14px;
             }
         }
 
@@ -571,9 +666,11 @@
                     <p class="role">Design Engineer</p>
                 </div>
             </div>
+            <div class="cross-grid" id="crossGrid"></div>
             <div class="intro">
-                <p>Делаю дизайн&#8209;системы, которые понимают и&nbsp;люди, и&nbsp;AI&#8209;агенты. Сейчас веду B2B дизайн&#8209;систему <a href="https://market.yandex.ru" target="_blank" rel="noopener">Яндекс&nbsp;Маркета</a> (MDS), до&nbsp;этого строил систему компонентов в&nbsp;<a href="https://www.sber.ru" target="_blank" rel="noopener">Сбере</a>.</p>
-                <p>Делаю опенсорс&#8209;инструменты на&nbsp;стыке дизайна и&nbsp;кода. Пишите в&nbsp;<a href="https://t.me/andrewaitken" target="_blank" rel="noopener">Telegram</a> или на&nbsp;<a href="mailto:andrew.antoshkin@gmail.com">почту</a>.</p>
+                <p>Строю дизайн&#8209;системы от&nbsp;Figma и&nbsp;токенов до&nbsp;кода и&nbsp;AI&#8209;автоматизации. Сейчас веду дизайн&#8209;систему Яндекс HR&nbsp;Tech, до&nbsp;этого строил дизайн&#8209;систему в&nbsp;<a href="https://www.sber.ru" target="_blank" rel="noopener">Сбере</a>.</p>
+                <p>Проектирую в&nbsp;Figma, прототипирую и&nbsp;строю инструменты с&nbsp;помощью Claude и&nbsp;Cursor. Делаю опенсорс проекты на&nbsp;стыке дизайна и&nbsp;кода. Менторю команды и&nbsp;веду воркшопы в&nbsp;Яндексе про AI в&nbsp;дизайн&#8209;процессах.</p>
+                <p>Пишите в&nbsp;<a href="https://t.me/andrewaitken" target="_blank" rel="noopener"><svg class="icon" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>Telegram</a>, на&nbsp;<a href="mailto:andrew.antoshkin@gmail.com"><svg class="icon" viewBox="0 0 24 24"><path d="M1.5 8.67v8.58a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V8.67l-8.928 5.493a3 3 0 0 1-3.144 0L1.5 8.67Z"/><path d="M22.5 6.908V6.75a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3v.158l9.714 5.978a1.5 1.5 0 0 0 1.572 0L22.5 6.908Z"/></svg>почту</a> или смотрите код на&nbsp;<a href="https://github.com/AndrewAntoshkin" target="_blank" rel="noopener"><svg class="icon" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>GitHub</a>.</p>
             </div>
         </div>
 
@@ -672,7 +769,7 @@
             <div class="exp-list">
                 <div class="exp-item">
                     <div class="exp-info">
-                        <span class="exp-company">Яндекс Маркет</span>
+                        <span class="exp-company">Яндекс</span>
                         <span class="exp-role">Product Designer &mdash; Design Systems</span>
                     </div>
                     <span class="exp-year">2025 —</span>
@@ -702,11 +799,6 @@
         </section>
 
         <section>
-            <h2>Обо мне</h2>
-            <p class="about-text">Дизайнер, который собирает рабочие продукты через AI. Проектирую в&nbsp;Figma, прототипирую и&nbsp;строю инструменты с&nbsp;помощью Claude и&nbsp;Cursor. Менторю команды и&nbsp;веду воркшопы в&nbsp;Яндексе про AI в&nbsp;дизайн&#8209;процессах. 7+ лет&nbsp;&mdash; от&nbsp;банкинга до&nbsp;e&#8209;commerce.</p>
-        </section>
-
-        <section>
             <h2>Контакты</h2>
             <div class="contacts-list">
                 <div class="contact-row">
@@ -732,12 +824,95 @@
             <img class="footer-logo" src="assets/antoshkin-tech-logo.svg" alt="antoshkin.tech">
             <div class="lang-switch">
                 <span class="active">Ru</span>
-                <a href="en.html" onclick="localStorage.setItem('lang','en')">En</a>
+                <a href="en.html" id="langSwitch">En</a>
             </div>
         </footer>
 
         <div class="spektr-hint" id="spektrHint"><kbd>Alt</kbd> + hover — инспектор элементов<button class="spektr-hint-close" id="spektrClose" type="button">&times;</button></div>
     </main>
+
+    <script>
+    (() => {
+        const grid = document.getElementById('crossGrid');
+        if (!grid) return;
+
+        const SIZE = 28;
+        const COLS = Math.floor(grid.offsetWidth / SIZE);
+        const ROWS = 7;
+        const COUNT = COLS * ROWS;
+        grid.style.setProperty('--cross-cols', COLS);
+
+        const PALETTE = [
+            'var(--text)',
+            'var(--text-muted)',
+            'color-mix(in srgb, var(--text-muted), transparent 40%)',
+            'color-mix(in srgb, var(--text-muted), transparent 70%)',
+        ];
+
+        const spans = [];
+        for (let i = 0; i < COUNT; i++) {
+            const s = document.createElement('span');
+            s.textContent = '+';
+            s.style.color = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+            grid.appendChild(s);
+            spans.push(s);
+        }
+
+        let isHovered = false;
+        const PX_RADIUS = SIZE * 2.5;
+
+        let centers = [];
+        function cachePositions() {
+            const gridRect = grid.getBoundingClientRect();
+            centers = spans.map(s => {
+                const r = s.getBoundingClientRect();
+                return { x: r.left + r.width / 2 - gridRect.left, y: r.top + r.height / 2 - gridRect.top };
+            });
+        }
+        cachePositions();
+        window.addEventListener('resize', cachePositions);
+
+        grid.addEventListener('mouseenter', () => {
+            isHovered = true;
+            grid.classList.add('hovered');
+        });
+
+        grid.addEventListener('mouseleave', () => {
+            isHovered = false;
+            grid.classList.remove('hovered');
+            spans.forEach(s => { s.classList.remove('near'); s.style.opacity = ''; });
+        });
+
+        grid.addEventListener('mousemove', e => {
+            const rect = grid.getBoundingClientRect();
+            const mx = e.clientX - rect.left;
+            const my = e.clientY - rect.top;
+
+            spans.forEach((s, idx) => {
+                const dx = centers[idx].x - mx;
+                const dy = centers[idx].y - my;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                const isNear = dist <= PX_RADIUS;
+                s.classList.toggle('near', isNear);
+                if (isNear) {
+                    const brightness = Math.max(0, 1 - dist / PX_RADIUS);
+                    s.style.opacity = 0.15 + brightness * 0.85;
+                } else {
+                    s.style.opacity = 0.15;
+                }
+            });
+        });
+
+        setInterval(() => {
+            if (isHovered) return;
+            const count = Math.max(1, Math.floor(COUNT * 0.08));
+            for (let i = 0; i < count; i++) {
+                const idx = Math.floor(Math.random() * COUNT);
+                spans[idx].style.color = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+            }
+        }, 200);
+    })();
+    </script>
 
     <script>
         (() => {
@@ -964,6 +1139,109 @@
         document.body.style.cursor = '';
         document.addEventListener('mousemove', e => {
             document.body.style.cursor = (e.altKey && active) ? 'crosshair' : '';
+        });
+    })();
+    </script>
+
+    <script>
+    (() => {
+        const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const SEL = 'h1, h2, p, .role, .project-title, .project-desc, .project-badge, ' +
+            '.entry-title, .entry-tag, .exp-company, .exp-role, .exp-year, ' +
+            '.contact-label, .contact-row a';
+        const TICK = 35;
+        const FLIPS = 5;
+        const ROW_DELAY = 40;
+
+        function textNodes(el) {
+            const out = [];
+            const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+            let n; while ((n = w.nextNode())) { if (n.textContent.trim()) out.push(n); }
+            return out;
+        }
+
+        function rchar() { return CHARS[Math.floor(Math.random() * CHARS.length)]; }
+        function isSpace(c) { return c === ' ' || c === '\u00A0' || c === '\u2011' || c === '\u2009'; }
+
+        function scramble(root, mode) {
+            return new Promise(resolve => {
+                const els = [...root.querySelectorAll(SEL)];
+                if (!els.length) return resolve();
+
+                let done = 0, total = 0;
+
+                els.forEach((el, row) => {
+                    const nodes = textNodes(el);
+                    nodes.forEach(node => {
+                        const orig = [...node.textContent];
+                        const cur = mode === 'in'
+                            ? orig.map(c => isSpace(c) ? c : rchar())
+                            : [...orig];
+                        node.textContent = cur.join('');
+                        total++;
+
+                        setTimeout(() => {
+                            let step = 0;
+                            const iv = setInterval(() => {
+                                step++;
+                                for (let i = 0; i < orig.length; i++) {
+                                    if (isSpace(orig[i])) continue;
+                                    if (step >= FLIPS) {
+                                        cur[i] = mode === 'in' ? orig[i] : rchar();
+                                    } else {
+                                        cur[i] = rchar();
+                                    }
+                                }
+                                node.textContent = cur.join('');
+                                if (step >= FLIPS) {
+                                    clearInterval(iv);
+                                    done++;
+                                    if (done === total) resolve();
+                                }
+                            }, TICK);
+                        }, row * ROW_DELAY);
+                    });
+                });
+            });
+        }
+
+        const sw = document.getElementById('langSwitch');
+        if (sw) {
+            sw.addEventListener('click', e => {
+                e.preventDefault();
+                const href = sw.href;
+                localStorage.setItem('lang', sw.textContent.trim() === 'En' ? 'en' : 'ru');
+                sessionStorage.setItem('splitflap', '1');
+                document.documentElement.style.viewTransitionName = 'none';
+                location.href = href;
+            });
+        }
+
+        if (sessionStorage.getItem('splitflap')) {
+            sessionStorage.removeItem('splitflap');
+            window.scrollTo({ top: 0, behavior: 'instant' });
+            scramble(document.querySelector('main'), 'in');
+        }
+    })();
+    </script>
+
+    <script>
+    (() => {
+        const targets = [
+            '.hero-identity',
+            '#crossGrid',
+            '.hero-tagline',
+            '.intro p',
+            'section'
+        ];
+        let delay = 0;
+        const STEP = 80;
+        targets.forEach(sel => {
+            document.querySelectorAll(sel).forEach(el => {
+                el.classList.add('reveal');
+                el.style.animationDelay = delay + 'ms';
+                delay += STEP;
+            });
         });
     })();
     </script>
