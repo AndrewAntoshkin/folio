@@ -535,7 +535,7 @@
                 grid-template-columns: 1fr;
             }
             .cross-grid span {
-                font-size: 14px;
+                font-size: 22px;
             }
         }
 
@@ -780,9 +780,10 @@
         const grid = document.getElementById('crossGrid');
         if (!grid) return;
 
-        const SIZE = 28;
+        const isMobile = window.innerWidth <= 600;
+        const SIZE = isMobile ? Math.floor(grid.offsetWidth / 10) : 28;
         const COLS = Math.floor(grid.offsetWidth / SIZE);
-        const ROWS = 7;
+        const ROWS = isMobile ? 5 : 7;
         const COUNT = COLS * ROWS;
         grid.style.setProperty('--cross-cols', COLS);
 
