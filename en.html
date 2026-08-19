@@ -128,6 +128,12 @@
 
             --accent: #2b7fff;
             --accent-soft: rgba(43, 127, 255, 0.1);
+            /* Линии замера типографики — циан, отдельно от синего интерфейса
+               выделения; на светлом фоне тот же тон, но темнее, иначе не читается */
+            --guide: #039dbf;
+            /* Заливка главной кнопки — небесный, а не синий интерфейсный:
+               под чёрный текст светлой темы нужен фон посветлее «--accent» */
+            --btn: #00aff9;
             --ok: #00a63e;
             --warn: #e17100;
             --err: #e7000b;
@@ -176,6 +182,9 @@
 
             --accent: #51a2ff;
             --accent-soft: rgba(81, 162, 255, 0.14);
+            --guide: #54eafd;
+            /* На тёмной белый текст и так лежит на светлом синем — оставляем акцент */
+            --btn: var(--accent);
             --ok: #05df72;
             --warn: #ffb900;
             --err: #ff6467;
@@ -361,9 +370,12 @@
 
         .hero-title {
             /* Значения измерены по метрикам Google Sans при line-height 1;
-               при смене интерлиньяжа сдвигаются на половину разницы */
+               при смене интерлиньяжа сдвигаются на половину разницы.
+               Доля хранится без единиц: внутри строки это em, а выноскам нужен
+               процент от её высоты — у них свой кегль, и em там уже не тот */
+            --x-ratio: 0.33;
             --baseline: 0.84em;
-            --x-line: 0.33em;
+            --x-line: calc(var(--x-ratio) * 1em);
             position: relative;
             font-size: clamp(2.5rem, 6.6vw, var(--t-display));
             line-height: 1;
@@ -437,12 +449,13 @@
         .btn svg { width: 16px; height: 16px; fill: currentColor; }
 
         .btn--primary {
-            background: var(--accent);
-            color: #fff;
+            background: var(--btn);
+            /* Текст идёт за темой: светлый на тёмной, тёмный на светлой */
+            color: var(--text);
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.14);
         }
-        :root[data-theme="dark"] .btn--primary { color: #101010; }
-        .btn--primary:hover { background: color-mix(in srgb, var(--accent) 88%, var(--text)); }
+        /* Ховер уводит фон в сторону подложки — навстречу тексту, а не от него */
+        .btn--primary:hover { background: color-mix(in srgb, var(--btn) 88%, var(--bg)); }
 
         .btn--ghost {
             background: var(--surface);
@@ -504,17 +517,15 @@
             position: absolute;
             left: 0;
             right: 0;
-            height: 1px;
+            height: 2px;
             opacity: 0;
         }
-        .t-line::before {
-            top: var(--x-line);
-            background-image: linear-gradient(90deg, var(--line-strong) 60%, transparent 0);
-            background-size: 5px 1px;
-        }
-        .t-line::after { top: var(--baseline); background: var(--accent); }
+        /* x-height и baseline — две одинаковые сплошные линии, разъезжаются друг за другом.
+           Линия ложится центром на метрику, поэтому поднимаем её на половину толщины */
+        .t-line::before { top: calc(var(--x-line) - 1px); background: var(--guide); }
+        .t-line::after { top: calc(var(--baseline) - 1px); background: var(--guide); }
 
-        [data-guides="true"] .t-line::before { animation: guideIn 0.6s var(--ease) 0.7s both; }
+        [data-guides="true"] .t-line::before { animation: guideWipe 0.75s var(--ease) 0.7s both; }
         [data-guides="true"] .t-line::after { animation: guideWipe 0.75s var(--ease) 0.55s both; }
 
         /* Обнимает сам текст, чтобы выноска цеплялась за конец строки, а не за край колонки */
@@ -540,11 +551,12 @@
             opacity: 0;
             z-index: 2;
         }
-        [data-guides="true"] .handle { animation: handleIn 0.45s var(--ease) both; }
-        .h-tl { top: -0.06em;    left: -0.1em;  margin: -4px 0 0 -4px; animation-delay: 0.95s; }
-        .h-tr { top: -0.06em;    right: -0.1em; margin: -4px -4px 0 0; animation-delay: 1.01s; }
-        .h-bl { bottom: -0.06em; left: -0.1em;  margin: 0 0 -4px -4px; animation-delay: 1.07s; }
-        .h-br { bottom: -0.06em; right: -0.1em; margin: 0 -4px -4px 0; animation-delay: 1.13s; }
+        /* Ручки выходят одной группой вместе с рамкой, без каскада */
+        [data-guides="true"] .handle { animation: handleIn 0.45s var(--ease) 0.85s both; }
+        .h-tl { top: -0.06em;    left: -0.1em;  margin: -4px 0 0 -4px; }
+        .h-tr { top: -0.06em;    right: -0.1em; margin: -4px -4px 0 0; }
+        .h-bl { bottom: -0.06em; left: -0.1em;  margin: 0 0 -4px -4px; }
+        .h-br { bottom: -0.06em; right: -0.1em; margin: 0 -4px -4px 0; }
 
         .annot {
             position: absolute;
@@ -599,6 +611,8 @@
         }
         .tick--up { top: auto; bottom: 100%; }
         .tick--up::after { bottom: auto; top: -2.5px; }
+        /* Поводок у правого края плашки — колечко садится ровно на конец линии */
+        .tick--end { left: auto; right: 0.75rem; }
         .tick--left {
             top: calc(50% - 0.5px);
             left: auto;
@@ -623,8 +637,13 @@
         /* 12px — половина высоты выноски (16 line-height + 2×4 padding).
            Выноски живут в боковых полях: подписи слева, замеры справа. */
         .annot--px    { left: calc(100% + 16px);  top: calc(50% - 12px);           animation-delay: 0.4s; }
-        .annot--x     { right: calc(100% + 24px); top: calc(var(--x-line) - 12px); animation-delay: 1.2s; }
-        .annot--size  { left: calc(100% + 20px);  top: calc(50% - 12px);           animation-delay: 1.26s; }
+        /* Плашка висит над строкой, поводок спускается на конец x-height:
+           52px = 24 высота плашки + 28 длина поводка */
+        .annot--x     { right: -0.75rem;          top: calc(var(--x-ratio) * 100% - 52px); animation-delay: 1.2s; }
+        /* Замер выделения висит под рамкой по центру, как бейдж размера в макете:
+           справа это место занято образцом цвета */
+        .annot--size  { left: 50%; top: calc(100% - 8px); transform: translateX(-50%); animation-delay: 0.95s; }
+        [data-guides="true"] .annot--size { animation-name: annotInCenter; }
         .annot--font  { right: calc(100% + 24px); top: calc(50% - 12px);           animation-delay: 1.32s; }
         .annot--color { left: calc(100% + 24px);  top: calc(50% - 12px);           animation-delay: 1.38s; }
         /* 49px = 16 выступ рамки + 16 линия + 9 точка + 8 зазор до плашки */
@@ -675,6 +694,11 @@
         @keyframes annotIn {
             from { opacity: 0; filter: blur(4px); transform: translateY(6px) scale(0.96); }
             to   { opacity: 1; filter: blur(0); transform: none; }
+        }
+        /* То же появление, но с сохранением центрирующего сдвига */
+        @keyframes annotInCenter {
+            from { opacity: 0; filter: blur(4px); transform: translateX(-50%) translateY(6px); }
+            to   { opacity: 1; filter: blur(0); transform: translateX(-50%); }
         }
         @keyframes handleIn {
             from { opacity: 0; transform: scale(0.3); }
@@ -1518,8 +1542,8 @@
             </div>
 
             <h1 class="hero-title">
-                <span class="t-line enter" style="--i: 1">Andrew&nbsp;<span class="sel">Antoshkin<i class="handle h-tl"></i><i class="handle h-tr"></i><i class="handle h-bl"></i><i class="handle h-br"></i><span class="annot annot--size" id="selSize" aria-hidden="true">&mdash;<i class="tick tick--left" style="--len: 16px"></i></span></span><span class="annot annot--x" aria-hidden="true">x-height<i class="tick tick--right" style="--len: 16px"></i></span></span>
-                <span class="serif enter" style="--i: 2"><span class="ink">Design Engineer<span class="annot annot--color" id="selColor" aria-hidden="true"><i class="swatch" style="background: var(--text-secondary)"></i>&mdash;<i class="tick tick--left" style="--len: 16px"></i></span></span><span class="annot annot--font" aria-hidden="true">old-standard-italic<i class="tick tick--right" style="--len: 16px"></i></span></span>
+                <span class="t-line enter" style="--i: 1">Andrew&nbsp;Antoshkin<span class="annot annot--x" aria-hidden="true">x-height<i class="tick tick--end" style="--len: 28px"></i></span></span>
+                <span class="serif enter" style="--i: 2"><span class="ink">Design <span class="sel">Engineer<i class="handle h-tl"></i><i class="handle h-tr"></i><i class="handle h-bl"></i><i class="handle h-br"></i><span class="annot annot--size" id="selSize" aria-hidden="true">&mdash;</span></span><span class="annot annot--color" id="selColor" aria-hidden="true"><i class="swatch" style="background: var(--text-secondary)"></i>&mdash;<i class="tick tick--left" style="--len: 16px"></i></span></span><span class="annot annot--font" aria-hidden="true">old-standard-italic<i class="tick tick--right" style="--len: 16px"></i></span></span>
             </h1>
 
             <div class="hero-intro">
