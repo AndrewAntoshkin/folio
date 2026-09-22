@@ -2,488 +2,263 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cursor + Figma: setting up a designer's environment</title>
-    <meta name="description" content="Step-by-step Cursor IDE setup, essential tools, and connecting Figma via MCP. From zero to a working design-to-code flow.">
-    <meta property="og:title" content="Cursor + Figma: setting up a designer's environment">
-    <meta property="og:description" content="Step-by-step Cursor setup and connecting Figma via MCP for designers.">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Cursor + Figma in 2026: the current setup for designers</title>
+    <meta name="description" content="Cursor + Figma in 2026: the current setup for designers">
+    <meta name="theme-color" content="#FDFDFC" id="themeColorMeta">
+    <meta property="og:title" content="Cursor + Figma in 2026: the current setup for designers">
+    <meta property="og:description" content="Cursor + Figma in 2026: the current setup for designers">
     <meta property="og:type" content="article">
-    <link rel="icon" type="image/png" href="assets/avatar.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <meta name="color-scheme" content="light dark">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        @view-transition {
-            navigation: auto;
-        }
-
-        ::view-transition-old(root),
-        ::view-transition-new(root) {
-            animation: 250ms ease both crossfade;
-        }
-
-        ::view-transition-old(root) {
-            animation-name: crossfade-out;
-        }
-
-        ::view-transition-new(article-body) {
-            animation: 500ms cubic-bezier(0.22, 1, 0.36, 1) both slide-fade-in;
-            animation-delay: 150ms;
-        }
-
-        ::view-transition-old(article-body) {
-            animation: 200ms ease both crossfade-out;
-        }
-
-        @keyframes crossfade {
-            from { opacity: 0; }
-        }
-
-        @keyframes crossfade-out {
-            to { opacity: 0; }
-        }
-
-        @keyframes slide-fade-in {
-            from { opacity: 0; transform: translateY(20px); }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            ::view-transition-group(*),
-            ::view-transition-old(*),
-            ::view-transition-new(*) {
-                animation: none !important;
-            }
-        }
-
-        :root {
-            --bg: #fafafa;
-            --text: #0a0a0a;
-            --text-sub: #52525b;
-            --text-muted: #737373;
-            --border: #e4e4e7;
-            --code-bg: #f4f4f5;
-            --code-border: rgba(0, 0, 0, 0.08);
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #0c0c0c;
-                --text: #f5f5f5;
-                --text-sub: #d4d4d8;
-                --text-muted: #8f8e8d;
-                --border: #27272a;
-                --code-bg: #18181b;
-                --code-border: rgba(255, 255, 255, 0.05);
-            }
-        }
-
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-        html {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            font-size: 1rem;
-            line-height: 1.618;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        body { min-height: 100vh; }
-        a { color: inherit; }
-
-        main {
-            width: min(592px, 100% - 32px);
-            margin: 0 auto;
-            padding-top: clamp(2rem, 0.56rem + 5.56vw, 5rem);
-            padding-bottom: clamp(2rem, 0.56rem + 5.56vw, 5rem);
-        }
-
-        .back-bar {
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            padding: 16px 16px 48px;
-            margin: 0 -16px;
-        }
-
-        .back-blur {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-        }
-
-        .back-blur:nth-child(1) {
-            -webkit-backdrop-filter: blur(1px);
-            backdrop-filter: blur(1px);
-            -webkit-mask-image: linear-gradient(to bottom, black, transparent 25%);
-            mask-image: linear-gradient(to bottom, black, transparent 25%);
-        }
-
-        .back-blur:nth-child(2) {
-            -webkit-backdrop-filter: blur(2px);
-            backdrop-filter: blur(2px);
-            -webkit-mask-image: linear-gradient(to bottom, black 12%, transparent 40%);
-            mask-image: linear-gradient(to bottom, black 12%, transparent 40%);
-        }
-
-        .back-blur:nth-child(3) {
-            -webkit-backdrop-filter: blur(4px);
-            backdrop-filter: blur(4px);
-            -webkit-mask-image: linear-gradient(to bottom, black 25%, transparent 60%);
-            mask-image: linear-gradient(to bottom, black 25%, transparent 60%);
-        }
-
-        .back-blur:nth-child(4) {
-            -webkit-backdrop-filter: blur(8px) saturate(180%);
-            backdrop-filter: blur(8px) saturate(180%);
-            -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
-            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
-        }
-
-        .back-bar::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            background: linear-gradient(to bottom, var(--bg) 0%, transparent 70%);
-            opacity: 0.7;
-        }
-
-        .back {
-            position: relative;
-            z-index: 1;
-            display: inline-block;
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .back:hover { color: var(--text); }
-
-        article h1 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            line-height: 1.3;
-            letter-spacing: -0.02em;
-            margin-bottom: 8px;
-        }
-
-        .article-tags {
-            display: flex;
-            gap: 4px;
-            flex-wrap: wrap;
-            margin-bottom: 2.5rem;
-        }
-
-        .article-tag {
-            font-size: 12px;
-            line-height: 14px;
-            padding: 4px 10px;
-            border: 1px solid var(--border);
-            border-radius: 100px;
-            color: var(--text-muted);
-            white-space: nowrap;
-        }
-
-        article h2 {
-            font-size: 1.125rem;
-            font-weight: 500;
-            line-height: 1.4;
-            margin-top: 2rem;
-            margin-bottom: 0;
-            color: var(--text);
-        }
-
-        article h3 {
-            font-size: 1rem;
-            font-weight: 500;
-            line-height: 1.5;
-            margin-top: 1.5rem;
-            margin-bottom: 0;
-        }
-
-        article p {
-            font-size: 1rem;
-            color: var(--text-sub);
-            margin-top: 1.5rem;
-        }
-
-        article p:first-of-type { margin-top: 0; }
-
-        article a {
-            color: var(--text);
-            text-decoration: underline;
-            text-decoration-color: color-mix(in srgb, currentColor, transparent 75%);
-            text-underline-offset: 0.3em;
-            text-decoration-thickness: 1px;
-            transition: text-decoration-color 0.17s ease-out;
-        }
-
-        article a:hover { text-decoration-color: currentColor; }
-
-        article strong { font-weight: 600; color: var(--text); }
-
-        article ul, article ol {
-            margin-top: 1rem;
-            padding-left: 1.25rem;
-        }
-
-        article li {
-            font-size: 1rem;
-            color: var(--text-sub);
-            margin-top: 0.25rem;
-        }
-
-        article li strong { color: var(--text); }
-
-        article code {
-            font-family: 'SF Mono', 'Fira Code', 'Fira Mono', monospace;
-            font-size: 0.8125rem;
-            background: var(--code-bg);
-            padding: 2px 6px;
-            border-radius: 4px;
-        }
-
-        article pre {
-            margin-top: 1rem;
-            background: var(--code-bg);
-            border: 1px solid var(--code-border);
-            border-radius: 0.625rem;
-            padding: 1rem;
-            overflow-x: auto;
-        }
-
-        article pre code {
-            background: none;
-            padding: 0;
-            font-size: 0.875rem;
-            line-height: 1.618;
-            color: var(--text);
-        }
-
-        .article-nav {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 3rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border);
-        }
-
-        .article-nav a {
-            text-decoration: none;
-            color: inherit;
-            max-width: 48%;
-        }
-
-        .article-nav a:hover .article-nav-title { color: var(--text); }
-
-        .article-nav-label {
-            display: block;
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-        }
-
-        .article-nav-title {
-            display: block;
-            font-size: 1rem;
-            font-weight: 500;
-            transition: color 0.15s;
-        }
-
-        .article-nav .next { margin-left: auto; text-align: right; }
-        @keyframes deblur {
-            from { opacity: 0; filter: blur(10px); transform: translateY(6px); }
-            to   { opacity: 1; filter: blur(0);    transform: translateY(0); }
-        }
-        .reveal {
-            opacity: 0;
-            animation: deblur 0.6s ease-out forwards;
-        }
-    </style>
+    <link rel="icon" type="image/svg+xml" href="assets/antoshkin-tech-logo.svg">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <link rel="stylesheet" href="assets/wireframe.css">
+    <link rel="stylesheet" href="assets/guides.css">
+    <script>
+        try {
+            if (localStorage.getItem('theme') === 'dark') document.documentElement.dataset.theme = 'dark';
+        } catch (e) {}
+    </script>
 </head>
-<body>
-    <main>
-        <div class="back-bar">
-            <div class="back-blur"></div>
-            <div class="back-blur"></div>
-            <div class="back-blur"></div>
-            <div class="back-blur"></div>
-            <a href="en.html" class="back">&larr; Back</a>
+<body data-guides="false">
+    <div class="page">
+        <div class="border-strip border-strip--left" aria-hidden="true"></div>
+        <div class="border-strip border-strip--right" aria-hidden="true"></div>
+        <div class="grid-line grid-line--nav" aria-hidden="true"></div>
+        <div class="grid-line grid-line--content-l" aria-hidden="true"></div>
+        <div class="grid-line grid-line--content-r" aria-hidden="true"></div>
+        <div class="grid-line grid-line--shell-r" aria-hidden="true"></div>
+
+        <nav class="top-nav fold" data-fold="50">
+            <a href="en.html" aria-label="Home"><img class="logo logo-photo wf-target" src="assets/avatar.png" alt="Andrew Antoshkin" width="32" height="32"></a>
+            <div class="nav-links">
+                <a class="nav-link" href="en.html">Home</a>
+                <a class="nav-link" href="projects-en.html">Projects</a>
+                <a class="nav-link active" href="writing-en.html">Writing</a>
+                <a class="nav-link" href="approach-en.html">Approach</a>
+                <a class="nav-link" href="collab-en.html">Work together</a>
+            </div>
+        </nav>
+
+        <div class="nav-contact fold" data-fold="80">
+            <p class="nav-contact-label">Contact:</p>
+            <span>
+                <a href="mailto:andrew.antoshkin@gmail.com" class="nav-contact-email wf-target" data-copy="andrew.antoshkin@gmail.com">
+                    andrew.antoshkin@gmail.com
+                    <span class="copied" hidden>Copied</span>
+                </a>
+            </span>
         </div>
 
-        <article style="view-transition-name: article-body">
-            <h1 style="view-transition-name: article-3">Cursor + Figma: setting up a designer's environment</h1>
-            <div class="article-tags">
-                <span class="article-tag">cursor</span>
-                <span class="article-tag">figma</span>
-                <span class="article-tag">mcp</span>
+        <div class="mobile-wrap">
+            <button class="mobile-pill" type="button" aria-expanded="false" aria-label="Menu">
+                <span class="pill-icon"><span class="pill-bar"></span><span class="pill-bar"></span></span>
+                <span>Menu</span>
+            </button>
+            <div class="mobile-menu" hidden>
+                <a href="en.html">Home</a>
+                <a href="projects-en.html">Projects</a>
+                <a href="writing-en.html">Writing</a>
+                <a href="approach-en.html">Approach</a>
+                <a href="collab-en.html">Work together</a>
+                <hr>
+                <div class="compact-controls">
+                    <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="Toggle theme">
+                        <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
+                        <span class="theme-symbol theme-symbol--moon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M12.8 10.3A5.5 5.5 0 0 1 5.7 3.2 5.5 5.5 0 1 0 12.8 10.3Z"/></svg></span>
+                    </button>
+                    <nav class="language-switch" aria-label="Language"><a href="cursor-figma.html">Ru</a><span aria-current="page">En</span></nav>
+                </div>
+                <a href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
+            </div>
+        </div>
+
+        <main class="main">
+            <div class="main-toggles">
+                <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="Toggle theme">
+                    <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
+                    <span class="theme-symbol theme-symbol--moon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M12.8 10.3A5.5 5.5 0 0 1 5.7 3.2 5.5 5.5 0 1 0 12.8 10.3Z"/></svg></span>
+                </button>
+                <nav class="language-switch" aria-label="Language"><a href="cursor-figma.html">Ru</a><span aria-current="page">En</span></nav>
+            </div>
+            <div class="follow-right fold" data-fold="120">
+                <div class="nav-divider"></div>
+                <div class="social-links">
+                    <a class="nav-link follow-link wf-target" href="https://t.me/aiantoshkin" target="_blank" rel="noopener noreferrer">
+                        Telegram
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m13.7 2.8-2 9.5c-.15.67-.55.83-1.1.52L7.55 10.6l-1.47 1.42c-.16.16-.3.3-.62.3l.22-3.1 5.64-5.1c.25-.21-.05-.33-.38-.12L3.97 8.4l-3-.94c-.65-.2-.66-.65.14-.96l11.72-4.52c.54-.2 1.02.13.87.82Z" fill="currentColor"/></svg>
+                    </a>
+                    <a class="nav-link follow-link wf-target" href="https://github.com/AndrewAntoshkin" target="_blank" rel="noopener noreferrer">
+                        GitHub
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path fill="currentColor" d="M8 1.35a6.65 6.65 0 0 0-2.1 12.96c.33.06.45-.14.45-.32v-1.16c-1.84.4-2.23-.78-2.23-.78-.3-.76-.74-.96-.74-.96-.6-.42.05-.41.05-.41.67.05 1.02.69 1.02.69.6 1.02 1.56.72 1.94.55.06-.43.23-.72.42-.89-1.47-.17-3.02-.74-3.02-3.29 0-.73.26-1.32.69-1.78-.07-.17-.3-.85.07-1.76 0 0 .56-.18 1.83.68A6.36 6.36 0 0 1 8 4.8c.56 0 1.12.08 1.64.22 1.27-.86 1.83-.68 1.83-.68.37.91.14 1.59.07 1.76.43.46.69 1.05.69 1.78 0 2.56-1.56 3.12-3.03 3.29.24.2.45.61.45 1.24V14c0 .18.12.39.45.32A6.65 6.65 0 0 0 8 1.35Z"/></svg>
+                    </a>
+                    <a class="nav-link follow-link wf-target" href="https://setka.ru/users/84b42bc4-44b4-4b1e-ba76-06d249242bc4" target="_blank" rel="noopener noreferrer">
+                        Setka
+                        <img class="social-icon" src="https://cdn-assets.setka.ru/setka-web/static/favicon/favicon-32x32.a8036291d4eac4cc9ab8cbc378cb6d17.png" alt="" width="16" height="16">
+                    </a>
+                </div>
             </div>
 
-            <p>You're a designer who wants to turn mockups into code. Not learn React from scratch, not become a frontend developer, but drop a link to a Figma node and get a working component. Cursor + Figma MCP makes this possible. This article is a step-by-step setup from zero to a working flow.</p>
+            <div class="content content--article">
+                
+                <a class="back-link back-link--inline fold wf-target" data-fold="60" href="writing-en.html">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    Writing
+                </a>
+                
+                
+                <div class="article-head fold wf-target" data-fold="100">
+                    <h1 class="title">Cursor + Figma in&nbsp;2026: the current setup for&nbsp;designers</h1>
+                    <div class="article-meta">
+                <span class="tag">cursor</span>
+                <span class="tag">figma mcp</span>
+                <span class="tag">2026</span>
+            </div>
+                </div>
+                <aside class="article-tldr fold" data-fold="120"><p class="article-tldr-label">TL;DR</p><p>Figma MCP gives the agent access to design structure, variables, and components, while Cursor helps connect them to the codebase. This speeds up the work, but quality still depends on the components, project rules, and verification of the result.</p></aside>
+                <div class="prose fold wf-target" data-fold="140"><p><strong>Current as of&nbsp;August&nbsp;21, 2026.</strong> Cursor and the official Figma MCP allow an agent to read a design&rsquo;s structure, variables, and components, map them to the codebase, and make changes to the project. But this is not a &ldquo;turn Figma into production&rdquo; button: quality depends on the file&rsquo;s structure, the components in the codebase, the project rules, and verification of the result.</p>
 
-            <h2>Why Cursor, not VS&nbsp;Code</h2>
+<h2 id="section-1">What changed by&nbsp;2026</h2>
 
-            <p>VS&nbsp;Code is a great editor. Cursor is VS&nbsp;Code with AI built in. The difference matters: in VS&nbsp;Code you install a copilot extension and get suggestions. In Cursor, AI is a full agent that reads your project, creates files, runs commands, and connects to external services via MCP.</p>
+<p>The old method involving the third-party <code>figma-developer-mcp</code> package and a personal API token is no longer necessary. Figma now has an official MCP server, available both remotely and locally in the desktop app. Figma recommends the remote server at <code>https://mcp.figma.com/mcp</code>: it offers a broader range of capabilities, receives updates without a local installation, and uses OAuth for authorization.</p>
 
-            <p>For a designer this means you talk to the IDE in plain language, drop a Figma link, and AI fetches the mockup, analyzes the structure, and generates code that fits your project. Not autocomplete, but a complete workflow.</p>
+<p>The easiest option in&nbsp;Cursor is to install the official Figma plugin. It adds the server and Agent Skills&mdash;instructions that help the agent read designs correctly, use components, and work with the canvas.</p>
 
-            <h2>Step 1. Installation</h2>
+<h2 id="section-2">Step 1. Prepare the project</h2>
 
-            <p>Download Cursor from <a href="https://cursor.com" target="_blank" rel="noopener">cursor.com</a>. Standard installation: dmg on Mac, exe on Windows. On first launch Cursor will offer to import VS&nbsp;Code settings. Accept if you've used it before.</p>
+<p>Before connecting Figma, make sure the project runs locally and has clear verification commands. Most web projects require Git and a current LTS version of Node.js, although your specific stack may differ.</p>
 
-            <p>After installation, open settings (<code>Cmd + ,</code>) and check three things:</p>
-
-            <ul>
-                <li><strong>Theme.</strong> Cursor supports all VS&nbsp;Code themes. For a designer used to Figma, the default dark theme works well</li>
-                <li><strong>Font.</strong> Use a monospace font in the terminal and editor: JetBrains Mono, SF Mono, or Fira Code</li>
-                <li><strong>Auto Save.</strong> Enable <code>Files: Auto Save</code> in <code>afterDelay</code> mode to avoid losing changes</li>
-            </ul>
-
-            <h2>Step 2. Terminal and basic tools</h2>
-
-            <p>The terminal is a text interface to your computer. Sounds scary, but for our flow you only need about five commands. In Cursor the terminal opens with <code>Ctrl + `</code>.</p>
-
-            <h3>Node.js</h3>
-
-            <p>Node.js is a runtime for JavaScript outside the browser. Many developer tools run on it. Install the LTS version from <a href="https://nodejs.org" target="_blank" rel="noopener">nodejs.org</a>. After installation, verify in the terminal:</p>
-
-<pre><code>node --version
+<pre><code>git --version
+node --version
 npm --version</code></pre>
 
-            <p>If both commands return a version number, everything works.</p>
+<p>Do not immediately ask the agent to &ldquo;build the screen.&rdquo; First, open the repository and ask it to find:</p>
 
-            <h3>Git</h3>
+<ul>
+  <li>existing components and page patterns;</li>
+  <li>color, typography, spacing, and radius tokens;</li>
+  <li>commands for running the project, tests, the linter, and the build;</li>
+  <li>framework constraints and accessibility rules.</li>
+</ul>
 
-            <p>Git is a version control system. For a designer, think of it as &ldquo;version history&rdquo; in Figma, but for code. On Mac, Git comes preinstalled. On Windows, install from <a href="https://git-scm.com" target="_blank" rel="noopener">git-scm.com</a>.</p>
+<p>Otherwise, the agent may reproduce the image accurately while creating a second set of buttons, colors, and spacing alongside the existing ones.</p>
 
-            <p>The minimum set of commands you'll need:</p>
+<h2 id="section-3">Step 2. Add project rules</h2>
 
-<pre><code>git clone &lt;url&gt;        # download a project
-git add .              # stage all changes
-git commit -m "text"   # save a snapshot
-git push               # push to GitHub</code></pre>
+<p>Cursor offers two main options. Use <code>AGENTS.md</code> for simple, general instructions. For scoped rules, use <code>.mdc</code> files in&nbsp;<code>.cursor/rules/</code>. A regular <code>.md</code> file inside <code>.cursor/rules/</code> is not recognized by the rules system.</p>
 
-            <p>But even these commands Cursor can run for you. Just ask &ldquo;commit and push the changes.&rdquo;</p>
+<pre><code># AGENTS.md
 
-            <h2>Step 3. Cursor Rules: project memory</h2>
+## UI
+- Look for an existing component first
+- Use tokens from src/styles/tokens.css
+- Do not add HEX values or arbitrary spacing
+- Preserve semantics and keyboard navigation
 
-            <p>Cursor Rules are files in the <code>.cursor/rules/</code> folder that AI reads at the start of every session. They provide your project's context: which technologies are used, which components exist, which patterns to follow.</p>
+## Verification
+- npm run lint
+- npm test
+- npm run build</code></pre>
 
-            <p>If you've read my previous article <a href="design-md-en.html">Design.md</a>, this is exactly where the design system spec lives. Create a file <code>.cursor/rules/design-system.md</code>:</p>
+<p>Rules provide context, not a hard guarantee. Linters, types, tests, and review are still necessary.</p>
 
-<pre><code># Design system
+<h2 id="section-4">Step 3. Connect the official Figma MCP</h2>
 
-## Stack
-- HTML, CSS (no frameworks)
-- CSS variables for tokens
-- Vanilla JavaScript
+<p>The current setup process in&nbsp;Cursor is:</p>
 
-## Tokens
-- Primary text: var(--text) — #0a0a0a / #f5f5f5
-- Secondary: var(--text-muted) — #737373 / #8f8e8d
-- Background: var(--bg) — #fafafa / #0c0c0c
+<ol>
+  <li>Open the Command Palette: <code>Cmd/Ctrl + Shift + P</code>.</li>
+  <li>Open Chat and enter <code>/add-plugin figma</code>.</li>
+  <li>Confirm installation of the official plugin.</li>
+  <li>Open <strong>Cursor Settings → Tools &amp; MCP</strong>.</li>
+  <li>Next to Figma, click <strong>Connect</strong> and complete OAuth authorization.</li>
+</ol>
 
-## Rules
-- Max content width: 592px
-- Font: Inter
-- Spacing multiples of 4px</code></pre>
+<p>The remote server is available on all Figma seats and plans. Desktop MCP requires a Dev or Full seat on a paid plan and is primarily intended for specialized organizational workflows. Do not put personal Figma tokens in the repository or share them with the agent.</p>
 
-            <p>Now every time you ask Cursor to write code, it knows your tokens, your stack, and your rules. It doesn't guess, it reads.</p>
+<h2 id="section-5">What the agent receives from&nbsp;Figma</h2>
 
-            <h2>Step 4. Connecting Figma via MCP</h2>
+<p>Given a link to a file or selected node, the official server can provide structured design context: hierarchy, layout, components, variables, images, and a visual reference. The available actions depend on the client, permissions, and the server&rsquo;s current tools.</p>
 
-            <p>MCP (Model Context Protocol) is a protocol that lets AI agents connect to external services. Figma released an official MCP server, and this changes everything: Cursor gets direct access to your mockups.</p>
+<p>As of August 2026, remote MCP can do more than read designs. In supported clients, the agent can create and update native content in&nbsp;Figma, as well as turn live web interfaces into editable layers. These are separate write workflows: do not mix them with the task of implementing a design in code.</p>
 
-            <h3>Setup</h3>
+<h2 id="section-6">Code Connect: when it really helps</h2>
 
-            <p>Open Cursor settings: <code>Cmd + Shift + P</code> &rarr; &ldquo;Cursor Settings&rdquo; &rarr; MCP tab. Click &ldquo;Add new global MCP server&rdquo; and add the configuration:</p>
+<p>Without Code Connect, the agent can see a design component but may not know which component to import from your package. Code Connect links a Figma library to its implementation in the repository and makes that relationship available to Dev Mode and Figma MCP.</p>
 
-<pre><code>{
-  "mcpServers": {
-    "Figma": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "figma-developer-mcp",
-        "--figma-api-key=YOUR_KEY"
-      ]
-    }
-  }
-}</code></pre>
+<p>There are two modes:</p>
 
-            <p>Where to get the API key: open <a href="https://www.figma.com/developers/api#access-tokens" target="_blank" rel="noopener">Figma &rarr; Settings &rarr; Personal Access Tokens</a>. Create a token with file access, copy it, and paste in place of <code>YOUR_KEY</code>.</p>
+<ul>
+  <li><strong>Code Connect UI</strong> runs inside Figma and connects to GitHub. It is a quick way to map components and give MCP a link to the real code. In Inspect, it shows the file and component name, but not custom snippets.</li>
+  <li><strong>Code Connect CLI</strong> stores mappings alongside the code and supports property mappings and dynamic examples. The CLI is the option you need if Dev Mode must display exact snippets from your design system.</li>
+</ul>
 
-            <p>After saving, Cursor will restart the MCP server. A green indicator should appear next to Figma in the server list.</p>
+<p>Since August&nbsp;17, 2026, framework-specific parsers no longer receive updates or support. For new integrations, Figma recommends framework-agnostic <code>.figma.ts</code> template files: a TypeScript template explicitly generates the snippet for the required language or framework. Existing mappings can be migrated with <code>npx figma connect migrate</code>.</p>
 
-            <h3>What this gives you</h3>
+<h2 id="section-7">Step 4. Give the design to the agent</h2>
 
-            <p>Now you can drop a link to any Figma node into Cursor, and it will receive:</p>
+<p>In Figma, select a frame, component, or section and copy the link to the selection. A good first prompt describes not only the desired appearance but also the scope of the task:</p>
 
-            <ul>
-                <li><strong>A screenshot</strong> of the node for visual context</li>
-                <li><strong>Structure:</strong> layers, auto-layout, spacing, colors</li>
-                <li><strong>Code reference:</strong> React + Tailwind by default, but AI adapts to your stack</li>
-                <li><strong>Code Connect:</strong> if components are linked to code, AI gets the real components from your codebase</li>
-            </ul>
+<pre><code>Implement this screen: [Figma link].
 
-            <h2>Step 5. First request</h2>
+First:
+1. find existing components and tokens;
+2. read AGENTS.md and the repository rules;
+3. write a short plan.
 
-            <p>Everything is set up. Open Figma, select a node (frame, component, section), copy the link: right-click &rarr; &ldquo;Copy link to selection.&rdquo; Open the chat in Cursor (<code>Cmd + L</code>) and type:</p>
+Then implement the screen without adding dependencies.
+Preserve responsiveness and accessibility.
+After making changes, run lint, tests, and build.</code></pre>
 
-<pre><code>Build this component
-https://figma.com/design/xxx/yyy?node-id=123-456</code></pre>
+<p>If you need a precise result, ask the agent to compare the implementation with the Figma screenshot at the target viewport sizes. Check more than pixels: tab order, focus states, contrast, text overflow, loading and error states, and behavior on a narrow screen are not always visible in a static frame.</p>
 
-            <p>Cursor will fetch all node information from Figma via MCP, check your Cursor Rules, see the stack and tokens, and generate code that fits your project.</p>
+<h2 id="section-8">What MCP does not solve</h2>
 
-            <p>Don't like the result? Keep the conversation going: &ldquo;make the padding bigger,&rdquo; &ldquo;change the font to Inter,&rdquo; &ldquo;add dark mode.&rdquo; AI remembers the context within a session and makes incremental changes.</p>
+<ul>
+  <li><strong>Ambiguous design.</strong> If the design does not define states and responsive behavior, the agent cannot infer them reliably.</li>
+  <li><strong>Poor Figma architecture.</strong> Arbitrary groups and duplicates instead of components provide weak context.</li>
+  <li><strong>Library drift.</strong> Matching names do not mean that Figma and the codebase are synchronized.</li>
+  <li><strong>Production quality.</strong> MCP does not replace tests, code review, accessibility checks, or performance checks.</li>
+  <li><strong>Security.</strong> An agent with access to the terminal and external systems requires the same safeguards as any other automated tool.</li>
+</ul>
 
-            <h2>One-click deploy</h2>
+<h2 id="section-9">Commit and deployment</h2>
 
-            <p>Code is written. How do you show it to the world? The simplest path is GitHub Pages. If your project is on GitHub, just ask Cursor:</p>
+<p>Do not blindly ask the agent to &ldquo;commit and push everything.&rdquo; Review the diff first, make sure it contains no secrets or unnecessary files, and then run the checks. GitHub Pages works well for static sites; the publishing method depends on the repository configuration and may use a branch or GitHub Actions. Vercel and other platforms typically create a preview deployment for every pull request, but the terms of free plans change&mdash;check them before publishing.</p>
 
-<pre><code>Commit and push all changes</code></pre>
+<h2 id="section-10">A concise workflow</h2>
 
-            <p>Go to your repository settings on GitHub &rarr; Pages &rarr; select the <code>main</code> branch. In a minute your site will be live at <code>username.github.io/repo</code>.</p>
+<ol>
+  <li>Prepare a working project and its verification commands.</li>
+  <li>Document the rules in&nbsp;<code>AGENTS.md</code> or <code>.cursor/rules/*.mdc</code>.</li>
+  <li>Connect the official remote Figma MCP through the plugin and OAuth.</li>
+  <li>Map key components through Code Connect if you have a design system.</li>
+  <li>Provide a precise link to the selection and the task constraints.</li>
+  <li>Compare the result visually and check states, accessibility, and responsive behavior.</li>
+  <li>Review the diff, run the checks, and only then publish.</li>
+</ol>
 
-            <p>For more complex projects there's <a href="https://vercel.com" target="_blank" rel="noopener">Vercel</a>: connect your repository and every push automatically deploys a new version. Free for personal projects.</p>
+<h2 id="section-11">Sources</h2>
 
-            <h2>What's next</h2>
+<ul>
+  <li><a href="https://help.figma.com/hc/en-us/articles/39889260656407-Cursor-and-Figma-Set-up-the-MCP-server" target="_blank" rel="noopener">Figma: set up the MCP server in&nbsp;Cursor</a></li>
+  <li><a href="https://help.figma.com/hc/en-us/articles/32132100833559-Guide-to-the-Figma-MCP-server" target="_blank" rel="noopener">Figma: guide to the Figma MCP server</a></li>
+  <li><a href="https://help.figma.com/hc/en-us/articles/23920389749655-Code-Connect" target="_blank" rel="noopener">Figma: Code Connect</a></li>
+  <li><a href="https://developers.figma.com/docs/code-connect/template-files/" target="_blank" rel="noopener">Figma: Code Connect template files</a></li>
+  <li><a href="https://cursor.com/docs/rules" target="_blank" rel="noopener">Cursor: Rules and&nbsp;AGENTS.md</a></li>
+  <li><a href="https://cursor.com/docs/mcp" target="_blank" rel="noopener">Cursor: MCP</a></li>
+</ul></div>
+                <nav class="article-nav"><a href="halo-working-memory-en.html"><span class="article-nav-label">Previous</span><span class="article-nav-title">Halo: how I&rsquo;m building a team&rsquo;s working memory</span></a><a href="design-md-en.html" class="next"><span class="article-nav-label">Next</span><span class="article-nav-title">DESIGN.md in&nbsp;2026: How to Describe a&nbsp;Design System for&nbsp;AI Agents</span></a></nav>
+    
+            </div>
+        </main>
 
-            <p>You have a working environment: an IDE with an AI agent that knows your design system and has direct access to Figma. This is not a replacement for a developer. It's a tool that lets designers test ideas in code, build prototypes from real components, and deploy them independently.</p>
-
-            <p>Three things to try first:</p>
-
-            <ul>
-                <li><strong>Build your portfolio site</strong> as a single-page with your work</li>
-                <li><strong>Build a design system component</strong> by dropping a Figma link to a button or card and getting HTML + CSS</li>
-                <li><strong>Write Cursor Rules for your project</strong> describing tokens, patterns, and rules so AI doesn't guess but knows</li>
-            </ul>
-
-            <p>The gap between design and code is shrinking. Cursor + Figma MCP is one of the shortest bridges.</p>
-        </article>
-
-        <nav class="article-nav">
-            <span></span>
-            <a href="design-md-en.html" class="next">
-                <span class="article-nav-label">Next</span>
-                <span class="article-nav-title">Design.md: how to describe a design system for AI agents</span>
-            </a>
-        </nav>
-    </main>
-    <script>
-    (function(){
-        const els = document.querySelectorAll('.back, article h1, .article-tags, article h2, article p, article pre, article ul, article ol, article blockquote, .article-nav');
-        let delay = 0;
-        els.forEach(el => {
-            el.classList.add('reveal');
-            el.style.animationDelay = delay + 'ms';
-            delay += 60;
-        });
-    })();
-    </script>
+        <div class="crosshair" aria-hidden="true">
+            <div class="crosshair-h"></div>
+            <div class="crosshair-v"></div>
+            <div class="crosshair-coords">0 · 0</div>
+        </div>
+        <div class="bottom-fade" aria-hidden="true"></div>
+    </div>
+    <script src="assets/wireframe.js"></script>
 </body>
 </html>

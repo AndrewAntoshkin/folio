@@ -1,0 +1,15 @@
+{
+  "files": {
+    "src/task/Task.tsx": "import { useState } from \"react\";\nimport { Button, Input, Label, PageHeader, Switch, Tabs } from \"@ds\";\n\nexport function Task() {\n  const [tab, setTab] = useState(\"Profile\");\n  return (\n    <div className=\"ds-stack\">\n      <PageHeader\n        title=\"Settings\"\n        description=\"Profile and notification preferences\"\n        actions={\n          <>\n            <Button variant=\"secondary\">Cancel</Button>\n            <Button>Save</Button>\n          </>\n        }\n      />\n      <Tabs tabs={[\"Profile\", \"Notifications\"]} value={tab} onChange={setTab} />\n      {tab === \"Profile\" ? (\n        <div className=\"ds-stack\">\n          <Label htmlFor=\"name\">Display name</Label>\n          <Input id=\"name\" defaultValue=\"Ada Lovelace\" />\n        </div>\n      ) : (\n        <Switch label=\"Email digest\" checked onChange={() => undefined} />\n      )}\n    </div>\n  );\n}\n"
+  },
+  "raw_text": "",
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": 0.0,
+  "latency_ms": 1,
+  "model": "fixture:good",
+  "provider": "fixture",
+  "system_prompt": "",
+  "task_prompt": "",
+  "error": null
+}

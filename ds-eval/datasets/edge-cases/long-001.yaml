@@ -1,0 +1,12 @@
+id: edge-long-001
+title: Extremely long names
+category: edge-cases
+difficulty: medium
+prompt: |
+  Render a card for a user whose display name is 180 characters long and whose
+  team name wraps. The layout must not overflow horizontally.
+required_components:
+  - Card
+  - Badge
+forbidden_patterns:
+  - raw-color

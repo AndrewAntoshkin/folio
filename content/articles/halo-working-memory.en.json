@@ -1,0 +1,10 @@
+{
+  "title": "Halo: how I'm building a team's working memory",
+  "h1": "Halo: how I&rsquo;m building a team&rsquo;s working memory",
+  "cover": {
+    "src": "assets/halo-working-memory.png",
+    "alt": "Andrew with a laptop beside a clothes rack and suitcase"
+  },
+  "tldr": "Halo brings together fragmented team context from Tracker, Wiki, and meetings into a connected working memory. Rather than presenting a list of documents, it answers questions about decisions, changes, and ownership—with dates, links, and an explanation.",
+  "tags": "<div class=\"article-meta\">\n                <span class=\"tag\">Halo</span>\n                <span class=\"tag\">knowledge graph</span>\n                <span class=\"tag\">AI agents</span>\n            </div>"
+}

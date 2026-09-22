@@ -1,0 +1,13 @@
+smoke:
+  - component-button-001
+  - component-select-001
+  - component-input-001
+  - pattern-confirm-001
+  - pattern-empty-001
+  - page-settings-001
+  - a11y-labels-001
+  - edge-long-001
+  - adversarial-color-001
+  - adversarial-actions-001
+
+full: smoke

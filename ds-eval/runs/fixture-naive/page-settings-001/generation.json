@@ -1,0 +1,12 @@
+{
+  "files": {
+    "src/task/Task.tsx": "export function Task() {\n  return (\n    <div style={{ padding: 32, background: \"#111827\" }}>\n      <h1 style={{ color: \"#F9FAFB\" }}>Settings</h1>\n      <div>\n        <span>Profile</span>\n        <span>Notifications</span>\n      </div>\n      <input placeholder=\"Name\" />\n      <button style={{ background: \"#2563EB\", color: \"#fff\" }}>Save</button>\n    </div>\n  );\n}\n"
+  },
+  "raw_text": "",
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": 0.0,
+  "latency_ms": 1,
+  "model": "fixture:naive",
+  "error": null
+}

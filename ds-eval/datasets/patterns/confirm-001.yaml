@@ -1,0 +1,14 @@
+id: pattern-confirm-001
+title: Destructive confirmation
+category: patterns
+difficulty: medium
+prompt: |
+  A Delete project action must open a confirmation dialog.
+  Confirm is destructive, cancel is secondary. No extra footer actions.
+required_components:
+  - Button
+  - Dialog
+forbidden_patterns:
+  - raw-color
+rubric:
+  ux: [correct_pattern, error_prevention]

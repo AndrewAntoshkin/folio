@@ -1,0 +1,17 @@
+id: component-button-001
+title: Button variants
+category: component
+difficulty: easy
+prompt: |
+  Create a toolbar with primary, secondary and danger buttons labelled Save, Cancel and Delete.
+required_components:
+  - Button
+forbidden_patterns:
+  - native-button
+  - raw-color
+assertions:
+  - kind: has_component
+    target: Button
+rubric:
+  visual: [spacing, alignment]
+  ux: [action_clarity]

@@ -1,0 +1,132 @@
+<p><strong>Current as of&nbsp;August&nbsp;21, 2026.</strong> Cursor and the official Figma MCP allow an agent to read a design&rsquo;s structure, variables, and components, map them to the codebase, and make changes to the project. But this is not a &ldquo;turn Figma into production&rdquo; button: quality depends on the file&rsquo;s structure, the components in the codebase, the project rules, and verification of the result.</p>
+
+<h2>What changed by&nbsp;2026</h2>
+
+<p>The old method involving the third-party <code>figma-developer-mcp</code> package and a personal API token is no longer necessary. Figma now has an official MCP server, available both remotely and locally in the desktop app. Figma recommends the remote server at <code>https://mcp.figma.com/mcp</code>: it offers a broader range of capabilities, receives updates without a local installation, and uses OAuth for authorization.</p>
+
+<p>The easiest option in&nbsp;Cursor is to install the official Figma plugin. It adds the server and Agent Skills&mdash;instructions that help the agent read designs correctly, use components, and work with the canvas.</p>
+
+<h2>Step 1. Prepare the project</h2>
+
+<p>Before connecting Figma, make sure the project runs locally and has clear verification commands. Most web projects require Git and a current LTS version of Node.js, although your specific stack may differ.</p>
+
+<pre><code>git --version
+node --version
+npm --version</code></pre>
+
+<p>Do not immediately ask the agent to &ldquo;build the screen.&rdquo; First, open the repository and ask it to find:</p>
+
+<ul>
+  <li>existing components and page patterns;</li>
+  <li>color, typography, spacing, and radius tokens;</li>
+  <li>commands for running the project, tests, the linter, and the build;</li>
+  <li>framework constraints and accessibility rules.</li>
+</ul>
+
+<p>Otherwise, the agent may reproduce the image accurately while creating a second set of buttons, colors, and spacing alongside the existing ones.</p>
+
+<h2>Step 2. Add project rules</h2>
+
+<p>Cursor offers two main options. Use <code>AGENTS.md</code> for simple, general instructions. For scoped rules, use <code>.mdc</code> files in&nbsp;<code>.cursor/rules/</code>. A regular <code>.md</code> file inside <code>.cursor/rules/</code> is not recognized by the rules system.</p>
+
+<pre><code># AGENTS.md
+
+## UI
+- Look for an existing component first
+- Use tokens from src/styles/tokens.css
+- Do not add HEX values or arbitrary spacing
+- Preserve semantics and keyboard navigation
+
+## Verification
+- npm run lint
+- npm test
+- npm run build</code></pre>
+
+<p>Rules provide context, not a hard guarantee. Linters, types, tests, and review are still necessary.</p>
+
+<h2>Step 3. Connect the official Figma MCP</h2>
+
+<p>The current setup process in&nbsp;Cursor is:</p>
+
+<ol>
+  <li>Open the Command Palette: <code>Cmd/Ctrl + Shift + P</code>.</li>
+  <li>Open Chat and enter <code>/add-plugin figma</code>.</li>
+  <li>Confirm installation of the official plugin.</li>
+  <li>Open <strong>Cursor Settings → Tools &amp; MCP</strong>.</li>
+  <li>Next to Figma, click <strong>Connect</strong> and complete OAuth authorization.</li>
+</ol>
+
+<p>The remote server is available on all Figma seats and plans. Desktop MCP requires a Dev or Full seat on a paid plan and is primarily intended for specialized organizational workflows. Do not put personal Figma tokens in the repository or share them with the agent.</p>
+
+<h2>What the agent receives from&nbsp;Figma</h2>
+
+<p>Given a link to a file or selected node, the official server can provide structured design context: hierarchy, layout, components, variables, images, and a visual reference. The available actions depend on the client, permissions, and the server&rsquo;s current tools.</p>
+
+<p>As of August 2026, remote MCP can do more than read designs. In supported clients, the agent can create and update native content in&nbsp;Figma, as well as turn live web interfaces into editable layers. These are separate write workflows: do not mix them with the task of implementing a design in code.</p>
+
+<h2>Code Connect: when it really helps</h2>
+
+<p>Without Code Connect, the agent can see a design component but may not know which component to import from your package. Code Connect links a Figma library to its implementation in the repository and makes that relationship available to Dev Mode and Figma MCP.</p>
+
+<p>There are two modes:</p>
+
+<ul>
+  <li><strong>Code Connect UI</strong> runs inside Figma and connects to GitHub. It is a quick way to map components and give MCP a link to the real code. In Inspect, it shows the file and component name, but not custom snippets.</li>
+  <li><strong>Code Connect CLI</strong> stores mappings alongside the code and supports property mappings and dynamic examples. The CLI is the option you need if Dev Mode must display exact snippets from your design system.</li>
+</ul>
+
+<p>Since August&nbsp;17, 2026, framework-specific parsers no longer receive updates or support. For new integrations, Figma recommends framework-agnostic <code>.figma.ts</code> template files: a TypeScript template explicitly generates the snippet for the required language or framework. Existing mappings can be migrated with <code>npx figma connect migrate</code>.</p>
+
+<h2>Step 4. Give the design to the agent</h2>
+
+<p>In Figma, select a frame, component, or section and copy the link to the selection. A good first prompt describes not only the desired appearance but also the scope of the task:</p>
+
+<pre><code>Implement this screen: [Figma link].
+
+First:
+1. find existing components and tokens;
+2. read AGENTS.md and the repository rules;
+3. write a short plan.
+
+Then implement the screen without adding dependencies.
+Preserve responsiveness and accessibility.
+After making changes, run lint, tests, and build.</code></pre>
+
+<p>If you need a precise result, ask the agent to compare the implementation with the Figma screenshot at the target viewport sizes. Check more than pixels: tab order, focus states, contrast, text overflow, loading and error states, and behavior on a narrow screen are not always visible in a static frame.</p>
+
+<h2>What MCP does not solve</h2>
+
+<ul>
+  <li><strong>Ambiguous design.</strong> If the design does not define states and responsive behavior, the agent cannot infer them reliably.</li>
+  <li><strong>Poor Figma architecture.</strong> Arbitrary groups and duplicates instead of components provide weak context.</li>
+  <li><strong>Library drift.</strong> Matching names do not mean that Figma and the codebase are synchronized.</li>
+  <li><strong>Production quality.</strong> MCP does not replace tests, code review, accessibility checks, or performance checks.</li>
+  <li><strong>Security.</strong> An agent with access to the terminal and external systems requires the same safeguards as any other automated tool.</li>
+</ul>
+
+<h2>Commit and deployment</h2>
+
+<p>Do not blindly ask the agent to &ldquo;commit and push everything.&rdquo; Review the diff first, make sure it contains no secrets or unnecessary files, and then run the checks. GitHub Pages works well for static sites; the publishing method depends on the repository configuration and may use a branch or GitHub Actions. Vercel and other platforms typically create a preview deployment for every pull request, but the terms of free plans change&mdash;check them before publishing.</p>
+
+<h2>A concise workflow</h2>
+
+<ol>
+  <li>Prepare a working project and its verification commands.</li>
+  <li>Document the rules in&nbsp;<code>AGENTS.md</code> or <code>.cursor/rules/*.mdc</code>.</li>
+  <li>Connect the official remote Figma MCP through the plugin and OAuth.</li>
+  <li>Map key components through Code Connect if you have a design system.</li>
+  <li>Provide a precise link to the selection and the task constraints.</li>
+  <li>Compare the result visually and check states, accessibility, and responsive behavior.</li>
+  <li>Review the diff, run the checks, and only then publish.</li>
+</ol>
+
+<h2>Sources</h2>
+
+<ul>
+  <li><a href="https://help.figma.com/hc/en-us/articles/39889260656407-Cursor-and-Figma-Set-up-the-MCP-server" target="_blank" rel="noopener">Figma: set up the MCP server in&nbsp;Cursor</a></li>
+  <li><a href="https://help.figma.com/hc/en-us/articles/32132100833559-Guide-to-the-Figma-MCP-server" target="_blank" rel="noopener">Figma: guide to the Figma MCP server</a></li>
+  <li><a href="https://help.figma.com/hc/en-us/articles/23920389749655-Code-Connect" target="_blank" rel="noopener">Figma: Code Connect</a></li>
+  <li><a href="https://developers.figma.com/docs/code-connect/template-files/" target="_blank" rel="noopener">Figma: Code Connect template files</a></li>
+  <li><a href="https://cursor.com/docs/rules" target="_blank" rel="noopener">Cursor: Rules and&nbsp;AGENTS.md</a></li>
+  <li><a href="https://cursor.com/docs/mcp" target="_blank" rel="noopener">Cursor: MCP</a></li>
+</ul>

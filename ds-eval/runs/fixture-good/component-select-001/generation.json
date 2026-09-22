@@ -1,0 +1,12 @@
+{
+  "files": {
+    "src/task/Task.tsx": "import { Select } from \"@ds\";\n\nconst COUNTRIES = [\"Austria\",\"Belgium\",\"Canada\",\"Denmark\",\"Estonia\",\"Finland\",\"Germany\",\"Hungary\",\"Ireland\",\"Japan\"];\n\nexport function Task() {\n  return (\n    <Select label=\"Country\" helper=\"Used for billing\" error=\"Select a country to continue\" defaultValue=\"\">\n      <option value=\"\">Choose one</option>\n      {COUNTRIES.map((name) => (\n        <option key={name} value={name}>{name}</option>\n      ))}\n    </Select>\n  );\n}\n"
+  },
+  "raw_text": "",
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": 0.0,
+  "latency_ms": 1,
+  "model": "fixture:good",
+  "error": null
+}

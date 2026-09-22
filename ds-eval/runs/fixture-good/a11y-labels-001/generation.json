@@ -1,0 +1,12 @@
+{
+  "files": {
+    "src/task/Task.tsx": "import { Button, Input, Label } from \"@ds\";\n\nexport function Task() {\n  return (\n    <form className=\"ds-stack\">\n      <div className=\"ds-field\">\n        <Label htmlFor=\"email\">Email</Label>\n        <Input id=\"email\" type=\"email\" invalid defaultValue=\"a@\" />\n      </div>\n      <div className=\"ds-field\">\n        <Label htmlFor=\"password\">Password</Label>\n        <Input id=\"password\" type=\"password\" />\n      </div>\n      <Button type=\"submit\">Sign in</Button>\n    </form>\n  );\n}\n"
+  },
+  "raw_text": "",
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": 0.0,
+  "latency_ms": 1,
+  "model": "fixture:good",
+  "error": null
+}

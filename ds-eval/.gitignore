@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+node_modules/
+dist/
+.DS_Store
+.env
+runs/**/app/
+tools/ast/.tmp-task.tsx

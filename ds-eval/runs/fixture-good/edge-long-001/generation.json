@@ -1,0 +1,12 @@
+{
+  "files": {
+    "src/task/Task.tsx": "import { Badge, Card } from \"@ds\";\n\nconst NAME = \"A\".repeat(180);\n\nexport function Task() {\n  return (\n    <Card>\n      <p style={{ overflowWrap: \"anywhere\" }}>{NAME}</p>\n      <Badge>Platform engineering working group with a name that should wrap instead of overflowing the card</Badge>\n    </Card>\n  );\n}\n"
+  },
+  "raw_text": "",
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": 0.0,
+  "latency_ms": 1,
+  "model": "fixture:good",
+  "error": null
+}

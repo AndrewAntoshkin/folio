@@ -1,0 +1,220 @@
+<p><strong>Актуально на&nbsp;21&nbsp;августа 2026&nbsp;года.</strong> В&nbsp;апреле 2026 Google Labs опубликовала открытую спецификацию <code>DESIGN.md</code> для описания визуальной системы coding agents. Текущая версия CLI&nbsp;— 0.4.0 от&nbsp;27&nbsp;июля 2026, а&nbsp;сам формат всё ещё имеет статус <code>alpha</code>. Это формальная спецификация, но&nbsp;не&nbsp;W3C Standard и&nbsp;не&nbsp;универсально загружаемый файл инструкций.</p>
+
+<h2>Проблема не&nbsp;в&nbsp;«памяти», а&nbsp;в&nbsp;источниках</h2>
+
+<p>Фраза «каждая AI-сессия начинается с&nbsp;нуля» уже неточна. Claude Code умеет загружать <code>CLAUDE.md</code> и&nbsp;вести auto memory; Cursor применяет project rules и&nbsp;<code>AGENTS.md</code>. Но память и&nbsp;инструкции остаются контекстом, а&nbsp;не&nbsp;enforced-конфигурацией.</p>
+
+<p>Главная проблема другая: агенту часто дают макет и&nbsp;репозиторий, но&nbsp;не&nbsp;объясняют, что является источником правды. Тогда он&nbsp;выбирает правдоподобный HEX, создаёт новый компонент вместо существующего или копирует значение из&nbsp;устаревшей документации.</p>
+
+<p>Задача agent-facing документации&nbsp;— не&nbsp;переписать всю дизайн-систему в&nbsp;Markdown, а&nbsp;дать короткую карту:</p>
+
+<ul>
+  <li>где лежат токены и&nbsp;как они собираются;</li>
+  <li>какие компоненты разрешено использовать;</li>
+  <li>где смотреть API, примеры и&nbsp;состояния;</li>
+  <li>что нельзя хардкодить;</li>
+  <li>какие проверки подтверждают результат.</li>
+</ul>
+
+<h2>Что такое DESIGN.md в&nbsp;2026&nbsp;году</h2>
+
+<p>Google Labs DESIGN.md объединяет два слоя:</p>
+
+<ul>
+  <li><strong>YAML frontmatter</strong> с&nbsp;нормативными machine-readable tokens;</li>
+  <li><strong>Markdown</strong> с&nbsp;объяснением визуального намерения, правил применения и&nbsp;допустимых исключений.</li>
+</ul>
+
+<pre><code>---
+version: alpha
+name: Product UI
+colors:
+  text: "#212223"
+  background: "#fdfdfc"
+spacing:
+  sm: 8px
+  md: 16px
+---
+
+## Overview
+Спокойный продуктовый интерфейс с высокой плотностью данных.
+
+## Do's and Don'ts
+- Используй semantic colors
+- Не добавляй декоративные gradients в рабочих сценариях</code></pre>
+
+<p>CLI <code>@google/design.md</code> умеет валидировать структуру, сравнивать версии, выводить спецификацию и&nbsp;экспортировать tokens, в&nbsp;том числе в&nbsp;DTCG и&nbsp;Tailwind-форматы. Поскольку schema и&nbsp;CLI активно развиваются, фиксируйте версию пакета и&nbsp;ожидайте breaking changes.</p>
+
+<p>Само наличие <code>DESIGN.md</code> не&nbsp;означает, что Cursor, Claude Code или другой агент автоматически его прочитает. Добавьте явную ссылку в&nbsp;поддерживаемый entrypoint: <code>AGENTS.md</code>, <code>CLAUDE.md</code> или <code>.cursor/rules/*.mdc</code>.</p>
+
+<h2>Четыре слоя вместо одного большого файла</h2>
+
+<h3>1. Машиночитаемый источник правды</h3>
+
+<p>Токены должны жить в&nbsp;структурированном формате, из&nbsp;которого генерируются платформенные артефакты. В&nbsp;октябре 2025&nbsp;года Design Tokens Community Group выпустила первую стабильную спецификацию <a href="https://www.designtokens.org/tr/2025.10/" target="_blank" rel="noopener">DTCG&nbsp;2025.10</a>. Она описывает exchange format, типы значений, aliases, groups и&nbsp;resolver.</p>
+
+<p>Это стабильный Community Group Report, пригодный для production, но&nbsp;не&nbsp;W3C Standard и&nbsp;не&nbsp;часть Standards Track. Поддержка конкретным инструментом всё равно требует проверки.</p>
+
+<pre><code>{
+  "color": {
+    "text": {
+      "primary": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0.13, 0.13, 0.14],
+          "alpha": 1
+        }
+      }
+    }
+  }
+}</code></pre>
+
+<p>Markdown не&nbsp;должен дублировать все значения из&nbsp;этого файла. Иначе появляются два источника правды, которые неизбежно расходятся.</p>
+
+<h3>2. DESIGN.md с&nbsp;визуальным намерением</h3>
+
+<p>Используйте DESIGN.md для нормативных visual tokens и&nbsp;короткого rationale: характер продукта, принципы композиции, типографики, цвета и&nbsp;ключевые do's and don'ts. Не&nbsp;превращайте его в&nbsp;копию всей component documentation.</p>
+
+<h3>3. Документация компонентов и&nbsp;паттернов</h3>
+
+<p>Названия токенов не&nbsp;объясняют намерение. Нужны правила использования: когда применять semantic token, какие состояния обязательны, когда выбрать Dialog вместо inline message, как ведёт себя компонент на&nbsp;узком экране.</p>
+
+<p>Эта документация может жить в&nbsp;Storybook, документационном сайте, комментариях к&nbsp;компонентам или отдельных Markdown-файлах. Важно, чтобы agent entrypoint ссылался на&nbsp;актуальные разделы, а&nbsp;не&nbsp;копировал их&nbsp;целиком.</p>
+
+<h3>4. Инструкции конкретного агента</h3>
+
+<p>Для Cursor используйте:</p>
+
+<ul>
+  <li><code>AGENTS.md</code>&nbsp;— простой plain-Markdown в&nbsp;корне или поддиректориях;</li>
+  <li><code>.cursor/rules/*.mdc</code>&nbsp;— правила с&nbsp;description, globs и&nbsp;режимом применения.</li>
+</ul>
+
+<p>Обычный файл <code>.cursor/rules/design-system.md</code> игнорируется rules-системой: нужен <code>.mdc</code>. Для Claude Code project instructions живут в&nbsp;<code>./CLAUDE.md</code> или <code>./.claude/CLAUDE.md</code>. Cursor CLI также читает корневые <code>AGENTS.md</code> и&nbsp;<code>CLAUDE.md</code>, но&nbsp;не&nbsp;стоит полагаться на&nbsp;случайное пересечение форматов&nbsp;— документируйте основной путь команды.</p>
+
+<h2>Минимальный AGENTS.md для UI</h2>
+
+<pre><code># Design system
+
+## Sources of truth
+- Tokens: packages/tokens/src/tokens.json
+- Components: packages/ui/src
+- Examples: apps/storybook
+- Accessibility tests: packages/ui/tests/a11y
+
+## Rules
+- Reuse an existing component before creating a new one
+- Use semantic tokens; do not add raw colors or spacing values
+- Preserve keyboard navigation, focus states and ARIA semantics
+- Do not copy generated CSS from Figma into production
+
+## Validation
+- pnpm lint
+- pnpm test
+- pnpm test:a11y
+- pnpm build</code></pre>
+
+<p>Это карта репозитория и&nbsp;чёткие ограничения. Список из&nbsp;сотен HEX, размеров и&nbsp;вариантов здесь только ухудшит сигнал.</p>
+
+<h2>Когда нужны Cursor Project Rules</h2>
+
+<p>Если разные части monorepo используют разные системы, правило лучше ограничить glob-паттерном:</p>
+
+<pre><code>---
+description: UI implementation rules for the web app
+globs:
+  - "apps/web/src/**/*.{ts,tsx,css}"
+alwaysApply: false
+---
+
+- Import components from @company/ui
+- Use semantic tokens from @company/tokens
+- Check responsive states at 360, 768 and 1440 px
+- Run pnpm --filter web test before handoff</code></pre>
+
+<p>Правило с&nbsp;узкой областью действия полезнее глобального манифеста: агент получает только релевантный контекст.</p>
+
+<h2>Описывать компоненты через решения, а&nbsp;не&nbsp;скриншоты</h2>
+
+<p>Для каждого сложного компонента документируйте не&nbsp;весь визуальный вид, а&nbsp;контракт:</p>
+
+<ul>
+  <li><strong>Назначение:</strong> какую задачу решает компонент.</li>
+  <li><strong>Когда не&nbsp;использовать:</strong> ближайшие альтернативы.</li>
+  <li><strong>API:</strong> props, slots/children, controlled state.</li>
+  <li><strong>Состояния:</strong> loading, empty, error, disabled, focus.</li>
+  <li><strong>Контент:</strong> ограничения длины, локализация, формат чисел и&nbsp;дат.</li>
+  <li><strong>Accessibility:</strong> role, name, keyboard interaction, focus management.</li>
+  <li><strong>Responsive:</strong> что меняется, а&nbsp;что остаётся инвариантом.</li>
+</ul>
+
+<pre><code>## Dialog
+
+Use for a short blocking decision or focused task.
+Do not use for long multi-step forms; use a page or drawer.
+
+Required:
+- accessible name
+- focus moves inside on open
+- Escape closes when dismissal is allowed
+- focus returns to the trigger
+
+Composition:
+- DialogHeader
+- DialogBody
+- DialogFooter</code></pre>
+
+<h2>Figma и&nbsp;Code Connect</h2>
+
+<p>Figma MCP передаёт агенту структуру дизайна, переменные и&nbsp;компоненты. Code Connect добавляет курируемую связь с&nbsp;реальной реализацией. Это полезнее, чем вручную перечислять в&nbsp;Markdown каждый prop.</p>
+
+<p>Но связь не&nbsp;заменяет документацию. Code Connect отвечает «какой компонент использовать и&nbsp;как выглядит его кодовый пример». Правила должны отвечать «когда этот компонент уместен» и&nbsp;«как проверить результат».</p>
+
+<p>С&nbsp;17&nbsp;августа 2026 Figma больше не&nbsp;обновляет framework-specific parsers Code Connect. Для новых mappings используйте framework-agnostic template files <code>.figma.ts</code>; старые parser-based integrations стоит мигрировать командой <code>npx figma connect migrate</code>.</p>
+
+<h2>Проверки важнее обещаний</h2>
+
+<p>Инструкции помогают агенту принять правильное решение, но&nbsp;не&nbsp;гарантируют соблюдение. Проверяйте то, что можно проверить автоматически:</p>
+
+<ul>
+  <li>линтер на&nbsp;запрещённые raw values и&nbsp;импорты;</li>
+  <li>type-check публичного API компонентов;</li>
+  <li>unit и&nbsp;interaction tests;</li>
+  <li>accessibility checks;</li>
+  <li>visual regression на&nbsp;ключевых состояниях;</li>
+  <li>сборку token outputs из&nbsp;единого source-файла;</li>
+  <li>проверку broken links и&nbsp;устаревших snippets в&nbsp;документации.</li>
+</ul>
+
+<p>Универсального «аудит-скрипта», который автоматически подберёт правильный токен для любого hardcoded значения, нет. Такие проверки зависят от&nbsp;структуры токенов и&nbsp;правил проекта. Не&nbsp;приравнивайте отсутствие regex-совпадений к&nbsp;качеству интерфейса.</p>
+
+<h2>Как не&nbsp;создать второй источник правды</h2>
+
+<ol>
+  <li>Храните values в&nbsp;структурированном token source, желательно совместимом с&nbsp;DTCG.</li>
+  <li>Генерируйте CSS, iOS, Android и&nbsp;другие outputs автоматически.</li>
+  <li>Храните component API рядом с&nbsp;кодом и&nbsp;проверяйте его тестами.</li>
+  <li>В&nbsp;agent instructions оставляйте ссылки, ограничения и&nbsp;команды проверки.</li>
+  <li>Меняйте документацию и&nbsp;реализацию в&nbsp;одном pull request.</li>
+  <li>Удаляйте устаревшие правила: короткий актуальный контекст лучше длинного архива.</li>
+</ol>
+
+<h2>Что считать результатом</h2>
+
+<p>Хорошая agent-facing спецификация не&nbsp;обещает одинаковый результат в&nbsp;каждой сессии. Она делает отклонения заметными и&nbsp;дешёвыми: агент находит нужный компонент, использует semantic tokens, запускает проверки и&nbsp;оставляет reviewable diff.</p>
+
+<p>DESIGN.md&nbsp;— полезная открытая alpha-спецификация для visual context, но&nbsp;не&nbsp;замена DTCG, component documentation или agent-specific rules. Инфраструктура начинается там, где назначен источник правды, явно связаны форматы и&nbsp;работает автоматическая проверка.</p>
+
+<h2>Источники</h2>
+
+<ul>
+  <li><a href="https://github.com/google-labs-code/design.md" target="_blank" rel="noopener">Google Labs: DESIGN.md</a></li>
+  <li><a href="https://github.com/google-labs-code/design.md/blob/main/docs/spec.md" target="_blank" rel="noopener">Google Labs: спецификация DESIGN.md</a></li>
+  <li><a href="https://cursor.com/docs/rules" target="_blank" rel="noopener">Cursor: Rules и&nbsp;AGENTS.md</a></li>
+  <li><a href="https://docs.anthropic.com/en/docs/claude-code/memory" target="_blank" rel="noopener">Anthropic: CLAUDE.md и&nbsp;auto memory</a></li>
+  <li><a href="https://www.designtokens.org/tr/2025.10/" target="_blank" rel="noopener">DTCG Technical Reports&nbsp;2025.10</a></li>
+  <li><a href="https://www.designtokens.org/faq/" target="_blank" rel="noopener">DTCG FAQ: статус спецификации</a></li>
+  <li><a href="https://help.figma.com/hc/en-us/articles/23920389749655-Code-Connect" target="_blank" rel="noopener">Figma: Code Connect</a></li>
+  <li><a href="https://developers.figma.com/docs/code-connect/templates-migration-guide/" target="_blank" rel="noopener">Figma: миграция Code Connect на&nbsp;template files</a></li>
+</ul>

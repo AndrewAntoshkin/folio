@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ds-eval dashboard</title>
+  <link rel="stylesheet" href="./dashboard.css" />
+</head>
+<body>
+  <aside>
+    <p class="brand">ds-eval</p>
+    <nav>
+      <button data-view="overview" class="active">Overview</button>
+      <button data-view="runs">Runs</button>
+      <button data-view="compare">Compare</button>
+    </nav>
+    <p class="hint">Local runs from <code>runs/</code></p>
+  </aside>
+  <main id="app"><p class="muted">Loading…</p></main>
+  <script src="./dashboard.js"></script>
+</body>
+</html>

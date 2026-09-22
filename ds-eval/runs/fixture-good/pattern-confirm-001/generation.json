@@ -1,0 +1,12 @@
+{
+  "files": {
+    "src/task/Task.tsx": "import { useState } from \"react\";\nimport { Button, Dialog } from \"@ds\";\n\nexport function Task() {\n  const [open, setOpen] = useState(false);\n  return (\n    <div>\n      <Button variant=\"danger\" onClick={() => setOpen(true)}>Delete project</Button>\n      <Dialog open={open} title=\"Delete project?\" onClose={() => setOpen(false)}>\n        <p className=\"ds-help\">This cannot be undone.</p>\n        <div className=\"ds-row\">\n          <Button variant=\"secondary\" onClick={() => setOpen(false)}>Cancel</Button>\n          <Button variant=\"danger\">Delete</Button>\n        </div>\n      </Dialog>\n    </div>\n  );\n}\n"
+  },
+  "raw_text": "",
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": 0.0,
+  "latency_ms": 1,
+  "model": "fixture:good",
+  "error": null
+}

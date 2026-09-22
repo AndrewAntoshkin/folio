@@ -1,0 +1,12 @@
+{
+  "files": {
+    "src/task/Task.tsx": "import { Button } from \"@ds\";\n\nexport function Task() {\n  return <Button>Continue</Button>;\n}\n"
+  },
+  "raw_text": "",
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": 0.0,
+  "latency_ms": 1,
+  "model": "fixture:good",
+  "error": null
+}

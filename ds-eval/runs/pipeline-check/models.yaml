@@ -1,0 +1,20 @@
+models:
+  fixture:
+    provider: fixture
+    pack: good
+    label: Fixture (DS-aware)
+
+  fixture-naive:
+    provider: fixture
+    pack: naive
+    label: Fixture (naive)
+
+  claude:
+    provider: anthropic
+    model: claude-sonnet-4-5
+    label: Claude
+
+  codex:
+    provider: openai
+    model: gpt-4.1
+    label: Codex

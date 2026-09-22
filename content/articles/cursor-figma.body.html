@@ -1,0 +1,132 @@
+<p><strong>Актуально на&nbsp;21&nbsp;августа 2026&nbsp;года.</strong> Cursor и&nbsp;официальный Figma MCP позволяют агенту читать структуру макета, переменные и&nbsp;компоненты, сопоставлять их&nbsp;с&nbsp;кодовой базой и&nbsp;вносить изменения в&nbsp;проект. Но это не&nbsp;кнопка «превратить Figma в&nbsp;production»: качество зависит от&nbsp;структуры файла, компонентов в&nbsp;коде, правил проекта и&nbsp;проверки результата.</p>
+
+<h2>Что изменилось к&nbsp;2026&nbsp;году</h2>
+
+<p>Старый способ через сторонний пакет <code>figma-developer-mcp</code> и&nbsp;персональный API-токен больше не&nbsp;нужен. У&nbsp;Figma есть официальный MCP-сервер: удалённый и&nbsp;локальный в&nbsp;desktop-приложении. Figma рекомендует удалённый сервер <code>https://mcp.figma.com/mcp</code>: у&nbsp;него шире набор возможностей, обновления приезжают без локальной установки, а&nbsp;авторизация проходит через OAuth.</p>
+
+<p>В&nbsp;Cursor проще всего поставить официальный Figma plugin. Он&nbsp;добавляет сервер и&nbsp;Agent Skills&nbsp;— инструкции, которые помогают агенту корректно читать дизайн, использовать компоненты и&nbsp;работать с&nbsp;canvas.</p>
+
+<h2>Шаг 1. Подготовить проект</h2>
+
+<p>До&nbsp;подключения Figma убедитесь, что проект запускается локально и&nbsp;у&nbsp;него есть понятные команды проверки. Для большинства web-проектов нужны Git и&nbsp;актуальная LTS-версия Node.js, но&nbsp;конкретный стек может быть другим.</p>
+
+<pre><code>git --version
+node --version
+npm --version</code></pre>
+
+<p>Не&nbsp;просите агента сразу «сверстать экран». Сначала откройте репозиторий и&nbsp;попросите найти:</p>
+
+<ul>
+  <li>существующие компоненты и&nbsp;паттерны страниц;</li>
+  <li>токены цвета, типографики, spacing и&nbsp;radius;</li>
+  <li>команды запуска, тестов, линтера и&nbsp;сборки;</li>
+  <li>ограничения фреймворка и&nbsp;правила accessibility.</li>
+</ul>
+
+<p>Иначе агент может точно повторить картинку, но&nbsp;создать второй набор кнопок, цветов и&nbsp;отступов рядом с&nbsp;уже существующим.</p>
+
+<h2>Шаг 2. Добавить правила проекта</h2>
+
+<p>В&nbsp;Cursor есть два основных варианта. Для простых общих инструкций используйте <code>AGENTS.md</code>. Для правил с&nbsp;областью действия используйте файлы <code>.mdc</code> в&nbsp;<code>.cursor/rules/</code>. Обычный <code>.md</code> внутри <code>.cursor/rules/</code> системой правил не&nbsp;считается.</p>
+
+<pre><code># AGENTS.md
+
+## UI
+- Сначала ищи существующий компонент
+- Используй токены из src/styles/tokens.css
+- Не добавляй HEX и произвольные отступы
+- Сохраняй семантику и keyboard navigation
+
+## Проверка
+- npm run lint
+- npm test
+- npm run build</code></pre>
+
+<p>Правила&nbsp;— это контекст, а&nbsp;не&nbsp;жёсткая гарантия. Линтеры, типы, тесты и&nbsp;review по-прежнему нужны.</p>
+
+<h2>Шаг 3. Подключить официальный Figma MCP</h2>
+
+<p>Актуальный путь в&nbsp;Cursor:</p>
+
+<ol>
+  <li>Откройте Command Palette: <code>Cmd/Ctrl + Shift + P</code>.</li>
+  <li>Откройте Chat и&nbsp;введите <code>/add-plugin figma</code>.</li>
+  <li>Подтвердите установку официального plugin.</li>
+  <li>Откройте <strong>Cursor Settings → Tools &amp; MCP</strong>.</li>
+  <li>У&nbsp;Figma нажмите <strong>Connect</strong> и&nbsp;пройдите OAuth-авторизацию.</li>
+</ol>
+
+<p>Удалённый сервер доступен на&nbsp;всех Figma seats и&nbsp;plans. Desktop MCP требует Dev или Full seat на&nbsp;платном плане и&nbsp;нужен в&nbsp;основном для специальных организационных сценариев. Не&nbsp;кладите персональные Figma-токены в&nbsp;репозиторий и&nbsp;не&nbsp;передавайте их&nbsp;агенту.</p>
+
+<h2>Что агент получает из&nbsp;Figma</h2>
+
+<p>По&nbsp;ссылке на&nbsp;файл или выбранный node официальный сервер может передать структурированный дизайн-контекст: иерархию, layout, компоненты, переменные, изображения и&nbsp;визуальный референс. Набор доступных действий зависит от&nbsp;клиента, прав и&nbsp;текущих инструментов сервера.</p>
+
+<p>К&nbsp;августу 2026&nbsp;года remote MCP умеет не&nbsp;только читать дизайн. В&nbsp;поддерживаемых клиентах агент может создавать и&nbsp;обновлять нативный контент в&nbsp;Figma, а&nbsp;также переносить live web-интерфейсы в&nbsp;редактируемые слои. Это отдельные write-сценарии: не&nbsp;смешивайте их&nbsp;с&nbsp;задачей реализации макета в&nbsp;коде.</p>
+
+<h2>Code Connect: когда он&nbsp;действительно помогает</h2>
+
+<p>Без Code Connect агент видит дизайн-компонент, но&nbsp;может не&nbsp;знать, какой компонент импортировать из&nbsp;вашего пакета. Code Connect связывает Figma library с&nbsp;реализацией в&nbsp;репозитории и&nbsp;передаёт эту связь в&nbsp;Dev Mode и&nbsp;Figma MCP.</p>
+
+<p>Есть два режима:</p>
+
+<ul>
+  <li><strong>Code Connect UI</strong> работает внутри Figma и&nbsp;подключается к&nbsp;GitHub. Это быстрый способ сопоставить компоненты и&nbsp;дать MCP ссылку на&nbsp;реальный код. В&nbsp;Inspect он&nbsp;показывает имя файла и&nbsp;компонента, но&nbsp;не&nbsp;кастомные snippets.</li>
+  <li><strong>Code Connect CLI</strong> хранит mappings рядом с&nbsp;кодом, поддерживает property mappings и&nbsp;динамические примеры. Именно CLI нужен, если в&nbsp;Dev Mode должны отображаться точные snippets вашей дизайн-системы.</li>
+</ul>
+
+<p>С&nbsp;17&nbsp;августа 2026 framework-specific parsers больше не&nbsp;получают обновления и&nbsp;поддержку. Для новых интеграций Figma рекомендует framework-agnostic template files <code>.figma.ts</code>: TypeScript-шаблон явно формирует snippet для нужного языка или фреймворка. Старые mappings можно перенести командой <code>npx figma connect migrate</code>.</p>
+
+<h2>Шаг 4. Передать дизайн агенту</h2>
+
+<p>Выберите в&nbsp;Figma frame, component или section и&nbsp;скопируйте link to selection. Хороший первый запрос описывает не&nbsp;только внешний вид, но&nbsp;и&nbsp;границы задачи:</p>
+
+<pre><code>Реализуй этот экран: [ссылка на Figma].
+
+Сначала:
+1. найди существующие компоненты и токены;
+2. прочитай AGENTS.md и правила репозитория;
+3. составь короткий план.
+
+Затем реализуй экран без новых зависимостей.
+Сохрани адаптивность и accessibility.
+После изменений запусти lint, tests и build.</code></pre>
+
+<p>Если нужен точный результат, попросите агента сравнить реализацию со&nbsp;скриншотом Figma на&nbsp;целевых размерах viewport. Проверяйте не&nbsp;только пиксели: tab order, focus states, контраст, переполнение текста, loading/error states и&nbsp;поведение на&nbsp;узком экране не&nbsp;всегда видны в&nbsp;статичном frame.</p>
+
+<h2>Что MCP не&nbsp;решает</h2>
+
+<ul>
+  <li><strong>Неоднозначный дизайн.</strong> Если в&nbsp;макете нет состояний и&nbsp;адаптивности, агент их&nbsp;не&nbsp;узнает.</li>
+  <li><strong>Плохая архитектура Figma.</strong> Случайные группы и&nbsp;дубли вместо компонентов дают слабый контекст.</li>
+  <li><strong>Расхождение библиотек.</strong> Одинаковые названия не&nbsp;означают, что Figma и&nbsp;код синхронизированы.</li>
+  <li><strong>Production-качество.</strong> MCP не&nbsp;заменяет тесты, code review, проверку accessibility и&nbsp;производительности.</li>
+  <li><strong>Безопасность.</strong> Агент с&nbsp;доступом к&nbsp;терминалу и&nbsp;внешним системам требует тех&nbsp;же ограничений, что любой автоматизированный инструмент.</li>
+</ul>
+
+<h2>Коммит и&nbsp;деплой</h2>
+
+<p>Не&nbsp;просите агента слепо «закоммитить и&nbsp;запушить всё». Сначала просмотрите diff, убедитесь, что в&nbsp;нём нет секретов и&nbsp;лишних файлов, затем запустите проверки. GitHub Pages подходит для статических сайтов; способ публикации зависит от&nbsp;конфигурации репозитория и&nbsp;может использовать branch или GitHub Actions. Vercel и&nbsp;другие платформы обычно делают preview-deploy на&nbsp;каждый pull request, но&nbsp;условия бесплатных планов меняются&nbsp;— проверяйте их&nbsp;перед публикацией.</p>
+
+<h2>Короткий рабочий процесс</h2>
+
+<ol>
+  <li>Подготовить работающий проект и&nbsp;команды проверки.</li>
+  <li>Описать правила в&nbsp;<code>AGENTS.md</code> или <code>.cursor/rules/*.mdc</code>.</li>
+  <li>Подключить официальный remote Figma MCP через plugin и&nbsp;OAuth.</li>
+  <li>Связать ключевые компоненты через Code Connect, если есть дизайн-система.</li>
+  <li>Передать точную ссылку на&nbsp;selection и&nbsp;ограничения задачи.</li>
+  <li>Сравнить визуально, проверить состояния, accessibility и&nbsp;адаптивность.</li>
+  <li>Просмотреть diff, запустить проверки и&nbsp;только потом публиковать.</li>
+</ol>
+
+<h2>Источники</h2>
+
+<ul>
+  <li><a href="https://help.figma.com/hc/en-us/articles/39889260656407-Cursor-and-Figma-Set-up-the-MCP-server" target="_blank" rel="noopener">Figma: настройка MCP в&nbsp;Cursor</a></li>
+  <li><a href="https://help.figma.com/hc/en-us/articles/32132100833559-Guide-to-the-Figma-MCP-server" target="_blank" rel="noopener">Figma: guide to the Figma MCP server</a></li>
+  <li><a href="https://help.figma.com/hc/en-us/articles/23920389749655-Code-Connect" target="_blank" rel="noopener">Figma: Code Connect</a></li>
+  <li><a href="https://developers.figma.com/docs/code-connect/template-files/" target="_blank" rel="noopener">Figma: Code Connect template files</a></li>
+  <li><a href="https://cursor.com/docs/rules" target="_blank" rel="noopener">Cursor: Rules и&nbsp;AGENTS.md</a></li>
+  <li><a href="https://cursor.com/docs/mcp" target="_blank" rel="noopener">Cursor: MCP</a></li>
+</ul>

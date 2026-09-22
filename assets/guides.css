@@ -1,0 +1,696 @@
+@font-face {
+    font-family: 'Google Sans';
+    src: url('fonts/GoogleSans-Latin.woff2') format('woff2');
+    font-weight: 100 900;
+    font-display: swap;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+    font-family: 'Google Sans';
+    src: url('fonts/GoogleSans-LatinExt.woff2') format('woff2');
+    font-weight: 100 900;
+    font-display: swap;
+    unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+    font-family: 'Google Sans';
+    src: url('fonts/GoogleSans-Cyrillic.woff2') format('woff2');
+    font-weight: 100 900;
+    font-display: swap;
+    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+    font-family: 'Google Sans';
+    src: url('fonts/GoogleSans-CyrillicExt.woff2') format('woff2');
+    font-weight: 100 900;
+    font-display: swap;
+    unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+    font-family: 'Old Standard';
+    src: url('fonts/OldStandardTT-LatinItalic.woff2') format('woff2');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Old Standard';
+    src: url('fonts/OldStandardTT-CyrillicItalic.woff2') format('woff2');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+
+:root {
+    --font-hero: 'Google Sans', var(--font);
+    --font-serif: 'Old Standard', Georgia, 'Times New Roman', serif;
+    --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
+    --t-display: 3.75rem;
+    --t-lg: 0.9375rem;
+    --t-base: 1rem;
+    --t-xs: 0.75rem;
+    --lh-display: 1;
+    --lh-lg: 1.5333;
+    --lh-base: 1.625;
+    --lh-xs: 1.3333;
+    --tr-display: -0.025em;
+    --r-full: 9999px;
+    --r-md: 12px;
+    --guide: #039dbf;
+    --measure: #f6339a;
+    --measure-line: #fb64b6;
+    --measure-fill: rgba(246, 51, 154, 0.1);
+    --hero-btn: #00aff9;
+    --accent-ui: #2b7fff;
+    --accent-soft: rgba(43, 127, 255, 0.1);
+    --shadow-card: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.04);
+    --shadow-lift: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 1px 2px -1px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.06);
+    --ease-hero: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html[data-theme="dark"] {
+    --guide: #54eafd;
+    --measure: #fb64b6;
+    --measure-line: #f6339a;
+    --measure-fill: rgba(251, 100, 182, 0.12);
+    --shadow-card: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 1px 2px -1px rgba(0, 0, 0, 0.35);
+}
+
+@keyframes enter {
+    from { opacity: 0; filter: blur(6px); transform: translateY(10px); }
+    to   { opacity: 1; filter: blur(0); transform: translateY(0); }
+}
+
+.enter {
+    animation: enter 0.75s var(--ease-hero) both;
+    animation-delay: calc(var(--i, 0) * 70ms);
+}
+
+/* ── Hero ────────────────────────────────────────── */
+        .hero { padding: 6rem 0 0; }
+
+        .hero-mark { position: relative; display: inline-block; margin-bottom: 2rem; }
+        .hero-mark img {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: block;
+            box-shadow: 0 0 0 1px rgba(115, 115, 115, 0.35);
+        }
+        .status-dot {
+            position: absolute;
+            right: 1px;
+            bottom: 3px;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            background: #3ac06a;
+            border: 2.5px solid var(--bg);
+        }
+        .status-dot::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 50%;
+            border: 1.5px solid #3ac06a;
+            animation: pulse 2.4s ease-out infinite;
+        }
+        @keyframes pulse {
+            0%   { opacity: 0.7; transform: scale(0.9); }
+            70%, 100% { opacity: 0; transform: scale(2); }
+        }
+
+        .hero-title {
+            /* Значения измерены по метрикам Google Sans при line-height 1;
+               при смене интерлиньяжа сдвигаются на половину разницы.
+               Доля хранится без единиц: внутри строки это em, а выноскам нужен
+               процент от её высоты — у них свой кегль, и em там уже не тот */
+            --x-ratio: 0.33;
+            --baseline: 0.84em;
+            --x-line: calc(var(--x-ratio) * 1em);
+            position: relative;
+            font-size: clamp(2.25rem, 5.2vw, 3.3125rem);
+            line-height: 1;
+            font-weight: 500;
+            letter-spacing: var(--tr-display);
+            text-wrap: balance;
+        }
+
+        .hero-title .serif {
+            position: relative;
+            display: block;
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            color: var(--text-secondary);
+            margin-top: 0.12em;
+        }
+
+        .hero-intro {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            font-size: var(--copy-size, var(--t-lg));
+            line-height: var(--copy-lh, var(--lh-lg));
+            color: var(--text-secondary);
+            text-wrap: pretty;
+        }
+        .hero-intro a {
+            color: var(--text);
+            box-shadow: inset 0 -1px 0 0 color-mix(in srgb, currentColor 32%, transparent);
+            transition: box-shadow 0.18s var(--ease-hero), color 0.18s var(--ease-hero);
+        }
+        .hero-intro a:hover { color: var(--accent-ui); box-shadow: inset 0 -1px 0 0 var(--accent-ui); }
+        .hero-intro .icon {
+            width: 0.95em;
+            height: 0.95em;
+            fill: currentColor;
+            vertical-align: -0.1em;
+            margin-right: 0.24em;
+        }
+
+        /* ── Кнопки ──────────────────────────────────────── */
+        .cta-row {
+            position: relative;
+            margin-top: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            position: relative;
+            z-index: 1;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            height: 3rem;
+            padding: 0 1.25rem;
+            border: 0;
+            border-radius: var(--r-full);
+            font-size: var(--t-base);
+            line-height: var(--lh-base);
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.18s var(--ease-hero), box-shadow 0.18s var(--ease-hero), background-color 0.18s var(--ease-hero);
+        }
+        .btn:active { transform: scale(0.975); }
+        .btn svg { width: 16px; height: 16px; fill: currentColor; }
+
+        .btn--primary {
+            background: var(--hero-btn);
+            /* Текст идёт за темой: светлый на тёмной, тёмный на светлой */
+            color: var(--text);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.14);
+        }
+        /* Ховер уводит фон в сторону подложки — навстречу тексту, а не от него */
+        .btn--primary:hover { background: color-mix(in srgb, var(--hero-btn) 88%, var(--bg)); }
+
+        .btn--ghost {
+            background: var(--surface);
+            color: var(--text);
+            box-shadow: var(--shadow-card);
+        }
+        .btn--ghost:hover { box-shadow: var(--shadow-lift); }
+
+        /* Рамка выделения кнопки: коробка 48px, из них 32 уходят под саму кнопку,
+           наружу торчат 16 — как ручка выделения в макете */
+        .cta-frame {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: -1rem;
+            width: 3rem;
+            border: 1px dashed rgba(115, 115, 115, 0.35);
+            border-right: 0;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+        [data-guides="true"] .cta-frame { animation: guideIn 0.5s var(--ease-hero) 1.44s both; }
+
+        /* Замер отступа над CTA — те же 32px, что и margin-top строки */
+        .cta-gap {
+            position: absolute;
+            bottom: 100%;
+            left: 1.5rem;
+            width: 2rem;
+            height: 2rem;
+            background: var(--measure-fill);
+            border-left: 1px solid var(--measure-line);
+            border-right: 1px solid var(--measure-line);
+            opacity: 0;
+            pointer-events: none;
+        }
+        .cta-gap b {
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            margin-left: 0.5rem;
+            transform: translateY(-50%);
+            font-family: var(--font-mono);
+            font-size: var(--t-xs);
+            line-height: var(--lh-xs);
+            font-weight: 400;
+            white-space: nowrap;
+            color: var(--measure);
+        }
+        [data-guides="true"] .cta-gap { animation: guideIn 0.5s var(--ease-hero) 1.5s both; }
+
+        /* ── Design-tool разметка ────────────────────────── */
+        .t-line { position: relative; display: inline-block; }
+
+        .t-line::before,
+        .t-line::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+            opacity: 0;
+        }
+        /* x-height и baseline — две одинаковые сплошные линии, разъезжаются друг за другом.
+           Линия ложится центром на метрику, поэтому поднимаем её на половину толщины */
+        .t-line::before { top: calc(var(--x-line) - 1px); background: var(--guide); }
+        .t-line::after { top: calc(var(--baseline) - 1px); background: var(--guide); }
+
+        [data-guides="true"] .t-line::before { animation: guideWipe 0.75s var(--ease-hero) 0.7s both; }
+        [data-guides="true"] .t-line::after { animation: guideWipe 0.75s var(--ease-hero) 0.55s both; }
+
+        /* Обнимает сам текст, чтобы выноска цеплялась за конец строки, а не за край колонки */
+        .ink { position: relative; }
+
+        .sel { position: relative; display: inline-block; }
+        .sel::before {
+            content: '';
+            position: absolute;
+            inset: -0.06em -0.1em;
+            border: 1px solid var(--accent-ui);
+            opacity: 0;
+        }
+        [data-guides="true"] .sel::before { animation: guideIn 0.5s var(--ease-hero) 0.85s both; }
+
+        .handle {
+            position: absolute;
+            width: 7px;
+            height: 7px;
+            background: var(--bg);
+            border: 1px solid var(--accent-ui);
+            border-radius: 1px;
+            opacity: 0;
+            z-index: 2;
+        }
+        /* Ручки выходят одной группой вместе с рамкой, без каскада */
+        [data-guides="true"] .handle { animation: handleIn 0.45s var(--ease-hero) 0.85s both; }
+        .h-tl { top: -0.06em;    left: -0.1em;  margin: -4px 0 0 -4px; }
+        .h-tr { top: -0.06em;    right: -0.1em; margin: -4px -4px 0 0; }
+        .h-bl { bottom: -0.06em; left: -0.1em;  margin: 0 0 -4px -4px; }
+        .h-br { bottom: -0.06em; right: -0.1em; margin: 0 -4px -4px 0; }
+
+        .annot {
+            position: absolute;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-family: var(--font-mono);
+            font-size: var(--t-xs);
+            font-style: normal;
+            font-weight: 400;
+            line-height: var(--lh-xs);
+            letter-spacing: 0;
+            color: var(--text-muted);
+            background: var(--surface);
+            border: 0;
+            border-radius: var(--r-md);
+            padding: 0.25rem 0.375rem;
+            white-space: nowrap;
+            box-shadow: var(--shadow-card);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 5;
+        }
+        [data-guides="true"] .annot { animation: annotIn 0.55s var(--ease-hero) both; }
+
+        .swatch {
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+            box-shadow: inset 0 0 0 1px rgba(128, 128, 128, 0.4);
+        }
+
+        .tick {
+            position: absolute;
+            top: 100%;
+            left: 1rem;
+            width: 1px;
+            height: var(--len, 15px);
+            background-image: linear-gradient(rgba(115, 115, 115, 0.35) 55%, transparent 0);
+            background-size: 1px 4px;
+        }
+        .tick::after {
+            content: '';
+            position: absolute;
+            left: -2px;
+            bottom: -2.5px;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            border: 1px solid rgba(115, 115, 115, 0.35);
+            background: var(--bg);
+        }
+        .tick--up { top: auto; bottom: 100%; }
+        .tick--up::after { bottom: auto; top: -2.5px; }
+        /* Поводок у правого края плашки — колечко садится ровно на конец линии */
+        .tick--end { left: auto; right: 0.75rem; }
+        .tick--left {
+            top: calc(50% - 0.5px);
+            left: auto;
+            right: 100%;
+            width: var(--len, 15px);
+            height: 1px;
+            background-image: linear-gradient(90deg, rgba(115, 115, 115, 0.35) 55%, transparent 0);
+            background-size: 4px 1px;
+        }
+        .tick--left::after { left: -2.5px; bottom: -2px; }
+        .tick--right {
+            top: calc(50% - 0.5px);
+            left: 100%;
+            width: var(--len, 15px);
+            height: 1px;
+            background-image: linear-gradient(90deg, rgba(115, 115, 115, 0.35) 55%, transparent 0);
+            background-size: 4px 1px;
+        }
+        .tick--right::after { left: auto; right: -2.5px; bottom: -2px; }
+
+        /* Позиции аннотаций */
+        /* 12px — половина высоты выноски (16 line-height + 2×4 padding).
+           Выноски живут в боковых полях: подписи слева, замеры справа. */
+        .annot--px    { left: calc(100% + 16px);  top: calc(50% - 12px);           animation-delay: 0.4s; }
+        /* Плашка висит над строкой, поводок спускается на конец x-height:
+           52px = 24 высота плашки + 28 длина поводка */
+        .annot--x     { right: -0.75rem;          top: calc(var(--x-ratio) * 100% - 52px); animation-delay: 1.2s; }
+        /* Замер выделения висит под рамкой по центру, как бейдж размера в макете:
+           справа это место занято образцом цвета */
+        .annot--size  { left: 50%; top: calc(100% - 8px); transform: translateX(-50%); animation-delay: 0.95s; }
+        [data-guides="true"] .annot--size { animation-name: annotInCenter; }
+        .annot--font  { right: calc(100% + 24px); top: calc(50% - 12px);           animation-delay: 1.32s; }
+        .annot--color { left: calc(100% + 24px);  top: calc(50% - 12px);           animation-delay: 1.38s; }
+        /* 49px = 16 выступ рамки + 16 линия + 9 точка + 8 зазор до плашки */
+        .annot--cta   { right: calc(100% + 49px); top: calc(50% - 12px);           animation-delay: 1.56s; }
+        .annot--gutter { right: calc(100% + 24px); top: 0.25rem;                   animation-delay: 0.15s; }
+        .annot--right  { left: calc(100% + 24px); top: 0.25rem;                    animation-delay: 0.2s; }
+        /* Подпись стажа стоит на верхнем узле, а сдвиг вниз задаёт скрипт:
+           тег едет по рельсе от начала карьеры к «сейчас» */
+        .annot--span   { right: calc(100% + 40px); top: 0.8125rem; }
+        .annot b { font-weight: inherit; }
+
+        /* Замер ширины колонки */
+        .col-measure {
+            position: absolute;
+            top: 2.4rem;
+            left: var(--pad);
+            right: var(--pad);
+            height: 1px;
+            background: rgba(115, 115, 115, 0.35);
+            opacity: 0;
+            pointer-events: none;
+        }
+        .col-measure::before,
+        .col-measure::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            width: 1px;
+            height: 9px;
+            background: rgba(115, 115, 115, 0.35);
+        }
+        .col-measure::before { left: 0; }
+        .col-measure::after { right: 0; }
+        .col-measure span {
+            position: absolute;
+            left: 50%;
+            top: -0.7rem;
+            transform: translateX(-50%);
+            font-family: var(--font-mono);
+            font-size: var(--t-xs);
+            line-height: var(--lh-xs);
+            color: var(--text-muted);
+            background: var(--bg);
+            padding: 0 0.5rem;
+        }
+        [data-guides="true"] .col-measure { animation: guideIn 0.6s var(--ease-hero) 0.3s both; }
+
+        @keyframes annotIn {
+            from { opacity: 0; filter: blur(4px); transform: translateY(6px) scale(0.96); }
+            to   { opacity: 1; filter: blur(0); transform: none; }
+        }
+        /* То же появление, но с сохранением центрирующего сдвига */
+        @keyframes annotInCenter {
+            from { opacity: 0; filter: blur(4px); transform: translateX(-50%) translateY(6px); }
+            to   { opacity: 1; filter: blur(0); transform: translateX(-50%); }
+        }
+        @keyframes handleIn {
+            from { opacity: 0; transform: scale(0.3); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+        @keyframes guideIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes guideWipe {
+            from { opacity: 1; clip-path: inset(0 100% 0 0); }
+            to   { opacity: 1; clip-path: inset(0 0 0 0); }
+        }
+        @keyframes chipIn {
+            from { opacity: 0; filter: blur(4px); }
+            to   { opacity: 1; filter: blur(0); }
+        }
+        @keyframes railUp {
+            from { opacity: 1; clip-path: inset(100% 0 0 0); }
+            to   { opacity: 1; clip-path: inset(0 0 0 0); }
+        }
+
+        [data-guides="false"] .annot,
+        [data-guides="false"] .handle,
+        [data-guides="false"] .col-measure,
+        [data-guides="false"] .cta-frame,
+        [data-guides="false"] .cta-gap,
+        [data-guides="false"] .gap-x,
+        [data-guides="false"] .gap-y,
+        [data-guides="false"] .rhythm,
+        [data-guides="false"] .clients-gap-y,
+        [data-guides="false"] .testi-frame,
+        [data-guides="false"] .testi-inset,
+        [data-guides="false"] .career-list--timeline .career-row::before,
+        [data-guides="false"] .career-list--timeline .career-row::after,
+        [data-guides="false"] .rows--timeline .row::before,
+        [data-guides="false"] .rows--timeline .row::after,
+        [data-guides="false"] .rows--baseline .row::after,
+        [data-guides="false"] .project-frame::after,
+        [data-guides="false"] .project::after,
+        [data-guides="false"] .sel::before,
+        [data-guides="false"] .t-line::before,
+        [data-guides="false"] .t-line::after {
+            animation: none;
+            opacity: 0;
+            transition: opacity 0.25s var(--ease-hero);
+        }
+
+        /* ── Секции (главная) ────────────────────────────── */
+        .guide-section { position: relative; }
+
+        .section-head {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .section-head .section-label { margin-bottom: 0; }
+
+        .annot--logo {
+            left: calc(100% + 12px);
+            top: calc(50% - 12px);
+            animation-delay: 0.55s;
+        }
+
+        /* Ритм между строками career */
+        .rhythm {
+            position: absolute;
+            left: 56px;
+            top: -0.75rem;
+            width: 2rem;
+            height: 1.5rem;
+            background: var(--measure-fill);
+            border-top: 1px solid var(--measure-line);
+            border-bottom: 1px solid var(--measure-line);
+            opacity: 0;
+            pointer-events: none;
+        }
+        .rhythm b {
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            margin-left: 0.5rem;
+            transform: translateY(-50%);
+            font-family: var(--font-mono);
+            font-size: var(--t-xs);
+            line-height: var(--lh-xs);
+            font-weight: 400;
+            white-space: nowrap;
+            color: var(--measure);
+        }
+        [data-guides="true"] .rhythm { animation: guideIn 0.5s var(--ease-hero) both; }
+
+        /* Таймлайн career — рельса слева от списка */
+        .career-list--timeline { position: relative; }
+
+        .career-list--timeline .career-row {
+            position: relative;
+        }
+
+        .career-list--timeline .career-row::before {
+            content: '';
+            position: absolute;
+            top: 24px;
+            right: calc(100% + 20px);
+            margin-right: -2.5px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            border: 1px solid rgba(115, 115, 115, 0.35);
+            background: var(--bg);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .career-list--timeline .career-row:first-child::before {
+            border-color: var(--accent-ui);
+            background: var(--accent-ui);
+        }
+
+        .career-list--timeline .career-row:not(:first-child)::after {
+            content: '';
+            position: absolute;
+            top: calc(24px - 100% - 24px);
+            height: calc(100% + 24px);
+            right: calc(100% + 20px);
+            width: 1px;
+            background-image: linear-gradient(rgba(115, 115, 115, 0.35) 55%, transparent 0);
+            background-size: 1px 4px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        [data-guides="true"] .career-list--timeline.is-drawn .career-row::before {
+            animation: handleIn 0.3s var(--ease-hero) calc(var(--lvl) * 0.5s) both;
+        }
+
+        [data-guides="true"] .career-list--timeline.is-drawn .career-row:not(:first-child)::after {
+            animation: railUp 0.35s var(--ease-hero) calc(var(--lvl) * 0.5s + 0.15s) both;
+        }
+
+        [data-guides="true"] .career-list--timeline .annot--span { animation: none; }
+        [data-guides="true"] .career-list--timeline.is-drawn .annot--span {
+            animation: chipIn 0.4s var(--ease-hero) both;
+        }
+
+        /* Зазор сетки clients */
+        .clients-gap-y {
+            grid-column: 1 / -1;
+            position: relative;
+            height: 12px;
+            background: var(--measure-fill);
+            border-top: 1px solid var(--measure-line);
+            border-bottom: 1px solid var(--measure-line);
+            opacity: 0;
+            pointer-events: none;
+        }
+        .clients-gap-y b {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            margin-left: 0.5rem;
+            transform: translateY(-50%);
+            font-family: var(--font-mono);
+            font-size: var(--t-xs);
+            line-height: var(--lh-xs);
+            font-weight: 400;
+            white-space: nowrap;
+            color: var(--measure);
+        }
+        [data-guides="true"] .clients-gap-y { animation: guideIn 0.5s var(--ease-hero) 0.35s both; }
+
+        /* Quote block — рамка и inset */
+        .testi-frame {
+            position: absolute;
+            inset: -8px;
+            border: 1px dashed rgba(115, 115, 115, 0.35);
+            border-radius: 14px;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 4;
+        }
+        [data-guides="true"] .testi-frame { animation: guideIn 0.5s var(--ease-hero) 0.2s both; }
+
+        .testi-inset {
+            position: absolute;
+            top: 88px;
+            left: 0;
+            width: 32px;
+            bottom: 32px;
+            background: var(--measure-fill);
+            border-right: 1px solid var(--measure-line);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 3;
+        }
+        .testi-inset b {
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            margin-left: 0.5rem;
+            transform: translateY(-50%);
+            font-family: var(--font-mono);
+            font-size: var(--t-xs);
+            line-height: var(--lh-xs);
+            font-weight: 400;
+            white-space: nowrap;
+            color: var(--measure);
+        }
+        [data-guides="true"] .testi-inset { animation: guideIn 0.5s var(--ease-hero) 0.45s both; }
+
+        .annot--testi-size {
+            right: -0.5rem;
+            top: -0.5rem;
+            animation-delay: 0.3s;
+        }
+
+        .annot--testi-label {
+            left: calc(100% + 20px);
+            top: 38%;
+            animation-delay: 0.55s;
+        }
+
+        .career-logo { position: relative; }
+
+        
+.hero-title,
+.hero-intro,
+.btn {
+    font-family: var(--font-hero);
+}
+
+.content--home {
+    position: relative;
+    padding-top: 96px;
+}
+
+.content--home .hero {
+    padding-top: 0;
+}
+
+.content--home .col-measure {
+    position: absolute;
+    top: 96px;
+    left: 0;
+    right: 0;
+}

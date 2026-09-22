@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Halo: how I'm building a team's working memory</title>
+    <meta name="description" content="Halo: how I'm building a team's working memory">
+    <meta name="theme-color" content="#FDFDFC" id="themeColorMeta">
+    <meta property="og:title" content="Halo: how I'm building a team's working memory">
+    <meta property="og:description" content="Halo: how I'm building a team's working memory">
+    <meta property="og:type" content="article">
+    <link rel="icon" type="image/svg+xml" href="assets/antoshkin-tech-logo.svg">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <link rel="stylesheet" href="assets/wireframe.css">
+    <link rel="stylesheet" href="assets/guides.css">
+    <script>
+        try {
+            if (localStorage.getItem('theme') === 'dark') document.documentElement.dataset.theme = 'dark';
+        } catch (e) {}
+    </script>
+</head>
+<body data-guides="false">
+    <div class="page">
+        <div class="border-strip border-strip--left" aria-hidden="true"></div>
+        <div class="border-strip border-strip--right" aria-hidden="true"></div>
+        <div class="grid-line grid-line--nav" aria-hidden="true"></div>
+        <div class="grid-line grid-line--content-l" aria-hidden="true"></div>
+        <div class="grid-line grid-line--content-r" aria-hidden="true"></div>
+        <div class="grid-line grid-line--shell-r" aria-hidden="true"></div>
+
+        <nav class="top-nav fold" data-fold="50">
+            <a href="en.html" aria-label="Home"><img class="logo logo-photo wf-target" src="assets/avatar.png" alt="Andrew Antoshkin" width="32" height="32"></a>
+            <div class="nav-links">
+                <a class="nav-link" href="en.html">Home</a>
+                <a class="nav-link" href="projects-en.html">Projects</a>
+                <a class="nav-link active" href="writing-en.html">Writing</a>
+                <a class="nav-link" href="approach-en.html">Approach</a>
+                <a class="nav-link" href="collab-en.html">Work together</a>
+            </div>
+        </nav>
+
+        <div class="nav-contact fold" data-fold="80">
+            <p class="nav-contact-label">Contact:</p>
+            <span>
+                <a href="mailto:andrew.antoshkin@gmail.com" class="nav-contact-email wf-target" data-copy="andrew.antoshkin@gmail.com">
+                    andrew.antoshkin@gmail.com
+                    <span class="copied" hidden>Copied</span>
+                </a>
+            </span>
+        </div>
+
+        <div class="mobile-wrap">
+            <button class="mobile-pill" type="button" aria-expanded="false" aria-label="Menu">
+                <span class="pill-icon"><span class="pill-bar"></span><span class="pill-bar"></span></span>
+                <span>Menu</span>
+            </button>
+            <div class="mobile-menu" hidden>
+                <a href="en.html">Home</a>
+                <a href="projects-en.html">Projects</a>
+                <a href="writing-en.html">Writing</a>
+                <a href="approach-en.html">Approach</a>
+                <a href="collab-en.html">Work together</a>
+                <hr>
+                <div class="compact-controls">
+                    <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="Toggle theme">
+                        <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
+                        <span class="theme-symbol theme-symbol--moon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M12.8 10.3A5.5 5.5 0 0 1 5.7 3.2 5.5 5.5 0 1 0 12.8 10.3Z"/></svg></span>
+                    </button>
+                    <nav class="language-switch" aria-label="Language"><a href="halo-working-memory.html">Ru</a><span aria-current="page">En</span></nav>
+                </div>
+                <a href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
+            </div>
+        </div>
+
+        <main class="main">
+            <div class="main-toggles">
+                <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="Toggle theme">
+                    <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
+                    <span class="theme-symbol theme-symbol--moon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M12.8 10.3A5.5 5.5 0 0 1 5.7 3.2 5.5 5.5 0 1 0 12.8 10.3Z"/></svg></span>
+                </button>
+                <nav class="language-switch" aria-label="Language"><a href="halo-working-memory.html">Ru</a><span aria-current="page">En</span></nav>
+            </div>
+            <div class="follow-right fold" data-fold="120">
+                <div class="nav-divider"></div>
+                <div class="social-links">
+                    <a class="nav-link follow-link wf-target" href="https://t.me/aiantoshkin" target="_blank" rel="noopener noreferrer">
+                        Telegram
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m13.7 2.8-2 9.5c-.15.67-.55.83-1.1.52L7.55 10.6l-1.47 1.42c-.16.16-.3.3-.62.3l.22-3.1 5.64-5.1c.25-.21-.05-.33-.38-.12L3.97 8.4l-3-.94c-.65-.2-.66-.65.14-.96l11.72-4.52c.54-.2 1.02.13.87.82Z" fill="currentColor"/></svg>
+                    </a>
+                    <a class="nav-link follow-link wf-target" href="https://github.com/AndrewAntoshkin" target="_blank" rel="noopener noreferrer">
+                        GitHub
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path fill="currentColor" d="M8 1.35a6.65 6.65 0 0 0-2.1 12.96c.33.06.45-.14.45-.32v-1.16c-1.84.4-2.23-.78-2.23-.78-.3-.76-.74-.96-.74-.96-.6-.42.05-.41.05-.41.67.05 1.02.69 1.02.69.6 1.02 1.56.72 1.94.55.06-.43.23-.72.42-.89-1.47-.17-3.02-.74-3.02-3.29 0-.73.26-1.32.69-1.78-.07-.17-.3-.85.07-1.76 0 0 .56-.18 1.83.68A6.36 6.36 0 0 1 8 4.8c.56 0 1.12.08 1.64.22 1.27-.86 1.83-.68 1.83-.68.37.91.14 1.59.07 1.76.43.46.69 1.05.69 1.78 0 2.56-1.56 3.12-3.03 3.29.24.2.45.61.45 1.24V14c0 .18.12.39.45.32A6.65 6.65 0 0 0 8 1.35Z"/></svg>
+                    </a>
+                    <a class="nav-link follow-link wf-target" href="https://setka.ru/users/84b42bc4-44b4-4b1e-ba76-06d249242bc4" target="_blank" rel="noopener noreferrer">
+                        Setka
+                        <img class="social-icon" src="https://cdn-assets.setka.ru/setka-web/static/favicon/favicon-32x32.a8036291d4eac4cc9ab8cbc378cb6d17.png" alt="" width="16" height="16">
+                    </a>
+                </div>
+            </div>
+
+            <div class="content content--article">
+                
+                <a class="back-link back-link--inline fold wf-target" data-fold="60" href="writing-en.html">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    Writing
+                </a>
+                
+                <figure class="article-cover fold wf-target" data-fold="80"><img src="assets/halo-working-memory.png" alt="Andrew with a laptop beside a clothes rack and suitcase"></figure>
+                <div class="article-head fold wf-target" data-fold="100">
+                    <h1 class="title">Halo: how I&rsquo;m building a team&rsquo;s working memory</h1>
+                    <div class="article-meta">
+                <span class="tag">Halo</span>
+                <span class="tag">knowledge graph</span>
+                <span class="tag">AI agents</span>
+            </div>
+                </div>
+                <aside class="article-tldr fold" data-fold="120"><p class="article-tldr-label">TL;DR</p><p>Halo brings together fragmented team context from Tracker, Wiki, and meetings into a connected working memory. Rather than presenting a list of documents, it answers questions about decisions, changes, and ownership—with dates, links, and an explanation.</p></aside>
+                <div class="prose fold wf-target" data-fold="140"><p><strong>Over the past few weeks, I&rsquo;ve been building Halo</strong>&nbsp;&mdash; a working prototype that brings together team context from Tracker, Wiki, meetings, and other internal sources. You can ask it questions such as &ldquo;What changed this week?&rdquo;, &ldquo;Why did we make this decision?&rdquo;, or &ldquo;Who is responsible for this now?&rdquo; and get an answer with dates, links, and an explanation of the evidence behind it.</p>
+
+<p>You can see the project on the <a href="https://andrewantoshkin.github.io/orbit-landing/" target="_blank" rel="noopener">Halo page</a>. Here, I&rsquo;ll take a closer look at why we need working memory in the first place, why conventional search proved insufficient, and how I&rsquo;m building the prototype around real questions from a design team.</p>
+
+<h2 id="section-1">The context exists, but it&rsquo;s scattered</h2>
+
+<p>A team generates a great deal of useful context every day. Statuses and assignees change in Tracker. Risks are discussed and decisions are made in meetings. Goals, processes, and specifications live in Wiki. Staff shows people&rsquo;s roles, while Calendar can help reconstruct the sequence of events.</p>
+
+<p>The problem isn&rsquo;t a lack of information. The problem is that answering a single work-related question often means manually checking several systems:</p>
+
+<ol>
+  <li>find the task and review its status history;</li>
+  <li>remember which meeting it was discussed in;</li>
+  <li>open the summary and find the wording of the decision;</li>
+  <li>check Wiki to see whether the goals have changed;</li>
+  <li>confirm who is now responsible for the next step.</li>
+</ol>
+
+<p>Each system works perfectly well on its own. What gets lost is the connection between them. A few weeks later, the task is still there, but the rationale behind the decision lives only in a meeting summary or in the memories of a few participants.</p>
+
+<h2 id="section-2">What I mean by working memory</h2>
+
+<p>Halo isn&rsquo;t another Wiki or a chat that &ldquo;knows everything.&rdquo; I see it as a layer on top of the systems a team already uses. It doesn&rsquo;t ask the team to move its processes somewhere new; instead, it connects existing entities:</p>
+
+<ul>
+  <li>tasks and their status changes;</li>
+  <li>meetings, participants, and recorded decisions;</li>
+  <li>Wiki pages, goals, and projects;</li>
+  <li>people, roles, and areas of responsibility;</li>
+  <li>links between all these objects.</li>
+</ul>
+
+<p>Working memory isn&rsquo;t a document archive. It should be able to show <strong>what happened, when it happened, what it relates to, and where the fact came from</strong>. That&rsquo;s why Halo cares not only about text, but also about events: a task moved from <code>inProgress</code> to <code>closed</code>, a decision was recorded in a meeting, or a project&rsquo;s assignee changed.</p>
+
+<h2 id="section-3">Why a graph, rather than just search</h2>
+
+<p>Search is good at answering, &ldquo;Where does this phrase appear?&rdquo; But most work-related questions are structured differently. &ldquo;What changed in the project after the sync?&rdquo;, &ldquo;Which decisions are related to this task?&rdquo;, and &ldquo;Who took part in the discussion, and who is responsible now?&rdquo; are questions about relationships and time.</p>
+
+<p>That&rsquo;s why I organized the team&rsquo;s context as a graph. In it, a task can be connected to a project, meeting, decision, person, and Wiki page. Every connection has a source, and every change has a date. This layer helps you do more than find a document: it lets you follow the chain:</p>
+
+<pre><code>project → meeting → decision → task → status change
+                         ↘ assignee</code></pre>
+
+<p>A graph doesn&rsquo;t make an answer automatically true. It simply provides a verifiable structure: every conclusion can be traced back to a specific task, page, or meeting.</p>
+
+<h2 id="section-4">What a Halo answer looks like</h2>
+
+<p>I want an answer to be immediately useful without hiding uncertainty. So it has several layers:</p>
+
+<ul>
+  <li><strong>Brief conclusion</strong>&nbsp;&mdash; a plain-language answer to the question.</li>
+  <li><strong>Facts and dates</strong>&nbsp;&mdash; exactly what happened and when.</li>
+  <li><strong>Sources</strong>&nbsp;&mdash; links to Tracker, Wiki, and meetings.</li>
+  <li><strong>Why this answer</strong>&nbsp;&mdash; the changes and connections that support the conclusion.</li>
+  <li><strong>Limitations</strong>&nbsp;&mdash; what is missing when the available data is insufficient.</li>
+</ul>
+
+<p>For example, when answering, &ldquo;What changed in the component?&rdquo;, it isn&rsquo;t enough to restate the task&rsquo;s current description. The history matters: when the task was created, which meeting led to its status changing, where the decision was recorded, and who became responsible for it.</p>
+
+<p>If the relevant fact isn&rsquo;t in the graph, Halo should say so directly: &ldquo;I couldn&rsquo;t find it.&rdquo; For a work tool, an honest gap is more useful than confident, plausible-sounding text. An answer like this shows exactly what needs to be checked or added to the sources.</p>
+
+<h2 id="section-5">From chat to exploration</h2>
+
+<p>Chat is a convenient entry point, but it isn&rsquo;t the whole product. An answer often raises another question: what is this task, how has its status changed, who was involved, and what documents are connected to it?</p>
+
+<p>That&rsquo;s why the prototype includes Explore. From an answer, you can open a task, person, or decision and inspect the history of its connections. This is an important difference from a conventional AI&#8209;generated summary: rather than being confined to generated text, the user can explore the original work context.</p>
+
+<h2 id="section-6">Workflows instead of a single empty field</h2>
+
+<p>Not every work-related question needs an open-ended chat. Many tasks recur: preparing a weekly update, getting ready for a 1:1, returning from vacation, finding blockers, or compiling decisions from meetings.</p>
+
+<p>For these, I&rsquo;m building workflows&nbsp;&mdash; ready-made recipes that run on top of the same memory. The user selects a period, participants, or project, and Halo knows which sources and connections to check. This makes the results more consistent and lowers the barrier to entry: there&rsquo;s no need to invent the perfect prompt every time.</p>
+
+<h2 id="section-7">What happens under the hood</h2>
+
+<p>Several parts are already running in the prototype:</p>
+
+<ul>
+  <li><strong>Ingest</strong> retrieves available data from work systems and maps it to a shared model.</li>
+  <li><strong>Context graph</strong> connects tasks, meetings, documents, people, decisions, and events.</li>
+  <li><strong>Chat</strong> turns a question into a context search and assembles the answer.</li>
+  <li><strong>Explore</strong> displays entities, change histories, and adjacent connections.</li>
+  <li><strong>Evals</strong> verify whether the system finds the right facts, preserves its sources, and can acknowledge when data is missing.</li>
+  <li><strong>MCP</strong> provides agents with the same context, so they don&rsquo;t have to begin with a blank slate.</li>
+</ul>
+
+<p>Access control is also crucial. Halo should see exactly what the user can see in the source systems. If someone doesn&rsquo;t have access to a task or page, it must not appear in either the answer or the source list.</p>
+
+<h2 id="section-8">Why MCP and agents matter here</h2>
+
+<p>I work in Cursor almost every day, and I&rsquo;ve noticed a consistent pattern: an agent speeds up work when it has high-quality context. In a repository, that context consists of the architecture, rules, documentation, and a clear task. Within a team, similar context is usually scattered across tickets, Wiki pages, and meeting summaries.</p>
+
+<p>If you give an agent only the task description, it may be able to write code or text, but it won&rsquo;t know why the team rejected a similar solution a month ago. Give it working memory, and it can first check related decisions, current goals, and assignees.</p>
+
+<p>That&rsquo;s why I&rsquo;m designing Halo as more than a human-facing interface. The MCP&#8209;layer allows an agent to ask the same question and receive structured context with links to the sources. The person and the agent work from the same verifiable memory, rather than from two different retellings.</p>
+
+<h2 id="section-9">Why I started with a design scope</h2>
+
+<p>At this stage, Halo isn&rsquo;t a product &ldquo;for every company.&rdquo; It&rsquo;s a working prototype tailored to the context of a design organization. A narrow scope is useful here: I know the real entities, the team&rsquo;s language, and the questions that come up every day.</p>
+
+<p>This means I can test the system with practical questions rather than abstract demo queries:</p>
+
+<ul>
+  <li>what changed in the design system this week;</li>
+  <li>which decisions were made in the latest syncs;</li>
+  <li>why a process or status changed;</li>
+  <li>which tasks are linked to the quarter&rsquo;s goals;</li>
+  <li>what someone needs to know after returning from vacation;</li>
+  <li>where the available data is insufficient for a confident answer.</li>
+</ul>
+
+<p>This quickly reveals real problems: duplicate entities, outdated connections, incomplete summaries, ambiguous names, and events without dates. These details have a greater impact on the quality of working memory than an impressive chat interface does.</p>
+
+<h2 id="section-10">What I&rsquo;m testing now</h2>
+
+<p>For me, the main question isn&rsquo;t, &ldquo;Can the model produce an eloquent answer?&rdquo; Modern models can do that without Halo. I&rsquo;m testing something else:</p>
+
+<ul>
+  <li>does the answer save time compared with manual searching;</li>
+  <li>can every important conclusion be verified quickly;</li>
+  <li>can the system reconstruct the sequence of changes;</li>
+  <li>can it distinguish a recorded decision from an assumption;</li>
+  <li>does it notice contradictions between sources;</li>
+  <li>does it know when to stop if there isn&rsquo;t enough data;</li>
+  <li>does the same context help agents complete real tasks?</li>
+</ul>
+
+<p>The answers to these questions emerge only through use. Right now, it&rsquo;s more important for me to gradually add real workflows, build evals, and see where Halo goes wrong than to rapidly expand the list of integrations.</p>
+
+<h2 id="section-11">Where the project is heading</h2>
+
+<p>The immediate goal is to make working memory reliable enough for recurring tasks: weekly updates, meeting preparation, context recovery, and decision exploration. At the same time, I&rsquo;m testing how a single context layer can serve both the product interface and agents through MCP.</p>
+
+<p>For now, it&rsquo;s a living prototype: some parts already work, while others change in response to the first real questions. I&rsquo;ll periodically write about how Halo performs in practice, which connections prove genuinely useful, and where the idea of working memory collides with reality.</p>
+
+<p><a href="https://andrewantoshkin.github.io/orbit-landing/" target="_blank" rel="noopener"><strong>Open the Halo page&nbsp;→</strong></a></p></div>
+                <nav class="article-nav"><a href="ai-changes-processes-en.html"><span class="article-nav-label">Previous</span><span class="article-nav-title">AI Is Not Changing Professions. AI Is Changing Processes</span></a><a href="cursor-figma-en.html" class="next"><span class="article-nav-label">Next</span><span class="article-nav-title">Cursor + Figma in&nbsp;2026: the current setup for&nbsp;designers</span></a></nav>
+    
+            </div>
+        </main>
+
+        <div class="crosshair" aria-hidden="true">
+            <div class="crosshair-h"></div>
+            <div class="crosshair-v"></div>
+            <div class="crosshair-coords">0 · 0</div>
+        </div>
+        <div class="bottom-fade" aria-hidden="true"></div>
+    </div>
+    <script src="assets/wireframe.js"></script>
+</body>
+</html>

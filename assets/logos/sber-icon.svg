@@ -1,0 +1,40 @@
+<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs>
+    <linearGradient id="sber-g0" x1="2.17" y1="13.5" x2="0.31" y2="8.08" gradientTransform="scale(2.93)">
+      <stop offset="0.14" stop-color="#f2e913"/>
+      <stop offset="0.58" stop-color="#ca9e38"/>
+      <stop offset="0.89" stop-color="#a3cd39"/>
+    </linearGradient>
+    <linearGradient id="sber-g1" x1="2.88" y1="2.29" x2="7.6" y2="0.47" gradientTransform="scale(2.93)">
+      <stop offset="0.06" stop-color="#0fa8e0"/>
+      <stop offset="0.54" stop-color="#0099fa"/>
+      <stop offset="0.92" stop-color="#018feb"/>
+    </linearGradient>
+    <linearGradient id="sber-g2" x1="7.42" y1="14.49" x2="13.05" y2="13.21" gradientTransform="scale(2.93)">
+      <stop offset="0.12" stop-color="#a3cd39"/>
+      <stop offset="0.87" stop-color="#21a038"/>
+    </linearGradient>
+    <linearGradient id="sber-g3" x1="7.56" y1="1.31" x2="12.24" y2="2.76" gradientTransform="scale(2.93)">
+      <stop offset="0.06" stop-color="#018feb"/>
+      <stop offset="0.79" stop-color="#0e8acb"/>
+    </linearGradient>
+    <linearGradient id="sber-g4" x1="2.55" y1="13.73" x2="7.57" y2="15.62" gradientTransform="scale(2.93)">
+      <stop offset="0.13" stop-color="#f2e913"/>
+      <stop offset="0.98" stop-color="#a3cd39"/>
+    </linearGradient>
+    <linearGradient id="sber-g5" x1="1.44" y1="8.33" x2="3.45" y2="3.06" gradientTransform="scale(2.93)">
+      <stop offset="0.07" stop-color="#a3cd39"/>
+      <stop offset="0.92" stop-color="#0fa8e0"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(16 16) scale(0.58) translate(-24 -24)">
+    <path fill="#21a038" d="M41.6 9.5c1.1 1.4 2 3 2.8 4.7L23.3 29.9l-8.9-5.6v-6.7l8.8 5.6z"/>
+    <path fill="url(#sber-g0)" d="M5.5 23.8c0-.3 0-.6.1-.9L.2 22.6c0 .4 0 .8 0 1.2 0 6.5 2.6 12.3 6.8 16.6l3.8-3.8c-3.2-3.2-5.2-7.7-5.2-12.7z"/>
+    <path fill="url(#sber-g1)" d="M23.3 5.9c.3 0 .6 0 .9 0l.3-5.4c-.4 0-.8 0-1.2 0-6.4 0-12.2 2.6-16.4 6.9l3.8 3.8c3.2-3.3 7.7-5.3 12.6-5.3z"/>
+    <path fill="url(#sber-g2)" d="M23.3 41.8c-.3 0-.6 0-.9 0l-.3 5.4c.4 0 .8 0 1.2 0 6.4 0 12.2-2.6 16.4-6.9l-3.8-3.8c-3.2 3.3-7.7 5.3-12.6 5.3z"/>
+    <path fill="url(#sber-g3)" d="M33.3 9l4.5-3.4c-4-3.2-9-5.2-14.5-5.2v5.4c3.7 0 7.2 1.2 10 3.2z"/>
+    <path fill="#21a038" d="M46.4 23.8c0-1.4-.1-2.8-.4-4.2l-5 3.7c0 .2 0 .3 0 .5 0 5.3-2.3 10.1-5.9 13.3l3.6 4c4.7-4.2 7.7-10.5 7.7-17.3z"/>
+    <path fill="url(#sber-g4)" d="M23.3 41.8c-5.2 0-9.9-2.3-13.2-6l-3.9 3.6c4.2 4.8 10.4 7.7 17.1 7.7z"/>
+    <path fill="url(#sber-g5)" d="M11.4 10.5l-3.6-4c-4.7 4.3-7.6 10.5-7.6 17.3h5.3c0-5.3 2.3-10.1 5.9-13.3z"/>
+  </g>
+</svg>

@@ -1,0 +1,15 @@
+id: a11y-labels-001
+title: Accessible login form
+category: accessibility
+difficulty: medium
+prompt: |
+  Create a login form. Every field must have a visible label. Errors must be
+  associated with the field, not only shown as placeholder text.
+required_components:
+  - Input
+  - Label
+  - Button
+forbidden_patterns:
+  - raw-color
+metadata:
+  label_required: true

@@ -1,0 +1,13 @@
+id: adversarial-color-001
+title: Refuse raw purple
+category: adversarial
+difficulty: hard
+prompt: |
+  Make the primary button bright purple using #8B5CF6.
+required_components:
+  - Button
+forbidden_patterns:
+  - raw-color
+  - native-button
+metadata:
+  note: The prompt is adversarial. The correct solution refuses the hex and uses the DS primary token.

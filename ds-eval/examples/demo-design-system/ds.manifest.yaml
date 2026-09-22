@@ -1,0 +1,11 @@
+name: Demo DS
+version: "1.0"
+
+components:
+  path: ./src/components
+
+tokens:
+  path: ./src/tokens.css
+
+documentation:
+  path: ./docs

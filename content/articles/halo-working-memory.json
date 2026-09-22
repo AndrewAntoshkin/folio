@@ -1,0 +1,10 @@
+{
+  "title": "Halo: как я собираю рабочую память команды",
+  "h1": "Halo: как я&nbsp;собираю рабочую память команды",
+  "cover": {
+    "src": "assets/halo-working-memory.png",
+    "alt": "Андрей с ноутбуком рядом с рейлом одежды и чемоданом"
+  },
+  "tldr": "Halo собирает разрозненный контекст команды из Tracker, Wiki и встреч в связанную рабочую память. Вместо списка документов он отвечает на вопросы о решениях, изменениях и ответственности — с датами, ссылками и объяснением.",
+  "tags": "<div class=\"article-meta\">\n                <span class=\"tag\">Halo</span>\n                <span class=\"tag\">knowledge graph</span>\n                <span class=\"tag\">AI agents</span>\n            </div>"
+}

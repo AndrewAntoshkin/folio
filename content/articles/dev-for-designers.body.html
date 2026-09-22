@@ -1,0 +1,166 @@
+<p><strong>Актуально на&nbsp;21&nbsp;августа 2026&nbsp;года.</strong> Дизайнеру дизайн-систем не&nbsp;обязательно становиться frontend-разработчиком. Но без понимания layout, component API, tokens, accessibility и&nbsp;проверки изменений трудно проектировать систему, которая одинаково работает в&nbsp;Figma и&nbsp;production.</p>
+
+<h2>Разрыв между Figma и&nbsp;кодом никуда не&nbsp;исчез</h2>
+
+<p>Компонент в&nbsp;Figma и&nbsp;компонент в&nbsp;React, SwiftUI или Compose&nbsp;— разные объекты. Они могут описывать один интерфейс, но&nbsp;имеют разные ограничения, lifecycle и&nbsp;способы композиции.</p>
+
+<p>Макет не&nbsp;показывает автоматически:</p>
+
+<ul>
+  <li>семантику HTML и&nbsp;accessibility tree;</li>
+  <li>keyboard interaction и&nbsp;focus management;</li>
+  <li>loading, empty, error и&nbsp;permission states;</li>
+  <li>локализацию, длинный контент и&nbsp;форматирование данных;</li>
+  <li>границы API и&nbsp;ответственность компонентов;</li>
+  <li>производительность и&nbsp;стоимость зависимости.</li>
+</ul>
+
+<p>Поэтому «пиксель в&nbsp;пиксель» недостаточно. Дизайнер системы должен уметь обсуждать поведение, а&nbsp;не&nbsp;только внешний вид.</p>
+
+<h2>Props, state и&nbsp;composition</h2>
+
+<p>В&nbsp;React компонент получает props и&nbsp;возвращает UI. Вложенный JSX передаётся через prop <code>children</code>:</p>
+
+<pre><code>function Card({ children }) {
+  return &lt;div className="card"&gt;{children}&lt;/div&gt;
+}
+
+&lt;Card&gt;
+  &lt;Avatar /&gt;
+  &lt;p&gt;Профиль пользователя&lt;/p&gt;
+&lt;/Card&gt;</code></pre>
+
+<p>Это не&nbsp;означает, что любой component API должен быть максимально свободным. Иногда нужен <code>children</code>, иногда именованные content props, иногда строгое подмножество дочерних компонентов. Понимание кода помогает выбрать осознанный уровень гибкости вместо бесконечного component set.</p>
+
+<h2>Figma Slots: что это на&nbsp;самом деле</h2>
+
+<p>Native Slots вышли в&nbsp;general availability в&nbsp;июне 2026&nbsp;года, а&nbsp;не&nbsp;в&nbsp;2025-м. Slot&nbsp;— один из&nbsp;пяти типов component properties в&nbsp;Figma наряду с&nbsp;boolean, instance swap, text и&nbsp;variant properties.</p>
+
+<p>Slot создаёт гибкую область внутри component instance. В&nbsp;неё можно добавлять, редактировать и&nbsp;переставлять контент без detach. Можно задать default content, preferred instances, minimum и&nbsp;maximum layer count и&nbsp;другие slot settings. Slots доступны в&nbsp;Figma Design на&nbsp;всех планах; создавать их&nbsp;может пользователь с&nbsp;правом редактирования файла.</p>
+
+<p>Это похоже на&nbsp;<code>children</code> или content slot в&nbsp;коде, но&nbsp;не&nbsp;полный эквивалент:</p>
+
+<ul>
+  <li>Figma Slot управляет редактированием слоёв внутри instance;</li>
+  <li>кодовый API управляет типами, данными, состоянием и&nbsp;runtime-поведением;</li>
+  <li>визуально допустимая композиция может быть семантически неправильной;</li>
+  <li>ограничения slot не&nbsp;заменяют type system и&nbsp;тесты.</li>
+</ul>
+
+<h2>Когда Slot, instance swap или variant</h2>
+
+<ul>
+  <li><strong>Variant</strong>&nbsp;— для ограниченного набора состояний или типов: size, tone, state.</li>
+  <li><strong>Instance swap</strong>&nbsp;— когда нужно заменить конкретный вложенный компонент из&nbsp;контролируемого набора.</li>
+  <li><strong>Slot</strong>&nbsp;— когда область должна принимать разный порядок и&nbsp;состав контента: body модалки, список действий, содержимое карточки.</li>
+</ul>
+
+<p>Не&nbsp;мигрируйте всё на&nbsp;Slots. Чем свободнее область, тем больше ответственности у&nbsp;пользователя библиотеки. Для status icon или leading action instance swap часто безопаснее.</p>
+
+<h2>Code Connect и&nbsp;Slots</h2>
+
+<p>Code Connect умеет маппить native Slot на&nbsp;композицию в&nbsp;коде. С&nbsp;17&nbsp;августа 2026 единственный активно поддерживаемый формат&nbsp;— framework-agnostic template files <code>.figma.ts</code>. В&nbsp;них Slot читается через <code>getSlot()</code>; старый <code>figma.slot()</code> относится к&nbsp;legacy React/HTML parsers.</p>
+
+<pre><code>// url=https://figma.com/design/...?node-id=123
+// source=src/components/Card.tsx
+// component=Card
+
+import figma from 'figma'
+
+const content = figma.selectedInstance.getSlot('Content')
+
+export default {
+  example: figma.code`&lt;Card&gt;${content}&lt;/Card&gt;`,
+  imports: ['import { Card } from "@company/ui"'],
+  id: 'card',
+}</code></pre>
+
+<p>Есть важное ограничение: по&nbsp;умолчанию Dev Mode показывает slot как кликабельную ссылку, а&nbsp;не&nbsp;разворачивает весь вложенный код. <code>connectedInstances</code> может вывести непосредственно вложенные code-connected components, но&nbsp;lookup поверхностный: текст, обычные слои, неподключённые и&nbsp;глубоко вложенные instances опускаются. Remote Figma MCP при этом может пройти внутрь slot и&nbsp;получить layout и&nbsp;nested content.</p>
+
+<h2>Tokens: стабильный формат появился</h2>
+
+<p>Design token&nbsp;— не&nbsp;просто имя для HEX. Он&nbsp;задаёт устойчивую ссылку между намерением и&nbsp;платформенным значением. Semantic token вроде <code>color.text.muted</code> позволяет менять theme или contrast mode без переписывания компонентов.</p>
+
+<p>В&nbsp;октябре 2025&nbsp;года DTCG опубликовала первую стабильную спецификацию&nbsp;2025.10. Это важный шаг к&nbsp;обмену токенами между инструментами, но&nbsp;не&nbsp;W3C Standard и&nbsp;не&nbsp;гарантия, что Figma, ваш transformer и&nbsp;все платформы одинаково поддерживают каждый тип.</p>
+
+<p>Практический вывод для дизайнера:</p>
+
+<ul>
+  <li>разделяйте primitive, semantic и&nbsp;component tokens только там, где это оправдано;</li>
+  <li>не&nbsp;дублируйте values вручную между Figma и&nbsp;репозиторием;</li>
+  <li>фиксируйте modes, aliases и&nbsp;fallback-поведение;</li>
+  <li>проверяйте generated outputs на&nbsp;каждой целевой платформе;</li>
+  <li>не&nbsp;называйте произвольный JSON «DTCG-compatible» без валидации.</li>
+</ul>
+
+<h2>Code Connect: не&nbsp;магическая синхронизация</h2>
+
+<p>Code Connect связывает library component в&nbsp;Figma с&nbsp;компонентом в&nbsp;репозитории. Template files не&nbsp;привязаны к&nbsp;фреймворку: один TypeScript-шаблон может формировать snippet для React, Web Components, SwiftUI, Compose или другого языка. Framework-specific parsers остаются доступными в&nbsp;старых версиях CLI, но&nbsp;больше не&nbsp;поддерживаются.</p>
+
+<p>Code Connect UI проще: он&nbsp;работает внутри Figma и&nbsp;подключается к&nbsp;GitHub, чтобы сопоставить дизайн и&nbsp;код для MCP. Но UI-mapping не&nbsp;показывает кастомный snippet в&nbsp;Inspect&nbsp;— для этого нужен CLI.</p>
+
+<p>Ни&nbsp;UI, ни&nbsp;CLI не&nbsp;обеспечивают двустороннюю синхронизацию API автоматически. Если prop переименован, вариант удалён или поведение изменилось, mapping и&nbsp;документацию нужно обновить и&nbsp;проверить.</p>
+
+<h2>AI ускоряет исполнение, но&nbsp;не&nbsp;принимает продуктовые решения</h2>
+
+<p>Cursor, Claude Code и&nbsp;другие агенты могут изучить репозиторий, получить Figma-контекст через MCP, изменить файлы и&nbsp;запустить проверки. Это позволяет дизайнеру быстрее собрать working prototype или проверить решение в&nbsp;реальном layout.</p>
+
+<p>Но агент не&nbsp;знает автоматически:</p>
+
+<ul>
+  <li>какое поведение продукта считается правильным;</li>
+  <li>какой компонент canonical;</li>
+  <li>допустима&nbsp;ли новая зависимость;</li>
+  <li>соответствует&nbsp;ли интерфейс требованиям accessibility;</li>
+  <li>какие компромиссы важны для команды.</li>
+</ul>
+
+<p>Чтобы оценивать результат, дизайнеру нужны основы браузера и&nbsp;кода. Иначе AI превращает непроверенное предположение в&nbsp;убедительно выглядящий diff.</p>
+
+<h2>Что дизайнеру действительно стоит изучить</h2>
+
+<ol>
+  <li><strong>HTML и&nbsp;семантику.</strong> Элементы, формы, headings, landmarks, accessible names.</li>
+  <li><strong>CSS layout.</strong> Box model, flex, grid, intrinsic sizing, overflow, container и&nbsp;media queries.</li>
+  <li><strong>Accessibility.</strong> Keyboard, focus, contrast, reduced motion, screen-reader basics.</li>
+  <li><strong>Component API.</strong> Props, state, composition, controlled и&nbsp;uncontrolled patterns.</li>
+  <li><strong>Tokens.</strong> Aliases, modes, semantic naming, transformation и&nbsp;platform outputs.</li>
+  <li><strong>Git и&nbsp;review.</strong> Branch, diff, commit, pull request, conflicts.</li>
+  <li><strong>DevTools и&nbsp;tests.</strong> Inspect, computed styles, responsive mode, console, network, visual и&nbsp;interaction tests.</li>
+</ol>
+
+<p>React не&nbsp;обязателен, если ваша команда использует другую платформу. Важно понимать модель целевой среды, а&nbsp;не&nbsp;заучивать один фреймворк.</p>
+
+<h2>Практика на&nbsp;одном компоненте</h2>
+
+<p>Возьмите компонент со&nbsp;средней сложностью&nbsp;— например, Dialog или Card&nbsp;— и&nbsp;пройдите полный цикл:</p>
+
+<ol>
+  <li>опишите назначение и&nbsp;неподходящие сценарии;</li>
+  <li>выберите variants, swaps и&nbsp;slots в&nbsp;Figma;</li>
+  <li>сопоставьте их&nbsp;с&nbsp;кодовым API;</li>
+  <li>задайте tokens и&nbsp;responsive behavior;</li>
+  <li>добавьте focus, keyboard и&nbsp;error states;</li>
+  <li>свяжите через Code Connect;</li>
+  <li>проверьте реализацию в&nbsp;Storybook или приложении;</li>
+  <li>обновите документацию в&nbsp;том&nbsp;же pull request.</li>
+</ol>
+
+<h2>Вывод</h2>
+
+<p>Разбираться в&nbsp;разработке&nbsp;— не&nbsp;значит самостоятельно писать весь production-код. Это значит проектировать component API, видеть ограничения платформы, проверять реализацию и&nbsp;обсуждать решения с&nbsp;инженерами без потери смысла.</p>
+
+<p>Slots, Code Connect, MCP и&nbsp;AI сокращают механический разрыв между Figma и&nbsp;кодом. Архитектурный разрыв они не&nbsp;закрывают. Его закрывает команда, которая договорилась об&nbsp;источниках правды, контрактах и&nbsp;проверках.</p>
+
+<h2>Источники</h2>
+
+<ul>
+  <li><a href="https://help.figma.com/hc/en-us/articles/38231200344599-Use-slots-to-build-flexible-components-in-Figma" target="_blank" rel="noopener">Figma: native Slots</a></li>
+  <li><a href="https://developers.figma.com/docs/plugins/updates/2026/06/10/update/" target="_blank" rel="noopener">Figma Developer Docs: Slots GA, июнь 2026</a></li>
+  <li><a href="https://developers.figma.com/docs/code-connect/react/" target="_blank" rel="noopener">Figma: Code Connect for React и&nbsp;Slots</a></li>
+  <li><a href="https://developers.figma.com/docs/code-connect/template-files/" target="_blank" rel="noopener">Figma: framework-agnostic template files</a></li>
+  <li><a href="https://developers.figma.com/docs/code-connect/templates-migration-guide/" target="_blank" rel="noopener">Figma: migration from legacy parsers</a></li>
+  <li><a href="https://help.figma.com/hc/en-us/articles/23920389749655-Code-Connect" target="_blank" rel="noopener">Figma: Code Connect overview</a></li>
+  <li><a href="https://react.dev/learn/passing-props-to-a-component#passing-jsx-as-children" target="_blank" rel="noopener">React: passing JSX as children</a></li>
+  <li><a href="https://www.designtokens.org/tr/2025.10/" target="_blank" rel="noopener">DTCG Technical Reports&nbsp;2025.10</a></li>
+</ul>

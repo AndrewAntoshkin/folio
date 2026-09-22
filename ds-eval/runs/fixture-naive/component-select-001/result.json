@@ -1,0 +1,132 @@
+{
+  "id": "component-select-001",
+  "title": "Country selector",
+  "category": "component",
+  "difficulty": "easy",
+  "error": null,
+  "scores": {
+    "ds_compliance": 34.1,
+    "functional": 70.0,
+    "visual": 0.0,
+    "ux": 0.0,
+    "accessibility": 75.0,
+    "code_quality": 90.0,
+    "reliability": 100.0,
+    "overall": 66.2
+  },
+  "graders": [
+    {
+      "name": "static",
+      "kind": "deterministic",
+      "score": 35.0,
+      "max_score": 100,
+      "passed": false,
+      "details": {
+        "found_components": [],
+        "missing_required": [
+          "Select"
+        ],
+        "hex": [],
+        "native": {
+          "native-button": false,
+          "native-select": true,
+          "native-input": false,
+          "inline-style": false
+        },
+        "uses_ds_imports": false
+      },
+      "reasoning": "missing required components: Select; no @ds imports"
+    },
+    {
+      "name": "ds_compliance",
+      "kind": "deterministic",
+      "score": 33.3,
+      "max_score": 100,
+      "passed": false,
+      "details": {
+        "required": [
+          "Select"
+        ],
+        "found": [],
+        "missing": [
+          "Select"
+        ],
+        "forbidden_hits": [
+          "native-select"
+        ]
+      },
+      "reasoning": "compliance against required/forbidden component rules"
+    },
+    {
+      "name": "code_quality",
+      "kind": "deterministic",
+      "score": 90.0,
+      "max_score": 100,
+      "passed": true,
+      "details": {
+        "bytes": 449
+      },
+      "reasoning": "uses any"
+    },
+    {
+      "name": "accessibility",
+      "kind": "deterministic",
+      "score": 75.0,
+      "max_score": 100,
+      "passed": true,
+      "details": {},
+      "reasoning": "label required by case"
+    },
+    {
+      "name": "reliability",
+      "kind": "deterministic",
+      "score": 100.0,
+      "max_score": 100,
+      "passed": true,
+      "details": {
+        "runtime": "skipped"
+      },
+      "reasoning": "generation produced files; browser runtime not run"
+    },
+    {
+      "name": "functional",
+      "kind": "deterministic",
+      "score": 70.0,
+      "max_score": 100,
+      "passed": true,
+      "details": {
+        "runtime": "skipped"
+      },
+      "reasoning": "functional checks require Playwright; defaulting to a conservative static score"
+    },
+    {
+      "name": "visual",
+      "kind": "llm",
+      "score": 0.0,
+      "max_score": 100,
+      "passed": false,
+      "details": {
+        "skipped": true
+      },
+      "reasoning": "LLM visual judge not enabled in this run"
+    },
+    {
+      "name": "ux",
+      "kind": "llm",
+      "score": 0.0,
+      "max_score": 100,
+      "passed": false,
+      "details": {
+        "skipped": true
+      },
+      "reasoning": "LLM UX judge not enabled in this run"
+    }
+  ],
+  "generation": {
+    "model": "fixture:naive",
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cost_usd": 0.0,
+    "latency_ms": 1
+  }
+}

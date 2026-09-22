@@ -1,0 +1,10 @@
+{
+  "title": "AI Is Not Changing Professions. AI Is Changing Processes",
+  "h1": "AI Is Not Changing Professions. AI Is Changing Processes",
+  "cover": {
+    "src": "assets/ai-processes-agents.png",
+    "alt": "A person designing a system in which several AI agents work together"
+  },
+  "tldr": "Results depend less on the model than on the process around it: context, roles, Skills, MCP, validation, and feedback. AI amplifies a specialist's capabilities, but it does not make product decisions for them.",
+  "tags": "<div class=\"article-meta\">\n                <span class=\"tag\">AI workflows</span>\n                <span class=\"tag\">agents</span>\n                <span class=\"tag\">design systems</span>\n            </div>"
+}

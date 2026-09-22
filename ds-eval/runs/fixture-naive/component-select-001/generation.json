@@ -1,0 +1,12 @@
+{
+  "files": {
+    "src/task/Task.tsx": "export function Task() {\n  return (\n    <div>\n      <span>Country</span>\n      <select>\n        <option>Austria</option>\n        <option>Belgium</option>\n        <option>Canada</option>\n        <option>Denmark</option>\n        <option>Estonia</option>\n        <option>Finland</option>\n        <option>Germany</option>\n        <option>Hungary</option>\n        <option>Ireland</option>\n        <option>Japan</option>\n      </select>\n    </div>\n  );\n}\n"
+  },
+  "raw_text": "",
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": 0.0,
+  "latency_ms": 1,
+  "model": "fixture:naive",
+  "error": null
+}

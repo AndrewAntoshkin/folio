@@ -1,0 +1,138 @@
+<p><strong>Everyone is talking about new models.</strong> Over coffee, in elevators, at conferences, and in work chats, people compare which one writes better code, which generates interfaces more accurately, which thinks faster, and which has the larger context window.</p>
+
+<p>But the more I&nbsp;work with AI, the less the final result depends on the choice of model. Increasingly, the difference between a&nbsp;strong result and a&nbsp;weak one lies a&nbsp;level higher&nbsp;— in <strong>how the process around the model is designed</strong>.</p>
+
+<h2>The model is only one layer</h2>
+
+<p>Even the strongest model starts making mistakes if it does not know the project architecture, uses outdated documentation, or does not understand where the source of truth lives. It can generate a&nbsp;polished screen while creating yet another button instead of using a&nbsp;design&#8209;system component. It can write working code that violates the team&rsquo;s internal rules. It can confidently recount a&nbsp;decision that no one ever made.</p>
+
+<p>That is why, today, I&nbsp;am interested not only in &ldquo;which model to choose,&rdquo; but in other questions:</p>
+
+<ul>
+  <li>how project context is stored and updated;</li>
+  <li>where the record of decisions lives;</li>
+  <li>which Skills are available to the agent;</li>
+  <li>which MCP servers and work systems it can access;</li>
+  <li>which actions it can perform independently;</li>
+  <li>where human approval is mandatory;</li>
+  <li>how the result is validated before it reaches production.</li>
+</ul>
+
+<p>The model is responsible for reasoning and generation. The process ensures that both happen with the right data, within acceptable boundaries, and with predictable validation.</p>
+
+<h2>One specialist becomes a&nbsp;multitool</h2>
+
+<p>Digital tools used to enhance one part of a&nbsp;profession. Figma helped designers create interfaces, an IDE helped developers write code, and Jira helped teams manage tasks. An AI agent can cover an entire sequence of actions: read a&nbsp;task, find the context, modify files, run checks, and prepare the result for review.</p>
+
+<p>This changes the specialist&rsquo;s role. They do not necessarily perform every step by hand. Increasingly, they define the goal, assemble the context, distribute the work, set constraints, and evaluate the result. The result is a&nbsp;human multitool who manages several modes of production at once.</p>
+
+<p>This does not mean that one person suddenly becomes an expert in every profession. On the contrary, domain expertise is still required to frame a&nbsp;task correctly and notice an agent&rsquo;s mistake. What changes is not the value of knowledge, but where it is applied&nbsp;— from manually performing every step to designing the entire system of work.</p>
+
+<h2>Not one universal agent, but several roles</h2>
+
+<p>One long prompt quickly turns into a&nbsp;mess. Task definition, implementation, visual validation, documentation, and tests all get mixed together. The agent has to be both the author and the reviewer of its own work.</p>
+
+<p>It is much clearer to divide the process into roles:</p>
+
+<ul>
+  <li><strong>Research agent</strong> gathers context, finds existing solutions, and identifies constraints.</li>
+  <li><strong>Development agent</strong> writes code within the chosen architecture.</li>
+  <li><strong>Design&#8209;system agent</strong> assembles the interface from real components and tokens.</li>
+  <li><strong>Review agent</strong> checks the diff, rules, accessibility, and edge states.</li>
+  <li><strong>Documentation agent</strong> updates specifications and examples after an API change.</li>
+  <li><strong>Validation agent</strong> runs tests, builds, and visual comparisons.</li>
+</ul>
+
+<p>You do not necessarily need to run six separate models. What matters is the separation of responsibilities: every stage has a&nbsp;specific input, an expected output, and a&nbsp;definition of done. The process can then be improved one part at a&nbsp;time, and errors are easier to isolate.</p>
+
+<h2>What one such process might look like</h2>
+
+<p>Imagine a&nbsp;typical task: adding a&nbsp;new state to a&nbsp;complex component.</p>
+
+<ol>
+  <li>The first agent reads the task and related decisions, then finds the component in the code and the design in Figma.</li>
+  <li>It checks the design&#8209;system documentation, available tokens, and existing patterns.</li>
+  <li>The implementation agent modifies the component and adds the state without creating a&nbsp;parallel API.</li>
+  <li>A&nbsp;separate validation step compares the result with the design, looks for raw values, and checks keyboard navigation.</li>
+  <li>The testing stage runs type&#8209;checking, unit tests, accessibility checks, and the build.</li>
+  <li>After all checks pass, the component documentation is updated and a&nbsp;short summary of the changes is prepared.</li>
+  <li>A&nbsp;person reviews the solution, any debatable points, and the final diff.</li>
+</ol>
+
+<p>The value here is not that the agent can write JSX. The value lies in the connected chain, where context is not lost between stages and the output of one step becomes a&nbsp;verifiable input for the next.</p>
+
+<h2>Context becomes infrastructure</h2>
+
+<p>For this kind of work, pasting a&nbsp;fragment of a&nbsp;task into a&nbsp;chat each time is not enough. The agent needs a&nbsp;map of the project: the repository structure, accepted decisions, component APIs, naming conventions, validation commands, and the boundaries of permitted changes.</p>
+
+<p>Some of this context is static and can live alongside the code:</p>
+
+<ul>
+  <li><code>AGENTS.md</code> or project rules containing a&nbsp;map of the repository;</li>
+  <li>design&#8209;system and component documentation;</li>
+  <li>machine&#8209;readable tokens;</li>
+  <li>Skills containing repeatable workflows;</li>
+  <li>tests and linters that formalize constraints.</li>
+</ul>
+
+<p>Another part changes constantly: task statuses, decisions made in meetings, owners, and current goals. It cannot be written once in Markdown and forgotten. What is needed is a&nbsp;living working&#8209;memory layer that gathers data from source systems and returns it with links and dates.</p>
+
+<p>That is why I&nbsp;am also building <a href="halo-working-memory.html">Halo</a>: I&nbsp;want to explore how a&nbsp;single context layer can support both people and agents.</p>
+
+<h2>Skills turn experience into repeatable workflows</h2>
+
+<p>A&nbsp;prompt often remains a&nbsp;one&#8209;off instruction. A&nbsp;Skill is an attempt to package a&nbsp;proven way of solving a&nbsp;task: when to use it, which sources to read, what sequence of actions to follow, and what counts as a&nbsp;finished result.</p>
+
+<p>For example, a&nbsp;Skill for modifying a&nbsp;component might require finding existing variants first, then checking tokens and accessibility, and finally running a&nbsp;specific set of tests after implementation. This does not make the agent infallible, but it removes the need to explain the same process again in every chat.</p>
+
+<p>Over the past few weeks, I&nbsp;have been working on exactly this kind of infrastructure: assembling LLM&#8209;ready documentation, documenting design&#8209;system rules, writing Skills, and testing them in Cursor and Claude Code on real projects.</p>
+
+<h2>MCP connects reasoning to work systems</h2>
+
+<p>Documentation in the repository is not enough when a&nbsp;task depends on Figma, Tracker, Wiki, or build results. MCP servers give an agent standardized access to tools and data: it can do more than read prepared text; it can retrieve the current structure of a&nbsp;design, find a&nbsp;task, or invoke an approved action.</p>
+
+<p>But more connections do not always produce a&nbsp;better process. For every tool, you need to define:</p>
+
+<ul>
+  <li>which data the agent can read;</li>
+  <li>which changes it can make;</li>
+  <li>what requires explicit approval;</li>
+  <li>how the user&rsquo;s permissions are inherited;</li>
+  <li>where the source of the completed action is recorded;</li>
+  <li>what happens when an error occurs or data is incomplete.</li>
+</ul>
+
+<p>Without these boundaries, an agent with many tools becomes not more useful, but more dangerous and less predictable.</p>
+
+<h2>Predictability matters more than an impressive demo</h2>
+
+<p>Almost any modern model can look impressive on a&nbsp;single, carefully selected task. It is much harder to build a&nbsp;process that works reliably across dozens of routine team tasks.</p>
+
+<p>That requires feedback loops:</p>
+
+<ul>
+  <li>automated code and interface checks;</li>
+  <li>evals based on real scenarios;</li>
+  <li>source links in responses;</li>
+  <li>an observable history of the agent&rsquo;s actions;</li>
+  <li>a&nbsp;clear handoff to a&nbsp;person;</li>
+  <li>error analysis and subsequent rule updates.</li>
+</ul>
+
+<p>A&nbsp;good AI process does not promise that the model will never make a&nbsp;mistake. It makes mistakes visible, limits their impact, and prevents them from passing unnoticed into the next stage.</p>
+
+<h2>What is changing most in design</h2>
+
+<p>This is especially clear in design. It is no longer enough to ask a&nbsp;model to &ldquo;draw a&nbsp;screen.&rdquo; It must understand the product structure, use real components, know the patterns, work with semantic tokens, and account for states, accessibility, and responsiveness.</p>
+
+<p>The design system therefore becomes not only a&nbsp;library for people, but also an interface for agents. The more clearly its components, decisions, and constraints are documented, the less the agent improvises where the team needs consistency.</p>
+
+<p>That is why working on an AI&#8209;ready design system is not an attempt to replace the designer. It is a&nbsp;way to make the team&rsquo;s accumulated experience available within a&nbsp;new workflow.</p>
+
+<h2>A&nbsp;new foundational skill</h2>
+
+<p>The ability to use AI will probably soon become as foundational as working in Figma, an IDE, or Jira. Simply using a&nbsp;model will no longer distinguish a&nbsp;strong specialist.</p>
+
+<p>The difference will lie elsewhere: whether a&nbsp;person can assemble context, divide work into roles, define the boundaries of autonomy, connect the right tools, and build a&nbsp;system for validating results. In other words, whether they can design a&nbsp;process in which a&nbsp;person and several agents work as one system.</p>
+
+<p><strong>AI is changing more than the set of tools within a&nbsp;profession. It is changing the way work itself gets done.</strong> And that is the level I&nbsp;find most interesting right now.</p>

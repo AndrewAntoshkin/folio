@@ -1,0 +1,12 @@
+{
+  "files": {
+    "src/task/Task.tsx": "import { Button } from \"@ds\";\n\nexport function Task() {\n  return (\n    <div className=\"ds-row\">\n      <Button>Save</Button>\n      <Button variant=\"secondary\">Cancel</Button>\n      <Button variant=\"danger\">Delete</Button>\n    </div>\n  );\n}\n"
+  },
+  "raw_text": "",
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": 0.0,
+  "latency_ms": 1,
+  "model": "fixture:good",
+  "error": null
+}

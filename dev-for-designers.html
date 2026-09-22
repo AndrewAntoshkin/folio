@@ -2,428 +2,297 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Зачем дизайнеру дизайн-систем разбираться в разработке</title>
-    <meta name="description" content="Компоненты, слоты, токены, Code Connect — почему понимание кода делает дизайнера дизайн-систем сильнее.">
-    <meta property="og:title" content="Зачем дизайнеру дизайн-систем разбираться в разработке">
-    <meta property="og:description" content="Почему понимание кода делает дизайнера дизайн-систем сильнее.">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Зачем дизайнеру дизайн-систем разбираться в разработке в 2026 году</title>
+    <meta name="description" content="Зачем дизайнеру дизайн-систем разбираться в разработке в 2026 году">
+    <meta name="theme-color" content="#FDFDFC" id="themeColorMeta">
+    <meta property="og:title" content="Зачем дизайнеру дизайн-систем разбираться в разработке в 2026 году">
+    <meta property="og:description" content="Зачем дизайнеру дизайн-систем разбираться в разработке в 2026 году">
     <meta property="og:type" content="article">
-    <link rel="icon" type="image/png" href="assets/avatar.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <meta name="color-scheme" content="light dark">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        @view-transition {
-            navigation: auto;
-        }
-
-        ::view-transition-old(root),
-        ::view-transition-new(root) {
-            animation: 250ms ease both crossfade;
-        }
-
-        ::view-transition-old(root) {
-            animation-name: crossfade-out;
-        }
-
-        ::view-transition-new(article-body) {
-            animation: 500ms cubic-bezier(0.22, 1, 0.36, 1) both slide-fade-in;
-            animation-delay: 150ms;
-        }
-
-        ::view-transition-old(article-body) {
-            animation: 200ms ease both crossfade-out;
-        }
-
-        @keyframes crossfade {
-            from { opacity: 0; }
-        }
-
-        @keyframes crossfade-out {
-            to { opacity: 0; }
-        }
-
-        @keyframes slide-fade-in {
-            from { opacity: 0; transform: translateY(20px); }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            ::view-transition-group(*),
-            ::view-transition-old(*),
-            ::view-transition-new(*) {
-                animation: none !important;
-            }
-        }
-
-        :root {
-            --bg: #fafafa;
-            --text: #0a0a0a;
-            --text-sub: #52525b;
-            --text-muted: #737373;
-            --border: #e4e4e7;
-            --code-bg: #f4f4f5;
-            --code-border: rgba(0, 0, 0, 0.08);
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #0c0c0c;
-                --text: #f5f5f5;
-                --text-sub: #d4d4d8;
-                --text-muted: #8f8e8d;
-                --border: #27272a;
-                --code-bg: #18181b;
-                --code-border: rgba(255, 255, 255, 0.05);
-            }
-        }
-
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-        html {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            font-size: 1rem;
-            line-height: 1.618;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        body { min-height: 100vh; }
-        a { color: inherit; }
-
-        main {
-            width: min(592px, 100% - 32px);
-            margin: 0 auto;
-            padding-top: clamp(2rem, 0.56rem + 5.56vw, 5rem);
-            padding-bottom: clamp(2rem, 0.56rem + 5.56vw, 5rem);
-        }
-
-        .back-bar {
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            padding: 16px 16px 48px;
-            margin: 0 -16px;
-        }
-
-        .back-blur {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-        }
-
-        .back-blur:nth-child(1) {
-            -webkit-backdrop-filter: blur(1px);
-            backdrop-filter: blur(1px);
-            -webkit-mask-image: linear-gradient(to bottom, black, transparent 25%);
-            mask-image: linear-gradient(to bottom, black, transparent 25%);
-        }
-
-        .back-blur:nth-child(2) {
-            -webkit-backdrop-filter: blur(2px);
-            backdrop-filter: blur(2px);
-            -webkit-mask-image: linear-gradient(to bottom, black 12%, transparent 40%);
-            mask-image: linear-gradient(to bottom, black 12%, transparent 40%);
-        }
-
-        .back-blur:nth-child(3) {
-            -webkit-backdrop-filter: blur(4px);
-            backdrop-filter: blur(4px);
-            -webkit-mask-image: linear-gradient(to bottom, black 25%, transparent 60%);
-            mask-image: linear-gradient(to bottom, black 25%, transparent 60%);
-        }
-
-        .back-blur:nth-child(4) {
-            -webkit-backdrop-filter: blur(8px) saturate(180%);
-            backdrop-filter: blur(8px) saturate(180%);
-            -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
-            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
-        }
-
-        .back-bar::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            background: linear-gradient(to bottom, var(--bg) 0%, transparent 70%);
-            opacity: 0.7;
-        }
-
-        .back {
-            position: relative;
-            z-index: 1;
-            display: inline-block;
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .back:hover { color: var(--text); }
-
-        article h1 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            line-height: 1.3;
-            letter-spacing: -0.02em;
-            margin-bottom: 8px;
-        }
-
-        .article-tags {
-            display: flex;
-            gap: 4px;
-            flex-wrap: wrap;
-            margin-bottom: 2.5rem;
-        }
-
-        .article-tag {
-            font-size: 12px;
-            line-height: 14px;
-            padding: 4px 10px;
-            border: 1px solid var(--border);
-            border-radius: 100px;
-            color: var(--text-muted);
-            white-space: nowrap;
-        }
-
-        article h2 {
-            font-size: 1.125rem;
-            font-weight: 500;
-            line-height: 1.4;
-            margin-top: 2rem;
-            margin-bottom: 0;
-            color: var(--text);
-        }
-
-        article h3 {
-            font-size: 1rem;
-            font-weight: 500;
-            line-height: 1.5;
-            margin-top: 1.5rem;
-            margin-bottom: 0;
-        }
-
-        article p {
-            font-size: 1rem;
-            color: var(--text-sub);
-            margin-top: 1.5rem;
-        }
-
-        article p:first-of-type { margin-top: 0; }
-
-        article a {
-            color: var(--text);
-            text-decoration: underline;
-            text-decoration-color: color-mix(in srgb, currentColor, transparent 75%);
-            text-underline-offset: 0.3em;
-            text-decoration-thickness: 1px;
-            transition: text-decoration-color 0.17s ease-out;
-        }
-
-        article a:hover { text-decoration-color: currentColor; }
-
-        article strong { font-weight: 600; color: var(--text); }
-
-        article ul, article ol {
-            margin-top: 1rem;
-            padding-left: 1.25rem;
-        }
-
-        article li {
-            font-size: 1rem;
-            color: var(--text-sub);
-            margin-top: 0.25rem;
-        }
-
-        article li strong { color: var(--text); }
-
-        article code {
-            font-family: 'SF Mono', 'Fira Code', 'Fira Mono', monospace;
-            font-size: 0.8125rem;
-            background: var(--code-bg);
-            padding: 2px 6px;
-            border-radius: 4px;
-        }
-
-        article pre {
-            margin-top: 1rem;
-            background: var(--code-bg);
-            border: 1px solid var(--code-border);
-            border-radius: 0.625rem;
-            padding: 1rem;
-            overflow-x: auto;
-        }
-
-        article pre code {
-            background: none;
-            padding: 0;
-            font-size: 0.875rem;
-            line-height: 1.618;
-            color: var(--text);
-        }
-
-        .article-nav {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 3rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border);
-        }
-
-        .article-nav a {
-            text-decoration: none;
-            color: inherit;
-            max-width: 48%;
-        }
-
-        .article-nav a:hover .article-nav-title { color: var(--text); }
-
-        .article-nav-label {
-            display: block;
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-        }
-
-        .article-nav-title {
-            display: block;
-            font-size: 1rem;
-            font-weight: 500;
-            transition: color 0.15s;
-        }
-
-        .article-nav .next { margin-left: auto; text-align: right; }
-        @keyframes deblur {
-            from { opacity: 0; filter: blur(10px); transform: translateY(6px); }
-            to   { opacity: 1; filter: blur(0);    transform: translateY(0); }
-        }
-        .reveal {
-            opacity: 0;
-            animation: deblur 0.6s ease-out forwards;
-        }
-    </style>
+    <link rel="icon" type="image/svg+xml" href="assets/antoshkin-tech-logo.svg">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <link rel="stylesheet" href="assets/wireframe.css">
+    <link rel="stylesheet" href="assets/guides.css">
+    <script>
+        try {
+            if (localStorage.getItem('theme') === 'dark') document.documentElement.dataset.theme = 'dark';
+        } catch (e) {}
+    </script>
 </head>
-<body>
-    <main>
-        <div class="back-bar">
-            <div class="back-blur"></div>
-            <div class="back-blur"></div>
-            <div class="back-blur"></div>
-            <div class="back-blur"></div>
-            <a href="/" class="back">&larr; Назад</a>
+<body data-guides="false">
+    <div class="page">
+        <div class="border-strip border-strip--left" aria-hidden="true"></div>
+        <div class="border-strip border-strip--right" aria-hidden="true"></div>
+        <div class="grid-line grid-line--nav" aria-hidden="true"></div>
+        <div class="grid-line grid-line--content-l" aria-hidden="true"></div>
+        <div class="grid-line grid-line--content-r" aria-hidden="true"></div>
+        <div class="grid-line grid-line--shell-r" aria-hidden="true"></div>
+
+        <nav class="top-nav fold" data-fold="50">
+            <a href="index.html" aria-label="На главную"><img class="logo logo-photo wf-target" src="assets/avatar.png" alt="Andrew Antoshkin" width="32" height="32"></a>
+            <div class="nav-links">
+                <a class="nav-link" href="index.html">Главная</a>
+                <a class="nav-link" href="projects.html">Проекты</a>
+                <a class="nav-link active" href="writing.html">Статьи</a>
+                <a class="nav-link" href="approach.html">Подход</a>
+                <a class="nav-link" href="collab.html">Сотрудничество</a>
+            </div>
+        </nav>
+
+        <div class="nav-contact fold" data-fold="80">
+            <p class="nav-contact-label">Для связи:</p>
+            <span>
+                <a href="mailto:andrew.antoshkin@gmail.com" class="nav-contact-email wf-target" data-copy="andrew.antoshkin@gmail.com">
+                    andrew.antoshkin@gmail.com
+                    <span class="copied" hidden>Скопировано</span>
+                </a>
+            </span>
         </div>
 
-        <article style="view-transition-name: article-body">
-            <h1 style="view-transition-name: article-2">Зачем дизайнеру дизайн&#8209;систем разбираться в&nbsp;разработке</h1>
-            <div class="article-tags">
-                <span class="article-tag">design systems</span>
-                <span class="article-tag">development</span>
+        <div class="mobile-wrap">
+            <button class="mobile-pill" type="button" aria-expanded="false" aria-label="Меню">
+                <span class="pill-icon"><span class="pill-bar"></span><span class="pill-bar"></span></span>
+                <span>Меню</span>
+            </button>
+            <div class="mobile-menu" hidden>
+                <a href="index.html">Главная</a>
+                <a href="projects.html">Проекты</a>
+                <a href="writing.html">Статьи</a>
+                <a href="approach.html">Подход</a>
+                <a href="collab.html">Сотрудничество</a>
+                <hr>
+                <div class="compact-controls">
+                    <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="Переключить тему">
+                        <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
+                        <span class="theme-symbol theme-symbol--moon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M12.8 10.3A5.5 5.5 0 0 1 5.7 3.2 5.5 5.5 0 1 0 12.8 10.3Z"/></svg></span>
+                    </button>
+                    <nav class="language-switch" aria-label="Language"><span aria-current="page">Ru</span><a href="dev-for-designers-en.html">En</a></nav>
+                </div>
+                <a href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
+            </div>
+        </div>
+
+        <main class="main">
+            <div class="main-toggles">
+                <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="Переключить тему">
+                    <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
+                    <span class="theme-symbol theme-symbol--moon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M12.8 10.3A5.5 5.5 0 0 1 5.7 3.2 5.5 5.5 0 1 0 12.8 10.3Z"/></svg></span>
+                </button>
+                <nav class="language-switch" aria-label="Language"><span aria-current="page">Ru</span><a href="dev-for-designers-en.html">En</a></nav>
+            </div>
+            <div class="follow-right fold" data-fold="120">
+                <div class="nav-divider"></div>
+                <div class="social-links">
+                    <a class="nav-link follow-link wf-target" href="https://t.me/aiantoshkin" target="_blank" rel="noopener noreferrer">
+                        Telegram
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m13.7 2.8-2 9.5c-.15.67-.55.83-1.1.52L7.55 10.6l-1.47 1.42c-.16.16-.3.3-.62.3l.22-3.1 5.64-5.1c.25-.21-.05-.33-.38-.12L3.97 8.4l-3-.94c-.65-.2-.66-.65.14-.96l11.72-4.52c.54-.2 1.02.13.87.82Z" fill="currentColor"/></svg>
+                    </a>
+                    <a class="nav-link follow-link wf-target" href="https://github.com/AndrewAntoshkin" target="_blank" rel="noopener noreferrer">
+                        GitHub
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path fill="currentColor" d="M8 1.35a6.65 6.65 0 0 0-2.1 12.96c.33.06.45-.14.45-.32v-1.16c-1.84.4-2.23-.78-2.23-.78-.3-.76-.74-.96-.74-.96-.6-.42.05-.41.05-.41.67.05 1.02.69 1.02.69.6 1.02 1.56.72 1.94.55.06-.43.23-.72.42-.89-1.47-.17-3.02-.74-3.02-3.29 0-.73.26-1.32.69-1.78-.07-.17-.3-.85.07-1.76 0 0 .56-.18 1.83.68A6.36 6.36 0 0 1 8 4.8c.56 0 1.12.08 1.64.22 1.27-.86 1.83-.68 1.83-.68.37.91.14 1.59.07 1.76.43.46.69 1.05.69 1.78 0 2.56-1.56 3.12-3.03 3.29.24.2.45.61.45 1.24V14c0 .18.12.39.45.32A6.65 6.65 0 0 0 8 1.35Z"/></svg>
+                    </a>
+                    <a class="nav-link follow-link wf-target" href="https://setka.ru/users/84b42bc4-44b4-4b1e-ba76-06d249242bc4" target="_blank" rel="noopener noreferrer">
+                        Сетка
+                        <img class="social-icon" src="https://cdn-assets.setka.ru/setka-web/static/favicon/favicon-32x32.a8036291d4eac4cc9ab8cbc378cb6d17.png" alt="" width="16" height="16">
+                    </a>
+                </div>
             </div>
 
-            <p>Дизайн-системы живут на&nbsp;стыке дизайна и&nbsp;кода. Компонент в&nbsp;Figma и&nbsp;компонент в&nbsp;React: это разные объекты с&nbsp;разной архитектурой. Дизайнер, который понимает обе стороны, проектирует системы, которые реально работают, не&nbsp;только в&nbsp;макете.</p>
+            <div class="content content--article">
+                
+                <a class="back-link back-link--inline fold wf-target" data-fold="60" href="writing.html">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    Статьи
+                </a>
+                
+                
+                <div class="article-head fold wf-target" data-fold="100">
+                    <h1 class="title">Зачем дизайнеру дизайн&#8209;систем разбираться в&nbsp;разработке в&nbsp;2026&nbsp;году</h1>
+                    <div class="article-meta">
+                <span class="tag">design systems</span>
+                <span class="tag">Figma Slots</span>
+                <span class="tag">Code Connect</span>
+            </div>
+                </div>
+                <aside class="article-tldr fold" data-fold="120"><p class="article-tldr-label">TL;DR</p><p>Дизайнеру не обязательно становиться frontend-разработчиком. Но понимание layout, component API, states, tokens и accessibility помогает проектировать реализуемые системы, проверять AI-результат и говорить с инженерами без потери смысла.</p></aside>
+                <div class="prose fold wf-target" data-fold="140"><p><strong>Актуально на&nbsp;21&nbsp;августа 2026&nbsp;года.</strong> Дизайнеру дизайн-систем не&nbsp;обязательно становиться frontend-разработчиком. Но без понимания layout, component API, tokens, accessibility и&nbsp;проверки изменений трудно проектировать систему, которая одинаково работает в&nbsp;Figma и&nbsp;production.</p>
 
-            <h2>Разрыв, который дорого стоит</h2>
+<h2 id="section-1">Разрыв между Figma и&nbsp;кодом никуда не&nbsp;исчез</h2>
 
-            <p>Дизайнер создаёт компонент в&nbsp;Figma: варианты, пропсы, стили. Разработчик получает его и&nbsp;переводит в&nbsp;код. Между этими двумя версиями есть разрыв. И&nbsp;чем больше он, тем дороже каждая итерация.</p>
+<p>Компонент в&nbsp;Figma и&nbsp;компонент в&nbsp;React, SwiftUI или Compose&nbsp;— разные объекты. Они могут описывать один интерфейс, но&nbsp;имеют разные ограничения, lifecycle и&nbsp;способы композиции.</p>
 
-            <p>Дизайнер, который не&nbsp;понимает код, рискует проектировать компоненты, которые невозможно реализовать без костылей, требуют десятков вариантов вместо композиции, не&nbsp;масштабируются при добавлении новых случаев. Разработчик адаптирует, дизайнер не&nbsp;узнаёт результат, и&nbsp;доверие к&nbsp;системе падает.</p>
+<p>Макет не&nbsp;показывает автоматически:</p>
 
-            <h2>Компоненты: пропсы и&nbsp;композиция</h2>
+<ul>
+  <li>семантику HTML и&nbsp;accessibility tree;</li>
+  <li>keyboard interaction и&nbsp;focus management;</li>
+  <li>loading, empty, error и&nbsp;permission states;</li>
+  <li>локализацию, длинный контент и&nbsp;форматирование данных;</li>
+  <li>границы API и&nbsp;ответственность компонентов;</li>
+  <li>производительность и&nbsp;стоимость зависимости.</li>
+</ul>
 
-            <p>В&nbsp;коде компонент: это функция, которая принимает параметры и&nbsp;возвращает интерфейс. Кнопка с&nbsp;иконкой не&nbsp;отдельный вариант. Это кнопка, которая принимает иконку как параметр:</p>
+<p>Поэтому «пиксель в&nbsp;пиксель» недостаточно. Дизайнер системы должен уметь обсуждать поведение, а&nbsp;не&nbsp;только внешний вид.</p>
 
-<pre><code>&lt;Button icon={&lt;IconPlus /&gt;}&gt;
-  Добавить
-&lt;/Button&gt;</code></pre>
+<h2 id="section-2">Props, state и&nbsp;composition</h2>
 
-            <p>Одна кнопка, бесконечное количество комбинаций. В&nbsp;Figma долгое время для каждой комбинации нужен был отдельный вариант или instance swap. Библиотека разрасталась, поддержка усложнялась.</p>
+<p>В&nbsp;React компонент получает props и&nbsp;возвращает UI. Вложенный JSX передаётся через prop <code>children</code>:</p>
 
-            <p>Понимание этого принципа меняет то, как вы проектируете: вместо &laquo;какие варианты создать&raquo; вы думаете &laquo;какие параметры компонент принимает&raquo;.</p>
-
-            <h2>Слоты: дизайн догоняет код</h2>
-
-            <p>В&nbsp;2025&nbsp;году Figma выпустила <a href="https://www.figma.com/blog/supercharge-your-design-system-with-slots/" target="_blank" rel="noopener">слоты</a>, и&nbsp;это фундаментальное изменение. Слоты позволяют вставлять любой контент внутрь компонента без открепления. Модалка принимает любое содержимое. Карточка: любой набор элементов. Список: любое количество пунктов.</p>
-
-            <p>Это именно то, как компоненты работают в&nbsp;коде. React-компонент <code>&lt;Modal&gt;</code> принимает <code>children</code>, любой контент внутри. Слоты в&nbsp;Figma и&nbsp;есть <code>children</code> в&nbsp;дизайне.</p>
-
-            <p><a href="https://nathanacurtis.substack.com/p/implementing-slots-in-a-figma-library" target="_blank" rel="noopener">Nathan Curtis</a> описывает миграцию на&nbsp;слоты как архитектурное решение, а&nbsp;не&nbsp;просто замену одного элемента другим. Для каждого компонента нужно решить: где оставить пропсы, а&nbsp;где дать слот. Какой контент показывать по&nbsp;умолчанию. Как ограничить, что можно вставить. Это решения, которые требуют понимания и&nbsp;дизайна, и&nbsp;кода.</p>
-
-            <h2>Токены: не&nbsp;просто цвета</h2>
-
-            <p>CSS-переменные вроде <code>--color-primary</code>, <code>--space-200</code> не&nbsp;просто синонимы HEX-кодов. Это слой абстракции, который позволяет менять тему одним переключением, поддерживать тёмный режим без правок в&nbsp;компонентах, обеспечивать консистентность автоматически.</p>
-
-<pre><code>:root {
-  --color-text: #171717;
-  --color-bg: #fafafa;
+<pre><code>function Card({ children }) {
+  return &lt;div className="card"&gt;{children}&lt;/div&gt;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-text: #ededed;
-    --color-bg: #0a0a0a;
-  }
+&lt;Card&gt;
+  &lt;Avatar /&gt;
+  &lt;p&gt;Профиль пользователя&lt;/p&gt;
+&lt;/Card&gt;</code></pre>
+
+<p>Это не&nbsp;означает, что любой component API должен быть максимально свободным. Иногда нужен <code>children</code>, иногда именованные content props, иногда строгое подмножество дочерних компонентов. Понимание кода помогает выбрать осознанный уровень гибкости вместо бесконечного component set.</p>
+
+<h2 id="section-3">Figma Slots: что это на&nbsp;самом деле</h2>
+
+<p>Native Slots вышли в&nbsp;general availability в&nbsp;июне 2026&nbsp;года, а&nbsp;не&nbsp;в&nbsp;2025-м. Slot&nbsp;— один из&nbsp;пяти типов component properties в&nbsp;Figma наряду с&nbsp;boolean, instance swap, text и&nbsp;variant properties.</p>
+
+<p>Slot создаёт гибкую область внутри component instance. В&nbsp;неё можно добавлять, редактировать и&nbsp;переставлять контент без detach. Можно задать default content, preferred instances, minimum и&nbsp;maximum layer count и&nbsp;другие slot settings. Slots доступны в&nbsp;Figma Design на&nbsp;всех планах; создавать их&nbsp;может пользователь с&nbsp;правом редактирования файла.</p>
+
+<p>Это похоже на&nbsp;<code>children</code> или content slot в&nbsp;коде, но&nbsp;не&nbsp;полный эквивалент:</p>
+
+<ul>
+  <li>Figma Slot управляет редактированием слоёв внутри instance;</li>
+  <li>кодовый API управляет типами, данными, состоянием и&nbsp;runtime-поведением;</li>
+  <li>визуально допустимая композиция может быть семантически неправильной;</li>
+  <li>ограничения slot не&nbsp;заменяют type system и&nbsp;тесты.</li>
+</ul>
+
+<h2 id="section-4">Когда Slot, instance swap или variant</h2>
+
+<ul>
+  <li><strong>Variant</strong>&nbsp;— для ограниченного набора состояний или типов: size, tone, state.</li>
+  <li><strong>Instance swap</strong>&nbsp;— когда нужно заменить конкретный вложенный компонент из&nbsp;контролируемого набора.</li>
+  <li><strong>Slot</strong>&nbsp;— когда область должна принимать разный порядок и&nbsp;состав контента: body модалки, список действий, содержимое карточки.</li>
+</ul>
+
+<p>Не&nbsp;мигрируйте всё на&nbsp;Slots. Чем свободнее область, тем больше ответственности у&nbsp;пользователя библиотеки. Для status icon или leading action instance swap часто безопаснее.</p>
+
+<h2 id="section-5">Code Connect и&nbsp;Slots</h2>
+
+<p>Code Connect умеет маппить native Slot на&nbsp;композицию в&nbsp;коде. С&nbsp;17&nbsp;августа 2026 единственный активно поддерживаемый формат&nbsp;— framework-agnostic template files <code>.figma.ts</code>. В&nbsp;них Slot читается через <code>getSlot()</code>; старый <code>figma.slot()</code> относится к&nbsp;legacy React/HTML parsers.</p>
+
+<pre><code>// url=https://figma.com/design/...?node-id=123
+// source=src/components/Card.tsx
+// component=Card
+
+import figma from 'figma'
+
+const content = figma.selectedInstance.getSlot('Content')
+
+export default {
+  example: figma.code`&lt;Card&gt;${content}&lt;/Card&gt;`,
+  imports: ['import { Card } from "@company/ui"'],
+  id: 'card',
 }</code></pre>
 
-            <p>Компоненты ссылаются на&nbsp;переменные, а&nbsp;не&nbsp;на&nbsp;конкретные значения. Тема меняется, компоненты подхватывают автоматически.</p>
+<p>Есть важное ограничение: по&nbsp;умолчанию Dev Mode показывает slot как кликабельную ссылку, а&nbsp;не&nbsp;разворачивает весь вложенный код. <code>connectedInstances</code> может вывести непосредственно вложенные code-connected components, но&nbsp;lookup поверхностный: текст, обычные слои, неподключённые и&nbsp;глубоко вложенные instances опускаются. Remote Figma MCP при этом может пройти внутрь slot и&nbsp;получить layout и&nbsp;nested content.</p>
 
-            <p>Дизайнер, который понимает, как это работает, проектирует токены, которые ложатся в&nbsp;код без трансляции. Не&nbsp;&laquo;Primary Blue 500&raquo;, а&nbsp;<code>--color-interactive</code>, с&nbsp;понятным назначением и&nbsp;правильным уровнем абстракции.</p>
+<h2 id="section-6">Tokens: стабильный формат появился</h2>
 
-            <h2>Code Connect: мост становится короче</h2>
+<p>Design token&nbsp;— не&nbsp;просто имя для HEX. Он&nbsp;задаёт устойчивую ссылку между намерением и&nbsp;платформенным значением. Semantic token вроде <code>color.text.muted</code> позволяет менять theme или contrast mode без переписывания компонентов.</p>
 
-            <p>Figma <a href="https://www.figma.com/blog/supercharge-your-design-system-with-slots/" target="_blank" rel="noopener">Code Connect</a> связывает компонент в&nbsp;Figma напрямую с&nbsp;его реализацией в&nbsp;коде. Разработчик открывает Dev Mode и&nbsp;видит не&nbsp;абстрактные пропсы из&nbsp;Figma, а&nbsp;реальный код компонента.</p>
+<p>В&nbsp;октябре 2025&nbsp;года DTCG опубликовала первую стабильную спецификацию&nbsp;2025.10. Это важный шаг к&nbsp;обмену токенами между инструментами, но&nbsp;не&nbsp;W3C Standard и&nbsp;не&nbsp;гарантия, что Figma, ваш transformer и&nbsp;все платформы одинаково поддерживают каждый тип.</p>
 
-            <p>Слоты поддерживаются в&nbsp;Code Connect, и&nbsp;инженеры сразу видят, как компонент со&nbsp;слотами маппится на&nbsp;production. Хэндофф становится предсказуемым.</p>
+<p>Практический вывод для дизайнера:</p>
 
-            <p>Дизайнер, который понимает код, может проверить, что его компонент корректно маппится на&nbsp;реализацию, описать компонент в&nbsp;терминах, понятных разработчику, и&nbsp;участвовать в&nbsp;ревью, не&nbsp;как рецензент синтаксиса, а&nbsp;как эксперт по&nbsp;интерфейсу.</p>
+<ul>
+  <li>разделяйте primitive, semantic и&nbsp;component tokens только там, где это оправдано;</li>
+  <li>не&nbsp;дублируйте values вручную между Figma и&nbsp;репозиторием;</li>
+  <li>фиксируйте modes, aliases и&nbsp;fallback-поведение;</li>
+  <li>проверяйте generated outputs на&nbsp;каждой целевой платформе;</li>
+  <li>не&nbsp;называйте произвольный JSON «DTCG-compatible» без валидации.</li>
+</ul>
 
-            <h2>AI как мост</h2>
+<h2 id="section-7">Code Connect: не&nbsp;магическая синхронизация</h2>
 
-            <p>Отдельная тема: AI-инструменты. Cursor и&nbsp;Claude позволяют дизайнеру прототипировать в&nbsp;коде без глубокого знания фреймворков. Вы&nbsp;описываете компонент, AI пишет код. Но&nbsp;чтобы оценить результат, направить AI и&nbsp;поправить детали, нужно понимать основы.</p>
+<p>Code Connect связывает library component в&nbsp;Figma с&nbsp;компонентом в&nbsp;репозитории. Template files не&nbsp;привязаны к&nbsp;фреймворку: один TypeScript-шаблон может формировать snippet для React, Web Components, SwiftUI, Compose или другого языка. Framework-specific parsers остаются доступными в&nbsp;старых версиях CLI, но&nbsp;больше не&nbsp;поддерживаются.</p>
 
-            <p>Это не&nbsp;про &laquo;научиться писать production-код&raquo;. Это про достаточное понимание, чтобы проверять идеи до&nbsp;передачи в&nbsp;разработку и&nbsp;говорить с&nbsp;инженерами на&nbsp;одном языке.</p>
+<p>Code Connect UI проще: он&nbsp;работает внутри Figma и&nbsp;подключается к&nbsp;GitHub, чтобы сопоставить дизайн и&nbsp;код для MCP. Но UI-mapping не&nbsp;показывает кастомный snippet в&nbsp;Inspect&nbsp;— для этого нужен CLI.</p>
 
-            <h2>Практическая польза</h2>
+<p>Ни&nbsp;UI, ни&nbsp;CLI не&nbsp;обеспечивают двустороннюю синхронизацию API автоматически. Если prop переименован, вариант удалён или поведение изменилось, mapping и&nbsp;документацию нужно обновить и&nbsp;проверить.</p>
 
-            <ul>
-                <li><strong>Лучшие компоненты.</strong> Вы&nbsp;проектируете с&nbsp;пониманием возможностей и&nbsp;ограничений платформы.</li>
-                <li><strong>Быстрее коммуникация.</strong> Вы&nbsp;говорите с&nbsp;разработчиками на&nbsp;одном языке. &laquo;Давай сделаем это через слот&raquo; вместо &laquo;мне нужно, чтобы сюда можно было вставить что угодно&raquo;.</li>
-                <li><strong>Меньше итераций.</strong> Компоненты реализуются ближе к&nbsp;замыслу с&nbsp;первого раза.</li>
-                <li><strong>Прототипирование через AI.</strong> Claude и&nbsp;Cursor становятся инструментами дизайнера, а&nbsp;не&nbsp;только разработчика.</li>
-            </ul>
+<h2 id="section-8">AI ускоряет исполнение, но&nbsp;не&nbsp;принимает продуктовые решения</h2>
 
-            <h2>С&nbsp;чего начать</h2>
+<p>Cursor, Claude Code и&nbsp;другие агенты могут изучить репозиторий, получить Figma-контекст через MCP, изменить файлы и&nbsp;запустить проверки. Это позволяет дизайнеру быстрее собрать working prototype или проверить решение в&nbsp;реальном layout.</p>
 
-            <p>Не нужно учить React или писать production-код. Достаточно четырёх шагов:</p>
+<p>Но агент не&nbsp;знает автоматически:</p>
 
-            <ul>
-                <li><strong>HTML и&nbsp;CSS</strong>: понять, как строится интерфейс в&nbsp;браузере</li>
-                <li><strong>CSS-переменные</strong>: понять токены на&nbsp;уровне реализации</li>
-                <li><strong>DevTools</strong>: научиться инспектировать компоненты в&nbsp;браузере</li>
-                <li><strong>Cursor + Claude</strong>: использовать AI для быстрого прототипирования</li>
-            </ul>
+<ul>
+  <li>какое поведение продукта считается правильным;</li>
+  <li>какой компонент canonical;</li>
+  <li>допустима&nbsp;ли новая зависимость;</li>
+  <li>соответствует&nbsp;ли интерфейс требованиям accessibility;</li>
+  <li>какие компромиссы важны для команды.</li>
+</ul>
 
-            <p>Дизайн-системы движутся к&nbsp;полному слиянию дизайна и&nbsp;кода. Слоты, Code Connect, AI-агенты: всё это сокращает разрыв. Дизайнер, который понимает обе стороны, не&nbsp;просто полезнее. Он&nbsp;проектирует системы, которые переживают смену инструментов.</p>
-        </article>
+<p>Чтобы оценивать результат, дизайнеру нужны основы браузера и&nbsp;кода. Иначе AI превращает непроверенное предположение в&nbsp;убедительно выглядящий diff.</p>
 
-        <nav class="article-nav">
-            <a href="design-md.html">
-                <span class="article-nav-label">Предыдущая</span>
-                <span class="article-nav-title">Design.md: как описать дизайн&#8209;систему для&nbsp;AI&#8209;агентов</span>
-            </a>
-        </nav>
-    </main>
-    <script>
-    (function(){
-        const els = document.querySelectorAll('.back, article h1, .article-tags, article h2, article p, article pre, article ul, article ol, article blockquote, .article-nav');
-        let delay = 0;
-        els.forEach(el => {
-            el.classList.add('reveal');
-            el.style.animationDelay = delay + 'ms';
-            delay += 60;
-        });
-    })();
-    </script>
+<h2 id="section-9">Что дизайнеру действительно стоит изучить</h2>
+
+<ol>
+  <li><strong>HTML и&nbsp;семантику.</strong> Элементы, формы, headings, landmarks, accessible names.</li>
+  <li><strong>CSS layout.</strong> Box model, flex, grid, intrinsic sizing, overflow, container и&nbsp;media queries.</li>
+  <li><strong>Accessibility.</strong> Keyboard, focus, contrast, reduced motion, screen-reader basics.</li>
+  <li><strong>Component API.</strong> Props, state, composition, controlled и&nbsp;uncontrolled patterns.</li>
+  <li><strong>Tokens.</strong> Aliases, modes, semantic naming, transformation и&nbsp;platform outputs.</li>
+  <li><strong>Git и&nbsp;review.</strong> Branch, diff, commit, pull request, conflicts.</li>
+  <li><strong>DevTools и&nbsp;tests.</strong> Inspect, computed styles, responsive mode, console, network, visual и&nbsp;interaction tests.</li>
+</ol>
+
+<p>React не&nbsp;обязателен, если ваша команда использует другую платформу. Важно понимать модель целевой среды, а&nbsp;не&nbsp;заучивать один фреймворк.</p>
+
+<h2 id="section-10">Практика на&nbsp;одном компоненте</h2>
+
+<p>Возьмите компонент со&nbsp;средней сложностью&nbsp;— например, Dialog или Card&nbsp;— и&nbsp;пройдите полный цикл:</p>
+
+<ol>
+  <li>опишите назначение и&nbsp;неподходящие сценарии;</li>
+  <li>выберите variants, swaps и&nbsp;slots в&nbsp;Figma;</li>
+  <li>сопоставьте их&nbsp;с&nbsp;кодовым API;</li>
+  <li>задайте tokens и&nbsp;responsive behavior;</li>
+  <li>добавьте focus, keyboard и&nbsp;error states;</li>
+  <li>свяжите через Code Connect;</li>
+  <li>проверьте реализацию в&nbsp;Storybook или приложении;</li>
+  <li>обновите документацию в&nbsp;том&nbsp;же pull request.</li>
+</ol>
+
+<h2 id="section-11">Вывод</h2>
+
+<p>Разбираться в&nbsp;разработке&nbsp;— не&nbsp;значит самостоятельно писать весь production-код. Это значит проектировать component API, видеть ограничения платформы, проверять реализацию и&nbsp;обсуждать решения с&nbsp;инженерами без потери смысла.</p>
+
+<p>Slots, Code Connect, MCP и&nbsp;AI сокращают механический разрыв между Figma и&nbsp;кодом. Архитектурный разрыв они не&nbsp;закрывают. Его закрывает команда, которая договорилась об&nbsp;источниках правды, контрактах и&nbsp;проверках.</p>
+
+<h2 id="section-12">Источники</h2>
+
+<ul>
+  <li><a href="https://help.figma.com/hc/en-us/articles/38231200344599-Use-slots-to-build-flexible-components-in-Figma" target="_blank" rel="noopener">Figma: native Slots</a></li>
+  <li><a href="https://developers.figma.com/docs/plugins/updates/2026/06/10/update/" target="_blank" rel="noopener">Figma Developer Docs: Slots GA, июнь 2026</a></li>
+  <li><a href="https://developers.figma.com/docs/code-connect/react/" target="_blank" rel="noopener">Figma: Code Connect for React и&nbsp;Slots</a></li>
+  <li><a href="https://developers.figma.com/docs/code-connect/template-files/" target="_blank" rel="noopener">Figma: framework-agnostic template files</a></li>
+  <li><a href="https://developers.figma.com/docs/code-connect/templates-migration-guide/" target="_blank" rel="noopener">Figma: migration from legacy parsers</a></li>
+  <li><a href="https://help.figma.com/hc/en-us/articles/23920389749655-Code-Connect" target="_blank" rel="noopener">Figma: Code Connect overview</a></li>
+  <li><a href="https://react.dev/learn/passing-props-to-a-component#passing-jsx-as-children" target="_blank" rel="noopener">React: passing JSX as children</a></li>
+  <li><a href="https://www.designtokens.org/tr/2025.10/" target="_blank" rel="noopener">DTCG Technical Reports&nbsp;2025.10</a></li>
+</ul></div>
+                <nav class="article-nav"><a href="design-md.html"><span class="article-nav-label">Предыдущая</span><span class="article-nav-title">DESIGN.md в&nbsp;2026: как описать дизайн&#8209;систему для&nbsp;AI&#8209;агентов</span></a></nav>
+    
+            </div>
+        </main>
+
+        <div class="crosshair" aria-hidden="true">
+            <div class="crosshair-h"></div>
+            <div class="crosshair-v"></div>
+            <div class="crosshair-coords">0 · 0</div>
+        </div>
+        <div class="bottom-fade" aria-hidden="true"></div>
+    </div>
+    <script src="assets/wireframe.js"></script>
 </body>
 </html>

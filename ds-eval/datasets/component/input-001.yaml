@@ -1,0 +1,14 @@
+id: component-input-001
+title: Email field with error
+category: component
+difficulty: easy
+prompt: |
+  Create an email field with a visible label, helper text, and an error state
+  saying the address is invalid.
+required_components:
+  - Input
+  - Label
+forbidden_patterns:
+  - raw-color
+metadata:
+  label_required: true

@@ -1,0 +1,136 @@
+<p><strong>Over the past few weeks, I&rsquo;ve been building Halo</strong>&nbsp;&mdash; a working prototype that brings together team context from Tracker, Wiki, meetings, and other internal sources. You can ask it questions such as &ldquo;What changed this week?&rdquo;, &ldquo;Why did we make this decision?&rdquo;, or &ldquo;Who is responsible for this now?&rdquo; and get an answer with dates, links, and an explanation of the evidence behind it.</p>
+
+<p>You can see the project on the <a href="https://andrewantoshkin.github.io/orbit-landing/" target="_blank" rel="noopener">Halo page</a>. Here, I&rsquo;ll take a closer look at why we need working memory in the first place, why conventional search proved insufficient, and how I&rsquo;m building the prototype around real questions from a design team.</p>
+
+<h2>The context exists, but it&rsquo;s scattered</h2>
+
+<p>A team generates a great deal of useful context every day. Statuses and assignees change in Tracker. Risks are discussed and decisions are made in meetings. Goals, processes, and specifications live in Wiki. Staff shows people&rsquo;s roles, while Calendar can help reconstruct the sequence of events.</p>
+
+<p>The problem isn&rsquo;t a lack of information. The problem is that answering a single work-related question often means manually checking several systems:</p>
+
+<ol>
+  <li>find the task and review its status history;</li>
+  <li>remember which meeting it was discussed in;</li>
+  <li>open the summary and find the wording of the decision;</li>
+  <li>check Wiki to see whether the goals have changed;</li>
+  <li>confirm who is now responsible for the next step.</li>
+</ol>
+
+<p>Each system works perfectly well on its own. What gets lost is the connection between them. A few weeks later, the task is still there, but the rationale behind the decision lives only in a meeting summary or in the memories of a few participants.</p>
+
+<h2>What I mean by working memory</h2>
+
+<p>Halo isn&rsquo;t another Wiki or a chat that &ldquo;knows everything.&rdquo; I see it as a layer on top of the systems a team already uses. It doesn&rsquo;t ask the team to move its processes somewhere new; instead, it connects existing entities:</p>
+
+<ul>
+  <li>tasks and their status changes;</li>
+  <li>meetings, participants, and recorded decisions;</li>
+  <li>Wiki pages, goals, and projects;</li>
+  <li>people, roles, and areas of responsibility;</li>
+  <li>links between all these objects.</li>
+</ul>
+
+<p>Working memory isn&rsquo;t a document archive. It should be able to show <strong>what happened, when it happened, what it relates to, and where the fact came from</strong>. That&rsquo;s why Halo cares not only about text, but also about events: a task moved from <code>inProgress</code> to <code>closed</code>, a decision was recorded in a meeting, or a project&rsquo;s assignee changed.</p>
+
+<h2>Why a graph, rather than just search</h2>
+
+<p>Search is good at answering, &ldquo;Where does this phrase appear?&rdquo; But most work-related questions are structured differently. &ldquo;What changed in the project after the sync?&rdquo;, &ldquo;Which decisions are related to this task?&rdquo;, and &ldquo;Who took part in the discussion, and who is responsible now?&rdquo; are questions about relationships and time.</p>
+
+<p>That&rsquo;s why I organized the team&rsquo;s context as a graph. In it, a task can be connected to a project, meeting, decision, person, and Wiki page. Every connection has a source, and every change has a date. This layer helps you do more than find a document: it lets you follow the chain:</p>
+
+<pre><code>project → meeting → decision → task → status change
+                         ↘ assignee</code></pre>
+
+<p>A graph doesn&rsquo;t make an answer automatically true. It simply provides a verifiable structure: every conclusion can be traced back to a specific task, page, or meeting.</p>
+
+<h2>What a Halo answer looks like</h2>
+
+<p>I want an answer to be immediately useful without hiding uncertainty. So it has several layers:</p>
+
+<ul>
+  <li><strong>Brief conclusion</strong>&nbsp;&mdash; a plain-language answer to the question.</li>
+  <li><strong>Facts and dates</strong>&nbsp;&mdash; exactly what happened and when.</li>
+  <li><strong>Sources</strong>&nbsp;&mdash; links to Tracker, Wiki, and meetings.</li>
+  <li><strong>Why this answer</strong>&nbsp;&mdash; the changes and connections that support the conclusion.</li>
+  <li><strong>Limitations</strong>&nbsp;&mdash; what is missing when the available data is insufficient.</li>
+</ul>
+
+<p>For example, when answering, &ldquo;What changed in the component?&rdquo;, it isn&rsquo;t enough to restate the task&rsquo;s current description. The history matters: when the task was created, which meeting led to its status changing, where the decision was recorded, and who became responsible for it.</p>
+
+<p>If the relevant fact isn&rsquo;t in the graph, Halo should say so directly: &ldquo;I couldn&rsquo;t find it.&rdquo; For a work tool, an honest gap is more useful than confident, plausible-sounding text. An answer like this shows exactly what needs to be checked or added to the sources.</p>
+
+<h2>From chat to exploration</h2>
+
+<p>Chat is a convenient entry point, but it isn&rsquo;t the whole product. An answer often raises another question: what is this task, how has its status changed, who was involved, and what documents are connected to it?</p>
+
+<p>That&rsquo;s why the prototype includes Explore. From an answer, you can open a task, person, or decision and inspect the history of its connections. This is an important difference from a conventional AI&#8209;generated summary: rather than being confined to generated text, the user can explore the original work context.</p>
+
+<h2>Workflows instead of a single empty field</h2>
+
+<p>Not every work-related question needs an open-ended chat. Many tasks recur: preparing a weekly update, getting ready for a 1:1, returning from vacation, finding blockers, or compiling decisions from meetings.</p>
+
+<p>For these, I&rsquo;m building workflows&nbsp;&mdash; ready-made recipes that run on top of the same memory. The user selects a period, participants, or project, and Halo knows which sources and connections to check. This makes the results more consistent and lowers the barrier to entry: there&rsquo;s no need to invent the perfect prompt every time.</p>
+
+<h2>What happens under the hood</h2>
+
+<p>Several parts are already running in the prototype:</p>
+
+<ul>
+  <li><strong>Ingest</strong> retrieves available data from work systems and maps it to a shared model.</li>
+  <li><strong>Context graph</strong> connects tasks, meetings, documents, people, decisions, and events.</li>
+  <li><strong>Chat</strong> turns a question into a context search and assembles the answer.</li>
+  <li><strong>Explore</strong> displays entities, change histories, and adjacent connections.</li>
+  <li><strong>Evals</strong> verify whether the system finds the right facts, preserves its sources, and can acknowledge when data is missing.</li>
+  <li><strong>MCP</strong> provides agents with the same context, so they don&rsquo;t have to begin with a blank slate.</li>
+</ul>
+
+<p>Access control is also crucial. Halo should see exactly what the user can see in the source systems. If someone doesn&rsquo;t have access to a task or page, it must not appear in either the answer or the source list.</p>
+
+<h2>Why MCP and agents matter here</h2>
+
+<p>I work in Cursor almost every day, and I&rsquo;ve noticed a consistent pattern: an agent speeds up work when it has high-quality context. In a repository, that context consists of the architecture, rules, documentation, and a clear task. Within a team, similar context is usually scattered across tickets, Wiki pages, and meeting summaries.</p>
+
+<p>If you give an agent only the task description, it may be able to write code or text, but it won&rsquo;t know why the team rejected a similar solution a month ago. Give it working memory, and it can first check related decisions, current goals, and assignees.</p>
+
+<p>That&rsquo;s why I&rsquo;m designing Halo as more than a human-facing interface. The MCP&#8209;layer allows an agent to ask the same question and receive structured context with links to the sources. The person and the agent work from the same verifiable memory, rather than from two different retellings.</p>
+
+<h2>Why I started with a design scope</h2>
+
+<p>At this stage, Halo isn&rsquo;t a product &ldquo;for every company.&rdquo; It&rsquo;s a working prototype tailored to the context of a design organization. A narrow scope is useful here: I know the real entities, the team&rsquo;s language, and the questions that come up every day.</p>
+
+<p>This means I can test the system with practical questions rather than abstract demo queries:</p>
+
+<ul>
+  <li>what changed in the design system this week;</li>
+  <li>which decisions were made in the latest syncs;</li>
+  <li>why a process or status changed;</li>
+  <li>which tasks are linked to the quarter&rsquo;s goals;</li>
+  <li>what someone needs to know after returning from vacation;</li>
+  <li>where the available data is insufficient for a confident answer.</li>
+</ul>
+
+<p>This quickly reveals real problems: duplicate entities, outdated connections, incomplete summaries, ambiguous names, and events without dates. These details have a greater impact on the quality of working memory than an impressive chat interface does.</p>
+
+<h2>What I&rsquo;m testing now</h2>
+
+<p>For me, the main question isn&rsquo;t, &ldquo;Can the model produce an eloquent answer?&rdquo; Modern models can do that without Halo. I&rsquo;m testing something else:</p>
+
+<ul>
+  <li>does the answer save time compared with manual searching;</li>
+  <li>can every important conclusion be verified quickly;</li>
+  <li>can the system reconstruct the sequence of changes;</li>
+  <li>can it distinguish a recorded decision from an assumption;</li>
+  <li>does it notice contradictions between sources;</li>
+  <li>does it know when to stop if there isn&rsquo;t enough data;</li>
+  <li>does the same context help agents complete real tasks?</li>
+</ul>
+
+<p>The answers to these questions emerge only through use. Right now, it&rsquo;s more important for me to gradually add real workflows, build evals, and see where Halo goes wrong than to rapidly expand the list of integrations.</p>
+
+<h2>Where the project is heading</h2>
+
+<p>The immediate goal is to make working memory reliable enough for recurring tasks: weekly updates, meeting preparation, context recovery, and decision exploration. At the same time, I&rsquo;m testing how a single context layer can serve both the product interface and agents through MCP.</p>
+
+<p>For now, it&rsquo;s a living prototype: some parts already work, while others change in response to the first real questions. I&rsquo;ll periodically write about how Halo performs in practice, which connections prove genuinely useful, and where the idea of working memory collides with reality.</p>
+
+<p><a href="https://andrewantoshkin.github.io/orbit-landing/" target="_blank" rel="noopener"><strong>Open the Halo page&nbsp;→</strong></a></p>

@@ -1,0 +1,12 @@
+{
+  "files": {
+    "src/task/Task.tsx": "export function Task() {\n  return (\n    <div style={{ background: \"#111\", color: \"#fff\", padding: 24 }}>\n      <button>Save</button>\n      <button>Save draft</button>\n      <button>Preview</button>\n      <button>Duplicate</button>\n      <button>Archive</button>\n      <button>Cancel</button>\n    </div>\n  );\n}\n"
+  },
+  "raw_text": "",
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": 0.0,
+  "latency_ms": 1,
+  "model": "fixture:naive",
+  "error": null
+}

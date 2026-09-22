@@ -1,0 +1,140 @@
+{
+  "id": "pattern-confirm-001",
+  "title": "Destructive confirmation",
+  "category": "patterns",
+  "difficulty": "medium",
+  "error": null,
+  "scores": {
+    "ds_compliance": 2.5,
+    "functional": 70.0,
+    "visual": 0.0,
+    "ux": 0.0,
+    "accessibility": 100.0,
+    "code_quality": 100.0,
+    "reliability": 100.0,
+    "overall": 62.0
+  },
+  "graders": [
+    {
+      "name": "static",
+      "kind": "deterministic",
+      "score": 5.0,
+      "max_score": 100,
+      "passed": false,
+      "details": {
+        "found_components": [],
+        "missing_required": [
+          "Button",
+          "Dialog"
+        ],
+        "hex": [
+          "#EF4444",
+          "#fff",
+          "#111827",
+          "#fff"
+        ],
+        "native": {
+          "native-button": true,
+          "native-select": false,
+          "native-input": false,
+          "inline-style": true
+        },
+        "uses_ds_imports": false
+      },
+      "reasoning": "missing required components: Button, Dialog; no @ds imports; raw colors: ['#EF4444', '#fff', '#111827', '#fff']; inline style object"
+    },
+    {
+      "name": "ds_compliance",
+      "kind": "deterministic",
+      "score": 0.0,
+      "max_score": 100,
+      "passed": false,
+      "details": {
+        "required": [
+          "Button",
+          "Dialog"
+        ],
+        "found": [],
+        "missing": [
+          "Button",
+          "Dialog"
+        ],
+        "forbidden_hits": [
+          "raw-color"
+        ]
+      },
+      "reasoning": "compliance against required/forbidden component rules"
+    },
+    {
+      "name": "code_quality",
+      "kind": "deterministic",
+      "score": 100.0,
+      "max_score": 100,
+      "passed": true,
+      "details": {
+        "bytes": 279
+      },
+      "reasoning": "structure looks like a maintainable React task"
+    },
+    {
+      "name": "accessibility",
+      "kind": "deterministic",
+      "score": 100.0,
+      "max_score": 100,
+      "passed": true,
+      "details": {},
+      "reasoning": "basic label/keyboard heuristics passed"
+    },
+    {
+      "name": "reliability",
+      "kind": "deterministic",
+      "score": 100.0,
+      "max_score": 100,
+      "passed": true,
+      "details": {
+        "runtime": "skipped"
+      },
+      "reasoning": "generation produced files; browser runtime not run"
+    },
+    {
+      "name": "functional",
+      "kind": "deterministic",
+      "score": 70.0,
+      "max_score": 100,
+      "passed": true,
+      "details": {
+        "runtime": "skipped"
+      },
+      "reasoning": "functional checks require Playwright; defaulting to a conservative static score"
+    },
+    {
+      "name": "visual",
+      "kind": "llm",
+      "score": 0.0,
+      "max_score": 100,
+      "passed": false,
+      "details": {
+        "skipped": true
+      },
+      "reasoning": "LLM visual judge not enabled in this run"
+    },
+    {
+      "name": "ux",
+      "kind": "llm",
+      "score": 0.0,
+      "max_score": 100,
+      "passed": false,
+      "details": {
+        "skipped": true
+      },
+      "reasoning": "LLM UX judge not enabled in this run"
+    }
+  ],
+  "generation": {
+    "model": "fixture:naive",
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cost_usd": 0.0,
+    "latency_ms": 1
+  }
+}

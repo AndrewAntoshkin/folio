@@ -1,0 +1,14 @@
+id: component-select-001
+title: Country selector
+category: component
+difficulty: easy
+prompt: |
+  Create a country selector containing 10 countries.
+  It should have a label, helper text and error state.
+required_components:
+  - Select
+forbidden_patterns:
+  - native-select
+  - raw-color
+metadata:
+  label_required: true

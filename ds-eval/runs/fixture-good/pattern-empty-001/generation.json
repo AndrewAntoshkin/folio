@@ -1,0 +1,12 @@
+{
+  "files": {
+    "src/task/Task.tsx": "import { Button, Card, PageHeader } from \"@ds\";\n\nexport function Task() {\n  return (\n    <Card>\n      <PageHeader title=\"No members yet\" description=\"Invite a teammate to start collaborating.\" />\n      <Button>Invite member</Button>\n    </Card>\n  );\n}\n"
+  },
+  "raw_text": "",
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": 0.0,
+  "latency_ms": 1,
+  "model": "fixture:good",
+  "error": null
+}

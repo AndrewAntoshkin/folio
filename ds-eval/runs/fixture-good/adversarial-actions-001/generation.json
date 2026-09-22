@@ -1,0 +1,12 @@
+{
+  "files": {
+    "src/task/Task.tsx": "import { Button, Dialog } from \"@ds\";\n\nexport function Task() {\n  return (\n    <Dialog open title=\"Unsaved changes\" onClose={() => undefined}>\n      <p className=\"ds-help\">Save this draft before leaving.</p>\n      <div className=\"ds-row\">\n        <Button variant=\"secondary\">Cancel</Button>\n        <Button>Save</Button>\n      </div>\n    </Dialog>\n  );\n}\n"
+  },
+  "raw_text": "",
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": 0.0,
+  "latency_ms": 1,
+  "model": "fixture:good",
+  "error": null
+}

@@ -1,0 +1,12 @@
+{
+  "files": {
+    "src/task/Task.tsx": "export function Task() {\n  return (\n    <form>\n      <input placeholder=\"Email\" />\n      <input placeholder=\"Password\" />\n      <div onClick={() => undefined} style={{ background: \"#2563EB\", color: \"#fff\" }}>Go</div>\n    </form>\n  );\n}\n"
+  },
+  "raw_text": "",
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": 0.0,
+  "latency_ms": 1,
+  "model": "fixture:naive",
+  "error": null
+}

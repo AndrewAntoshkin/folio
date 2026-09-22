@@ -1,0 +1,157 @@
+[
+  {
+    "name": "static",
+    "kind": "deterministic",
+    "score": 100.0,
+    "max_score": 100,
+    "passed": true,
+    "details": {
+      "found_components": [
+        "Button",
+        "Input",
+        "Label",
+        "PageHeader",
+        "Switch",
+        "Tabs"
+      ],
+      "missing_required": [],
+      "hex": [],
+      "native_elements": [],
+      "uses_ds_imports": true,
+      "forbidden_hits": [],
+      "parser": "babel"
+    },
+    "reasoning": "AST shows DS imports and no token violations"
+  },
+  {
+    "name": "ds_compliance",
+    "kind": "deterministic",
+    "score": 100.0,
+    "max_score": 100,
+    "passed": true,
+    "details": {
+      "required": [
+        "PageHeader",
+        "Tabs",
+        "Input",
+        "Button"
+      ],
+      "found": [
+        "PageHeader",
+        "Tabs",
+        "Input",
+        "Button"
+      ],
+      "missing": [],
+      "forbidden_hits": []
+    },
+    "reasoning": "AST compliance against required/forbidden component rules"
+  },
+  {
+    "name": "code_quality",
+    "kind": "deterministic",
+    "score": 100.0,
+    "max_score": 100,
+    "passed": true,
+    "details": {
+      "bytes": 858
+    },
+    "reasoning": "structure looks like a maintainable React task"
+  },
+  {
+    "name": "reliability",
+    "kind": "deterministic",
+    "score": 100.0,
+    "max_score": 100,
+    "passed": true,
+    "details": {
+      "build": "ok",
+      "screenshot": true,
+      "page_errors": [],
+      "console_errors": []
+    },
+    "reasoning": "runtime ok"
+  },
+  {
+    "name": "functional",
+    "kind": "deterministic",
+    "score": 100.0,
+    "max_score": 100,
+    "passed": true,
+    "details": {
+      "assertions": [
+        {
+          "kind": "render",
+          "passed": true,
+          "detail": "page loaded"
+        },
+        {
+          "kind": "visible",
+          "target": "text=Settings",
+          "passed": true
+        },
+        {
+          "kind": "click",
+          "target": "role=tab[name=Notifications]",
+          "passed": true
+        },
+        {
+          "kind": "click",
+          "target": "role=tab[name=Profile]",
+          "passed": true
+        },
+        {
+          "kind": "visible",
+          "target": "role=button[name=\"Save\"]",
+          "passed": true
+        }
+      ]
+    },
+    "reasoning": "5/5 interaction assertions passed"
+  },
+  {
+    "name": "accessibility",
+    "kind": "deterministic",
+    "score": 70.0,
+    "max_score": 100,
+    "passed": true,
+    "details": {
+      "violation_count": 2,
+      "violations": [
+        {
+          "id": "landmark-one-main",
+          "impact": "moderate",
+          "description": "Ensure the document has a main landmark"
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "description": "Ensure all page content is contained by landmarks"
+        }
+      ]
+    },
+    "reasoning": "2 axe violations"
+  },
+  {
+    "name": "visual",
+    "kind": "llm",
+    "score": 0.0,
+    "max_score": 100,
+    "passed": false,
+    "details": {
+      "skipped": true
+    },
+    "reasoning": "vision judge requires a live model screenshot"
+  },
+  {
+    "name": "ux",
+    "kind": "llm",
+    "score": 0.0,
+    "max_score": 100,
+    "passed": false,
+    "details": {
+      "skipped": true
+    },
+    "reasoning": "UX judge requires a live model screenshot"
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "files": {
+    "src/task/Task.tsx": "import { Field, Input, Label } from \"@ds\";\n\nexport function Task() {\n  return (\n    <Field label=\"Email\" helper=\"Work address\" error=\"This address is invalid\">\n      <Label htmlFor=\"email\">Email</Label>\n      <Input id=\"email\" type=\"email\" invalid defaultValue=\"not-an-email\" />\n    </Field>\n  );\n}\n"
+  },
+  "raw_text": "",
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": 0.0,
+  "latency_ms": 1,
+  "model": "fixture:good",
+  "error": null
+}

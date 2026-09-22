@@ -1,0 +1,89 @@
+{
+  "a": {
+    "run_id": "fixture-good",
+    "model": "fixture",
+    "overall": 87.4
+  },
+  "b": {
+    "run_id": "fixture-naive",
+    "model": "fixture-naive",
+    "overall": 59.3
+  },
+  "deltas": {
+    "overall": -28.1,
+    "ds_compliance": -81.3,
+    "functional": 0.0,
+    "accessibility": -19.5,
+    "code_quality": 1.0,
+    "reliability": 0.0
+  },
+  "improved": [],
+  "regressions": [
+    {
+      "id": "a11y-labels-001",
+      "delta": -39.1,
+      "before": 88.3,
+      "after": 49.2
+    },
+    {
+      "id": "adversarial-actions-001",
+      "delta": -26.3,
+      "before": 88.3,
+      "after": 62.0
+    },
+    {
+      "id": "adversarial-color-001",
+      "delta": -26.3,
+      "before": 88.3,
+      "after": 62.0
+    },
+    {
+      "id": "component-button-001",
+      "delta": -26.3,
+      "before": 88.3,
+      "after": 62.0
+    },
+    {
+      "id": "component-input-001",
+      "delta": -37.5,
+      "before": 88.3,
+      "after": 50.8
+    },
+    {
+      "id": "component-select-001",
+      "delta": -16.5,
+      "before": 82.7,
+      "after": 66.2
+    },
+    {
+      "id": "edge-long-001",
+      "delta": -23.2,
+      "before": 85.2,
+      "after": 62.0
+    },
+    {
+      "id": "page-settings-001",
+      "delta": -33.5,
+      "before": 88.3,
+      "after": 54.8
+    },
+    {
+      "id": "pattern-confirm-001",
+      "delta": -26.3,
+      "before": 88.3,
+      "after": 62.0
+    },
+    {
+      "id": "pattern-empty-001",
+      "delta": -26.3,
+      "before": 88.3,
+      "after": 62.0
+    }
+  ],
+  "unchanged": [],
+  "counts": {
+    "improved": 0,
+    "regressions": 10,
+    "unchanged": 0
+  }
+}

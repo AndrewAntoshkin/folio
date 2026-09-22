@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Halo: как я собираю рабочую память команды</title>
+    <meta name="description" content="Halo: как я собираю рабочую память команды">
+    <meta name="theme-color" content="#FDFDFC" id="themeColorMeta">
+    <meta property="og:title" content="Halo: как я собираю рабочую память команды">
+    <meta property="og:description" content="Halo: как я собираю рабочую память команды">
+    <meta property="og:type" content="article">
+    <link rel="icon" type="image/svg+xml" href="assets/antoshkin-tech-logo.svg">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <link rel="stylesheet" href="assets/wireframe.css">
+    <link rel="stylesheet" href="assets/guides.css">
+    <script>
+        try {
+            if (localStorage.getItem('theme') === 'dark') document.documentElement.dataset.theme = 'dark';
+        } catch (e) {}
+    </script>
+</head>
+<body data-guides="false">
+    <div class="page">
+        <div class="border-strip border-strip--left" aria-hidden="true"></div>
+        <div class="border-strip border-strip--right" aria-hidden="true"></div>
+        <div class="grid-line grid-line--nav" aria-hidden="true"></div>
+        <div class="grid-line grid-line--content-l" aria-hidden="true"></div>
+        <div class="grid-line grid-line--content-r" aria-hidden="true"></div>
+        <div class="grid-line grid-line--shell-r" aria-hidden="true"></div>
+
+        <nav class="top-nav fold" data-fold="50">
+            <a href="index.html" aria-label="На главную"><img class="logo logo-photo wf-target" src="assets/avatar.png" alt="Andrew Antoshkin" width="32" height="32"></a>
+            <div class="nav-links">
+                <a class="nav-link" href="index.html">Главная</a>
+                <a class="nav-link" href="projects.html">Проекты</a>
+                <a class="nav-link active" href="writing.html">Статьи</a>
+                <a class="nav-link" href="approach.html">Подход</a>
+                <a class="nav-link" href="collab.html">Сотрудничество</a>
+            </div>
+        </nav>
+
+        <div class="nav-contact fold" data-fold="80">
+            <p class="nav-contact-label">Для связи:</p>
+            <span>
+                <a href="mailto:andrew.antoshkin@gmail.com" class="nav-contact-email wf-target" data-copy="andrew.antoshkin@gmail.com">
+                    andrew.antoshkin@gmail.com
+                    <span class="copied" hidden>Скопировано</span>
+                </a>
+            </span>
+        </div>
+
+        <div class="mobile-wrap">
+            <button class="mobile-pill" type="button" aria-expanded="false" aria-label="Меню">
+                <span class="pill-icon"><span class="pill-bar"></span><span class="pill-bar"></span></span>
+                <span>Меню</span>
+            </button>
+            <div class="mobile-menu" hidden>
+                <a href="index.html">Главная</a>
+                <a href="projects.html">Проекты</a>
+                <a href="writing.html">Статьи</a>
+                <a href="approach.html">Подход</a>
+                <a href="collab.html">Сотрудничество</a>
+                <hr>
+                <div class="compact-controls">
+                    <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="Переключить тему">
+                        <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
+                        <span class="theme-symbol theme-symbol--moon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M12.8 10.3A5.5 5.5 0 0 1 5.7 3.2 5.5 5.5 0 1 0 12.8 10.3Z"/></svg></span>
+                    </button>
+                    <nav class="language-switch" aria-label="Language"><span aria-current="page">Ru</span><a href="halo-working-memory-en.html">En</a></nav>
+                </div>
+                <a href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
+            </div>
+        </div>
+
+        <main class="main">
+            <div class="main-toggles">
+                <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="Переключить тему">
+                    <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
+                    <span class="theme-symbol theme-symbol--moon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M12.8 10.3A5.5 5.5 0 0 1 5.7 3.2 5.5 5.5 0 1 0 12.8 10.3Z"/></svg></span>
+                </button>
+                <nav class="language-switch" aria-label="Language"><span aria-current="page">Ru</span><a href="halo-working-memory-en.html">En</a></nav>
+            </div>
+            <div class="follow-right fold" data-fold="120">
+                <div class="nav-divider"></div>
+                <div class="social-links">
+                    <a class="nav-link follow-link wf-target" href="https://t.me/aiantoshkin" target="_blank" rel="noopener noreferrer">
+                        Telegram
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m13.7 2.8-2 9.5c-.15.67-.55.83-1.1.52L7.55 10.6l-1.47 1.42c-.16.16-.3.3-.62.3l.22-3.1 5.64-5.1c.25-.21-.05-.33-.38-.12L3.97 8.4l-3-.94c-.65-.2-.66-.65.14-.96l11.72-4.52c.54-.2 1.02.13.87.82Z" fill="currentColor"/></svg>
+                    </a>
+                    <a class="nav-link follow-link wf-target" href="https://github.com/AndrewAntoshkin" target="_blank" rel="noopener noreferrer">
+                        GitHub
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path fill="currentColor" d="M8 1.35a6.65 6.65 0 0 0-2.1 12.96c.33.06.45-.14.45-.32v-1.16c-1.84.4-2.23-.78-2.23-.78-.3-.76-.74-.96-.74-.96-.6-.42.05-.41.05-.41.67.05 1.02.69 1.02.69.6 1.02 1.56.72 1.94.55.06-.43.23-.72.42-.89-1.47-.17-3.02-.74-3.02-3.29 0-.73.26-1.32.69-1.78-.07-.17-.3-.85.07-1.76 0 0 .56-.18 1.83.68A6.36 6.36 0 0 1 8 4.8c.56 0 1.12.08 1.64.22 1.27-.86 1.83-.68 1.83-.68.37.91.14 1.59.07 1.76.43.46.69 1.05.69 1.78 0 2.56-1.56 3.12-3.03 3.29.24.2.45.61.45 1.24V14c0 .18.12.39.45.32A6.65 6.65 0 0 0 8 1.35Z"/></svg>
+                    </a>
+                    <a class="nav-link follow-link wf-target" href="https://setka.ru/users/84b42bc4-44b4-4b1e-ba76-06d249242bc4" target="_blank" rel="noopener noreferrer">
+                        Сетка
+                        <img class="social-icon" src="https://cdn-assets.setka.ru/setka-web/static/favicon/favicon-32x32.a8036291d4eac4cc9ab8cbc378cb6d17.png" alt="" width="16" height="16">
+                    </a>
+                </div>
+            </div>
+
+            <div class="content content--article">
+                
+                <a class="back-link back-link--inline fold wf-target" data-fold="60" href="writing.html">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    Статьи
+                </a>
+                
+                <figure class="article-cover fold wf-target" data-fold="80"><img src="assets/halo-working-memory.png" alt="Андрей с ноутбуком рядом с рейлом одежды и чемоданом"></figure>
+                <div class="article-head fold wf-target" data-fold="100">
+                    <h1 class="title">Halo: как я&nbsp;собираю рабочую память команды</h1>
+                    <div class="article-meta">
+                <span class="tag">Halo</span>
+                <span class="tag">knowledge graph</span>
+                <span class="tag">AI agents</span>
+            </div>
+                </div>
+                <aside class="article-tldr fold" data-fold="120"><p class="article-tldr-label">TL;DR</p><p>Halo собирает разрозненный контекст команды из Tracker, Wiki и встреч в связанную рабочую память. Вместо списка документов он отвечает на вопросы о решениях, изменениях и ответственности — с датами, ссылками и объяснением.</p></aside>
+                <div class="prose fold wf-target" data-fold="140"><p><strong>Последние недели я&nbsp;делаю Halo</strong>&nbsp;— рабочий прототип, который собирает контекст команды из&nbsp;Tracker, Wiki, встреч и&nbsp;других внутренних источников. Его можно спросить «что изменилось за&nbsp;неделю?», «почему мы&nbsp;так решили?» или «кто сейчас за&nbsp;это отвечает?» и&nbsp;получить ответ с&nbsp;датами, ссылками и&nbsp;объяснением, на&nbsp;чём он&nbsp;основан.</p>
+
+<p>Посмотреть проект можно на&nbsp;<a href="https://andrewantoshkin.github.io/orbit-landing/" target="_blank" rel="noopener">странице Halo</a>. А&nbsp;здесь я&nbsp;подробнее разберу, зачем вообще понадобилась рабочая память, почему обычного поиска оказалось мало и&nbsp;как я&nbsp;собираю прототип под реальные вопросы design&#8209;команды.</p>
+
+<h2 id="section-1">Контекст есть, но&nbsp;он&nbsp;размазан</h2>
+
+<p>Команда каждый день производит много полезного контекста. В&nbsp;Tracker меняются статусы и&nbsp;ответственные. Во&nbsp;встречах обсуждаются риски и&nbsp;принимаются решения. В&nbsp;Wiki живут цели, процессы и&nbsp;спецификации. В&nbsp;Staff можно понять роли людей, а&nbsp;в&nbsp;Calendar&nbsp;— восстановить последовательность событий.</p>
+
+<p>Проблема не&nbsp;в&nbsp;отсутствии информации. Проблема в&nbsp;том, что для ответа на&nbsp;один рабочий вопрос часто приходится вручную пройти несколько систем:</p>
+
+<ol>
+  <li>найти задачу и&nbsp;посмотреть историю статусов;</li>
+  <li>вспомнить, на&nbsp;какой встрече её&nbsp;обсуждали;</li>
+  <li>открыть саммари и&nbsp;найти формулировку решения;</li>
+  <li>свериться с&nbsp;Wiki, не&nbsp;изменились&nbsp;ли цели;</li>
+  <li>уточнить, кто теперь отвечает за&nbsp;следующий шаг.</li>
+</ol>
+
+<p>Каждая система по&nbsp;отдельности работает нормально. Теряется именно связь между ними. Через пару недель задача остаётся, а&nbsp;причина решения уже живёт только в&nbsp;саммари встречи или в&nbsp;памяти нескольких участников.</p>
+
+<h2 id="section-2">Что я&nbsp;называю рабочей памятью</h2>
+
+<p>Halo&nbsp;— не&nbsp;ещё одна Wiki и&nbsp;не&nbsp;чат, который «знает всё». Я&nbsp;смотрю на&nbsp;него как на&nbsp;слой поверх уже существующих рабочих систем. Он&nbsp;не&nbsp;просит команду перенести процессы в&nbsp;новое место, а&nbsp;связывает сущности, которые уже есть:</p>
+
+<ul>
+  <li>задачи и&nbsp;изменения их&nbsp;статусов;</li>
+  <li>встречи, участники и&nbsp;зафиксированные решения;</li>
+  <li>страницы Wiki, цели и&nbsp;проекты;</li>
+  <li>люди, роли и&nbsp;зоны ответственности;</li>
+  <li>ссылки между всеми этими объектами.</li>
+</ul>
+
+<p>Рабочая память&nbsp;— это не&nbsp;архив документов. Она должна уметь показать, <strong>что произошло, когда, с&nbsp;чем это связано и&nbsp;откуда взят факт</strong>. Поэтому в&nbsp;Halo важны не&nbsp;только тексты, но&nbsp;и&nbsp;события: задача перешла из&nbsp;<code>inProgress</code> в&nbsp;<code>closed</code>, на&nbsp;встрече зафиксировали решение, у&nbsp;проекта сменился ответственный.</p>
+
+<h2 id="section-3">Почему граф, а&nbsp;не&nbsp;просто поиск</h2>
+
+<p>Поиск хорошо отвечает на&nbsp;вопрос «где встречается эта фраза?». Но&nbsp;большинство рабочих вопросов устроено иначе. «Что изменилось по&nbsp;проекту после синка?», «какие решения связаны с&nbsp;этой задачей?», «кто участвовал в&nbsp;обсуждении и&nbsp;кто отвечает сейчас?»&nbsp;— это вопросы про связи и&nbsp;время.</p>
+
+<p>Поэтому я&nbsp;собрал контекст отдела в&nbsp;граф. В&nbsp;нём задача может быть связана с&nbsp;проектом, встречей, решением, человеком и&nbsp;страницей Wiki. У&nbsp;связей есть источник, а&nbsp;у&nbsp;изменений&nbsp;— дата. Такой слой помогает не&nbsp;только найти документ, но&nbsp;и&nbsp;пройти по&nbsp;цепочке:</p>
+
+<pre><code>проект → встреча → решение → задача → изменение статуса
+                         ↘ ответственный</code></pre>
+
+<p>Граф не&nbsp;делает ответ автоматически истинным. Он&nbsp;лишь задаёт проверяемую структуру: каждый вывод можно вернуть к&nbsp;конкретной задаче, странице или встрече.</p>
+
+<h2 id="section-4">Как выглядит ответ Halo</h2>
+
+<p>Я&nbsp;хочу, чтобы ответ был полезен сразу, но&nbsp;не&nbsp;скрывал неопределённость. Поэтому у&nbsp;него несколько слоёв:</p>
+
+<ul>
+  <li><strong>Короткий вывод</strong>&nbsp;— ответ на&nbsp;вопрос человеческим языком.</li>
+  <li><strong>Факты и&nbsp;даты</strong>&nbsp;— что именно произошло и&nbsp;в&nbsp;какой момент.</li>
+  <li><strong>Источники</strong>&nbsp;— ссылки на&nbsp;Tracker, Wiki и&nbsp;встречи.</li>
+  <li><strong>Почему этот ответ</strong>&nbsp;— какие изменения и&nbsp;связи поддерживают вывод.</li>
+  <li><strong>Ограничения</strong>&nbsp;— чего не&nbsp;хватает, если данных недостаточно.</li>
+</ul>
+
+<p>Например, на&nbsp;вопрос «что изменилось по&nbsp;компоненту?» недостаточно пересказать текущее описание задачи. Важно показать историю: когда её&nbsp;создали, после какой встречи поменялся статус, где зафиксировано решение и&nbsp;кто стал ответственным.</p>
+
+<p>Если нужного факта нет в&nbsp;графе, Halo должен прямо сказать: «не&nbsp;нашёл». Для рабочего инструмента честный пробел полезнее уверенного правдоподобного текста. Такой ответ подсказывает, что именно нужно проверить или добавить в&nbsp;источники.</p>
+
+<h2 id="section-5">От&nbsp;чата к&nbsp;исследованию</h2>
+
+<p>Чат&nbsp;— удобная точка входа, но&nbsp;не&nbsp;весь продукт. После ответа часто появляется следующий вопрос: что это за&nbsp;задача, как менялся её&nbsp;статус, кто участвовал, какие документы лежат рядом?</p>
+
+<p>Поэтому в&nbsp;прототипе есть Explore. Из&nbsp;ответа можно перейти к&nbsp;задаче, человеку или решению и&nbsp;посмотреть историю связей. Это важное отличие от&nbsp;обычного AI&#8209;саммари: пользователь не&nbsp;остаётся внутри сгенерированного текста, а&nbsp;может исследовать исходный рабочий контекст.</p>
+
+<h2 id="section-6">Сценарии вместо одного пустого поля</h2>
+
+<p>Не&nbsp;каждому рабочему вопросу нужен свободный чат. Многие задачи повторяются: недельный апдейт, подготовка к&nbsp;1:1, возвращение после отпуска, поиск блокеров или сбор решений со&nbsp;встреч.</p>
+
+<p>Для них я&nbsp;делаю сценарии&nbsp;— готовые рецепты поверх той&nbsp;же памяти. Пользователь выбирает период, участников или проект, а&nbsp;Halo знает, какие источники и&nbsp;связи проверить. Это делает результат стабильнее и&nbsp;снижает порог входа: не&nbsp;нужно каждый раз изобретать идеальный промпт.</p>
+
+<h2 id="section-7">Что происходит под капотом</h2>
+
+<p>Сейчас в&nbsp;прототипе уже крутятся несколько частей:</p>
+
+<ul>
+  <li><strong>Ingest</strong> забирает доступные данные из&nbsp;рабочих систем и&nbsp;приводит их&nbsp;к&nbsp;общей модели.</li>
+  <li><strong>Граф контекста</strong> связывает задачи, встречи, документы, людей, решения и&nbsp;события.</li>
+  <li><strong>Чат</strong> переводит вопрос в&nbsp;поиск по&nbsp;контексту и&nbsp;собирает ответ.</li>
+  <li><strong>Explore</strong> показывает сущности, историю изменений и&nbsp;соседние связи.</li>
+  <li><strong>Evals</strong> проверяют, находит&nbsp;ли система нужные факты, не&nbsp;теряет&nbsp;ли источники и&nbsp;умеет&nbsp;ли признавать отсутствие данных.</li>
+  <li><strong>MCP</strong> отдаёт тот&nbsp;же контекст агентам, чтобы им&nbsp;не&nbsp;приходилось начинать работу с&nbsp;пустого окна.</li>
+</ul>
+
+<p>Отдельно важны права доступа. Halo должен видеть ровно то&nbsp;же, что и&nbsp;пользователь в&nbsp;исходных системах. Если у&nbsp;человека нет доступа к&nbsp;задаче или странице, они не&nbsp;должны появиться ни&nbsp;в&nbsp;ответе, ни&nbsp;в&nbsp;списке источников.</p>
+
+<h2 id="section-8">Зачем здесь MCP и&nbsp;агенты</h2>
+
+<p>Я&nbsp;почти каждый день работаю в&nbsp;Cursor и&nbsp;вижу одну закономерность: агент ускоряет работу, когда у&nbsp;него есть качественный контекст. В&nbsp;репозитории это архитектура, rules, документация и&nbsp;понятная задача. В&nbsp;команде аналогичный контекст обычно размазан по&nbsp;тикетам, Wiki и&nbsp;саммари встреч.</p>
+
+<p>Если дать агенту только формулировку задачи, он&nbsp;может написать код или текст, но&nbsp;не&nbsp;узнает, почему команда отказалась от&nbsp;похожего решения месяц назад. Если передать ему рабочую память, он&nbsp;сможет сначала проверить связанные решения, актуальные цели и&nbsp;ответственных.</p>
+
+<p>Поэтому Halo я&nbsp;проектирую не&nbsp;только как интерфейс для человека. MCP&#8209;слой позволяет агенту задать тот&nbsp;же вопрос и&nbsp;получить структурированный контекст со&nbsp;ссылками на&nbsp;источники. Человек и&nbsp;агент работают не&nbsp;из&nbsp;двух разных пересказов, а&nbsp;из&nbsp;одной проверяемой памяти.</p>
+
+<h2 id="section-9">Почему я&nbsp;начал с&nbsp;design&#8209;scope</h2>
+
+<p>Сейчас Halo&nbsp;— не&nbsp;продукт «для любой компании». Это рабочий прототип под контекст дизайн&#8209;направления. Узкий scope здесь полезен: я&nbsp;знаю реальные сущности, язык команды и&nbsp;вопросы, которые возникают каждый день.</p>
+
+<p>Можно проверять систему не&nbsp;на&nbsp;абстрактных демо&#8209;запросах, а&nbsp;на&nbsp;практических:</p>
+
+<ul>
+  <li>что изменилось в&nbsp;дизайн&#8209;системе за&nbsp;неделю;</li>
+  <li>какие решения приняли на&nbsp;последних синках;</li>
+  <li>почему поменяли процесс или статус;</li>
+  <li>какие задачи связаны с&nbsp;целями квартала;</li>
+  <li>что нужно знать человеку после отпуска;</li>
+  <li>где данных недостаточно для уверенного ответа.</li>
+</ul>
+
+<p>Так быстрее становятся видны настоящие проблемы: дубли сущностей, устаревшие связи, неполные саммари, неоднозначные имена и&nbsp;события без даты. Именно эти детали определяют качество рабочей памяти сильнее, чем эффектный интерфейс чата.</p>
+
+<h2 id="section-10">Что я&nbsp;проверяю сейчас</h2>
+
+<p>Для меня главный вопрос не&nbsp;«может&nbsp;ли модель красиво ответить?». Современные модели умеют это и&nbsp;без Halo. Я&nbsp;проверяю другое:</p>
+
+<ul>
+  <li>экономит&nbsp;ли ответ время по&nbsp;сравнению с&nbsp;ручным поиском;</li>
+  <li>можно&nbsp;ли быстро проверить каждый важный вывод;</li>
+  <li>восстанавливает&nbsp;ли система последовательность изменений;</li>
+  <li>отличает&nbsp;ли зафиксированное решение от&nbsp;предположения;</li>
+  <li>замечает&nbsp;ли противоречия между источниками;</li>
+  <li>умеет&nbsp;ли остановиться, когда данных мало;</li>
+  <li>помогает&nbsp;ли тот&nbsp;же контекст агентам выполнять реальные задачи.</li>
+</ul>
+
+<p>Ответы на&nbsp;эти вопросы появляются только в&nbsp;использовании. Поэтому сейчас мне важнее постепенно подключать реальные сценарии, собирать evals и&nbsp;смотреть, где Halo ошибается, чем быстро расширять список интеграций.</p>
+
+<h2 id="section-11">Куда проект движется</h2>
+
+<p>Ближайшая цель&nbsp;— сделать рабочую память достаточно надёжной для регулярных задач: недельных апдейтов, подготовки к&nbsp;встречам, восстановления контекста и&nbsp;исследования решений. Параллельно я&nbsp;проверяю, как один слой контекста может обслуживать и&nbsp;продуктовый интерфейс, и&nbsp;агентов через MCP.</p>
+
+<p>Пока это живой прототип: что&#8209;то уже работает, что&#8209;то меняется после первых реальных вопросов. Я&nbsp;буду периодически писать о&nbsp;том, как Halo ведёт себя на&nbsp;практике, какие связи действительно полезны и&nbsp;где идея рабочей памяти ломается о&nbsp;реальность.</p>
+
+<p><a href="https://andrewantoshkin.github.io/orbit-landing/" target="_blank" rel="noopener"><strong>Открыть страницу Halo&nbsp;→</strong></a></p></div>
+                <nav class="article-nav"><a href="ai-changes-processes.html"><span class="article-nav-label">Предыдущая</span><span class="article-nav-title">AI меняет не&nbsp;профессии. AI меняет процессы</span></a><a href="cursor-figma.html" class="next"><span class="article-nav-label">Следующая</span><span class="article-nav-title">Cursor + Figma в&nbsp;2026: актуальная настройка для&nbsp;дизайнера</span></a></nav>
+    
+            </div>
+        </main>
+
+        <div class="crosshair" aria-hidden="true">
+            <div class="crosshair-h"></div>
+            <div class="crosshair-v"></div>
+            <div class="crosshair-coords">0 · 0</div>
+        </div>
+        <div class="bottom-fade" aria-hidden="true"></div>
+    </div>
+    <script src="assets/wireframe.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+# pipeline-check
+
+Model: **fixture**
+Overall: **95.2**
+Cases: 1 · cost $0.0000
+
+| Case | Category | Overall | DS | A11y | Code |
+| --- | --- | --- | --- | --- | --- |
+| page-settings-001 | pages | 95.2 | 100.0 | 70.0 | 100.0 |
+
+## Aggregates
+
+- DS compliance: 100.0
+- Functional: 100.0
+- Accessibility: 70.0
+- Code quality: 100.0
+- Reliability: 100.0

@@ -1,0 +1,2860 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Андрей Антошкин — Design Engineer</title>
+    <meta name="description" content="Design Engineer. Дизайн-системы, AI-инструменты и инфраструктура на стыке дизайна и разработки.">
+    <link rel="icon" type="image/png" href="../assets/avatar.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Homemade+Apple&family=Red+Hat+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Google Sans';
+            src: url('../assets/fonts/GoogleSans-Latin.woff2') format('woff2');
+            font-weight: 100 900;
+            font-display: swap;
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        }
+        @font-face {
+            font-family: 'Google Sans';
+            src: url('../assets/fonts/GoogleSans-LatinExt.woff2') format('woff2');
+            font-weight: 100 900;
+            font-display: swap;
+            unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+        }
+        @font-face {
+            font-family: 'Google Sans';
+            src: url('../assets/fonts/GoogleSans-Cyrillic.woff2') format('woff2');
+            font-weight: 100 900;
+            font-display: swap;
+            unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+        }
+        @font-face {
+            font-family: 'Google Sans';
+            src: url('../assets/fonts/GoogleSans-CyrillicExt.woff2') format('woff2');
+            font-weight: 100 900;
+            font-display: swap;
+            unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+        }
+
+        @font-face {
+            font-family: 'Matrix Sans Print';
+            src: url('../assets/fonts/MatrixSansPrint-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --font-body: 'Google Sans', system-ui, -apple-system, sans-serif;
+            --font-mono: 'Red Hat Mono', ui-monospace, monospace;
+            --font-pixel: 'Matrix Sans Print', 'Red Hat Mono', ui-monospace, monospace;
+            --font-sign: 'Homemade Apple', cursive;
+            --page-max: 1248px;
+            --content-max: 50rem;
+            --content-pad: 1rem;
+            --radius-pill: 9999px;
+            --radius-sm: 8px;
+            --shadow-lit: -.671842px .671842px .950128px -.125px #0000000d, -1.59238px 1.59238px 2.25197px -.25px #0000000f, -2.90467px 2.90467px 4.10783px -.375px #0000000f, -4.82901px 4.82901px 6.82925px -.5px #00000012, -7.79846px 7.79846px 11.0287px -.625px #00000014, -12.7653px 12.7653px 18.0529px -.75px #0000001a, -21.981px 21.981px 31.0858px -.875px #00000021, -40px 40px 56.5685px -1px #0003;
+            --color-text: #ffffffeb;
+            --color-text-muted: #ffffff80;
+            --color-link: #f0a07a;
+            --home-text-color: #ffffffeb;
+            --btn-bg: #f3f4f0;
+            --btn-text: #000;
+            --expand-fill: #ffffff33;
+            --expand-hover-text: #000;
+        }
+
+        html { background: #000; }
+
+        html {
+            font-family: var(--font-body);
+            -webkit-font-smoothing: antialiased;
+            color: var(--color-text);
+        }
+
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: #000;
+        }
+
+        body { cursor: none; }
+        body.cursor-dot { cursor: auto; }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            #bgCanvas { display: none; }
+            .project-tooltip { transition: none; }
+        }
+
+        #bgCanvas { display: none; }
+
+        .film-grain {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.12;
+            mix-blend-mode: soft-light;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+            background-size: 256px 256px;
+        }
+
+        .inner-shadow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 32px;
+            z-index: 25;
+            pointer-events: none;
+            background: linear-gradient(180deg, #00000066, transparent);
+        }
+
+        .app {
+            position: relative;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 1.2s ease 0.2s;
+        }
+
+        .app.ready { opacity: 1; }
+
+        /* ── PAGES ── */
+        .page {
+            display: none;
+            opacity: 0;
+            filter: blur(10px);
+            transform: translateY(6px);
+        }
+
+        .page.active {
+            display: block;
+            animation: pageIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes pageIn {
+            to { opacity: 1; filter: blur(0); transform: translateY(0); }
+        }
+
+        .content-area {
+            z-index: 3;
+            max-width: var(--content-max);
+            margin: 0 auto;
+            padding: 10vh var(--content-pad) 0;
+            font-family: var(--font-body);
+            font-size: 1.4rem;
+            font-weight: 300;
+            line-height: 1.6;
+            color: var(--home-text-color);
+            text-align: start;
+            position: relative;
+            transition: color 2s;
+        }
+
+        .prose-block { margin-bottom: 1.2em; }
+
+        .prose-reveal {
+            display: none;
+            margin-bottom: 1.2em;
+        }
+
+        .prose-reveal.is-open { display: block; }
+
+        .prose-reveal-inner {
+            opacity: 1;
+            filter: blur(0);
+            transition: opacity 700ms ease-out, filter 700ms ease-out;
+        }
+
+        .prose-reveal.is-open .prose-reveal-inner.is-blurred {
+            opacity: 0;
+            filter: blur(12px);
+        }
+
+        .prose-reveal-inner + .prose-reveal-inner {
+            margin-top: 1.2em;
+        }
+
+        .prose-project + .prose-project {
+            margin-top: 1.2em;
+        }
+
+        .prose-project-name {
+            font-weight: 500;
+            color: var(--color-link);
+            text-decoration: none;
+        }
+
+        .prose-project-name:hover { text-decoration: underline; }
+
+        .prose-project-tag {
+            font-size: 0.55em;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--color-text-muted);
+            background: var(--expand-fill);
+            padding: 0.2em 0.55em;
+            border-radius: 9999px;
+            vertical-align: middle;
+            margin-left: 0.25em;
+        }
+
+        .prose-project-desc {
+            color: var(--color-text-muted);
+            font-weight: 300;
+        }
+
+        .em-wrap {
+            font-weight: 300;
+        }
+
+        .expand-word {
+            cursor: none;
+            pointer-events: auto;
+            color: inherit;
+            font-size: inherit;
+            font-weight: inherit;
+            isolation: isolate;
+            --enter-x: 50%;
+            --enter-y: 50%;
+            background: var(--expand-fill);
+            border-radius: 9999px;
+            align-items: center;
+            padding: 2px 12px 5px;
+            line-height: 1em;
+            vertical-align: baseline;
+            text-decoration: none;
+            transition: color 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+            display: inline-flex;
+            position: relative;
+        }
+
+        .expand-word::before {
+            content: "";
+            border-radius: inherit;
+            clip-path: circle(0% at var(--enter-x) var(--enter-y));
+            z-index: -1;
+            pointer-events: none;
+            background: #fff;
+            transition: clip-path 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+            position: absolute;
+            inset: 0;
+        }
+
+        .expand-word:hover::before {
+            clip-path: circle(150% at var(--enter-x) var(--enter-y));
+        }
+
+        .expand-word:hover { color: var(--expand-hover-text); }
+
+        .magnetic-word {
+            display: inline-block;
+            position: relative;
+            vertical-align: -0.03em;
+            cursor: none;
+            line-height: 1;
+        }
+
+        .magnetic-word__slot {
+            display: inline-block;
+            visibility: hidden;
+            white-space: nowrap;
+        }
+
+        .magnetic-word svg {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+            pointer-events: auto;
+        }
+
+        .magnetic-word path {
+            fill: var(--home-text-color);
+            stroke: var(--home-text-color);
+        }
+
+        .tool-word {
+            display: inline-block;
+            position: relative;
+            vertical-align: baseline;
+            cursor: none;
+            white-space: nowrap;
+            isolation: isolate;
+        }
+
+        .tool-word__outline {
+            position: relative;
+            display: inline-block;
+            padding: 0 5px;
+            border: 1.5px dashed #b26dc2;
+        }
+
+        .tool-word__outline::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 2px 2px, #b26dc2 0 2px, transparent 2.1px),
+                radial-gradient(circle at calc(100% - 2px) 2px, #b26dc2 0 2px, transparent 2.1px),
+                radial-gradient(circle at 2px calc(100% - 2px), #b26dc2 0 2px, transparent 2.1px),
+                radial-gradient(circle at calc(100% - 2px) calc(100% - 2px), #b26dc2 0 2px, transparent 2.1px);
+        }
+
+        .tool-word__text {
+            display: inline;
+        }
+
+        .tool-word__badge {
+            position: absolute;
+            left: 0;
+            top: 0;
+            transform: translate(0, calc(-100% - 2px));
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            height: 20px;
+            padding: 0 7px 0 3px;
+            background: #b26dc2;
+            color: #fff;
+            font-family: var(--font-body);
+            font-size: 11px;
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: 0.01em;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 180ms ease, transform 180ms ease;
+        }
+
+        .tool-word__badge-icon {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+        }
+
+        .tool-word:hover .tool-word__badge,
+        .tool-word:focus-visible .tool-word__badge {
+            opacity: 1;
+            transform: translate(0, calc(-100% - 6px));
+        }
+
+        .tool-word-toast {
+            position: fixed;
+            left: 50%;
+            bottom: 28px;
+            z-index: 1000;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px 10px 16px;
+            background: #f7f5f3;
+            color: #13274e;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1;
+            box-shadow: 0 10px 40px #00000059;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(-50%) translateY(10px);
+            transition: opacity 220ms ease, transform 220ms ease;
+        }
+
+        .tool-word-toast.is-visible {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .tool-word-toast__icon {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        .macro-word {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.24em;
+            position: relative;
+            vertical-align: middle;
+            cursor: none;
+            padding: 0.11em 0.34em 0.12em;
+            border: 1px solid #ffffff24;
+            border-radius: 0.36em;
+            background: #050505;
+            box-shadow:
+                0 0.1em 0.45em #0000007a,
+                inset 0 0 0 1px #ffffff0d;
+            color: #f5f5f5;
+            font-family: var(--font-mono);
+            font-size: 0.94em;
+            font-weight: 400;
+            line-height: 1;
+            white-space: nowrap;
+            transform: translateY(-0.04em);
+            transition: border-color 160ms ease, box-shadow 160ms ease, color 160ms ease;
+        }
+
+        .macro-word:hover,
+        .macro-word.is-thinking {
+            border-color: #ffffff42;
+            box-shadow:
+                0 0.14em 0.65em #00000099,
+                0 0 0.55em #7b9eff24,
+                inset 0 0 0 1px #ffffff14;
+        }
+
+        .macro-word__prompt {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.08em;
+            transform: translateY(0.01em);
+            color: #ffffff8a;
+            font-size: 0.64em;
+            line-height: 1;
+            letter-spacing: -0.02em;
+        }
+
+        .macro-word__prompt-symbol {
+            display: inline-block;
+        }
+
+        .macro-word__prompt-symbol--chevron {
+            transform: scaleX(0.86);
+            transform-origin: center;
+        }
+
+        .macro-word__prompt-symbol--slash {
+            opacity: 0.78;
+            transform: translateY(-0.01em) scaleX(0.9);
+            transform-origin: center;
+        }
+
+        .macro-word__prompt-symbol--tilde {
+            margin-left: 0.16em;
+            opacity: 0.7;
+        }
+
+        .macro-word__text {
+            display: inline-flex;
+            align-items: center;
+            line-height: 1;
+        }
+
+        .macro-word::after {
+            content: '';
+            display: inline-block;
+            width: 0.08em;
+            height: 0.86em;
+            margin-left: -0.02em;
+            background: currentColor;
+            opacity: 0;
+        }
+
+        .macro-word:hover::after {
+            animation: macro-caret-blink 950ms steps(1, end) infinite;
+        }
+
+        .macro-word.is-thinking::after {
+            opacity: 1;
+            animation: macro-caret-think 420ms ease-in-out infinite alternate;
+        }
+
+        @keyframes macro-caret-blink {
+            0%, 48% { opacity: 1; }
+            49%, 100% { opacity: 0; }
+        }
+
+        @keyframes macro-caret-think {
+            from { opacity: 0.35; }
+            to { opacity: 1; }
+        }
+
+        .brand-inline {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.28em;
+            vertical-align: baseline;
+            white-space: nowrap;
+        }
+
+        .brand-inline__mark {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.08em;
+            height: 1.08em;
+            border-radius: 0.24em;
+            flex-shrink: 0;
+            position: relative;
+            top: 0.05em;
+            color: #fff;
+            line-height: 0;
+        }
+
+        .brand-inline__mark img {
+            width: 0.62em;
+            height: 0.62em;
+            display: block;
+        }
+
+        .brand-inline__mark--claude {
+            background: #d97757;
+        }
+
+        .brand-inline__mark--cursor {
+            background: #f0f0f0;
+            box-shadow: 0 0 0 1px #ffffff40;
+        }
+
+        .brand-inline__mark--cursor img {
+            filter: invert(1);
+        }
+
+        .lightpull-line {
+            cursor: none;
+        }
+
+        .lightpull-char {
+            display: inline;
+        }
+
+        .project-tooltip {
+            position: fixed;
+            z-index: 100;
+            max-width: 22rem;
+            padding: 0.7rem 0.95rem;
+            background: #fff;
+            color: #000;
+            font-family: var(--font-body);
+            font-size: 0.875rem;
+            font-weight: 400;
+            line-height: 1.45;
+            border-radius: 10px;
+            pointer-events: none;
+            opacity: 0;
+            transform: translate(-50%, calc(-100% + 10px));
+            transition: opacity 0.24s ease, transform 0.24s ease;
+            box-shadow: 0 8px 28px #00000040;
+        }
+
+        .project-tooltip.is-visible {
+            opacity: 1;
+            transform: translate(-50%, calc(-100% - 8px));
+        }
+
+        .project-chip {
+            position: relative;
+            display: inline-block;
+            vertical-align: baseline;
+            text-decoration: none;
+            color: #000;
+            cursor: none;
+            background: var(--chip-color);
+            border-radius: 4px;
+            padding: 0.1em 0.38em 0.14em;
+            line-height: 1;
+            isolation: isolate;
+        }
+
+        .project-chip::after {
+            content: '';
+            position: absolute;
+            inset: -5px -3px;
+            z-index: 0;
+        }
+
+        .project-chip-label {
+            position: relative;
+            z-index: 1;
+            transition: opacity 0.12s ease;
+        }
+
+        .project-chip-marquee {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            background: #fff;
+            color: #000;
+            border-radius: inherit;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.12s ease;
+        }
+
+        .project-chip-marquee-track {
+            display: inline-flex;
+            white-space: nowrap;
+            font-family: var(--font-pixel);
+            font-size: 0.82em;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            line-height: 1;
+            will-change: transform;
+        }
+
+        .project-chip-marquee-track span {
+            padding-right: 1.25em;
+        }
+
+        .project-chip:hover .project-chip-label,
+        .project-chip:focus-visible .project-chip-label {
+            opacity: 0;
+        }
+
+        .project-chip:hover .project-chip-marquee,
+        .project-chip:focus-visible .project-chip-marquee {
+            opacity: 1;
+        }
+
+        .project-chip:hover .project-chip-marquee-track,
+        .project-chip:focus-visible .project-chip-marquee-track {
+            animation: project-marquee 7s linear infinite;
+        }
+
+        @keyframes project-marquee {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        .project-line {
+            display: inline;
+        }
+
+        .meet-extra[hidden] { display: none; }
+
+        .expand-word[data-no-fill]::before { display: none; }
+        .expand-word[data-no-fill]:hover { color: inherit; }
+
+        .em-wrap .expand-word {
+            background: transparent !important;
+            padding: 0 !important;
+        }
+
+        .em-wrap .expand-word::before { display: none !important; }
+        .em-wrap .expand-word:hover { color: inherit !important; }
+
+        .comp-interactive { cursor: none; }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .tabular-nums { font-variant-numeric: tabular-nums; }
+
+        .photo-wrap {
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 0;
+            perspective: 600px;
+            position: relative;
+            top: -4px;
+            z-index: 50;
+        }
+
+        .photo-inner {
+            display: inline-block;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 280ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .photo-tilt {
+            height: 1.5em;
+            width: 1.5em;
+            display: block;
+            border-radius: 8px;
+            object-fit: cover;
+            transform: scale(1);
+            transform-origin: center bottom;
+            transition: transform 280ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 1px 2px #00000014, 0 4px 10px #0000001a;
+        }
+
+        .photo-wrap.open .photo-tilt {
+            transform: scale(2.5);
+            box-shadow: 0 2px 4px #0000002e, 0 8px 20px #00000047;
+        }
+
+        .slot-wrap {
+            cursor: none;
+            vertical-align: baseline;
+            box-shadow: 0 1px 0 0 #ffffff0f inset, 0 0 0 1px #ffffff14, var(--shadow-lit);
+            background: #0a0a0a;
+            border-radius: 6px;
+            gap: 2px;
+            padding: 0.09em;
+            display: inline-flex;
+            position: relative;
+            top: 0.18em;
+            transition: box-shadow 1s;
+        }
+
+        .slot-cell {
+            display: inline-block;
+            width: 0.52em;
+            height: 1em;
+            overflow: hidden;
+            position: relative;
+            border-radius: 0.07em;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .slot-cell-track {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 2;
+            transform: translateY(0em);
+            transition: none;
+        }
+
+        .slot-cell-letter {
+            height: 1.53846em;
+            line-height: 1.53846em;
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 0.65em;
+            font-weight: 500;
+            text-transform: uppercase;
+            color: rgb(255, 255, 255);
+        }
+
+        .slot-cell-letter.is-dim {
+            color: rgba(255, 255, 255, 0.25);
+        }
+
+        .slot-cell-shade {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 0.15em;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .slot-cell-shade--top {
+            top: 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.15), transparent);
+        }
+
+        .slot-cell-shade--bottom {
+            bottom: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.15), transparent);
+        }
+
+        .idecard {
+            color: #0a0a0a;
+            font-family: var(--font-mono);
+            white-space: nowrap;
+            vertical-align: baseline;
+            box-shadow: 0 1px 0 0 #0000000f inset, 0 0 0 1px #00000014, var(--shadow-lit);
+            background: #fff;
+            border-radius: 7px;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            font-size: 0.6em;
+            font-weight: 500;
+            line-height: 1.4;
+            display: inline-flex;
+            position: relative;
+            top: -0.3em;
+            overflow: hidden;
+            cursor: none;
+        }
+
+        .idecard-prompt {
+            opacity: 0.45;
+            flex: none;
+        }
+
+        .idecard-phrase {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            min-width: 16ch;
+        }
+
+        .idecard-cursor {
+            display: inline-block;
+            width: 1.5px;
+            height: 0.9em;
+            background: #0a0a0a;
+            vertical-align: text-bottom;
+            animation: termBlink 1.1s step-end infinite;
+        }
+
+        @keyframes termBlink { 50% { opacity: 0; } }
+
+        @keyframes contact-link-wave {
+            from { background-position-x: 0; }
+            to { background-position-x: 20px; }
+        }
+
+        .contact-link {
+            position: relative;
+            color: var(--home-text-color);
+            text-decoration: none;
+        }
+
+        .contact-link::before,
+        .contact-link::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0.06em;
+            width: 100%;
+            height: 5px;
+            background-repeat: repeat-x;
+            background-size: 20px 5px;
+            pointer-events: none;
+        }
+
+        .contact-link::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='5' viewBox='0 0 20 5'%3E%3Cpath d='M0 3.25 H20' stroke='%23ffffffeb' fill='none' stroke-width='2'/%3E%3C/svg%3E");
+        }
+
+        .contact-link::after {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='5' viewBox='0 0 20 5'%3E%3Cpath d='M0 3.25 Q2.5 1.25 5 3.25 T10 3.25 T15 3.25 T20 3.25' stroke='%23ffffffeb' fill='none' stroke-width='2'/%3E%3C/svg%3E");
+            opacity: 0;
+        }
+
+        .contact-link:hover::before {
+            opacity: 0;
+        }
+
+        .contact-link:hover::after {
+            opacity: 1;
+            animation: contact-link-wave 0.55s linear infinite;
+        }
+
+        /* ── WORK / WRITING / INFO ── */
+        .section-page {
+            max-width: var(--page-max);
+            margin: 0 auto;
+            padding: 4vh var(--content-pad) 8vh;
+        }
+
+        .section-page h1 {
+            font-family: var(--font-body);
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            color: var(--home-text-color);
+        }
+
+        .work-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .work-card {
+            display: block;
+            padding: 1.25rem;
+            border-radius: var(--radius-sm);
+            background: var(--expand-fill);
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .work-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lit);
+        }
+
+        .work-card h3 {
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .work-card .badge {
+            font-family: var(--font-body);
+            font-size: 0.65rem;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--color-text-muted);
+            margin-bottom: 0.75rem;
+            display: inline-block;
+        }
+
+        .work-card p {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: var(--color-text-muted);
+            font-weight: 300;
+        }
+
+        .writing-list { list-style: none; }
+
+        .writing-list li + li { margin-top: 0.5rem; }
+
+        .writing-list a {
+            display: block;
+            padding: 1rem 1.25rem;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            color: inherit;
+            transition: background 0.2s;
+        }
+
+        .writing-list a:hover { background: var(--expand-fill); }
+
+        .writing-list .title {
+            font-size: 1.25rem;
+            font-weight: 400;
+            display: block;
+            margin-bottom: 0.35rem;
+        }
+
+        .writing-list .tags {
+            font-family: var(--font-body);
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+        }
+
+        .info-grid {
+            display: grid;
+            gap: 3rem;
+        }
+
+        .exp-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--expand-fill);
+            font-size: 1.125rem;
+        }
+
+        .exp-row .year {
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            white-space: nowrap;
+        }
+
+        /* ── FOOTER ── */
+        .site-footer {
+            max-width: var(--content-max);
+            margin: 64px auto 0;
+            padding: 0 var(--content-pad) 3rem;
+        }
+
+        .main-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 2rem;
+            font-size: 1rem;
+            line-height: normal;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.25rem 1rem;
+        }
+
+        .footer-links a {
+            color: var(--home-text-color);
+            opacity: 0.4;
+            text-decoration: none;
+            transition: opacity 0.15s;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            text-decoration: underline;
+            text-underline-offset: 0.16em;
+        }
+
+        .lang-switch {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            padding: 3px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .lang-switch a,
+        .lang-switch button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 2rem;
+            height: 1.5rem;
+            padding: 0 0.45rem;
+            border-radius: 6px;
+            border: none;
+            font: inherit;
+            font-size: 0.875rem;
+            line-height: 1;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.42);
+            background: none;
+            cursor: none;
+            appearance: none;
+            -webkit-appearance: none;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .lang-switch a:hover,
+        .lang-switch button:hover:not(.active) {
+            color: var(--home-text-color);
+        }
+
+        .lang-switch .active {
+            background: rgba(255, 255, 255, 0.14);
+            color: var(--home-text-color);
+        }
+
+        .cross-grid {
+            display: grid;
+            grid-template-columns: repeat(var(--cross-cols), 1fr);
+            gap: 0;
+            width: 100%;
+            user-select: none;
+        }
+
+        .cross-grid span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            aspect-ratio: 1;
+            line-height: 1;
+            color: var(--color-text-muted);
+            transition: color 0.9s ease, opacity 0.6s ease;
+            cursor: default;
+            --dot-duration: 3.2s;
+            --dot-delay: 0s;
+        }
+
+        .cross-grid span::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+            transform: scale(0.25);
+            transform-origin: center;
+            backface-visibility: hidden;
+            will-change: transform;
+            animation: dot-pulse var(--dot-duration) cubic-bezier(0.37, 0, 0.63, 1) infinite;
+            animation-delay: var(--dot-delay);
+        }
+
+        @keyframes dot-pulse {
+            0%, 100% {
+                transform: scale(0.25);
+            }
+            50% {
+                transform: scale(1);
+            }
+        }
+
+        .cross-grid.hovered span {
+            color: var(--color-text-muted) !important;
+        }
+
+        .cross-grid.show-time.hovered span {
+            color: inherit;
+        }
+
+        .cross-grid.show-time span.time-on {
+            color: var(--home-text-color) !important;
+            opacity: 1 !important;
+        }
+
+        .cross-grid.show-time span.time-on::before {
+            transform: scale(1);
+            animation: none;
+            transition: transform 0.55s cubic-bezier(0.37, 0, 0.63, 1), opacity 0.55s ease;
+        }
+
+        .cross-grid.show-time span:not(.time-on) {
+            color: var(--color-text-muted) !important;
+            opacity: 0.12 !important;
+        }
+
+        .cross-grid.show-time span:not(.time-on)::before {
+            transform: scale(0.25);
+            animation: none;
+            transition: transform 0.55s cubic-bezier(0.37, 0, 0.63, 1), opacity 0.55s ease;
+        }
+
+        @media (max-width: 600px) {
+            .cross-grid span::before {
+                animation-duration: calc(var(--dot-duration) * 1.05);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .cross-grid span::before {
+                transform: scale(0.5);
+                animation: none;
+            }
+        }
+
+        /* ── CURSOR (emilycampbell.co) ── */
+        .contextual-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0;
+            will-change: transform;
+            transition: opacity 0.15s ease;
+            display: none;
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            body .contextual-cursor { display: block; }
+            html,
+            html * {
+                cursor: none !important;
+            }
+        }
+
+        .contextual-cursor[data-visible="true"] {
+            opacity: 1;
+        }
+
+        .contextual-cursor__dot {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--btn-bg);
+            transform: translate(-50%, -50%);
+            transition:
+                opacity 0.15s ease,
+                transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1),
+                width 0.22s cubic-bezier(0.2, 0.8, 0.2, 1),
+                height 0.22s cubic-bezier(0.2, 0.8, 0.2, 1),
+                border-radius 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .contextual-cursor__special {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 30px;
+            height: 30px;
+            max-width: none;
+            max-height: none;
+            pointer-events: none;
+            user-select: none;
+            -webkit-user-drag: none;
+            transform: translate(-8px, -8px);
+            filter: invert(1);
+            opacity: 0;
+        }
+
+        .contextual-cursor[data-mode="special"] {
+            mix-blend-mode: difference;
+        }
+
+        .contextual-cursor[data-mode="special"] .contextual-cursor__special {
+            opacity: 1;
+        }
+
+        .contextual-cursor[data-mode="special"] .contextual-cursor__dot {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.4);
+        }
+
+        .contextual-cursor[data-mode="text"] .contextual-cursor__dot {
+            border-radius: 1px;
+            width: 2px;
+            height: 1.05em;
+            min-height: 18px;
+            max-height: 26px;
+            background: var(--home-text-color);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .contextual-cursor,
+            .contextual-cursor__dot {
+                transition: none;
+            }
+        }
+
+        @media (min-width: 641px) {
+            :root { --content-pad: 1.5rem; }
+        }
+
+        @media (max-width: 400px) {
+            :root { --content-pad: 0.75rem; }
+            .content-area { font-size: 1.2rem; line-height: 150%; }
+            .idecard { font-size: 0.5em; }
+            .idecard-phrase { min-width: 14ch; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="bgCanvas" aria-hidden="true"></canvas>
+    <div class="film-grain" aria-hidden="true"></div>
+    <div class="inner-shadow" aria-hidden="true"></div>
+
+    <div class="app" id="app">
+        <div class="page-wrap">
+            <main class="page active" id="page-home" data-page="home">
+                <h1 class="sr-only" id="srTitle">Андрей Антошкин — дизайнер</h1>
+                <div class="content-area">
+                    <div id="homeProse">
+                        <div class="prose-block">
+                            <span class="em-wrap">
+                                <span class="expand-word" data-no-fill="true">Привет.</span><span> </span>
+                            </span>
+                        </div>
+                        <div class="prose-block">
+                            <span>Я&nbsp;— </span>
+                            <span style="white-space: nowrap;">
+                                <span>Андрей Антошкин </span>
+                                <span class="comp-interactive">
+                                    <span class="photo-wrap" id="photoWrap">
+                                        <span class="photo-inner">
+                                            <img class="photo-tilt" src="../assets/avatar.png" alt="" width="48" height="48">
+                                        </span>
+                                    </span>
+                                </span><span>,</span>
+                            </span><span> </span><span class="expand-word" data-reveal="products" id="expandProducts">дизайнер</span><span>. Создаю </span><span>продукты</span><span>, </span><span>дизайн&#8209;системы</span><span> и&nbsp;</span><span class="expand-word" data-reveal="tools" id="expandTools">инструменты</span><span>, которые связывают дизайн и&nbsp;код.</span>
+                        </div>
+                        <div class="prose-block prose-reveal" id="reveal-products" aria-hidden="true">
+                            <div class="prose-reveal-inner">
+                                <span class="lightpull-line" data-cursor-text="true">Мне интересно не&nbsp;просто проектировать интерфейсы, а&nbsp;влиять на&nbsp;то, как они создаются: через дизайн&#8209;системы, инструменты, код и&nbsp;автоматизацию. Особенно сейчас, когда AI меняет не&nbsp;только отдельные задачи, но&nbsp;и&nbsp;сам процесс работы над продуктом.</span>
+                            </div>
+                        </div>
+                        <div class="prose-block prose-reveal" id="reveal-tools" aria-hidden="true">
+                            <div class="prose-reveal-inner">
+                                <span>Параллельно создаю собственные проекты и&nbsp;open&#8209;source инструменты для дизайнеров и&nbsp;разработчиков. Меня особенно вдохновляют инструменты, с&nbsp;которыми дизайнеры и&nbsp;разработчики работают из&nbsp;одной спецификации.</span>
+                                <span class="project-line"><span>Среди них&nbsp;— </span><a class="project-chip" href="https://antoshkin.tech/ds-health/" target="_blank" rel="noopener" style="--chip-color:#5eead4" data-tooltip="Веб&#8209;инструмент для оценки «здоровья» дизайн&#8209;системы. Анализирует живой продукт по&nbsp;URL и&nbsp;помогает находить проблемы консистентности, масштабируемости и&nbsp;качества интерфейсов."><span class="project-chip-label">ds&#8209;health</span><span class="project-chip-marquee" aria-hidden="true"><span class="project-chip-marquee-track"></span></span></a><span>, </span><a class="project-chip" href="https://antoshkin.tech/figma-to-design-md/" target="_blank" rel="noopener" style="--chip-color:#c084fc" data-tooltip="CLI&#8209;инструмент, который извлекает переменные, стили и&nbsp;компоненты из&nbsp;Figma и&nbsp;преобразует их&nbsp;в&nbsp;структурированные markdown&#8209;спецификации для AI&#8209;агентов и&nbsp;документации."><span class="project-chip-label">figma&#8209;to&#8209;design&#8209;md</span><span class="project-chip-marquee" aria-hidden="true"><span class="project-chip-marquee-track"></span></span></a><span>, </span><a class="project-chip" href="https://antoshkin.tech/design-system-ai-starter/" target="_blank" rel="noopener" style="--chip-color:#60a5fa" data-tooltip="Инструмент для генерации AI&#8209;friendly спецификаций дизайн&#8209;систем на&nbsp;основе существующих токенов, компонентов и&nbsp;правил."><span class="project-chip-label">design&#8209;system&#8209;ai&#8209;starter</span><span class="project-chip-marquee" aria-hidden="true"><span class="project-chip-marquee-track"></span></span></a><span>, </span><a class="project-chip" href="https://antoshkin.tech/spektr/" target="_blank" rel="noopener" style="--chip-color:#fb923c" data-tooltip="Инструмент инспекции интерфейсов. Позволяет быстро просматривать отступы, типографику, цвета и&nbsp;другие параметры элементов прямо в&nbsp;браузере."><span class="project-chip-label">spektr</span><span class="project-chip-marquee" aria-hidden="true"><span class="project-chip-marquee-track"></span></span></a><span>, </span><a class="project-chip" href="https://antoshkin.tech/ds-lint/" target="_blank" rel="noopener" style="--chip-color:#facc15" data-tooltip="Линтер дизайн&#8209;систем, который находит захардкоженные значения цветов, отступов и&nbsp;типографики и&nbsp;предлагает заменить их&nbsp;на&nbsp;токены."><span class="project-chip-label">ds&#8209;lint</span><span class="project-chip-marquee" aria-hidden="true"><span class="project-chip-marquee-track"></span></span></a><span> и&nbsp;</span><a class="project-chip" href="https://antoshkin.tech/ds-coverage/" target="_blank" rel="noopener" style="--chip-color:#4ade80" data-tooltip="Инструмент аналитики использования дизайн&#8209;системы. Показывает, какие компоненты используются в&nbsp;продукте, где появляются дубликаты и&nbsp;какие элементы требуют внимания."><span class="project-chip-label">ds&#8209;coverage</span><span class="project-chip-marquee" aria-hidden="true"><span class="project-chip-marquee-track"></span></span></a><span>.</span></span>
+                            </div>
+                        </div>
+                        <div class="prose-block">
+                            <span>Большую часть </span><span class="expand-word" data-reveal="design-systems" id="expandDesignSystems">карьеры</span><span> я&nbsp;решаю системные задачи в&nbsp;продуктовых командах. Мне интересно не&nbsp;только </span><span class="tool-word">проектировать</span><span> интерфейсы, но&nbsp;и&nbsp;улучшать процесс их&nbsp;создания&nbsp;— с&nbsp;помощью дизайн&#8209;систем, кода, </span><span class="expand-word" data-reveal="ai" id="expandChanged">AI</span><span> и&nbsp;</span><span class="macro-word">автоматизации</span><span>.</span>
+                        </div>
+                        <div class="prose-block prose-reveal" id="reveal-design-systems" aria-hidden="true">
+                            <div class="prose-reveal-inner">
+                                <span>Сейчас развиваю дизайн&#8209;систему в&nbsp;</span><a class="contact-link" href="https://yandex.ru" target="_blank" rel="noopener">Яндекс HR Tech</a><span>&nbsp;— от&nbsp;библиотек компонентов и&nbsp;токенов до&nbsp;документации, кода и&nbsp;AI&#8209;подходов в&nbsp;работе команды. До&nbsp;этого занимался дизайн&#8209;системами в&nbsp;</span><a class="contact-link" href="https://www.sber.ru" target="_blank" rel="noopener">Сбере</a><span> и&nbsp;проектировал продукты в&nbsp;«Открытии Брокер» и&nbsp;МТС.</span>
+                            </div>
+                        </div>
+                        <div class="prose-block prose-reveal" id="reveal-ai" aria-hidden="true">
+                            <div class="prose-reveal-inner">
+                                <span>AI стал для меня частью этого процесса. Я&nbsp;проектирую в&nbsp;Figma, пишу код и&nbsp;собираю свои продукты с&nbsp;<span class="brand-inline"><span class="brand-inline__mark brand-inline__mark--claude" aria-hidden="true"><img src="../assets/claude-mark.svg" alt=""></span>Claude</span>, <span class="brand-inline"><span class="brand-inline__mark brand-inline__mark--cursor" aria-hidden="true"><img src="../assets/cursor-mark.svg" alt=""></span>Cursor</span> и&nbsp;другими инструментами&nbsp;— не&nbsp;ради эксперимента, а&nbsp;чтобы быстрее проверять идеи и&nbsp;доводить их&nbsp;до&nbsp;рабочего состояния.</span>
+                            </div>
+                        </div>
+                        <div class="prose-block" id="meetBlock">
+                            <span class="expand-word" data-reveal="meet" id="meetLine">Буду рад познакомиться.</span><span class="meet-extra" id="meetInline" hidden> Помимо работы люблю горные лыжи&nbsp;⛷️, путешествия&nbsp;✈️ и&nbsp;проводить время с&nbsp;семьёй&nbsp;👨‍👩‍👧.</span>
+                        </div>
+                        <div class="prose-block prose-reveal" id="reveal-meet" aria-hidden="true">
+                            <div class="prose-reveal-inner">
+                                <span>Открыт к&nbsp;общению, особенно если вам интересны AI, дизайн&#8209;системы или продуктовая разработка. Напишите мне в&nbsp;</span><a class="contact-link" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Telegram</a><span> или на&nbsp;</span><a class="contact-link" href="mailto:andrew.antoshkin@gmail.com">почту</a><span>.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <main class="page" id="page-work" data-page="work">
+                <div class="section-page" id="workSection">
+                    <h1>Проекты</h1>
+                    <div class="work-grid">
+                        <a class="work-card" href="https://antoshkin.tech/ds-health/" target="_blank" rel="noopener"><span class="badge">repo</span><h3>ds-health</h3><p>Веб&#8209;инструмент для оценки «здоровья» дизайн&#8209;системы. Анализирует живой продукт по&nbsp;URL и&nbsp;помогает находить проблемы консистентности, масштабируемости и&nbsp;качества интерфейсов.</p></a>
+                        <a class="work-card" href="https://antoshkin.tech/figma-to-design-md/" target="_blank" rel="noopener"><span class="badge">tool</span><h3>figma-to-design-md</h3><p>CLI&#8209;инструмент, который извлекает переменные, стили и&nbsp;компоненты из&nbsp;Figma и&nbsp;преобразует их&nbsp;в&nbsp;markdown&#8209;спецификации для AI&#8209;агентов и&nbsp;документации.</p></a>
+                        <a class="work-card" href="https://antoshkin.tech/design-system-ai-starter/" target="_blank" rel="noopener"><span class="badge">cli</span><h3>design-system-ai-starter</h3><p>Генерация AI&#8209;friendly спецификаций дизайн&#8209;систем на&nbsp;основе существующих токенов, компонентов и&nbsp;правил.</p></a>
+                        <a class="work-card" href="https://antoshkin.tech/spektr" target="_blank" rel="noopener"><span class="badge">react</span><h3>spektr</h3><p>Инструмент инспекции интерфейсов: отступы, типографика, цвета и&nbsp;другие параметры элементов прямо в&nbsp;браузере.</p></a>
+                        <a class="work-card" href="https://antoshkin.tech/ds-lint/" target="_blank" rel="noopener"><span class="badge">cli</span><h3>ds-lint</h3><p>Линтер дизайн&#8209;систем: находит захардкоженные значения цветов, отступов и&nbsp;типографики и&nbsp;предлагает заменить их&nbsp;на&nbsp;токены.</p></a>
+                        <a class="work-card" href="https://antoshkin.tech/ds-coverage/" target="_blank" rel="noopener"><span class="badge">cli</span><h3>ds-coverage</h3><p>Аналитика использования дизайн&#8209;системы: какие компоненты используются, где дубликаты и&nbsp;что требует внимания.</p></a>
+                    </div>
+                </div>
+            </main>
+
+            <main class="page" id="page-writing" data-page="writing">
+                <div class="section-page" id="writingSection">
+                    <h1>Статьи</h1>
+                    <ul class="writing-list">
+                        <li><a href="../cursor-figma.html"><span class="title">Cursor + Figma: настройка окружения для дизайнера</span><span class="tags">cursor · figma · mcp</span></a></li>
+                        <li><a href="../design-md.html"><span class="title">Design.md: как описать дизайн&#8209;систему для AI&#8209;агентов</span><span class="tags">design · agents · rules</span></a></li>
+                        <li><a href="../dev-for-designers.html"><span class="title">Зачем дизайнеру в&nbsp;дизайн&#8209;системах разбираться в&nbsp;разработке</span><span class="tags">design systems · development</span></a></li>
+                    </ul>
+                </div>
+            </main>
+
+            <main class="page" id="page-info" data-page="info">
+                <div class="section-page info-grid" id="infoSection">
+                    <div>
+                        <h1>Опыт</h1>
+                        <div class="exp-row"><div><strong>Яндекс</strong><br>Product Designer — Design Systems</div><span class="year">Сейчас</span></div>
+                        <div class="exp-row"><div><strong>Сбер</strong><br>Design System Lead</div><span class="year">2021 — 2025</span></div>
+                        <div class="exp-row"><div><strong>Открытие Брокер</strong><br>Senior Product Designer</div><span class="year">2020 — 2021</span></div>
+                        <div class="exp-row"><div><strong>МТС</strong><br>Product Designer</div><span class="year">2019 — 2020</span></div>
+                    </div>
+                    <div>
+                        <h1>Контакты</h1>
+                        <p style="font-size:1.25rem;line-height:2;font-weight:300;">
+                            <a class="contact-link" href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a><br>
+                            <a class="contact-link" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Telegram @andrewaitken</a><br>
+                            <a class="contact-link" href="https://github.com/AndrewAntoshkin" target="_blank" rel="noopener">GitHub</a><br>
+                            <a class="contact-link" href="https://t.me/aiantoshkin" target="_blank" rel="noopener">Канал @aiantoshkin</a>
+                        </p>
+                        <p style="margin-top:1.5rem;font-size:1.125rem;font-weight:300;color:var(--color-text-muted);">
+                            Design Engineer. Создаю цифровые продукты, дизайн&#8209;системы и&nbsp;AI&#8209;инструменты на&nbsp;стыке дизайна и&nbsp;разработки.
+                        </p>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <footer class="site-footer">
+            <div class="cross-grid" id="crossGrid" aria-hidden="true" aria-live="polite"></div>
+            <div class="main-footer">
+                <nav class="footer-links" id="footerLinks" aria-label="Контакты">
+                    <a href="https://t.me/andrewaitken" target="_blank" rel="noopener noreferrer">Telegram</a>
+                    <a href="https://github.com/AndrewAntoshkin" target="_blank" rel="noopener noreferrer">GitHub</a>
+                </nav>
+                <div class="lang-switch" id="langSwitch" role="group" aria-label="Язык">
+                    <button type="button" class="active" data-lang="ru" aria-pressed="true">Ru</button>
+                    <button type="button" data-lang="en" aria-pressed="false">En</button>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div class="contextual-cursor" id="cursor" data-visible="false" data-mode="dot" aria-hidden="true">
+        <div class="contextual-cursor__dot"></div>
+        <img class="contextual-cursor__special" src="../assets/cursor-sm.svg" alt="" width="30" height="30">
+    </div>
+    <div class="project-tooltip" id="projectTooltip" hidden aria-hidden="true"></div>
+    <div class="tool-word-toast" id="toolWordToast" hidden aria-live="polite">
+        <span class="tool-word-toast__label">Detached</span>
+        <svg class="tool-word-toast__icon" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <circle cx="9" cy="9" r="8" fill="#9bd1ee"/>
+            <path d="M5.5 9.1L7.8 11.4L12.6 6.6" stroke="#13274e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </div>
+
+    <script src="magnetic-words.js"></script>
+    <script>
+    (() => {
+        const SOUNDS = {
+            open: '../assets/sounds/open.wav',
+            click: '../assets/sounds/click.wav',
+            flipper: '../assets/sounds/flipper2s.mp3',
+            keys: '../assets/sounds/keys.wav',
+        };
+
+        const COPY = {
+            ru: {
+                meta: {
+                    title: 'Андрей Антошкин — Design Engineer',
+                    description: 'Design Engineer. Дизайн-системы, AI-инструменты и инфраструктура на стыке дизайна и разработки.',
+                    srOnly: 'Андрей Антошкин — дизайнер',
+                },
+                footerNav: 'Контакты',
+                langLabel: 'Язык',
+                infoChannel: 'Канал @aiantoshkin',
+                infoBio: 'Design Engineer. Создаю цифровые продукты, дизайн\u2011системы и\u00a0AI\u2011инструменты на\u00a0стыке дизайна и\u00a0разработки.',
+                infoPresent: 'Сейчас',
+                ideLines: [
+                    '~как люди работают',
+                    '~потоки информации',
+                    '~смысл работы',
+                    '~структура команды',
+                    '~карьерный путь',
+                ],
+                slotWord: 'технологии',
+                slotCharset: 'абвгдежзийклмнопрстуфхцчшщъыьэюя',
+            },
+            en: {
+                meta: {
+                    title: 'Andrew Antoshkin — Design Engineer',
+                    description: 'Design Engineer. Design systems, AI tools, and infrastructure at the intersection of design and development.',
+                    srOnly: 'Andrew Antoshkin — designer',
+                },
+                footerNav: 'Contacts',
+                langLabel: 'Language',
+                infoChannel: 'Channel @aiantoshkin',
+                infoBio: 'Design Engineer. I build digital products, design\u2011systems, and AI tools at the intersection of design and development.',
+                infoPresent: 'Present',
+                ideLines: [
+                    '~how people work',
+                    '~information flows',
+                    '~meaning of work',
+                    '~team structure',
+                    '~career path',
+                ],
+                slotWord: 'technology',
+                slotCharset: 'abcdefghijklmnopqrstuvwxyz',
+                homeHtml: `<div class="prose-block"><span class="em-wrap"><span class="expand-word" data-no-fill="true">Hello.</span><span> </span></span></div><div class="prose-block"><span>I&rsquo;m </span><span style="white-space: nowrap;"><span>Andrew Antoshkin </span><span class="comp-interactive"><span class="photo-wrap" id="photoWrap"><span class="photo-inner"><img class="photo-tilt" src="../assets/avatar.png" alt="" width="48" height="48"></span></span></span><span>,</span></span><span> a </span><span class="expand-word" data-reveal="products" id="expandProducts">designer</span><span>. I build </span><span>products</span><span>, </span><span>design&#8209;systems</span><span>, and </span><span class="expand-word" data-reveal="tools" id="expandTools">tools</span><span> that connect design and code.</span></div><div class="prose-block prose-reveal" id="reveal-products" aria-hidden="true"><div class="prose-reveal-inner"><span class="lightpull-line" data-cursor-text="true">I&rsquo;m interested not just in designing interfaces, but in shaping how they get built: through design systems, tools, code, and automation. Especially now, as AI changes not only individual tasks, but the product development process itself.</span></div></div><div class="prose-block prose-reveal" id="reveal-tools" aria-hidden="true"><div class="prose-reveal-inner"><span>Alongside that, I build personal projects and open-source tools for designers and developers. I&rsquo;m especially drawn to tools that let designers and developers work from the same spec.</span><span class="project-line"><span>Among them&nbsp;&mdash; </span><a class="project-chip" href="https://antoshkin.tech/ds-health/" target="_blank" rel="noopener" style="--chip-color:#5eead4" data-tooltip="Web tool for assessing design system health. Analyzes a live product by URL and helps find consistency, scalability, and interface quality issues."><span class="project-chip-label">ds&#8209;health</span><span class="project-chip-marquee" aria-hidden="true"><span class="project-chip-marquee-track"></span></span></a><span>, </span><a class="project-chip" href="https://antoshkin.tech/figma-to-design-md/" target="_blank" rel="noopener" style="--chip-color:#c084fc" data-tooltip="CLI tool that extracts variables, styles, and components from Figma and converts them into structured markdown specs for AI agents and documentation."><span class="project-chip-label">figma&#8209;to&#8209;design&#8209;md</span><span class="project-chip-marquee" aria-hidden="true"><span class="project-chip-marquee-track"></span></span></a><span>, </span><a class="project-chip" href="https://antoshkin.tech/design-system-ai-starter/" target="_blank" rel="noopener" style="--chip-color:#60a5fa" data-tooltip="Tool for generating AI-friendly design system specs from existing tokens, components, and rules."><span class="project-chip-label">design&#8209;system&#8209;ai&#8209;starter</span><span class="project-chip-marquee" aria-hidden="true"><span class="project-chip-marquee-track"></span></span></a><span>, </span><a class="project-chip" href="https://antoshkin.tech/spektr/" target="_blank" rel="noopener" style="--chip-color:#fb923c" data-tooltip="Interface inspection tool. Quickly view spacing, typography, colors, and other element properties right in the browser."><span class="project-chip-label">spektr</span><span class="project-chip-marquee" aria-hidden="true"><span class="project-chip-marquee-track"></span></span></a><span>, </span><a class="project-chip" href="https://antoshkin.tech/ds-lint/" target="_blank" rel="noopener" style="--chip-color:#facc15" data-tooltip="Design system linter that finds hardcoded color, spacing, and typography values and suggests replacing them with tokens."><span class="project-chip-label">ds&#8209;lint</span><span class="project-chip-marquee" aria-hidden="true"><span class="project-chip-marquee-track"></span></span></a><span> and </span><a class="project-chip" href="https://antoshkin.tech/ds-coverage/" target="_blank" rel="noopener" style="--chip-color:#4ade80" data-tooltip="Design system usage analytics. Shows which components are used in a product, where duplicates appear, and what needs attention."><span class="project-chip-label">ds&#8209;coverage</span><span class="project-chip-marquee" aria-hidden="true"><span class="project-chip-marquee-track"></span></span></a><span>.</span></span></div></div><div class="prose-block"><span>For most of my </span><span class="expand-word" data-reveal="design-systems" id="expandDesignSystems">career</span><span>, I&rsquo;ve worked on systemic challenges within product teams. I&rsquo;m interested not only in </span><span class="tool-word">designing</span><span> interfaces, but also in improving how they are created&nbsp;&mdash; through design systems, code, </span><span class="expand-word" data-reveal="ai" id="expandChanged">AI</span><span>, and </span><span class="macro-word">automation</span><span>.</span></div><div class="prose-block prose-reveal" id="reveal-design-systems" aria-hidden="true"><div class="prose-reveal-inner"><span>I currently grow the design system at </span><a class="contact-link" href="https://yandex.ru" target="_blank" rel="noopener">Yandex HR Tech</a><span>&nbsp;&mdash; from component libraries and tokens to documentation, code, and AI-driven workflows for the team. Before that, I led design systems at </span><a class="contact-link" href="https://www.sber.ru" target="_blank" rel="noopener">Sber</a><span> and designed products at Otkritie Broker and MTS.</span></div></div><div class="prose-block prose-reveal" id="reveal-ai" aria-hidden="true"><div class="prose-reveal-inner"><span>AI has become part of that process for me. I design in Figma, write code, and build my own products with <span class="brand-inline"><span class="brand-inline__mark brand-inline__mark--claude" aria-hidden="true"><img src="../assets/claude-mark.svg" alt=""></span>Claude</span>, <span class="brand-inline"><span class="brand-inline__mark brand-inline__mark--cursor" aria-hidden="true"><img src="../assets/cursor-mark.svg" alt=""></span>Cursor</span>, and other tools&nbsp;&mdash; not for the sake of experimenting, but to test ideas faster and bring them to a working state.</span></div></div><div class="prose-block" id="meetBlock"><span class="expand-word" data-reveal="meet" id="meetLine">I&rsquo;d be glad to meet.</span><span class="meet-extra" id="meetInline" hidden> Besides work, I love skiing&nbsp;⛷️, travel&nbsp;✈️, and spending time with my family&nbsp;👨‍👩‍👧.</span></div><div class="prose-block prose-reveal" id="reveal-meet" aria-hidden="true"><div class="prose-reveal-inner"><span>I&rsquo;m open to connecting, especially if you&rsquo;re interested in AI, design systems, or product development. Reach me on </span><a class="contact-link" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Telegram</a><span> or by </span><a class="contact-link" href="mailto:andrew.antoshkin@gmail.com">email</a><span>.</span></div></div>`,
+                workHtml: `<h1>Projects</h1><div class="work-grid"><a class="work-card" href="https://antoshkin.tech/ds-health/" target="_blank" rel="noopener"><span class="badge">repo</span><h3>ds-health</h3><p>Web tool for assessing design system health. Analyzes a live product by URL and helps find consistency, scalability, and interface quality issues.</p></a><a class="work-card" href="https://antoshkin.tech/figma-to-design-md/" target="_blank" rel="noopener"><span class="badge">tool</span><h3>figma-to-design-md</h3><p>CLI tool that extracts variables, styles, and components from Figma and converts them into markdown specs for AI agents and documentation.</p></a><a class="work-card" href="https://antoshkin.tech/design-system-ai-starter/" target="_blank" rel="noopener"><span class="badge">cli</span><h3>design-system-ai-starter</h3><p>Generates AI-friendly design system specs from existing tokens, components, and rules.</p></a><a class="work-card" href="https://antoshkin.tech/spektr" target="_blank" rel="noopener"><span class="badge">react</span><h3>spektr</h3><p>Interface inspection tool: spacing, typography, colors, and other element properties right in the browser.</p></a><a class="work-card" href="https://antoshkin.tech/ds-lint/" target="_blank" rel="noopener"><span class="badge">cli</span><h3>ds-lint</h3><p>Design system linter that finds hardcoded color, spacing, and typography values and suggests replacing them with tokens.</p></a><a class="work-card" href="https://antoshkin.tech/ds-coverage/" target="_blank" rel="noopener"><span class="badge">cli</span><h3>ds-coverage</h3><p>Design system usage analytics: which components are used, where duplicates appear, and what needs attention.</p></a></div>`,
+                writingHtml: `<h1>Writing</h1><ul class="writing-list"><li><a href="../cursor-figma.html"><span class="title">Cursor + Figma: setting up the environment for a designer</span><span class="tags">cursor · figma · mcp</span></a></li><li><a href="../design-md.html"><span class="title">Design.md: how to describe a design system for AI agents</span><span class="tags">design · agents · rules</span></a></li><li><a href="../dev-for-designers.html"><span class="title">Why designers working on design systems should understand development</span><span class="tags">design systems · development</span></a></li></ul>`,
+                infoHtml: `<div><h1>Experience</h1><div class="exp-row"><div><strong>Yandex</strong><br>Product Designer — Design Systems</div><span class="year">Present</span></div><div class="exp-row"><div><strong>Sber</strong><br>Design System Lead</div><span class="year">2021 — 2025</span></div><div class="exp-row"><div><strong>Otkritie Broker</strong><br>Senior Product Designer</div><span class="year">2020 — 2021</span></div><div class="exp-row"><div><strong>MTS</strong><br>Product Designer</div><span class="year">2019 — 2020</span></div></div><div><h1>Contacts</h1><p style="font-size:1.25rem;line-height:2;font-weight:300;"><a class="contact-link" href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a><br><a class="contact-link" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Telegram @andrewaitken</a><br><a class="contact-link" href="https://github.com/AndrewAntoshkin" target="_blank" rel="noopener">GitHub</a><br><a class="contact-link" href="https://t.me/aiantoshkin" target="_blank" rel="noopener">Channel @aiantoshkin</a></p><p style="margin-top:1.5rem;font-size:1.125rem;font-weight:300;color:var(--color-text-muted);">Design Engineer. I build digital products, design&#8209;systems, and AI tools at the intersection of design and development.</p></div>`,
+            },
+        };
+
+        function captureRuTemplates() {
+            COPY.ru.homeHtml = document.getElementById('homeProse').innerHTML;
+            COPY.ru.workHtml = document.getElementById('workSection').innerHTML;
+            COPY.ru.writingHtml = document.getElementById('writingSection').innerHTML;
+            COPY.ru.infoHtml = document.getElementById('infoSection').innerHTML;
+        }
+
+        let currentLang = 'ru';
+        let IDE_LINES = COPY.ru.ideLines;
+        let SLOT_WORD = COPY.ru.slotWord;
+        let SLOT_CHARSET = COPY.ru.slotCharset;
+        let ideIdx = 0;
+        const revealed = new Set();
+
+        const body = document.body;
+        const html = document.documentElement;
+        const app = document.getElementById('app');
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function playSound(name, volume = 0.5) {
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            const src = SOUNDS[name];
+            if (!src) return;
+            const a = new Audio(src);
+            a.volume = volume;
+            a.play().catch(() => {});
+        }
+
+        let hoverClickAudio = null;
+        function playHoverClick() {
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            if (!hoverClickAudio) {
+                hoverClickAudio = new Audio(SOUNDS.click);
+                hoverClickAudio.volume = 0.7;
+            }
+            hoverClickAudio.currentTime = 0;
+            hoverClickAudio.play().catch(() => {});
+        }
+
+        function haptic() {
+            if (!navigator.vibrate) return;
+            navigator.vibrate([40, 30, 40, 30, 50]);
+        }
+
+        /* Background canvas — dark atmospheric */
+        const blobs = Array.from({ length: 6 }, (_, i) => ({
+            x: Math.random(),
+            y: Math.random(),
+            r: 0.15 + Math.random() * 0.2,
+            vx: (Math.random() - 0.5) * 0.0003,
+            vy: (Math.random() - 0.5) * 0.0003,
+            phase: i,
+        }));
+
+        const BG_COLORS = ['#0a0d18', '#12182a', '#1a2238'];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth * devicePixelRatio;
+            canvas.height = window.innerHeight * devicePixelRatio;
+            canvas.style.width = window.innerWidth + 'px';
+            canvas.style.height = window.innerHeight + 'px';
+            ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+        }
+
+        function drawBg() {
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            const colors = BG_COLORS;
+            const g = ctx.createLinearGradient(0, 0, w, h);
+            g.addColorStop(0, colors[0]);
+            g.addColorStop(1, colors[1]);
+            ctx.fillStyle = g;
+            ctx.fillRect(0, 0, w, h);
+            blobs.forEach((b) => {
+                const cx = (b.x + Math.sin(Date.now() * 0.0002 + b.phase) * 0.05) * w;
+                const cy = (b.y + Math.cos(Date.now() * 0.00015 + b.phase) * 0.05) * h;
+                const r = b.r * Math.min(w, h);
+                const rg = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+                rg.addColorStop(0, colors[2] + '55');
+                rg.addColorStop(1, 'transparent');
+                ctx.fillStyle = rg;
+                ctx.beginPath();
+                ctx.arc(cx, cy, r, 0, Math.PI * 2);
+                ctx.fill();
+                b.x += b.vx;
+                b.y += b.vy;
+                if (b.x < 0 || b.x > 1) b.vx *= -1;
+                if (b.y < 0 || b.y > 1) b.vy *= -1;
+            });
+        }
+
+        let animId;
+        function loop() {
+            drawBg();
+            animId = requestAnimationFrame(loop);
+        }
+
+        /* Custom cursor — matches emilycampbell.co special hover */
+        const cursor = document.getElementById('cursor');
+        let cursorVisible = false;
+        let expandWordTarget = null;
+
+        const CURSOR_SPECIAL_SELECTOR = 'a[href], button, .expand-word:not([data-no-fill]), .project-chip, .slot-wrap, .em-wrap, .idecard, .photo-wrap, .work-card, .writing-list a, .contact-link, .lang-switch button, .magnetic-word, .tool-word, .macro-word';
+
+        function moveCursor(e) {
+            cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+            if (!cursorVisible) {
+                cursorVisible = true;
+                cursor.dataset.visible = 'true';
+            }
+
+            const target = e.target instanceof Element ? e.target : null;
+            const expandWord = target?.closest('.expand-word');
+            const expandInteractive = expandWord instanceof HTMLElement && !expandWord.hasAttribute('data-no-fill')
+                ? expandWord
+                : null;
+
+            if (expandInteractive !== expandWordTarget) {
+                if (expandInteractive) {
+                    const r = expandInteractive.getBoundingClientRect();
+                    expandInteractive.style.setProperty('--enter-x', `${e.clientX - r.left}px`);
+                    expandInteractive.style.setProperty('--enter-y', `${e.clientY - r.top}px`);
+                }
+                expandWordTarget = expandInteractive;
+            } else if (expandInteractive) {
+                const r = expandInteractive.getBoundingClientRect();
+                expandInteractive.style.setProperty('--enter-x', `${e.clientX - r.left}px`);
+                expandInteractive.style.setProperty('--enter-y', `${e.clientY - r.top}px`);
+            }
+
+            const isSpecial = !!target?.closest(CURSOR_SPECIAL_SELECTOR);
+            const isText = !!target?.closest('.lightpull-line[data-cursor-text]');
+            cursor.dataset.mode = isSpecial ? 'special' : isText ? 'text' : 'dot';
+        }
+
+        function hideCursor() {
+            cursorVisible = false;
+            cursor.dataset.visible = 'false';
+            expandWordTarget = null;
+        }
+
+        document.addEventListener('mousemove', moveCursor, { passive: true });
+        document.documentElement.addEventListener('mouseleave', hideCursor);
+
+        /* Project chips — marquee + tooltips */
+        const projectTooltip = document.getElementById('projectTooltip');
+        let projectTooltipTimer;
+        let projectTooltipChip = null;
+
+        function formatTooltipText(text) {
+            const trimmed = text.trim();
+            if (!trimmed) return trimmed;
+            return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
+        }
+
+        function positionProjectTooltip(el) {
+            const r = el.getBoundingClientRect();
+            projectTooltip.style.left = (r.left + r.width / 2) + 'px';
+            projectTooltip.style.top = r.top + 'px';
+
+            const tr = projectTooltip.getBoundingClientRect();
+            let shiftX = 0;
+            if (tr.left < 12) shiftX = 12 - tr.left;
+            else if (tr.right > window.innerWidth - 12) shiftX = window.innerWidth - 12 - tr.right;
+            if (shiftX) {
+                projectTooltip.style.left = (parseFloat(projectTooltip.style.left) + shiftX) + 'px';
+            }
+        }
+
+        function hideProjectTooltip(delay = 120) {
+            clearTimeout(projectTooltipTimer);
+            projectTooltipTimer = setTimeout(() => {
+                if (projectTooltipChip?.matches(':hover')) return;
+                projectTooltip.classList.remove('is-visible');
+                projectTooltipTimer = setTimeout(() => {
+                    if (!projectTooltip.classList.contains('is-visible')) {
+                        projectTooltip.hidden = true;
+                        projectTooltip.setAttribute('aria-hidden', 'true');
+                    }
+                    projectTooltipChip = null;
+                }, 180);
+            }, delay);
+        }
+
+        /* Expand-word reveal */
+        function settlePill(trigger) {
+            if (!trigger?.parentNode) return;
+            trigger.replaceWith(document.createTextNode(trigger.textContent));
+        }
+
+        function showRevealPanel(panel) {
+            const inner = panel.querySelector('.prose-reveal-inner');
+            if (inner) inner.classList.add('is-blurred');
+            panel.classList.add('is-open');
+            panel.removeAttribute('aria-hidden');
+            if (inner) {
+                panel.offsetHeight;
+                inner.classList.remove('is-blurred');
+            }
+        }
+
+        function openReveal(trigger, key) {
+            if (revealed.has(key)) {
+                if (trigger?.parentNode) settlePill(trigger);
+                return;
+            }
+
+            if (trigger.dataset.swap) {
+                revealed.add(key);
+                trigger.textContent = trigger.dataset.swap.replace(/&nbsp;/g, '\u00a0');
+                settlePill(trigger);
+                playSound('open', 0.35);
+                haptic();
+                return;
+            }
+
+            if (key === 'meet') {
+                revealed.add(key);
+                playSound('open', 0.35);
+                haptic();
+                settlePill(trigger);
+                document.querySelectorAll('#meetBlock .meet-extra').forEach((el) => { el.hidden = false; });
+                const panel = document.getElementById('reveal-meet');
+                if (panel) showRevealPanel(panel);
+                return;
+            }
+
+            const panel = document.getElementById('reveal-' + key);
+            if (!panel) return;
+
+            revealed.add(key);
+            playSound('open', 0.35);
+            haptic();
+
+            settlePill(trigger);
+            showRevealPanel(panel);
+        }
+
+        document.querySelector('.content-area').addEventListener('click', (e) => {
+            const el = e.target.closest('.expand-word[data-reveal]');
+            if (!el) return;
+            e.stopPropagation();
+            openReveal(el, el.dataset.reveal);
+        });
+
+        function bindExpandWordHovers() {
+            document.querySelectorAll('.expand-word').forEach((el) => {
+                el.addEventListener('mouseenter', (e) => {
+                    const r = el.getBoundingClientRect();
+                    el.style.setProperty('--enter-x', ((e.clientX - r.left) / r.width * 100) + '%');
+                    el.style.setProperty('--enter-y', ((e.clientY - r.top) / r.height * 100) + '%');
+                    if (!el.hasAttribute('data-no-fill')) playHoverClick();
+                });
+            });
+        }
+
+        function commandsToPath(commands) {
+            return commands.map((cmd) => {
+                switch (cmd.type) {
+                    case 'M': return `M${cmd.x} ${cmd.y}`;
+                    case 'L': return `L${cmd.x} ${cmd.y}`;
+                    case 'Q': return `Q${cmd.x1} ${cmd.y1} ${cmd.x} ${cmd.y}`;
+                    case 'C': return `C${cmd.x1} ${cmd.y1} ${cmd.x2} ${cmd.y2} ${cmd.x} ${cmd.y}`;
+                    case 'Z': return 'Z';
+                    default: return '';
+                }
+            }).join(' ');
+        }
+
+        function warpCommands(source, pointer, config) {
+            const { x: px, y: py } = pointer;
+            const { radius, strength } = config;
+
+            const pull = (x, y) => {
+                const ox = px - x;
+                const oy = py - y;
+                const dist = Math.hypot(ox, oy);
+                if (dist > radius || dist < 0.1) return [x, y];
+                const t = 1 - dist / radius;
+                const force = t * t * strength;
+                return [x + ox * force, y + oy * force];
+            };
+
+            return source.map((cmd) => {
+                const next = { ...cmd };
+                if (next.x != null && next.y != null) [next.x, next.y] = pull(next.x, next.y);
+                if (next.x1 != null && next.y1 != null) [next.x1, next.y1] = pull(next.x1, next.y1);
+                if (next.x2 != null && next.y2 != null) [next.x2, next.y2] = pull(next.x2, next.y2);
+                return next;
+            });
+        }
+
+        function settleCommands(current, base, springBack) {
+            let settled = true;
+
+            const blend = (value, origin) => {
+                const next = value * springBack + origin * (1 - springBack);
+                if (Math.abs(next - origin) > 0.05) settled = false;
+                return Math.abs(next - origin) < 0.05 ? origin : next;
+            };
+
+            const commands = current.map((cmd, index) => {
+                const origin = base[index];
+                const next = { ...cmd };
+                if (next.x != null && origin.x != null) next.x = blend(next.x, origin.x);
+                if (next.y != null && origin.y != null) next.y = blend(next.y, origin.y);
+                if (next.x1 != null && origin.x1 != null) next.x1 = blend(next.x1, origin.x1);
+                if (next.y1 != null && origin.y1 != null) next.y1 = blend(next.y1, origin.y1);
+                if (next.x2 != null && origin.x2 != null) next.x2 = blend(next.x2, origin.x2);
+                if (next.y2 != null && origin.y2 != null) next.y2 = blend(next.y2, origin.y2);
+                return next;
+            });
+
+            return { commands, settled };
+        }
+
+        function getPathBounds(commands) {
+            let minX = Infinity;
+            let maxX = -Infinity;
+            let minY = Infinity;
+            let maxY = -Infinity;
+
+            commands.forEach((cmd) => {
+                ['x', 'y', 'x1', 'y1', 'x2', 'y2'].forEach((key) => {
+                    if (cmd[key] == null) return;
+                    if (key.includes('x') || key === 'x') {
+                        minX = Math.min(minX, cmd[key]);
+                        maxX = Math.max(maxX, cmd[key]);
+                    } else {
+                        minY = Math.min(minY, cmd[key]);
+                        maxY = Math.max(maxY, cmd[key]);
+                    }
+                });
+            });
+
+            return { minX, maxX, minY, maxY };
+        }
+
+        function setupLightPullLines() {
+            const PALETTE = [
+                { t: 0, color: 'rgb(255, 255, 255)' },
+                { t: 1, color: 'rgb(120, 170, 255)' },
+                { t: 2, color: 'rgb(180, 120, 230)' },
+                { t: 3, color: 'rgb(245, 130, 200)' },
+            ];
+            const RADIUS = 60;
+            const HEAT_MAX = 3;
+            const HEAT_GAIN = 0.03;
+            const HOLD_MS = 620;
+            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            const colorFromHeat = (heat, stops) => {
+                const h = Math.max(0, Math.min(stops[stops.length - 1].t, heat));
+                let lo = stops[0];
+                let hi = stops[stops.length - 1];
+                for (let i = 0; i < stops.length - 1; i++) {
+                    if (h <= stops[i + 1].t) {
+                        lo = stops[i];
+                        hi = stops[i + 1];
+                        break;
+                    }
+                }
+                const span = hi.t - lo.t;
+                const pct = span === 0 ? 0 : ((h - lo.t) / span) * 100;
+                return `color-mix(in oklch, ${lo.color}, ${hi.color} ${pct.toFixed(2)}%)`;
+            };
+
+            const wrapLightPullChars = (root) => {
+                const label = root.textContent.replace(/\s+/g, ' ').trim();
+                if (label) root.setAttribute('aria-label', label);
+
+                const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+                    acceptNode(node) {
+                        let parent = node.parentElement;
+                        while (parent && parent !== root) {
+                            if (parent.classList?.contains('lightpull-char')) {
+                                return NodeFilter.FILTER_REJECT;
+                            }
+                            parent = parent.parentElement;
+                        }
+                        return NodeFilter.FILTER_ACCEPT;
+                    },
+                });
+
+                const nodes = [];
+                while (walker.nextNode()) nodes.push(walker.currentNode);
+
+                nodes.forEach((node) => {
+                    const text = node.textContent;
+                    if (!text) return;
+                    const frag = document.createDocumentFragment();
+                    for (const ch of text) {
+                        if (ch === ' ' || ch === '\u00A0') {
+                            frag.appendChild(document.createTextNode(ch));
+                            continue;
+                        }
+                        const span = document.createElement('span');
+                        span.className = 'lightpull-char';
+                        span.setAttribute('aria-hidden', 'true');
+                        span.textContent = ch;
+                        frag.appendChild(span);
+                    }
+                    node.parentNode.replaceChild(frag, node);
+                });
+            };
+
+            const buildWordGroups = (root) => {
+                const groups = [];
+                let current = [];
+
+                root.childNodes.forEach((node) => {
+                    if (node.nodeType === Node.TEXT_NODE && !node.textContent.trim()) {
+                        if (current.length) {
+                            groups.push(current);
+                            current = [];
+                        }
+                        return;
+                    }
+                    if (node.classList?.contains('lightpull-char')) {
+                        current.push(node);
+                    }
+                });
+
+                if (current.length) groups.push(current);
+                return groups;
+            };
+
+            document.querySelectorAll('.lightpull-line[data-cursor-text]').forEach((line) => {
+                if (line.dataset.lightpullReady) return;
+                line.dataset.lightpullReady = 'true';
+                wrapLightPullChars(line);
+                if (reducedMotion) return;
+
+                const chars = [...line.querySelectorAll('.lightpull-char')];
+                const heat = chars.map(() => 0);
+                const charIndex = new Map(chars.map((char, index) => [char, index]));
+                const wordGroups = buildWordGroups(line);
+                const charToWord = new Map();
+                const wordDwell = wordGroups.map((group, wordIndex) => {
+                    group.forEach((char) => charToWord.set(char, wordIndex));
+                    return 0;
+                });
+                let pointer = { x: -9999, y: -9999 };
+                let raf = 0;
+
+                const tick = () => {
+                    let keepLoop = false;
+                    let closestWord = -1;
+                    let closestDist = Infinity;
+                    const { x: px, y: py } = pointer;
+
+                    chars.forEach((char, index) => {
+                        const rect = char.getBoundingClientRect();
+                        if (!rect.width && !rect.height) return;
+
+                        const cx = rect.left + rect.width / 2;
+                        const cy = rect.top + rect.height / 2;
+                        const dist = Math.hypot(px - cx, py - cy);
+
+                        if (dist < closestDist) {
+                            closestDist = dist;
+                            closestWord = charToWord.get(char) ?? -1;
+                        }
+
+                        if (dist < RADIUS) {
+                            heat[index] = Math.min(HEAT_MAX, heat[index] + HEAT_GAIN);
+                        }
+
+                        const decay = 0.997 + 0.0022999999999999687 * Math.min(1, heat[index] / HEAT_MAX);
+                        heat[index] *= decay;
+
+                        if (heat[index] > 0.01) {
+                            char.style.color = colorFromHeat(heat[index], PALETTE);
+                            keepLoop = true;
+                        } else {
+                            heat[index] = 0;
+                            char.style.color = '';
+                        }
+                    });
+
+                    if (closestDist < RADIUS && closestWord >= 0) {
+                        wordDwell[closestWord] = Math.min(HOLD_MS * 1.25, wordDwell[closestWord] + 16);
+                    } else {
+                        wordDwell.forEach((_, wi) => {
+                            wordDwell[wi] = Math.max(0, wordDwell[wi] - 10);
+                        });
+                    }
+
+                    wordDwell.forEach((dwell, wi) => {
+                        if (dwell < HOLD_MS) return;
+                        wordGroups[wi].forEach((char) => {
+                            const index = charIndex.get(char);
+                            if (index == null) return;
+                            heat[index] = HEAT_MAX;
+                            char.style.color = colorFromHeat(HEAT_MAX, PALETTE);
+                            keepLoop = true;
+                        });
+                    });
+
+                    raf = keepLoop ? requestAnimationFrame(tick) : 0;
+                };
+
+                const startLoop = () => {
+                    if (!raf) raf = requestAnimationFrame(tick);
+                };
+
+                const setPointer = (e) => {
+                    pointer = { x: e.clientX, y: e.clientY };
+                    startLoop();
+                };
+
+                const clearPointer = () => {
+                    pointer = { x: -9999, y: -9999 };
+                    startLoop();
+                };
+
+                line.addEventListener('mouseenter', setPointer);
+                line.addEventListener('mousemove', setPointer);
+                line.addEventListener('mouseleave', clearPointer);
+            });
+        }
+
+        function setupMagneticWords() {
+            if (typeof MAGNETIC_WORD_DATA === 'undefined') return;
+
+            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const config = {
+                radius: 120,
+                strength: 0.35,
+                strokeWidth: 4,
+                springBack: 0.85,
+            };
+
+            document.querySelectorAll('.magnetic-word').forEach((el) => {
+                if (el.dataset.magneticReady) return;
+
+                const key = (el.dataset.magnetic || el.textContent || '').trim().toLowerCase();
+                const data = MAGNETIC_WORD_DATA[key];
+                if (!data) return;
+
+                el.dataset.magneticReady = 'true';
+
+                const base = data.commands.map((cmd) => ({ ...cmd }));
+                const basePath = commandsToPath(base);
+                const bounds = getPathBounds(base);
+                const padX = 8;
+                const padY = 6;
+                const viewBoxX = bounds.minX - padX;
+                const viewBoxY = bounds.minY - padY;
+                const viewWidth = bounds.maxX - bounds.minX + padX * 2;
+                const viewHeight = bounds.maxY - bounds.minY + padY * 2;
+                const label = el.textContent.trim() || key;
+
+                el.setAttribute('aria-label', label);
+
+                const slot = document.createElement('span');
+                slot.className = 'magnetic-word__slot';
+                slot.setAttribute('aria-hidden', 'true');
+                slot.textContent = label;
+
+                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                svg.setAttribute('viewBox', `${viewBoxX} ${viewBoxY} ${viewWidth} ${viewHeight}`);
+                svg.setAttribute('preserveAspectRatio', 'xMinYMax meet');
+                svg.setAttribute('aria-hidden', 'true');
+                svg.style.userSelect = 'none';
+
+                const pathEl = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                pathEl.setAttribute('d', basePath);
+                pathEl.setAttribute('stroke-width', String(config.strokeWidth));
+                pathEl.setAttribute('stroke-linejoin', 'round');
+                svg.appendChild(pathEl);
+
+                el.replaceChildren(slot, svg);
+
+                if (reducedMotion) return;
+
+                let raf = 0;
+                let active = false;
+                let pointer = { x: 0, y: 0 };
+                let warped = null;
+                let enterTimer = null;
+
+                const mapPointer = (clientX, clientY) => {
+                    const rect = svg.getBoundingClientRect();
+                    if (!rect.width || !rect.height) return;
+                    pointer = {
+                        x: viewBoxX + (clientX - rect.left) / rect.width * viewWidth,
+                        y: viewBoxY + (clientY - rect.top) / rect.height * viewHeight,
+                    };
+                };
+
+                const tick = () => {
+                    if (active) {
+                        const source = warped || base;
+                        warped = warpCommands(source, pointer, config);
+                        pathEl.setAttribute('d', commandsToPath(warped));
+                    } else if (warped) {
+                        const result = settleCommands(warped, base, config.springBack);
+                        if (result.settled) {
+                            warped = null;
+                            pathEl.setAttribute('d', basePath);
+                        } else {
+                            warped = result.commands;
+                            pathEl.setAttribute('d', commandsToPath(warped));
+                        }
+                    } else {
+                        raf = 0;
+                        return;
+                    }
+
+                    raf = requestAnimationFrame(tick);
+                };
+
+                const startLoop = () => {
+                    if (!raf) raf = requestAnimationFrame(tick);
+                };
+
+                const onMove = (e) => {
+                    mapPointer(e.clientX, e.clientY);
+                };
+
+                const onEnter = (e) => {
+                    mapPointer(e.clientX, e.clientY);
+                    enterTimer = window.setTimeout(() => {
+                        active = true;
+                        startLoop();
+                    }, 200);
+                };
+
+                const onLeave = () => {
+                    if (enterTimer) window.clearTimeout(enterTimer);
+                    active = false;
+                    startLoop();
+                };
+
+                const onTouchStart = (e) => {
+                    const touch = e.touches[0];
+                    if (!touch) return;
+                    mapPointer(touch.clientX, touch.clientY);
+                    active = true;
+                    startLoop();
+                };
+
+                const onTouchMove = (e) => {
+                    const touch = e.touches[0];
+                    if (!touch) return;
+                    mapPointer(touch.clientX, touch.clientY);
+                };
+
+                const onTouchEnd = () => {
+                    active = false;
+                    startLoop();
+                };
+
+                svg.addEventListener('mousemove', onMove);
+                svg.addEventListener('mouseenter', onEnter);
+                svg.addEventListener('mouseleave', onLeave);
+                svg.addEventListener('touchstart', onTouchStart, { passive: true });
+                svg.addEventListener('touchmove', onTouchMove, { passive: true });
+                svg.addEventListener('touchend', onTouchEnd);
+                svg.addEventListener('touchcancel', onTouchEnd);
+            });
+        }
+
+        function setupMacroWords() {
+            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            document.querySelectorAll('.macro-word').forEach((el) => {
+                if (el.dataset.macroReady) return;
+                el.dataset.macroReady = 'true';
+
+                const label = el.textContent.trim();
+                if (!label) return;
+
+                el.setAttribute('aria-label', label);
+                el.setAttribute('role', 'button');
+                el.setAttribute('tabindex', '0');
+
+                const prompt = document.createElement('span');
+                prompt.className = 'macro-word__prompt';
+                prompt.setAttribute('aria-hidden', 'true');
+                prompt.innerHTML = '<span class="macro-word__prompt-symbol macro-word__prompt-symbol--chevron">&gt;</span><span class="macro-word__prompt-symbol macro-word__prompt-symbol--slash">/</span><span class="macro-word__prompt-symbol macro-word__prompt-symbol--tilde">~</span>';
+
+                const text = document.createElement('span');
+                text.className = 'macro-word__text';
+                text.textContent = label;
+
+                el.replaceChildren(prompt, text);
+                const isRu = /[А-Яа-яЁё]/.test(label);
+                const dynamicStatuses = isRu
+                    ? ['думаю...', 'исследую...', 'собираю...', 'проверяю...', 'строю...']
+                    : ['thinking...', 'exploring...', 'gathering...', 'checking...', 'mapping...'];
+
+                if (reducedMotion) return;
+
+                const RESET_DELAY = 1400;
+                let typingTimer = null;
+                let resetTimer = null;
+                let active = false;
+                let statusIndex = -1;
+                let keysAudio = null;
+
+                const clearTypingTimer = () => {
+                    if (!typingTimer) return;
+                    clearTimeout(typingTimer);
+                    typingTimer = null;
+                };
+
+                const clearResetTimer = () => {
+                    if (!resetTimer) return;
+                    clearTimeout(resetTimer);
+                    resetTimer = null;
+                };
+
+                const finishTyping = () => {
+                    clearTypingTimer();
+                    active = false;
+                    el.classList.remove('is-thinking');
+                    el.setAttribute('aria-label', text.textContent || label);
+                };
+
+                const playKeys = () => {
+                    if (!keysAudio) {
+                        keysAudio = new Audio(SOUNDS.keys);
+                        keysAudio.volume = 0.6;
+                    }
+                    keysAudio.currentTime = 0;
+                    keysAudio.play().catch(() => {});
+                };
+
+                const schedule = (fn, delay) => {
+                    typingTimer = setTimeout(fn, delay);
+                };
+
+                const animateTo = (targetText, onComplete) => {
+                    active = true;
+                    el.classList.add('is-thinking');
+
+                    const erase = () => {
+                        if (!text.textContent.length) {
+                            type('');
+                            return;
+                        }
+                        text.textContent = text.textContent.slice(0, -1);
+                        schedule(erase, 40);
+                    };
+
+                    const type = (current) => {
+                        if (current.length === targetText.length) {
+                            onComplete();
+                            return;
+                        }
+                        const next = targetText.slice(0, current.length + 1);
+                        text.textContent = next;
+                        schedule(() => type(next), 55);
+                    };
+
+                    erase();
+                };
+
+                const scheduleReset = () => {
+                    clearResetTimer();
+                    resetTimer = setTimeout(() => {
+                        resetTimer = null;
+                        if (text.textContent === label) return;
+                        animateTo(label, finishTyping);
+                    }, RESET_DELAY);
+                };
+
+                const startThinking = () => {
+                    clearResetTimer();
+                    clearTypingTimer();
+                    if (active) return;
+
+                    statusIndex = (statusIndex + 1) % dynamicStatuses.length;
+                    const nextStatus = dynamicStatuses[statusIndex];
+
+                    el.setAttribute('aria-label', isRu ? `${label}: агент печатает статус` : `${label}: agent typing status`);
+                    playKeys();
+                    haptic();
+
+                    animateTo(nextStatus, () => {
+                        el.classList.remove('is-thinking');
+                        el.setAttribute('aria-label', nextStatus);
+                        active = false;
+                        scheduleReset();
+                    });
+                };
+
+                el.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    startThinking();
+                });
+                el.addEventListener('keydown', (e) => {
+                    if (e.key !== 'Enter' && e.key !== ' ') return;
+                    e.preventDefault();
+                    e.stopPropagation();
+                    startThinking();
+                });
+            });
+        }
+
+        const TOOL_WORD_BADGE_ICON = `<svg class="tool-word__badge-icon" viewBox="0 0 19 19" fill="none" aria-hidden="true"><path d="M9.5 13.8L12.2 11.1L14.9 13.8L12.2 16.5L9.5 13.8Z" fill="currentColor"/><path d="M5.7 10L8.4 7.3L11.1 10L8.4 12.7L5.7 10Z" fill="currentColor"/><path d="M13.3 10L16 7.3L18.7 10L16 12.7L13.3 10Z" fill="currentColor"/><path d="M9.5 6.2L12.2 3.5L14.9 6.2L12.2 8.9L9.5 6.2Z" fill="currentColor"/></svg>`;
+
+        function createToolWordBadge() {
+            const badge = document.createElement('span');
+            badge.className = 'tool-word__badge';
+            badge.setAttribute('aria-hidden', 'true');
+            badge.innerHTML = `${TOOL_WORD_BADGE_ICON}<span class="tool-word__badge-label">Word</span>`;
+            return badge;
+        }
+
+        let toolWordToastTimer = null;
+
+        function showToolWordToast() {
+            const toast = document.getElementById('toolWordToast');
+            if (!toast) return;
+
+            if (toolWordToastTimer) {
+                clearTimeout(toolWordToastTimer);
+                toolWordToastTimer = null;
+            }
+
+            toast.hidden = false;
+            requestAnimationFrame(() => toast.classList.add('is-visible'));
+
+            toolWordToastTimer = window.setTimeout(() => {
+                toast.classList.remove('is-visible');
+                toolWordToastTimer = window.setTimeout(() => {
+                    toast.hidden = true;
+                    toolWordToastTimer = null;
+                }, 220);
+            }, 1800);
+        }
+
+        function setupToolWords() {
+            document.querySelectorAll('.tool-word').forEach((el) => {
+                if (el.dataset.toolReady) return;
+                el.dataset.toolReady = 'true';
+
+                const label = el.textContent.trim();
+                if (!label) return;
+
+                el.setAttribute('aria-label', label);
+                el.setAttribute('role', 'button');
+                el.setAttribute('tabindex', '0');
+
+                const outline = document.createElement('span');
+                outline.className = 'tool-word__outline';
+
+                const text = document.createElement('span');
+                text.className = 'tool-word__text';
+                text.textContent = label;
+
+                outline.append(text, createToolWordBadge());
+                el.replaceChildren(outline);
+
+                const settleToolWord = () => {
+                    if (!el.parentNode) return;
+                    playSound('click', 0.7);
+                    haptic();
+                    showToolWordToast();
+                    el.replaceWith(document.createTextNode(label));
+                };
+
+                el.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    settleToolWord();
+                });
+
+                el.addEventListener('keydown', (e) => {
+                    if (e.key !== 'Enter' && e.key !== ' ') return;
+                    e.preventDefault();
+                    e.stopPropagation();
+                    settleToolWord();
+                });
+            });
+        }
+
+        function setupProjectChips() {
+            document.querySelectorAll('.project-chip').forEach((chip) => {
+                const label = chip.querySelector('.project-chip-label');
+                const track = chip.querySelector('.project-chip-marquee-track');
+                if (label && track) {
+                    const name = label.textContent.trim().toUpperCase().replace(/\u2011/g, '-');
+                    track.replaceChildren();
+                    const segment = document.createElement('span');
+                    segment.textContent = name;
+                    track.append(segment.cloneNode(true), segment.cloneNode(true), segment.cloneNode(true), segment.cloneNode(true));
+                }
+
+                if (chip.dataset.tooltip) {
+                    chip.dataset.tooltip = formatTooltipText(chip.dataset.tooltip);
+                }
+
+                chip.addEventListener('mouseenter', () => {
+                    clearTimeout(projectTooltipTimer);
+                    projectTooltipChip = chip;
+                    if (chip.dataset.tooltip) {
+                        projectTooltip.textContent = chip.dataset.tooltip;
+                        projectTooltip.hidden = false;
+                        projectTooltip.setAttribute('aria-hidden', 'false');
+                        positionProjectTooltip(chip);
+                        requestAnimationFrame(() => projectTooltip.classList.add('is-visible'));
+                    }
+                    playHoverClick();
+                });
+
+                chip.addEventListener('mouseleave', () => hideProjectTooltip(120));
+            });
+        }
+
+        function setupPhotoTilt() {
+            const photoWrap = document.getElementById('photoWrap');
+            if (!photoWrap) return;
+
+            let photoTimer;
+            photoWrap.addEventListener('mouseenter', () => {
+                photoTimer = setTimeout(() => {
+                    photoWrap.classList.add('open');
+                }, 200);
+            });
+            photoWrap.addEventListener('mousemove', (e) => {
+                const r = photoWrap.getBoundingClientRect();
+                const ry = ((e.clientX - r.left) / r.width - 0.5) * 24;
+                const rx = ((e.clientY - r.top) / r.height - 0.5) * -24;
+                const inner = photoWrap.querySelector('.photo-inner');
+                if (inner) inner.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+            });
+            photoWrap.addEventListener('mouseleave', () => {
+                clearTimeout(photoTimer);
+                photoWrap.classList.remove('open');
+                const inner = photoWrap.querySelector('.photo-inner');
+                if (inner) inner.style.transform = '';
+            });
+        }
+
+        function restoreRevealedState() {
+            revealed.forEach((key) => {
+                if (key === 'meet') {
+                    document.querySelectorAll('#meetBlock .meet-extra').forEach((el) => { el.hidden = false; });
+                    const meetLine = document.getElementById('meetLine');
+                    if (meetLine?.parentNode) settlePill(meetLine);
+                    const panel = document.getElementById('reveal-meet');
+                    if (panel) showRevealPanel(panel);
+                    return;
+                }
+
+                const trigger = document.querySelector(`.expand-word[data-reveal="${key}"]`);
+                const panel = document.getElementById('reveal-' + key);
+                if (trigger?.parentNode) settlePill(trigger);
+                if (panel) showRevealPanel(panel);
+            });
+        }
+
+        function applyLang(lang, { playClick = false } = {}) {
+            if (lang !== 'ru' && lang !== 'en') return;
+            if (playClick && lang !== currentLang) playSound('click', 0.7);
+
+            currentLang = lang;
+            localStorage.setItem('lang', lang);
+
+            const copy = COPY[lang];
+            IDE_LINES = copy.ideLines;
+            SLOT_WORD = copy.slotWord;
+            SLOT_CHARSET = copy.slotCharset;
+
+            html.lang = lang;
+            document.title = copy.meta.title;
+            document.querySelector('meta[name="description"]')?.setAttribute('content', copy.meta.description);
+            document.getElementById('srTitle').textContent = copy.meta.srOnly;
+
+            document.getElementById('homeProse').innerHTML = copy.homeHtml;
+            document.getElementById('workSection').innerHTML = copy.workHtml;
+            document.getElementById('writingSection').innerHTML = copy.writingHtml;
+            document.getElementById('infoSection').innerHTML = copy.infoHtml;
+
+            const footerLinks = document.getElementById('footerLinks');
+            if (footerLinks) footerLinks.setAttribute('aria-label', copy.footerNav);
+
+            const langSwitch = document.getElementById('langSwitch');
+            if (langSwitch) langSwitch.setAttribute('aria-label', copy.langLabel);
+
+            langSwitch?.querySelectorAll('[data-lang]').forEach((btn) => {
+                const active = btn.dataset.lang === lang;
+                btn.classList.toggle('active', active);
+                btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+            });
+
+            bindExpandWordHovers();
+            setupPhotoTilt();
+            setupProjectChips();
+            setupSlotMachine();
+            setupMagneticWords();
+            setupMacroWords();
+            setupToolWords();
+            setupLightPullLines();
+            restoreRevealedState();
+
+            const ideText = document.getElementById('ideText');
+            if (ideText) ideText.textContent = IDE_LINES[ideIdx];
+        }
+
+        /* Slot machine — matches emilycampbell.co split-flap scroll */
+        const SLOT_SPIN_COUNT = 12;
+        const SLOT_STAGGER_MS = 100;
+        const SLOT_PHASE1_BASE_MS = 600;
+        const SLOT_PHASE1_STEP_MS = 100;
+        const SLOT_BOUNCE_MS = 300;
+        let slotSoundMs = 2153;
+        let slotSpinning = false;
+
+        const flipperAudio = new Audio(SOUNDS.flipper);
+        flipperAudio.preload = 'auto';
+        flipperAudio.addEventListener('loadedmetadata', () => {
+            if (Number.isFinite(flipperAudio.duration) && flipperAudio.duration > 0) {
+                slotSoundMs = Math.round(flipperAudio.duration * 1000);
+            }
+        });
+
+        function getSlotScale(total, totalMs = slotSoundMs) {
+            const count = Math.max(total, 1);
+            if (count === 1) return 1;
+            const lastIndex = count - 1;
+            const naturalLastEnd = lastIndex * SLOT_STAGGER_MS
+                + SLOT_PHASE1_BASE_MS + lastIndex * SLOT_PHASE1_STEP_MS
+                + SLOT_BOUNCE_MS;
+            return totalMs / naturalLastEnd;
+        }
+
+        function getSlotTimings(index, total, totalMs = slotSoundMs) {
+            const scale = getSlotScale(total, totalMs);
+            return {
+                startMs: Math.round(index * SLOT_STAGGER_MS * scale),
+                phase1Ms: Math.round((SLOT_PHASE1_BASE_MS + index * SLOT_PHASE1_STEP_MS) * scale),
+                bounceMs: Math.round(SLOT_BOUNCE_MS * scale),
+            };
+        }
+
+        function playFlipperSound() {
+            flipperAudio.currentTime = 0;
+            flipperAudio.volume = 0.5;
+            flipperAudio.play().catch(() => {});
+            if (Number.isFinite(flipperAudio.duration) && flipperAudio.duration > 0) {
+                slotSoundMs = Math.round(flipperAudio.duration * 1000);
+            }
+            return slotSoundMs;
+        }
+
+        function createSlotLetter(char, dim = false) {
+            const letter = document.createElement('span');
+            letter.className = 'slot-cell-letter' + (dim ? ' is-dim' : '');
+            letter.textContent = char;
+            return letter;
+        }
+
+        function resetSlotColumn(track, char) {
+            track.replaceChildren(createSlotLetter(char));
+            track.style.transition = 'none';
+            track.style.transform = 'translateY(0em)';
+        }
+
+        function spinSlotColumn({ track, char }, index, total, totalMs, slotCells) {
+            const { startMs, phase1Ms, bounceMs } = getSlotTimings(index, total, totalMs);
+            const phase1Sec = phase1Ms / 1000;
+            const bounceSec = bounceMs / 1000;
+
+            window.setTimeout(() => {
+                const letters = [];
+                for (let i = 0; i < SLOT_SPIN_COUNT; i++) {
+                    letters.push(SLOT_CHARSET[Math.floor(Math.random() * SLOT_CHARSET.length)]);
+                }
+                letters.push(char);
+
+                track.replaceChildren(...letters.map((letter, i) => createSlotLetter(letter, i < letters.length - 1)));
+                track.style.transition = 'none';
+                track.style.transform = 'translateY(0em)';
+                track.offsetHeight;
+
+                track.style.transition = `transform ${phase1Sec}s cubic-bezier(0.2, 0, 0.8, 1)`;
+                track.style.transform = 'translateY(-10em)';
+
+                window.setTimeout(() => {
+                    track.style.transition = `transform ${bounceSec}s cubic-bezier(0.34, 1.56, 0.64, 1)`;
+                    track.style.transform = 'translateY(-12em)';
+                    window.setTimeout(() => {
+                        track.style.transition = 'none';
+                    }, bounceMs);
+                }, phase1Ms);
+            }, startMs);
+        }
+
+        function setupSlotMachine() {
+            const slotWrap = document.getElementById('slotWord');
+            if (!slotWrap) return;
+
+            slotWrap.replaceChildren();
+            const slotCells = [];
+
+            SLOT_WORD.split('').forEach((ch) => {
+                const cell = document.createElement('span');
+                cell.className = 'slot-cell';
+
+                const track = document.createElement('span');
+                track.className = 'slot-cell-track';
+                resetSlotColumn(track, ch);
+
+                const shadeTop = document.createElement('span');
+                shadeTop.className = 'slot-cell-shade slot-cell-shade--top';
+
+                const shadeBottom = document.createElement('span');
+                shadeBottom.className = 'slot-cell-shade slot-cell-shade--bottom';
+
+                cell.appendChild(track);
+                cell.appendChild(shadeTop);
+                cell.appendChild(shadeBottom);
+                slotWrap.appendChild(cell);
+                slotCells.push({ track, char: ch });
+            });
+
+            slotWrap.addEventListener('click', () => {
+                if (slotSpinning) return;
+                slotSpinning = true;
+                const totalMs = playFlipperSound();
+
+                slotCells.forEach((col) => resetSlotColumn(col.track, col.char));
+
+                slotCells.forEach((col, index) => {
+                    spinSlotColumn(col, index, slotCells.length, totalMs, slotCells);
+                });
+
+                const lastIndex = slotCells.length - 1;
+                const { startMs, phase1Ms, bounceMs } = getSlotTimings(lastIndex, slotCells.length, totalMs);
+                window.setTimeout(() => { slotSpinning = false; }, startMs + phase1Ms + bounceMs + 30);
+            });
+        }
+
+        /* IDE card typing */
+        const idecard = document.getElementById('idecard');
+        const ideText = document.getElementById('ideText');
+        if (idecard && ideText) {
+        idecard.addEventListener('click', async () => {
+            playSound('keys', 0.6);
+            ideIdx = (ideIdx + 1) % IDE_LINES.length;
+            const next = IDE_LINES[ideIdx];
+            const current = ideText.textContent;
+            for (let i = current.length; i >= 0; i--) {
+                ideText.textContent = current.slice(0, i);
+                await new Promise((r) => setTimeout(r, 25));
+            }
+            for (let i = 0; i <= next.length; i++) {
+                ideText.textContent = next.slice(0, i);
+                await new Promise((r) => setTimeout(r, 35));
+            }
+        });
+        }
+
+        /* Cross grid — from main site footer/hero */
+        (() => {
+            const grid = document.getElementById('crossGrid');
+            if (!grid) return;
+
+            const PALETTE = [
+                'var(--home-text-color)',
+                'var(--color-text-muted)',
+                'color-mix(in srgb, var(--color-text-muted), transparent 40%)',
+                'color-mix(in srgb, var(--color-text-muted), transparent 70%)',
+            ];
+            const COLORS = ['#4285F4', '#EA4335', '#FBBC04', '#34A853', '#FF6D01', '#46BDC6', '#7B61FF'];
+
+            const GLYPHS_WIDE = {
+                '0': [[1,1,1],[1,0,1],[1,0,1],[1,0,1],[1,1,1]],
+                '1': [[0,1,0],[1,1,0],[0,1,0],[0,1,0],[1,1,1]],
+                '2': [[1,1,1],[0,0,1],[1,1,1],[1,0,0],[1,1,1]],
+                '3': [[1,1,1],[0,0,1],[1,1,1],[0,0,1],[1,1,1]],
+                '4': [[1,0,1],[1,0,1],[1,1,1],[0,0,1],[0,0,1]],
+                '5': [[1,1,1],[1,0,0],[1,1,1],[0,0,1],[1,1,1]],
+                '6': [[1,1,1],[1,0,0],[1,1,1],[1,0,1],[1,1,1]],
+                '7': [[1,1,1],[0,0,1],[0,1,0],[0,1,0],[0,1,0]],
+                '8': [[1,1,1],[1,0,1],[1,1,1],[1,0,1],[1,1,1]],
+                '9': [[1,1,1],[1,0,1],[1,1,1],[0,0,1],[1,1,1]],
+                ':': [[0],[1],[0],[1],[0]],
+            };
+
+            const GLYPHS_NARROW = {
+                '0': [[1,1],[1,1],[1,1],[1,1],[1,1]],
+                '1': [[0,1],[1,1],[0,1],[0,1],[1,1]],
+                '2': [[1,1],[0,1],[1,1],[1,0],[1,1]],
+                '3': [[1,1],[0,1],[1,1],[0,1],[1,1]],
+                '4': [[1,1],[1,1],[1,1],[0,1],[0,1]],
+                '5': [[1,1],[1,0],[1,1],[0,1],[1,1]],
+                '6': [[1,1],[1,0],[1,1],[1,1],[1,1]],
+                '7': [[1,1],[0,1],[0,1],[0,1],[0,1]],
+                '8': [[1,1],[1,1],[1,1],[1,1],[1,1]],
+                '9': [[1,1],[1,1],[1,1],[0,1],[1,1]],
+                ':': [[0],[1],[0],[1],[0]],
+            };
+
+            let spans = [];
+            let isHovered = false;
+            let coloredIdx = -1;
+            let cols = 0;
+            let rows = 7;
+            let colorTimer = null;
+            let flickerTimer = null;
+            let timeTimer = null;
+
+            function pad2(n) {
+                return String(n).padStart(2, '0');
+            }
+
+            function formatTime(includeSeconds) {
+                const d = new Date();
+                const base = `${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+                return includeSeconds ? `${base}:${pad2(d.getSeconds())}` : base;
+            }
+
+            function measureString(str, glyphs, gap) {
+                let width = 0;
+                for (let i = 0; i < str.length; i++) {
+                    width += glyphs[str[i]][0].length;
+                    if (i < str.length - 1) width += gap;
+                }
+                return width;
+            }
+
+            function pickTimeLayout() {
+                for (const gap of [1, 0]) {
+                    for (const includeSeconds of [true, false]) {
+                        const str = formatTime(includeSeconds);
+                        if (measureString(str, GLYPHS_WIDE, gap) <= cols) {
+                            return { str, glyphs: GLYPHS_WIDE, gap };
+                        }
+                    }
+                }
+                for (const gap of [1, 0]) {
+                    for (const includeSeconds of [true, false]) {
+                        for (const glyphs of [GLYPHS_WIDE, GLYPHS_NARROW]) {
+                            const str = formatTime(includeSeconds);
+                            if (measureString(str, glyphs, gap) <= cols) {
+                                return { str, glyphs, gap };
+                            }
+                        }
+                    }
+                }
+                return {
+                    str: formatTime(false),
+                    glyphs: GLYPHS_WIDE,
+                    gap: 0,
+                };
+            }
+
+            function getTimeIndices() {
+                const { str, glyphs, gap } = pickTimeLayout();
+                const glyphH = glyphs['0'].length;
+                const rowOffset = Math.max(0, Math.floor((rows - glyphH) / 2));
+                const totalW = measureString(str, glyphs, gap);
+                let col = Math.max(0, Math.floor((cols - totalW) / 2));
+                const active = new Set();
+
+                for (const char of str) {
+                    const glyph = glyphs[char];
+                    for (let r = 0; r < glyph.length; r++) {
+                        for (let c = 0; c < glyph[r].length; c++) {
+                            if (!glyph[r][c]) continue;
+                            const gc = col + c;
+                            const gr = rowOffset + r;
+                            if (gc >= 0 && gc < cols && gr >= 0 && gr < rows) {
+                                active.add(gr * cols + gc);
+                            }
+                        }
+                    }
+                    col += glyph[0].length + gap;
+                }
+
+                return { active, label: str };
+            }
+
+            function renderTime() {
+                const { active, label } = getTimeIndices();
+                grid.setAttribute('aria-label', label);
+                grid.removeAttribute('aria-hidden');
+
+                spans.forEach((s, idx) => {
+                    s.classList.toggle('time-on', active.has(idx));
+                });
+            }
+
+            function clearTime() {
+                grid.classList.remove('show-time');
+                grid.removeAttribute('aria-label');
+                grid.setAttribute('aria-hidden', 'true');
+                spans.forEach((s) => {
+                    s.classList.remove('time-on');
+                    s.style.opacity = '';
+                    s.style.color = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+                });
+            }
+
+            function buildGrid() {
+                grid.replaceChildren();
+                spans = [];
+                coloredIdx = -1;
+
+                const isMobile = window.innerWidth <= 600;
+                const size = isMobile ? Math.max(18, Math.floor(grid.offsetWidth / 12)) : 24;
+                cols = Math.max(1, Math.floor(grid.offsetWidth / size));
+                rows = isMobile ? 8 : 9;
+                grid.style.setProperty('--cross-cols', cols);
+                grid.style.setProperty('--cross-size', `${Math.max(18, size - 1)}px`);
+
+                for (let i = 0; i < cols * rows; i++) {
+                    const s = document.createElement('span');
+                    s.style.color = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+                    s.style.setProperty('--dot-duration', `${3.4 + Math.random() * 4.2}s`);
+                    s.style.setProperty('--dot-delay', `${-(Math.random() * 6).toFixed(2)}s`);
+                    grid.appendChild(s);
+                    spans.push(s);
+                }
+                if (isHovered) renderTime();
+            }
+
+            buildGrid();
+
+            grid.addEventListener('mouseenter', () => {
+                isHovered = true;
+                grid.classList.add('hovered', 'show-time');
+                renderTime();
+                if (timeTimer) window.clearInterval(timeTimer);
+                timeTimer = window.setInterval(renderTime, 1000);
+            });
+
+            grid.addEventListener('mouseleave', () => {
+                isHovered = false;
+                grid.classList.remove('hovered');
+                if (timeTimer) {
+                    window.clearInterval(timeTimer);
+                    timeTimer = null;
+                }
+                clearTime();
+            });
+
+            window.addEventListener('resize', () => {
+                buildGrid();
+            });
+
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                flickerTimer = window.setInterval(() => {
+                    if (isHovered || !spans.length) return;
+                    const count = Math.max(1, Math.floor(spans.length * 0.03));
+                    for (let i = 0; i < count; i++) {
+                        const idx = Math.floor(Math.random() * spans.length);
+                        spans[idx].style.color = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+                    }
+                }, 650);
+
+                colorTimer = window.setInterval(() => {
+                    if (isHovered || !spans.length) return;
+                    if (coloredIdx >= 0) {
+                        spans[coloredIdx].style.color = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+                    }
+                    coloredIdx = Math.floor(Math.random() * spans.length);
+                    spans[coloredIdx].style.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+                }, 2000);
+            }
+        })();
+
+        /* SPA navigation */
+        function showPage(id) {
+            document.querySelectorAll('.page').forEach((p) => {
+                p.classList.toggle('active', p.dataset.page === id);
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.querySelectorAll('[data-page]').forEach((el) => {
+            el.addEventListener('click', (e) => {
+                const page = el.dataset.page;
+                if (!page || el.href?.includes('http')) return;
+                e.preventDefault();
+                showPage(page);
+                history.pushState({ page }, '', '#' + page);
+            });
+        });
+
+        window.addEventListener('popstate', () => {
+            showPage((location.hash || '#home').slice(1) || 'home');
+        });
+
+        /* Init */
+        captureRuTemplates();
+
+        document.getElementById('langSwitch')?.querySelectorAll('[data-lang]').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                if (btn.dataset.lang === currentLang) return;
+                applyLang(btn.dataset.lang, { playClick: true });
+            });
+        });
+
+        const savedLang = localStorage.getItem('lang');
+        const initialLang = savedLang === 'en' || savedLang === 'ru'
+            ? savedLang
+            : (navigator.language || '').toLowerCase().startsWith('ru') ? 'ru' : 'en';
+        applyLang(initialLang);
+
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        loop();
+        setTimeout(() => app.classList.add('ready'), 300);
+
+        const hashPage = (location.hash || '#home').slice(1) || 'home';
+        if (hashPage !== 'home') showPage(hashPage);
+    })();
+    </script>
+</body>
+</html>

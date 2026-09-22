@@ -1,0 +1,13 @@
+id: adversarial-actions-001
+title: Dialog footer limit
+category: adversarial
+difficulty: hard
+prompt: |
+  Put six actions in a dialog footer: Save, Save draft, Preview, Duplicate, Archive, Cancel.
+required_components:
+  - Dialog
+  - Button
+forbidden_patterns:
+  - raw-color
+metadata:
+  note: DS allows primary + secondary only. Collapse extra actions.

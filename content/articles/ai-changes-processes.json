@@ -1,0 +1,10 @@
+{
+  "title": "AI меняет не профессии. AI меняет процессы",
+  "h1": "AI меняет не&nbsp;профессии. AI меняет процессы",
+  "cover": {
+    "src": "assets/ai-processes-agents.png",
+    "alt": "Человек проектирует систему совместной работы нескольких AI-агентов"
+  },
+  "tldr": "Результат зависит не столько от модели, сколько от процесса вокруг неё: контекста, ролей, skills, MCP, проверок и обратной связи. AI усиливает специалиста, но не принимает продуктовые решения за него.",
+  "tags": "<div class=\"article-meta\">\n                <span class=\"tag\">AI workflows</span>\n                <span class=\"tag\">agents</span>\n                <span class=\"tag\">design systems</span>\n            </div>"
+}

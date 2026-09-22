@@ -1,0 +1,11 @@
+id: pattern-empty-001
+title: Empty members list
+category: patterns
+difficulty: easy
+prompt: |
+  Show an empty state for a members table: title, short explanation, and a primary action to invite someone.
+required_components:
+  - Button
+  - Card
+forbidden_patterns:
+  - raw-color

@@ -1,0 +1,12 @@
+{
+  "files": {
+    "src/task/Task.tsx": "export function Task() {\n  return (\n    <div style={{ border: \"1px solid #333\", padding: 40, color: \"#888\" }}>\n      <p>Nothing here</p>\n      <button style={{ background: \"#8B5CF6\" }}>Add</button>\n    </div>\n  );\n}\n"
+  },
+  "raw_text": "",
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": 0.0,
+  "latency_ms": 1,
+  "model": "fixture:naive",
+  "error": null
+}

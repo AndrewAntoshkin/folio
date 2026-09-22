@@ -2,462 +2,351 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Design.md — how to describe a design system for AI agents</title>
-    <meta name="description" content="How to structure a design system in a format that AI agents can use. Tokens, components, patterns, audit.">
-    <meta property="og:title" content="Design.md — how to describe a design system for AI agents">
-    <meta property="og:description" content="How to structure a design system in a format that AI agents can use.">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>DESIGN.md in 2026: How to Describe a Design System for AI Agents</title>
+    <meta name="description" content="DESIGN.md in 2026: How to Describe a Design System for AI Agents">
+    <meta name="theme-color" content="#FDFDFC" id="themeColorMeta">
+    <meta property="og:title" content="DESIGN.md in 2026: How to Describe a Design System for AI Agents">
+    <meta property="og:description" content="DESIGN.md in 2026: How to Describe a Design System for AI Agents">
     <meta property="og:type" content="article">
-    <link rel="icon" type="image/png" href="assets/avatar.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <meta name="color-scheme" content="light dark">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        @view-transition {
-            navigation: auto;
-        }
-
-        ::view-transition-old(root),
-        ::view-transition-new(root) {
-            animation: 250ms ease both crossfade;
-        }
-
-        ::view-transition-old(root) {
-            animation-name: crossfade-out;
-        }
-
-        ::view-transition-new(article-body) {
-            animation: 500ms cubic-bezier(0.22, 1, 0.36, 1) both slide-fade-in;
-            animation-delay: 150ms;
-        }
-
-        ::view-transition-old(article-body) {
-            animation: 200ms ease both crossfade-out;
-        }
-
-        @keyframes crossfade {
-            from { opacity: 0; }
-        }
-
-        @keyframes crossfade-out {
-            to { opacity: 0; }
-        }
-
-        @keyframes slide-fade-in {
-            from { opacity: 0; transform: translateY(20px); }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            ::view-transition-group(*),
-            ::view-transition-old(*),
-            ::view-transition-new(*) {
-                animation: none !important;
-            }
-        }
-
-        :root {
-            --bg: #fafafa;
-            --text: #0a0a0a;
-            --text-sub: #52525b;
-            --text-muted: #737373;
-            --border: #e4e4e7;
-            --code-bg: #f4f4f5;
-            --code-border: rgba(0, 0, 0, 0.08);
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #0c0c0c;
-                --text: #f5f5f5;
-                --text-sub: #d4d4d8;
-                --text-muted: #8f8e8d;
-                --border: #27272a;
-                --code-bg: #18181b;
-                --code-border: rgba(255, 255, 255, 0.05);
-            }
-        }
-
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-        html {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            font-size: 1rem;
-            line-height: 1.618;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        body { min-height: 100vh; }
-        a { color: inherit; }
-
-        main {
-            width: min(592px, 100% - 32px);
-            margin: 0 auto;
-            padding-top: clamp(2rem, 0.56rem + 5.56vw, 5rem);
-            padding-bottom: clamp(2rem, 0.56rem + 5.56vw, 5rem);
-        }
-
-        .back-bar {
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            padding: 16px 16px 48px;
-            margin: 0 -16px;
-        }
-
-        .back-blur {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-        }
-
-        .back-blur:nth-child(1) {
-            -webkit-backdrop-filter: blur(1px);
-            backdrop-filter: blur(1px);
-            -webkit-mask-image: linear-gradient(to bottom, black, transparent 25%);
-            mask-image: linear-gradient(to bottom, black, transparent 25%);
-        }
-
-        .back-blur:nth-child(2) {
-            -webkit-backdrop-filter: blur(2px);
-            backdrop-filter: blur(2px);
-            -webkit-mask-image: linear-gradient(to bottom, black 12%, transparent 40%);
-            mask-image: linear-gradient(to bottom, black 12%, transparent 40%);
-        }
-
-        .back-blur:nth-child(3) {
-            -webkit-backdrop-filter: blur(4px);
-            backdrop-filter: blur(4px);
-            -webkit-mask-image: linear-gradient(to bottom, black 25%, transparent 60%);
-            mask-image: linear-gradient(to bottom, black 25%, transparent 60%);
-        }
-
-        .back-blur:nth-child(4) {
-            -webkit-backdrop-filter: blur(8px) saturate(180%);
-            backdrop-filter: blur(8px) saturate(180%);
-            -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
-            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
-        }
-
-        .back-bar::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            background: linear-gradient(to bottom, var(--bg) 0%, transparent 70%);
-            opacity: 0.7;
-        }
-
-        .back {
-            position: relative;
-            z-index: 1;
-            display: inline-block;
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .back:hover { color: var(--text); }
-
-        article h1 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            line-height: 1.3;
-            letter-spacing: -0.02em;
-            margin-bottom: 8px;
-        }
-
-        .article-tags {
-            display: flex;
-            gap: 4px;
-            flex-wrap: wrap;
-            margin-bottom: 2.5rem;
-        }
-
-        .article-tag {
-            font-size: 12px;
-            line-height: 14px;
-            padding: 4px 10px;
-            border: 1px solid var(--border);
-            border-radius: 100px;
-            color: var(--text-muted);
-            white-space: nowrap;
-        }
-
-        article h2 {
-            font-size: 1.125rem;
-            font-weight: 500;
-            line-height: 1.4;
-            margin-top: 2rem;
-            margin-bottom: 0;
-            color: var(--text);
-        }
-
-        article h3 {
-            font-size: 1rem;
-            font-weight: 500;
-            line-height: 1.5;
-            margin-top: 1.5rem;
-            margin-bottom: 0;
-        }
-
-        article p {
-            font-size: 1rem;
-            color: var(--text-sub);
-            margin-top: 1.5rem;
-        }
-
-        article p:first-of-type { margin-top: 0; }
-
-        article a {
-            color: var(--text);
-            text-decoration: underline;
-            text-decoration-color: color-mix(in srgb, currentColor, transparent 75%);
-            text-underline-offset: 0.3em;
-            text-decoration-thickness: 1px;
-            transition: text-decoration-color 0.17s ease-out;
-        }
-
-        article a:hover { text-decoration-color: currentColor; }
-
-        article strong { font-weight: 600; color: var(--text); }
-
-        article ul, article ol {
-            margin-top: 1rem;
-            padding-left: 1.25rem;
-        }
-
-        article li {
-            font-size: 1rem;
-            color: var(--text-sub);
-            margin-top: 0.25rem;
-        }
-
-        article li strong { color: var(--text); }
-
-        article code {
-            font-family: 'SF Mono', 'Fira Code', 'Fira Mono', monospace;
-            font-size: 0.8125rem;
-            background: var(--code-bg);
-            padding: 2px 6px;
-            border-radius: 4px;
-        }
-
-        article pre {
-            margin-top: 1rem;
-            background: var(--code-bg);
-            border: 1px solid var(--code-border);
-            border-radius: 0.625rem;
-            padding: 1rem;
-            overflow-x: auto;
-        }
-
-        article pre code {
-            background: none;
-            padding: 0;
-            font-size: 0.875rem;
-            line-height: 1.618;
-            color: var(--text);
-        }
-
-        .article-nav {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 3rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border);
-        }
-
-        .article-nav a {
-            text-decoration: none;
-            color: inherit;
-            max-width: 48%;
-        }
-
-        .article-nav a:hover .article-nav-title { color: var(--text); }
-
-        .article-nav-label {
-            display: block;
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-        }
-
-        .article-nav-title {
-            display: block;
-            font-size: 1rem;
-            font-weight: 500;
-            transition: color 0.15s;
-        }
-
-        .article-nav .next { margin-left: auto; text-align: right; }
-        @keyframes deblur {
-            from { opacity: 0; filter: blur(10px); transform: translateY(6px); }
-            to   { opacity: 1; filter: blur(0);    transform: translateY(0); }
-        }
-        .reveal {
-            opacity: 0;
-            animation: deblur 0.6s ease-out forwards;
-        }
-    </style>
+    <link rel="icon" type="image/svg+xml" href="assets/antoshkin-tech-logo.svg">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <link rel="stylesheet" href="assets/wireframe.css">
+    <link rel="stylesheet" href="assets/guides.css">
+    <script>
+        try {
+            if (localStorage.getItem('theme') === 'dark') document.documentElement.dataset.theme = 'dark';
+        } catch (e) {}
+    </script>
 </head>
-<body>
-    <main>
-        <div class="back-bar">
-            <div class="back-blur"></div>
-            <div class="back-blur"></div>
-            <div class="back-blur"></div>
-            <div class="back-blur"></div>
-            <a href="en.html" class="back">&larr; Back</a>
+<body data-guides="false">
+    <div class="page">
+        <div class="border-strip border-strip--left" aria-hidden="true"></div>
+        <div class="border-strip border-strip--right" aria-hidden="true"></div>
+        <div class="grid-line grid-line--nav" aria-hidden="true"></div>
+        <div class="grid-line grid-line--content-l" aria-hidden="true"></div>
+        <div class="grid-line grid-line--content-r" aria-hidden="true"></div>
+        <div class="grid-line grid-line--shell-r" aria-hidden="true"></div>
+
+        <nav class="top-nav fold" data-fold="50">
+            <a href="en.html" aria-label="Home"><img class="logo logo-photo wf-target" src="assets/avatar.png" alt="Andrew Antoshkin" width="32" height="32"></a>
+            <div class="nav-links">
+                <a class="nav-link" href="en.html">Home</a>
+                <a class="nav-link" href="projects-en.html">Projects</a>
+                <a class="nav-link active" href="writing-en.html">Writing</a>
+                <a class="nav-link" href="approach-en.html">Approach</a>
+                <a class="nav-link" href="collab-en.html">Work together</a>
+            </div>
+        </nav>
+
+        <div class="nav-contact fold" data-fold="80">
+            <p class="nav-contact-label">Contact:</p>
+            <span>
+                <a href="mailto:andrew.antoshkin@gmail.com" class="nav-contact-email wf-target" data-copy="andrew.antoshkin@gmail.com">
+                    andrew.antoshkin@gmail.com
+                    <span class="copied" hidden>Copied</span>
+                </a>
+            </span>
         </div>
 
-        <article style="view-transition-name: article-body">
-            <h1 style="view-transition-name: article-1">Design.md: how to describe a design system for AI&nbsp;agents</h1>
-            <div class="article-tags">
-                <span class="article-tag">design</span>
-                <span class="article-tag">agents</span>
-                <span class="article-tag">rules</span>
+        <div class="mobile-wrap">
+            <button class="mobile-pill" type="button" aria-expanded="false" aria-label="Menu">
+                <span class="pill-icon"><span class="pill-bar"></span><span class="pill-bar"></span></span>
+                <span>Menu</span>
+            </button>
+            <div class="mobile-menu" hidden>
+                <a href="en.html">Home</a>
+                <a href="projects-en.html">Projects</a>
+                <a href="writing-en.html">Writing</a>
+                <a href="approach-en.html">Approach</a>
+                <a href="collab-en.html">Work together</a>
+                <hr>
+                <div class="compact-controls">
+                    <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="Toggle theme">
+                        <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
+                        <span class="theme-symbol theme-symbol--moon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M12.8 10.3A5.5 5.5 0 0 1 5.7 3.2 5.5 5.5 0 1 0 12.8 10.3Z"/></svg></span>
+                    </button>
+                    <nav class="language-switch" aria-label="Language"><a href="design-md.html">Ru</a><span aria-current="page">En</span></nav>
+                </div>
+                <a href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
+            </div>
+        </div>
+
+        <main class="main">
+            <div class="main-toggles">
+                <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="Toggle theme">
+                    <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
+                    <span class="theme-symbol theme-symbol--moon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M12.8 10.3A5.5 5.5 0 0 1 5.7 3.2 5.5 5.5 0 1 0 12.8 10.3Z"/></svg></span>
+                </button>
+                <nav class="language-switch" aria-label="Language"><a href="design-md.html">Ru</a><span aria-current="page">En</span></nav>
+            </div>
+            <div class="follow-right fold" data-fold="120">
+                <div class="nav-divider"></div>
+                <div class="social-links">
+                    <a class="nav-link follow-link wf-target" href="https://t.me/aiantoshkin" target="_blank" rel="noopener noreferrer">
+                        Telegram
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m13.7 2.8-2 9.5c-.15.67-.55.83-1.1.52L7.55 10.6l-1.47 1.42c-.16.16-.3.3-.62.3l.22-3.1 5.64-5.1c.25-.21-.05-.33-.38-.12L3.97 8.4l-3-.94c-.65-.2-.66-.65.14-.96l11.72-4.52c.54-.2 1.02.13.87.82Z" fill="currentColor"/></svg>
+                    </a>
+                    <a class="nav-link follow-link wf-target" href="https://github.com/AndrewAntoshkin" target="_blank" rel="noopener noreferrer">
+                        GitHub
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path fill="currentColor" d="M8 1.35a6.65 6.65 0 0 0-2.1 12.96c.33.06.45-.14.45-.32v-1.16c-1.84.4-2.23-.78-2.23-.78-.3-.76-.74-.96-.74-.96-.6-.42.05-.41.05-.41.67.05 1.02.69 1.02.69.6 1.02 1.56.72 1.94.55.06-.43.23-.72.42-.89-1.47-.17-3.02-.74-3.02-3.29 0-.73.26-1.32.69-1.78-.07-.17-.3-.85.07-1.76 0 0 .56-.18 1.83.68A6.36 6.36 0 0 1 8 4.8c.56 0 1.12.08 1.64.22 1.27-.86 1.83-.68 1.83-.68.37.91.14 1.59.07 1.76.43.46.69 1.05.69 1.78 0 2.56-1.56 3.12-3.03 3.29.24.2.45.61.45 1.24V14c0 .18.12.39.45.32A6.65 6.65 0 0 0 8 1.35Z"/></svg>
+                    </a>
+                    <a class="nav-link follow-link wf-target" href="https://setka.ru/users/84b42bc4-44b4-4b1e-ba76-06d249242bc4" target="_blank" rel="noopener noreferrer">
+                        Setka
+                        <img class="social-icon" src="https://cdn-assets.setka.ru/setka-web/static/favicon/favicon-32x32.a8036291d4eac4cc9ab8cbc378cb6d17.png" alt="" width="16" height="16">
+                    </a>
+                </div>
             </div>
 
-            <p>AI agents (Claude, GPT, Cursor) are increasingly writing UI code. But they have a fundamental problem: they don't know your design system. Every session starts from scratch. Every visual decision is a guess.</p>
+            <div class="content content--article">
+                
+                <a class="back-link back-link--inline fold wf-target" data-fold="60" href="writing-en.html">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    Writing
+                </a>
+                
+                
+                <div class="article-head fold wf-target" data-fold="100">
+                    <h1 class="title">DESIGN.md in&nbsp;2026: How to Describe a&nbsp;Design System for&nbsp;AI Agents</h1>
+                    <div class="article-meta">
+                <span class="tag">DESIGN.md</span>
+                <span class="tag">agent rules</span>
+                <span class="tag">DTCG</span>
+            </div>
+                </div>
+                <aside class="article-tldr fold" data-fold="120"><p class="article-tldr-label">TL;DR</p><p>DESIGN.md helps communicate a design system’s visual rules and decisions to an AI agent, but it does not replace code, tokens, or documentation. A useful format is layered, points to sources of truth, and is validated by automated tests.</p></aside>
+                <div class="prose fold wf-target" data-fold="140"><p><strong>Current as of&nbsp;August&nbsp;21, 2026.</strong> In&nbsp;April 2026, Google Labs published the open <code>DESIGN.md</code> specification for describing visual systems to coding agents. The current CLI version is&nbsp;0.4.0, released July&nbsp;27, 2026, while the format itself still has <code>alpha</code> status. It is a formal specification, but&nbsp;not a&nbsp;W3C Standard or&nbsp;a universally loaded instruction file.</p>
 
-            <p>Design.md solves this. It's a structured design system specification that AI reads at the start of every session. Instead of guessing, it looks things up.</p>
+<h2 id="section-1">The problem is&nbsp;not “memory,” but&nbsp;sources</h2>
 
-            <h2>The problem: 200 reasonable guesses</h2>
+<p>The claim that “every AI session starts from scratch” is&nbsp;no longer accurate. Claude Code can load <code>CLAUDE.md</code> and&nbsp;maintain auto memory; Cursor applies project rules and&nbsp;<code>AGENTS.md</code>. But memory and&nbsp;instructions remain context, not&nbsp;enforced configuration.</p>
 
-            <p>When AI writes an interface, it makes hundreds of micro-decisions: what padding for a card, what shade of blue for a link, what border radius for a button. Each decision looks fine. But 200 &ldquo;reasonable guesses&rdquo; don't add up to a consistent design.</p>
+<p>The main problem is&nbsp;different: an agent is&nbsp;often given a&nbsp;design and&nbsp;a repository without being told what constitutes the source of&nbsp;truth. It&nbsp;then chooses a&nbsp;plausible HEX value, creates a&nbsp;new component instead of&nbsp;using an existing one, or&nbsp;copies a&nbsp;value from outdated documentation.</p>
 
-            <p><a href="https://hvpandya.com/llm-design-systems" target="_blank" rel="noopener">Hardik Pandya</a> precisely describes three LLM limitations:</p>
+<p>The purpose of&nbsp;agent-facing documentation is&nbsp;not to&nbsp;rewrite the entire design system in&nbsp;Markdown, but&nbsp;to provide a&nbsp;concise map:</p>
 
-            <ol>
-                <li><strong>Value fabrication.</strong> AI doesn't look up your tokens. It generates plausible ones. If the system has <code>--space-200</code>&nbsp;= 8px, AI will write <code>padding: 12px</code> because 12 is a reasonable number. It's not wrong. It's just not yours.</li>
-                <li><strong>No memory between sessions.</strong> Every new session starts from zero. AI doesn't remember that yesterday it used <code>#2563EB</code> for links. Today it picks a different blue. By the fifth session, you have three different blues in one prototype.</li>
-                <li><strong>Can't read design intent from code.</strong> AI sees component APIs: import Button, pass <code>appearance="primary"</code>. But it doesn't understand when to use a modal instead of an inline message, or what spacing to put between sections. That knowledge lives in designers' heads.</li>
-            </ol>
+<ul>
+  <li>where tokens live and&nbsp;how they are built;</li>
+  <li>which components are approved for&nbsp;use;</li>
+  <li>where to&nbsp;find APIs, examples, and&nbsp;states;</li>
+  <li>what must not&nbsp;be hardcoded;</li>
+  <li>which checks validate the result.</li>
+</ul>
 
-            <h2>What is Design.md</h2>
+<h2 id="section-2">What DESIGN.md is&nbsp;in&nbsp;2026</h2>
 
-            <p>Design.md is a file in the repository root that describes your design system in a format suitable for AI. For Cursor, it lives in <code>.cursor/rules/</code>. For Claude, in CLAUDE.md. For any agent, in the session context.</p>
+<p>Google Labs’ DESIGN.md combines two layers:</p>
 
-            <p>The idea is simple: AI shouldn't decide &ldquo;which blue to use for a link.&rdquo; It should find <code>var(--color-link)</code> in the spec.</p>
+<ul>
+  <li><strong>YAML frontmatter</strong> containing normative machine-readable tokens;</li>
+  <li><strong>Markdown</strong> explaining the visual intent, usage rules, and&nbsp;permitted exceptions.</li>
+</ul>
 
-            <p><a href="https://airops-style-guide.vercel.app/" target="_blank" rel="noopener">AirOps</a> went further: their brand guideline has two representations: a live visual guideline for humans and a structured instruction for AI agents. One source of truth, two consumption formats.</p>
+<pre><code>---
+version: alpha
+name: Product UI
+colors:
+  text: "#212223"
+  background: "#fdfdfc"
+spacing:
+  sm: 8px
+  md: 16px
+---
 
-            <h2>What to include</h2>
+## Overview
+A calm product interface with high information density.
 
-            <h3>Tokens</h3>
+## Do's and Don'ts
+- Use semantic colors
+- Do not add decorative gradients to task-oriented flows</code></pre>
 
-            <p>A complete map of CSS variables with values and context. Not just <code>--color-primary: #2563EB</code>, but when and where to use it:</p>
+<p>The <code>@google/design.md</code> CLI can validate structure, compare versions, print the specification, and&nbsp;export tokens, including in&nbsp;DTCG and&nbsp;Tailwind formats. Because the schema and&nbsp;CLI are evolving rapidly, pin the package version and&nbsp;expect breaking changes.</p>
 
-<pre><code>## Colors
+<p>The mere presence of&nbsp;<code>DESIGN.md</code> does not mean Cursor, Claude Code, or&nbsp;another agent will read it&nbsp;automatically. Add an explicit reference from a&nbsp;supported entry point: <code>AGENTS.md</code>, <code>CLAUDE.md</code>, or&nbsp;<code>.cursor/rules/*.mdc</code>.</p>
 
-- `--color-text`: #171717 — primary text
-- `--color-text-sub`: #525252 — secondary text, descriptions
-- `--color-link`: #2563EB — links and interactive elements
-- `--color-bg`: #fafafa — page background
-- `--color-border`: #e5e5e5 — dividers and borders
+<h2 id="section-3">Four layers instead of&nbsp;one large file</h2>
 
-## Spacing (base 4px)
+<h3>1. A machine-readable source of&nbsp;truth</h3>
 
-- `--space-100`: 4px — minimum, between icon and text
-- `--space-200`: 8px — inside component
-- `--space-300`: 12px — between related elements
-- `--space-400`: 16px — standard padding
-- `--space-600`: 24px — between blocks
-- `--space-800`: 32px — between sections</code></pre>
+<p>Tokens should live in&nbsp;a structured format from which platform-specific artifacts are generated. In&nbsp;October 2025, the Design Tokens Community Group released the first stable <a href="https://www.designtokens.org/tr/2025.10/" target="_blank" rel="noopener">DTCG&nbsp;2025.10</a> specification. It&nbsp;defines an exchange format, value types, aliases, groups, and&nbsp;a resolver.</p>
 
-            <h3>Components</h3>
+<p>It&nbsp;is a&nbsp;stable Community Group Report suitable for&nbsp;production, but&nbsp;not a&nbsp;W3C Standard or&nbsp;part of&nbsp;the Standards Track. Support in&nbsp;any particular tool still needs to&nbsp;be verified.</p>
 
-            <p>For each component: when to use, when not to use, which tokens are involved, what states exist:</p>
+<pre><code>{
+  "color": {
+    "text": {
+      "primary": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0.13, 0.13, 0.14],
+          "alpha": 1
+        }
+      }
+    }
+  }
+}</code></pre>
 
-<pre><code>## Button
+<p>Markdown should not duplicate every value from this file. Doing so&nbsp;creates two sources of&nbsp;truth that will inevitably diverge.</p>
 
-When: primary action on the page
-When NOT: navigation (use Link)
+<h3>2. DESIGN.md for&nbsp;visual intent</h3>
 
-Variants: primary | secondary | ghost
-Sizes: sm (32px) | md (40px) | lg (48px)
+<p>Use DESIGN.md for&nbsp;normative visual tokens and&nbsp;concise rationale: the product’s character, composition principles, typography, color, and&nbsp;key do’s and&nbsp;don’ts. Do&nbsp;not turn it&nbsp;into a&nbsp;copy of&nbsp;the entire component documentation.</p>
 
-Tokens:
-- Background: var(--color-primary)
-- Text: var(--color-on-primary)
-- Border radius: var(--radius-md)
-- Padding: var(--space-300) var(--space-400)
+<h3>3. Component and&nbsp;pattern documentation</h3>
 
-States: default, hover, active, focus, disabled</code></pre>
+<p>Token names do&nbsp;not explain intent. Usage rules are needed: when to&nbsp;apply a&nbsp;semantic token, which states are required, when to&nbsp;choose a&nbsp;Dialog instead of&nbsp;an inline message, and&nbsp;how a&nbsp;component behaves on&nbsp;a narrow screen.</p>
 
-            <h3>Patterns</h3>
+<p>This documentation can live in&nbsp;Storybook, a&nbsp;documentation site, component comments, or&nbsp;separate Markdown files. What matters is&nbsp;that the agent entry point links to&nbsp;the current sections instead of&nbsp;copying them wholesale.</p>
 
-            <p>Layout rules that AI can't derive from code: spacing between sections, grid behavior, responsiveness principles. This is what usually lives in designers' heads and is never written down.</p>
+<h3>4. Agent-specific instructions</h3>
 
-            <h2>Three-layer token architecture</h2>
+<p>For Cursor, use:</p>
 
-            <p>Hardik Pandya proposes a three-layer structure that protects against drift:</p>
+<ul>
+  <li><code>AGENTS.md</code>&nbsp;— plain Markdown in&nbsp;the repository root or&nbsp;subdirectories;</li>
+  <li><code>.cursor/rules/*.mdc</code>&nbsp;— rules with a&nbsp;description, globs, and&nbsp;an application mode.</li>
+</ul>
 
-            <ol>
-                <li><strong>Upstream tokens</strong> from the design system: <code>--ds-text: #171717</code></li>
-                <li><strong>Project aliases</strong> with reference and fallback: <code>--color-text: var(--ds-text, #171717)</code></li>
-                <li><strong>Components</strong> use only aliases: <code>color: var(--color-text)</code></li>
-            </ol>
+<p>A regular <code>.cursor/rules/design-system.md</code> file is&nbsp;ignored by&nbsp;the rules system: the extension must be&nbsp;<code>.mdc</code>. In&nbsp;Claude Code, project instructions live in&nbsp;<code>./CLAUDE.md</code> or&nbsp;<code>./.claude/CLAUDE.md</code>. Cursor CLI also reads root-level <code>AGENTS.md</code> and&nbsp;<code>CLAUDE.md</code>, but&nbsp;do not rely on&nbsp;incidental overlap between formats&mdash;document the team’s primary path.</p>
 
-            <p>The alias is a protective layer. If the upstream system renames a token, you change one alias. Dark theme, high contrast, any future theme: all resolve automatically through the chain.</p>
+<h2 id="section-4">A minimal AGENTS.md for&nbsp;UI work</h2>
 
-            <h2>Audit: catching what AI missed</h2>
+<pre><code># Design system
 
-            <p>Design.md gives AI the right answers. The audit script catches cases where AI guessed anyway. A simple script scans CSS files for hardcoded values and suggests the specific token:</p>
+## Sources of truth
+- Tokens: packages/tokens/src/tokens.json
+- Components: packages/ui/src
+- Examples: apps/storybook
+- Accessibility tests: packages/ui/tests/a11y
 
-<pre><code>src/components/Nav.css
-  L42: color: #2563EB → use var(--color-link)
-  L78: padding: 12px → use var(--space-300)
+## Rules
+- Reuse an existing component before creating a new one
+- Use semantic tokens; do not add raw colors or spacing values
+- Preserve keyboard navigation, focus states and ARIA semantics
+- Do not copy generated CSS from Figma into production
 
-Errors: 2 | Warnings: 0</code></pre>
+## Validation
+- pnpm lint
+- pnpm test
+- pnpm test:a11y
+- pnpm build</code></pre>
 
-            <p>The script returns exit code 1 on errors and can be added to CI. Zero violations = safe to merge.</p>
+<p>This is&nbsp;a repository map with clear constraints. A&nbsp;list of&nbsp;hundreds of&nbsp;HEX values, dimensions, and&nbsp;variants would only weaken the signal.</p>
 
-            <h2>How to maintain</h2>
+<h2 id="section-5">When Cursor Project Rules are needed</h2>
 
-            <p>The spec lives in the repository next to the code, not in a Figma comment or Notion. When a component changes in a PR, the spec is in the same diff. Three rules:</p>
+<p>If different parts of&nbsp;a monorepo use different systems, it&nbsp;is better to&nbsp;limit the rule with a&nbsp;glob pattern:</p>
 
-            <ul>
-                <li><strong>New component</strong>: write the spec before or during development</li>
-                <li><strong>Design system update</strong>: update the affected sections of Design.md</li>
-                <li><strong>Audit in CI</strong>: the script automatically checks every PR</li>
-            </ul>
+<pre><code>---
+description: UI implementation rules for the web app
+globs:
+  - "apps/web/src/**/*.{ts,tsx,css}"
+alwaysApply: false
+---
 
-            <p>A small accurate spec is better than a large outdated one.</p>
+- Import components from @company/ui
+- Use semantic tokens from @company/tokens
+- Check responsive states at 360, 768 and 1440 px
+- Run pnpm --filter web test before handoff</code></pre>
 
-            <h2>Result</h2>
+<p>A narrowly scoped rule is&nbsp;more useful than a&nbsp;global manifesto: the agent receives only the relevant context.</p>
 
-            <p>Your tenth AI session delivers the same visual quality as the first. AI doesn't guess, it looks up. Doesn't fabricate, it references. Doesn't drift, it gets checked by audit.</p>
+<h2 id="section-6">Describe components through decisions, not&nbsp;screenshots</h2>
 
-            <p>Design.md is not documentation. It's infrastructure.</p>
-        </article>
+<p>For each complex component, document its contract rather than its entire visual appearance:</p>
 
-        <nav class="article-nav">
-            <a href="cursor-figma-en.html">
-                <span class="article-nav-label">Previous</span>
-                <span class="article-nav-title">Cursor + Figma: setting up a designer's environment</span>
-            </a>
-            <a href="dev-for-designers-en.html" class="next">
-                <span class="article-nav-label">Next</span>
-                <span class="article-nav-title">Why design system designers should understand development</span>
-            </a>
-        </nav>
-    </main>
-    <script>
-    (function(){
-        const els = document.querySelectorAll('.back, article h1, .article-tags, article h2, article p, article pre, article ul, article ol, article blockquote, .article-nav');
-        let delay = 0;
-        els.forEach(el => {
-            el.classList.add('reveal');
-            el.style.animationDelay = delay + 'ms';
-            delay += 60;
-        });
-    })();
-    </script>
+<ul>
+  <li><strong>Purpose:</strong> the problem the component solves.</li>
+  <li><strong>When not&nbsp;to use it:</strong> the closest alternatives.</li>
+  <li><strong>API:</strong> props, slots/children, controlled state.</li>
+  <li><strong>States:</strong> loading, empty, error, disabled, focus.</li>
+  <li><strong>Content:</strong> length constraints, localization, and&nbsp;number and&nbsp;date formats.</li>
+  <li><strong>Accessibility:</strong> role, name, keyboard interaction, focus management.</li>
+  <li><strong>Responsive behavior:</strong> what changes and&nbsp;what remains invariant.</li>
+</ul>
+
+<pre><code>## Dialog
+
+Use for a short blocking decision or focused task.
+Do not use for long multi-step forms; use a page or drawer.
+
+Required:
+- accessible name
+- focus moves inside on open
+- Escape closes when dismissal is allowed
+- focus returns to the trigger
+
+Composition:
+- DialogHeader
+- DialogBody
+- DialogFooter</code></pre>
+
+<h2 id="section-7">Figma and&nbsp;Code Connect</h2>
+
+<p>Figma MCP provides the agent with design structure, variables, and&nbsp;components. Code Connect adds a&nbsp;curated link to&nbsp;the actual implementation. This is&nbsp;more useful than manually listing every prop in&nbsp;Markdown.</p>
+
+<p>But that connection does not replace documentation. Code Connect answers “which component should be&nbsp;used, and&nbsp;what does its code example look like?” Rules should answer “when is&nbsp;this component appropriate?” and&nbsp;“how should the result be&nbsp;validated?”</p>
+
+<p>As&nbsp;of August&nbsp;17, 2026, Figma no&nbsp;longer updates framework-specific Code Connect parsers. For new mappings, use framework-agnostic <code>.figma.ts</code> template files; legacy parser-based integrations should be&nbsp;migrated with <code>npx figma connect migrate</code>.</p>
+
+<h2 id="section-8">Checks matter more than promises</h2>
+
+<p>Instructions help an agent make the right decision, but&nbsp;they do&nbsp;not guarantee compliance. Automate the checks that can be&nbsp;automated:</p>
+
+<ul>
+  <li>linting for&nbsp;prohibited raw values and&nbsp;imports;</li>
+  <li>type-checking the public component API;</li>
+  <li>unit and&nbsp;interaction tests;</li>
+  <li>accessibility checks;</li>
+  <li>visual regression tests for&nbsp;key states;</li>
+  <li>building token outputs from a&nbsp;single source file;</li>
+  <li>checking documentation for&nbsp;broken links and&nbsp;outdated snippets.</li>
+</ul>
+
+<p>There is&nbsp;no universal “audit script” that can automatically select the correct token for&nbsp;every hardcoded value. Such checks depend on&nbsp;the project’s token structure and&nbsp;rules. Do&nbsp;not equate the absence of&nbsp;regex matches with interface quality.</p>
+
+<h2 id="section-9">How to&nbsp;avoid creating a&nbsp;second source of&nbsp;truth</h2>
+
+<ol>
+  <li>Keep values in&nbsp;a structured token source, preferably one compatible with DTCG.</li>
+  <li>Generate CSS, iOS, Android, and&nbsp;other outputs automatically.</li>
+  <li>Keep the component API close to&nbsp;the code and&nbsp;validate it&nbsp;with tests.</li>
+  <li>Keep only links, constraints, and&nbsp;validation commands in&nbsp;agent instructions.</li>
+  <li>Update documentation and&nbsp;implementation in&nbsp;the same pull request.</li>
+  <li>Remove outdated rules: concise, current context is&nbsp;better than a&nbsp;long archive.</li>
+</ol>
+
+<h2 id="section-10">What counts as&nbsp;a successful result</h2>
+
+<p>A good agent-facing specification does not promise an identical result in&nbsp;every session. It&nbsp;makes deviations visible and&nbsp;inexpensive: the agent finds the right component, uses semantic tokens, runs checks, and&nbsp;leaves a&nbsp;reviewable diff.</p>
+
+<p>DESIGN.md is&nbsp;a useful open alpha specification for&nbsp;visual context, but&nbsp;it is&nbsp;not a&nbsp;replacement for&nbsp;DTCG, component documentation, or&nbsp;agent-specific rules. Infrastructure begins when a&nbsp;source of&nbsp;truth is&nbsp;designated, formats are explicitly connected, and&nbsp;automated validation works.</p>
+
+<h2 id="section-11">Sources</h2>
+
+<ul>
+  <li><a href="https://github.com/google-labs-code/design.md" target="_blank" rel="noopener">Google Labs: DESIGN.md</a></li>
+  <li><a href="https://github.com/google-labs-code/design.md/blob/main/docs/spec.md" target="_blank" rel="noopener">Google Labs: DESIGN.md specification</a></li>
+  <li><a href="https://cursor.com/docs/rules" target="_blank" rel="noopener">Cursor: Rules and&nbsp;AGENTS.md</a></li>
+  <li><a href="https://docs.anthropic.com/en/docs/claude-code/memory" target="_blank" rel="noopener">Anthropic: CLAUDE.md and&nbsp;auto memory</a></li>
+  <li><a href="https://www.designtokens.org/tr/2025.10/" target="_blank" rel="noopener">DTCG Technical Reports&nbsp;2025.10</a></li>
+  <li><a href="https://www.designtokens.org/faq/" target="_blank" rel="noopener">DTCG FAQ: specification status</a></li>
+  <li><a href="https://help.figma.com/hc/en-us/articles/23920389749655-Code-Connect" target="_blank" rel="noopener">Figma: Code Connect</a></li>
+  <li><a href="https://developers.figma.com/docs/code-connect/templates-migration-guide/" target="_blank" rel="noopener">Figma: migrating Code Connect to&nbsp;template files</a></li>
+</ul></div>
+                <nav class="article-nav"><a href="cursor-figma-en.html"><span class="article-nav-label">Previous</span><span class="article-nav-title">Cursor + Figma in&nbsp;2026: the current setup for&nbsp;designers</span></a><a href="dev-for-designers-en.html" class="next"><span class="article-nav-label">Next</span><span class="article-nav-title">Why design system designers should understand development in&nbsp;2026</span></a></nav>
+    
+            </div>
+        </main>
+
+        <div class="crosshair" aria-hidden="true">
+            <div class="crosshair-h"></div>
+            <div class="crosshair-v"></div>
+            <div class="crosshair-coords">0 · 0</div>
+        </div>
+        <div class="bottom-fade" aria-hidden="true"></div>
+    </div>
+    <script src="assets/wireframe.js"></script>
 </body>
 </html>

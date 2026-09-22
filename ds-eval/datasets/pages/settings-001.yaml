@@ -1,0 +1,25 @@
+id: page-settings-001
+title: Settings page
+category: pages
+difficulty: hard
+prompt: |
+  Build a settings page with a page header, tabs (Profile / Notifications),
+  form controls, and save/cancel actions.
+required_components:
+  - PageHeader
+  - Tabs
+  - Input
+  - Button
+forbidden_patterns:
+  - raw-color
+  - native-button
+assertions:
+  - kind: visible
+    target: text=Settings
+  - kind: click
+    target: role=tab[name=Notifications]
+  - kind: click
+    target: role=tab[name=Profile]
+  - kind: visible
+    target: 'role=button[name="Save"]'
+

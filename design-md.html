@@ -2,462 +2,351 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Design.md — как описать дизайн-систему для AI-агентов</title>
-    <meta name="description" content="Как структурировать дизайн-систему в формате, который AI-агенты могут использовать. Токены, компоненты, паттерны, аудит.">
-    <meta property="og:title" content="Design.md — как описать дизайн-систему для AI-агентов">
-    <meta property="og:description" content="Как структурировать дизайн-систему в формате, который AI-агенты могут использовать.">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>DESIGN.md в 2026: как описать дизайн-систему для AI-агентов</title>
+    <meta name="description" content="DESIGN.md в 2026: как описать дизайн-систему для AI-агентов">
+    <meta name="theme-color" content="#FDFDFC" id="themeColorMeta">
+    <meta property="og:title" content="DESIGN.md в 2026: как описать дизайн-систему для AI-агентов">
+    <meta property="og:description" content="DESIGN.md в 2026: как описать дизайн-систему для AI-агентов">
     <meta property="og:type" content="article">
-    <link rel="icon" type="image/png" href="assets/avatar.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <meta name="color-scheme" content="light dark">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        @view-transition {
-            navigation: auto;
-        }
-
-        ::view-transition-old(root),
-        ::view-transition-new(root) {
-            animation: 250ms ease both crossfade;
-        }
-
-        ::view-transition-old(root) {
-            animation-name: crossfade-out;
-        }
-
-        ::view-transition-new(article-body) {
-            animation: 500ms cubic-bezier(0.22, 1, 0.36, 1) both slide-fade-in;
-            animation-delay: 150ms;
-        }
-
-        ::view-transition-old(article-body) {
-            animation: 200ms ease both crossfade-out;
-        }
-
-        @keyframes crossfade {
-            from { opacity: 0; }
-        }
-
-        @keyframes crossfade-out {
-            to { opacity: 0; }
-        }
-
-        @keyframes slide-fade-in {
-            from { opacity: 0; transform: translateY(20px); }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            ::view-transition-group(*),
-            ::view-transition-old(*),
-            ::view-transition-new(*) {
-                animation: none !important;
-            }
-        }
-
-        :root {
-            --bg: #fafafa;
-            --text: #0a0a0a;
-            --text-sub: #52525b;
-            --text-muted: #737373;
-            --border: #e4e4e7;
-            --code-bg: #f4f4f5;
-            --code-border: rgba(0, 0, 0, 0.08);
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #0c0c0c;
-                --text: #f5f5f5;
-                --text-sub: #d4d4d8;
-                --text-muted: #8f8e8d;
-                --border: #27272a;
-                --code-bg: #18181b;
-                --code-border: rgba(255, 255, 255, 0.05);
-            }
-        }
-
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-        html {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            font-size: 1rem;
-            line-height: 1.618;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        body { min-height: 100vh; }
-        a { color: inherit; }
-
-        main {
-            width: min(592px, 100% - 32px);
-            margin: 0 auto;
-            padding-top: clamp(2rem, 0.56rem + 5.56vw, 5rem);
-            padding-bottom: clamp(2rem, 0.56rem + 5.56vw, 5rem);
-        }
-
-        .back-bar {
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            padding: 16px 16px 48px;
-            margin: 0 -16px;
-        }
-
-        .back-blur {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-        }
-
-        .back-blur:nth-child(1) {
-            -webkit-backdrop-filter: blur(1px);
-            backdrop-filter: blur(1px);
-            -webkit-mask-image: linear-gradient(to bottom, black, transparent 25%);
-            mask-image: linear-gradient(to bottom, black, transparent 25%);
-        }
-
-        .back-blur:nth-child(2) {
-            -webkit-backdrop-filter: blur(2px);
-            backdrop-filter: blur(2px);
-            -webkit-mask-image: linear-gradient(to bottom, black 12%, transparent 40%);
-            mask-image: linear-gradient(to bottom, black 12%, transparent 40%);
-        }
-
-        .back-blur:nth-child(3) {
-            -webkit-backdrop-filter: blur(4px);
-            backdrop-filter: blur(4px);
-            -webkit-mask-image: linear-gradient(to bottom, black 25%, transparent 60%);
-            mask-image: linear-gradient(to bottom, black 25%, transparent 60%);
-        }
-
-        .back-blur:nth-child(4) {
-            -webkit-backdrop-filter: blur(8px) saturate(180%);
-            backdrop-filter: blur(8px) saturate(180%);
-            -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
-            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
-        }
-
-        .back-bar::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            background: linear-gradient(to bottom, var(--bg) 0%, transparent 70%);
-            opacity: 0.7;
-        }
-
-        .back {
-            position: relative;
-            z-index: 1;
-            display: inline-block;
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .back:hover { color: var(--text); }
-
-        article h1 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            line-height: 1.3;
-            letter-spacing: -0.02em;
-            margin-bottom: 8px;
-        }
-
-        .article-tags {
-            display: flex;
-            gap: 4px;
-            flex-wrap: wrap;
-            margin-bottom: 2.5rem;
-        }
-
-        .article-tag {
-            font-size: 12px;
-            line-height: 14px;
-            padding: 4px 10px;
-            border: 1px solid var(--border);
-            border-radius: 100px;
-            color: var(--text-muted);
-            white-space: nowrap;
-        }
-
-        article h2 {
-            font-size: 1.125rem;
-            font-weight: 500;
-            line-height: 1.4;
-            margin-top: 2rem;
-            margin-bottom: 0;
-            color: var(--text);
-        }
-
-        article h3 {
-            font-size: 1rem;
-            font-weight: 500;
-            line-height: 1.5;
-            margin-top: 1.5rem;
-            margin-bottom: 0;
-        }
-
-        article p {
-            font-size: 1rem;
-            color: var(--text-sub);
-            margin-top: 1.5rem;
-        }
-
-        article p:first-of-type { margin-top: 0; }
-
-        article a {
-            color: var(--text);
-            text-decoration: underline;
-            text-decoration-color: color-mix(in srgb, currentColor, transparent 75%);
-            text-underline-offset: 0.3em;
-            text-decoration-thickness: 1px;
-            transition: text-decoration-color 0.17s ease-out;
-        }
-
-        article a:hover { text-decoration-color: currentColor; }
-
-        article strong { font-weight: 600; color: var(--text); }
-
-        article ul, article ol {
-            margin-top: 1rem;
-            padding-left: 1.25rem;
-        }
-
-        article li {
-            font-size: 1rem;
-            color: var(--text-sub);
-            margin-top: 0.25rem;
-        }
-
-        article li strong { color: var(--text); }
-
-        article code {
-            font-family: 'SF Mono', 'Fira Code', 'Fira Mono', monospace;
-            font-size: 0.8125rem;
-            background: var(--code-bg);
-            padding: 2px 6px;
-            border-radius: 4px;
-        }
-
-        article pre {
-            margin-top: 1rem;
-            background: var(--code-bg);
-            border: 1px solid var(--code-border);
-            border-radius: 0.625rem;
-            padding: 1rem;
-            overflow-x: auto;
-        }
-
-        article pre code {
-            background: none;
-            padding: 0;
-            font-size: 0.875rem;
-            line-height: 1.618;
-            color: var(--text);
-        }
-
-        .article-nav {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 3rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border);
-        }
-
-        .article-nav a {
-            text-decoration: none;
-            color: inherit;
-            max-width: 48%;
-        }
-
-        .article-nav a:hover .article-nav-title { color: var(--text); }
-
-        .article-nav-label {
-            display: block;
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-        }
-
-        .article-nav-title {
-            display: block;
-            font-size: 1rem;
-            font-weight: 500;
-            transition: color 0.15s;
-        }
-
-        .article-nav .next { margin-left: auto; text-align: right; }
-        @keyframes deblur {
-            from { opacity: 0; filter: blur(10px); transform: translateY(6px); }
-            to   { opacity: 1; filter: blur(0);    transform: translateY(0); }
-        }
-        .reveal {
-            opacity: 0;
-            animation: deblur 0.6s ease-out forwards;
-        }
-    </style>
+    <link rel="icon" type="image/svg+xml" href="assets/antoshkin-tech-logo.svg">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <link rel="stylesheet" href="assets/wireframe.css">
+    <link rel="stylesheet" href="assets/guides.css">
+    <script>
+        try {
+            if (localStorage.getItem('theme') === 'dark') document.documentElement.dataset.theme = 'dark';
+        } catch (e) {}
+    </script>
 </head>
-<body>
-    <main>
-        <div class="back-bar">
-            <div class="back-blur"></div>
-            <div class="back-blur"></div>
-            <div class="back-blur"></div>
-            <div class="back-blur"></div>
-            <a href="/" class="back">&larr; Назад</a>
+<body data-guides="false">
+    <div class="page">
+        <div class="border-strip border-strip--left" aria-hidden="true"></div>
+        <div class="border-strip border-strip--right" aria-hidden="true"></div>
+        <div class="grid-line grid-line--nav" aria-hidden="true"></div>
+        <div class="grid-line grid-line--content-l" aria-hidden="true"></div>
+        <div class="grid-line grid-line--content-r" aria-hidden="true"></div>
+        <div class="grid-line grid-line--shell-r" aria-hidden="true"></div>
+
+        <nav class="top-nav fold" data-fold="50">
+            <a href="index.html" aria-label="На главную"><img class="logo logo-photo wf-target" src="assets/avatar.png" alt="Andrew Antoshkin" width="32" height="32"></a>
+            <div class="nav-links">
+                <a class="nav-link" href="index.html">Главная</a>
+                <a class="nav-link" href="projects.html">Проекты</a>
+                <a class="nav-link active" href="writing.html">Статьи</a>
+                <a class="nav-link" href="approach.html">Подход</a>
+                <a class="nav-link" href="collab.html">Сотрудничество</a>
+            </div>
+        </nav>
+
+        <div class="nav-contact fold" data-fold="80">
+            <p class="nav-contact-label">Для связи:</p>
+            <span>
+                <a href="mailto:andrew.antoshkin@gmail.com" class="nav-contact-email wf-target" data-copy="andrew.antoshkin@gmail.com">
+                    andrew.antoshkin@gmail.com
+                    <span class="copied" hidden>Скопировано</span>
+                </a>
+            </span>
         </div>
 
-        <article style="view-transition-name: article-body">
-            <h1 style="view-transition-name: article-1">Design.md: как описать дизайн&#8209;систему для&nbsp;AI&#8209;агентов</h1>
-            <div class="article-tags">
-                <span class="article-tag">design</span>
-                <span class="article-tag">agents</span>
-                <span class="article-tag">rules</span>
+        <div class="mobile-wrap">
+            <button class="mobile-pill" type="button" aria-expanded="false" aria-label="Меню">
+                <span class="pill-icon"><span class="pill-bar"></span><span class="pill-bar"></span></span>
+                <span>Меню</span>
+            </button>
+            <div class="mobile-menu" hidden>
+                <a href="index.html">Главная</a>
+                <a href="projects.html">Проекты</a>
+                <a href="writing.html">Статьи</a>
+                <a href="approach.html">Подход</a>
+                <a href="collab.html">Сотрудничество</a>
+                <hr>
+                <div class="compact-controls">
+                    <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="Переключить тему">
+                        <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
+                        <span class="theme-symbol theme-symbol--moon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M12.8 10.3A5.5 5.5 0 0 1 5.7 3.2 5.5 5.5 0 1 0 12.8 10.3Z"/></svg></span>
+                    </button>
+                    <nav class="language-switch" aria-label="Language"><span aria-current="page">Ru</span><a href="design-md-en.html">En</a></nav>
+                </div>
+                <a href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
+            </div>
+        </div>
+
+        <main class="main">
+            <div class="main-toggles">
+                <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="Переключить тему">
+                    <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
+                    <span class="theme-symbol theme-symbol--moon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M12.8 10.3A5.5 5.5 0 0 1 5.7 3.2 5.5 5.5 0 1 0 12.8 10.3Z"/></svg></span>
+                </button>
+                <nav class="language-switch" aria-label="Language"><span aria-current="page">Ru</span><a href="design-md-en.html">En</a></nav>
+            </div>
+            <div class="follow-right fold" data-fold="120">
+                <div class="nav-divider"></div>
+                <div class="social-links">
+                    <a class="nav-link follow-link wf-target" href="https://t.me/aiantoshkin" target="_blank" rel="noopener noreferrer">
+                        Telegram
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m13.7 2.8-2 9.5c-.15.67-.55.83-1.1.52L7.55 10.6l-1.47 1.42c-.16.16-.3.3-.62.3l.22-3.1 5.64-5.1c.25-.21-.05-.33-.38-.12L3.97 8.4l-3-.94c-.65-.2-.66-.65.14-.96l11.72-4.52c.54-.2 1.02.13.87.82Z" fill="currentColor"/></svg>
+                    </a>
+                    <a class="nav-link follow-link wf-target" href="https://github.com/AndrewAntoshkin" target="_blank" rel="noopener noreferrer">
+                        GitHub
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path fill="currentColor" d="M8 1.35a6.65 6.65 0 0 0-2.1 12.96c.33.06.45-.14.45-.32v-1.16c-1.84.4-2.23-.78-2.23-.78-.3-.76-.74-.96-.74-.96-.6-.42.05-.41.05-.41.67.05 1.02.69 1.02.69.6 1.02 1.56.72 1.94.55.06-.43.23-.72.42-.89-1.47-.17-3.02-.74-3.02-3.29 0-.73.26-1.32.69-1.78-.07-.17-.3-.85.07-1.76 0 0 .56-.18 1.83.68A6.36 6.36 0 0 1 8 4.8c.56 0 1.12.08 1.64.22 1.27-.86 1.83-.68 1.83-.68.37.91.14 1.59.07 1.76.43.46.69 1.05.69 1.78 0 2.56-1.56 3.12-3.03 3.29.24.2.45.61.45 1.24V14c0 .18.12.39.45.32A6.65 6.65 0 0 0 8 1.35Z"/></svg>
+                    </a>
+                    <a class="nav-link follow-link wf-target" href="https://setka.ru/users/84b42bc4-44b4-4b1e-ba76-06d249242bc4" target="_blank" rel="noopener noreferrer">
+                        Сетка
+                        <img class="social-icon" src="https://cdn-assets.setka.ru/setka-web/static/favicon/favicon-32x32.a8036291d4eac4cc9ab8cbc378cb6d17.png" alt="" width="16" height="16">
+                    </a>
+                </div>
             </div>
 
-            <p>AI-агенты (Claude, GPT, Cursor) всё чаще пишут UI-код. Но у&nbsp;них есть фундаментальная проблема: они не&nbsp;знают вашу дизайн-систему. Каждая сессия начинается с&nbsp;нуля. Каждое визуальное решение: догадка.</p>
+            <div class="content content--article">
+                
+                <a class="back-link back-link--inline fold wf-target" data-fold="60" href="writing.html">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    Статьи
+                </a>
+                
+                
+                <div class="article-head fold wf-target" data-fold="100">
+                    <h1 class="title">DESIGN.md в&nbsp;2026: как описать дизайн&#8209;систему для&nbsp;AI&#8209;агентов</h1>
+                    <div class="article-meta">
+                <span class="tag">DESIGN.md</span>
+                <span class="tag">agent rules</span>
+                <span class="tag">DTCG</span>
+            </div>
+                </div>
+                <aside class="article-tldr fold" data-fold="120"><p class="article-tldr-label">TL;DR</p><p>DESIGN.md помогает передать AI-агенту визуальные правила и решения дизайн-системы, но не заменяет код, токены и документацию. Полезный формат строится слоями, ссылается на источники правды и проверяется автоматическими тестами.</p></aside>
+                <div class="prose fold wf-target" data-fold="140"><p><strong>Актуально на&nbsp;21&nbsp;августа 2026&nbsp;года.</strong> В&nbsp;апреле 2026 Google Labs опубликовала открытую спецификацию <code>DESIGN.md</code> для описания визуальной системы coding agents. Текущая версия CLI&nbsp;— 0.4.0 от&nbsp;27&nbsp;июля 2026, а&nbsp;сам формат всё ещё имеет статус <code>alpha</code>. Это формальная спецификация, но&nbsp;не&nbsp;W3C Standard и&nbsp;не&nbsp;универсально загружаемый файл инструкций.</p>
 
-            <p>Design.md решает это. Это структурированная спецификация дизайн-системы, которую AI читает в&nbsp;начале каждой сессии. Вместо догадок: поиск по&nbsp;документу.</p>
+<h2 id="section-1">Проблема не&nbsp;в&nbsp;«памяти», а&nbsp;в&nbsp;источниках</h2>
 
-            <h2>Проблема: 200 разумных догадок</h2>
+<p>Фраза «каждая AI-сессия начинается с&nbsp;нуля» уже неточна. Claude Code умеет загружать <code>CLAUDE.md</code> и&nbsp;вести auto memory; Cursor применяет project rules и&nbsp;<code>AGENTS.md</code>. Но память и&nbsp;инструкции остаются контекстом, а&nbsp;не&nbsp;enforced-конфигурацией.</p>
 
-            <p>Когда AI пишет интерфейс, он принимает сотни микрорешений: какой отступ у&nbsp;карточки, какой оттенок синего для ссылки, какой радиус скругления у&nbsp;кнопки. Каждое решение выглядит нормально. Но 200 &laquo;нормальных догадок&raquo; не&nbsp;складываются в&nbsp;консистентный дизайн.</p>
+<p>Главная проблема другая: агенту часто дают макет и&nbsp;репозиторий, но&nbsp;не&nbsp;объясняют, что является источником правды. Тогда он&nbsp;выбирает правдоподобный HEX, создаёт новый компонент вместо существующего или копирует значение из&nbsp;устаревшей документации.</p>
 
-            <p><a href="https://hvpandya.com/llm-design-systems" target="_blank" rel="noopener">Hardik Pandya</a> точно описывает три ограничения LLM:</p>
+<p>Задача agent-facing документации&nbsp;— не&nbsp;переписать всю дизайн-систему в&nbsp;Markdown, а&nbsp;дать короткую карту:</p>
 
-            <ol>
-                <li><strong>Фабрикация значений.</strong> AI не&nbsp;ищет ваши токены, а генерирует правдоподобные. Если в&nbsp;системе <code>--space-200</code>&nbsp;= 8px, AI напишет <code>padding: 12px</code>, потому что 12, разумное число. Оно не&nbsp;неправильное. Оно просто не&nbsp;ваше.</li>
-                <li><strong>Нет памяти между сессиями.</strong> Каждая новая сессия начинается с&nbsp;нуля. AI не&nbsp;помнит, что вчера использовал <code>#2563EB</code> для ссылок. Сегодня он выберет другой синий. К&nbsp;пятой сессии у&nbsp;вас три разных синих в&nbsp;одном прототипе.</li>
-                <li><strong>Не&nbsp;читает дизайн-намерение из&nbsp;кода.</strong> AI видит API компонентов: импортировать Button, передать <code>appearance="primary"</code>. Но&nbsp;он не&nbsp;понимает, когда использовать модалку вместо инлайн-сообщения, или какой отступ ставить между секциями. Это знание живёт в&nbsp;головах дизайнеров.</li>
-            </ol>
+<ul>
+  <li>где лежат токены и&nbsp;как они собираются;</li>
+  <li>какие компоненты разрешено использовать;</li>
+  <li>где смотреть API, примеры и&nbsp;состояния;</li>
+  <li>что нельзя хардкодить;</li>
+  <li>какие проверки подтверждают результат.</li>
+</ul>
 
-            <h2>Что такое Design.md</h2>
+<h2 id="section-2">Что такое DESIGN.md в&nbsp;2026&nbsp;году</h2>
 
-            <p>Design.md: файл в&nbsp;корне репозитория, который описывает вашу дизайн-систему в&nbsp;формате, пригодном для AI. Для Cursor он живёт в&nbsp;<code>.cursor/rules/</code>. Для Claude: в&nbsp;CLAUDE.md. Для любого агента: в&nbsp;контексте сессии.</p>
+<p>Google Labs DESIGN.md объединяет два слоя:</p>
 
-            <p>Идея простая: AI не&nbsp;должен решать &laquo;какой синий использовать для ссылки&raquo;. Он&nbsp;должен найти <code>var(--color-link)</code> в&nbsp;спецификации.</p>
+<ul>
+  <li><strong>YAML frontmatter</strong> с&nbsp;нормативными machine-readable tokens;</li>
+  <li><strong>Markdown</strong> с&nbsp;объяснением визуального намерения, правил применения и&nbsp;допустимых исключений.</li>
+</ul>
 
-            <p><a href="https://airops-style-guide.vercel.app/" target="_blank" rel="noopener">AirOps</a> пошли дальше: их бренд-гайдлайн имеет два представления: живой визуальный гайдлайн для людей и&nbsp;структурированная инструкция для AI-агентов. Один источник правды, два формата потребления.</p>
+<pre><code>---
+version: alpha
+name: Product UI
+colors:
+  text: "#212223"
+  background: "#fdfdfc"
+spacing:
+  sm: 8px
+  md: 16px
+---
 
-            <h2>Что включать</h2>
+## Overview
+Спокойный продуктовый интерфейс с высокой плотностью данных.
 
-            <h3>Токены</h3>
+## Do's and Don'ts
+- Используй semantic colors
+- Не добавляй декоративные gradients в рабочих сценариях</code></pre>
 
-            <p>Полная карта CSS-переменных с&nbsp;значениями и&nbsp;контекстом. Не&nbsp;просто <code>--color-primary: #2563EB</code>, а&nbsp;когда и&nbsp;где его использовать:</p>
+<p>CLI <code>@google/design.md</code> умеет валидировать структуру, сравнивать версии, выводить спецификацию и&nbsp;экспортировать tokens, в&nbsp;том числе в&nbsp;DTCG и&nbsp;Tailwind-форматы. Поскольку schema и&nbsp;CLI активно развиваются, фиксируйте версию пакета и&nbsp;ожидайте breaking changes.</p>
 
-<pre><code>## Цвета
+<p>Само наличие <code>DESIGN.md</code> не&nbsp;означает, что Cursor, Claude Code или другой агент автоматически его прочитает. Добавьте явную ссылку в&nbsp;поддерживаемый entrypoint: <code>AGENTS.md</code>, <code>CLAUDE.md</code> или <code>.cursor/rules/*.mdc</code>.</p>
 
-- `--color-text`: #171717 — основной текст
-- `--color-text-sub`: #525252 — вторичный текст, описания
-- `--color-link`: #2563EB — ссылки и интерактивные элементы
-- `--color-bg`: #fafafa — фон страницы
-- `--color-border`: #e5e5e5 — разделители и границы
+<h2 id="section-3">Четыре слоя вместо одного большого файла</h2>
 
-## Отступы (base 4px)
+<h3>1. Машиночитаемый источник правды</h3>
 
-- `--space-100`: 4px — минимальный, между иконкой и текстом
-- `--space-200`: 8px — внутри компонента
-- `--space-300`: 12px — между связанными элементами
-- `--space-400`: 16px — стандартный padding
-- `--space-600`: 24px — между блоками
-- `--space-800`: 32px — между секциями</code></pre>
+<p>Токены должны жить в&nbsp;структурированном формате, из&nbsp;которого генерируются платформенные артефакты. В&nbsp;октябре 2025&nbsp;года Design Tokens Community Group выпустила первую стабильную спецификацию <a href="https://www.designtokens.org/tr/2025.10/" target="_blank" rel="noopener">DTCG&nbsp;2025.10</a>. Она описывает exchange format, типы значений, aliases, groups и&nbsp;resolver.</p>
 
-            <h3>Компоненты</h3>
+<p>Это стабильный Community Group Report, пригодный для production, но&nbsp;не&nbsp;W3C Standard и&nbsp;не&nbsp;часть Standards Track. Поддержка конкретным инструментом всё равно требует проверки.</p>
 
-            <p>Для каждого компонента: когда использовать, когда не&nbsp;использовать, какие токены задействованы, какие состояния есть:</p>
+<pre><code>{
+  "color": {
+    "text": {
+      "primary": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0.13, 0.13, 0.14],
+          "alpha": 1
+        }
+      }
+    }
+  }
+}</code></pre>
 
-<pre><code>## Button
+<p>Markdown не&nbsp;должен дублировать все значения из&nbsp;этого файла. Иначе появляются два источника правды, которые неизбежно расходятся.</p>
 
-Когда: основное действие на странице
-Когда НЕ: навигация (используй Link)
+<h3>2. DESIGN.md с&nbsp;визуальным намерением</h3>
 
-Варианты: primary | secondary | ghost
-Размеры: sm (32px) | md (40px) | lg (48px)
+<p>Используйте DESIGN.md для нормативных visual tokens и&nbsp;короткого rationale: характер продукта, принципы композиции, типографики, цвета и&nbsp;ключевые do's and don'ts. Не&nbsp;превращайте его в&nbsp;копию всей component documentation.</p>
 
-Токены:
-- Фон: var(--color-primary)
-- Текст: var(--color-on-primary)
-- Скругление: var(--radius-md)
-- Паддинг: var(--space-300) var(--space-400)
+<h3>3. Документация компонентов и&nbsp;паттернов</h3>
 
-Состояния: default, hover, active, focus, disabled</code></pre>
+<p>Названия токенов не&nbsp;объясняют намерение. Нужны правила использования: когда применять semantic token, какие состояния обязательны, когда выбрать Dialog вместо inline message, как ведёт себя компонент на&nbsp;узком экране.</p>
 
-            <h3>Паттерны</h3>
+<p>Эта документация может жить в&nbsp;Storybook, документационном сайте, комментариях к&nbsp;компонентам или отдельных Markdown-файлах. Важно, чтобы agent entrypoint ссылался на&nbsp;актуальные разделы, а&nbsp;не&nbsp;копировал их&nbsp;целиком.</p>
 
-            <p>Правила компоновки, которые AI не&nbsp;может вывести из&nbsp;кода: отступы между секциями, поведение сетки, принципы адаптивности. Это то, что обычно живёт в&nbsp;головах дизайнеров и&nbsp;нигде не&nbsp;записано.</p>
+<h3>4. Инструкции конкретного агента</h3>
 
-            <h2>Трёхслойная архитектура токенов</h2>
+<p>Для Cursor используйте:</p>
 
-            <p>Hardik Pandya предлагает структуру из&nbsp;трёх слоёв, которая защищает от&nbsp;дрейфа:</p>
+<ul>
+  <li><code>AGENTS.md</code>&nbsp;— простой plain-Markdown в&nbsp;корне или поддиректориях;</li>
+  <li><code>.cursor/rules/*.mdc</code>&nbsp;— правила с&nbsp;description, globs и&nbsp;режимом применения.</li>
+</ul>
 
-            <ol>
-                <li><strong>Upstream-токены</strong> из&nbsp;дизайн-системы: <code>--ds-text: #171717</code></li>
-                <li><strong>Алиасы проекта</strong> со&nbsp;ссылкой и&nbsp;фолбэком: <code>--color-text: var(--ds-text, #171717)</code></li>
-                <li><strong>Компоненты</strong> используют только алиасы: <code>color: var(--color-text)</code></li>
-            </ol>
+<p>Обычный файл <code>.cursor/rules/design-system.md</code> игнорируется rules-системой: нужен <code>.mdc</code>. Для Claude Code project instructions живут в&nbsp;<code>./CLAUDE.md</code> или <code>./.claude/CLAUDE.md</code>. Cursor CLI также читает корневые <code>AGENTS.md</code> и&nbsp;<code>CLAUDE.md</code>, но&nbsp;не&nbsp;стоит полагаться на&nbsp;случайное пересечение форматов&nbsp;— документируйте основной путь команды.</p>
 
-            <p>Алиас: защитный слой. Если upstream-система переименует токен, вы меняете один алиас. Тёмная тема, высокий контраст, любая будущая тема: всё разрешается автоматически через цепочку.</p>
+<h2 id="section-4">Минимальный AGENTS.md для UI</h2>
 
-            <h2>Аудит: ловить то, что AI пропустил</h2>
+<pre><code># Design system
 
-            <p>Design.md даёт AI правильные ответы. Аудит-скрипт ловит случаи, когда AI всё равно догадался. Простой скрипт сканирует CSS-файлы на&nbsp;захардкоженные значения и&nbsp;предлагает конкретный токен:</p>
+## Sources of truth
+- Tokens: packages/tokens/src/tokens.json
+- Components: packages/ui/src
+- Examples: apps/storybook
+- Accessibility tests: packages/ui/tests/a11y
 
-<pre><code>src/components/Nav.css
-  L42: color: #2563EB → используй var(--color-link)
-  L78: padding: 12px → используй var(--space-300)
+## Rules
+- Reuse an existing component before creating a new one
+- Use semantic tokens; do not add raw colors or spacing values
+- Preserve keyboard navigation, focus states and ARIA semantics
+- Do not copy generated CSS from Figma into production
 
-Ошибок: 2 | Предупреждений: 0</code></pre>
+## Validation
+- pnpm lint
+- pnpm test
+- pnpm test:a11y
+- pnpm build</code></pre>
 
-            <p>Скрипт возвращает exit code 1 при ошибках, можно поставить в&nbsp;CI. Ноль нарушений = можно мержить.</p>
+<p>Это карта репозитория и&nbsp;чёткие ограничения. Список из&nbsp;сотен HEX, размеров и&nbsp;вариантов здесь только ухудшит сигнал.</p>
 
-            <h2>Как поддерживать</h2>
+<h2 id="section-5">Когда нужны Cursor Project Rules</h2>
 
-            <p>Спецификация живёт в&nbsp;репозитории рядом с&nbsp;кодом, не&nbsp;в&nbsp;Figma-комментарии и&nbsp;не&nbsp;в&nbsp;Notion. Когда компонент меняется в&nbsp;PR, спецификация в&nbsp;том&nbsp;же диффе. Три правила:</p>
+<p>Если разные части monorepo используют разные системы, правило лучше ограничить glob-паттерном:</p>
 
-            <ul>
-                <li><strong>Новый компонент</strong>: пиши спеку до&nbsp;или во&nbsp;время разработки</li>
-                <li><strong>Обновление дизайн-системы</strong>: обнови затронутые секции Design.md</li>
-                <li><strong>Аудит в&nbsp;CI</strong>: скрипт автоматически проверяет каждый PR</li>
-            </ul>
+<pre><code>---
+description: UI implementation rules for the web app
+globs:
+  - "apps/web/src/**/*.{ts,tsx,css}"
+alwaysApply: false
+---
 
-            <p>Маленькая точная спецификация лучше большой устаревшей.</p>
+- Import components from @company/ui
+- Use semantic tokens from @company/tokens
+- Check responsive states at 360, 768 and 1440 px
+- Run pnpm --filter web test before handoff</code></pre>
 
-            <h2>Результат</h2>
+<p>Правило с&nbsp;узкой областью действия полезнее глобального манифеста: агент получает только релевантный контекст.</p>
 
-            <p>Ваша десятая AI-сессия даёт такое&nbsp;же визуальное качество, как первая. AI не&nbsp;угадывает, а ищет. Не&nbsp;фабрикует, а ссылается. Не&nbsp;дрейфует, а проверяется аудитом.</p>
+<h2 id="section-6">Описывать компоненты через решения, а&nbsp;не&nbsp;скриншоты</h2>
 
-            <p>Design.md: это не&nbsp;документация. Это инфраструктура.</p>
-        </article>
+<p>Для каждого сложного компонента документируйте не&nbsp;весь визуальный вид, а&nbsp;контракт:</p>
 
-        <nav class="article-nav">
-            <a href="cursor-figma.html">
-                <span class="article-nav-label">Предыдущая</span>
-                <span class="article-nav-title">Cursor + Figma: настройка окружения для&nbsp;дизайнера</span>
-            </a>
-            <a href="dev-for-designers.html" class="next">
-                <span class="article-nav-label">Следующая</span>
-                <span class="article-nav-title">Зачем дизайнеру дизайн&#8209;систем разбираться в&nbsp;разработке</span>
-            </a>
-        </nav>
-    </main>
-    <script>
-    (function(){
-        const els = document.querySelectorAll('.back, article h1, .article-tags, article h2, article p, article pre, article ul, article ol, article blockquote, .article-nav');
-        let delay = 0;
-        els.forEach(el => {
-            el.classList.add('reveal');
-            el.style.animationDelay = delay + 'ms';
-            delay += 60;
-        });
-    })();
-    </script>
+<ul>
+  <li><strong>Назначение:</strong> какую задачу решает компонент.</li>
+  <li><strong>Когда не&nbsp;использовать:</strong> ближайшие альтернативы.</li>
+  <li><strong>API:</strong> props, slots/children, controlled state.</li>
+  <li><strong>Состояния:</strong> loading, empty, error, disabled, focus.</li>
+  <li><strong>Контент:</strong> ограничения длины, локализация, формат чисел и&nbsp;дат.</li>
+  <li><strong>Accessibility:</strong> role, name, keyboard interaction, focus management.</li>
+  <li><strong>Responsive:</strong> что меняется, а&nbsp;что остаётся инвариантом.</li>
+</ul>
+
+<pre><code>## Dialog
+
+Use for a short blocking decision or focused task.
+Do not use for long multi-step forms; use a page or drawer.
+
+Required:
+- accessible name
+- focus moves inside on open
+- Escape closes when dismissal is allowed
+- focus returns to the trigger
+
+Composition:
+- DialogHeader
+- DialogBody
+- DialogFooter</code></pre>
+
+<h2 id="section-7">Figma и&nbsp;Code Connect</h2>
+
+<p>Figma MCP передаёт агенту структуру дизайна, переменные и&nbsp;компоненты. Code Connect добавляет курируемую связь с&nbsp;реальной реализацией. Это полезнее, чем вручную перечислять в&nbsp;Markdown каждый prop.</p>
+
+<p>Но связь не&nbsp;заменяет документацию. Code Connect отвечает «какой компонент использовать и&nbsp;как выглядит его кодовый пример». Правила должны отвечать «когда этот компонент уместен» и&nbsp;«как проверить результат».</p>
+
+<p>С&nbsp;17&nbsp;августа 2026 Figma больше не&nbsp;обновляет framework-specific parsers Code Connect. Для новых mappings используйте framework-agnostic template files <code>.figma.ts</code>; старые parser-based integrations стоит мигрировать командой <code>npx figma connect migrate</code>.</p>
+
+<h2 id="section-8">Проверки важнее обещаний</h2>
+
+<p>Инструкции помогают агенту принять правильное решение, но&nbsp;не&nbsp;гарантируют соблюдение. Проверяйте то, что можно проверить автоматически:</p>
+
+<ul>
+  <li>линтер на&nbsp;запрещённые raw values и&nbsp;импорты;</li>
+  <li>type-check публичного API компонентов;</li>
+  <li>unit и&nbsp;interaction tests;</li>
+  <li>accessibility checks;</li>
+  <li>visual regression на&nbsp;ключевых состояниях;</li>
+  <li>сборку token outputs из&nbsp;единого source-файла;</li>
+  <li>проверку broken links и&nbsp;устаревших snippets в&nbsp;документации.</li>
+</ul>
+
+<p>Универсального «аудит-скрипта», который автоматически подберёт правильный токен для любого hardcoded значения, нет. Такие проверки зависят от&nbsp;структуры токенов и&nbsp;правил проекта. Не&nbsp;приравнивайте отсутствие regex-совпадений к&nbsp;качеству интерфейса.</p>
+
+<h2 id="section-9">Как не&nbsp;создать второй источник правды</h2>
+
+<ol>
+  <li>Храните values в&nbsp;структурированном token source, желательно совместимом с&nbsp;DTCG.</li>
+  <li>Генерируйте CSS, iOS, Android и&nbsp;другие outputs автоматически.</li>
+  <li>Храните component API рядом с&nbsp;кодом и&nbsp;проверяйте его тестами.</li>
+  <li>В&nbsp;agent instructions оставляйте ссылки, ограничения и&nbsp;команды проверки.</li>
+  <li>Меняйте документацию и&nbsp;реализацию в&nbsp;одном pull request.</li>
+  <li>Удаляйте устаревшие правила: короткий актуальный контекст лучше длинного архива.</li>
+</ol>
+
+<h2 id="section-10">Что считать результатом</h2>
+
+<p>Хорошая agent-facing спецификация не&nbsp;обещает одинаковый результат в&nbsp;каждой сессии. Она делает отклонения заметными и&nbsp;дешёвыми: агент находит нужный компонент, использует semantic tokens, запускает проверки и&nbsp;оставляет reviewable diff.</p>
+
+<p>DESIGN.md&nbsp;— полезная открытая alpha-спецификация для visual context, но&nbsp;не&nbsp;замена DTCG, component documentation или agent-specific rules. Инфраструктура начинается там, где назначен источник правды, явно связаны форматы и&nbsp;работает автоматическая проверка.</p>
+
+<h2 id="section-11">Источники</h2>
+
+<ul>
+  <li><a href="https://github.com/google-labs-code/design.md" target="_blank" rel="noopener">Google Labs: DESIGN.md</a></li>
+  <li><a href="https://github.com/google-labs-code/design.md/blob/main/docs/spec.md" target="_blank" rel="noopener">Google Labs: спецификация DESIGN.md</a></li>
+  <li><a href="https://cursor.com/docs/rules" target="_blank" rel="noopener">Cursor: Rules и&nbsp;AGENTS.md</a></li>
+  <li><a href="https://docs.anthropic.com/en/docs/claude-code/memory" target="_blank" rel="noopener">Anthropic: CLAUDE.md и&nbsp;auto memory</a></li>
+  <li><a href="https://www.designtokens.org/tr/2025.10/" target="_blank" rel="noopener">DTCG Technical Reports&nbsp;2025.10</a></li>
+  <li><a href="https://www.designtokens.org/faq/" target="_blank" rel="noopener">DTCG FAQ: статус спецификации</a></li>
+  <li><a href="https://help.figma.com/hc/en-us/articles/23920389749655-Code-Connect" target="_blank" rel="noopener">Figma: Code Connect</a></li>
+  <li><a href="https://developers.figma.com/docs/code-connect/templates-migration-guide/" target="_blank" rel="noopener">Figma: миграция Code Connect на&nbsp;template files</a></li>
+</ul></div>
+                <nav class="article-nav"><a href="cursor-figma.html"><span class="article-nav-label">Предыдущая</span><span class="article-nav-title">Cursor + Figma в&nbsp;2026: актуальная настройка для&nbsp;дизайнера</span></a><a href="dev-for-designers.html" class="next"><span class="article-nav-label">Следующая</span><span class="article-nav-title">Зачем дизайнеру дизайн&#8209;систем разбираться в&nbsp;разработке в&nbsp;2026&nbsp;году</span></a></nav>
+    
+            </div>
+        </main>
+
+        <div class="crosshair" aria-hidden="true">
+            <div class="crosshair-h"></div>
+            <div class="crosshair-v"></div>
+            <div class="crosshair-coords">0 · 0</div>
+        </div>
+        <div class="bottom-fade" aria-hidden="true"></div>
+    </div>
+    <script src="assets/wireframe.js"></script>
 </body>
 </html>
