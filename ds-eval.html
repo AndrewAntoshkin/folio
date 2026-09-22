@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>ds-eval — Андрей Антошкин</title>
+    <meta name="description" content="Harness, который измеряет, следует ли AI-агент существующей дизайн-системе.">
+    <meta name="theme-color" content="#FDFDFC" id="themeColorMeta">
+    <meta property="og:title" content="ds-eval — Андрей Антошкин">
+    <meta property="og:description" content="Harness, который измеряет, следует ли AI-агент существующей дизайн-системе.">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/svg+xml" href="assets/antoshkin-tech-logo.svg">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <link rel="stylesheet" href="assets/wireframe.css">
+    <link rel="stylesheet" href="assets/guides.css">
+    <script>
+        try {
+            if (localStorage.getItem('theme') === 'dark') document.documentElement.dataset.theme = 'dark';
+        } catch (e) {}
+    </script>
+</head>
+<body data-guides="false">
+    <div class="page page--project">
+        <div class="border-strip border-strip--left" aria-hidden="true"></div>
+        <div class="border-strip border-strip--right" aria-hidden="true"></div>
+        <div class="grid-line grid-line--nav" aria-hidden="true"></div>
+        <div class="grid-line grid-line--content-l" aria-hidden="true"></div>
+        <div class="grid-line grid-line--content-r" aria-hidden="true"></div>
+        <div class="grid-line grid-line--shell-r" aria-hidden="true"></div>
+
+        <nav class="top-nav top-nav--project fold" data-fold="50" aria-label='ds-eval'>
+            
+            <a class="project-back" href="projects.html"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Проекты</a>
+            <p class="project-nav-name">ds-eval</p>
+            <p class="project-nav-label">Основное</p><a class="nav-link" href="#why">Зачем</a><a class="nav-link" href="#how">Как устроено</a><a class="nav-link" href="#run">Запуск</a><a class="nav-link" href="#cli">CLI</a><p class="project-nav-label">Бенчмарк</p><a class="nav-link" href="#dataset">Датасет</a><a class="nav-link" href="#published">Опубликованный прогон</a><a class="nav-link" href="#graders">Проверки</a><a class="nav-link" href="#scores">Оценка</a><a class="nav-link" href="#regression">Регрессия</a><a class="nav-link" href="#dashboard">Дашборд</a><p class="project-nav-label">Дальше</p><a class="nav-link" href="#custom">Своя система</a><a class="nav-link" href="#limits">Пределы</a><a class="nav-link" href="#pipeline">Цепочка</a><p class="project-nav-label">Ссылки</p><a class="nav-link" href="https://github.com/AndrewAntoshkin/ds-eval" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </nav>
+
+        <div class="nav-contact fold" data-fold="80">
+            <p class="nav-contact-label">Для связи:</p>
+            <span>
+                <a href="mailto:andrew.antoshkin@gmail.com" class="nav-contact-email wf-target" data-copy="andrew.antoshkin@gmail.com">
+                    andrew.antoshkin@gmail.com
+                    <span class="copied" hidden>Скопировано</span>
+                </a>
+            </span>
+        </div>
+
+        <div class="mobile-wrap">
+            <button class="mobile-pill" type="button" aria-expanded="false" aria-label="Меню">
+                <span class="pill-icon"><span class="pill-bar"></span><span class="pill-bar"></span></span>
+                <span>Меню</span>
+            </button>
+            <div class="mobile-menu mobile-menu--project" hidden>
+                
+                <a class="project-back" href="projects.html"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Проекты</a>
+                <p class="project-nav-name">ds-eval</p>
+                <p class="project-nav-label">Основное</p><a class="nav-link" href="#why">Зачем</a><a class="nav-link" href="#how">Как устроено</a><a class="nav-link" href="#run">Запуск</a><a class="nav-link" href="#cli">CLI</a><p class="project-nav-label">Бенчмарк</p><a class="nav-link" href="#dataset">Датасет</a><a class="nav-link" href="#published">Опубликованный прогон</a><a class="nav-link" href="#graders">Проверки</a><a class="nav-link" href="#scores">Оценка</a><a class="nav-link" href="#regression">Регрессия</a><a class="nav-link" href="#dashboard">Дашборд</a><p class="project-nav-label">Дальше</p><a class="nav-link" href="#custom">Своя система</a><a class="nav-link" href="#limits">Пределы</a><a class="nav-link" href="#pipeline">Цепочка</a><p class="project-nav-label">Ссылки</p><a class="nav-link" href="https://github.com/AndrewAntoshkin/ds-eval" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <hr>
+                <div class="compact-controls">
+                    <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="Переключить тему">
+                        <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
+                        <span class="theme-symbol theme-symbol--moon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M12.8 10.3A5.5 5.5 0 0 1 5.7 3.2 5.5 5.5 0 1 0 12.8 10.3Z"/></svg></span>
+                    </button>
+                    <nav class="language-switch" aria-label="Language"><span aria-current="page">Ru</span><a href="ds-eval-en.html">En</a></nav>
+                </div>
+                <a href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
+            </div>
+        </div>
+
+        <main class="main">
+            <div class="main-toggles">
+                <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="Переключить тему">
+                    <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
+                    <span class="theme-symbol theme-symbol--moon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M12.8 10.3A5.5 5.5 0 0 1 5.7 3.2 5.5 5.5 0 1 0 12.8 10.3Z"/></svg></span>
+                </button>
+                <nav class="language-switch" aria-label="Language"><span aria-current="page">Ru</span><a href="ds-eval-en.html">En</a></nav>
+            </div>
+            <div class="follow-right fold" data-fold="120">
+                <div class="nav-divider"></div>
+                <div class="social-links">
+                    <a class="nav-link follow-link wf-target" href="https://t.me/aiantoshkin" target="_blank" rel="noopener noreferrer">
+                        Telegram
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m13.7 2.8-2 9.5c-.15.67-.55.83-1.1.52L7.55 10.6l-1.47 1.42c-.16.16-.3.3-.62.3l.22-3.1 5.64-5.1c.25-.21-.05-.33-.38-.12L3.97 8.4l-3-.94c-.65-.2-.66-.65.14-.96l11.72-4.52c.54-.2 1.02.13.87.82Z" fill="currentColor"/></svg>
+                    </a>
+                    <a class="nav-link follow-link wf-target" href="https://github.com/AndrewAntoshkin" target="_blank" rel="noopener noreferrer">
+                        GitHub
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path fill="currentColor" d="M8 1.35a6.65 6.65 0 0 0-2.1 12.96c.33.06.45-.14.45-.32v-1.16c-1.84.4-2.23-.78-2.23-.78-.3-.76-.74-.96-.74-.96-.6-.42.05-.41.05-.41.67.05 1.02.69 1.02.69.6 1.02 1.56.72 1.94.55.06-.43.23-.72.42-.89-1.47-.17-3.02-.74-3.02-3.29 0-.73.26-1.32.69-1.78-.07-.17-.3-.85.07-1.76 0 0 .56-.18 1.83.68A6.36 6.36 0 0 1 8 4.8c.56 0 1.12.08 1.64.22 1.27-.86 1.83-.68 1.83-.68.37.91.14 1.59.07 1.76.43.46.69 1.05.69 1.78 0 2.56-1.56 3.12-3.03 3.29.24.2.45.61.45 1.24V14c0 .18.12.39.45.32A6.65 6.65 0 0 0 8 1.35Z"/></svg>
+                    </a>
+                    <a class="nav-link follow-link wf-target" href="https://setka.ru/users/84b42bc4-44b4-4b1e-ba76-06d249242bc4" target="_blank" rel="noopener noreferrer">
+                        Сетка
+                        <img class="social-icon" src="https://cdn-assets.setka.ru/setka-web/static/favicon/favicon-32x32.a8036291d4eac4cc9ab8cbc378cb6d17.png" alt="" width="16" height="16">
+                    </a>
+                </div>
+            </div>
+
+            <div class="content content--article">
+                
+                
+                <p class="section-label">Бенчмарк</p>
+                <h1 class="title">ds-eval</h1>
+                <p class="body-text">Может ли агент пользоваться дизайн-системой, которую он не придумал сам? ds-eval прогоняет одни и те же UI-задачи через разные модели и оценивает собранный интерфейс.</p>
+                <div class="prose prose--docs"><figure class="bench"><figcaption><span>Пример · фикстуры, не живой вызов API</span><strong>Ответ со системой против наивного · smoke</strong><em>10 прогонов · $0 · офлайн</em></figcaption><div class="bench-scores"><p><span>Фикстура</span><b>87.8</b></p><p><span>Наивный</span><b>59.3</b></p></div><table><thead><tr><th>Ось</th><th>Фикстура</th><th>Наивный</th></tr></thead><tbody><tr><td>DS</td><td>87</td><td>6</td></tr><tr><td>Функции</td><td>70</td><td>70</td></tr><tr><td>A11y</td><td>100</td><td>78</td></tr><tr><td>Код</td><td>98</td><td>99</td></tr><tr><td>Сборка</td><td>100</td><td>100</td></tr></tbody></table><p>DS −81.3, когда ответ игнорирует дизайн-систему. 10 регрессий.</p></figure>
+<section id="why"><h2>Зачем</h2>
+<p>Агент собирает страницу настроек за секунды. Гораздо хуже он пользуется уже существующей системой: рисует свой Button, хардкодит <code>#8B5CF6</code>, пропускает токены и игнорирует правила композиции.</p>
+<p>ds-eval превращает это в измеримый вопрос. Одни и те же задачи, одна система, разные модели или промпты — и счёт, который можно сравнить и прогнать на регрессию.</p>
+<ul class="feature-list"><li><strong>Сравнить модели</strong><span>Claude, Codex, Gemini, Grok или локальная модель — один набор, один отчёт</span></li><li><strong>Ловить регрессии промпта</strong><span>Промпт v12 против v13: что выросло, что сломалось, какие кейсы перевернулись</span></li><li><strong>Своя система</strong><span>Токены, React-компоненты, Storybook, документация и UX-паттерны как источник правды</span></li></ul></section>
+<section id="how"><h2>Как устроено</h2>
+<p>Каждый кейс стартует из изолированного приложения. Модель получает дизайн-систему и задачу и должна собрать рабочий интерфейс. Дальше harness собирает проект, снимает скриншот и ставит оценку.</p>
+<pre><code>Design System
+↓
+Eval Task
+↓
+AI Coding Agent
+↓
+Generated UI
+↓
+────────────────────────
+AST / DS Compliance
+Runtime + Playwright
+Accessibility (axe)
+Visual Judge
+UX Judge
+Code Quality
+────────────────────────
+↓
+Benchmark + Regression</code></pre></section>
+<section id="run"><h2>Запуск</h2>
+<p>Движок на Python. Фикстуры работают офлайн. Живые модели читают ключи из окружения, не из конфига.</p>
+<pre><code>cd ds-eval
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e .
+
+ds-eval run --model fixture --suite smoke
+ds-eval run --model fixture-naive --suite smoke
+ds-eval compare RUN_FIXTURE RUN_NAIVE
+ds-eval dashboard --port 8001</code></pre>
+<p>С ключами API:</p>
+<pre><code>export ANTHROPIC_API_KEY=…
+export OPENAI_API_KEY=…
+ds-eval run --model claude --suite smoke
+ds-eval run --model codex --suite smoke</code></pre></section>
+<section id="cli"><h2>CLI</h2>
+<pre><code>ds-eval init                         scaffold a DS manifest
+ds-eval list                         print the dataset
+ds-eval run --model claude --limit 20
+ds-eval compare RUN_1 RUN_2
+ds-eval report ./runs/run-id</code></pre>
+<p><code>report</code> пишет <code>report.json</code>, <code>report.html</code> и <code>summary.md</code> из артефактов прогона. Таблица ниже — офлайн smoke на фикстурах, не Claude и не Codex.</p>
+<table><thead><tr><th>Модель</th><th>Общий</th><th>DS</th><th>A11y</th><th>Код</th></tr></thead><tbody><tr><td>fixture</td><td>87.8</td><td>87</td><td>100</td><td>98</td></tr><tr><td>fixture-naive</td><td>59.3</td><td>5.7</td><td>78</td><td>99</td></tr></tbody></table></section>
+<section id="dataset"><h2>Датасет</h2>
+<p>100 кейсов, написанных как продуктовые задачи, а не сто копий «сделай кнопку». Лёгкие, средние и сложные, плюс кейсы, которые специально спорят с правилами системы.</p>
+<table><thead><tr><th>Категория</th><th>Сколько</th><th>Что проверяет</th></tr></thead><tbody><tr><td>Компоненты</td><td>25</td><td>Верное использование Button, Select, Tabs, Dialog, Toast…</td></tr><tr><td>Паттерны</td><td>20</td><td>Подтверждение удаления, пустые состояния, массовые действия, несколько шагов</td></tr><tr><td>Страницы</td><td>25</td><td>Настройки, оплата, права, профиль сотрудника</td></tr><tr><td>Доступность</td><td>10</td><td>Клавиатура, подписи, ARIA, контраст, фокус</td></tr><tr><td>Крайние случаи</td><td>10</td><td>Длинные строки, пустые данные, 100+ строк, мобильный, i18n</td></tr><tr><td>Намеренные ловушки</td><td>10</td><td>Промпт подталкивает к сырому цвету или лишним действиям, которые система запрещает</td></tr></tbody></table>
+<p>Кейсы — это YAML со схемой Pydantic: обязательные компоненты, запрещённые паттерны, проверки, рубрика, вьюпорт.</p>
+<pre><code>id: component-select-001
+category: component
+prompt: |
+  Create a country selector containing 10 countries.
+  It should have a label, helper text and error state.
+requirements:
+  required_components: [Select]
+  forbidden: [native-select]
+  accessibility:
+    keyboard_navigation: true
+    label_required: true</code></pre></section>
+<section id="graders"><h2>Проверки</h2>
+<p>Общий счёт — не одно мнение модели. Проверки по правилам и судьи на LLM на дашборде лежат отдельно.</p>
+<ul class="feature-list"><li><strong>Статика / AST <span class="tag tag-det">правило</span></strong><span>Импорты из системы против сырого <code>&lt;button&gt;</code>, захардкоженные цвета, токены отступов, дубли компонентов</span></li><li><strong>Соответствие компонентам <span class="tag tag-det">правило</span></strong><span>Обязательные и запрещённые компоненты, варианты, пропсы, правила композиции</span></li><li><strong>Рантайм <span class="tag tag-det">правило</span></strong><span>Сборка, Playwright, ошибки консоли, диалоги, табы, отправка формы</span></li><li><strong>Доступность <span class="tag tag-det">правило</span></strong><span>axe-core плюс подписи, клавиатура, фокус, семантика, ARIA</span></li><li><strong>Визуал <span class="tag tag-llm">LLM</span></strong><span>Раскладка, иерархия, отступы, выравнивание, цельность, аккуратность — каждый критерий от 0 до 5 с объяснением</span></li><li><strong>Продуктовый UX <span class="tag tag-llm">LLM</span></strong><span>Задача сделана, паттерн верный, ошибки предотвращаются, есть обратная связь, ясна структура</span></li><li><strong>Качество кода <span class="tag tag-llm">LLM</span></strong><span>Структура, дубли, типы, практики React, лишняя абстракция</span></li></ul></section>
+<section id="scores"><h2>Оценка</h2>
+<p>Веса настраиваются. Смесь по умолчанию для общего счёта:</p>
+<table><thead><tr><th>Ось</th><th>Вес</th><th>Источник</th></tr></thead><tbody><tr><td>Следование системе</td><td>25%</td><td>AST и проверка компонентов</td></tr><tr><td>Функции</td><td>20%</td><td>Взаимодействия в Playwright</td></tr><tr><td>Визуал</td><td>15%</td><td>Vision-модель, рубрика 0–5</td></tr><tr><td>Продуктовый UX</td><td>15%</td><td>UX-судья</td></tr><tr><td>Доступность</td><td>10%</td><td>axe и проверки</td></tr><tr><td>Качество кода</td><td>10%</td><td>Статика и LLM</td></tr><tr><td>Надёжность сборки</td><td>5%</td><td>Установка, сборка, запуск</td></tr></tbody></table>
+<p>Каждый вызов генерации и судьи сохраняет входные и выходные токены, оценку стоимости и задержку. Дашборд показывает стоимость бенчмарка и цену одного кейса.</p></section>
+<section id="regression"><h2>Регрессия</h2>
+<p>Сравнивает два прогона — версии модели или версии промпта — и показывает, что сдвинулось.</p>
+<pre><code>ds-eval compare runs/sonnet-v1 runs/sonnet-v2</code></pre>
+<pre><code>overall +2.7
+DS compliance +4.1
+Visual +1.2
+Accessibility −3.4 ⚠
+
+7 improved · 3 regressions · 90 unchanged</code></pre>
+<p>У каждого перевернувшегося кейса остаются скриншоты до и после, объяснения проверок и сгенерированный код.</p></section>
+<section id="dashboard"><h2>Дашборд</h2>
+<p>Локальный интерфейс исследователя поверх истории прогонов в SQLite. Обзор, модели, прогоны, кейсы и сравнение двух ответов на одну задачу.</p>
+<ul class="feature-list"><li><strong>Обзор</strong><span>Общий счёт, категории, доля прошедших, стоимость, токены, задержка</span></li><li><strong>Кейсы</strong><span>Фильтр по модели, категории, сложности, прошёл или нет, проверке</span></li><li><strong>Карточка кейса</strong><span>Промпт, собранный интерфейс, скриншот, исходник, рубрика, логи, стоимость</span></li></ul></section>
+<section id="custom"><h2>Своя система</h2>
+<p>В репозитории есть демо-система (Button, Input, Select, Dialog, Table, токены и несколько UX-паттернов), чтобы проект запускался сразу после клона. Своя система подключается манифестом:</p>
+<pre><code>name: Demo DS
+version: 1.0
+components:
+  path: ./src/components
+tokens:
+  path: ./src/tokens
+documentation:
+  path: ./docs
+storybook:
+  url: http://localhost:6006</code></pre>
+<pre><code>ds-eval init ./my-design-system
+ds-eval run --system ./my-design-system --suite smoke</code></pre></section>
+<section id="limits"><h2>Пределы</h2>
+<p>Судьи на LLM — не истина. Визуал и UX субъективны, даже с рубрикой и несколькими судьями. Надёжное ядро — проверки по правилам: импорты, токены, axe, Playwright. Остальное — сигнал, не приговор.</p>
+<p>Высокий балл значит, что модель следовала этой системе на этом наборе. Он не значит, что экран готов в продакшен вашего продукта.</p></section>
+<section id="published"><h2>Опубликованный прогон</h2><p>Таблица из 100 кейсов выше — устройство датасета, а не размер этого прогона. Опубликованный smoke лежит в <code>ds-eval/runs/fixture-good</code>: модель <code>fixture</code>, 10 кейсов, общий балл 87.8, стоимость $0. Это не вызов Claude или Codex. Блок compare в разделе «Регрессия» показывает форму отчёта, не этот прогон.</p><table><thead><tr><th>Кейс</th><th>Категория</th><th>Общий</th><th>DS</th><th>A11y</th><th>Код</th></tr></thead><tbody><tr><td>a11y-labels-001</td><td>accessibility</td><td>88.3</td><td>87.5</td><td>100.0</td><td>100.0</td></tr><tr><td>adversarial-actions-001</td><td>adversarial</td><td>88.3</td><td>87.5</td><td>100.0</td><td>100.0</td></tr><tr><td>adversarial-color-001</td><td>adversarial</td><td>88.3</td><td>87.5</td><td>100.0</td><td>100.0</td></tr><tr><td>component-button-001</td><td>component</td><td>88.3</td><td>87.5</td><td>100.0</td><td>100.0</td></tr><tr><td>component-input-001</td><td>component</td><td>88.3</td><td>87.5</td><td>100.0</td><td>100.0</td></tr><tr><td>component-select-001</td><td>component</td><td>86.7</td><td>87.5</td><td>100.0</td><td>90.0</td></tr><tr><td>edge-long-001</td><td>edge-cases</td><td>85.2</td><td>82.5</td><td>100.0</td><td>90.0</td></tr><tr><td>page-settings-001</td><td>pages</td><td>88.3</td><td>87.5</td><td>100.0</td><td>100.0</td></tr><tr><td>pattern-confirm-001</td><td>patterns</td><td>88.3</td><td>87.5</td><td>100.0</td><td>100.0</td></tr><tr><td>pattern-empty-001</td><td>patterns</td><td>88.3</td><td>87.5</td><td>100.0</td><td>100.0</td></tr></tbody></table><p>Один кейс целиком: <code>component-select-001</code>. Задача — селект страны с подписью, подсказкой и ошибкой. Ответ фикстуры — <code>source/Task.tsx</code>.</p><pre><code>import { Select } from &quot;@ds&quot;;
+
+const COUNTRIES = [&quot;Austria&quot;,&quot;Belgium&quot;,&quot;Canada&quot;,&quot;Denmark&quot;,&quot;Estonia&quot;,&quot;Finland&quot;,&quot;Germany&quot;,&quot;Hungary&quot;,&quot;Ireland&quot;,&quot;Japan&quot;];
+
+export function Task() {
+  return (
+    &lt;Select label=&quot;Country&quot; helper=&quot;Used for billing&quot; error=&quot;Select a country to continue&quot; defaultValue=&quot;&quot;&gt;
+      &lt;option value=&quot;&quot;&gt;Choose one&lt;/option&gt;
+      {COUNTRIES.map((name) =&gt; (
+        &lt;option key={name} value={name}&gt;{name}&lt;/option&gt;
+      ))}
+    &lt;/Select&gt;
+  );
+}</code></pre><p>Оси этого кейса. Визуальный и UX-судьи выключены: ноль в записи означает пропуск, не оценку экрана. Их вес перераспределяется на остальные оси, поэтому общий балл не равен нулю.</p><table><thead><tr><th>Ось</th><th>Балл</th><th></th></tr></thead><tbody><tr><td>DS</td><td>87.5</td><td></td></tr><tr><td>Функции</td><td>70.0</td><td></td></tr><tr><td>Визуал</td><td>0.0</td><td>пропуск, вес ушёл на остальные оси</td></tr><tr><td>UX</td><td>0.0</td><td>пропуск, вес ушёл на остальные оси</td></tr><tr><td>A11y</td><td>100.0</td><td></td></tr><tr><td>Код</td><td>90.0</td><td></td></tr><tr><td>Сборка</td><td>100.0</td><td></td></tr><tr><td>Общий</td><td>86.7</td><td></td></tr></tbody></table></section><section id="pipeline"><h2>Цепочка</h2>
+<p>ds-eval ставит счёт после того, как у модели есть пакет контекста и, если нужно, проход починки:</p>
+<pre><code>ds-context prepares the pack
+model writes UI
+ui-repair patches violations
+ds-eval scores the result ← you are here
+prompt-regress diffs the next prompt</code></pre></section>
+<p><a href="https://github.com/AndrewAntoshkin/ds-eval" target="_blank" rel="noopener noreferrer">Код</a></p></div>
+                <nav class="article-nav" aria-label="Projects"><span></span><a href="ds-context.html" class="next"><span class="article-nav-label">Следующий</span><span class="article-nav-title">ds-context</span></a></nav>
+            
+            </div>
+        </main>
+
+        <div class="crosshair" aria-hidden="true">
+            <div class="crosshair-h"></div>
+            <div class="crosshair-v"></div>
+            <div class="crosshair-coords">0 · 0</div>
+        </div>
+        <div class="bottom-fade" aria-hidden="true"></div>
+    </div>
+    <script src="assets/wireframe.js"></script>
+</body>
+</html>

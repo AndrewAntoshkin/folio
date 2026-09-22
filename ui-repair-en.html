@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>ui-repair — Andrew Antoshkin</title>
+    <meta name="description" content="Rule-based repair of an interface onto a design system.">
+    <meta name="theme-color" content="#FDFDFC" id="themeColorMeta">
+    <meta property="og:title" content="ui-repair — Andrew Antoshkin">
+    <meta property="og:description" content="Rule-based repair of an interface onto a design system.">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/svg+xml" href="assets/antoshkin-tech-logo.svg">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <link rel="stylesheet" href="assets/wireframe.css">
+    <link rel="stylesheet" href="assets/guides.css">
+    <script>
+        try {
+            if (localStorage.getItem('theme') === 'dark') document.documentElement.dataset.theme = 'dark';
+        } catch (e) {}
+    </script>
+</head>
+<body data-guides="false">
+    <div class="page page--project">
+        <div class="border-strip border-strip--left" aria-hidden="true"></div>
+        <div class="border-strip border-strip--right" aria-hidden="true"></div>
+        <div class="grid-line grid-line--nav" aria-hidden="true"></div>
+        <div class="grid-line grid-line--content-l" aria-hidden="true"></div>
+        <div class="grid-line grid-line--content-r" aria-hidden="true"></div>
+        <div class="grid-line grid-line--shell-r" aria-hidden="true"></div>
+
+        <nav class="top-nav top-nav--project fold" data-fold="50" aria-label='ui-repair'>
+            
+            <a class="project-back" href="projects-en.html"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Projects</a>
+            <p class="project-nav-name">ui-repair</p>
+            <p class="project-nav-label">Basics</p><a class="nav-link" href="#why">Why</a><a class="nav-link" href="#rules">Rules</a><a class="nav-link" href="#run">Run</a><p class="project-nav-label">Fixture</p><a class="nav-link" href="#before">Before</a><a class="nav-link" href="#after">After</a><a class="nav-link" href="#score">Checks</a><p class="project-nav-label">Loop</p><a class="nav-link" href="#chain">Where it sits</a><a class="nav-link" href="#limits">Limit</a><p class="project-nav-label">Links</p><a class="nav-link" href="https://github.com/AndrewAntoshkin/ui-repair" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </nav>
+
+        <div class="nav-contact fold" data-fold="80">
+            <p class="nav-contact-label">Contact:</p>
+            <span>
+                <a href="mailto:andrew.antoshkin@gmail.com" class="nav-contact-email wf-target" data-copy="andrew.antoshkin@gmail.com">
+                    andrew.antoshkin@gmail.com
+                    <span class="copied" hidden>Copied</span>
+                </a>
+            </span>
+        </div>
+
+        <div class="mobile-wrap">
+            <button class="mobile-pill" type="button" aria-expanded="false" aria-label="Menu">
+                <span class="pill-icon"><span class="pill-bar"></span><span class="pill-bar"></span></span>
+                <span>Menu</span>
+            </button>
+            <div class="mobile-menu mobile-menu--project" hidden>
+                
+                <a class="project-back" href="projects-en.html"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Projects</a>
+                <p class="project-nav-name">ui-repair</p>
+                <p class="project-nav-label">Basics</p><a class="nav-link" href="#why">Why</a><a class="nav-link" href="#rules">Rules</a><a class="nav-link" href="#run">Run</a><p class="project-nav-label">Fixture</p><a class="nav-link" href="#before">Before</a><a class="nav-link" href="#after">After</a><a class="nav-link" href="#score">Checks</a><p class="project-nav-label">Loop</p><a class="nav-link" href="#chain">Where it sits</a><a class="nav-link" href="#limits">Limit</a><p class="project-nav-label">Links</p><a class="nav-link" href="https://github.com/AndrewAntoshkin/ui-repair" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <hr>
+                <div class="compact-controls">
+                    <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="Toggle theme">
+                        <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
+                        <span class="theme-symbol theme-symbol--moon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M12.8 10.3A5.5 5.5 0 0 1 5.7 3.2 5.5 5.5 0 1 0 12.8 10.3Z"/></svg></span>
+                    </button>
+                    <nav class="language-switch" aria-label="Language"><a href="ui-repair.html">Ru</a><span aria-current="page">En</span></nav>
+                </div>
+                <a href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
+            </div>
+        </div>
+
+        <main class="main">
+            <div class="main-toggles">
+                <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="Toggle theme">
+                    <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
+                    <span class="theme-symbol theme-symbol--moon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M12.8 10.3A5.5 5.5 0 0 1 5.7 3.2 5.5 5.5 0 1 0 12.8 10.3Z"/></svg></span>
+                </button>
+                <nav class="language-switch" aria-label="Language"><a href="ui-repair.html">Ru</a><span aria-current="page">En</span></nav>
+            </div>
+            <div class="follow-right fold" data-fold="120">
+                <div class="nav-divider"></div>
+                <div class="social-links">
+                    <a class="nav-link follow-link wf-target" href="https://t.me/aiantoshkin" target="_blank" rel="noopener noreferrer">
+                        Telegram
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m13.7 2.8-2 9.5c-.15.67-.55.83-1.1.52L7.55 10.6l-1.47 1.42c-.16.16-.3.3-.62.3l.22-3.1 5.64-5.1c.25-.21-.05-.33-.38-.12L3.97 8.4l-3-.94c-.65-.2-.66-.65.14-.96l11.72-4.52c.54-.2 1.02.13.87.82Z" fill="currentColor"/></svg>
+                    </a>
+                    <a class="nav-link follow-link wf-target" href="https://github.com/AndrewAntoshkin" target="_blank" rel="noopener noreferrer">
+                        GitHub
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path fill="currentColor" d="M8 1.35a6.65 6.65 0 0 0-2.1 12.96c.33.06.45-.14.45-.32v-1.16c-1.84.4-2.23-.78-2.23-.78-.3-.76-.74-.96-.74-.96-.6-.42.05-.41.05-.41.67.05 1.02.69 1.02.69.6 1.02 1.56.72 1.94.55.06-.43.23-.72.42-.89-1.47-.17-3.02-.74-3.02-3.29 0-.73.26-1.32.69-1.78-.07-.17-.3-.85.07-1.76 0 0 .56-.18 1.83.68A6.36 6.36 0 0 1 8 4.8c.56 0 1.12.08 1.64.22 1.27-.86 1.83-.68 1.83-.68.37.91.14 1.59.07 1.76.43.46.69 1.05.69 1.78 0 2.56-1.56 3.12-3.03 3.29.24.2.45.61.45 1.24V14c0 .18.12.39.45.32A6.65 6.65 0 0 0 8 1.35Z"/></svg>
+                    </a>
+                    <a class="nav-link follow-link wf-target" href="https://setka.ru/users/84b42bc4-44b4-4b1e-ba76-06d249242bc4" target="_blank" rel="noopener noreferrer">
+                        Setka
+                        <img class="social-icon" src="https://cdn-assets.setka.ru/setka-web/static/favicon/favicon-32x32.a8036291d4eac4cc9ab8cbc378cb6d17.png" alt="" width="16" height="16">
+                    </a>
+                </div>
+            </div>
+
+            <div class="content content--article">
+                
+                
+                <p class="section-label">Repair</p>
+                <h1 class="title">ui-repair</h1>
+                <p class="body-text">A linter says the file has a raw button and #8B5CF6. ui-repair applies system rules and writes a patch. On the fixture a 10-check rubric moves from 50 to 100. That is not a model call and not a ds-eval run.</p>
+                <div class="prose prose--docs"><section id="why"><h2>Why</h2><p>Finding a violation is the small half. The team needs a patch: a raw <code>&lt;button&gt;</code> becomes Button, <code>#8B5CF6</code> becomes a token, a homemade modal becomes Dialog. ui-repair makes that replacement with rules and shows which check flipped.</p><p>A live agent should emit a patch of the same shape. This MVP keeps the rules deterministic so the example runs without a key.</p></section><section id="rules"><h2>Rules</h2><p>Each rule reads the fixture text and the <code>tokens.css</code> beside it. On Acme, <code>--color-accent</code> is <code>#8B5CF6</code> and <code>--space-3</code> is <code>12px</code>.</p><table><thead><tr><th>Finds</th><th>Writes</th></tr></thead><tbody><tr><td>a hex that matches a token value</td><td><code>var(--color-accent)</code></td></tr><tr><td><code>padding: 13</code></td><td><code>var(--space-3)</code></td></tr><tr><td><code>&lt;div className="modal"&gt;</code></td><td><code>&lt;Dialog&gt;</code></td></tr><tr><td>a raw <code>&lt;button&gt;</code></td><td><code>&lt;Button&gt;</code> and an import from <code>@ds</code></td></tr><tr><td>a button whose only child is ×</td><td><code>aria-label="Close"</code></td></tr></tbody></table><p>The import is one line, added when the file has no <code>from "@ds"</code> yet: <code>import { Button, Dialog } from "@ds";</code></p></section><section id="run"><h2>Run</h2><pre><code>python3 ui-repair/ui_repair.py scan ui-repair/fixtures
+python3 ui-repair/ui_repair.py fix ui-repair/fixtures --out ui-repair/examples</code></pre><p><code>scan</code> prints the list and writes nothing. <code>fix</code> puts <code>Settings.jsx</code> in <code>ui-repair/examples</code> and prints the local score before and after. On the fixture, scan reports:</p><pre><code>6 issues
+  raw &lt;button&gt;
+  hardcoded hex color
+  hand-rolled modal
+  padding 13 is off the space scale
+  icon button without an accessible name
+  no design-system import</code></pre></section><section id="before"><h2>Before</h2><p><code>ui-repair/fixtures/Settings.jsx</code>. A purple background as a number, padding 13, Save as a raw button, a div modal, and a close mark with no name.</p><pre><code>export function Settings() {
+  const open = () =&gt; {};
+  return (
+    &lt;section&gt;
+      &lt;h1&gt;Settings&lt;/h1&gt;
+      &lt;div style={{ background: &quot;#8B5CF6&quot;, padding: 13 }}&gt;
+        &lt;button onClick={open}&gt;Save&lt;/button&gt;
+        &lt;div className=&quot;modal&quot;&gt;
+          &lt;h2&gt;Delete account&lt;/h2&gt;
+          &lt;button&gt;×&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+  );
+}</code></pre></section><section id="after"><h2>After</h2><p>The same file after <code>fix</code>. This is the rule result, not a model reply.</p><pre><code>import { Button, Dialog } from &quot;@ds&quot;;
+export function Settings() {
+  const open = () =&gt; {};
+  return (
+    &lt;section&gt;
+      &lt;h1&gt;Settings&lt;/h1&gt;
+      &lt;div style={{ background: &quot;var(--color-accent)&quot;, padding: &quot;var(--space-3)&quot; }}&gt;
+        &lt;Button onClick={open}&gt;Save&lt;/Button&gt;
+        &lt;Dialog&gt;
+          &lt;h2&gt;Delete account&lt;/h2&gt;
+          &lt;Button aria-label=&quot;Close&quot;&gt;×&lt;/Button&gt;
+        &lt;/Dialog&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+  );
+}</code></pre></section><section id="score"><h2>Checks</h2><p>Ten checks, equal weight. Before the repair the score is 50: five structural checks already passed, five system checks did not. After, it is 100.</p><table><thead><tr><th>Check</th><th>Before</th><th>After</th></tr></thead><tbody><tr><td>exports a component</td><td>pass</td><td>pass</td></tr><tr><td>handles a click</td><td>pass</td><td>pass</td></tr><tr><td>no dangerouslySetInnerHTML</td><td>pass</td><td>pass</td></tr><tr><td>has a heading</td><td>pass</td><td>pass</td></tr><tr><td>no !important</td><td>pass</td><td>pass</td></tr><tr><td>imports the design system</td><td>fail</td><td>pass</td></tr><tr><td>no raw button</td><td>fail</td><td>pass</td></tr><tr><td>no hardcoded hex</td><td>fail</td><td>pass</td></tr><tr><td>uses Dialog, not a modal div</td><td>fail</td><td>pass</td></tr><tr><td>no magic padding number</td><td>fail</td><td>pass</td></tr></tbody></table><p>This is not a <a href="ds-eval-en.html">ds-eval</a> score and not a Claude result. The next step is to run the patch through that harness: build, axe, Playwright. What you see here is a rule repair and which checks it closed.</p></section><section id="chain"><h2>Where it sits</h2><p><a href="ds-context-en.html">ds-context</a> says which components and tokens exist. ui-repair moves a file onto that list. <a href="ds-eval-en.html">ds-eval</a> checks whether the screen works, not only whether the tags look clean.</p></section><section id="limits"><h2>Limit</h2><p>The rules know this fixture: one hex, padding 13, a modal class, a close mark. They will not repair an arbitrary codebase. There is no git-style diff, no screenshot, and no live agent. A jump from 50 to 100 is easy to read and easy to over-read.</p></section></div>
+                <nav class="article-nav" aria-label="Projects"><a href="ds-context-en.html"><span class="article-nav-label">Previous</span><span class="article-nav-title">ds-context</span></a><a href="prompt-regress-en.html" class="next"><span class="article-nav-label">Next</span><span class="article-nav-title">prompt-regress</span></a></nav>
+            
+            </div>
+        </main>
+
+        <div class="crosshair" aria-hidden="true">
+            <div class="crosshair-h"></div>
+            <div class="crosshair-v"></div>
+            <div class="crosshair-coords">0 · 0</div>
+        </div>
+        <div class="bottom-fade" aria-hidden="true"></div>
+    </div>
+    <script src="assets/wireframe.js"></script>
+</body>
+</html>

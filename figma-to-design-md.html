@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>figma-to-design-md — Андрей Антошкин</title>
+    <meta name="description" content="CLI: Figma-файл становится markdown-спекой для AI-агентов.">
+    <meta name="theme-color" content="#FDFDFC" id="themeColorMeta">
+    <meta property="og:title" content="figma-to-design-md — Андрей Антошкин">
+    <meta property="og:description" content="CLI: Figma-файл становится markdown-спекой для AI-агентов.">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/svg+xml" href="assets/antoshkin-tech-logo.svg">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <link rel="stylesheet" href="assets/wireframe.css">
+    <link rel="stylesheet" href="assets/guides.css">
+    <script>
+        try {
+            if (localStorage.getItem('theme') === 'dark') document.documentElement.dataset.theme = 'dark';
+        } catch (e) {}
+    </script>
+</head>
+<body data-guides="false">
+    <div class="page page--project">
+        <div class="border-strip border-strip--left" aria-hidden="true"></div>
+        <div class="border-strip border-strip--right" aria-hidden="true"></div>
+        <div class="grid-line grid-line--nav" aria-hidden="true"></div>
+        <div class="grid-line grid-line--content-l" aria-hidden="true"></div>
+        <div class="grid-line grid-line--content-r" aria-hidden="true"></div>
+        <div class="grid-line grid-line--shell-r" aria-hidden="true"></div>
+
+        <nav class="top-nav top-nav--project fold" data-fold="50" aria-label='figma-to-design-md'>
+            
+            <a class="project-back" href="projects.html"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Проекты</a>
+            <p class="project-nav-name">figma-to-design-md</p>
+            <p class="project-nav-label">Основное</p><a class="nav-link" href="#how">Как устроено</a><a class="nav-link" href="#install">Установка</a><a class="nav-link" href="#setup">Настройка</a><a class="nav-link" href="#cli">Параметры</a><p class="project-nav-label">Примеры</p><a class="nav-link" href="#output">Структура файлов</a><a class="nav-link" href="#foundations">Основы</a><a class="nav-link" href="#components">Компоненты</a><a class="nav-link" href="#gaps">Пробелы</a><a class="nav-link" href="#pipeline">Цепочка</a><p class="project-nav-label">Ссылки</p><a class="nav-link" href="https://github.com/AndrewAntoshkin/figma-to-design-md" target="_blank" rel="noopener noreferrer">GitHub</a><a class="nav-link" href="https://www.npmjs.com/package/figma-to-design-md" target="_blank" rel="noopener noreferrer">npm</a>
+        </nav>
+
+        <div class="nav-contact fold" data-fold="80">
+            <p class="nav-contact-label">Для связи:</p>
+            <span>
+                <a href="mailto:andrew.antoshkin@gmail.com" class="nav-contact-email wf-target" data-copy="andrew.antoshkin@gmail.com">
+                    andrew.antoshkin@gmail.com
+                    <span class="copied" hidden>Скопировано</span>
+                </a>
+            </span>
+        </div>
+
+        <div class="mobile-wrap">
+            <button class="mobile-pill" type="button" aria-expanded="false" aria-label="Меню">
+                <span class="pill-icon"><span class="pill-bar"></span><span class="pill-bar"></span></span>
+                <span>Меню</span>
+            </button>
+            <div class="mobile-menu mobile-menu--project" hidden>
+                
+                <a class="project-back" href="projects.html"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Проекты</a>
+                <p class="project-nav-name">figma-to-design-md</p>
+                <p class="project-nav-label">Основное</p><a class="nav-link" href="#how">Как устроено</a><a class="nav-link" href="#install">Установка</a><a class="nav-link" href="#setup">Настройка</a><a class="nav-link" href="#cli">Параметры</a><p class="project-nav-label">Примеры</p><a class="nav-link" href="#output">Структура файлов</a><a class="nav-link" href="#foundations">Основы</a><a class="nav-link" href="#components">Компоненты</a><a class="nav-link" href="#gaps">Пробелы</a><a class="nav-link" href="#pipeline">Цепочка</a><p class="project-nav-label">Ссылки</p><a class="nav-link" href="https://github.com/AndrewAntoshkin/figma-to-design-md" target="_blank" rel="noopener noreferrer">GitHub</a><a class="nav-link" href="https://www.npmjs.com/package/figma-to-design-md" target="_blank" rel="noopener noreferrer">npm</a>
+                <hr>
+                <div class="compact-controls">
+                    <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="Переключить тему">
+                        <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
+                        <span class="theme-symbol theme-symbol--moon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M12.8 10.3A5.5 5.5 0 0 1 5.7 3.2 5.5 5.5 0 1 0 12.8 10.3Z"/></svg></span>
+                    </button>
+                    <nav class="language-switch" aria-label="Language"><span aria-current="page">Ru</span><a href="figma-to-design-md-en.html">En</a></nav>
+                </div>
+                <a href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
+            </div>
+        </div>
+
+        <main class="main">
+            <div class="main-toggles">
+                <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="Переключить тему">
+                    <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
+                    <span class="theme-symbol theme-symbol--moon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M12.8 10.3A5.5 5.5 0 0 1 5.7 3.2 5.5 5.5 0 1 0 12.8 10.3Z"/></svg></span>
+                </button>
+                <nav class="language-switch" aria-label="Language"><span aria-current="page">Ru</span><a href="figma-to-design-md-en.html">En</a></nav>
+            </div>
+            <div class="follow-right fold" data-fold="120">
+                <div class="nav-divider"></div>
+                <div class="social-links">
+                    <a class="nav-link follow-link wf-target" href="https://t.me/aiantoshkin" target="_blank" rel="noopener noreferrer">
+                        Telegram
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m13.7 2.8-2 9.5c-.15.67-.55.83-1.1.52L7.55 10.6l-1.47 1.42c-.16.16-.3.3-.62.3l.22-3.1 5.64-5.1c.25-.21-.05-.33-.38-.12L3.97 8.4l-3-.94c-.65-.2-.66-.65.14-.96l11.72-4.52c.54-.2 1.02.13.87.82Z" fill="currentColor"/></svg>
+                    </a>
+                    <a class="nav-link follow-link wf-target" href="https://github.com/AndrewAntoshkin" target="_blank" rel="noopener noreferrer">
+                        GitHub
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path fill="currentColor" d="M8 1.35a6.65 6.65 0 0 0-2.1 12.96c.33.06.45-.14.45-.32v-1.16c-1.84.4-2.23-.78-2.23-.78-.3-.76-.74-.96-.74-.96-.6-.42.05-.41.05-.41.67.05 1.02.69 1.02.69.6 1.02 1.56.72 1.94.55.06-.43.23-.72.42-.89-1.47-.17-3.02-.74-3.02-3.29 0-.73.26-1.32.69-1.78-.07-.17-.3-.85.07-1.76 0 0 .56-.18 1.83.68A6.36 6.36 0 0 1 8 4.8c.56 0 1.12.08 1.64.22 1.27-.86 1.83-.68 1.83-.68.37.91.14 1.59.07 1.76.43.46.69 1.05.69 1.78 0 2.56-1.56 3.12-3.03 3.29.24.2.45.61.45 1.24V14c0 .18.12.39.45.32A6.65 6.65 0 0 0 8 1.35Z"/></svg>
+                    </a>
+                    <a class="nav-link follow-link wf-target" href="https://setka.ru/users/84b42bc4-44b4-4b1e-ba76-06d249242bc4" target="_blank" rel="noopener noreferrer">
+                        Сетка
+                        <img class="social-icon" src="https://cdn-assets.setka.ru/setka-web/static/favicon/favicon-32x32.a8036291d4eac4cc9ab8cbc378cb6d17.png" alt="" width="16" height="16">
+                    </a>
+                </div>
+            </div>
+
+            <div class="content content--article">
+                
+                
+                <p class="section-label">CLI</p>
+                <h1 class="title">figma-to-design-md</h1>
+                <p class="body-text">Забирает переменные, стили и компоненты из Figma через REST API и собирает markdown-спеки, которые агент может читать напрямую.</p>
+                <div class="prose prose--docs"><section id="how"><h2>Как устроено</h2>
+<pre><code>Figma file ──▶ figma-to-design-md ──▶ specs/
+├── design-system.md
+├── foundations/
+│ ├── colors.md
+│ ├── typography.md
+│ ├── spacing.md
+│ └── radii.md
+├── components/
+│ ├── README.md
+│ ├── button.md
+│ └── ...
+└── gaps.md</code></pre></section>
+<section id="install"><h2>Установка</h2>
+<pre><code># Run directly
+npx figma-to-design-md extract --file &lt;key&gt; --token &lt;token&gt;
+
+# Or install globally
+npm i -g figma-to-design-md</code></pre></section>
+<section id="setup"><h2>Настройка</h2>
+<h3>1. Возьми токен Figma</h3>
+<p>Открой <a href="https://www.figma.com/settings" target="_blank" rel="noopener noreferrer">настройки Figma</a> → Personal access tokens → создай токен с правом <strong>File content: Read-only</strong>.</p>
+<h3>2. Возьми ключ файла</h3>
+<p>Из любого URL Figma:</p>
+<pre><code>https://www.figma.com/design/ABC123xyz/My-Design-System
+                              ^^^^^^^^^^^
+                              this is the file key</code></pre>
+<h3>3. Run</h3>
+<pre><code>figma-to-design-md extract \
+  --file ABC123xyz \
+  --token figd_xxx</code></pre></section>
+<section id="cli"><h2>Параметры</h2>
+<table><thead><tr><th>Флаг</th><th>По умолчанию</th><th>Описание</th></tr></thead><tbody><tr><td>--file &lt;key&gt;</td><td>—</td><td>Ключ файла Figma (обязательно)</td></tr><tr><td>--token &lt;token&gt;</td><td>$FIGMA_TOKEN</td><td>Персональный токен Figma</td></tr><tr><td>--out &lt;dir&gt;</td><td>./specs</td><td>Папка для результата</td></tr><tr><td>--mode &lt;mode&gt;</td><td>full</td><td>full | foundations | components</td></tr><tr><td>--node &lt;id&gt;</td><td>—</td><td>Ограничить страницей или фреймом</td></tr><tr><td>--version</td><td></td><td>Показать версию</td></tr><tr><td>--help</td><td></td><td>Показать справку</td></tr></tbody></table></section>
+<section id="output"><h2>Структура файлов</h2>
+<h3>design-system.md</h3>
+<p>Верхний обзор: счётчики и ссылки на подробные файлы.</p>
+<h3>foundations/*.md</h3>
+<table><thead><tr><th>Файл</th><th>Содержимое</th></tr></thead><tbody><tr><td>colors.md</td><td>Все переменные COLOR и стили FILL в markdown-таблицах</td></tr><tr><td>typography.md</td><td>Переменные шрифта и стили TEXT</td></tr><tr><td>spacing.md</td><td>Переменные с space, gap, padding, margin</td></tr><tr><td>radii.md</td><td>Переменные с radius, round, corner</td></tr></tbody></table>
+<p>У переменных с несколькими режимами (например, Light / Dark) выводятся все значения.</p></section>
+<section id="foundations"><h2>Пример основ</h2>
+<p>Как выглядит сгенерированный <code>colors.md</code>:</p>
+<pre><code># Colors
+
+## Variables (12 tokens)
+
+| Name | Collection | Light | Dark |
+|-------------------|------------|-----------|-----------|
+| color/primary | Theme | #3b82f6 | #60a5fa |
+| color/secondary | Theme | #6366f1 | #818cf8 |
+| color/bg | Theme | #fafafa | #0a0a0a |
+| color/text | Theme | #0a0a0a | #f5f5f5 |
+| color/muted | Theme | #737373 | #a3a3a3 |
+
+## Styles (3 styles)
+
+| Name | Type |
+|-----------------|-------|
+| Primary Fill | FILL |
+| Background | FILL |
+| Text Default | FILL |</code></pre></section>
+<section id="components"><h2>Пример компонента</h2>
+<p>Как выглядит файл компонента:</p>
+<pre><code># Button
+
+> Primary action element with label and optional icon.
+
+- **Figma node:** 123:456
+- **Type:** COMPONENT_SET
+
+## Variants
+
+| Property | Values |
+|----------|-------------------|
+| Size | sm, md, lg |
+| Style | primary, outline |
+| State | default, hover |
+
+## Usage
+
+_Add usage guidelines here._</code></pre></section>
+<section id="gaps"><h2>Пробелы</h2>
+<p>Инструмент сам замечает возможные проблемы и пишет их в <code>gaps.md</code>:</p>
+<ul class="feature-list"><li><strong>Нет описаний</strong><span>У компонентов нет описания в Figma — агент не понимает замысел</span></li><li><strong>Нет токенов</strong><span>В файле нет локальных переменных — спека будет неполной</span></li><li><strong>Компоненты без документации</strong><span>Компоненты есть, но описания, которое сможет прочитать агент, нет</span></li></ul></section>
+<section id="pipeline"><h2>Цепочка</h2>
+<p>Markdown из Figma — это вход, который ds-context упаковывает для модели:</p>
+<pre><code>figma-to-design-md extracts the spec ← you are here
+ds-context packs it for the model
+ui-repair patches violations
+ds-eval scores the result</code></pre></section>
+<p><a href="https://github.com/AndrewAntoshkin/figma-to-design-md" target="_blank" rel="noopener noreferrer">Код</a></p></div>
+                <nav class="article-nav" aria-label="Projects"><a href="prompt-regress.html"><span class="article-nav-label">Предыдущий</span><span class="article-nav-title">prompt-regress</span></a><a href="ds-lint.html" class="next"><span class="article-nav-label">Следующий</span><span class="article-nav-title">ds-lint</span></a></nav>
+            
+            </div>
+        </main>
+
+        <div class="crosshair" aria-hidden="true">
+            <div class="crosshair-h"></div>
+            <div class="crosshair-v"></div>
+            <div class="crosshair-coords">0 · 0</div>
+        </div>
+        <div class="bottom-fade" aria-hidden="true"></div>
+    </div>
+    <script src="assets/wireframe.js"></script>
+</body>
+</html>

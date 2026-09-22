@@ -1,0 +1,10 @@
+:root {
+  --color-accent: #8B5CF6;
+  --color-text: #212223;
+  --color-surface: #ffffff;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --radius-2: 8px;
+  --font-size-body: 14px;
+}

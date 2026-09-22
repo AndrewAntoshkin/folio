@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Button",
+    "props": ["variant", "size", "children"],
+    "example": "<Button variant=\"primary\">Save</Button>",
+    "avoid": "A raw <button> with an inline background."
+  },
+  {
+    "name": "Input",
+    "props": ["label", "hint", "error"],
+    "example": "<Input label=\"Email\" />",
+    "avoid": "An unlabeled <input>."
+  },
+  {
+    "name": "Dialog",
+    "props": ["open", "title", "onClose"],
+    "example": "<Dialog open title=\"Delete account\" />",
+    "avoid": "A <div className=\"modal\"> with a hand-rolled overlay."
+  },
+  {
+    "name": "Select",
+    "props": ["label", "options", "value"],
+    "example": "<Select label=\"Country\" options={countries} />",
+    "avoid": "A native <select> when the system Select exists."
+  }
+]

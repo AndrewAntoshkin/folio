@@ -479,8 +479,6 @@ html[data-theme="dark"] {
         [data-guides="false"] .gap-y,
         [data-guides="false"] .rhythm,
         [data-guides="false"] .clients-gap-y,
-        [data-guides="false"] .testi-frame,
-        [data-guides="false"] .testi-inset,
         [data-guides="false"] .career-list--timeline .career-row::before,
         [data-guides="false"] .career-list--timeline .career-row::after,
         [data-guides="false"] .rows--timeline .row::before,
@@ -618,57 +616,6 @@ html[data-theme="dark"] {
             color: var(--measure);
         }
         [data-guides="true"] .clients-gap-y { animation: guideIn 0.5s var(--ease-hero) 0.35s both; }
-
-        /* Quote block — рамка и inset */
-        .testi-frame {
-            position: absolute;
-            inset: -8px;
-            border: 1px dashed rgba(115, 115, 115, 0.35);
-            border-radius: 14px;
-            opacity: 0;
-            pointer-events: none;
-            z-index: 4;
-        }
-        [data-guides="true"] .testi-frame { animation: guideIn 0.5s var(--ease-hero) 0.2s both; }
-
-        .testi-inset {
-            position: absolute;
-            top: 88px;
-            left: 0;
-            width: 32px;
-            bottom: 32px;
-            background: var(--measure-fill);
-            border-right: 1px solid var(--measure-line);
-            opacity: 0;
-            pointer-events: none;
-            z-index: 3;
-        }
-        .testi-inset b {
-            position: absolute;
-            top: 50%;
-            left: 100%;
-            margin-left: 0.5rem;
-            transform: translateY(-50%);
-            font-family: var(--font-mono);
-            font-size: var(--t-xs);
-            line-height: var(--lh-xs);
-            font-weight: 400;
-            white-space: nowrap;
-            color: var(--measure);
-        }
-        [data-guides="true"] .testi-inset { animation: guideIn 0.5s var(--ease-hero) 0.45s both; }
-
-        .annot--testi-size {
-            right: -0.5rem;
-            top: -0.5rem;
-            animation-delay: 0.3s;
-        }
-
-        .annot--testi-label {
-            left: calc(100% + 20px);
-            top: 38%;
-            animation-delay: 0.55s;
-        }
 
         .career-logo { position: relative; }
 

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>ds-lint — Андрей Антошкин</title>
+    <meta name="description" content="Сканер захардкоженных цветов, отступов и шрифтов.">
+    <meta name="theme-color" content="#FDFDFC" id="themeColorMeta">
+    <meta property="og:title" content="ds-lint — Андрей Антошкин">
+    <meta property="og:description" content="Сканер захардкоженных цветов, отступов и шрифтов.">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/svg+xml" href="assets/antoshkin-tech-logo.svg">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <link rel="stylesheet" href="assets/wireframe.css">
+    <link rel="stylesheet" href="assets/guides.css">
+    <script>
+        try {
+            if (localStorage.getItem('theme') === 'dark') document.documentElement.dataset.theme = 'dark';
+        } catch (e) {}
+    </script>
+</head>
+<body data-guides="false">
+    <div class="page page--project">
+        <div class="border-strip border-strip--left" aria-hidden="true"></div>
+        <div class="border-strip border-strip--right" aria-hidden="true"></div>
+        <div class="grid-line grid-line--nav" aria-hidden="true"></div>
+        <div class="grid-line grid-line--content-l" aria-hidden="true"></div>
+        <div class="grid-line grid-line--content-r" aria-hidden="true"></div>
+        <div class="grid-line grid-line--shell-r" aria-hidden="true"></div>
+
+        <nav class="top-nav top-nav--project fold" data-fold="50" aria-label='ds-lint'>
+            
+            <a class="project-back" href="projects.html"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Проекты</a>
+            <p class="project-nav-name">ds-lint</p>
+            <p class="project-nav-label">Основное</p><a class="nav-link" href="#problem">Проблема</a><a class="nav-link" href="#install">Установка</a><a class="nav-link" href="#usage">Запуск</a><a class="nav-link" href="#cli">Параметры</a><p class="project-nav-label">Примеры</p><a class="nav-link" href="#detects">Что находит</a><a class="nav-link" href="#tokens">Откуда токены</a><a class="nav-link" href="#output-example">Пример отчёта</a><a class="nav-link" href="#ignore">Игнор в коде</a><a class="nav-link" href="#ci">CI</a><a class="nav-link" href="#pipeline">Цепочка</a><p class="project-nav-label">Ссылки</p><a class="nav-link" href="https://github.com/AndrewAntoshkin/ds-lint" target="_blank" rel="noopener noreferrer">GitHub</a><a class="nav-link" href="https://www.npmjs.com/package/ds-lint" target="_blank" rel="noopener noreferrer">npm</a>
+        </nav>
+
+        <div class="nav-contact fold" data-fold="80">
+            <p class="nav-contact-label">Для связи:</p>
+            <span>
+                <a href="mailto:andrew.antoshkin@gmail.com" class="nav-contact-email wf-target" data-copy="andrew.antoshkin@gmail.com">
+                    andrew.antoshkin@gmail.com
+                    <span class="copied" hidden>Скопировано</span>
+                </a>
+            </span>
+        </div>
+
+        <div class="mobile-wrap">
+            <button class="mobile-pill" type="button" aria-expanded="false" aria-label="Меню">
+                <span class="pill-icon"><span class="pill-bar"></span><span class="pill-bar"></span></span>
+                <span>Меню</span>
+            </button>
+            <div class="mobile-menu mobile-menu--project" hidden>
+                
+                <a class="project-back" href="projects.html"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Проекты</a>
+                <p class="project-nav-name">ds-lint</p>
+                <p class="project-nav-label">Основное</p><a class="nav-link" href="#problem">Проблема</a><a class="nav-link" href="#install">Установка</a><a class="nav-link" href="#usage">Запуск</a><a class="nav-link" href="#cli">Параметры</a><p class="project-nav-label">Примеры</p><a class="nav-link" href="#detects">Что находит</a><a class="nav-link" href="#tokens">Откуда токены</a><a class="nav-link" href="#output-example">Пример отчёта</a><a class="nav-link" href="#ignore">Игнор в коде</a><a class="nav-link" href="#ci">CI</a><a class="nav-link" href="#pipeline">Цепочка</a><p class="project-nav-label">Ссылки</p><a class="nav-link" href="https://github.com/AndrewAntoshkin/ds-lint" target="_blank" rel="noopener noreferrer">GitHub</a><a class="nav-link" href="https://www.npmjs.com/package/ds-lint" target="_blank" rel="noopener noreferrer">npm</a>
+                <hr>
+                <div class="compact-controls">
+                    <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="Переключить тему">
+                        <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
+                        <span class="theme-symbol theme-symbol--moon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M12.8 10.3A5.5 5.5 0 0 1 5.7 3.2 5.5 5.5 0 1 0 12.8 10.3Z"/></svg></span>
+                    </button>
+                    <nav class="language-switch" aria-label="Language"><span aria-current="page">Ru</span><a href="ds-lint-en.html">En</a></nav>
+                </div>
+                <a href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
+            </div>
+        </div>
+
+        <main class="main">
+            <div class="main-toggles">
+                <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="Переключить тему">
+                    <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
+                    <span class="theme-symbol theme-symbol--moon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M12.8 10.3A5.5 5.5 0 0 1 5.7 3.2 5.5 5.5 0 1 0 12.8 10.3Z"/></svg></span>
+                </button>
+                <nav class="language-switch" aria-label="Language"><span aria-current="page">Ru</span><a href="ds-lint-en.html">En</a></nav>
+            </div>
+            <div class="follow-right fold" data-fold="120">
+                <div class="nav-divider"></div>
+                <div class="social-links">
+                    <a class="nav-link follow-link wf-target" href="https://t.me/aiantoshkin" target="_blank" rel="noopener noreferrer">
+                        Telegram
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m13.7 2.8-2 9.5c-.15.67-.55.83-1.1.52L7.55 10.6l-1.47 1.42c-.16.16-.3.3-.62.3l.22-3.1 5.64-5.1c.25-.21-.05-.33-.38-.12L3.97 8.4l-3-.94c-.65-.2-.66-.65.14-.96l11.72-4.52c.54-.2 1.02.13.87.82Z" fill="currentColor"/></svg>
+                    </a>
+                    <a class="nav-link follow-link wf-target" href="https://github.com/AndrewAntoshkin" target="_blank" rel="noopener noreferrer">
+                        GitHub
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path fill="currentColor" d="M8 1.35a6.65 6.65 0 0 0-2.1 12.96c.33.06.45-.14.45-.32v-1.16c-1.84.4-2.23-.78-2.23-.78-.3-.76-.74-.96-.74-.96-.6-.42.05-.41.05-.41.67.05 1.02.69 1.02.69.6 1.02 1.56.72 1.94.55.06-.43.23-.72.42-.89-1.47-.17-3.02-.74-3.02-3.29 0-.73.26-1.32.69-1.78-.07-.17-.3-.85.07-1.76 0 0 .56-.18 1.83.68A6.36 6.36 0 0 1 8 4.8c.56 0 1.12.08 1.64.22 1.27-.86 1.83-.68 1.83-.68.37.91.14 1.59.07 1.76.43.46.69 1.05.69 1.78 0 2.56-1.56 3.12-3.03 3.29.24.2.45.61.45 1.24V14c0 .18.12.39.45.32A6.65 6.65 0 0 0 8 1.35Z"/></svg>
+                    </a>
+                    <a class="nav-link follow-link wf-target" href="https://setka.ru/users/84b42bc4-44b4-4b1e-ba76-06d249242bc4" target="_blank" rel="noopener noreferrer">
+                        Сетка
+                        <img class="social-icon" src="https://cdn-assets.setka.ru/setka-web/static/favicon/favicon-32x32.a8036291d4eac4cc9ab8cbc378cb6d17.png" alt="" width="16" height="16">
+                    </a>
+                </div>
+            </div>
+
+            <div class="content content--article">
+                
+                
+                <p class="section-label">Сканер</p>
+                <h1 class="title">ds-lint</h1>
+                <p class="body-text">Сканирует код и находит захардкоженные цвета, отступы, размеры шрифта и радиусы, которые должны быть токенами.</p>
+                <div class="prose prose--docs"><section id="problem"><h2>Проблема</h2>
+<p>Система протекает, когда рядом с токенами компонент всё ещё пишет сырой цвет или отступ. ds-lint находит такие значения и, если рядом есть файл токенов, предлагает имя из системы.</p></section>
+<section id="install"><h2>Установка</h2>
+<pre><code># Run directly (no install)
+npx ds-lint src/
+
+# Or install globally
+npm i -g ds-lint</code></pre></section>
+<section id="usage"><h2>Запуск</h2>
+<pre><code># Basic scan
+ds-lint src/
+
+# With token definitions (enables suggestions)
+ds-lint src/ --tokens tokens.css
+
+# Markdown report for PR
+ds-lint src/ --format markdown --out report.md
+
+# Strict mode for CI
+ds-lint src/ --tokens tokens.css --strict</code></pre></section>
+<section id="cli"><h2>Параметры</h2>
+<table><thead><tr><th>Флаг</th><th>По умолчанию</th><th>Описание</th></tr></thead><tbody><tr><td>[path]</td><td>.</td><td>Папка или файл для проверки</td></tr><tr><td>--tokens &lt;file&gt;</td><td>—</td><td>Источник токенов (.css, .json или .md)</td></tr><tr><td>--format &lt;type&gt;</td><td>terminal</td><td>terminal | markdown | json</td></tr><tr><td>--out &lt;file&gt;</td><td>—</td><td>Записать отчёт в файл</td></tr><tr><td>--strict</td><td>false</td><td>Код 1, если нашлись нарушения</td></tr><tr><td>--version</td><td></td><td>Показать версию</td></tr><tr><td>--help</td><td></td><td>Показать справку</td></tr></tbody></table></section>
+<section id="detects"><h2>Что находит</h2>
+<ul class="feature-list"><li><strong>Цвета</strong><span><code>#hex</code>, <code>rgb()</code>, <code>rgba()</code>, <code>hsl()</code>, <code>hsla()</code> и именованные цвета CSS (red, blue и другие)</span></li><li><strong>Отступы</strong><span><code>padding</code>, <code>margin</code>, <code>gap</code>, <code>top/right/bottom/left</code>, <code>width/height</code> в px/rem</span></li><li><strong>Размеры шрифта</strong><span><code>font-size</code>, <code>line-height</code>, <code>letter-spacing</code> в px/rem</span></li><li><strong>Радиус</strong><span><code>border-radius</code> в px/rem (ноль пропускает)</span></li></ul>
+<p>Смотрит: <code>.js</code> <code>.jsx</code> <code>.ts</code> <code>.tsx</code> <code>.css</code> <code>.scss</code> <code>.vue</code> <code>.svelte</code></p>
+<p>Пропускает: <code>node_modules</code>, <code>dist</code>, <code>build</code>, <code>.next</code>, <code>.git</code> и объявления CSS-переменных</p></section>
+<section id="tokens"><h2>Откуда токены</h2>
+<p>Передай файл токенов через <code>--tokens</code>, чтобы получить подсказки замены:</p>
+<h3>CSS-переменные</h3>
+<pre><code>:root {
+  --color-primary: #3b82f6;
+  --space-4: 16px;
+  --text-sm: 14px;
+  --radius-md: 8px;
+}</code></pre>
+<h3>JSON-токены (формат DTCG)</h3>
+<pre><code>{
+  "color": {
+    "primary": { "$value": "#3b82f6" }
+  },
+  "space": {
+    "sm": { "$value": "8px" },
+    "md": { "$value": "16px" }
+  }
+}</code></pre>
+<h3>Markdown-таблицы</h3>
+<p>Понимает вывод <a href="figma-to-design-md.html">figma-to-design-md</a> — таблицы токенов разбираются сами.</p></section>
+<section id="output-example"><h2>Пример отчёта</h2>
+<pre><code>src/components/Button.tsx
+L14:5 #3b82f6 → var(--color-primary) (Color)
+L22:3 16px → var(--space-4) (Spacing)
+L31:3 14px → var(--text-sm) (Font Size)
+L45:3 8px → var(--radius-md) (Radius)
+
+src/pages/Home.css
+L8:5 #ff0000 (Color)
+L12:3 24px (Spacing)
+
+─────────────────────────────────
+Total: 6 hardcoded values in 2 files
+Colors: 2 Spacing: 2 Fonts: 1 Radius: 1
+Fixable (token match found): 4 of 6</code></pre></section>
+<section id="ignore"><h2>Игнор в коде</h2>
+<p>Комментарий строкой выше пропускает конкретные значения:</p>
+<pre><code>/* ds-lint-ignore */
+.special-case { color: #ff0000; }
+
+// ds-lint-disable
+const borderColor = "#333";</code></pre></section>
+<section id="ci"><h2>CI</h2>
+<pre><code># GitHub Actions
+- name: Check design tokens
+  run: npx ds-lint src/ --tokens tokens.css --strict
+
+# Generate PR report
+- name: DS Lint Report
+  run: npx ds-lint src/ --tokens tokens.css --format markdown --out ds-lint.md</code></pre>
+<p><code>--strict</code> завершается с кодом 1, если нарушения есть, и роняет шаг CI.</p></section>
+<section id="pipeline"><h2>Цепочка</h2>
+<p>ds-lint — ворота в коде, до того как модель увидит систему:</p>
+<pre><code>figma-to-design-md extracts the spec
+ds-lint blocks raw values ← you are here
+ds-context packs what the model may see
+ds-eval scores the generated UI</code></pre></section>
+<p><a href="https://github.com/AndrewAntoshkin/ds-lint" target="_blank" rel="noopener noreferrer">Код</a></p></div>
+                <nav class="article-nav" aria-label="Projects"><a href="figma-to-design-md.html"><span class="article-nav-label">Предыдущий</span><span class="article-nav-title">figma-to-design-md</span></a><a href="ds-coverage.html" class="next"><span class="article-nav-label">Следующий</span><span class="article-nav-title">ds-coverage</span></a></nav>
+            
+            </div>
+        </main>
+
+        <div class="crosshair" aria-hidden="true">
+            <div class="crosshair-h"></div>
+            <div class="crosshair-v"></div>
+            <div class="crosshair-coords">0 · 0</div>
+        </div>
+        <div class="bottom-fade" aria-hidden="true"></div>
+    </div>
+    <script src="assets/wireframe.js"></script>
+</body>
+</html>

@@ -1,4 +1,5 @@
 {
+  "date": "2026-08-21",
   "title": "Why design system designers should understand development in 2026",
   "h1": "Why design system designers should understand development in&nbsp;2026",
   "tldr": "Designers do not need to become frontend developers. But understanding layout, component APIs, states, tokens, and accessibility helps them design systems that can be implemented, evaluate AI-generated results, and communicate with engineers without losing the original intent.",

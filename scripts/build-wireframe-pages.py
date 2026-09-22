@@ -4,11 +4,46 @@ from __future__ import annotations
 
 import json
 import re
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from project_docs import load_doc
+from project_pages import PROJECTS, href as project_href, list_blocks, project_nav
 
 ROOT = Path(__file__).resolve().parents[1]
 ARTICLES_DIR = ROOT / "content" / "articles"
 ARTICLE_ORDER = ["ai-changes-processes", "halo-working-memory", "cursor-figma", "design-md", "dev-for-designers"]
+
+_RU_SHORT = "янв фев мар апр май июн июл авг сен окт ноя дек".split()
+_RU_GEN = "января февраля марта апреля мая июня июля августа сентября октября ноября декабря".split()
+_RU_NOM = "январь февраль март апрель май июнь июль август сентябрь октябрь ноябрь декабрь".split()
+_EN_SHORT = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split()
+_EN_FULL = "January February March April May June July August September October November December".split()
+
+
+def format_article_date(iso: str, lang: str, *, full: bool = False) -> str:
+    year, month, *rest = iso.split("-")
+    index = int(month) - 1
+    day = int(rest[0]) if rest else None
+    if lang == "ru":
+        if day and full:
+            return f"{day}&nbsp;{_RU_GEN[index]} {year}"
+        if day:
+            return f"{day} {_RU_SHORT[index]} {year}"
+        return f"{_RU_NOM[index]} {year}" if full else f"{_RU_SHORT[index]} {year}"
+    if day and full:
+        return f"{_EN_FULL[index]}&nbsp;{day}, {year}"
+    if day:
+        return f"{_EN_SHORT[index]} {day}, {year}"
+    return f"{_EN_FULL[index]} {year}" if full else f"{_EN_SHORT[index]} {year}"
+
+
+def article_date_html(iso: str, lang: str, *, full: bool = False) -> str:
+    if not iso:
+        return ""
+    label = format_article_date(iso, lang, full=full)
+    return f'<time class="article-date" datetime="{iso}">{label}</time>'
 
 NAV_RU = [
     ("index.html", "home", "Главная"),
@@ -97,6 +132,7 @@ def shell(
     og_type: str = "website",
     lang: str = "ru",
     counterpart: str | None = None,
+    project_menu: dict | None = None,
 ) -> str:
     is_ru = lang == "ru"
     home_href = "index.html" if is_ru else "en.html"
@@ -115,13 +151,39 @@ def shell(
             language_switch = f'<nav class="language-switch" aria-label="Language"><span aria-current="page">Ru</span><a href="{counterpart}">En</a></nav>'
         else:
             language_switch = f'<nav class="language-switch" aria-label="Language"><a href="{counterpart}">Ru</a><span aria-current="page">En</span></nav>'
+    arrow = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
     back_html = ""
-    if back:
+    if back and not project_menu:
         back_html = f'''
                 <a class="back-link back-link--inline fold wf-target" data-fold="60" href="{back["href"]}">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    {arrow}
                     {back["label"]}
                 </a>'''
+    menu_block = ""
+    mobile_project = ""
+    nav_class = "top-nav fold"
+    if project_menu:
+        nav_class = "top-nav top-nav--project fold"
+        groups = []
+        mobile_groups = []
+        for group in project_menu["groups"]:
+            links = []
+            for item in group["items"]:
+                external = item["href"].startswith("http")
+                attrs = ' target="_blank" rel="noopener noreferrer"' if external else ""
+                links.append(f'<a class="nav-link" href="{item["href"]}"{attrs}>{item["label"]}</a>')
+            block = f'<p class="project-nav-label">{group["label"]}</p>' + "".join(links)
+            groups.append(block)
+            mobile_groups.append(block)
+        menu_block = f'''
+            <a class="project-back" href="{project_menu["back_href"]}">{arrow}{project_menu["back_label"]}</a>
+            <p class="project-nav-name">{project_menu["name"]}</p>
+            {"".join(groups)}'''
+        mobile_project = f'''
+                <a class="project-back" href="{project_menu["back_href"]}">{arrow}{project_menu["back_label"]}</a>
+                <p class="project-nav-name">{project_menu["name"]}</p>
+                {"".join(mobile_groups)}
+                <hr>'''
 
     cc = "content"
     if content_class:
@@ -149,7 +211,7 @@ def shell(
     </script>
 </head>
 <body data-guides="false">
-    <div class="page">
+    <div class="page{' page--project' if project_menu else ''}">
         <div class="border-strip border-strip--left" aria-hidden="true"></div>
         <div class="border-strip border-strip--right" aria-hidden="true"></div>
         <div class="grid-line grid-line--nav" aria-hidden="true"></div>
@@ -157,11 +219,8 @@ def shell(
         <div class="grid-line grid-line--content-r" aria-hidden="true"></div>
         <div class="grid-line grid-line--shell-r" aria-hidden="true"></div>
 
-        <nav class="top-nav fold" data-fold="50">
-            <a href="{home_href}" aria-label="{home_label}">{LOGO}</a>
-            <div class="nav-links">
-                {nav_links(active, lang)}
-            </div>
+        <nav class="{nav_class}" data-fold="50" {"aria-label='" + project_menu["name"] + "'" if project_menu else ""}>
+            {menu_block if project_menu else f'<a href="{home_href}" aria-label="{home_label}">{LOGO}</a><div class="nav-links">{nav_links(active, lang)}</div>'}
         </nav>
 
         <div class="nav-contact fold" data-fold="80">
@@ -179,10 +238,8 @@ def shell(
                 <span class="pill-icon"><span class="pill-bar"></span><span class="pill-bar"></span></span>
                 <span>{menu_label}</span>
             </button>
-            <div class="mobile-menu" hidden>
-                <a href="{home_href}">{'Главная' if is_ru else 'Home'}</a>
-                {mobile_links(lang)}
-                <hr>
+            <div class="mobile-menu{' mobile-menu--project' if project_menu else ''}" hidden>
+                {mobile_project if project_menu else f'<a href="{home_href}">{"Главная" if is_ru else "Home"}</a>{mobile_links(lang)}<hr>'}
                 <div class="compact-controls">
                     <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="{theme_aria}">
                         <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
@@ -304,7 +361,7 @@ def home_content() -> str:
                         </article>
                         <article class="positioning-block">
                             <span class="positioning-kicker">Инструменты</span>
-                            <p>Создаю open&#8209;source инструменты для общей спецификации дизайна и&nbsp;кода: <a class="about-link tool" href="/ds-eval/" target="_blank" rel="noopener">ds&#8209;eval</a>, <a class="about-link tool" href="https://antoshkin.tech/ds-health/" target="_blank" rel="noopener">ds&#8209;health</a>, <a class="about-link tool" href="https://antoshkin.tech/figma-to-design-md/" target="_blank" rel="noopener">figma&#8209;to&#8209;design&#8209;md</a>, <a class="about-link tool" href="https://antoshkin.tech/design-system-ai-starter/" target="_blank" rel="noopener">design&#8209;system&#8209;ai&#8209;starter</a>, <a class="about-link tool" href="https://antoshkin.tech/spektr/" target="_blank" rel="noopener">spektr</a>, <a class="about-link tool" href="https://antoshkin.tech/ds-lint/" target="_blank" rel="noopener">ds&#8209;lint</a> и&nbsp;<a class="about-link tool" href="https://antoshkin.tech/ds-coverage/" target="_blank" rel="noopener">ds&#8209;coverage</a>.</p>
+                            <p>Собираю инфраструктуру для AI&#8209;native дизайн&#8209;систем: {chain_sentence("ru")}.</p>
                         </article>
                         <article class="positioning-block">
                             <span class="positioning-kicker">AI и&nbsp;код</span>
@@ -330,48 +387,16 @@ def home_content() -> str:
                         {career_list_html(timeline=True)}
                     </div>
                 </section>
-
-                <hr class="divider">
-
-                <section class="guide-section fold" data-fold="160">
-                    <div class="testi-card">
-                        <span class="testi-frame" aria-hidden="true"></span>
-                        <span class="annot annot--testi-size" id="testiSize" aria-hidden="true">&mdash;</span>
-                        <span class="annot annot--testi-label" aria-hidden="true">quote block<i class="tick tick--right" style="--len: 28px"></i></span>
-                        <span class="testi-inset" aria-hidden="true"><b>32 px</b></span>
-                        <div class="testi-bg" aria-hidden="true"></div>
-                        <div class="testi-shade" aria-hidden="true"></div>
-                        <p class="testi-quote">&laquo;Мне интересно не&nbsp;просто проектировать интерфейсы, а&nbsp;влиять на&nbsp;то, как они создаются&nbsp;— через дизайн&#8209;системы, инструменты, код и&nbsp;автоматизацию.&raquo;</p>
-                        <div class="testi-divider" aria-hidden="true"></div>
-                        <div class="testi-footer"><span class="testi-logo">antoshkin.tech</span><span class="testi-author">Андрей Антошкин</span></div>
-                    </div>
-                </section>
 '''
 
 
 def about_content() -> str:
-    tools = (
-        '<a class="about-link tool" href="/ds-eval/" target="_blank" rel="noopener">'
-        'ds&#8209;eval</a>, '
-        '<a class="about-link tool" href="https://antoshkin.tech/ds-health/" target="_blank" rel="noopener">'
-        'ds&#8209;health</a>, '
-        '<a class="about-link tool" href="https://antoshkin.tech/figma-to-design-md/" target="_blank" rel="noopener">'
-        'figma&#8209;to&#8209;design&#8209;md</a>, '
-        '<a class="about-link tool" href="https://antoshkin.tech/design-system-ai-starter/" target="_blank" rel="noopener">'
-        'design&#8209;system&#8209;ai&#8209;starter</a>, '
-        '<a class="about-link tool" href="https://antoshkin.tech/spektr/" target="_blank" rel="noopener">'
-        'spektr</a>, '
-        '<a class="about-link tool" href="https://antoshkin.tech/ds-lint/" target="_blank" rel="noopener">'
-        'ds&#8209;lint</a> и&nbsp;'
-        '<a class="about-link tool" href="https://antoshkin.tech/ds-coverage/" target="_blank" rel="noopener">'
-        'ds&#8209;coverage</a>'
-    )
     return f'''
                 <h1 class="title fold" data-fold="100">Обо мне</h1>
                 <div class="about-prose fold" data-fold="120">
                     <p class="about-text about-lead">Привет.<br>Я&nbsp;&mdash; Андрей Антошкин, дизайнер. Создаю продукты, дизайн&#8209;системы и&nbsp;инструменты, которые связывают дизайн и&nbsp;код.</p>
                     <p class="about-text">Мне интересно не&nbsp;просто проектировать интерфейсы, а&nbsp;влиять на&nbsp;то, как они создаются: через дизайн&#8209;системы, инструменты, код и&nbsp;автоматизацию. Особенно сейчас, когда AI меняет не&nbsp;только отдельные задачи, но&nbsp;и&nbsp;сам процесс работы над продуктом.</p>
-                    <p class="about-text">Параллельно создаю собственные проекты и&nbsp;open&#8209;source инструменты для дизайнеров и&nbsp;разработчиков. Меня особенно вдохновляют инструменты, с&nbsp;которыми дизайнеры и&nbsp;разработчики работают из&nbsp;одной спецификации. Среди них&nbsp;&mdash; {tools}.</p>
+                    <p class="about-text">Параллельно собираю инфраструктуру для AI&#8209;native дизайн&#8209;систем: {chain_sentence("ru")}. Рядом остаются инструменты спецификации и&nbsp;контроля на&nbsp;проде.</p>
                     <p class="about-text">Большую часть карьеры я&nbsp;решаю системные задачи в&nbsp;продуктовых командах. Мне интересно не&nbsp;только проектировать интерфейсы, но&nbsp;и&nbsp;улучшать процесс их&nbsp;создания&nbsp;&mdash; с&nbsp;помощью дизайн&#8209;систем, кода, AI и&nbsp;автоматизации.</p>
                     <p class="about-text">Сейчас развиваю дизайн&#8209;систему в&nbsp;<a class="about-link" href="https://yandex.ru" target="_blank" rel="noopener">Яндекс HR&nbsp;Tech</a>&nbsp;&mdash; от&nbsp;библиотек компонентов и&nbsp;токенов до&nbsp;документации, кода и&nbsp;AI&#8209;подходов в&nbsp;работе команды. До&nbsp;этого занимался дизайн&#8209;системами в&nbsp;<a class="about-link" href="https://www.sber.ru" target="_blank" rel="noopener">Сбере</a> и&nbsp;проектировал продукты в&nbsp;&laquo;Открытии Брокер&raquo; и&nbsp;МТС.</p>
                     <p class="about-text">AI стал для меня частью этого процесса. Я&nbsp;проектирую в&nbsp;Figma, пишу код и&nbsp;собираю свои продукты с&nbsp;<span class="brand-inline"><img src="assets/claude-mark.svg" alt="" width="16" height="16">Claude</span>, <span class="brand-inline"><img src="assets/cursor-mark.svg" alt="" width="16" height="16">Cursor</span> и&nbsp;другими инструментами&nbsp;&mdash; не&nbsp;ради эксперимента, а&nbsp;чтобы быстрее проверять идеи и&nbsp;доводить их&nbsp;до&nbsp;рабочего состояния.</p>
@@ -444,16 +469,72 @@ def project_visual(kind: str) -> str:
                 <div class="pv-browser-bar"><i></i><i></i><i></i><span>ds.eval/benchmark</span></div>
                 <div class="pv-eval">
                     <div class="pv-eval-models">
-                        <div class="pv-eval-model"><span>Claude</span><b>87.4</b></div>
-                        <div class="pv-eval-model"><span>Codex</span><b>84.1</b></div>
+                        <div class="pv-eval-model"><span>Fixture</span><b>87.8</b></div>
+                        <div class="pv-eval-model"><span>Naive</span><b>59.3</b></div>
                     </div>
                     <div class="pv-eval-rows">
-                        <div><span>DS</span><i style="--value:94%"></i><em>94</em><em>88</em></div>
-                        <div><span>UX</span><i style="--value:88%"></i><em>88</em><em>86</em></div>
-                        <div><span>Visual</span><i style="--value:86%"></i><em>86</em><em>85</em></div>
-                        <div><span>A11y</span><i style="--value:79%"></i><em>79</em><em>82</em></div>
+                        <div><span>DS</span><i style="--value:87%"></i><em>87</em><em>6</em></div>
+                        <div><span>A11y</span><i style="--value:100%"></i><em>100</em><em>78</em></div>
+                        <div><span>Code</span><i style="--value:98%"></i><em>98</em><em>99</em></div>
+                        <div><span>Build</span><i style="--value:100%"></i><em>100</em><em>100</em></div>
                     </div>
-                    <div class="pv-eval-foot"><b>+2.7</b><span>7 improved</span><span class="pv-eval-down">3 regressions</span></div>
+                    <div class="pv-eval-foot"><b>−81</b><span>DS gap</span><span class="pv-eval-down">10 regressions</span></div>
+                </div>
+            </div>''',
+        "ai": '''
+            <div class="pv-markdown">
+                <span class="pv-md-title">AGENTS.md</span>
+                <i style="--w:86%"></i><i style="--w:70%"></i>
+                <span class="pv-md-sub">## Tokens</span>
+                <i style="--w:64%"></i><i style="--w:78%"></i><i style="--w:52%"></i>
+            </div>''',
+        "cv": '''
+            <div class="pv-browser">
+                <div class="pv-browser-bar"><i></i><i></i><i></i><span>coverage/report</span></div>
+                <div class="pv-health-layout">
+                    <div class="pv-health-score"><span>64</span><small>used</small></div>
+                    <div class="pv-health-metrics">
+                        <div><span>Imported</span><i style="--value:64%"></i><b>64</b></div>
+                        <div><span>Unused</span><i style="--value:22%"></i><b>22</b></div>
+                        <div><span>Local</span><i style="--value:18%"></i><b>18</b></div>
+                    </div>
+                </div>
+            </div>''',
+        "cx": '''
+            <div class="pv-markdown">
+                <span class="pv-md-title">design-system.md</span>
+                <i style="--w:88%"></i><i style="--w:72%"></i>
+                <span class="pv-md-sub">compact · ~375</span>
+                <i style="--w:60%"></i><i style="--w:46%"></i>
+            </div>''',
+        "fx": '''
+            <div class="pv-lint">
+                <div class="pv-code">
+                    <div><em>4</em><span>&lt;button&gt;</span><b>raw</b><small>repair</small></div>
+                    <div><em>5</em><span>#8B5CF6</span><b>hex</b><small>token</small></div>
+                    <div><em>8</em><span>modal</span><b>div</b><small>Dialog</small></div>
+                </div>
+                <div class="pv-lint-route"><i></i><i></i><i></i><b>→</b></div>
+                <div class="pv-tokens">
+                    <span><i></i>Button</span>
+                    <span><i class="pv-token-color"></i>color.accent</span>
+                    <span><i></i>Dialog</span>
+                </div>
+            </div>''',
+        "rg": '''
+            <div class="pv-browser">
+                <div class="pv-browser-bar"><i></i><i></i><i></i><span>prompt v12 → v13</span></div>
+                <div class="pv-eval">
+                    <div class="pv-eval-models">
+                        <div class="pv-eval-model"><span>Improved</span><b>6</b></div>
+                        <div class="pv-eval-model"><span>Regressed</span><b>2</b></div>
+                    </div>
+                    <div class="pv-eval-rows">
+                        <div><span>select</span><i style="--value:91%"></i><em>38</em><em>91</em></div>
+                        <div><span>settings</span><i style="--value:93%"></i><em>44</em><em>93</em></div>
+                        <div><span>delete</span><i style="--value:61%"></i><em>84</em><em>61</em></div>
+                    </div>
+                    <div class="pv-eval-foot"><b>6</b><span>improved</span><span class="pv-eval-down">2 regressed</span></div>
                 </div>
             </div>''',
     }
@@ -465,27 +546,20 @@ def project_block(icon: str, name: str, url: str, desc: str, delay: int, open_la
                 <article class="project-item fold wf-target" data-fold="{delay}">
                     <hr class="divider">
                     <div class="project-row">
-                        <div class="project-left"><div class="project-icon">{icon}</div><div class="career-company">{name}</div></div>
-                        <a class="project-link" href="{url}" target="_blank" rel="noopener">{open_label} →</a>
+                        <a class="project-left" href="{url}"><div class="project-icon">{icon}</div><div class="career-company">{name}</div></a>
+                        <a class="project-link" href="{url}">{open_label} →</a>
                     </div>
-                    <div class="project-preview project-preview--{icon} wf-target">{project_visual(icon)}</div>
+                    <a class="project-preview project-preview--{icon} wf-target" href="{url}" aria-label="{name}">{project_visual(icon)}</a>
                     <p class="work-desc">{desc}</p>
                 </article>'''
 
 
 def projects_content() -> str:
-    blocks = [
-        ("ev", "ds-eval", "/ds-eval/", "Бенчмарк: прогоняет одни и те же UI&#8209;задачи через разные модели и показывает, насколько агент следует дизайн&#8209;системе.", 120),
-        ("ds", "ds-health", "https://antoshkin.tech/ds-health/", "Веб&#8209;тул: вставляешь URL живого сайта и&nbsp;получаешь визуальный отчёт о&nbsp;«здоровье» дизайн&#8209;системы.", 150),
-        ("md", "figma-to-design-md", "https://antoshkin.tech/figma-to-design-md/", "CLI: вытаскивает переменные, стили и&nbsp;компоненты из&nbsp;Figma и&nbsp;генерирует markdown&#8209;спеки для AI&#8209;агентов.", 180),
-        ("sp", "spektr", "https://antoshkin.tech/spektr/", "Alt+hover по&nbsp;любому элементу: spacing, типографика и&nbsp;цвета прямо в&nbsp;браузере, как Figma Inspect.", 210),
-        ("ln", "ds-lint", "https://antoshkin.tech/ds-lint/", "Сканер: находит захардкоженные цвета, отступы и&nbsp;шрифты в&nbsp;коде и&nbsp;предлагает замену на&nbsp;токены.", 240),
-    ]
-    return '''
+    return f'''
                 <p class="section-label fold" data-fold="80">Свои проекты</p>
                 <h1 class="title fold wf-target" data-fold="100" data-wf-tag="display · h1">Проекты вне работы.</h1>
-                <p class="body-text fold wf-target" data-fold="130">Инструменты, которые я&nbsp;собираю для дизайнеров и&nbsp;разработчиков&nbsp;— чтобы работать из&nbsp;одной спецификации.</p>
-                ''' + "".join(project_block(*b) for b in blocks)
+                <p class="body-text fold wf-target" data-fold="130">Один контур для AI&#8209;native дизайн&#8209;систем: {chain_sentence("ru")}. Дальше в&nbsp;списке&nbsp;— спецификация и&nbsp;контроль на&nbsp;проде.</p>
+                ''' + "".join(project_block(*b) for b in list_blocks("ru"))
 
 
 def writing_content(lang: str = "ru") -> str:
@@ -498,16 +572,18 @@ def writing_content(lang: str = "ru") -> str:
         tag_html = meta["tags"].replace('class="article-meta"', 'class="article-tags"')
         tag_html = re.sub(r'^<div class="article-tags">|</div>$', "", tag_html.strip())
         delay = 120 + index * 30
+        date_html = article_date_html(meta.get("date", ""), lang)
         rows.append(
             f'<a class="article-row wf-target fold" data-fold="{delay}" href="{href}">'
             f'<span class="article-main">'
             f'<span class="article-title">{title}</span>'
             f'<span class="article-tags">{tag_html}</span>'
             f'</span>'
+            f'<span class="article-side">{date_html}'
             f'<span class="article-arrow" aria-hidden="true">'
             f'<svg width="16" height="16" viewBox="0 0 16 16" fill="none">'
             f'<path d="M6 4.5 10.5 8 6 11.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>'
-            f'</svg></span></a>'
+            f'</svg></span></span></a>'
         )
     if lang == "en":
         return '''
@@ -639,7 +715,7 @@ def home_content_en() -> str:
                         </article>
                         <article class="positioning-block">
                             <span class="positioning-kicker">Tools</span>
-                            <p>I build open&#8209;source tools for a shared design and code specification: <a class="about-link tool" href="/ds-eval/" target="_blank" rel="noopener">ds&#8209;eval</a>, <a class="about-link tool" href="https://antoshkin.tech/ds-health/" target="_blank" rel="noopener">ds&#8209;health</a>, <a class="about-link tool" href="https://antoshkin.tech/figma-to-design-md/" target="_blank" rel="noopener">figma&#8209;to&#8209;design&#8209;md</a>, <a class="about-link tool" href="https://antoshkin.tech/design-system-ai-starter/" target="_blank" rel="noopener">design&#8209;system&#8209;ai&#8209;starter</a>, <a class="about-link tool" href="https://antoshkin.tech/spektr/" target="_blank" rel="noopener">spektr</a>, <a class="about-link tool" href="https://antoshkin.tech/ds-lint/" target="_blank" rel="noopener">ds&#8209;lint</a>, and <a class="about-link tool" href="https://antoshkin.tech/ds-coverage/" target="_blank" rel="noopener">ds&#8209;coverage</a>.</p>
+                            <p>I build infrastructure for AI&#8209;native design systems: {chain_sentence("en")}.</p>
                         </article>
                         <article class="positioning-block">
                             <span class="positioning-kicker">AI and code</span>
@@ -665,41 +741,16 @@ def home_content_en() -> str:
                         {career_list_html(timeline=True, lang="en")}
                     </div>
                 </section>
-
-                <hr class="divider">
-
-                <section class="guide-section fold" data-fold="160">
-                    <div class="testi-card">
-                        <span class="testi-frame" aria-hidden="true"></span>
-                        <span class="annot annot--testi-size" id="testiSize" aria-hidden="true">&mdash;</span>
-                        <span class="annot annot--testi-label" aria-hidden="true">quote block<i class="tick tick--right" style="--len: 28px"></i></span>
-                        <span class="testi-inset" aria-hidden="true"><b>32 px</b></span>
-                        <div class="testi-bg" aria-hidden="true"></div>
-                        <div class="testi-shade" aria-hidden="true"></div>
-                        <p class="testi-quote">&ldquo;I am interested not only in designing interfaces, but in shaping how they are built&nbsp;— through design systems, tools, code, and automation.&rdquo;</p>
-                        <div class="testi-divider" aria-hidden="true"></div>
-                        <div class="testi-footer"><span class="testi-logo">antoshkin.tech</span><span class="testi-author">Andrew Antoshkin</span></div>
-                    </div>
-                </section>
 '''
 
 
 def about_content_en() -> str:
-    tools = (
-        '<a class="about-link tool" href="/ds-eval/" target="_blank" rel="noopener">ds&#8209;eval</a>, '
-        '<a class="about-link tool" href="https://antoshkin.tech/ds-health/" target="_blank" rel="noopener">ds&#8209;health</a>, '
-        '<a class="about-link tool" href="https://antoshkin.tech/figma-to-design-md/" target="_blank" rel="noopener">figma&#8209;to&#8209;design&#8209;md</a>, '
-        '<a class="about-link tool" href="https://antoshkin.tech/design-system-ai-starter/" target="_blank" rel="noopener">design&#8209;system&#8209;ai&#8209;starter</a>, '
-        '<a class="about-link tool" href="https://antoshkin.tech/spektr/" target="_blank" rel="noopener">spektr</a>, '
-        '<a class="about-link tool" href="https://antoshkin.tech/ds-lint/" target="_blank" rel="noopener">ds&#8209;lint</a>, and '
-        '<a class="about-link tool" href="https://antoshkin.tech/ds-coverage/" target="_blank" rel="noopener">ds&#8209;coverage</a>'
-    )
     return f'''
                 <h1 class="title fold" data-fold="100">About me</h1>
                 <div class="about-prose fold" data-fold="120">
                     <p class="about-text about-lead">Hello.<br>I&rsquo;m Andrew Antoshkin, a designer. I build products, design systems, and tools that connect design and code.</p>
                     <p class="about-text">I am interested not only in designing interfaces, but in shaping how they are built through design systems, tools, code, and automation&nbsp;— especially as AI changes the product development process itself.</p>
-                    <p class="about-text">Alongside my main work, I build open&#8209;source tools for designers and developers. I am especially interested in tools that let both disciplines work from a shared specification. These include {tools}.</p>
+                    <p class="about-text">Alongside that work I build infrastructure for AI&#8209;native design systems: {chain_sentence("en")}. Specification and production checks sit next to that loop.</p>
                     <p class="about-text">Most of my career has focused on systemic challenges within product teams: improving not just interfaces, but the way teams create them.</p>
                     <p class="about-text">I currently develop the design system at <a class="about-link" href="https://yandex.ru" target="_blank" rel="noopener">Yandex HR Tech</a>&nbsp;— from component libraries and tokens to documentation, code, and AI workflows. Before that, I worked on design systems at <a class="about-link" href="https://www.sber.ru" target="_blank" rel="noopener">Sber</a> and designed products at Otkritie Broker and MTS.</p>
                     <p class="about-text">I design in Figma, write code, and build products with <span class="brand-inline"><img src="assets/claude-mark.svg" alt="" width="16" height="16">Claude</span>, <span class="brand-inline"><img src="assets/cursor-mark.svg" alt="" width="16" height="16">Cursor</span>, and other tools to test ideas faster and bring them to a working state.</p>
@@ -709,19 +760,44 @@ def about_content_en() -> str:
 '''
 
 
-def projects_content_en() -> str:
-    blocks = [
-        ("ev", "ds-eval", "/ds-eval/", "A benchmark that runs the same UI tasks through different models and measures how well coding agents follow your design system.", 120, "Open"),
-        ("ds", "ds-health", "https://antoshkin.tech/ds-health/", "A web tool that analyzes a live site and produces a visual report on design system health.", 150, "Open"),
-        ("md", "figma-to-design-md", "https://antoshkin.tech/figma-to-design-md/", "A CLI that extracts variables, styles, and components from Figma and generates markdown specifications for AI agents.", 180, "Open"),
-        ("sp", "spektr", "https://antoshkin.tech/spektr/", "Alt+hover any element to inspect spacing, typography, and colors in the browser, like Figma Inspect.", 210, "Open"),
-        ("ln", "ds-lint", "https://antoshkin.tech/ds-lint/", "A scanner that finds hardcoded colors, spacing, and fonts in code and suggests token replacements.", 240, "Open"),
+def chain_sentence(lang: str) -> str:
+    def link(slug: str) -> str:
+        label = slug.replace("-", "&#8209;")
+        return f'<a class="about-link tool" href="{project_href(slug, lang)}">{label}</a>'
+
+    context, repair, eval_, regress = (
+        link("ds-context"),
+        link("ui-repair"),
+        link("ds-eval"),
+        link("prompt-regress"),
+    )
+    if lang == "ru":
+        return (
+            f"{context} готовит контекст, {repair} чинит код, "
+            f"{eval_} измеряет следование системе, {regress} сравнивает версии промпта"
+        )
+    return (
+        f"{context} prepares context, {repair} repairs code, "
+        f"{eval_} measures whether the agent follows the system, {regress} compares prompt versions"
+    )
+
+
+def tool_links(lang: str) -> str:
+    parts = [
+        f'<a class="about-link tool" href="{project_href(project["slug"], lang)}">{project["name"].replace("-", "&#8209;")}</a>'
+        for project in PROJECTS
     ]
-    return '''
+    if lang == "ru":
+        return ", ".join(parts[:-1]) + " и&nbsp;" + parts[-1]
+    return ", ".join(parts[:-1]) + ", and " + parts[-1]
+
+
+def projects_content_en() -> str:
+    return f'''
                 <p class="section-label fold" data-fold="80">Side projects</p>
                 <h1 class="title fold wf-target" data-fold="100" data-wf-tag="display · h1">Built after hours.</h1>
-                <p class="body-text fold wf-target" data-fold="130">Tools I build for designers and developers to work from a shared specification.</p>
-                ''' + "".join(project_block(*b) for b in blocks)
+                <p class="body-text fold wf-target" data-fold="130">One loop for AI&#8209;native design systems: {chain_sentence("en")}. Specification and production checks follow.</p>
+                ''' + "".join(project_block(*b) for b in list_blocks("en"))
 
 
 def approach_content_en() -> str:
@@ -840,7 +916,7 @@ def article_nav(stem: str, lang: str) -> str:
     return f'<nav class="article-nav">{"".join(links)}</nav>'
 
 
-def load_article_source(stem: str, lang: str) -> tuple[str, str, str, str, str, str, str]:
+def load_article_source(stem: str, lang: str) -> tuple[str, str, str, str, str, str, str, str]:
     suffix = "" if lang == "ru" else ".en"
     meta_path = ARTICLES_DIR / f"{stem}{suffix}.json"
     body_path = ARTICLES_DIR / f"{stem}{suffix}.body.html"
@@ -864,17 +940,19 @@ def load_article_source(stem: str, lang: str) -> tuple[str, str, str, str, str, 
             f'<img src="{cover["src"]}" alt="{cover["alt"]}">'
             '</figure>'
         )
-    return meta["title"], meta["h1"], meta["tags"], cover_html, tldr, body, article_nav(stem, lang)
+    date_html = article_date_html(meta.get("date", ""), lang, full=True)
+    return meta["title"], meta["h1"], date_html, meta["tags"], cover_html, tldr, body, article_nav(stem, lang)
 
 
 def article_page(stem: str, lang: str) -> None:
-    title, h1, tags, cover, tldr, body, nav = load_article_source(stem, lang)
+    title, h1, date_html, tags, cover, tldr, body, nav = load_article_source(stem, lang)
     output_name = f"{stem}.html" if lang == "ru" else f"{stem}-en.html"
     counterpart = f"{stem}-en.html" if lang == "ru" else f"{stem}.html"
     content = f'''
                 {cover}
                 <div class="article-head fold wf-target" data-fold="100">
                     <h1 class="title">{h1}</h1>
+                    {date_html}
                     {tags}
                 </div>
                 {tldr}
@@ -895,15 +973,72 @@ def article_page(stem: str, lang: str) -> None:
     write(output_name, out)
 
 
+def write_project_pages() -> None:
+    for index, project in enumerate(PROJECTS):
+        for lang in ("ru", "en"):
+            other = "en" if lang == "ru" else "ru"
+            back_href = "projects.html" if lang == "ru" else "projects-en.html"
+            back_label = "Проекты" if lang == "ru" else "Projects"
+            who = "Андрей Антошкин" if lang == "ru" else "Andrew Antoshkin"
+            doc = load_doc(project["slug"], lang)
+            kicker = project["kicker"][0 if lang == "ru" else 1]
+            content = f'''
+                <p class="section-label">{kicker}</p>
+                <h1 class="title">{project["name"]}</h1>
+                <p class="body-text">{doc["lead"]}</p>
+                <div class="prose prose--docs">{doc["body"]}</div>
+                {project_nav(index, lang)}
+            '''
+            write(
+                project_href(project["slug"], lang),
+                shell(
+                    active="projects",
+                    title=f'{project["name"]} — {who}',
+                    description=project["meta"][_lang_bit(lang)],
+                    content=content,
+                    content_class="content--article",
+                    lang=lang,
+                    counterpart=project_href(project["slug"], other),
+                    project_menu={
+                        "name": project["name"],
+                        "back_href": back_href,
+                        "back_label": back_label,
+                        "groups": doc["groups"],
+                    },
+                ),
+            )
+        if project["legacy"]:
+            target = "/" + project_href(project["slug"], "en")
+            write(
+                project["legacy"],
+                f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="refresh" content="0; url={target}">
+    <link rel="canonical" href="{target}">
+    <title>{project["name"]}</title>
+</head>
+<body><a href="{target}">{project["name"]}</a></body>
+</html>
+''',
+            )
+
+
+def _lang_bit(lang: str) -> int:
+    return 0 if lang == "ru" else 1
+
+
 def main() -> None:
     pages = [
         ("index.html", "en.html", "ru", "home", "Андрей Антошкин — Design Engineer", "Design Engineer. Дизайн-системы, AI-инструменты и инфраструктура.", home_content()),
-        ("projects.html", "projects-en.html", "ru", "projects", "Проекты — Андрей Антошкин", "Опенсорс-инструменты для дизайн-систем и design-to-code.", projects_content()),
+        ("projects.html", "projects-en.html", "ru", "projects", "Проекты — Андрей Антошкин", "Инфраструктура для AI-native дизайн-систем: контекст, починка, измерение и регрессия промпта.", projects_content()),
         ("writing.html", "writing-en.html", "ru", "writing", "Статьи — Андрей Антошкин", "Статьи про Figma, Cursor, design systems и AI.", writing_content("ru")),
         ("approach.html", "approach-en.html", "ru", "approach", "Подход — Андрей Антошкин", "Как превращаю сложные продуктовые задачи в работающие системы — от модели и прототипа до продакшена.", approach_content()),
         ("collab.html", "collab-en.html", "ru", "collab", "Сотрудничество — Андрей Антошкин", "Менторство, воркшопы и консалтинг по дизайн-системам.", collab_content()),
         ("en.html", "index.html", "en", "home", "Andrew Antoshkin — Design Engineer", "Design Engineer building design systems, AI tools, and product infrastructure.", home_content_en()),
-        ("projects-en.html", "projects.html", "en", "projects", "Projects — Andrew Antoshkin", "Open-source tools for design systems and design-to-code workflows.", projects_content_en()),
+        ("projects-en.html", "projects.html", "en", "projects", "Projects — Andrew Antoshkin", "Infrastructure for AI-native design systems: context, repair, measurement, and prompt regression.", projects_content_en()),
         ("writing-en.html", "writing.html", "en", "writing", "Writing — Andrew Antoshkin", "Articles about Figma, Cursor, design systems, and AI.", writing_content("en")),
         ("approach-en.html", "approach.html", "en", "approach", "Approach — Andrew Antoshkin", "How I turn complex product problems into working systems, from model and prototype to production.", approach_content_en()),
         ("collab-en.html", "collab.html", "en", "collab", "Work together — Andrew Antoshkin", "Mentoring, workshops, and consulting on design systems and AI workflows.", collab_content_en()),
@@ -918,6 +1053,8 @@ def main() -> None:
     for stem in ARTICLE_ORDER:
         article_page(stem, "ru")
         article_page(stem, "en")
+
+    write_project_pages()
 
 
 if __name__ == "__main__":

@@ -111,21 +111,6 @@
     })();
 
     (() => {
-        const testi = document.querySelector('.testi-card');
-        const testiLabel = document.getElementById('testiSize');
-        if (!testi || !testiLabel) return;
-
-        const update = () => {
-            const r = testi.getBoundingClientRect();
-            testiLabel.firstChild.nodeValue = `${Math.round(r.width)} × ${Math.round(r.height)}`;
-        };
-
-        update();
-        addEventListener('resize', update, { passive: true });
-        new MutationObserver(update).observe(body, { attributeFilter: ['data-guides'] });
-    })();
-
-    (() => {
         const rail = document.querySelector('.career-list--timeline');
         const label = document.querySelector('#careerSpan b');
         if (!rail || !label) return;
@@ -271,6 +256,31 @@
         link.classList.toggle('active', key === pathKey);
     });
 
+    const projectNav = document.querySelector('.top-nav--project');
+    if (projectNav) {
+        const groups = [
+            [...projectNav.querySelectorAll('a[href^="#"]')],
+            [...document.querySelectorAll('.mobile-menu--project a[href^="#"]')],
+        ];
+        const sections = groups[0]
+            .map((link) => document.getElementById(link.getAttribute('href').slice(1)))
+            .filter(Boolean);
+        const markSection = () => {
+            if (!sections.length) return;
+            let current = sections[0];
+            sections.forEach((section) => {
+                if (section.getBoundingClientRect().top <= 120) current = section;
+            });
+            const id = `#${current.id}`;
+            groups.flat().forEach((link) => {
+                link.classList.toggle('active', link.getAttribute('href') === id);
+            });
+        };
+        document.addEventListener('scroll', markSection, { passive: true });
+        window.addEventListener('hashchange', markSection);
+        requestAnimationFrame(() => requestAnimationFrame(markSection));
+    }
+
     // ── FAQ accordion ─────────────────────────────────────
     document.querySelectorAll('.faq-q').forEach((btn) => {
         btn.addEventListener('click', () => {
@@ -282,7 +292,7 @@
     });
 
     // ── Article prose stagger ─────────────────────────────
-    document.querySelectorAll('.prose').forEach((prose) => {
+    document.querySelectorAll('.prose:not(.prose--docs)').forEach((prose) => {
         let delay = 180;
         prose.querySelectorAll('h2, h3, p, ul, ol, pre').forEach((el) => {
             el.classList.add('fold');

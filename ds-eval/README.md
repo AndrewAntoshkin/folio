@@ -69,3 +69,14 @@ Deterministic in this slice: DS imports, forbidden native controls, raw colors, 
 ds-eval init ./my-design-system
 ds-eval run --system ./my-design-system --model fixture --suite smoke
 ```
+
+## Published run
+
+`runs/fixture-good` is a recorded smoke. It is not a live Claude or Codex call.
+
+| Model | Overall | DS | A11y | Code |
+| --- | --- | --- | --- | --- |
+| fixture | 87.8 | 87 | 100 | 98 |
+| fixture-naive | 59.3 | 5.7 | 78 | 99 |
+
+DS drops about 81 points when the answer ignores the design system. The functional score stays at 70. Visual and UX judges are skipped in this run, and their weight moves onto the other axes. Cost is $0.

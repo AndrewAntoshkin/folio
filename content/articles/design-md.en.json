@@ -1,4 +1,5 @@
 {
+  "date": "2026-08-21",
   "title": "DESIGN.md in 2026: How to Describe a Design System for AI Agents",
   "h1": "DESIGN.md in&nbsp;2026: How to Describe a&nbsp;Design System for&nbsp;AI Agents",
   "tldr": "DESIGN.md helps communicate a design system’s visual rules and decisions to an AI agent, but it does not replace code, tokens, or documentation. A useful format is layered, points to sources of truth, and is validated by automated tests.",

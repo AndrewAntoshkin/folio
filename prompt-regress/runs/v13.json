@@ -1,0 +1,18 @@
+[
+  {"id": "select-001", "pass": true, "ds": 91, "tokens": 1720, "note": "Select with a label."},
+  {"id": "settings-002", "pass": true, "ds": 93, "tokens": 1980, "note": "Button and color token."},
+  {"id": "dialog-003", "pass": true, "ds": 90, "tokens": 1840, "note": "Dialog instead of a div."},
+  {"id": "empty-004", "pass": true, "ds": 87, "tokens": 1010, "note": "Still the empty-state pattern."},
+  {"id": "table-005", "pass": true, "ds": 82, "tokens": 2360, "note": "Table unchanged in substance."},
+  {"id": "form-006", "pass": true, "ds": 89, "tokens": 1690, "note": "Every field has a label."},
+  {"id": "delete-007", "pass": false, "ds": 61, "tokens": 1510, "note": "Confirm button lost its danger variant."},
+  {"id": "tabs-008", "pass": true, "ds": 80, "tokens": 1490, "note": "Tabs still from the system."},
+  {"id": "toast-009", "pass": true, "ds": 85, "tokens": 940, "note": "Toast uses the system component."},
+  {"id": "billing-010", "pass": true, "ds": 84, "tokens": 2550, "note": "Billing stays on tokens."},
+  {"id": "permissions-011", "pass": true, "ds": 86, "tokens": 1870, "note": "Checkbox group from the system."},
+  {"id": "profile-012", "pass": false, "ds": 58, "tokens": 1600, "note": "Avatar control became a raw button."},
+  {"id": "bulk-013", "pass": true, "ds": 78, "tokens": 1680, "note": "Bulk bar still acceptable."},
+  {"id": "filters-014", "pass": false, "ds": 51, "tokens": 1580, "note": "Chips still hardcoded."},
+  {"id": "search-015", "pass": true, "ds": 83, "tokens": 1120, "note": "Search field still labeled."},
+  {"id": "nav-016", "pass": true, "ds": 79, "tokens": 1290, "note": "Side nav unchanged."}
+]

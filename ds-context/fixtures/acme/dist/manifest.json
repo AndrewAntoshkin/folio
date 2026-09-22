@@ -1,0 +1,28 @@
+{
+  "strategy": "full",
+  "source": "ds-context/fixtures/acme",
+  "components": [
+    "Button",
+    "Input",
+    "Dialog",
+    "Select"
+  ],
+  "tokens": [
+    "--color-accent",
+    "--color-text",
+    "--color-surface",
+    "--space-2",
+    "--space-3",
+    "--space-4",
+    "--radius-2",
+    "--font-size-body"
+  ],
+  "files": {
+    "design-system.md": 292,
+    "components.md": 160,
+    "patterns.md": 87,
+    "anti-patterns.md": 54,
+    "examples.md": 72
+  },
+  "tokens_total": 665
+}

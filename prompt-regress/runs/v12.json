@@ -1,0 +1,18 @@
+[
+  {"id": "select-001", "pass": false, "ds": 38, "tokens": 1640, "note": "Native select, no label."},
+  {"id": "settings-002", "pass": false, "ds": 44, "tokens": 2100, "note": "Raw button and #8B5CF6."},
+  {"id": "dialog-003", "pass": false, "ds": 41, "tokens": 1880, "note": "Custom modal div."},
+  {"id": "empty-004", "pass": true, "ds": 86, "tokens": 980, "note": "Empty state uses Button."},
+  {"id": "table-005", "pass": true, "ds": 80, "tokens": 2400, "note": "Table component, token spacing."},
+  {"id": "form-006", "pass": false, "ds": 52, "tokens": 1760, "note": "Inputs miss labels."},
+  {"id": "delete-007", "pass": true, "ds": 84, "tokens": 1320, "note": "Dialog confirm."},
+  {"id": "tabs-008", "pass": true, "ds": 79, "tokens": 1540, "note": "Tabs from the system."},
+  {"id": "toast-009", "pass": false, "ds": 47, "tokens": 890, "note": "Invented toast styles."},
+  {"id": "billing-010", "pass": true, "ds": 83, "tokens": 2600, "note": "Billing page on tokens."},
+  {"id": "permissions-011", "pass": false, "ds": 55, "tokens": 1980, "note": "Checkbox group is native."},
+  {"id": "profile-012", "pass": true, "ds": 88, "tokens": 1430, "note": "Profile uses Input."},
+  {"id": "bulk-013", "pass": true, "ds": 76, "tokens": 1710, "note": "Bulk bar is close enough."},
+  {"id": "filters-014", "pass": false, "ds": 49, "tokens": 1600, "note": "Filter chips hardcoded."},
+  {"id": "search-015", "pass": true, "ds": 81, "tokens": 1100, "note": "Search field labeled."},
+  {"id": "nav-016", "pass": true, "ds": 77, "tokens": 1340, "note": "Side nav uses system links."}
+]

@@ -1,4 +1,5 @@
 {
+  "date": "2026-08-21",
   "title": "Cursor + Figma in 2026: the current setup for designers",
   "h1": "Cursor + Figma in&nbsp;2026: the current setup for&nbsp;designers",
   "tldr": "Figma MCP gives the agent access to design structure, variables, and components, while Cursor helps connect them to the codebase. This speeds up the work, but quality still depends on the components, project rules, and verification of the result.",

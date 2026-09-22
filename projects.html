@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>Проекты — Андрей Антошкин</title>
-    <meta name="description" content="Опенсорс-инструменты для дизайн-систем и design-to-code.">
+    <meta name="description" content="Инфраструктура для AI-native дизайн-систем: контекст, починка, измерение и регрессия промпта.">
     <meta name="theme-color" content="#FDFDFC" id="themeColorMeta">
     <meta property="og:title" content="Проекты — Андрей Антошкин">
-    <meta property="og:description" content="Опенсорс-инструменты для дизайн-систем и design-to-code.">
+    <meta property="og:description" content="Инфраструктура для AI-native дизайн-систем: контекст, починка, измерение и регрессия промпта.">
     <meta property="og:type" content="website">
     <link rel="icon" type="image/svg+xml" href="assets/antoshkin-tech-logo.svg">
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
@@ -28,15 +28,12 @@
         <div class="grid-line grid-line--content-r" aria-hidden="true"></div>
         <div class="grid-line grid-line--shell-r" aria-hidden="true"></div>
 
-        <nav class="top-nav fold" data-fold="50">
-            <a href="index.html" aria-label="На главную"><img class="logo logo-photo wf-target" src="assets/avatar.png" alt="Andrew Antoshkin" width="32" height="32"></a>
-            <div class="nav-links">
-                <a class="nav-link" href="index.html">Главная</a>
+        <nav class="top-nav fold" data-fold="50" >
+            <a href="index.html" aria-label="На главную"><img class="logo logo-photo wf-target" src="assets/avatar.png" alt="Andrew Antoshkin" width="32" height="32"></a><div class="nav-links"><a class="nav-link" href="index.html">Главная</a>
                 <a class="nav-link active" href="projects.html">Проекты</a>
                 <a class="nav-link" href="writing.html">Статьи</a>
                 <a class="nav-link" href="approach.html">Подход</a>
-                <a class="nav-link" href="collab.html">Сотрудничество</a>
-            </div>
+                <a class="nav-link" href="collab.html">Сотрудничество</a></div>
         </nav>
 
         <div class="nav-contact fold" data-fold="80">
@@ -55,12 +52,10 @@
                 <span>Меню</span>
             </button>
             <div class="mobile-menu" hidden>
-                <a href="index.html">Главная</a>
-                <a href="projects.html">Проекты</a>
+                <a href="index.html">Главная</a><a href="projects.html">Проекты</a>
                 <a href="writing.html">Статьи</a>
                 <a href="approach.html">Подход</a>
-                <a href="collab.html">Сотрудничество</a>
-                <hr>
+                <a href="collab.html">Сотрудничество</a><hr>
                 <div class="compact-controls">
                     <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="Переключить тему">
                         <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
@@ -103,61 +98,101 @@
                 
                 <p class="section-label fold" data-fold="80">Свои проекты</p>
                 <h1 class="title fold wf-target" data-fold="100" data-wf-tag="display · h1">Проекты вне работы.</h1>
-                <p class="body-text fold wf-target" data-fold="130">Инструменты, которые я&nbsp;собираю для дизайнеров и&nbsp;разработчиков&nbsp;— чтобы работать из&nbsp;одной спецификации.</p>
+                <p class="body-text fold wf-target" data-fold="130">Один контур для AI&#8209;native дизайн&#8209;систем: <a class="about-link tool" href="ds-context.html">ds&#8209;context</a> готовит контекст, <a class="about-link tool" href="ui-repair.html">ui&#8209;repair</a> чинит код, <a class="about-link tool" href="ds-eval.html">ds&#8209;eval</a> измеряет следование системе, <a class="about-link tool" href="prompt-regress.html">prompt&#8209;regress</a> сравнивает версии промпта. Дальше в&nbsp;списке&nbsp;— спецификация и&nbsp;контроль на&nbsp;проде.</p>
                 
                 <article class="project-item fold wf-target" data-fold="120">
                     <hr class="divider">
                     <div class="project-row">
-                        <div class="project-left"><div class="project-icon">ev</div><div class="career-company">ds-eval</div></div>
-                        <a class="project-link" href="/ds-eval/" target="_blank" rel="noopener">Открыть →</a>
+                        <a class="project-left" href="ds-eval.html"><div class="project-icon">ev</div><div class="career-company">ds-eval</div></a>
+                        <a class="project-link" href="ds-eval.html">Открыть →</a>
                     </div>
-                    <div class="project-preview project-preview--ev wf-target">
+                    <a class="project-preview project-preview--ev wf-target" href="ds-eval.html" aria-label="ds-eval">
             <div class="pv-browser">
                 <div class="pv-browser-bar"><i></i><i></i><i></i><span>ds.eval/benchmark</span></div>
                 <div class="pv-eval">
                     <div class="pv-eval-models">
-                        <div class="pv-eval-model"><span>Claude</span><b>87.4</b></div>
-                        <div class="pv-eval-model"><span>Codex</span><b>84.1</b></div>
+                        <div class="pv-eval-model"><span>Fixture</span><b>87.8</b></div>
+                        <div class="pv-eval-model"><span>Naive</span><b>59.3</b></div>
                     </div>
                     <div class="pv-eval-rows">
-                        <div><span>DS</span><i style="--value:94%"></i><em>94</em><em>88</em></div>
-                        <div><span>UX</span><i style="--value:88%"></i><em>88</em><em>86</em></div>
-                        <div><span>Visual</span><i style="--value:86%"></i><em>86</em><em>85</em></div>
-                        <div><span>A11y</span><i style="--value:79%"></i><em>79</em><em>82</em></div>
+                        <div><span>DS</span><i style="--value:87%"></i><em>87</em><em>6</em></div>
+                        <div><span>A11y</span><i style="--value:100%"></i><em>100</em><em>78</em></div>
+                        <div><span>Code</span><i style="--value:98%"></i><em>98</em><em>99</em></div>
+                        <div><span>Build</span><i style="--value:100%"></i><em>100</em><em>100</em></div>
                     </div>
-                    <div class="pv-eval-foot"><b>+2.7</b><span>7 improved</span><span class="pv-eval-down">3 regressions</span></div>
+                    <div class="pv-eval-foot"><b>−81</b><span>DS gap</span><span class="pv-eval-down">10 regressions</span></div>
                 </div>
-            </div></div>
-                    <p class="work-desc">Бенчмарк: прогоняет одни и те же UI&#8209;задачи через разные модели и показывает, насколько агент следует дизайн&#8209;системе.</p>
+            </div></a>
+                    <p class="work-desc">Прогоняет одни и&nbsp;те&nbsp;же UI&#8209;задачи через разные ответы модели и&nbsp;показывает, следует&nbsp;ли агент уже существующей дизайн&#8209;системе.</p>
                 </article>
                 <article class="project-item fold wf-target" data-fold="150">
                     <hr class="divider">
                     <div class="project-row">
-                        <div class="project-left"><div class="project-icon">ds</div><div class="career-company">ds-health</div></div>
-                        <a class="project-link" href="https://antoshkin.tech/ds-health/" target="_blank" rel="noopener">Открыть →</a>
+                        <a class="project-left" href="ds-context.html"><div class="project-icon">cx</div><div class="career-company">ds-context</div></a>
+                        <a class="project-link" href="ds-context.html">Открыть →</a>
                     </div>
-                    <div class="project-preview project-preview--ds wf-target">
-            <div class="pv-browser">
-                <div class="pv-browser-bar"><i></i><i></i><i></i><span>system.health/report</span></div>
-                <div class="pv-health-layout">
-                    <div class="pv-health-score"><span>86</span><small>health</small></div>
-                    <div class="pv-health-metrics">
-                        <div><span>Tokens</span><i style="--value:92%"></i><b>92</b></div>
-                        <div><span>Components</span><i style="--value:78%"></i><b>78</b></div>
-                        <div><span>Consistency</span><i style="--value:88%"></i><b>88</b></div>
-                    </div>
-                </div>
-                <div class="pv-health-map"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-            </div></div>
-                    <p class="work-desc">Веб&#8209;тул: вставляешь URL живого сайта и&nbsp;получаешь визуальный отчёт о&nbsp;«здоровье» дизайн&#8209;системы.</p>
+                    <a class="project-preview project-preview--cx wf-target" href="ds-context.html" aria-label="ds-context">
+            <div class="pv-markdown">
+                <span class="pv-md-title">design-system.md</span>
+                <i style="--w:88%"></i><i style="--w:72%"></i>
+                <span class="pv-md-sub">compact · ~375</span>
+                <i style="--w:60%"></i><i style="--w:46%"></i>
+            </div></a>
+                    <p class="work-desc">Собирает из токенов, компонентов и спеки короткий пакет для модели и считает, сколько токенов стоит каждая упаковка.</p>
                 </article>
                 <article class="project-item fold wf-target" data-fold="180">
                     <hr class="divider">
                     <div class="project-row">
-                        <div class="project-left"><div class="project-icon">md</div><div class="career-company">figma-to-design-md</div></div>
-                        <a class="project-link" href="https://antoshkin.tech/figma-to-design-md/" target="_blank" rel="noopener">Открыть →</a>
+                        <a class="project-left" href="ui-repair.html"><div class="project-icon">fx</div><div class="career-company">ui-repair</div></a>
+                        <a class="project-link" href="ui-repair.html">Открыть →</a>
                     </div>
-                    <div class="project-preview project-preview--md wf-target">
+                    <a class="project-preview project-preview--fx wf-target" href="ui-repair.html" aria-label="ui-repair">
+            <div class="pv-lint">
+                <div class="pv-code">
+                    <div><em>4</em><span>&lt;button&gt;</span><b>raw</b><small>repair</small></div>
+                    <div><em>5</em><span>#8B5CF6</span><b>hex</b><small>token</small></div>
+                    <div><em>8</em><span>modal</span><b>div</b><small>Dialog</small></div>
+                </div>
+                <div class="pv-lint-route"><i></i><i></i><i></i><b>→</b></div>
+                <div class="pv-tokens">
+                    <span><i></i>Button</span>
+                    <span><i class="pv-token-color"></i>color.accent</span>
+                    <span><i></i>Dialog</span>
+                </div>
+            </div></a>
+                    <p class="work-desc">Заменяет сырые контролы, hex и самодельный modal на компоненты системы и показывает, какие проверки перевернулись.</p>
+                </article>
+                <article class="project-item fold wf-target" data-fold="210">
+                    <hr class="divider">
+                    <div class="project-row">
+                        <a class="project-left" href="prompt-regress.html"><div class="project-icon">rg</div><div class="career-company">prompt-regress</div></a>
+                        <a class="project-link" href="prompt-regress.html">Открыть →</a>
+                    </div>
+                    <a class="project-preview project-preview--rg wf-target" href="prompt-regress.html" aria-label="prompt-regress">
+            <div class="pv-browser">
+                <div class="pv-browser-bar"><i></i><i></i><i></i><span>prompt v12 → v13</span></div>
+                <div class="pv-eval">
+                    <div class="pv-eval-models">
+                        <div class="pv-eval-model"><span>Improved</span><b>6</b></div>
+                        <div class="pv-eval-model"><span>Regressed</span><b>2</b></div>
+                    </div>
+                    <div class="pv-eval-rows">
+                        <div><span>select</span><i style="--value:91%"></i><em>38</em><em>91</em></div>
+                        <div><span>settings</span><i style="--value:93%"></i><em>44</em><em>93</em></div>
+                        <div><span>delete</span><i style="--value:61%"></i><em>84</em><em>61</em></div>
+                    </div>
+                    <div class="pv-eval-foot"><b>6</b><span>improved</span><span class="pv-eval-down">2 regressed</span></div>
+                </div>
+            </div></a>
+                    <p class="work-desc">Сравнивает две версии промпта на одном наборе UI-кейсов: что выросло, что сломалось, а не средний балл.</p>
+                </article>
+                <article class="project-item fold wf-target" data-fold="240">
+                    <hr class="divider">
+                    <div class="project-row">
+                        <a class="project-left" href="figma-to-design-md.html"><div class="project-icon">md</div><div class="career-company">figma-to-design-md</div></a>
+                        <a class="project-link" href="figma-to-design-md.html">Открыть →</a>
+                    </div>
+                    <a class="project-preview project-preview--md wf-target" href="figma-to-design-md.html" aria-label="figma-to-design-md">
             <div class="pv-flow">
                 <div class="pv-figma-tree">
                     <span class="pv-node pv-node--root">◆</span>
@@ -172,37 +207,16 @@
                     <span class="pv-md-sub">## Components</span>
                     <i style="--w:74%"></i><i style="--w:88%"></i><i style="--w:55%"></i>
                 </div>
-            </div></div>
-                    <p class="work-desc">CLI: вытаскивает переменные, стили и&nbsp;компоненты из&nbsp;Figma и&nbsp;генерирует markdown&#8209;спеки для AI&#8209;агентов.</p>
+            </div></a>
+                    <p class="work-desc">Вытаскивает переменные, стили и&nbsp;компоненты из&nbsp;Figma и&nbsp;собирает markdown&#8209;спеку, которую может прочитать агент.</p>
                 </article>
-                <article class="project-item fold wf-target" data-fold="210">
+                <article class="project-item fold wf-target" data-fold="270">
                     <hr class="divider">
                     <div class="project-row">
-                        <div class="project-left"><div class="project-icon">sp</div><div class="career-company">spektr</div></div>
-                        <a class="project-link" href="https://antoshkin.tech/spektr/" target="_blank" rel="noopener">Открыть →</a>
+                        <a class="project-left" href="ds-lint.html"><div class="project-icon">ln</div><div class="career-company">ds-lint</div></a>
+                        <a class="project-link" href="ds-lint.html">Открыть →</a>
                     </div>
-                    <div class="project-preview project-preview--sp wf-target">
-            <div class="pv-inspector">
-                <div class="pv-inspector-ui">
-                    <div class="pv-inspector-nav"></div>
-                    <div class="pv-inspector-copy"><i></i><i></i><i></i></div>
-                    <div class="pv-inspector-card"></div>
-                </div>
-                <div class="pv-measure pv-measure--x"><span>24</span></div>
-                <div class="pv-measure pv-measure--y"><span>16</span></div>
-                <div class="pv-inspector-target"><i></i><i></i><i></i><i></i></div>
-                <div class="pv-cursor">↖</div>
-                <div class="pv-inspector-popover"><b>Card</b><span>240 × 144</span><span>gap · 16</span><span>radius · 12</span></div>
-            </div></div>
-                    <p class="work-desc">Alt+hover по&nbsp;любому элементу: spacing, типографика и&nbsp;цвета прямо в&nbsp;браузере, как Figma Inspect.</p>
-                </article>
-                <article class="project-item fold wf-target" data-fold="240">
-                    <hr class="divider">
-                    <div class="project-row">
-                        <div class="project-left"><div class="project-icon">ln</div><div class="career-company">ds-lint</div></div>
-                        <a class="project-link" href="https://antoshkin.tech/ds-lint/" target="_blank" rel="noopener">Открыть →</a>
-                    </div>
-                    <div class="project-preview project-preview--ln wf-target">
+                    <a class="project-preview project-preview--ln wf-target" href="ds-lint.html" aria-label="ds-lint">
             <div class="pv-lint">
                 <div class="pv-code">
                     <div><em>12</em><span>color:</span><b>#FF4D4F</b><small>hardcoded</small></div>
@@ -215,8 +229,49 @@
                     <span><i></i>space.4</span>
                     <span><i></i>radius.2</span>
                 </div>
-            </div></div>
-                    <p class="work-desc">Сканер: находит захардкоженные цвета, отступы и&nbsp;шрифты в&nbsp;коде и&nbsp;предлагает замену на&nbsp;токены.</p>
+            </div></a>
+                    <p class="work-desc">Находит захардкоженные цвета, отступы и&nbsp;шрифты в&nbsp;коде и&nbsp;предлагает замену на&nbsp;токены.</p>
+                </article>
+                <article class="project-item fold wf-target" data-fold="300">
+                    <hr class="divider">
+                    <div class="project-row">
+                        <a class="project-left" href="ds-coverage.html"><div class="project-icon">cv</div><div class="career-company">ds-coverage</div></a>
+                        <a class="project-link" href="ds-coverage.html">Открыть →</a>
+                    </div>
+                    <a class="project-preview project-preview--cv wf-target" href="ds-coverage.html" aria-label="ds-coverage">
+            <div class="pv-browser">
+                <div class="pv-browser-bar"><i></i><i></i><i></i><span>coverage/report</span></div>
+                <div class="pv-health-layout">
+                    <div class="pv-health-score"><span>64</span><small>used</small></div>
+                    <div class="pv-health-metrics">
+                        <div><span>Imported</span><i style="--value:64%"></i><b>64</b></div>
+                        <div><span>Unused</span><i style="--value:22%"></i><b>22</b></div>
+                        <div><span>Local</span><i style="--value:18%"></i><b>18</b></div>
+                    </div>
+                </div>
+            </div></a>
+                    <p class="work-desc">Считает, какая часть кода реально импортирует дизайн&#8209;систему, и&nbsp;где компоненты написаны заново.</p>
+                </article>
+                <article class="project-item fold wf-target" data-fold="330">
+                    <hr class="divider">
+                    <div class="project-row">
+                        <a class="project-left" href="ds-health.html"><div class="project-icon">ds</div><div class="career-company">ds-health</div></a>
+                        <a class="project-link" href="ds-health.html">Открыть →</a>
+                    </div>
+                    <a class="project-preview project-preview--ds wf-target" href="ds-health.html" aria-label="ds-health">
+            <div class="pv-browser">
+                <div class="pv-browser-bar"><i></i><i></i><i></i><span>system.health/report</span></div>
+                <div class="pv-health-layout">
+                    <div class="pv-health-score"><span>86</span><small>health</small></div>
+                    <div class="pv-health-metrics">
+                        <div><span>Tokens</span><i style="--value:92%"></i><b>92</b></div>
+                        <div><span>Components</span><i style="--value:78%"></i><b>78</b></div>
+                        <div><span>Consistency</span><i style="--value:88%"></i><b>88</b></div>
+                    </div>
+                </div>
+                <div class="pv-health-map"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            </div></a>
+                    <p class="work-desc">Вставляешь URL живого сайта и&nbsp;получаешь отчёт: сколько на&nbsp;странице цветов, шрифтов, отступов и&nbsp;радиусов.</p>
                 </article>
             </div>
         </main>

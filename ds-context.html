@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>ds-context — Андрей Антошкин</title>
+    <meta name="description" content="Компилятор контекста дизайн-системы для coding-агента.">
+    <meta name="theme-color" content="#FDFDFC" id="themeColorMeta">
+    <meta property="og:title" content="ds-context — Андрей Антошкин">
+    <meta property="og:description" content="Компилятор контекста дизайн-системы для coding-агента.">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/svg+xml" href="assets/antoshkin-tech-logo.svg">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <link rel="stylesheet" href="assets/wireframe.css">
+    <link rel="stylesheet" href="assets/guides.css">
+    <script>
+        try {
+            if (localStorage.getItem('theme') === 'dark') document.documentElement.dataset.theme = 'dark';
+        } catch (e) {}
+    </script>
+</head>
+<body data-guides="false">
+    <div class="page page--project">
+        <div class="border-strip border-strip--left" aria-hidden="true"></div>
+        <div class="border-strip border-strip--right" aria-hidden="true"></div>
+        <div class="grid-line grid-line--nav" aria-hidden="true"></div>
+        <div class="grid-line grid-line--content-l" aria-hidden="true"></div>
+        <div class="grid-line grid-line--content-r" aria-hidden="true"></div>
+        <div class="grid-line grid-line--shell-r" aria-hidden="true"></div>
+
+        <nav class="top-nav top-nav--project fold" data-fold="50" aria-label='ds-context'>
+            
+            <a class="project-back" href="projects.html"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Проекты</a>
+            <p class="project-nav-name">ds-context</p>
+            <p class="project-nav-label">Основное</p><a class="nav-link" href="#why">Зачем</a><a class="nav-link" href="#inputs">Вход</a><a class="nav-link" href="#run">Запуск</a><p class="project-nav-label">Пакет</p><a class="nav-link" href="#output">Выход</a><a class="nav-link" href="#strategies">Стратегии</a><a class="nav-link" href="#manifest">Манифест</a><p class="project-nav-label">Контур</p><a class="nav-link" href="#chain">Куда встаёт</a><a class="nav-link" href="#limits">Предел</a><p class="project-nav-label">Ссылки</p><a class="nav-link" href="https://github.com/AndrewAntoshkin/ds-context" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </nav>
+
+        <div class="nav-contact fold" data-fold="80">
+            <p class="nav-contact-label">Для связи:</p>
+            <span>
+                <a href="mailto:andrew.antoshkin@gmail.com" class="nav-contact-email wf-target" data-copy="andrew.antoshkin@gmail.com">
+                    andrew.antoshkin@gmail.com
+                    <span class="copied" hidden>Скопировано</span>
+                </a>
+            </span>
+        </div>
+
+        <div class="mobile-wrap">
+            <button class="mobile-pill" type="button" aria-expanded="false" aria-label="Меню">
+                <span class="pill-icon"><span class="pill-bar"></span><span class="pill-bar"></span></span>
+                <span>Меню</span>
+            </button>
+            <div class="mobile-menu mobile-menu--project" hidden>
+                
+                <a class="project-back" href="projects.html"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Проекты</a>
+                <p class="project-nav-name">ds-context</p>
+                <p class="project-nav-label">Основное</p><a class="nav-link" href="#why">Зачем</a><a class="nav-link" href="#inputs">Вход</a><a class="nav-link" href="#run">Запуск</a><p class="project-nav-label">Пакет</p><a class="nav-link" href="#output">Выход</a><a class="nav-link" href="#strategies">Стратегии</a><a class="nav-link" href="#manifest">Манифест</a><p class="project-nav-label">Контур</p><a class="nav-link" href="#chain">Куда встаёт</a><a class="nav-link" href="#limits">Предел</a><p class="project-nav-label">Ссылки</p><a class="nav-link" href="https://github.com/AndrewAntoshkin/ds-context" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <hr>
+                <div class="compact-controls">
+                    <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="Переключить тему">
+                        <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
+                        <span class="theme-symbol theme-symbol--moon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M12.8 10.3A5.5 5.5 0 0 1 5.7 3.2 5.5 5.5 0 1 0 12.8 10.3Z"/></svg></span>
+                    </button>
+                    <nav class="language-switch" aria-label="Language"><span aria-current="page">Ru</span><a href="ds-context-en.html">En</a></nav>
+                </div>
+                <a href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
+            </div>
+        </div>
+
+        <main class="main">
+            <div class="main-toggles">
+                <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="Переключить тему">
+                    <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
+                    <span class="theme-symbol theme-symbol--moon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M12.8 10.3A5.5 5.5 0 0 1 5.7 3.2 5.5 5.5 0 1 0 12.8 10.3Z"/></svg></span>
+                </button>
+                <nav class="language-switch" aria-label="Language"><span aria-current="page">Ru</span><a href="ds-context-en.html">En</a></nav>
+            </div>
+            <div class="follow-right fold" data-fold="120">
+                <div class="nav-divider"></div>
+                <div class="social-links">
+                    <a class="nav-link follow-link wf-target" href="https://t.me/aiantoshkin" target="_blank" rel="noopener noreferrer">
+                        Telegram
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m13.7 2.8-2 9.5c-.15.67-.55.83-1.1.52L7.55 10.6l-1.47 1.42c-.16.16-.3.3-.62.3l.22-3.1 5.64-5.1c.25-.21-.05-.33-.38-.12L3.97 8.4l-3-.94c-.65-.2-.66-.65.14-.96l11.72-4.52c.54-.2 1.02.13.87.82Z" fill="currentColor"/></svg>
+                    </a>
+                    <a class="nav-link follow-link wf-target" href="https://github.com/AndrewAntoshkin" target="_blank" rel="noopener noreferrer">
+                        GitHub
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path fill="currentColor" d="M8 1.35a6.65 6.65 0 0 0-2.1 12.96c.33.06.45-.14.45-.32v-1.16c-1.84.4-2.23-.78-2.23-.78-.3-.76-.74-.96-.74-.96-.6-.42.05-.41.05-.41.67.05 1.02.69 1.02.69.6 1.02 1.56.72 1.94.55.06-.43.23-.72.42-.89-1.47-.17-3.02-.74-3.02-3.29 0-.73.26-1.32.69-1.78-.07-.17-.3-.85.07-1.76 0 0 .56-.18 1.83.68A6.36 6.36 0 0 1 8 4.8c.56 0 1.12.08 1.64.22 1.27-.86 1.83-.68 1.83-.68.37.91.14 1.59.07 1.76.43.46.69 1.05.69 1.78 0 2.56-1.56 3.12-3.03 3.29.24.2.45.61.45 1.24V14c0 .18.12.39.45.32A6.65 6.65 0 0 0 8 1.35Z"/></svg>
+                    </a>
+                    <a class="nav-link follow-link wf-target" href="https://setka.ru/users/84b42bc4-44b4-4b1e-ba76-06d249242bc4" target="_blank" rel="noopener noreferrer">
+                        Сетка
+                        <img class="social-icon" src="https://cdn-assets.setka.ru/setka-web/static/favicon/favicon-32x32.a8036291d4eac4cc9ab8cbc378cb6d17.png" alt="" width="16" height="16">
+                    </a>
+                </div>
+            </div>
+
+            <div class="content content--article">
+                
+                
+                <p class="section-label">Контекст</p>
+                <h1 class="title">ds-context</h1>
+                <p class="body-text">Модель плохо следует дизайн-системе ещё и потому, что ей отдают плохой контекст: простыню доков, половину Storybook и ни одного антипаттерна. ds-context собирает из локальных файлов короткий пакет и показывает, сколько токенов стоит каждая стратегия упаковки.</p>
+                <div class="prose prose--docs"><section id="why"><h2>Зачем</h2><p>Агент путает систему не только из-за слабой модели. Ему часто отдают либо ничего, либо весь Storybook сразу. В первом случае он рисует свой Button. Во втором тонет в токенах и примерах, которые не относятся к задаче.</p><p>ds-context стоит перед моделью. Он собирает контекст, который потом можно отдать Claude или Codex и проверить в <a href="ds-eval.html">ds-eval</a>.</p></section><section id="inputs"><h2>Вход</h2><p>MVP читает папку. Он не открывает Storybook и не ходит в Figma API. Файл из Figma попадает сюда уже как markdown, например после figma-to-design-md. Фикстура Acme — пять файлов:</p><pre><code>fixtures/acme/
+  tokens.css
+  components.json
+  patterns.md
+  anti-patterns.md
+  examples.md
+  dist/
+    design-system.md
+    components.md
+    patterns.md
+    anti-patterns.md
+    examples.md
+    manifest.json</code></pre><p><code>tokens.css</code> — шкала, с которой потом сверяется починка.</p><pre><code>:root {
+  --color-accent: #8B5CF6;
+  --color-text: #212223;
+  --color-surface: #ffffff;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --radius-2: 8px;
+  --font-size-body: 14px;
+}</code></pre><p><code>components.json</code> — имя, пропсы, пример и чего избегать. Пример попадает в пакет только в стратегии full.</p><pre><code>[
+  {
+    &quot;name&quot;: &quot;Button&quot;,
+    &quot;props&quot;: [&quot;variant&quot;, &quot;size&quot;, &quot;children&quot;],
+    &quot;example&quot;: &quot;&lt;Button variant=\&quot;primary\&quot;&gt;Save&lt;/Button&gt;&quot;,
+    &quot;avoid&quot;: &quot;A raw &lt;button&gt; with an inline background.&quot;
+  },
+  {
+    &quot;name&quot;: &quot;Input&quot;,
+    &quot;props&quot;: [&quot;label&quot;, &quot;hint&quot;, &quot;error&quot;],
+    &quot;example&quot;: &quot;&lt;Input label=\&quot;Email\&quot; /&gt;&quot;,
+    &quot;avoid&quot;: &quot;An unlabeled &lt;input&gt;.&quot;
+  },
+  {
+    &quot;name&quot;: &quot;Dialog&quot;,
+    &quot;props&quot;: [&quot;open&quot;, &quot;title&quot;, &quot;onClose&quot;],
+    &quot;example&quot;: &quot;&lt;Dialog open title=\&quot;Delete account\&quot; /&gt;&quot;,
+    &quot;avoid&quot;: &quot;A &lt;div className=\&quot;modal\&quot;&gt; with a hand-rolled overlay.&quot;
+  },
+  {
+    &quot;name&quot;: &quot;Select&quot;,
+    &quot;props&quot;: [&quot;label&quot;, &quot;options&quot;, &quot;value&quot;],
+    &quot;example&quot;: &quot;&lt;Select label=\&quot;Country\&quot; options={countries} /&gt;&quot;,
+    &quot;avoid&quot;: &quot;A native &lt;select&gt; when the system Select exists.&quot;
+  }
+]</code></pre><p>Три markdown-файла задают паттерны, запреты и короткие примеры экранов.</p><pre><code># Patterns
+
+## Destructive confirm
+Ask for confirmation before a delete. Use Dialog, name the object, and make the confirm button the danger variant.
+
+## Empty state
+Show one next action. Do not invent a second illustration style.
+
+## Settings
+Group fields by task. Use Input with a label. Actions sit in the page footer, not inside the form card.</code></pre><pre><code># Anti-patterns
+
+- Do not hardcode #8B5CF6. Use var(--color-accent).
+- Do not build a modal from a positioned div.
+- Do not add a button with no accessible name.
+- Do not pick 13px of padding. Use the space scale.</code></pre><pre><code># Examples
+
+A settings page uses Input for the name and email, Select for the country, and Button for save.
+A delete flow opens Dialog. The confirm action is variant=&quot;danger&quot;. The close control has an accessible name.
+Empty lists use the empty-state pattern: one sentence and one Button.</code></pre></section><section id="run"><h2>Запуск</h2><pre><code>python3 ds-context/ds_context.py build ds-context/fixtures/acme</code></pre><p>Команда пишет пакет в <code>ds-context/fixtures/acme/dist</code>. Это офлайн-сборка: без ключей и без вызова модели. Печать команды на этой фикстуре:</p><pre><code>source  ds-context/fixtures/acme
+out     ds-context/fixtures/acme/dist
+pack    files
+        design-system.md   ~ 292 tokens
+        components.md      ~ 160 tokens
+        patterns.md        ~  87 tokens
+        anti-patterns.md   ~  54 tokens
+        examples.md        ~  72 tokens
+strategies (estimate, ~4 chars/token, manifest excluded)
+        full         ~ 665
+        compact      ~ 375
+        components   ~ 180</code></pre></section><section id="output"><h2>Выход</h2><p><code>design-system.md</code> — то, что можно положить в контекст целиком. В стратегии full сюда же встроены паттерны, антипаттерны и примеры. Отдельные файлы в <code>dist/</code> повторяют исходные markdown.</p><pre><code># Design system
+
+Components: Button, Input, Dialog, Select.
+
+## Tokens
+
+| Token | Value |
+| --- | --- |
+| `--color-accent` | #8B5CF6 |
+| `--color-text` | #212223 |
+| `--color-surface` | #ffffff |
+| `--space-2` | 8px |
+| `--space-3` | 12px |
+| `--space-4` | 16px |
+| `--radius-2` | 8px |
+| `--font-size-body` | 14px |
+
+# Patterns
+
+## Destructive confirm
+Ask for confirmation before a delete. Use Dialog, name the object, and make the confirm button the danger variant.
+
+## Empty state
+Show one next action. Do not invent a second illustration style.
+
+## Settings
+Group fields by task. Use Input with a label. Actions sit in the page footer, not inside the form card.
+
+# Anti-patterns
+
+- Do not hardcode #8B5CF6. Use var(--color-accent).
+- Do not build a modal from a positioned div.
+- Do not add a button with no accessible name.
+- Do not pick 13px of padding. Use the space scale.
+
+# Examples
+
+A settings page uses Input for the name and email, Select for the country, and Button for save.
+A delete flow opens Dialog. The confirm action is variant=&quot;danger&quot;. The close control has an accessible name.
+Empty lists use the empty-state pattern: one sentence and one Button.</code></pre><p><code>components.md</code> — API. Пример и строка Avoid берутся из JSON.</p><pre><code># Component API
+
+### Button
+
+Props: `variant`, `size`, `children`
+
+Example:
+
+```jsx
+&lt;Button variant=&quot;primary&quot;&gt;Save&lt;/Button&gt;
+```
+
+Avoid: A raw &lt;button&gt; with an inline background.
+
+### Input
+
+Props: `label`, `hint`, `error`
+
+Example:
+
+```jsx
+&lt;Input label=&quot;Email&quot; /&gt;
+```
+
+Avoid: An unlabeled &lt;input&gt;.
+
+### Dialog
+
+Props: `open`, `title`, `onClose`
+
+Example:
+
+```jsx
+&lt;Dialog open title=&quot;Delete account&quot; /&gt;
+```
+
+Avoid: A &lt;div className=&quot;modal&quot;&gt; with a hand-rolled overlay.
+
+### Select
+
+Props: `label`, `options`, `value`
+
+Example:
+
+```jsx
+&lt;Select label=&quot;Country&quot; options={countries} /&gt;
+```
+
+Avoid: A native &lt;select&gt; when the system Select exists.</code></pre></section><section id="strategies"><h2>Стратегии</h2><p>Оценка размера — около 4 символов на токен. Это не токенайзер Claude. Манифест в сумму не входит. На фикстуре Acme:</p><table><thead><tr><th>Стратегия</th><th>Оценка</th><th>Что внутри</th></tr></thead><tbody><tr><td>full</td><td>~665</td><td>Токены, API с примерами, паттерны, антипаттерны и примеры экранов</td></tr><tr><td>compact</td><td>~375</td><td>Токены, API без примеров и антипаттерны. Отдельный examples.md не пишется</td></tr><tr><td>components</td><td>~180</td><td>Только обзор с токенами и API. Паттерны и примеры не пишутся</td></tr></tbody></table><p>Полный пакет по файлам:</p><table><thead><tr><th>Файл</th><th>Оценка</th></tr></thead><tbody><tr><td><code>design-system.md</code></td><td>~292</td></tr><tr><td><code>components.md</code></td><td>~160</td></tr><tr><td><code>patterns.md</code></td><td>~87</td></tr><tr><td><code>anti-patterns.md</code></td><td>~54</td></tr><tr><td><code>examples.md</code></td><td>~72</td></tr></tbody></table></section><section id="manifest"><h2>Манифест</h2><p>Манифест нужен следующему шагу контура: выбрать стратегию под бюджет токенов и отдать модели только эти файлы. Имена компонентов и токенов лежат списком, чтобы <a href="ui-repair.html">ui-repair</a> и <a href="ds-eval.html">ds-eval</a> сверялись с тем же источником.</p><pre><code>{
+  &quot;strategy&quot;: &quot;full&quot;,
+  &quot;source&quot;: &quot;ds-context/fixtures/acme&quot;,
+  &quot;components&quot;: [
+    &quot;Button&quot;,
+    &quot;Input&quot;,
+    &quot;Dialog&quot;,
+    &quot;Select&quot;
+  ],
+  &quot;tokens&quot;: [
+    &quot;--color-accent&quot;,
+    &quot;--color-text&quot;,
+    &quot;--color-surface&quot;,
+    &quot;--space-2&quot;,
+    &quot;--space-3&quot;,
+    &quot;--space-4&quot;,
+    &quot;--radius-2&quot;,
+    &quot;--font-size-body&quot;
+  ],
+  &quot;files&quot;: {
+    &quot;design-system.md&quot;: 292,
+    &quot;components.md&quot;: 160,
+    &quot;patterns.md&quot;: 87,
+    &quot;anti-patterns.md&quot;: 54,
+    &quot;examples.md&quot;: 72
+  },
+  &quot;tokens_total&quot;: 665
+}</code></pre></section><section id="chain"><h2>Куда встаёт</h2><pre><code>Figma / локальная спека
+→ ds-context
+→ модель
+→ ui-repair
+→ ds-eval
+→ prompt-regress</code></pre><p>ds-context готовит контекст. <a href="ds-eval.html">ds-eval</a> измеряет, помог ли он. <a href="prompt-regress.html">prompt-regress</a> показывает, не сломала ли новая версия промпта то, что уже проходило.</p></section><section id="limits"><h2>Предел</h2><p>Инструмент не открывает Storybook и не ходит в Figma. Он не выбирает кусок пакета под один экран: стратегии глобальные. Оценка токенов годится, чтобы сравнить пакеты между собой, и не годится как счёт из API.</p></section></div>
+                <nav class="article-nav" aria-label="Projects"><a href="ds-eval.html"><span class="article-nav-label">Предыдущий</span><span class="article-nav-title">ds-eval</span></a><a href="ui-repair.html" class="next"><span class="article-nav-label">Следующий</span><span class="article-nav-title">ui-repair</span></a></nav>
+            
+            </div>
+        </main>
+
+        <div class="crosshair" aria-hidden="true">
+            <div class="crosshair-h"></div>
+            <div class="crosshair-v"></div>
+            <div class="crosshair-coords">0 · 0</div>
+        </div>
+        <div class="bottom-fade" aria-hidden="true"></div>
+    </div>
+    <script src="assets/wireframe.js"></script>
+</body>
+</html>

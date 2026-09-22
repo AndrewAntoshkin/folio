@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>ds-health — Андрей Антошкин</title>
+    <meta name="description" content="Отчёт о здоровье дизайн-системы на живом сайте.">
+    <meta name="theme-color" content="#FDFDFC" id="themeColorMeta">
+    <meta property="og:title" content="ds-health — Андрей Антошкин">
+    <meta property="og:description" content="Отчёт о здоровье дизайн-системы на живом сайте.">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/svg+xml" href="assets/antoshkin-tech-logo.svg">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <link rel="stylesheet" href="assets/wireframe.css">
+    <link rel="stylesheet" href="assets/guides.css">
+    <script>
+        try {
+            if (localStorage.getItem('theme') === 'dark') document.documentElement.dataset.theme = 'dark';
+        } catch (e) {}
+    </script>
+</head>
+<body data-guides="false">
+    <div class="page page--project">
+        <div class="border-strip border-strip--left" aria-hidden="true"></div>
+        <div class="border-strip border-strip--right" aria-hidden="true"></div>
+        <div class="grid-line grid-line--nav" aria-hidden="true"></div>
+        <div class="grid-line grid-line--content-l" aria-hidden="true"></div>
+        <div class="grid-line grid-line--content-r" aria-hidden="true"></div>
+        <div class="grid-line grid-line--shell-r" aria-hidden="true"></div>
+
+        <nav class="top-nav top-nav--project fold" data-fold="50" aria-label='ds-health'>
+            
+            <a class="project-back" href="projects.html"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Проекты</a>
+            <p class="project-nav-name">ds-health</p>
+            <p class="project-nav-label">Основное</p><a class="nav-link" href="#measures">Что измеряет</a><a class="nav-link" href="#run">Запуск</a><a class="nav-link" href="#how">Как устроено</a><a class="nav-link" href="#api">API</a><p class="project-nav-label">Примеры</p><a class="nav-link" href="#healthy">Здоровый сайт</a><a class="nav-link" href="#fragmented">Раздробленный сайт</a><a class="nav-link" href="#report">Как читать отчёт</a><a class="nav-link" href="#scores">Шкала</a><a class="nav-link" href="#pipeline">Цепочка</a><p class="project-nav-label">Ссылки</p><a class="nav-link" href="https://github.com/AndrewAntoshkin/ds-health" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </nav>
+
+        <div class="nav-contact fold" data-fold="80">
+            <p class="nav-contact-label">Для связи:</p>
+            <span>
+                <a href="mailto:andrew.antoshkin@gmail.com" class="nav-contact-email wf-target" data-copy="andrew.antoshkin@gmail.com">
+                    andrew.antoshkin@gmail.com
+                    <span class="copied" hidden>Скопировано</span>
+                </a>
+            </span>
+        </div>
+
+        <div class="mobile-wrap">
+            <button class="mobile-pill" type="button" aria-expanded="false" aria-label="Меню">
+                <span class="pill-icon"><span class="pill-bar"></span><span class="pill-bar"></span></span>
+                <span>Меню</span>
+            </button>
+            <div class="mobile-menu mobile-menu--project" hidden>
+                
+                <a class="project-back" href="projects.html"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Проекты</a>
+                <p class="project-nav-name">ds-health</p>
+                <p class="project-nav-label">Основное</p><a class="nav-link" href="#measures">Что измеряет</a><a class="nav-link" href="#run">Запуск</a><a class="nav-link" href="#how">Как устроено</a><a class="nav-link" href="#api">API</a><p class="project-nav-label">Примеры</p><a class="nav-link" href="#healthy">Здоровый сайт</a><a class="nav-link" href="#fragmented">Раздробленный сайт</a><a class="nav-link" href="#report">Как читать отчёт</a><a class="nav-link" href="#scores">Шкала</a><a class="nav-link" href="#pipeline">Цепочка</a><p class="project-nav-label">Ссылки</p><a class="nav-link" href="https://github.com/AndrewAntoshkin/ds-health" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <hr>
+                <div class="compact-controls">
+                    <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="Переключить тему">
+                        <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
+                        <span class="theme-symbol theme-symbol--moon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M12.8 10.3A5.5 5.5 0 0 1 5.7 3.2 5.5 5.5 0 1 0 12.8 10.3Z"/></svg></span>
+                    </button>
+                    <nav class="language-switch" aria-label="Language"><span aria-current="page">Ru</span><a href="ds-health-en.html">En</a></nav>
+                </div>
+                <a href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
+            </div>
+        </div>
+
+        <main class="main">
+            <div class="main-toggles">
+                <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="Переключить тему">
+                    <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
+                    <span class="theme-symbol theme-symbol--moon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M12.8 10.3A5.5 5.5 0 0 1 5.7 3.2 5.5 5.5 0 1 0 12.8 10.3Z"/></svg></span>
+                </button>
+                <nav class="language-switch" aria-label="Language"><span aria-current="page">Ru</span><a href="ds-health-en.html">En</a></nav>
+            </div>
+            <div class="follow-right fold" data-fold="120">
+                <div class="nav-divider"></div>
+                <div class="social-links">
+                    <a class="nav-link follow-link wf-target" href="https://t.me/aiantoshkin" target="_blank" rel="noopener noreferrer">
+                        Telegram
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m13.7 2.8-2 9.5c-.15.67-.55.83-1.1.52L7.55 10.6l-1.47 1.42c-.16.16-.3.3-.62.3l.22-3.1 5.64-5.1c.25-.21-.05-.33-.38-.12L3.97 8.4l-3-.94c-.65-.2-.66-.65.14-.96l11.72-4.52c.54-.2 1.02.13.87.82Z" fill="currentColor"/></svg>
+                    </a>
+                    <a class="nav-link follow-link wf-target" href="https://github.com/AndrewAntoshkin" target="_blank" rel="noopener noreferrer">
+                        GitHub
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path fill="currentColor" d="M8 1.35a6.65 6.65 0 0 0-2.1 12.96c.33.06.45-.14.45-.32v-1.16c-1.84.4-2.23-.78-2.23-.78-.3-.76-.74-.96-.74-.96-.6-.42.05-.41.05-.41.67.05 1.02.69 1.02.69.6 1.02 1.56.72 1.94.55.06-.43.23-.72.42-.89-1.47-.17-3.02-.74-3.02-3.29 0-.73.26-1.32.69-1.78-.07-.17-.3-.85.07-1.76 0 0 .56-.18 1.83.68A6.36 6.36 0 0 1 8 4.8c.56 0 1.12.08 1.64.22 1.27-.86 1.83-.68 1.83-.68.37.91.14 1.59.07 1.76.43.46.69 1.05.69 1.78 0 2.56-1.56 3.12-3.03 3.29.24.2.45.61.45 1.24V14c0 .18.12.39.45.32A6.65 6.65 0 0 0 8 1.35Z"/></svg>
+                    </a>
+                    <a class="nav-link follow-link wf-target" href="https://setka.ru/users/84b42bc4-44b4-4b1e-ba76-06d249242bc4" target="_blank" rel="noopener noreferrer">
+                        Сетка
+                        <img class="social-icon" src="https://cdn-assets.setka.ru/setka-web/static/favicon/favicon-32x32.a8036291d4eac4cc9ab8cbc378cb6d17.png" alt="" width="16" height="16">
+                    </a>
+                </div>
+            </div>
+
+            <div class="content content--article">
+                
+                
+                <p class="section-label">Веб-тул</p>
+                <h1 class="title">ds-health</h1>
+                <p class="body-text">Вставляешь URL и получаешь отчёт о здоровье дизайн-системы. Инструмент считает цвета, типографику, отступы и радиусы на живом сайте в настоящем браузере.</p>
+                <div class="prose prose--docs"><section id="measures"><h2>Что измеряет</h2>
+<ul class="feature-list"><li><strong>Цвета</strong><span>Сколько цветов текста и фона на странице. Чем меньше уникальных значений и чем больше CSS-переменных, тем выше счёт.</span></li><li><strong>Типографика</strong><span>Семейства, размеры и начертания видимого текста. Чем их меньше, тем собраннее система.</span></li><li><strong>Отступы</strong><span>Сколько разных значений padding и gap. Хорошо, когда они сходятся к шкале.</span></li><li><strong>Радиус</strong><span>Сколько ненулевых радиусов. Меньше — ровнее углы.</span></li></ul></section>
+<section id="run"><h2>Запуск</h2>
+<pre><code>git clone https://github.com/AndrewAntoshkin/ds-health.git
+cd ds-health
+npm install
+npm start</code></pre>
+<p>Открой <code>http://localhost:3000</code>. Если порт занят:</p>
+<pre><code>PORT=3002 npm start</code></pre>
+<p>Если Playwright не находит браузер:</p>
+<pre><code>npx playwright install chromium</code></pre></section>
+<section id="how"><h2>Как устроено</h2>
+<p>Инструмент открывает страницу в настоящем Chromium через Playwright, снимает видимые элементы, читает computed styles и собирает отчёт: счёт, сигналы и рекомендации.</p>
+<pre><code>URL → Playwright (Chromium) → getComputedStyle() on sampled elements
+→ Count unique colors, fonts, spacing, radii
+→ Score each category (0–100)
+→ Generate executive summary + priorities + recommendations</code></pre></section>
+<section id="api"><h2>API</h2>
+<h3>POST /api/analyze</h3>
+<pre><code>curl -X POST http://localhost:3000/api/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"url": "https://example.com"}'</code></pre>
+<h3>Запрос</h3>
+<table><thead><tr><th>Поле</th><th>Тип</th><th>Описание</th></tr></thead><tbody><tr><td>url</td><td>строка</td><td>Публичный HTTP/HTTPS-адрес страницы</td></tr></tbody></table>
+<h3>Ответ</h3>
+<table><thead><tr><th>Поле</th><th>Тип</th><th>Описание</th></tr></thead><tbody><tr><td>health.overall</td><td>число</td><td>Средний балл от 0 до 100</td></tr><tr><td>health.color</td><td>число</td><td>Оценка цельности цвета</td></tr><tr><td>health.typography</td><td>число</td><td>Оценка цельности типографики</td></tr><tr><td>health.spacing</td><td>число</td><td>Оценка цельности отступов</td></tr><tr><td>health.radius</td><td>число</td><td>Оценка цельности скруглений</td></tr><tr><td>health.label</td><td>строка</td><td>«Здоровый», «В целом цельный» и другие</td></tr><tr><td>executiveSummary</td><td>строка</td><td>Короткий вывод обычным языком</td></tr><tr><td>priorities</td><td>массив</td><td>Что чинить первым</td></tr><tr><td>recommendations</td><td>массив</td><td>Конкретные следующие шаги</td></tr><tr><td>signals</td><td>массив</td><td>Отдельные наблюдения</td></tr><tr><td>topValues</td><td>объект</td><td>Самые частые значения по категориям</td></tr></tbody></table>
+<h3>GET /health</h3>
+<p>Возвращает <code>{ "ok": true }</code> — удобно для проверки, что сервис жив.</p></section>
+<section id="healthy"><h2>Пример здорового сайта</h2>
+<p>Результат разбора <code>barvian.me</code> — собранный минималистичный сайт:</p>
+<table><thead><tr><th>Значение</th><th>Что значит</th></tr></thead><tbody><tr><td>100</td><td>Цвет</td></tr><tr><td>100</td><td>Типографика</td></tr><tr><td>100</td><td>Отступы</td></tr><tr><td>100</td><td>Скругление</td></tr></tbody></table>
+<pre><code>{
+"elementsSampled": 69,
+"textNodesSampled": 41,
+"cssVariables": 4,
+"textColors": 3,
+"backgroundColors": 3,
+"fontFamilies": 1,
+"fontSizes": 1,
+"fontWeights": 2,
+"spacingValues": 4,
+"radiusValues": 1
+}
+
+Executive summary:
+"This page looks healthy. 4 CSS variables were
+detected, and no major consistency issues stood
+out in the sampled page."</code></pre></section>
+<section id="fragmented"><h2>Пример раздробленного сайта</h2>
+<p>Страница с кучей конкурирующих значений — обычная история легаси и быстрых прототипов:</p>
+<table><thead><tr><th>Значение</th><th>Что значит</th></tr></thead><tbody><tr><td>65</td><td>Цвет</td></tr><tr><td>45</td><td>Типографика</td></tr><tr><td>70</td><td>Отступы</td></tr><tr><td>90</td><td>Скругление</td></tr></tbody></table>
+<pre><code>Priority issues:
+⚠ 14 text colors detected — consider consolidating
+⚠ 4 font families in use — reduce to 1–2
+⚠ 8 font sizes found — align to a type scale
+⚠ No CSS variables detected — consider tokenizing
+
+Recommendations:
+→ Audit text colors and create a semantic palette
+→ Standardize on 1–2 font families
+→ Define a spacing scale (4, 8, 12, 16, 24, 32)
+→ Introduce CSS custom properties for tokens</code></pre></section>
+<section id="report"><h2>Как читать отчёт</h2>
+<p>Удобный порядок чтения: <strong>сначала счёт</strong>, потом резюме, потом приоритеты, потом сырые значения.</p>
+<table><thead><tr><th>Раздел</th><th>Что показывает</th></tr></thead><tbody><tr><td>Общее здоровье</td><td>Среднее четырёх оценок — быстрый сигнал «прошло / не прошло»</td></tr><tr><td>Короткий вывод</td><td>Вывод для тех, кто не читает сырые цифры</td></tr><tr><td>Приоритеты</td><td>Что чинить первым — с наибольшим эффектом</td></tr><tr><td>Рекомендации</td><td>Практичные шаги, которые можно поставить в спринт</td></tr><tr><td>Сигналы</td><td>Отдельные наблюдения — сырые доказательства за оценкой</td></tr><tr><td>Частые значения</td><td>Самые частые цвета, размеры и отступы — где сведение в токены даст больше всего</td></tr><tr><td>Сведённые группы</td><td>Почти одинаковые значения собраны в более чистые группы</td></tr></tbody></table></section>
+<section id="scores"><h2>Шкала</h2>
+<table><thead><tr><th>Диапазон</th><th>Метка</th><th>Что значит</th></tr></thead><tbody><tr><td>90–100</td><td>Здоровый</td><td>Жёстко собрано: мало цветов, сдержанная типографика, небольшой набор отступов</td></tr><tr><td>70–89</td><td>В целом цельный</td><td>Есть разрозненность или несколько разовых значений</td></tr><tr><td>50–69</td><td>Нужно внимание</td><td>Визуальная система расползается — стоит посмотреть ближе</td></tr><tr><td>0–49</td><td>Раздробленный</td><td>Слишком много конкурирующих значений — слоя токенов, скорее всего, нет</td></tr></tbody></table></section>
+<section id="pipeline"><h2>Цепочка</h2>
+<p>ds-health проверяет живую страницу после контура модели, когда интерфейс уже на проде:</p>
+<pre><code>ds-context prepares the pack
+ds-eval scores generated UI
+ds-health reads the live page ← you are here</code></pre></section>
+<p><a href="https://github.com/AndrewAntoshkin/ds-health" target="_blank" rel="noopener noreferrer">Код</a></p></div>
+                <nav class="article-nav" aria-label="Projects"><a href="ds-coverage.html"><span class="article-nav-label">Предыдущий</span><span class="article-nav-title">ds-coverage</span></a></nav>
+            
+            </div>
+        </main>
+
+        <div class="crosshair" aria-hidden="true">
+            <div class="crosshair-h"></div>
+            <div class="crosshair-v"></div>
+            <div class="crosshair-coords">0 · 0</div>
+        </div>
+        <div class="bottom-fade" aria-hidden="true"></div>
+    </div>
+    <script src="assets/wireframe.js"></script>
+</body>
+</html>
