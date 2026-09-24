@@ -13,7 +13,7 @@ from project_pages import PROJECTS, href as project_href, list_blocks, project_n
 
 ROOT = Path(__file__).resolve().parents[1]
 ARTICLES_DIR = ROOT / "content" / "articles"
-ARTICLE_ORDER = ["ai-changes-processes", "halo-working-memory", "cursor-figma", "design-md", "dev-for-designers"]
+ARTICLE_ORDER = ["apres-prompt", "ai-changes-processes", "halo-working-memory", "cursor-figma", "design-md", "dev-for-designers"]
 
 _RU_SHORT = "янв фев мар апр май июн июл авг сен окт ноя дек".split()
 _RU_GEN = "января февраля марта апреля мая июня июля августа сентября октября ноября декабря".split()
@@ -365,7 +365,7 @@ def home_content() -> str:
                         </article>
                         <article class="positioning-block">
                             <span class="positioning-kicker">AI и&nbsp;код</span>
-                            <p>Проектирую в&nbsp;Figma, пишу код и&nbsp;собираю продукты с&nbsp;<span class="brand-inline"><img src="assets/claude-mark.svg" alt="" width="16" height="16">Claude</span> и&nbsp;<span class="brand-inline"><img src="assets/cursor-mark.svg" alt="" width="16" height="16">Cursor</span>. AI помогает быстрее проверять идеи.</p>
+                            <p>Проектирую в&nbsp;Figma, пишу код и&nbsp;строю инструменты, которые помогают агентам читать дизайн&#8209;систему, собирать по&nbsp;ней интерфейс и&nbsp;проверять, что они не&nbsp;выдумали своё.</p>
                         </article>
                         <article class="positioning-block">
                             <span class="positioning-kicker">Процесс</span>
@@ -408,135 +408,81 @@ def about_content() -> str:
 
 def project_visual(kind: str) -> str:
     visuals = {
-        "ds": '''
-            <div class="pv-browser">
-                <div class="pv-browser-bar"><i></i><i></i><i></i><span>system.health/report</span></div>
-                <div class="pv-health-layout">
-                    <div class="pv-health-score"><span>86</span><small>health</small></div>
-                    <div class="pv-health-metrics">
-                        <div><span>Tokens</span><i style="--value:92%"></i><b>92</b></div>
-                        <div><span>Components</span><i style="--value:78%"></i><b>78</b></div>
-                        <div><span>Consistency</span><i style="--value:88%"></i><b>88</b></div>
+        "ev": """
+            <div class="pv-cover pv-pair">
+                <div><span>Naive</span><b>59.3</b></div>
+                <i aria-hidden="true"></i>
+                <div><span>Fixture</span><b>87.8</b></div>
+            </div>""",
+        "cx": """
+            <div class="pv-cover pv-table">
+                <div><span>full</span><b>~665</b></div>
+                <div class="on"><span>compact</span><b>~375</b></div>
+                <div><span>components</span><b>~180</b></div>
+            </div>""",
+        "fx": """
+            <div class="pv-cover pv-stage">
+                <span class="pv-guides"><i></i><i></i><i></i><i></i><span class="pv-btn">Button</span></span>
+                <code>&lt;Button variant="primary" /&gt;</code>
+            </div>""",
+        "rg": """
+            <div class="pv-cover pv-marquee">
+                <div class="pv-row"><div class="pv-track" style="--d:52s"><div class="pv-set"><span class="chip">select <s>38</s><span class="to">→</span><b>91</b></span><span class="chip">settings <s>44</s><span class="to">→</span><b>93</b></span><span class="chip">dialog <s>41</s><span class="to">→</span><b>90</b></span><span class="chip chip--bad">delete <s>84</s><span class="to">→</span><b>61</b></span><span class="chip">empty <s>86</s><span class="to">→</span><b>87</b></span></div><div class="pv-set" aria-hidden="true"><span class="chip">select <s>38</s><span class="to">→</span><b>91</b></span><span class="chip">settings <s>44</s><span class="to">→</span><b>93</b></span><span class="chip">dialog <s>41</s><span class="to">→</span><b>90</b></span><span class="chip chip--bad">delete <s>84</s><span class="to">→</span><b>61</b></span><span class="chip">empty <s>86</s><span class="to">→</span><b>87</b></span></div></div></div>
+                <div class="pv-row"><div class="pv-track" style="--d:64s"><div class="pv-set"><span class="chip">dialog <s>41</s><span class="to">→</span><b>90</b></span><span class="chip">empty <s>86</s><span class="to">→</span><b>87</b></span><span class="chip chip--bad">delete <s>84</s><span class="to">→</span><b>61</b></span><span class="chip">select <s>38</s><span class="to">→</span><b>91</b></span><span class="chip">settings <s>44</s><span class="to">→</span><b>93</b></span></div><div class="pv-set" aria-hidden="true"><span class="chip">dialog <s>41</s><span class="to">→</span><b>90</b></span><span class="chip">empty <s>86</s><span class="to">→</span><b>87</b></span><span class="chip chip--bad">delete <s>84</s><span class="to">→</span><b>61</b></span><span class="chip">select <s>38</s><span class="to">→</span><b>91</b></span><span class="chip">settings <s>44</s><span class="to">→</span><b>93</b></span></div></div></div>
+                <div class="pv-row"><div class="pv-track" style="--d:46s"><div class="pv-set"><span class="chip">settings <s>44</s><span class="to">→</span><b>93</b></span><span class="chip chip--bad">delete <s>84</s><span class="to">→</span><b>61</b></span><span class="chip">empty <s>86</s><span class="to">→</span><b>87</b></span><span class="chip">select <s>38</s><span class="to">→</span><b>91</b></span><span class="chip">dialog <s>41</s><span class="to">→</span><b>90</b></span></div><div class="pv-set" aria-hidden="true"><span class="chip">settings <s>44</s><span class="to">→</span><b>93</b></span><span class="chip chip--bad">delete <s>84</s><span class="to">→</span><b>61</b></span><span class="chip">empty <s>86</s><span class="to">→</span><b>87</b></span><span class="chip">select <s>38</s><span class="to">→</span><b>91</b></span><span class="chip">dialog <s>41</s><span class="to">→</span><b>90</b></span></div></div></div>
+                <div class="pv-row"><div class="pv-track" style="--d:58s"><div class="pv-set"><span class="chip">empty <s>86</s><span class="to">→</span><b>87</b></span><span class="chip">select <s>38</s><span class="to">→</span><b>91</b></span><span class="chip">settings <s>44</s><span class="to">→</span><b>93</b></span><span class="chip">dialog <s>41</s><span class="to">→</span><b>90</b></span><span class="chip chip--bad">delete <s>84</s><span class="to">→</span><b>61</b></span></div><div class="pv-set" aria-hidden="true"><span class="chip">empty <s>86</s><span class="to">→</span><b>87</b></span><span class="chip">select <s>38</s><span class="to">→</span><b>91</b></span><span class="chip">settings <s>44</s><span class="to">→</span><b>93</b></span><span class="chip">dialog <s>41</s><span class="to">→</span><b>90</b></span><span class="chip chip--bad">delete <s>84</s><span class="to">→</span><b>61</b></span></div></div></div>
+            </div>""",
+        "md": """
+            <div class="pv-cover pv-fan">
+                <div class="pv-card pv-card--a">
+                    <span>File</span>
+                    <span>Variables</span>
+                    <span>Styles</span>
+                    <span>Button</span>
+                </div>
+                <div class="pv-card pv-card--b">
+                    <span>design-system.md</span>
+                    <span>colors.md</span>
+                    <span>typography.md</span>
+                    <span>button.md</span>
+                    <span>gaps.md</span>
+                </div>
+            </div>""",
+        "ln": """
+            <div class="pv-cover pv-dock">
+                <div class="pv-window pv-code">
+                    <div class="pv-chrome"><i></i><i></i><i></i><span>Button.tsx</span></div>
+                    <div><em>12</em><s>color: #FF4D4F</s><b>color.error</b></div>
+                    <div><em>13</em><s>padding: 16px</s><b>space.4</b></div>
+                    <div><em>14</em><s>radius: 8px</s><b>radius.2</b></div>
+                    <div><em>15</em><s>gap: 8px</s><b>space.2</b></div>
+                    <div><em>16</em><s>font: 14px</s><b>type.body</b></div>
+                    <div><em>17</em><s>background: #fff</s><b>color.bg</b></div>
+                    <div><em>18</em><s>border: 1px</s><b>space.px</b></div>
+                    <div><em>19</em><s>shadow: 0 4px 12px</s><b>shadow.md</b></div>
+                </div>
+            </div>""",
+        "cv": """
+            <div class="pv-cover pv-table">
+                <div class="on"><span>imported</span><b>64</b></div>
+                <div><span>unused</span><b>22</b></div>
+                <div><span>local</span><b>18</b></div>
+            </div>""",
+        "ds": """
+            <div class="pv-cover pv-dock">
+                <div class="pv-window pv-report">
+                    <div class="pv-chrome"><i></i><i></i><i></i><span>acme.app</span></div>
+                    <b class="pv-score">86</b>
+                    <div class="pv-rows">
+                        <div><span>Color</span><i style="--w:92%"></i><em>92</em></div>
+                        <div><span>Type</span><i style="--w:78%"></i><em>78</em></div>
+                        <div><span>Spacing</span><i style="--w:88%"></i><em>88</em></div>
+                        <div><span>Radius</span><i style="--w:86%"></i><em>86</em></div>
+                        <div><span>Variables</span><i style="--w:80%"></i><em>80</em></div>
+                        <div><span>Contrast</span><i style="--w:94%"></i><em>94</em></div>
                     </div>
                 </div>
-                <div class="pv-health-map"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-            </div>''',
-        "md": '''
-            <div class="pv-flow">
-                <div class="pv-figma-tree">
-                    <span class="pv-node pv-node--root">◆</span>
-                    <span class="pv-node">Button</span>
-                    <span class="pv-node">Input</span>
-                    <span class="pv-node">Card</span>
-                </div>
-                <div class="pv-flow-lines"><i></i><i></i><i></i><b>→</b></div>
-                <div class="pv-markdown">
-                    <span class="pv-md-title"># Design system</span>
-                    <i style="--w:82%"></i><i style="--w:64%"></i>
-                    <span class="pv-md-sub">## Components</span>
-                    <i style="--w:74%"></i><i style="--w:88%"></i><i style="--w:55%"></i>
-                </div>
-            </div>''',
-        "sp": '''
-            <div class="pv-inspector">
-                <div class="pv-inspector-ui">
-                    <div class="pv-inspector-nav"></div>
-                    <div class="pv-inspector-copy"><i></i><i></i><i></i></div>
-                    <div class="pv-inspector-card"></div>
-                </div>
-                <div class="pv-measure pv-measure--x"><span>24</span></div>
-                <div class="pv-measure pv-measure--y"><span>16</span></div>
-                <div class="pv-inspector-target"><i></i><i></i><i></i><i></i></div>
-                <div class="pv-cursor">↖</div>
-                <div class="pv-inspector-popover"><b>Card</b><span>240 × 144</span><span>gap · 16</span><span>radius · 12</span></div>
-            </div>''',
-        "ln": '''
-            <div class="pv-lint">
-                <div class="pv-code">
-                    <div><em>12</em><span>color:</span><b>#FF4D4F</b><small>hardcoded</small></div>
-                    <div><em>13</em><span>padding:</span><b>16px</b><small>hardcoded</small></div>
-                    <div><em>14</em><span>radius:</span><b>8px</b><small>hardcoded</small></div>
-                </div>
-                <div class="pv-lint-route"><i></i><i></i><i></i><b>→</b></div>
-                <div class="pv-tokens">
-                    <span><i class="pv-token-color"></i>color.error</span>
-                    <span><i></i>space.4</span>
-                    <span><i></i>radius.2</span>
-                </div>
-            </div>''',
-        "ev": '''
-            <div class="pv-browser">
-                <div class="pv-browser-bar"><i></i><i></i><i></i><span>ds.eval/benchmark</span></div>
-                <div class="pv-eval">
-                    <div class="pv-eval-models">
-                        <div class="pv-eval-model"><span>Fixture</span><b>87.8</b></div>
-                        <div class="pv-eval-model"><span>Naive</span><b>59.3</b></div>
-                    </div>
-                    <div class="pv-eval-rows">
-                        <div><span>DS</span><i style="--value:87%"></i><em>87</em><em>6</em></div>
-                        <div><span>A11y</span><i style="--value:100%"></i><em>100</em><em>78</em></div>
-                        <div><span>Code</span><i style="--value:98%"></i><em>98</em><em>99</em></div>
-                        <div><span>Build</span><i style="--value:100%"></i><em>100</em><em>100</em></div>
-                    </div>
-                    <div class="pv-eval-foot"><b>−81</b><span>DS gap</span><span class="pv-eval-down">10 regressions</span></div>
-                </div>
-            </div>''',
-        "ai": '''
-            <div class="pv-markdown">
-                <span class="pv-md-title">AGENTS.md</span>
-                <i style="--w:86%"></i><i style="--w:70%"></i>
-                <span class="pv-md-sub">## Tokens</span>
-                <i style="--w:64%"></i><i style="--w:78%"></i><i style="--w:52%"></i>
-            </div>''',
-        "cv": '''
-            <div class="pv-browser">
-                <div class="pv-browser-bar"><i></i><i></i><i></i><span>coverage/report</span></div>
-                <div class="pv-health-layout">
-                    <div class="pv-health-score"><span>64</span><small>used</small></div>
-                    <div class="pv-health-metrics">
-                        <div><span>Imported</span><i style="--value:64%"></i><b>64</b></div>
-                        <div><span>Unused</span><i style="--value:22%"></i><b>22</b></div>
-                        <div><span>Local</span><i style="--value:18%"></i><b>18</b></div>
-                    </div>
-                </div>
-            </div>''',
-        "cx": '''
-            <div class="pv-markdown">
-                <span class="pv-md-title">design-system.md</span>
-                <i style="--w:88%"></i><i style="--w:72%"></i>
-                <span class="pv-md-sub">compact · ~375</span>
-                <i style="--w:60%"></i><i style="--w:46%"></i>
-            </div>''',
-        "fx": '''
-            <div class="pv-lint">
-                <div class="pv-code">
-                    <div><em>4</em><span>&lt;button&gt;</span><b>raw</b><small>repair</small></div>
-                    <div><em>5</em><span>#8B5CF6</span><b>hex</b><small>token</small></div>
-                    <div><em>8</em><span>modal</span><b>div</b><small>Dialog</small></div>
-                </div>
-                <div class="pv-lint-route"><i></i><i></i><i></i><b>→</b></div>
-                <div class="pv-tokens">
-                    <span><i></i>Button</span>
-                    <span><i class="pv-token-color"></i>color.accent</span>
-                    <span><i></i>Dialog</span>
-                </div>
-            </div>''',
-        "rg": '''
-            <div class="pv-browser">
-                <div class="pv-browser-bar"><i></i><i></i><i></i><span>prompt v12 → v13</span></div>
-                <div class="pv-eval">
-                    <div class="pv-eval-models">
-                        <div class="pv-eval-model"><span>Improved</span><b>6</b></div>
-                        <div class="pv-eval-model"><span>Regressed</span><b>2</b></div>
-                    </div>
-                    <div class="pv-eval-rows">
-                        <div><span>select</span><i style="--value:91%"></i><em>38</em><em>91</em></div>
-                        <div><span>settings</span><i style="--value:93%"></i><em>44</em><em>93</em></div>
-                        <div><span>delete</span><i style="--value:61%"></i><em>84</em><em>61</em></div>
-                    </div>
-                    <div class="pv-eval-foot"><b>6</b><span>improved</span><span class="pv-eval-down">2 regressed</span></div>
-                </div>
-            </div>''',
+            </div>""",
     }
     return visuals[kind]
 
@@ -544,10 +490,9 @@ def project_visual(kind: str) -> str:
 def project_block(icon: str, name: str, url: str, desc: str, delay: int, open_label: str = "Открыть") -> str:
     return f'''
                 <article class="project-item fold wf-target" data-fold="{delay}">
-                    <hr class="divider">
                     <div class="project-row">
-                        <a class="project-left" href="{url}"><div class="project-icon">{icon}</div><div class="career-company">{name}</div></a>
-                        <a class="project-link" href="{url}">{open_label} →</a>
+                        <a class="project-left" href="{url}"><div class="career-company">{name}</div></a>
+                        <a class="project-link" href="{url}" aria-label="{open_label}"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.5 11.5 11.5 4.5M6.5 4.5h5v5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
                     </div>
                     <a class="project-preview project-preview--{icon} wf-target" href="{url}" aria-label="{name}">{project_visual(icon)}</a>
                     <p class="work-desc">{desc}</p>
@@ -556,8 +501,8 @@ def project_block(icon: str, name: str, url: str, desc: str, delay: int, open_la
 
 def projects_content() -> str:
     return f'''
-                <p class="section-label fold" data-fold="80">Свои проекты</p>
-                <h1 class="title fold wf-target" data-fold="100" data-wf-tag="display · h1">Проекты вне работы.</h1>
+                <p class="section-label fold" data-fold="80">Open source</p>
+                <h1 class="title fold wf-target" data-fold="100" data-wf-tag="display · h1">Open-source инструменты.</h1>
                 <p class="body-text fold wf-target" data-fold="130">Один контур для AI&#8209;native дизайн&#8209;систем: {chain_sentence("ru")}. Дальше в&nbsp;списке&nbsp;— спецификация и&nbsp;контроль на&nbsp;проде.</p>
                 ''' + "".join(project_block(*b) for b in list_blocks("ru"))
 
@@ -719,7 +664,7 @@ def home_content_en() -> str:
                         </article>
                         <article class="positioning-block">
                             <span class="positioning-kicker">AI and code</span>
-                            <p>I design in Figma, write code, and build products with <span class="brand-inline"><img src="assets/claude-mark.svg" alt="" width="16" height="16">Claude</span> and <span class="brand-inline"><img src="assets/cursor-mark.svg" alt="" width="16" height="16">Cursor</span>. AI helps me test ideas faster.</p>
+                            <p>I design in Figma, write code, and build tools that help agents read a design system, assemble an interface from it, and check that they did not invent their own.</p>
                         </article>
                         <article class="positioning-block">
                             <span class="positioning-kicker">Process</span>
@@ -794,8 +739,8 @@ def tool_links(lang: str) -> str:
 
 def projects_content_en() -> str:
     return f'''
-                <p class="section-label fold" data-fold="80">Side projects</p>
-                <h1 class="title fold wf-target" data-fold="100" data-wf-tag="display · h1">Built after hours.</h1>
+                <p class="section-label fold" data-fold="80">Open source</p>
+                <h1 class="title fold wf-target" data-fold="100" data-wf-tag="display · h1">Open-source tools.</h1>
                 <p class="body-text fold wf-target" data-fold="130">One loop for AI&#8209;native design systems: {chain_sentence("en")}. Specification and production checks follow.</p>
                 ''' + "".join(project_block(*b) for b in list_blocks("en"))
 

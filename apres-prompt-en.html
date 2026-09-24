@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Après-prompt: What Happens to Work When the Agent Keeps Going Without You</title>
+    <meta name="description" content="Après-prompt: What Happens to Work When the Agent Keeps Going Without You">
+    <meta name="theme-color" content="#FDFDFC" id="themeColorMeta">
+    <meta property="og:title" content="Après-prompt: What Happens to Work When the Agent Keeps Going Without You">
+    <meta property="og:description" content="Après-prompt: What Happens to Work When the Agent Keeps Going Without You">
+    <meta property="og:type" content="article">
+    <link rel="icon" type="image/svg+xml" href="assets/antoshkin-tech-logo.svg">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <link rel="stylesheet" href="assets/wireframe.css">
+    <link rel="stylesheet" href="assets/guides.css">
+    <script>
+        try {
+            if (localStorage.getItem('theme') === 'dark') document.documentElement.dataset.theme = 'dark';
+        } catch (e) {}
+    </script>
+</head>
+<body data-guides="false">
+    <div class="page">
+        <div class="border-strip border-strip--left" aria-hidden="true"></div>
+        <div class="border-strip border-strip--right" aria-hidden="true"></div>
+        <div class="grid-line grid-line--nav" aria-hidden="true"></div>
+        <div class="grid-line grid-line--content-l" aria-hidden="true"></div>
+        <div class="grid-line grid-line--content-r" aria-hidden="true"></div>
+        <div class="grid-line grid-line--shell-r" aria-hidden="true"></div>
+
+        <nav class="top-nav fold" data-fold="50" >
+            <a href="en.html" aria-label="Home"><img class="logo logo-photo wf-target" src="assets/avatar.png" alt="Andrew Antoshkin" width="32" height="32"></a><div class="nav-links"><a class="nav-link" href="en.html">Home</a>
+                <a class="nav-link" href="projects-en.html">Projects</a>
+                <a class="nav-link active" href="writing-en.html">Writing</a>
+                <a class="nav-link" href="approach-en.html">Approach</a>
+                <a class="nav-link" href="collab-en.html">Work together</a></div>
+        </nav>
+
+        <div class="nav-contact fold" data-fold="80">
+            <p class="nav-contact-label">Contact:</p>
+            <span>
+                <a href="mailto:andrew.antoshkin@gmail.com" class="nav-contact-email wf-target" data-copy="andrew.antoshkin@gmail.com">
+                    andrew.antoshkin@gmail.com
+                    <span class="copied" hidden>Copied</span>
+                </a>
+            </span>
+        </div>
+
+        <div class="mobile-wrap">
+            <button class="mobile-pill" type="button" aria-expanded="false" aria-label="Menu">
+                <span class="pill-icon"><span class="pill-bar"></span><span class="pill-bar"></span></span>
+                <span>Menu</span>
+            </button>
+            <div class="mobile-menu" hidden>
+                <a href="en.html">Home</a><a href="projects-en.html">Projects</a>
+                <a href="writing-en.html">Writing</a>
+                <a href="approach-en.html">Approach</a>
+                <a href="collab-en.html">Work together</a><hr>
+                <div class="compact-controls">
+                    <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="Toggle theme">
+                        <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
+                        <span class="theme-symbol theme-symbol--moon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M12.8 10.3A5.5 5.5 0 0 1 5.7 3.2 5.5 5.5 0 1 0 12.8 10.3Z"/></svg></span>
+                    </button>
+                    <nav class="language-switch" aria-label="Language"><a href="apres-prompt.html">Ru</a><span aria-current="page">En</span></nav>
+                </div>
+                <a href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
+            </div>
+        </div>
+
+        <main class="main">
+            <div class="main-toggles">
+                <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="Toggle theme">
+                    <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
+                    <span class="theme-symbol theme-symbol--moon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M12.8 10.3A5.5 5.5 0 0 1 5.7 3.2 5.5 5.5 0 1 0 12.8 10.3Z"/></svg></span>
+                </button>
+                <nav class="language-switch" aria-label="Language"><a href="apres-prompt.html">Ru</a><span aria-current="page">En</span></nav>
+            </div>
+            <div class="follow-right fold" data-fold="120">
+                <div class="nav-divider"></div>
+                <div class="social-links">
+                    <a class="nav-link follow-link wf-target" href="https://t.me/aiantoshkin" target="_blank" rel="noopener noreferrer">
+                        Telegram
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m13.7 2.8-2 9.5c-.15.67-.55.83-1.1.52L7.55 10.6l-1.47 1.42c-.16.16-.3.3-.62.3l.22-3.1 5.64-5.1c.25-.21-.05-.33-.38-.12L3.97 8.4l-3-.94c-.65-.2-.66-.65.14-.96l11.72-4.52c.54-.2 1.02.13.87.82Z" fill="currentColor"/></svg>
+                    </a>
+                    <a class="nav-link follow-link wf-target" href="https://github.com/AndrewAntoshkin" target="_blank" rel="noopener noreferrer">
+                        GitHub
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path fill="currentColor" d="M8 1.35a6.65 6.65 0 0 0-2.1 12.96c.33.06.45-.14.45-.32v-1.16c-1.84.4-2.23-.78-2.23-.78-.3-.76-.74-.96-.74-.96-.6-.42.05-.41.05-.41.67.05 1.02.69 1.02.69.6 1.02 1.56.72 1.94.55.06-.43.23-.72.42-.89-1.47-.17-3.02-.74-3.02-3.29 0-.73.26-1.32.69-1.78-.07-.17-.3-.85.07-1.76 0 0 .56-.18 1.83.68A6.36 6.36 0 0 1 8 4.8c.56 0 1.12.08 1.64.22 1.27-.86 1.83-.68 1.83-.68.37.91.14 1.59.07 1.76.43.46.69 1.05.69 1.78 0 2.56-1.56 3.12-3.03 3.29.24.2.45.61.45 1.24V14c0 .18.12.39.45.32A6.65 6.65 0 0 0 8 1.35Z"/></svg>
+                    </a>
+                    <a class="nav-link follow-link wf-target" href="https://setka.ru/users/84b42bc4-44b4-4b1e-ba76-06d249242bc4" target="_blank" rel="noopener noreferrer">
+                        Setka
+                        <img class="social-icon" src="https://cdn-assets.setka.ru/setka-web/static/favicon/favicon-32x32.a8036291d4eac4cc9ab8cbc378cb6d17.png" alt="" width="16" height="16">
+                    </a>
+                </div>
+            </div>
+
+            <div class="content content--article">
+                
+                <a class="back-link back-link--inline fold wf-target" data-fold="60" href="writing-en.html">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    Writing
+                </a>
+                
+                <figure class="article-cover fold wf-target" data-fold="80"><img src="assets/apres-prompt.jpg" alt="A person with a cup of coffee while agents keep working at the computer"></figure>
+                <div class="article-head fold wf-target" data-fold="100">
+                    <h1 class="title">Après-prompt: What Happens to&nbsp;Work When the Agent Keeps Going Without You</h1>
+                    <time class="article-date" datetime="2026-09-24">September&nbsp;24, 2026</time>
+                    <div class="article-meta">
+                <span class="tag">agents</span>
+                <span class="tag">interface</span>
+                <span class="tag">work</span>
+            </div>
+                </div>
+                <aside class="article-tldr fold" data-fold="120"><p class="article-tldr-label">TL;DR</p><p>AI agents are creating a new kind of working time. You have already given the task, the work is in progress, but you are no longer doing anything with your hands. As Claude Code, Codex, and other agents become more autonomous, more of our work will consist not of constantly interacting with an interface, but of assigning tasks, switching between processes, and reviewing results. It feels like a small culture is starting to form around that space. I call it <strong>Après-prompt</strong>.</p></aside>
+                <div class="prose fold wf-target" data-fold="140"><h2 id="section-1">After Enter</h2>
+
+<p>There is a term called <em>après&#8209;ski</em>. Literally, “after skiing.” It started as a simple idea: people would hang out after a day on the slopes. Over time, an entire culture grew around it — clothes, music, mountain bars, chalets, hot drinks, a visual language of its own. At some point, what happened after skiing became almost as important to the trip as the skiing itself.</p>
+
+<p>Something similar seems to be happening with AI. You open Claude Code or Codex, describe the task, add the necessary context, press Enter, and the agent starts working on its own. It reads the repository, looks for the right files, changes the code, runs tests, hits an error, fixes it, and keeps going. Sometimes it realizes it took the wrong path, goes back, and rewrites what it already made.</p>
+
+<p>Meanwhile, you are no longer typing. At first, that feels strange. You are clearly working, but you are not actually doing anything with your hands. Then you get used to it, and the gap between “do this” and “done” starts taking up more and more of your day. I call that gap <strong>Après&#8209;prompt</strong>.</p>
+
+<h2 id="section-2">The Computer No Longer Needs Your Constant Attention</h2>
+
+<p>For the last few decades, working on a computer has followed roughly the same pattern: the person is almost constantly interacting with the interface. Writing text, moving objects around in Figma, switching tabs, editing CSS, going back to the IDE, typing again. Even good tools mostly made individual actions faster. They did not continue doing the work once you stopped interacting with them.</p>
+
+<p>Agents change exactly that. More and more often, the person is no longer the one performing every individual step. Instead, they define the task, provide constraints, and decide whether the result is good enough. Previously, the time you spent working and the time you spent actively interacting with the computer were almost the same thing. Now they are starting to separate. The computer keeps working after you have taken your hands off the keyboard.</p>
+
+<p>That feels like a much bigger shift than simply saying, “AI writes code faster.” The shape of work itself is changing.</p>
+
+<h2 id="section-3">Work Starts to Look Like Process Management</h2>
+
+<p>I increasingly notice myself working in a different mode. Instead of one task that I execute step by step, I have several processes running in parallel. One agent is looking at architecture, another is fixing the UI, a third is writing tests, and somewhere else a build is running.</p>
+
+<p>You start the first task. While it is running, you formulate the second. Then you go back to the first, review the diff, send it back for another pass, switch to the third, and check what the second agent has done. It starts to feel a little like managing a small team, except the entire team lives on your laptop.</p>
+
+<p>And that creates a new problem that barely existed before: <strong>what should the human do while the machine is working?</strong> The longer these autonomous chains become, the more important that question gets.</p>
+
+<h2 id="section-4">Waiting Becomes Part of the Interface</h2>
+
+<p>Traditional interfaces had a fairly simple goal: show the user the result as quickly as possible. You click a button, something happens. You drag an object, it moves immediately. You open a page, it loads.</p>
+
+<p>AI interfaces are different. Some operations take a few seconds. Others take several minutes. An agent may perform dozens of actions before it needs the person again. At that point, waiting can no longer be treated as just a technical delay. It becomes a separate product state.</p>
+
+<p>If Claude is working for 40 seconds, the question is no longer just how fast the model is. The question is what the user does during those 40 seconds. Do they watch the terminal? Read the log? Move on to another task? Get a notification when the agent finishes? Start another agent in parallel?</p>
+
+<p>This is where some of the stranger experiments start to make sense: panels above the prompt, news while the agent is running, breathing animations, completion notifications, separate apps for monitoring multiple sessions. The individual implementation is less interesting than the underlying idea. For decades, software interfaces have tried to keep the user engaged. Now an interface can effectively say: <strong>you do not need to watch me right now.</strong></p>
+
+<h2 id="section-5">The Desktop May Have to Change Too</h2>
+
+<p>If agents keep becoming more autonomous, the software will not be the only thing that changes. The structure of the workspace may change as well. The desktop is still built around the assumption that a person is actively working inside one application: a large window, a cursor, a keyboard, an active focus.</p>
+
+<p>But what happens when five or ten agents are working at the same time? The main interface may start to look very different. Not an IDE filling the whole screen, but a process manager: what is running right now, what has finished, where a conflict appeared, which task is blocked, and where the agent needs my decision.</p>
+
+<p>In other words, the “desktop” starts to become something closer to a control center. I think this is one reason why so many tools are appearing for managing multiple agents, terminals, and parallel sessions. We are trying to fit a new way of working into interfaces that were designed for a different world: one person, one application, one active task. That pattern is starting to break.</p>
+
+<h2 id="section-6">Speed of Execution Matters Less</h2>
+
+<p>If an agent can do in a few minutes what used to take an hour, then the speed of the person stops being the main constraint. It matters less how quickly you type, how fast you can assemble an interface by hand, or how much syntax you can remember.</p>
+
+<p>Other skills become more important. How well can you define the task? What context should you provide? What constraints matter? How should a large problem be broken down? When can you trust the agent? When should you stop it? And, most importantly, how quickly can you recognize that a solution looks convincing but is actually wrong?</p>
+
+<p>Part of the work is moving from <strong>execution</strong> to <strong>judgment</strong>. We spend less time directly producing the result and more time framing the problem, reviewing the output, and making decisions. That is why AI is not simply making the old process faster. It is changing <strong>what human work is made of</strong>.</p>
+
+<h2 id="section-7">Work Gets a Different Rhythm</h2>
+
+<p>Traditional computer work has a fairly steady rhythm: do something, get a result, do the next thing. With agents, the rhythm changes. First comes a short period of high concentration. You need to understand the problem, collect the context, and formulate the task properly. Then Enter. Then a pause. Then you come back, review the result, correct something, and launch the next run.</p>
+
+<p>Sometimes several of these cycles are happening at once. Terminals are working on their own, a notification appears somewhere, another agent is waiting for approval. You might make coffee, walk around the room, or switch to something else, not because you got distracted from work, but because the work is continuing without your direct involvement.</p>
+
+<p>This is where I think a new aesthetic starts to emerge. Terminals running by themselves, tiny status indicators, completion sounds, agent dashboards, a workspace designed around processes running in parallel rather than a person performing every action in sequence.</p>
+
+<h2 id="section-8">This Is Not Free Time</h2>
+
+<p>There is an important distinction here. Après&#8209;prompt does not mean AI has suddenly given us a huge amount of free time. At least not yet.</p>
+
+<p>The gap gets filled with other work almost immediately. You launch another agent, review the previous result, read documentation, think through the next task. If one task gets faster, people tend to find five more things to do.</p>
+
+<p>So the more interesting question is not whether we will work less. It is <strong>what work will look like</strong>. It becomes less continuous, more parallel, and more dependent on assigning tasks and reviewing outputs. Less manual execution. More orchestration.</p>
+
+<h2 id="section-9">And This Is Not Just About Code</h2>
+
+<p>This shift is easiest to see in software development because coding agents are already fairly autonomous. But there is no reason to think it will stop there.</p>
+
+<p>A designer could say: “Create three versions of this page using our design system, check them for accessibility, and compare them with the current version.” An analyst could say: “Review the last three months of data, find anomalies, and suggest five hypotheses.” A product manager could ask: “Analyze recent user feedback, group the problems, and map them to the current roadmap.”</p>
+
+<p>In all of these cases, the person starts the work but does not perform every step themselves. That means Après&#8209;prompt may not remain a quirk of software development. It could become a normal state of knowledge work.</p>
+
+<h2 id="section-10">Maybe the Interface of the Future Is a Queue</h2>
+
+<p>Today, AI is often added to existing products as a chat window. There is the familiar application, and next to it sits a text box where the user can type a request. But if agents really become autonomous, chat may not be the main interface at all.</p>
+
+<p>A queue may matter more. Here are the tasks. Here is what is running. Here is what finished. Here is what needs a decision. Here is where the agent got stuck. Here is what changed since yesterday. Here is what can be started next.</p>
+
+<p>Not conversation history, but working memory and the current state of ongoing processes. In that sense, today’s terminal agents may turn out to be something like the command line in early computing: an extremely powerful interface for specialists that eventually gives rise to an entirely different class of products.</p>
+
+<h2 id="section-11">Après&#8209;prompt</h2>
+
+<p>I like the term not only because it sounds funny. It describes a genuinely new state quite well: the work has already started, the result is not ready yet, and for a while the human is not needed.</p>
+
+<p>In the past, this kind of gap was treated as a technical problem. We called it loading time and tried to make it as short as possible. Now that gap is becoming part of the workflow itself.</p>
+
+<p>And maybe an entire culture really will grow around it: its own apps, rituals, interfaces, workspace setups, and even its own aesthetic. A few years from now, it may feel slightly strange that people once sat in front of a screen for eight hours straight and performed every single action themselves.</p>
+
+<p>For now, I like the name <strong>Après&#8209;prompt</strong>.</p>
+
+<p>The time between “do it” and “done.”</p></div>
+                <nav class="article-nav"><span></span><a href="ai-changes-processes-en.html" class="next"><span class="article-nav-label">Next</span><span class="article-nav-title">AI Is Not Changing Professions. AI Is Changing Processes</span></a></nav>
+    
+            </div>
+        </main>
+
+        <div class="crosshair" aria-hidden="true">
+            <div class="crosshair-h"></div>
+            <div class="crosshair-v"></div>
+            <div class="crosshair-coords">0 · 0</div>
+        </div>
+        <div class="bottom-fade" aria-hidden="true"></div>
+    </div>
+    <script src="assets/wireframe.js"></script>
+</body>
+</html>

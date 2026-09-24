@@ -1,0 +1,11 @@
+{
+  "date": "2026-09-24",
+  "title": "Après-prompt: What Happens to Work When the Agent Keeps Going Without You",
+  "h1": "Après-prompt: What Happens to&nbsp;Work When the Agent Keeps Going Without You",
+  "cover": {
+    "src": "assets/apres-prompt.jpg",
+    "alt": "A person with a cup of coffee while agents keep working at the computer"
+  },
+  "tldr": "AI agents are creating a new kind of working time. You have already given the task, the work is in progress, but you are no longer doing anything with your hands. As Claude Code, Codex, and other agents become more autonomous, more of our work will consist not of constantly interacting with an interface, but of assigning tasks, switching between processes, and reviewing results. It feels like a small culture is starting to form around that space. I call it <strong>Après-prompt</strong>.",
+  "tags": "<div class=\"article-meta\">\n                <span class=\"tag\">agents</span>\n                <span class=\"tag\">interface</span>\n                <span class=\"tag\">work</span>\n            </div>"
+}

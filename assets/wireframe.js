@@ -18,30 +18,16 @@
         });
     }
 
-    // ── Crosshair overlay ───────────────────────────────────
-    const crosshair = document.querySelector('.crosshair');
-    if (crosshair && !reduced && matchMedia('(min-width: 769px)').matches) {
-        const lineH = crosshair.querySelector('.crosshair-h');
-        const lineV = crosshair.querySelector('.crosshair-v');
-        const coords = crosshair.querySelector('.crosshair-coords');
-        let raf = 0;
-        let mx = 0;
-        let my = 0;
-
-        const render = () => {
-            raf = 0;
-            lineH.style.transform = `translateY(${my}px)`;
-            lineV.style.transform = `translateX(${mx}px)`;
-            coords.style.transform = `translate(${mx + 12}px, ${my + 12}px)`;
-            coords.textContent = `${Math.round(mx)} · ${Math.round(my)}`;
-        };
-
-        document.addEventListener('mousemove', (e) => {
-            mx = e.clientX;
-            my = e.clientY;
-            if (!raf) raf = requestAnimationFrame(render);
-        }, { passive: true });
-    }
+    document.querySelectorAll('.language-switch a').forEach((link) => {
+        link.addEventListener('click', (event) => {
+            if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+            const nav = link.closest('.language-switch');
+            if (!nav || reduced) return;
+            event.preventDefault();
+            nav.classList.add(link.textContent.trim() === 'En' ? 'is-en' : 'is-ru');
+            window.setTimeout(() => { window.location.href = link.href; }, 240);
+        });
+    });
 
     // ── Theme (light / dark) ──────────────────────────────
     const themeToggles = document.querySelectorAll('[data-theme-toggle]');
@@ -290,6 +276,72 @@
             if (!open) item.classList.add('open');
         });
     });
+
+    // ── Article outline rail (ChatGPT-style ticks) ────────
+    (() => {
+        const prose = document.querySelector('.content--article .prose:not(.prose--docs)');
+        const slot = document.querySelector('.follow-right');
+        if (!prose || !slot || page?.classList.contains('page--project')) return;
+
+        slot.querySelector('.nav-divider')?.remove();
+        slot.querySelector('.social-links')?.remove();
+
+        const headings = [...prose.querySelectorAll('h2')];
+        if (headings.length < 2) return;
+
+        const widths = [18, 11, 16, 22, 12, 15, 9, 20, 13, 17, 14, 19];
+        const label = root.lang === 'en' ? 'Contents' : 'Содержание';
+        const nav = document.createElement('nav');
+        nav.className = 'article-rail';
+        nav.setAttribute('aria-label', label);
+
+        const list = document.createElement('ol');
+        list.className = 'article-rail-list';
+
+        const links = headings.map((heading, index) => {
+            if (!heading.id) heading.id = `section-${index + 1}`;
+            const title = heading.textContent.replace(/\u00a0/g, ' ').replace(/\s+/g, ' ').trim();
+            const item = document.createElement('li');
+            item.className = 'article-rail-item';
+            const link = document.createElement('a');
+            link.className = 'article-rail-link';
+            link.href = `#${heading.id}`;
+            link.innerHTML = `<span class="article-rail-slot"><span class="article-rail-label"></span></span><span class="article-rail-bar" style="--bar:${widths[index % widths.length]}px"></span>`;
+            link.querySelector('.article-rail-label').textContent = title;
+            link.addEventListener('click', (event) => {
+                event.preventDefault();
+                nav.classList.add('is-collapsed');
+                link.blur();
+                heading.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+                history.pushState(null, '', `#${heading.id}`);
+                mark();
+            });
+            item.appendChild(link);
+            list.appendChild(item);
+            return link;
+        });
+
+        nav.appendChild(list);
+        nav.addEventListener('mouseleave', () => nav.classList.remove('is-collapsed'));
+        slot.appendChild(nav);
+
+        const mark = () => {
+            let current = headings[0];
+            headings.forEach((heading) => {
+                if (heading.getBoundingClientRect().top <= 140) current = heading;
+            });
+            links.forEach((link, index) => {
+                const on = headings[index] === current;
+                link.classList.toggle('is-active', on);
+                if (on) link.setAttribute('aria-current', 'location');
+                else link.removeAttribute('aria-current');
+            });
+        };
+
+        document.addEventListener('scroll', mark, { passive: true });
+        window.addEventListener('hashchange', mark);
+        requestAnimationFrame(mark);
+    })();
 
     // ── Article prose stagger ─────────────────────────────
     document.querySelectorAll('.prose:not(.prose--docs)').forEach((prose) => {
