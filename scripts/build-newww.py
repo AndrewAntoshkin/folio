@@ -17,7 +17,6 @@ from project_pages import PROJECTS  # noqa: E402
 
 ORDER = ["apres-prompt", "ai-changes-processes", "halo-working-memory", "cursor-figma", "design-md", "dev-for-designers"]
 TG = "https://t.me/andrewaitken"
-GH = "https://github.com/AndrewAntoshkin"
 
 HEAD = """<!DOCTYPE html>
 <html lang="{lang}" class="nojs">
@@ -26,7 +25,7 @@ HEAD = """<!DOCTYPE html>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{title}</title>
   <script>document.documentElement.classList.remove('nojs')</script>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=24">
 </head>
 <body>
 """
@@ -43,7 +42,6 @@ ICONS = {
 }
 ARROW = svg('<path d="M7 17 17 7M8 7h9v9"/>', 20)
 PLUS = svg('<path d="M12 5v14M5 12h14"/>', 20)
-CHECK = svg('<path d="m5 12.5 4.5 4.5L19 7.5"/>', 18)
 SVC_ICONS = [
     svg('<circle cx="12" cy="12" r="8"/><path d="M12 4v8l6 4M4.5 9 12 12 4.5 15"/>', 20),
     svg('<path d="M12 3 4 8v8l8 5 8-5V8l-8-5Z"/><path d="m4 8 8 5 8-5M12 13v8"/>', 20),
@@ -115,11 +113,10 @@ def chrome(lang: str, active: str, stem: str) -> str:
         f'<a href="{name_for(k, lang)}" aria-label="{label}"{" aria-current=\"page\"" if k == active else ""}>{ICONS[icon]}</a>'
         for k, label, icon in items
     )
-    ru_cur = ' aria-current="page"' if ru else ""
-    en_cur = "" if ru else ' aria-current="page"'
+    other = "en" if ru else "ru"
     return (
-        f'\n<div class="dock"><nav aria-label="{"Навигация" if ru else "Navigation"}"><i aria-hidden="true"></i>{links}</nav></div>\n'
-        f'<nav class="langs" aria-label="Language"><a href="{name_for(stem, "ru")}"{ru_cur}>Ru</a><a href="{name_for(stem, "en")}"{en_cur}>En</a></nav>\n'
+        f'\n<div class="dock"><nav aria-label="{"Навигация" if ru else "Navigation"}"><i aria-hidden="true"></i>{links}</nav>'
+        f'<a class="lang" href="{name_for(stem, other)}" aria-label="{"English" if ru else "Русский"}">{"En" if ru else "Ru"}</a></div>\n'
         f'<a class="float" href="{TG}" target="_blank" rel="noopener">{"Написать" if ru else "Say hello"}'
         f'{svg("<path d=\"M7 17 17 7M8 7h9v9\"/>", 16)}</a>\n'
     )
@@ -135,46 +132,24 @@ def reveal(inner_tag: str, delay: float = 0) -> str:
     return f'{inner_tag[:-1]} data-r style="--d:{delay}s">' if delay else f'{inner_tag[:-1]} data-r>'
 
 
-SOCIAL = (
-    f'<a href="{TG}" target="_blank" rel="noopener" aria-label="Telegram">{svg("<path d=\"M21 4 3 11l5.5 2L10 19l3-4 4.5 3.5L21 4Z\"/><path d=\"m8.5 13 8-5\"/>", 20)}</a>'
-    f'<a href="{GH}" target="_blank" rel="noopener" aria-label="GitHub">{svg("<path d=\"M9 19c-4 1.2-4-2-5.5-2.5M15 21v-3.5c0-1 .1-1.500-.5-2.200 2.800-.3 5.500-1.400 5.500-6a4.700 4.700 0 0 0-1.300-3.300 4.400 4.400 0 0 0-.1-3.300s-1-.3-3.400 1.300a11.700 11.700 0 0 0-6.200 0C6.600 2.900 5.600 3.200 5.600 3.200a4.400 4.400 0 0 0-.1 3.300A4.700 4.700 0 0 0 4.200 9.800c0 4.600 2.700 5.700 5.500 6-.6.700-.6 1.300-.6 2.200V21\"/>", 20)}</a>'
-    f'<a href="mailto:andrew.antoshkin@gmail.com" aria-label="Email">{ICONS["mail"][:0]}{svg("<path d=\"M4 7.5h16v10H4v-10Z\"/><path d=\"m5 8 7 6 7-6\"/>", 20)}</a>'
-)
-
-
-def cta_and_footer(lang: str) -> str:
+def cta_and_footer(lang: str, cta: bool = True) -> str:
     ru = lang == "ru"
     if ru:
-        badge, title, text = "Вместе", "Готовы сделать следующий шаг?", "Есть задача, которую хочется довести до работающего состояния? Напишите, и разберём, с чего начать."
-        fields = ("Ваше имя", "Ваша почта", "Чем могу помочь?", "Отправить", "Сотрудничество")
-        foot = ("Давайте сделаем", "что-нибудь настоящее.")
-        copy, built = "© Андрей Антошкин, 2026", "Сделано вручную, без шаблонов"
-        pages_t, projects_t, writing_t = "Страницы", "Проекты", "Статьи"
+        title, text = "Есть задача?", "Если хочется довести её до дела — напишите. Разберём, с чего начать."
+        fields = ("Имя", "Почта", "Пару слов о задаче", "Написать", "Сотрудничество")
+        lead = "Хотите обсудить проект?<br>Расскажите о задаче и о том, чем я могу помочь."
     else:
-        badge, title, text = "Work together", "Are you ready to take the next step?", "Have a problem you want to ship? Write me and we will shape the next step together."
-        fields = ("Your name", "Your email", "How can I help?", "Send a message", "Collaboration")
-        foot = ("Let’s create something", "that actually ships.")
-        copy, built = "© Andrew Antoshkin, 2026", "Built by hand, no templates"
-        pages_t, projects_t, writing_t = "Pages", "Projects", "Writing"
-    pages = [
-        (name_for("home", lang), "Главная" if ru else "Home"),
-        (name_for("projects", lang), projects_t),
-        (name_for("writing", lang), writing_t),
-        (name_for("approach", lang), "Подход" if ru else "Approach"),
-        (name_for("collab", lang), "Сотрудничество" if ru else "Collaboration"),
-    ]
-    proj = [(name_for(p["slug"], lang), p["name"]) for p in PROJECTS[:5]]
-    arts = [(name_for(s, lang), re.sub(r"&nbsp;|&#8209;", " ", article(s, lang)["title"]).split(":")[0]) for s in ORDER[:5]]
+        title, text = "Got a task?", "If you want to get it into a working state, write me. We’ll figure out where to start."
+        fields = ("Name", "Email", "A few words about the task", "Write", "Collaboration")
+        lead = "Want to discuss a project?<br>Would love to hear about your company and how I can help."
 
-    def col(t, rows):
-        return f"<div><p>{t}</p>{''.join(f'<a href=\"{h}\">{n}</a>' for h, n in rows)}</div>"
-
-    return f'''
+    cta_html = ""
+    if cta:
+        cta_html = f'''
   <section class="cta" data-r>
     <div class="cta-grid">
       <div class="cta-card">
-        <div class="shader" aria-hidden="true"><i></i><i></i><i></i></div>
-        <span class="tag top">{badge}</span>
+        <div class="shader" aria-hidden="true"></div>
         <div class="mid"><h2>{title}</h2></div>
         <div class="bot"><p>{text}</p></div>
       </div>
@@ -185,23 +160,24 @@ def cta_and_footer(lang: str) -> str:
         <button type="submit">{fields[3]}</button>
       </form>
     </div>
-  </section>
+    </section>'''
+    return cta_html + f'''
   <footer class="foot">
-    <div class="foot-art" aria-hidden="true"><img src="img/gen/footer.jpg" alt=""></div>
     <div class="foot-in">
-      <h2 data-r><span>{foot[0]}</span><br>{foot[1]}</h2>
-      <div class="social" data-r style="--d:.1s">{SOCIAL}</div>
-      <div class="cols">{col(pages_t, pages)}{col(projects_t, proj)}{col(writing_t, arts)}</div>
-      <div class="legal"><span>{copy}</span><span>{built}</span></div>
+      <p class="foot-mark">antoshkin.tech</p>
+      <div class="foot-copy">
+        <p class="foot-lead">{lead}</p>
+        <a class="foot-mail" href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
+      </div>
     </div>
   </footer>
-  <script src="motion.js"></script>
+  <script src="motion.js?v=3"></script>
 </body></html>
 '''
 
 
-def shell(lang: str, title: str, active: str, stem: str, inner: str) -> str:
-    return HEAD.format(lang=lang, title=title) + chrome(lang, active, stem) + inner + cta_and_footer(lang)
+def shell(lang: str, title: str, active: str, stem: str, inner: str, cta: bool = True) -> str:
+    return HEAD.format(lang=lang, title=title) + chrome(lang, active, stem) + inner + cta_and_footer(lang, cta)
 
 
 # ── Shared blocks ───────────────────────────────────────────────────────────
@@ -213,7 +189,7 @@ def project_cards(lang: str, items: list[tuple[int, dict]]) -> str:
         out.append(
             f'<a class="pcard" href="{name_for(p["slug"], lang)}" data-r>'
             f'{cover(p["slug"], p["name"], p["kicker"][i])}'
-            f'<div class="meta-row"><div><h3>{p["name"]}</h3><p>{p["desc"][i]}</p></div><span class="arrow-btn">{ARROW}</span></div></a>'
+            f'<div class="meta-row"><p>{p["desc"][i]}</p><span class="arrow-btn">{ARROW}</span></div></a>'
         )
     return f'<div class="plist">{"".join(out)}</div>'
 
@@ -261,49 +237,24 @@ def faq_block(items: list[tuple[str, str]]) -> str:
     ) + "</div>"
 
 
-def price_cards(lang: str, cards: list[dict]) -> str:
-    ru = lang == "ru"
-    out = []
-    for n, c in enumerate(cards):
-        lis = "".join(f"<li>{CHECK}<span>{x}</span></li>" for x in c["list"])
-        out.append(
-            f'<div class="price" data-r style="--d:{n * 0.08}s"><div class="price-in">'
-            f'<div class="price-top"><span class="tag">{c["tag"]}</span><p>{c["text"]}</p></div>'
-            f'<div class="price-num"><small>{"Стоимость" if ru else "Pricing"}</small><b>{"По запросу" if ru else "On request"}</b></div>'
-            f'<a class="btn mint" href="{TG}" target="_blank" rel="noopener">{"Обсудить" if ru else "Start a conversation"}</a>'
-            f'<ul class="checks">{lis}</ul></div></div>'
-        )
-    return f'<div class="cards2">{"".join(out)}</div>'
-
-
-def collab_data(lang: str) -> tuple[list[dict], list[tuple[str, str]]]:
+def collab_faqs(lang: str) -> list[tuple[str, str]]:
     if lang == "ru":
-        cards = [
-            {"tag": "Команды", "text": "Для команд, которые хотят встроить AI в дизайн-процесс и не потерять качество.",
-             "list": ["Воркшопы по AI в дизайне", "Настройка design-to-code флоу с Cursor и Figma", "Аудит дизайн-системы и roadmap улучшений"]},
-            {"tag": "Дизайнеры", "text": "Для дизайнеров и руководителей дизайн-систем, которые растут в сторону Design Engineering.",
-             "list": ["Менторство для дизайнеров", "Менторство для design system leads", "Разбор процессов и инструментов вашей команды"]},
-        ]
         faqs = [
-            ("С чего начать?", "Напишите на почту или в Telegram с кратким описанием задачи: продукт, размер команды, что болит. Я предложу формат и следующий шаг."),
-            ("Работаете удалённо?", "Да. Воркшопы и менторство — онлайн или очно в Москве, если нужно очно."),
-            ("Только дизайн-системы?", "Фокус на системной работе: DS, токены, tooling, AI-процессы. Разовые макеты без системного контекста — не мой формат."),
-            ("Кто такой Design Engineer?", "Это специалист, который работает со всем процессом: от идеи и интерфейса до спецификации, реализации и инструментов команды."),
+            ("Кто такой Design Engineer?", "Я не останавливаюсь на макете. Проектирую интерфейс, записываю правила — состояния, компоненты, токены — и довожу это до кода. Если интерфейс потом собирает агент, та же спецификация лежит и у него. Иначе у дизайна, разработки и агента получаются три разные версии."),
+            ("Чем вы занимаетесь сейчас?", "Развиваю дизайн-систему Яндекс HR Tech: компоненты, токены, документацию и код. Рядом собираю инструменты, которые проверяют, берёт ли агент уже существующую систему, а не рисует свою."),
+            ("Где вы работали до этого?", "С 2021 по 2025 вёл дизайн-системы в Сбере: от компонентов до правил, как ими пользоваться. До этого проектировал продукты для частных инвесторов в «Открытии Брокер» и интерфейсы в МТС."),
+            ("Зачем свои инструменты?", "Агент часто рисует свой Button и хардкодит цвет, потому что система не лежит рядом с задачей и результат никто не сверяет. Инструменты собирают короткий контекст, чинят интерфейс под систему и измеряют, взял ли ответ её компоненты."),
+            ("Как вы работаете с агентом?", "Агент ищет, что уже есть в системе, собирает черновик и прогоняет проверки. Я ставлю задачу, задаю границы и смотрю результат. Продуктовое решение и всё, что выходит от моего имени, остаётся за мной."),
         ]
     else:
-        cards = [
-            {"tag": "Teams", "text": "For teams that want to bring AI into the design process without losing quality.",
-             "list": ["AI workshops for design teams", "Design-to-code workflows with Cursor and Figma", "Design system audits and improvement roadmaps"]},
-            {"tag": "Designers", "text": "For designers and design system leads growing toward Design Engineering.",
-             "list": ["Mentoring for designers", "Mentoring for design system leads", "A review of your team’s processes and tooling"]},
-        ]
         faqs = [
-            ("Where do we start?", "Email me or message me on Telegram with a short description of the product, team, and challenge. I will suggest a format and next step."),
-            ("Do you work remotely?", "Yes. Workshops and mentoring can be remote or in person in Moscow."),
-            ("Only design systems?", "My focus is systemic work: design systems, tokens, tooling, and AI workflows. One-off mockups without a system context are not my format."),
-            ("What is a Design Engineer?", "Someone who works across the whole process: from an idea and an interface to specification, implementation, and team tooling."),
+            ("What is a Design Engineer?", "I don't stop at the mockup. I design the interface, write the rules — states, components, tokens — and take that through to code. If an agent assembles the interface later, it gets the same specification. Otherwise design, engineering, and the agent each build their own version."),
+            ("What are you doing now?", "I develop the Yandex HR Tech design system: components, tokens, documentation, and code. Alongside it I build tools that check whether an agent uses a system that already exists, instead of drawing its own."),
+            ("Where did you work before?", "From 2021 to 2025 I led design systems at Sber, from components to the rules for using them. Before that I designed products for private investors at Otkritie Broker and interfaces at MTS."),
+            ("Why build your own tools?", "An agent often draws its own Button and hardcodes a color, because the system is not next to the task and nobody checks the result. The tools pack a short context, repair the interface onto the system, and measure whether the answer used its components."),
+            ("How do you work with an agent?", "The agent finds what the system already has, drafts, and runs the checks. I set the task, set the boundaries, and look at the result. The product decision, and anything that goes out under my name, stays with me."),
         ]
-    return cards, faqs
+    return faqs
 
 
 # ── Pages ───────────────────────────────────────────────────────────────────
@@ -311,13 +262,12 @@ def collab_data(lang: str) -> tuple[list[dict], list[tuple[str, str]]]:
 def home(lang: str) -> str:
     ru = lang == "ru"
     if ru:
-        tags = ["Дизайн-системы", "Figma", "Cursor", "AI-агенты"]
         h1a, h1b = "Андрей Антошкин,", "Design Engineer."
         sub = "Соединяю дизайн и разработку: создаю дизайн-системы, инструменты и код, с которыми команда работает из одной спецификации."
         b1, b2 = "Смотреть проекты", "Написать"
-        s_proj, s_how, s_art, s_exp, s_collab, s_faq, s_all = "Проекты", "Как я работаю", "Статьи", "Опыт", "Сотрудничество", "Частые вопросы", "Все"
+        s_proj, s_how, s_art, s_exp, s_faq, s_all = "Проекты", "Практика", "Статьи", "Опыт", "Частые вопросы", "Все"
         steps = [
-            ("Системы", "Развиваю дизайн-систему Яндекс HR Tech: компоненты, токены, документацию и код."),
+            ("Дизайн-системы", "Развиваю дизайн-систему Яндекс HR Tech: компоненты, токены, документацию и код."),
             ("Инструменты", "Собираю инфраструктуру для AI-native дизайн-систем: контекст для агента, починка интерфейса, измерение качества."),
             ("AI и код", "Проектирую в Figma, пишу код и строю инструменты, которые помогают агентам читать дизайн-систему."),
             ("Процесс", "Работаю со всем процессом: от идеи и интерфейса до спецификации, реализации и инструментов команды."),
@@ -329,13 +279,12 @@ def home(lang: str) -> str:
             ("../assets/logos/mts-icon.svg", "МТС", "Product Designer · 2019 — 2020", "Проектировал продукты и интерфейсы в МТС."),
         ]
     else:
-        tags = ["Design systems", "Figma", "Cursor", "AI agents"]
         h1a, h1b = "Andrew Antoshkin,", "Design Engineer."
         sub = "I connect design and engineering by building design systems, tools, and code that let teams work from a shared specification."
         b1, b2 = "See projects", "Say hello"
-        s_proj, s_how, s_art, s_exp, s_collab, s_faq, s_all = "Projects", "How I work", "Writing", "Experience", "Collaboration", "Most asked questions", "See all"
+        s_proj, s_how, s_art, s_exp, s_faq, s_all = "Projects", "Practice", "Writing", "Experience", "Most asked questions", "See all"
         steps = [
-            ("Systems", "I develop the Yandex HR Tech design system: components, tokens, documentation, and code."),
+            ("Design systems", "I develop the Yandex HR Tech design system: components, tokens, documentation, and code."),
             ("Tools", "I build infrastructure for AI-native design systems: agent context, interface repair, and quality measurement."),
             ("AI and code", "I design in Figma, write code, and build tools that help agents read a design system."),
             ("Process", "I work across the whole process: from an idea and an interface to specification, implementation, and team tooling."),
@@ -346,7 +295,6 @@ def home(lang: str) -> str:
             ("../assets/logos/otkritie-icon.svg", "Otkritie Broker", "Senior Product Designer · 2020 — 2021", "Designed brokerage products for private investors."),
             ("../assets/logos/mts-icon.svg", "MTS", "Product Designer · 2019 — 2020", "Designed products and interfaces at MTS."),
         ]
-    tag_html = "".join(f'<span class="tag w-tag">{t}</span>' for t in tags)
     svc = "".join(
         f'<div class="svc" data-r style="--d:{n * 0.06}s"><div class="svc-in"><div class="svc-top"><span class="svc-n">0{n + 1}.</span><span class="ico">{SVC_ICONS[n]}</span></div>'
         f'<div><h3>{h}</h3><p>{p}</p></div></div></div>'
@@ -360,23 +308,22 @@ def home(lang: str) -> str:
         return f'<div class="vcard"><div class="vhead"><span class="vava"><img src="{src}" alt=""></span><div><div class="vname">{name}</div><div class="vhandle">{role}</div></div></div><p>{text}</p></div>'
 
     vgrid = "".join(f'<div data-r style="--d:{n * 0.07}s">{vcard(v)}</div>' for n, v in enumerate(voices))
-    cards, faqs = collab_data(lang)
+    faqs = collab_faqs(lang)
     top_projects = list(enumerate(PROJECTS))[:2]
     return f'''
+<svg width="0" height="0" aria-hidden="true" style="position:absolute"><filter id="hero-key" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="linear" slope="1.15" intercept="-0.064"/><feFuncG type="linear" slope="1.15" intercept="-0.064"/><feFuncB type="linear" slope="1.15" intercept="-0.064"/></feComponentTransfer></filter></svg>
 <main><div class="col">
   <header class="hero">
-    <div class="tags" style="justify-content:center">{tag_html}</div>
     <h1 data-split><span class="dim">{h1a}</span><br>{h1b}</h1>
     <p class="sub" data-r style="--d:.35s">{sub}</p>
     <div class="actions" data-r style="--d:.45s"><a class="btn mint" href="{name_for("projects", lang)}">{b1}</a><a class="btn dark" href="{TG}" target="_blank" rel="noopener">{b2}</a></div>
-    <div class="hero-art" data-r style="--d:.6s"><img src="img/gen/hero.jpg" alt="" data-parallax></div>
+    <div class="hero-art" data-r style="--d:.6s"><div class="hero-frame" data-parallax><img src="img/portrait.jpg" alt="{h1a.rstrip(',')}"></div></div>
   </header>
   <section class="stack">{sec_head(s_proj, len(PROJECTS), (name_for("projects", lang), s_all))}{project_cards(lang, top_projects)}</section>
   <section class="stack">{sec_head(s_how, len(steps))}<div class="cards2">{svc}</div></section>
   <div class="ticker" data-r aria-hidden="true"><div class="ticker-track">{tk}</div></div>
   <section class="stack">{sec_head(s_art, len(ORDER), (name_for("writing", lang), s_all))}{journal(lang, ORDER[:4])}</section>
   <section class="stack">{sec_head(s_exp, len(voices))}<div class="voices">{vgrid}</div></section>
-  <section class="stack">{sec_head(s_collab, len(cards), (name_for("collab", lang), s_all))}{price_cards(lang, cards)}</section>
   <section class="stack">{sec_head(s_faq, len(faqs))}{faq_block(faqs)}</section>
 </div></main>
 '''
@@ -405,53 +352,118 @@ def writing_page(lang: str) -> str:
 
 
 def approach_page(lang: str) -> str:
-    if lang == "ru":
+    ru = lang == "ru"
+    essay = name_for("ai-changes-processes", lang)
+    if ru:
         title = "От неопределённости к работающему продукту."
-        sub = "Подключаюсь там, где сложную продуктовую задачу нужно превратить в работающую систему: разбираюсь в контексте, формулирую принципы, собираю прототип и связываю дизайн, разработку и AI в единый процесс."
-        quote = "Я не заканчиваю работу на макете. Мне важно, чтобы решение дошло до пользователя и стало частью устойчивого процесса команды."
-        rows = [
-            ("Модель продукта", "Проблема, сценарии, ограничения и критерии результата — до того, как команда начнёт рисовать и разрабатывать."),
-            ("Рабочий прототип", "Ключевые сценарии в Figma или коде, на которых можно быстро проверить решение и снять риски."),
-            ("Единая спецификация", "Состояния, компоненты, токены и правила, одинаково понятные дизайнерам, разработчикам и AI-агентам."),
-            ("Система в продакшене", "Код, автоматизация, QA и метрики, которые помогают решению доехать до пользователя и масштабироваться."),
-        ]
-        label = "Главные артефакты"
+        sub = "Подключаюсь, когда задачу ещё нельзя отдать в разработку. Сначала понимаю, что нужно сделать и по каким правилам. Потом собираю то, на чём это можно проверить. Остаюсь, пока решение не дошло до людей и команда не может вести его сама."
+        where = "Сейчас так устроена работа над дизайн-системой <b>Яндекс HR Tech</b>. До этого — дизайн-системы в <b>Сбере</b>, продукты в «Открытии Брокер» и МТС."
         cta_t = "Обсудить задачу"
+        steps_t = "Как идёт работа"
+        steps = [
+            ("Контекст", "Проблема, сценарии, ограничения и то, по чему поймём, что получилось. Пока это нельзя сказать, макет только прячет неопределённость."),
+            ("Прототип", "Не весь продукт, а сценарии, на которых решение может развалиться. В Figma или в коде — что быстрее даст предмет для спора. Спорить нужно о вещи, а не о мнении."),
+            ("Правила", "Состояния, компоненты, токены. Одна спецификация для дизайна, разработки и для агента, если он потом собирает интерфейс. Иначе каждый сделает свою версию."),
+            ("До людей", "Макет для меня не конец работы. Я остаюсь на реализации, проверках и на том, как команда будет менять это дальше, не теряя качества."),
+        ]
+        agent_t = "С агентом"
+        agent = [
+            "Агент забирает последовательность: найти, что уже есть в системе, собрать черновик, прогнать проверки. Я ставлю задачу, задаю границы и смотрю результат.",
+            "Один длинный промпт не использую. В нём агент одновременно автор и ревьюер своей работы. У шага есть вход, выход и момент, где я говорю, готово это или нет.",
+            "Продуктовое решение, компромисс качества и срока и всё, что выходит от моего имени, я оставляю себе.",
+        ]
+        hold = "<b>Хороший процесс не обещает, что модель никогда не ошибётся.</b> Он делает ошибку заметной и не даёт ей пройти дальше незаметно."
+        more = f'Подробнее — в статье <a href="{essay}">про то, как AI меняет процессы</a>.'
     else:
         title = "From ambiguity to production."
-        sub = "I join when a complex product problem needs to become a working system: I study the context, define principles, build a prototype, and connect design, engineering, and AI into one process."
-        quote = "My work does not end with a mockup. I want the solution to reach users and become part of a sustainable team process."
-        rows = [
-            ("Product model", "The problem, scenarios, constraints, and success criteria — before the team starts designing and building."),
-            ("Working prototype", "Key scenarios in Figma or code that help validate the solution quickly and reduce risk."),
-            ("Shared specification", "States, components, tokens, and rules understood by designers, developers, and AI agents alike."),
-            ("Production system", "Code, automation, QA, and metrics that help the solution reach users and scale."),
-        ]
-        label = "Core artifacts"
+        sub = "I join when a task is not ready to hand to engineering. First I work out what has to be done, and by which rules. Then I build something the decision can be tested on. I stay until it reaches people and the team can carry it without me."
+        where = "This is how I work on the design system at <b>Yandex HR Tech</b> now. Before that, design systems at <b>Sber</b>, and products at Otkritie Broker and MTS."
         cta_t = "Discuss a task"
-    svc = "".join(
-        f'<div class="svc" data-r style="--d:{n * 0.06}s"><div class="svc-in"><div class="svc-top"><span class="svc-n">0{n + 1}.</span><span class="ico">{SVC_ICONS[n]}</span></div>'
-        f'<div><h3>{h}</h3><p>{p}</p></div></div></div>'
-        for n, (h, p) in enumerate(rows)
+        steps_t = "How the work goes"
+        steps = [
+            ("Context", "The problem, the scenarios, the constraints, and how we will know it worked. Until that can be said, a mockup only hides the ambiguity."),
+            ("Prototype", "Not the whole product. The scenarios where the decision could fall apart. Figma or code, whichever gets something real to argue about sooner. The argument should be about the thing, not about an opinion."),
+            ("Rules", "States, components, tokens. One specification for design, engineering, and an agent if it will assemble the interface later. Otherwise everyone builds their own version."),
+            ("To people", "A mockup is not the end of the work for me. I stay for the implementation, the checks, and the way the team will change it later without losing quality."),
+        ]
+        agent_t = "With an agent"
+        agent = [
+            "An agent takes the sequence: find what the system already has, draft, run the checks. I set the task, set the boundaries, and look at the result.",
+            "I don’t use one long prompt. In it, the agent is author and reviewer of its own work. A step has an input, an output, and a moment where I say whether it is done.",
+            "The product decision, the tradeoff between quality and time, and anything that goes out under my name stay with me.",
+        ]
+        hold = "<b>A good process does not promise the model will never be wrong.</b> It makes the error visible and stops it from passing unnoticed."
+        more = f'More on this is in the essay <a href="{essay}">on how AI changes processes</a>.'
+    steps_html = "".join(
+        f'<div class="layer" data-r style="--d:{n * 0.05:.2f}s"><span class="layer-n">0{n + 1}</span><h3>{h}</h3><p>{p}</p></div>'
+        for n, (h, p) in enumerate(steps)
     )
-    return (
-        f'<main><div class="col">{page_head(title, sub)}'
-        f'<div class="art-intro" data-r><p>{quote}</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="{TG}" target="_blank" rel="noopener">{cta_t}</a></div></div>'
-        f'<section class="stack">{sec_head(label, len(rows))}<div class="cards2">{svc}</div></section></div></main>'
-    )
+    paras = "".join(f"<p>{p}</p>" for p in agent)
+    return f'''<main class="approach"><div class="col">
+  <header class="page-head approach-top">
+    <h1 data-split>{title}</h1>
+    <p class="sub" data-r style="--d:.3s">{sub}</p>
+    <p class="where" data-r style="--d:.4s">{where}</p>
+    <div class="actions" data-r style="--d:.48s"><a class="btn mint" href="{TG}" target="_blank" rel="noopener">{cta_t}</a></div>
+  </header>
+  <section class="stack">{sec_head(steps_t, len(steps))}<div class="layers">{steps_html}</div></section>
+  <section class="stack">{sec_head(agent_t)}<div class="prose essay" data-r>{paras}<p class="hold">{hold}</p><p class="more">{more}</p></div></section>
+</div></main>'''
 
 
 def collab_page(lang: str) -> str:
     ru = lang == "ru"
-    title = "Менторство, воркшопы и консалтинг." if ru else "Mentoring, workshops and consulting."
-    sub = ("Помогаю командам выстроить дизайн-системы, внедрить AI в дизайн-процесс и сократить разрыв между Figma и кодом." if ru
-           else "I help teams build design systems, introduce AI into design workflows, and close the gap between Figma and code.")
-    cards, faqs = collab_data(lang)
-    return (
-        f'<main><div class="col">{page_head(title, sub)}'
-        f'<section class="stack">{sec_head("Форматы" if ru else "Formats", len(cards))}{price_cards(lang, cards)}</section>'
-        f'<section class="stack">{sec_head("Частые вопросы" if ru else "Most asked questions", len(faqs))}{faq_block(faqs)}</section></div></main>'
-    )
+    if ru:
+        h1 = "Есть вопрос?<br>Напишите."
+        n1, k1 = "01.", "Контакты"
+        n2, k2 = "02.", "Локация"
+        place = "Москва"
+        card_t = "Расскажите о задаче."
+        card_p = "Продукт, команда и что сейчас не сходится. Отвечу и предложу следующий шаг."
+        fields = ("Имя", "Почта", "О задаче", "Отправить", "Сотрудничество")
+        tg = "t.me/andrewaitken"
+    else:
+        h1 = "Any questions?<br>Write to me."
+        n1, k1 = "01.", "Contact"
+        n2, k2 = "02.", "Location"
+        place = "Moscow"
+        card_t = "Tell me about the task."
+        card_p = "The product, the team, and what isn’t working. I’ll reply with a next step."
+        fields = ("Your name", "Your email", "About the task", "Send", "Collaboration")
+        tg = "t.me/andrewaitken"
+    mail = svg('<circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"/>', 22)
+    pin = svg('<path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/>', 22)
+    return f'''<main class="contact"><div class="col">
+  <header class="page-head contact-head"><h1 data-split>{h1}</h1></header>
+  <div class="contact-grid">
+    <div class="contact-side">
+      <div class="contact-shell"><div class="contact-in">
+        <div class="contact-top"><p class="contact-n">{n1}</p><span class="info-ico" aria-hidden="true">{mail}</span></div>
+        <div class="contact-body">
+          <p class="contact-k">{k1}</p>
+          <a href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
+          <a href="{TG}" target="_blank" rel="noopener">{tg}</a>
+        </div>
+      </div></div>
+      <div class="contact-shell"><div class="contact-in">
+        <div class="contact-top"><p class="contact-n">{n2}</p><span class="info-ico" aria-hidden="true">{pin}</span></div>
+        <div class="contact-body"><p class="contact-k">{k2}</p><p class="contact-place">{place}</p></div>
+      </div></div>
+    </div>
+    <div class="contact-shell contact-form-shell">
+      <form class="contact-in contact-card cta-form" data-subject="{fields[4]}">
+        <h2>{card_t}</h2>
+        <p class="contact-lead">{card_p}</p>
+        <div class="contact-fields">
+          <input name="name" required placeholder="{fields[0]}" autocomplete="name">
+          <input name="email" type="email" required placeholder="{fields[1]}" autocomplete="email">
+          <textarea name="question" required placeholder="{fields[2]}"></textarea>
+        </div>
+        <button type="submit">{fields[3]}</button>
+      </form>
+    </div>
+  </div>
+</div></main>'''
 
 
 def project_page(project: dict, lang: str) -> str:
@@ -499,14 +511,14 @@ def main() -> None:
         ru = lang == "ru"
         who = "Андрей Антошкин" if ru else "Andrew Antoshkin"
 
-        def write(stem: str, title: str, active: str, inner: str) -> None:
-            (OUT / name_for(stem, lang)).write_text(shell(lang, title, active, stem, inner), encoding="utf-8")
+        def write(stem: str, title: str, active: str, inner: str, cta: bool = True) -> None:
+            (OUT / name_for(stem, lang)).write_text(shell(lang, title, active, stem, inner, cta), encoding="utf-8")
 
         write("home", f"{who} — Design Engineer", "home", home(lang))
         write("projects", f"{'Проекты' if ru else 'Projects'} — {who}", "projects", projects_page(lang))
         write("writing", f"{'Статьи' if ru else 'Writing'} — {who}", "writing", writing_page(lang))
         write("approach", f"{'Подход' if ru else 'Approach'} — {who}", "approach", approach_page(lang))
-        write("collab", f"{'Сотрудничество' if ru else 'Collaboration'} — {who}", "collab", collab_page(lang))
+        write("collab", f"{'Сотрудничество' if ru else 'Collaboration'} — {who}", "collab", collab_page(lang), cta=False)
         for p in PROJECTS:
             write(p["slug"], f'{p["name"]} — {who}', "projects", project_page(p, lang))
         for s in ORDER:

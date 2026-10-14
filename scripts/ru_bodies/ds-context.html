@@ -1,0 +1,195 @@
+<section id="why"><h2>Зачем</h2><p>Агенту часто отдают либо ничего, либо весь Storybook сразу. В первом случае он рисует свой Button. Во втором случае в контексте много токенов и примеров, которые к задаче не относятся.</p><p>ds-context собирает короткий пакет из локальных файлов. Пакет можно отдать Claude или Codex и проверить в <a href="ds-eval.html">ds-eval</a>. Он не вызывает модель.</p></section><section id="inputs"><h2>Вход</h2><p>Инструмент читает локальную папку. Storybook он не открывает и в Figma API не ходит. Файл из Figma попадает сюда уже как markdown, например после figma-to-design-md. Пример Acme — пять файлов:</p><pre><code>fixtures/acme/
+  tokens.css
+  components.json
+  patterns.md
+  anti-patterns.md
+  examples.md
+  dist/
+    design-system.md
+    components.md
+    patterns.md
+    anti-patterns.md
+    examples.md
+    manifest.json</code></pre><p><code>tokens.css</code> — токены, с которыми потом сверяется починка.</p><pre><code>:root {
+  --color-accent: #8B5CF6;
+  --color-text: #212223;
+  --color-surface: #ffffff;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --radius-2: 8px;
+  --font-size-body: 14px;
+}</code></pre><p><code>components.json</code> — имя, пропсы, пример и чего избегать. Пример попадает в пакет только в стратегии full.</p><pre><code>[
+  {
+    &quot;name&quot;: &quot;Button&quot;,
+    &quot;props&quot;: [&quot;variant&quot;, &quot;size&quot;, &quot;children&quot;],
+    &quot;example&quot;: &quot;&lt;Button variant=\&quot;primary\&quot;&gt;Save&lt;/Button&gt;&quot;,
+    &quot;avoid&quot;: &quot;A raw &lt;button&gt; with an inline background.&quot;
+  },
+  {
+    &quot;name&quot;: &quot;Input&quot;,
+    &quot;props&quot;: [&quot;label&quot;, &quot;hint&quot;, &quot;error&quot;],
+    &quot;example&quot;: &quot;&lt;Input label=\&quot;Email\&quot; /&gt;&quot;,
+    &quot;avoid&quot;: &quot;An unlabeled &lt;input&gt;.&quot;
+  },
+  {
+    &quot;name&quot;: &quot;Dialog&quot;,
+    &quot;props&quot;: [&quot;open&quot;, &quot;title&quot;, &quot;onClose&quot;],
+    &quot;example&quot;: &quot;&lt;Dialog open title=\&quot;Delete account\&quot; /&gt;&quot;,
+    &quot;avoid&quot;: &quot;A &lt;div className=\&quot;modal\&quot;&gt; with a hand-rolled overlay.&quot;
+  },
+  {
+    &quot;name&quot;: &quot;Select&quot;,
+    &quot;props&quot;: [&quot;label&quot;, &quot;options&quot;, &quot;value&quot;],
+    &quot;example&quot;: &quot;&lt;Select label=\&quot;Country\&quot; options={countries} /&gt;&quot;,
+    &quot;avoid&quot;: &quot;A native &lt;select&gt; when the system Select exists.&quot;
+  }
+]</code></pre><p>Три markdown-файла задают паттерны, запреты и короткие примеры экранов.</p><pre><code># Patterns
+
+## Destructive confirm
+Ask for confirmation before a delete. Use Dialog, name the object, and make the confirm button the danger variant.
+
+## Empty state
+Show one next action. Do not invent a second illustration style.
+
+## Settings
+Group fields by task. Use Input with a label. Actions sit in the page footer, not inside the form card.</code></pre><pre><code># Anti-patterns
+
+- Do not hardcode #8B5CF6. Use var(--color-accent).
+- Do not build a modal from a positioned div.
+- Do not add a button with no accessible name.
+- Do not pick 13px of padding. Use the space scale.</code></pre><pre><code># Examples
+
+A settings page uses Input for the name and email, Select for the country, and Button for save.
+A delete flow opens Dialog. The confirm action is variant=&quot;danger&quot;. The close control has an accessible name.
+Empty lists use the empty-state pattern: one sentence and one Button.</code></pre></section><section id="run"><h2>Запуск</h2><pre><code>python3 ds-context/ds_context.py build ds-context/fixtures/acme</code></pre><p>Команда пишет пакет в <code>ds-context/fixtures/acme/dist</code>. Ключи не нужны, модель не вызывается. На этом примере команда печатает:</p><pre><code>source  ds-context/fixtures/acme
+out     ds-context/fixtures/acme/dist
+pack    files
+        design-system.md   ~ 292 tokens
+        components.md      ~ 160 tokens
+        patterns.md        ~  87 tokens
+        anti-patterns.md   ~  54 tokens
+        examples.md        ~  72 tokens
+strategies (estimate, ~4 chars/token, manifest excluded)
+        full         ~ 665
+        compact      ~ 375
+        components   ~ 180</code></pre></section><section id="output"><h2>Выход</h2><p><code>design-system.md</code> можно положить в контекст целиком. В стратегии full сюда же встроены паттерны, запреты и примеры. Отдельные файлы в <code>dist/</code> повторяют исходные markdown.</p><pre><code># Design system
+
+Components: Button, Input, Dialog, Select.
+
+## Tokens
+
+| Token | Value |
+| --- | --- |
+| `--color-accent` | #8B5CF6 |
+| `--color-text` | #212223 |
+| `--color-surface` | #ffffff |
+| `--space-2` | 8px |
+| `--space-3` | 12px |
+| `--space-4` | 16px |
+| `--radius-2` | 8px |
+| `--font-size-body` | 14px |
+
+# Patterns
+
+## Destructive confirm
+Ask for confirmation before a delete. Use Dialog, name the object, and make the confirm button the danger variant.
+
+## Empty state
+Show one next action. Do not invent a second illustration style.
+
+## Settings
+Group fields by task. Use Input with a label. Actions sit in the page footer, not inside the form card.
+
+# Anti-patterns
+
+- Do not hardcode #8B5CF6. Use var(--color-accent).
+- Do not build a modal from a positioned div.
+- Do not add a button with no accessible name.
+- Do not pick 13px of padding. Use the space scale.
+
+# Examples
+
+A settings page uses Input for the name and email, Select for the country, and Button for save.
+A delete flow opens Dialog. The confirm action is variant=&quot;danger&quot;. The close control has an accessible name.
+Empty lists use the empty-state pattern: one sentence and one Button.</code></pre><p><code>components.md</code> — API. Пример и строка Avoid берутся из JSON.</p><pre><code># Component API
+
+### Button
+
+Props: `variant`, `size`, `children`
+
+Example:
+
+```jsx
+&lt;Button variant=&quot;primary&quot;&gt;Save&lt;/Button&gt;
+```
+
+Avoid: A raw &lt;button&gt; with an inline background.
+
+### Input
+
+Props: `label`, `hint`, `error`
+
+Example:
+
+```jsx
+&lt;Input label=&quot;Email&quot; /&gt;
+```
+
+Avoid: An unlabeled &lt;input&gt;.
+
+### Dialog
+
+Props: `open`, `title`, `onClose`
+
+Example:
+
+```jsx
+&lt;Dialog open title=&quot;Delete account&quot; /&gt;
+```
+
+Avoid: A &lt;div className=&quot;modal&quot;&gt; with a hand-rolled overlay.
+
+### Select
+
+Props: `label`, `options`, `value`
+
+Example:
+
+```jsx
+&lt;Select label=&quot;Country&quot; options={countries} /&gt;
+```
+
+Avoid: A native &lt;select&gt; when the system Select exists.</code></pre></section><section id="strategies"><h2>Стратегии</h2><p>Оценка размера — около 4 символов на токен. Это не токенайзер Claude. Манифест в сумму не входит. На примере Acme:</p><table><thead><tr><th>Стратегия</th><th>Оценка</th><th>Что внутри</th></tr></thead><tbody><tr><td>full</td><td>~665</td><td>Токены, API с примерами, паттерны, запреты и примеры экранов</td></tr><tr><td>compact</td><td>~375</td><td>Токены, API без примеров и запреты. Отдельный examples.md не пишется</td></tr><tr><td>components</td><td>~180</td><td>Только обзор с токенами и API. Паттерны и примеры не пишутся</td></tr></tbody></table><p>Полный пакет по файлам:</p><table><thead><tr><th>Файл</th><th>Оценка</th></tr></thead><tbody><tr><td><code>design-system.md</code></td><td>~292</td></tr><tr><td><code>components.md</code></td><td>~160</td></tr><tr><td><code>patterns.md</code></td><td>~87</td></tr><tr><td><code>anti-patterns.md</code></td><td>~54</td></tr><tr><td><code>examples.md</code></td><td>~72</td></tr></tbody></table></section><section id="manifest"><h2>Манифест</h2><p>Манифест нужен следующему шагу: выбрать стратегию под бюджет токенов и отдать модели только эти файлы. Имена компонентов и токенов лежат списком, чтобы <a href="ui-repair.html">ui-repair</a> и <a href="ds-eval.html">ds-eval</a> сверялись с тем же источником.</p><pre><code>{
+  &quot;strategy&quot;: &quot;full&quot;,
+  &quot;source&quot;: &quot;ds-context/fixtures/acme&quot;,
+  &quot;components&quot;: [
+    &quot;Button&quot;,
+    &quot;Input&quot;,
+    &quot;Dialog&quot;,
+    &quot;Select&quot;
+  ],
+  &quot;tokens&quot;: [
+    &quot;--color-accent&quot;,
+    &quot;--color-text&quot;,
+    &quot;--color-surface&quot;,
+    &quot;--space-2&quot;,
+    &quot;--space-3&quot;,
+    &quot;--space-4&quot;,
+    &quot;--radius-2&quot;,
+    &quot;--font-size-body&quot;
+  ],
+  &quot;files&quot;: {
+    &quot;design-system.md&quot;: 292,
+    &quot;components.md&quot;: 160,
+    &quot;patterns.md&quot;: 87,
+    &quot;anti-patterns.md&quot;: 54,
+    &quot;examples.md&quot;: 72
+  },
+  &quot;tokens_total&quot;: 665
+}</code></pre></section><section id="chain"><h2>Куда встаёт</h2><pre><code>Figma / локальная спека
+→ ds-context
+→ модель
+→ ui-repair
+→ ds-eval
+→ prompt-regress</code></pre><p>ds-context готовит контекст. <a href="ds-eval.html">ds-eval</a> измеряет, помог ли он. <a href="prompt-regress.html">prompt-regress</a> показывает, не сломала ли новая версия промпта то, что уже проходило.</p></section><section id="limits"><h2>Предел</h2><p>Инструмент не открывает Storybook и не ходит в Figma. Он не выбирает кусок пакета под один экран. Оценка токенов годится, чтобы сравнить пакеты между собой, и не годится как счёт из API.</p></section>

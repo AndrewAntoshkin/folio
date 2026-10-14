@@ -1,0 +1,90 @@
+<section id="how"><h2>Как устроено</h2>
+<pre><code>Файл Figma ──▶ figma-to-design-md ──▶ specs/
+├── design-system.md
+├── foundations/
+│ ├── colors.md
+│ ├── typography.md
+│ ├── spacing.md
+│ └── radii.md
+├── components/
+│ ├── README.md
+│ ├── button.md
+│ └── ...
+└── gaps.md</code></pre></section>
+<section id="install"><h2>Установка</h2>
+<pre><code># Запустить сразу
+npx figma-to-design-md extract --file &lt;key&gt; --token &lt;token&gt;
+
+# Или установить глобально
+npm i -g figma-to-design-md</code></pre></section>
+<section id="setup"><h2>Настройка</h2>
+<h3>1. Возьми токен Figma</h3>
+<p>Открой <a href="https://www.figma.com/settings" target="_blank" rel="noopener noreferrer">настройки Figma</a>. Зайди в Personal access tokens и создай токен с правом <strong>File content: Read-only</strong>.</p>
+<h3>2. Возьми ключ файла</h3>
+<p>Из любой ссылки на файл в Figma:</p>
+<pre><code>https://www.figma.com/design/ABC123xyz/My-Design-System
+                              ^^^^^^^^^^^
+                              это ключ файла</code></pre>
+<h3>3. Запусти</h3>
+<pre><code>figma-to-design-md extract \
+  --file ABC123xyz \
+  --token figd_xxx</code></pre></section>
+<section id="cli"><h2>Параметры</h2>
+<table><thead><tr><th>Флаг</th><th>По умолчанию</th><th>Описание</th></tr></thead><tbody><tr><td>--file &lt;key&gt;</td><td>—</td><td>Ключ файла Figma (обязательно)</td></tr><tr><td>--token &lt;token&gt;</td><td>$FIGMA_TOKEN</td><td>Персональный токен Figma</td></tr><tr><td>--out &lt;dir&gt;</td><td>./specs</td><td>Папка для результата</td></tr><tr><td>--mode &lt;mode&gt;</td><td>full</td><td>full | foundations | components</td></tr><tr><td>--node &lt;id&gt;</td><td>—</td><td>Ограничить страницей или фреймом</td></tr><tr><td>--version</td><td></td><td>Показать версию</td></tr><tr><td>--help</td><td></td><td>Показать справку</td></tr></tbody></table></section>
+<section id="output"><h2>Структура файлов</h2>
+<h3>design-system.md</h3>
+<p>Обзор: счётчики и ссылки на подробные файлы.</p>
+<h3>foundations/*.md</h3>
+<table><thead><tr><th>Файл</th><th>Содержимое</th></tr></thead><tbody><tr><td>colors.md</td><td>Все переменные COLOR и стили FILL в markdown-таблицах</td></tr><tr><td>typography.md</td><td>Переменные шрифта и стили TEXT</td></tr><tr><td>spacing.md</td><td>Переменные с space, gap, padding, margin</td></tr><tr><td>radii.md</td><td>Переменные с radius, round, corner</td></tr></tbody></table>
+<p>Если у переменной несколько режимов, например Light и Dark, в файл попадают все значения.</p></section>
+<section id="foundations"><h2>Пример основ</h2>
+<p>Как выглядит готовый <code>colors.md</code>:</p>
+<pre><code># Colors
+
+## Variables (12 tokens)
+
+| Name | Collection | Light | Dark |
+|-------------------|------------|-----------|-----------|
+| color/primary | Theme | #3b82f6 | #60a5fa |
+| color/secondary | Theme | #6366f1 | #818cf8 |
+| color/bg | Theme | #fafafa | #0a0a0a |
+| color/text | Theme | #0a0a0a | #f5f5f5 |
+| color/muted | Theme | #737373 | #a3a3a3 |
+
+## Styles (3 styles)
+
+| Name | Type |
+|-----------------|-------|
+| Primary Fill | FILL |
+| Background | FILL |
+| Text Default | FILL |</code></pre></section>
+<section id="components"><h2>Пример компонента</h2>
+<p>Как выглядит файл компонента:</p>
+<pre><code># Button
+
+> Primary action element with label and optional icon.
+
+- **Figma node:** 123:456
+- **Type:** COMPONENT_SET
+
+## Variants
+
+| Property | Values |
+|----------|-------------------|
+| Size | sm, md, lg |
+| Style | primary, outline |
+| State | default, hover |
+
+## Usage
+
+_Add usage guidelines here._</code></pre></section>
+<section id="gaps"><h2>Пробелы</h2>
+<p>Инструмент сам замечает возможные проблемы и пишет их в <code>gaps.md</code>:</p>
+<ul class="feature-list"><li><strong>Нет описаний</strong><span>У компонентов нет описания в Figma. Агент не понимает, для чего они.</span></li><li><strong>Нет токенов</strong><span>В файле нет локальных переменных. Markdown получится неполным.</span></li><li><strong>Компоненты без документации</strong><span>Компоненты есть, а описания для агента нет.</span></li></ul></section>
+<section id="pipeline"><h2>Цепочка</h2>
+<p>Markdown из Figma — вход для ds-context. Он собирает из него контекст для модели:</p>
+<pre><code>figma-to-design-md пишет markdown ← ты здесь
+ds-context собирает контекст для модели
+ui-repair чинит нарушения
+ds-eval оценивает результат</code></pre></section>
+<p><a href="https://github.com/AndrewAntoshkin/figma-to-design-md" target="_blank" rel="noopener noreferrer">Код</a></p>

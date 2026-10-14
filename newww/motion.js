@@ -44,10 +44,6 @@
     });
   };
   document.querySelectorAll("[data-split]").forEach(split);
-  document.querySelectorAll(".w-tag").forEach((tag, i) => {
-    tag.classList.add("w");
-    tag.style.setProperty("--i", i * 0.6);
-  });
 
   /* Cyrillic serif fallback has a narrower hyphen than Halant: render hyphens inside Cyrillic words with it */
   const fixHy = (root) => {
@@ -108,23 +104,24 @@
   const art = document.querySelector("[data-parallax]");
   if (art && !reduced) {
     let ticking = false;
+    const apply = () => {
+      art.style.setProperty("--py", `${scrollY * 0.15}px`);
+      ticking = false;
+    };
     addEventListener(
       "scroll",
       () => {
         if (ticking) return;
         ticking = true;
-        requestAnimationFrame(() => {
-          art.style.setProperty("--py", `${Math.min(scrollY, 900) * -0.12}px`);
-          ticking = false;
-        });
+        requestAnimationFrame(apply);
       },
       { passive: true }
     );
+    apply();
   }
 
   /* CTA form → mailto */
-  const form = document.querySelector(".cta-form");
-  if (form) {
+  document.querySelectorAll("form[data-subject]").forEach((form) => {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
       const d = new FormData(form);
@@ -132,5 +129,5 @@
       const body = encodeURIComponent(`${d.get("question")}\n\n— ${d.get("name")} (${d.get("email")})`);
       location.href = `mailto:andrew.antoshkin@gmail.com?subject=${subject}&body=${body}`;
     });
-  }
+  })
 })();

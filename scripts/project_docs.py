@@ -469,7 +469,7 @@ def _apply_ru(html: str) -> str:
     return "".join(out)
 
 
-def load_doc(slug: str, lang: str) -> dict:
+def _load_doc(slug: str, lang: str) -> dict:
     if slug in {"ds-context", "ui-repair", "prompt-regress"}:
         from chain_docs import load
         return load(slug, lang)
@@ -488,6 +488,24 @@ def load_doc(slug: str, lang: str) -> dict:
     if slug == "ds-eval":
         body, groups = _with_published(body, groups, lang)
     return {"lead": lead, "groups": groups, "body": body}
+
+
+def load_doc(slug: str, lang: str) -> dict:
+    import json
+
+    doc = _load_doc(slug, lang)
+    if lang != "ru":
+        return doc
+    folder = ROOT / "scripts" / "ru_bodies"
+    body_path = folder / f"{slug}.html"
+    meta_path = folder / f"{slug}.json"
+    if body_path.exists():
+        doc["body"] = body_path.read_text(encoding="utf-8")
+    if meta_path.exists():
+        data = json.loads(meta_path.read_text(encoding="utf-8"))
+        if data.get("lead"):
+            doc["lead"] = data["lead"]
+    return doc
 
 
 def _with_published(body: str, groups: list[dict], lang: str) -> tuple[str, list[dict]]:

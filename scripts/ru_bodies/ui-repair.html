@@ -1,0 +1,37 @@
+<section id="why"><h2>Зачем</h2><p>Найти нарушение мало. Команде нужен патч: сырой <code>&lt;button&gt;</code> становится Button, захардкоженный <code>#8B5CF6</code> становится токеном, самодельный modal становится Dialog. ui-repair делает эту замену по правилам и показывает, какие проверки раньше не проходили, а теперь проходят.</p><p>Агент должен отдавать такой же патч. В этом примере правила каждый раз дают один и тот же патч, чтобы пример можно было повторить без ключа.</p></section><section id="rules"><h2>Правила</h2><p>Каждое правило смотрит на текст примера и на <code>tokens.css</code> рядом. На Acme <code>--color-accent</code> равен <code>#8B5CF6</code>, <code>--space-3</code> равен <code>12px</code>.</p><table><thead><tr><th>Находит</th><th>Пишет</th></tr></thead><tbody><tr><td>hex, если значение совпало с токеном</td><td><code>var(--color-accent)</code></td></tr><tr><td><code>padding: 13</code></td><td><code>var(--space-3)</code></td></tr><tr><td><code>&lt;div className="modal"&gt;</code></td><td><code>&lt;Dialog&gt;</code></td></tr><tr><td>сырой <code>&lt;button&gt;</code></td><td><code>&lt;Button&gt;</code> и импорт из <code>@ds</code></td></tr><tr><td>кнопка, внутри которой только ×</td><td><code>aria-label="Close"</code></td></tr></tbody></table><p>Импорт добавляется одной строкой, если в файле ещё нет <code>from "@ds"</code>: <code>import { Button, Dialog } from "@ds";</code></p></section><section id="run"><h2>Запуск</h2><pre><code>python3 ui-repair/ui_repair.py scan ui-repair/fixtures
+python3 ui-repair/ui_repair.py fix ui-repair/fixtures --out ui-repair/examples</code></pre><p><code>scan</code> печатает список и ничего не пишет. <code>fix</code> кладёт <code>Settings.jsx</code> в <code>ui-repair/examples</code> и печатает счёт до и после. На примере scan находит:</p><pre><code>6 issues
+  raw &lt;button&gt;
+  hardcoded hex color
+  hand-rolled modal
+  padding 13 is off the space scale
+  icon button without an accessible name
+  no design-system import</code></pre></section><section id="before"><h2>До</h2><p>Файл <code>ui-repair/fixtures/Settings.jsx</code>. Фиолетовый фон числом, отступ 13, Save сырым тегом, модалка из div и крестик без имени.</p><pre><code>export function Settings() {
+  const open = () =&gt; {};
+  return (
+    &lt;section&gt;
+      &lt;h1&gt;Settings&lt;/h1&gt;
+      &lt;div style={{ background: &quot;#8B5CF6&quot;, padding: 13 }}&gt;
+        &lt;button onClick={open}&gt;Save&lt;/button&gt;
+        &lt;div className=&quot;modal&quot;&gt;
+          &lt;h2&gt;Delete account&lt;/h2&gt;
+          &lt;button&gt;×&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+  );
+}</code></pre></section><section id="after"><h2>После</h2><p>Тот же файл после <code>fix</code>. Это результат правил, не ответ модели.</p><pre><code>import { Button, Dialog } from &quot;@ds&quot;;
+export function Settings() {
+  const open = () =&gt; {};
+  return (
+    &lt;section&gt;
+      &lt;h1&gt;Settings&lt;/h1&gt;
+      &lt;div style={{ background: &quot;var(--color-accent)&quot;, padding: &quot;var(--space-3)&quot; }}&gt;
+        &lt;Button onClick={open}&gt;Save&lt;/Button&gt;
+        &lt;Dialog&gt;
+          &lt;h2&gt;Delete account&lt;/h2&gt;
+          &lt;Button aria-label=&quot;Close&quot;&gt;×&lt;/Button&gt;
+        &lt;/Dialog&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+  );
+}</code></pre></section><section id="score"><h2>Проверки</h2><p>Десять проверок, равный вес. До починки счёт 50: пять структурных проверок уже проходили, пять проверок системы не проходили. После — 100.</p><table><thead><tr><th>Проверка</th><th>До</th><th>После</th></tr></thead><tbody><tr><td>экспортирует компонент</td><td>да</td><td>да</td></tr><tr><td>обрабатывает клик</td><td>да</td><td>да</td></tr><tr><td>нет dangerouslySetInnerHTML</td><td>да</td><td>да</td></tr><tr><td>есть заголовок</td><td>да</td><td>да</td></tr><tr><td>нет !important</td><td>да</td><td>да</td></tr><tr><td>импортирует дизайн-систему</td><td>нет</td><td>да</td></tr><tr><td>нет сырого button</td><td>нет</td><td>да</td></tr><tr><td>нет цвета, прописанного вручную</td><td>нет</td><td>да</td></tr><tr><td>Dialog, а не div.modal</td><td>нет</td><td>да</td></tr><tr><td>нет отступа, прописанного вручную</td><td>нет</td><td>да</td></tr></tbody></table><p>Это не балл <a href="ds-eval.html">ds-eval</a> и не результат Claude. Следующий шаг — прогнать патч в ds-eval: сборка, axe, Playwright. Здесь виден только ремонт по правилам и то, какие проверки он закрыл.</p></section><section id="chain"><h2>Куда встаёт</h2><p><a href="ds-context.html">ds-context</a> говорит, какие компоненты и токены существуют. ui-repair правит файл по этому списку. <a href="ds-eval.html">ds-eval</a> проверяет, стал ли экран рабочим, а не только формально чистым.</p></section><section id="limits"><h2>Предел</h2><p>Правила знают этот пример: конкретный hex, padding 13, класс modal, крестик. Чужой код с другими нарушениями они не починят. Нет диффа, как в git. Нет скриншота. Агента, который сам правит файл, тоже нет. Счёт 50 → 100 легко читать и легко переоценить.</p></section>

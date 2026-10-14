@@ -13,7 +13,7 @@ PROJECTS = [
         "name": "agent-ui",
         "kicker": ("Компоненты", "Components"),
         "desc": (
-            "Компоненты для AI&#8209;интерфейсов: ввод промпта, вызов инструмента, запрос разрешения, статус агента. Каждый ставится вместе с&nbsp;правилом для агента.",
+            "Компоненты для AI-интерфейсов: поле промпта, вызов инструмента, запрос разрешения, статус агента. Каждый ставится вместе с правилом для агента.",
             "Components for AI interfaces: prompt input, tool call, approval, agent status. Each one installs with a rule for the coding agent.",
         ),
         "meta": (
@@ -31,7 +31,7 @@ PROJECTS = [
         "name": "ds-eval",
         "kicker": ("Бенчмарк", "Benchmark"),
         "desc": (
-            "Прогоняет одни и&nbsp;те&nbsp;же UI&#8209;задачи через разные ответы модели и&nbsp;показывает, следует&nbsp;ли агент уже существующей дизайн&#8209;системе.",
+            "Одни и те же UI-задачи, разные ответы модели. Видно, берёт ли агент компоненты уже существующей дизайн-системы или рисует свои контролы.",
             "Runs the same UI tasks through model outputs and measures whether a coding agent follows a design system it did not invent.",
         ),
         "meta": (
@@ -114,7 +114,7 @@ ds-eval compare RUN_FIXTURE RUN_NAIVE</code></pre>
         "name": "ds-context",
         "kicker": ("Контекст", "Context"),
         "desc": (
-            "Собирает из токенов, компонентов и спеки короткий пакет для модели и считает, сколько токенов стоит каждая упаковка.",
+            "Собирает из токенов, компонентов и спеки короткий пакет и показывает, сколько токенов занимает каждая стратегия. Модель не вызывается.",
             "Builds a short model pack from tokens, components, and a spec, and prices each packing strategy in tokens.",
         ),
         "meta": (
@@ -132,7 +132,7 @@ ds-eval compare RUN_FIXTURE RUN_NAIVE</code></pre>
         "name": "ui-repair",
         "kicker": ("Починка", "Repair"),
         "desc": (
-            "Заменяет сырые контролы, hex и самодельный modal на компоненты системы и показывает, какие проверки перевернулись.",
+            "Заменяет сырой button, цвет, прописанный вручную, и самодельный modal на компоненты системы. Показывает, какие проверки раньше не проходили, а теперь проходят.",
             "Replaces raw controls, hex, and a homemade modal with system components, and shows which checks flipped.",
         ),
         "meta": (
@@ -150,7 +150,7 @@ ds-eval compare RUN_FIXTURE RUN_NAIVE</code></pre>
         "name": "prompt-regress",
         "kicker": ("Регрессия", "Regression"),
         "desc": (
-            "Сравнивает две версии промпта на одном наборе UI-кейсов: что выросло, что сломалось, а не средний балл.",
+            "Сравнивает два сохранённых прогона одних и тех же UI-кейсов: какие стали лучше, какие сломались, а не средний балл.",
             "Compares two prompt versions on one UI suite: what improved, what broke, instead of an average score.",
         ),
         "meta": (
@@ -168,7 +168,7 @@ ds-eval compare RUN_FIXTURE RUN_NAIVE</code></pre>
         "name": "figma-to-design-md",
         "kicker": ("CLI", "CLI"),
         "desc": (
-            "Вытаскивает переменные, стили и&nbsp;компоненты из&nbsp;Figma и&nbsp;собирает markdown&#8209;спеку, которую может прочитать агент.",
+            "Вытаскивает переменные, стили и компоненты из Figma и кладёт их в markdown, который читает агент.",
             "Extracts variables, styles, and components from Figma into a markdown spec an agent can read.",
         ),
         "meta": (
@@ -207,7 +207,7 @@ ds-eval compare RUN_FIXTURE RUN_NAIVE</code></pre>
         "name": "ds-lint",
         "kicker": ("Сканер", "Scanner"),
         "desc": (
-            "Находит захардкоженные цвета, отступы и&nbsp;шрифты в&nbsp;коде и&nbsp;предлагает замену на&nbsp;токены.",
+            "Находит в коде цвета, отступы и шрифты, прописанные вручную. Предлагает токен на замену.",
             "Finds hardcoded colors, spacing, and fonts in code and suggests a token instead.",
         ),
         "meta": (
@@ -250,7 +250,7 @@ ds-lint src/ --tokens tokens.css --strict</code></pre>
         "name": "ds-coverage",
         "kicker": ("Сканер", "Scanner"),
         "desc": (
-            "Считает, какая часть кода реально импортирует дизайн&#8209;систему, и&nbsp;где компоненты написаны заново.",
+            "Считает, какая часть кода реально импортирует дизайн-систему, и где компоненты написаны заново.",
             "Measures how much of the codebase actually imports the design system, and where components were rebuilt locally.",
         ),
         "meta": (
@@ -299,7 +299,7 @@ ds-coverage src/ --ds @acme/ui --inventory components.json --min 70</code></pre>
         "name": "ds-health",
         "kicker": ("Веб-тул", "Web tool"),
         "desc": (
-            "Вставляешь URL живого сайта и&nbsp;получаешь отчёт: сколько на&nbsp;странице цветов, шрифтов, отступов и&nbsp;радиусов.",
+            "Даёшь URL. На выходе видно, сколько на странице цветов, шрифтов, отступов и радиусов.",
             "Paste a live URL and get a report on how many colors, type styles, spacings, and radii the page actually uses.",
         ),
         "meta": (

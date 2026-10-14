@@ -1,0 +1,73 @@
+<section id="measures"><h2>Что считает</h2>
+<ul class="feature-list"><li><strong>Цвета</strong><span>Сколько цветов текста и фона на странице. Меньше разных значений и больше CSS-переменных — страница ближе к одной шкале.</span></li><li><strong>Типографика</strong><span>Семейства, размеры и начертания видимого текста. Чем их меньше, тем ближе текст к одной шкале.</span></li><li><strong>Отступы</strong><span>Сколько разных значений padding и gap. Чем их меньше, тем ближе отступы к одной шкале.</span></li><li><strong>Радиус</strong><span>Сколько ненулевых радиусов. Чем их меньше, тем ближе радиусы к одной шкале.</span></li></ul></section>
+<section id="run"><h2>Запуск</h2>
+<pre><code>git clone https://github.com/AndrewAntoshkin/ds-health.git
+cd ds-health
+npm install
+npm start</code></pre>
+<p>Открой <code>http://localhost:3000</code>. Если порт занят:</p>
+<pre><code>PORT=3002 npm start</code></pre>
+<p>Если Playwright не находит браузер:</p>
+<pre><code>npx playwright install chromium</code></pre></section>
+<section id="how"><h2>Как устроено</h2>
+<p>Инструмент открывает страницу в Chromium через Playwright. Берёт видимые элементы и читает стили, которые браузер уже применил. Потом отдаёт баллы, сигналы и рекомендации.</p>
+<pre><code>URL → Playwright (Chromium) → getComputedStyle() on sampled elements
+→ Count unique colors, fonts, spacing, radii
+→ Score each category (0–100)
+→ Generate executive summary + priorities + recommendations</code></pre></section>
+<section id="api"><h2>API</h2>
+<h3>POST /api/analyze</h3>
+<pre><code>curl -X POST http://localhost:3000/api/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"url": "https://example.com"}'</code></pre>
+<h3>Запрос</h3>
+<table><thead><tr><th>Поле</th><th>Тип</th><th>Описание</th></tr></thead><tbody><tr><td>url</td><td>строка</td><td>Публичный HTTP/HTTPS-адрес страницы</td></tr></tbody></table>
+<h3>Ответ</h3>
+<table><thead><tr><th>Поле</th><th>Тип</th><th>Описание</th></tr></thead><tbody><tr><td>health.overall</td><td>число</td><td>Средний балл от 0 до 100</td></tr><tr><td>health.color</td><td>число</td><td>Насколько цвета близки к одной шкале</td></tr><tr><td>health.typography</td><td>число</td><td>Насколько типографика близка к одной шкале</td></tr><tr><td>health.spacing</td><td>число</td><td>Насколько отступы близки к одной шкале</td></tr><tr><td>health.radius</td><td>число</td><td>Насколько радиусы близки к одной шкале</td></tr><tr><td>health.label</td><td>строка</td><td>«Близко к шкале», «Небольшой разброс» и другие</td></tr><tr><td>executiveSummary</td><td>строка</td><td>Короткий вывод обычным языком</td></tr><tr><td>priorities</td><td>массив</td><td>Что чинить первым</td></tr><tr><td>recommendations</td><td>массив</td><td>Конкретные следующие шаги</td></tr><tr><td>signals</td><td>массив</td><td>Отдельные наблюдения</td></tr><tr><td>topValues</td><td>объект</td><td>Самые частые значения по категориям</td></tr></tbody></table>
+<h3>GET /health</h3>
+<p>Возвращает <code>{ "ok": true }</code> — удобно для проверки, что сервис жив.</p></section>
+<section id="healthy"><h2>Пример страницы, близкой к одной шкале</h2>
+<p>Результат разбора <code>barvian.me</code> — минималистичный сайт:</p>
+<table><thead><tr><th>Значение</th><th>Что значит</th></tr></thead><tbody><tr><td>100</td><td>Цвет</td></tr><tr><td>100</td><td>Типографика</td></tr><tr><td>100</td><td>Отступы</td></tr><tr><td>100</td><td>Скругление</td></tr></tbody></table>
+<pre><code>{
+"elementsSampled": 69,
+"textNodesSampled": 41,
+"cssVariables": 4,
+"textColors": 3,
+"backgroundColors": 3,
+"fontFamilies": 1,
+"fontSizes": 1,
+"fontWeights": 2,
+"spacingValues": 4,
+"radiusValues": 1
+}
+
+Executive summary:
+"This page looks healthy. 4 CSS variables were
+detected, and no major consistency issues stood
+out in the sampled page."</code></pre></section>
+<section id="fragmented"><h2>Пример раздробленного сайта</h2>
+<p>Страница с кучей разных значений — обычная история легаси и быстрых прототипов:</p>
+<table><thead><tr><th>Значение</th><th>Что значит</th></tr></thead><tbody><tr><td>65</td><td>Цвет</td></tr><tr><td>45</td><td>Типографика</td></tr><tr><td>70</td><td>Отступы</td></tr><tr><td>90</td><td>Скругление</td></tr></tbody></table>
+<pre><code>Priority issues:
+⚠ 14 text colors detected — consider consolidating
+⚠ 4 font families in use — reduce to 1–2
+⚠ 8 font sizes found — align to a type scale
+⚠ No CSS variables detected — consider tokenizing
+
+Recommendations:
+→ Audit text colors and create a semantic palette
+→ Standardize on 1–2 font families
+→ Define a spacing scale (4, 8, 12, 16, 24, 32)
+→ Introduce CSS custom properties for tokens</code></pre></section>
+<section id="report"><h2>Как читать отчёт</h2>
+<p>Удобный порядок чтения: <strong>сначала балл</strong>, потом короткий вывод, потом приоритеты, потом сырые значения.</p>
+<table><thead><tr><th>Раздел</th><th>Что показывает</th></tr></thead><tbody><tr><td>Общий балл</td><td>Среднее четырёх оценок. Быстро видно, прошло или нет.</td></tr><tr><td>Короткий вывод</td><td>Вывод для тех, кто не читает сырые цифры</td></tr><tr><td>Приоритеты</td><td>Что чинить первым — с наибольшим эффектом</td></tr><tr><td>Рекомендации</td><td>Практичные шаги, которые можно поставить в спринт</td></tr><tr><td>Сигналы</td><td>Отдельные наблюдения. По ним видно, откуда балл.</td></tr><tr><td>Частые значения</td><td>Самые частые цвета, размеры и отступы. Их в первую очередь стоит собрать в токены.</td></tr><tr><td>Группы похожих значений</td><td>Почти одинаковые значения собраны в группы.</td></tr></tbody></table></section>
+<section id="scores"><h2>Шкала</h2>
+<table><thead><tr><th>Диапазон</th><th>Метка</th><th>Что значит</th></tr></thead><tbody><tr><td>90–100</td><td>Близко к шкале</td><td>Мало цветов, немного вариантов шрифта, небольшой набор отступов</td></tr><tr><td>70–89</td><td>Небольшой разброс</td><td>Есть разброс или несколько разовых значений</td></tr><tr><td>50–69</td><td>Нужно внимание</td><td>Визуальная система расползается — стоит посмотреть ближе</td></tr><tr><td>0–49</td><td>Раздробленный</td><td>Слишком много разных значений — слоя токенов, скорее всего, нет</td></tr></tbody></table></section>
+<section id="pipeline"><h2>Цепочка</h2>
+<p>ds-health проверяет страницу, когда интерфейс уже на проде. Это шаг после модели:</p>
+<pre><code>ds-context prepares the pack
+ds-eval scores generated UI
+ds-health reads the live page ← you are here</code></pre></section>
+<p><a href="https://github.com/AndrewAntoshkin/ds-health" target="_blank" rel="noopener noreferrer">Код</a></p>

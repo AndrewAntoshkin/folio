@@ -1,0 +1,93 @@
+<section id="why"><h2>Зачем это есть</h2>
+<p>Библиотеку собирают, а доказать, что ей пользуются, не могут. За год удовлетворённость может упасть с 68% до 31%.</p>
+<p>ds-coverage считает, какие компоненты код импортирует, как часто и что рядом написано заново.</p></section>
+<section id="install"><h2>Установка</h2>
+<pre><code># Run directly (no install)
+npx ds-coverage src/ --ds @acme/ui
+
+# Or install globally
+npm i -g ds-coverage</code></pre></section>
+<section id="usage"><h2>Запуск</h2>
+<pre><code># Basic scan
+ds-coverage src/ --ds @acme/ui
+
+# Multiple packages
+ds-coverage . --ds @acme/ui,@acme/icons
+
+# With component inventory (finds unused)
+ds-coverage src/ --ds @acme/ui --inventory components.json
+
+# Markdown report
+ds-coverage src/ --ds @acme/ui --format markdown --out coverage.md
+
+# CI threshold (fail below 70%)
+ds-coverage src/ --ds @acme/ui --inventory components.json --min 70</code></pre></section>
+<section id="cli"><h2>Параметры</h2>
+<table><thead><tr><th>Флаг</th><th>По умолчанию</th><th>Описание</th></tr></thead><tbody><tr><td>[path]</td><td>.</td><td>Папка для проверки</td></tr><tr><td>--ds &lt;packages&gt;</td><td>—</td><td>Имена пакетов системы через запятую (обязательно)</td></tr><tr><td>--inventory &lt;file&gt;</td><td>—</td><td>JSON со всеми компонентами системы</td></tr><tr><td>--format &lt;type&gt;</td><td>terminal</td><td>terminal | markdown | json</td></tr><tr><td>--out &lt;file&gt;</td><td>—</td><td>Записать отчёт в файл</td></tr><tr><td>--min &lt;percent&gt;</td><td>—</td><td>Ошибка, если покрытие ниже порога</td></tr><tr><td>--version</td><td></td><td>Показать версию</td></tr><tr><td>--help</td><td></td><td>Показать справку</td></tr></tbody></table></section>
+<section id="metrics"><h2>Что измеряет</h2>
+<ul class="feature-list"><li><strong>Используемые компоненты</strong><span>Сколько компонентов системы встречается в импортах</span></li><li><strong>Всего импортов</strong><span>Сколько раз систему импортировали</span></li><li><strong>Локальные компоненты</strong><span>Компоненты из относительных путей — кандидаты в систему</span></li><li><strong>Дубли</strong><span>Локальные компоненты с тем же именем, что у системных — скорее всего написаны заново</span></li><li><strong>Неиспользуемые</strong><span>Компоненты системы, которые нигде не импортированы — кандидаты на удаление (нужен --inventory)</span></li></ul></section>
+<section id="output-good"><h2>Системой пользуются</h2>
+<p>Команда, которая системой реально пользуется:</p>
+<table><thead><tr><th>Значение</th><th>Что значит</th></tr></thead><tbody><tr><td>34</td><td>Компоненты системы</td></tr><tr><td>87%</td><td>Покрытие</td></tr><tr><td>0</td><td>Дубли</td></tr></tbody></table>
+<pre><code>Design System Coverage Report
+──────────────────────────────
+
+Package: @acme/ui
+Components used: 34 of 39 (87%)
+Total imports: 412
+Unused components: Alert, Breadcrumb, Stepper, Timeline, Tree
+
+─────────────────────────────
+Files scanned: 186
+DS component uses: 412
+Custom components: 12
+
+Top used:
+Button (142)
+Text (98)
+Card (67)
+Input (45)
+Badge (38)</code></pre></section>
+<section id="output-bad"><h2>Систему обходят</h2>
+<p>Код, где систему обходят:</p>
+<table><thead><tr><th>Значение</th><th>Что значит</th></tr></thead><tbody><tr><td>12</td><td>Компоненты системы</td></tr><tr><td>31%</td><td>Покрытие</td></tr><tr><td>5</td><td>Дубли</td></tr></tbody></table>
+<pre><code>Package: @acme/ui
+Components used: 12 of 39 (31%)
+Total imports: 54
+Unused components: 27 components never imported
+
+─────────────────────────────
+Files scanned: 340
+DS component uses: 54
+Custom components: 89
+⚠ Possible dupes: Button, Modal, Badge, Card, Input
+
+Least used (1-2 imports):
+Tooltip (2)
+Accordion (1)
+Tabs (1)</code></pre></section>
+<section id="inventory"><h2>Инвентарь</h2>
+<p>Чтобы найти неиспользуемые компоненты, передай JSON со всеми экспортами пакета системы:</p>
+<h3>Формат массива</h3>
+<pre><code>["Button", "Card", "Modal", "Tooltip", "Badge", "Input", "Select"]</code></pre>
+<h3>Формат объекта</h3>
+<pre><code>{
+  "components": ["Button", "Card", "Modal", "Tooltip", "Badge"]
+}</code></pre>
+<p>Можно указать index-файл пакета: ds-coverage сам разберёт экспорты.</p></section>
+<section id="ci"><h2>CI</h2>
+<pre><code># GitHub Actions
+- name: Check DS adoption
+  run: npx ds-coverage src/ --ds @acme/ui --inventory components.json --min 60
+
+# Generate PR report
+- name: DS Coverage Report
+  run: npx ds-coverage src/ --ds @acme/ui --format markdown --out coverage.md</code></pre>
+<p><code>--min</code> завершается с кодом 1, если покрытие ниже порога.</p></section>
+<section id="pipeline"><h2>Цепочка</h2>
+<p>ds-coverage считает, импортирует ли код ту систему, которую показали модели:</p>
+<pre><code>ds-lint blocks raw values
+ds-context packs the system
+ds-coverage counts real imports ← you are here
+ds-health reads the live page</code></pre></section>
+<p><a href="https://github.com/AndrewAntoshkin/ds-coverage" target="_blank" rel="noopener noreferrer">Код</a></p>
