@@ -8,6 +8,24 @@ def href(slug: str, lang: str) -> str:
 
 PROJECTS = [
     {
+        "slug": "agent-ui",
+        "icon": "ui",
+        "name": "agent-ui",
+        "kicker": ("Компоненты", "Components"),
+        "desc": (
+            "Компоненты для AI&#8209;интерфейсов: ввод промпта, вызов инструмента, запрос разрешения, статус агента. Каждый ставится вместе с&nbsp;правилом для агента.",
+            "Components for AI interfaces: prompt input, tool call, approval, agent status. Each one installs with a rule for the coding agent.",
+        ),
+        "meta": (
+            "Библиотека компонентов для AI-интерфейсов, которыми агент умеет пользоваться.",
+            "A component library for AI interfaces that coding agents know how to use.",
+        ),
+        "lead": ("", ""),
+        "github": ("/agent-ui/", "/agent-ui/en.html"),
+        "github_label": ("Открыть компоненты", "Open the components"),
+        "legacy": "",
+    },
+    {
         "slug": "ds-eval",
         "icon": "ev",
         "name": "ds-eval",
@@ -366,8 +384,9 @@ def page_content(project: dict, index: int, lang: str, visual: str) -> str:
     i = _lang_index(lang)
     github = ""
     if project["github"]:
+        gh = project["github"][i] if isinstance(project["github"], tuple) else project["github"]
         github = (
-            f'<p><a href="{project["github"]}" target="_blank" rel="noopener noreferrer">'
+            f'<p><a href="{gh}" target="_blank" rel="noopener noreferrer">'
             f'{project["github_label"][i]}</a></p>'
         )
     preview = ""

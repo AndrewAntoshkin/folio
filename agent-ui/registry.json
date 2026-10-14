@@ -1,0 +1,390 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "agent-ui",
+  "homepage": "https://antoshkin.tech/agent-ui/",
+  "items": [
+    {
+      "name": "prompt-input",
+      "type": "registry:component",
+      "title": "Prompt Input",
+      "description": "Auto-growing prompt composer with send/stop, attachments and a toolbar slot.",
+      "dependencies": [
+        "motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/agent-ui/prompt-input.tsx",
+          "type": "registry:component",
+          "target": "components/agent-ui/prompt-input.tsx"
+        },
+        {
+          "path": "registry/rules/prompt-input.mdc",
+          "type": "registry:file",
+          "target": "~/.cursor/rules/agent-ui-prompt-input.mdc"
+        }
+      ]
+    },
+    {
+      "name": "message",
+      "type": "registry:component",
+      "title": "Message",
+      "description": "User and assistant turns with a streaming caret and hover actions.",
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/agent-ui/message.tsx",
+          "type": "registry:component",
+          "target": "components/agent-ui/message.tsx"
+        },
+        {
+          "path": "registry/rules/message.mdc",
+          "type": "registry:file",
+          "target": "~/.cursor/rules/agent-ui-message.mdc"
+        }
+      ]
+    },
+    {
+      "name": "thinking",
+      "type": "registry:component",
+      "title": "Thinking",
+      "description": "Shimmering reasoning label that collapses into \"Thought for Ns\".",
+      "dependencies": [
+        "motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/agent-ui/thinking.tsx",
+          "type": "registry:component",
+          "target": "components/agent-ui/thinking.tsx"
+        },
+        {
+          "path": "registry/rules/thinking.mdc",
+          "type": "registry:file",
+          "target": "~/.cursor/rules/agent-ui-thinking.mdc"
+        }
+      ]
+    },
+    {
+      "name": "tool-call",
+      "type": "registry:component",
+      "title": "Tool Call",
+      "description": "Collapsible card for one agent tool call: status, arguments, output, error.",
+      "dependencies": [
+        "motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/agent-ui/tool-call.tsx",
+          "type": "registry:component",
+          "target": "components/agent-ui/tool-call.tsx"
+        },
+        {
+          "path": "registry/rules/tool-call.mdc",
+          "type": "registry:file",
+          "target": "~/.cursor/rules/agent-ui-tool-call.mdc"
+        }
+      ]
+    },
+    {
+      "name": "approval",
+      "type": "registry:component",
+      "title": "Approval",
+      "description": "Human-in-the-loop permission card that collapses into a one-line record.",
+      "dependencies": [
+        "motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/agent-ui/approval.tsx",
+          "type": "registry:component",
+          "target": "components/agent-ui/approval.tsx"
+        },
+        {
+          "path": "registry/rules/approval.mdc",
+          "type": "registry:file",
+          "target": "~/.cursor/rules/agent-ui-approval.mdc"
+        }
+      ]
+    },
+    {
+      "name": "plan",
+      "type": "registry:component",
+      "title": "Plan",
+      "description": "Ordered steps the assistant proposes, with pending, running, done and failed states.",
+      "dependencies": [
+        "motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/agent-ui/plan.tsx",
+          "type": "registry:component",
+          "target": "components/agent-ui/plan.tsx"
+        },
+        {
+          "path": "registry/rules/plan.mdc",
+          "type": "registry:file",
+          "target": "~/.cursor/rules/agent-ui-plan.mdc"
+        }
+      ]
+    },
+    {
+      "name": "choice",
+      "type": "registry:component",
+      "title": "Choice",
+      "description": "A question from the assistant with two to five mutually exclusive options.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/agent-ui/choice.tsx",
+          "type": "registry:component",
+          "target": "components/agent-ui/choice.tsx"
+        },
+        {
+          "path": "registry/rules/choice.mdc",
+          "type": "registry:file",
+          "target": "~/.cursor/rules/agent-ui-choice.mdc"
+        }
+      ]
+    },
+    {
+      "name": "data-table",
+      "type": "registry:component",
+      "title": "Data Table",
+      "description": "A table for comparisons and tool results inside an assistant answer.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/agent-ui/data-table.tsx",
+          "type": "registry:component",
+          "target": "components/agent-ui/data-table.tsx"
+        },
+        {
+          "path": "registry/rules/data-table.mdc",
+          "type": "registry:file",
+          "target": "~/.cursor/rules/agent-ui-data-table.mdc"
+        }
+      ]
+    },
+    {
+      "name": "answer-chart",
+      "type": "registry:component",
+      "title": "Answer Chart",
+      "description": "One bar or line series, up to eight points, colored with the primary token.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/agent-ui/answer-chart.tsx",
+          "type": "registry:component",
+          "target": "components/agent-ui/answer-chart.tsx"
+        },
+        {
+          "path": "registry/rules/answer-chart.mdc",
+          "type": "registry:file",
+          "target": "~/.cursor/rules/agent-ui-answer-chart.mdc"
+        }
+      ]
+    },
+    {
+      "name": "code-block",
+      "type": "registry:component",
+      "title": "Code Block",
+      "description": "Source or a unified diff in an answer, with a filename and a copy button.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/agent-ui/code-block.tsx",
+          "type": "registry:component",
+          "target": "components/agent-ui/code-block.tsx"
+        },
+        {
+          "path": "registry/rules/code-block.mdc",
+          "type": "registry:file",
+          "target": "~/.cursor/rules/agent-ui-code-block.mdc"
+        }
+      ]
+    },
+    {
+      "name": "sources",
+      "type": "registry:component",
+      "title": "Sources",
+      "description": "Citations under an answer: title, address and a short excerpt.",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/agent-ui/sources.tsx",
+          "type": "registry:component",
+          "target": "components/agent-ui/sources.tsx"
+        },
+        {
+          "path": "registry/rules/sources.mdc",
+          "type": "registry:file",
+          "target": "~/.cursor/rules/agent-ui-sources.mdc"
+        }
+      ]
+    },
+    {
+      "name": "artifact",
+      "type": "registry:component",
+      "title": "Artifact",
+      "description": "A file or page card in the thread that opens its contents in a side panel.",
+      "dependencies": [
+        "motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/agent-ui/artifact.tsx",
+          "type": "registry:component",
+          "target": "components/agent-ui/artifact.tsx"
+        },
+        {
+          "path": "registry/rules/artifact.mdc",
+          "type": "registry:file",
+          "target": "~/.cursor/rules/agent-ui-artifact.mdc"
+        }
+      ]
+    },
+    {
+      "name": "context-meter",
+      "type": "registry:component",
+      "title": "Context Meter",
+      "description": "Ring showing context-window token usage, with a warning threshold.",
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/agent-ui/context-meter.tsx",
+          "type": "registry:component",
+          "target": "components/agent-ui/context-meter.tsx"
+        },
+        {
+          "path": "registry/rules/context-meter.mdc",
+          "type": "registry:file",
+          "target": "~/.cursor/rules/agent-ui-context-meter.mdc"
+        }
+      ]
+    },
+    {
+      "name": "suggestions",
+      "type": "registry:component",
+      "title": "Suggestions",
+      "description": "Staggered starter prompts and follow-up chips.",
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/agent-ui/suggestions.tsx",
+          "type": "registry:component",
+          "target": "components/agent-ui/suggestions.tsx"
+        },
+        {
+          "path": "registry/rules/suggestions.mdc",
+          "type": "registry:file",
+          "target": "~/.cursor/rules/agent-ui-suggestions.mdc"
+        }
+      ]
+    },
+    {
+      "name": "agent-dock",
+      "type": "registry:component",
+      "title": "Agent Dock",
+      "description": "Floating status dock for a running agent that expands into its step list.",
+      "dependencies": [
+        "motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "registry/agent-ui/agent-dock.tsx",
+          "type": "registry:component",
+          "target": "components/agent-ui/agent-dock.tsx"
+        },
+        {
+          "path": "registry/rules/agent-dock.mdc",
+          "type": "registry:file",
+          "target": "~/.cursor/rules/agent-ui-agent-dock.mdc"
+        }
+      ]
+    },
+    {
+      "name": "all",
+      "type": "registry:block",
+      "title": "All agent-ui components",
+      "description": "Every agent-ui component with its agent rule.",
+      "registryDependencies": [
+        "https://antoshkin.tech/agent-ui/r/prompt-input.json",
+        "https://antoshkin.tech/agent-ui/r/message.json",
+        "https://antoshkin.tech/agent-ui/r/thinking.json",
+        "https://antoshkin.tech/agent-ui/r/tool-call.json",
+        "https://antoshkin.tech/agent-ui/r/approval.json",
+        "https://antoshkin.tech/agent-ui/r/plan.json",
+        "https://antoshkin.tech/agent-ui/r/choice.json",
+        "https://antoshkin.tech/agent-ui/r/data-table.json",
+        "https://antoshkin.tech/agent-ui/r/answer-chart.json",
+        "https://antoshkin.tech/agent-ui/r/code-block.json",
+        "https://antoshkin.tech/agent-ui/r/sources.json",
+        "https://antoshkin.tech/agent-ui/r/artifact.json",
+        "https://antoshkin.tech/agent-ui/r/context-meter.json",
+        "https://antoshkin.tech/agent-ui/r/suggestions.json",
+        "https://antoshkin.tech/agent-ui/r/agent-dock.json"
+      ],
+      "files": []
+    }
+  ]
+}

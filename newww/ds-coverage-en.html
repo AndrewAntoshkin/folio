@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" class="nojs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ds-coverage — Andrew Antoshkin</title>
+  <script>document.documentElement.classList.remove('nojs')</script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="dock"><nav aria-label="Navigation"><i aria-hidden="true"></i><a href="en.html" aria-label="Home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg></a><a href="projects-en.html" aria-label="Projects" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 13h16"/></svg></a><a href="writing-en.html" aria-label="Writing"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M14 5.5 18.5 10 9 19.5H4.5V15L14 5.5Z"/><path d="m12 7.5 4.5 4.5"/></svg></a><a href="approach-en.html" aria-label="Approach"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.25"/><path d="M5.5 19.5c1.2-3 3.4-4.5 6.5-4.5s5.3 1.5 6.5 4.5"/></svg></a><a href="collab-en.html" aria-label="Contact"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></nav></div>
+<nav class="langs" aria-label="Language"><a href="ds-coverage.html">Ru</a><a href="ds-coverage-en.html" aria-current="page">En</a></nav>
+<a class="float" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Say hello<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+<main><div class="col"><article class="art">
+  <header class="art-top">
+    <a class="back" href="projects-en.html" data-r>‹ Back</a>
+    <h1 data-split>ds-coverage</h1>
+    <div class="tags" data-r style="--d:.25s"><span class="tag">Scanner</span><span class="tag">open source</span></div>
+  </header>
+  <div class="art-intro" data-r style="--d:.3s"><p>Measure how much of your codebase actually uses your design system. Find unused components, duplicates, and adoption gaps.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="https://github.com/AndrewAntoshkin/ds-coverage" target="_blank" rel="noopener">Repository on GitHub</a></div></div>
+  <div class="prose"><div class="pcover "><div class="bg" style="background-image:url(img/gen/ds-coverage.jpg)"></div><span class="plogo">ds-coverage</span></div><section id="why"><h2>Why This Exists</h2>
+<p>Adoption is the #1 challenge in design systems. Teams build component libraries but can't prove they're being used. Satisfaction can drop from 68% to 31% within a year while "adoption" metrics look healthy.</p>
+<p>ds-coverage gives you real numbers: which components are imported, how often, and what's being reimplemented locally instead.</p></section>
+<section id="install"><h2>Installation</h2>
+<pre><code># Run directly (no install)
+npx ds-coverage src/ --ds @acme/ui
+
+# Or install globally
+npm i -g ds-coverage</code></pre></section>
+<section id="usage"><h2>Usage</h2>
+<pre><code># Basic scan
+ds-coverage src/ --ds @acme/ui
+
+# Multiple packages
+ds-coverage . --ds @acme/ui,@acme/icons
+
+# With component inventory (finds unused)
+ds-coverage src/ --ds @acme/ui --inventory components.json
+
+# Markdown report
+ds-coverage src/ --ds @acme/ui --format markdown --out coverage.md
+
+# CI threshold (fail below 70%)
+ds-coverage src/ --ds @acme/ui --inventory components.json --min 70</code></pre></section>
+<section id="cli"><h2>CLI Options</h2>
+<table><thead><tr><th>Flag</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td>[path]</td><td>.</td><td>Directory to scan</td></tr><tr><td>--ds &lt;packages&gt;</td><td>—</td><td>Comma-separated DS package names (required)</td></tr><tr><td>--inventory &lt;file&gt;</td><td>—</td><td>JSON file listing all DS components</td></tr><tr><td>--format &lt;type&gt;</td><td>terminal</td><td>terminal | markdown | json</td></tr><tr><td>--out &lt;file&gt;</td><td>—</td><td>Write report to file</td></tr><tr><td>--min &lt;percent&gt;</td><td>—</td><td>Fail if coverage below threshold</td></tr><tr><td>--version</td><td></td><td>Print version</td></tr><tr><td>--help</td><td></td><td>Print help</td></tr></tbody></table></section>
+<section id="metrics"><h2>What It Measures</h2>
+<ul class="feature-list"><li><strong>Components Used</strong><span>How many DS components appear in import statements across the codebase</span></li><li><strong>Total Imports</strong><span>Total number of DS import occurrences — measures adoption depth</span></li><li><strong>Custom Components</strong><span>Local components imported from relative paths — potential DS candidates</span></li><li><strong>Duplicates</strong><span>Local components with the same name as DS components — likely reimplementations</span></li><li><strong>Unused Components</strong><span>DS components never imported anywhere — deprecation candidates (requires --inventory)</span></li></ul></section>
+<section id="output-good"><h2>Healthy Codebase</h2>
+<p>A team that actively uses their design system:</p>
+<table><thead><tr><th>Score</th><th>Meaning</th></tr></thead><tbody><tr><td>34</td><td>DS Components</td></tr><tr><td>87%</td><td>Coverage</td></tr><tr><td>0</td><td>Duplicates</td></tr></tbody></table>
+<pre><code>Design System Coverage Report
+──────────────────────────────
+
+Package: @acme/ui
+Components used: 34 of 39 (87%)
+Total imports: 412
+Unused components: Alert, Breadcrumb, Stepper, Timeline, Tree
+
+─────────────────────────────
+Files scanned: 186
+DS component uses: 412
+Custom components: 12
+
+Top used:
+Button (142)
+Text (98)
+Card (67)
+Input (45)
+Badge (38)</code></pre></section>
+<section id="output-bad"><h2>Low Adoption</h2>
+<p>A codebase where teams bypass the design system:</p>
+<table><thead><tr><th>Score</th><th>Meaning</th></tr></thead><tbody><tr><td>12</td><td>DS Components</td></tr><tr><td>31%</td><td>Coverage</td></tr><tr><td>5</td><td>Duplicates</td></tr></tbody></table>
+<pre><code>Package: @acme/ui
+Components used: 12 of 39 (31%)
+Total imports: 54
+Unused components: 27 components never imported
+
+─────────────────────────────
+Files scanned: 340
+DS component uses: 54
+Custom components: 89
+⚠ Possible dupes: Button, Modal, Badge, Card, Input
+
+Least used (1-2 imports):
+Tooltip (2)
+Accordion (1)
+Tabs (1)</code></pre></section>
+<section id="inventory"><h2>Inventory File</h2>
+<p>To detect unused components, provide a JSON file listing all exports from your DS package:</p>
+<h3>Array format</h3>
+<pre><code>["Button", "Card", "Modal", "Tooltip", "Badge", "Input", "Select"]</code></pre>
+<h3>Object format</h3>
+<pre><code>{
+  "components": ["Button", "Card", "Modal", "Tooltip", "Badge"]
+}</code></pre>
+<p>You can also point to the index file of your DS package — ds-coverage will parse its exports.</p></section>
+<section id="ci"><h2>CI Integration</h2>
+<pre><code># GitHub Actions
+- name: Check DS adoption
+  run: npx ds-coverage src/ --ds @acme/ui --inventory components.json --min 60
+
+# Generate PR report
+- name: DS Coverage Report
+  run: npx ds-coverage src/ --ds @acme/ui --format markdown --out coverage.md</code></pre>
+<p><code>--min</code> exits with code 1 when coverage is below the threshold.</p></section>
+<section id="pipeline"><h2>Pipeline</h2>
+<p>ds-coverage counts whether the codebase imports the system the model was told to use:</p>
+<pre><code>ds-lint blocks raw values
+ds-context packs the system
+ds-coverage counts real imports ← you are here
+ds-health reads the live page</code></pre></section>
+<p><a href="https://github.com/AndrewAntoshkin/ds-coverage" target="_blank" rel="noopener noreferrer">Source</a></p></div>
+</article></div></main>
+  <section class="cta" data-r>
+    <div class="cta-grid">
+      <div class="cta-card">
+        <div class="shader" aria-hidden="true"><i></i><i></i><i></i></div>
+        <span class="tag top">Work together</span>
+        <div class="mid"><h2>Are you ready to take the next step?</h2></div>
+        <div class="bot"><p>Have a problem you want to ship? Write me and we will shape the next step together.</p></div>
+      </div>
+      <form class="cta-form" data-subject="Collaboration">
+        <input name="name" required placeholder="Your name" autocomplete="name">
+        <input name="email" type="email" required placeholder="Your email" autocomplete="email">
+        <textarea name="question" required placeholder="How can I help?"></textarea>
+        <button type="submit">Send a message</button>
+      </form>
+    </div>
+  </section>
+  <footer class="foot">
+    <div class="foot-art" aria-hidden="true"><img src="img/gen/footer.jpg" alt=""></div>
+    <div class="foot-in">
+      <h2 data-r><span>Let’s create something</span><br>that actually ships.</h2>
+      <div class="social" data-r style="--d:.1s"><a href="https://t.me/andrewaitken" target="_blank" rel="noopener" aria-label="Telegram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M21 4 3 11l5.5 2L10 19l3-4 4.5 3.5L21 4Z"/><path d="m8.5 13 8-5"/></svg></a><a href="https://github.com/AndrewAntoshkin" target="_blank" rel="noopener" aria-label="GitHub"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M9 19c-4 1.2-4-2-5.5-2.5M15 21v-3.5c0-1 .1-1.500-.5-2.200 2.800-.3 5.500-1.400 5.500-6a4.700 4.700 0 0 0-1.300-3.300 4.400 4.400 0 0 0-.1-3.300s-1-.3-3.400 1.300a11.700 11.700 0 0 0-6.200 0C6.600 2.900 5.600 3.200 5.600 3.200a4.400 4.400 0 0 0-.1 3.300A4.700 4.700 0 0 0 4.200 9.800c0 4.600 2.700 5.700 5.500 6-.6.700-.6 1.300-.6 2.200V21"/></svg></a><a href="mailto:andrew.antoshkin@gmail.com" aria-label="Email"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></div>
+      <div class="cols"><div><p>Pages</p><a href="en.html">Home</a><a href="projects-en.html">Projects</a><a href="writing-en.html">Writing</a><a href="approach-en.html">Approach</a><a href="collab-en.html">Collaboration</a></div><div><p>Projects</p><a href="agent-ui-en.html">agent-ui</a><a href="ds-eval-en.html">ds-eval</a><a href="ds-context-en.html">ds-context</a><a href="ui-repair-en.html">ui-repair</a><a href="prompt-regress-en.html">prompt-regress</a></div><div><p>Writing</p><a href="apres-prompt-en.html">Après-prompt</a><a href="ai-changes-processes-en.html">AI Is Not Changing Professions. AI Is Changing Processes</a><a href="halo-working-memory-en.html">Halo</a><a href="cursor-figma-en.html">Cursor + Figma in 2026</a><a href="design-md-en.html">DESIGN.md in 2026</a></div></div>
+      <div class="legal"><span>© Andrew Antoshkin, 2026</span><span>Built by hand, no templates</span></div>
+    </div>
+  </footer>
+  <script src="motion.js"></script>
+</body></html>

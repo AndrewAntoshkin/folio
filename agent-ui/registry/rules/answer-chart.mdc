@@ -1,0 +1,42 @@
+---
+description: agent-ui AnswerChart. Use when an assistant answer shows one bar or line series of up to eight points. Not for dashboards.
+alwaysApply: false
+---
+
+# AnswerChart
+
+`import { AnswerChart } from "@/components/agent-ui/answer-chart"`
+
+## Use for
+- One series in an assistant answer, when the shape matters: a bar comparison or a line over a short sequence.
+
+## Do not use for
+- Dashboards, pie charts, scatter plots, or a second series. Use the project's chart.
+- Exact values the reader must compare. Use `DataTable`.
+- More than eight points. Aggregate or use a table.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `data` | `{ label, value }[]` | Required. Up to eight points. `value` is a number. |
+| `type` | `"bar" \| "line"` | Default `"bar"`. Use `"line"` only when the order is a sequence. |
+| `caption` | `string` | One line under the chart saying what the numbers are. |
+| `empty` | `string` | Shown when `data` is empty. |
+
+## Example
+```tsx
+<AnswerChart
+  type="bar"
+  caption="Violations per file"
+  data={[
+    { label: "settings", value: 6 },
+    { label: "nav", value: 2 },
+    { label: "dialog", value: 1 },
+  ]}
+/>
+```
+
+## Rules
+- There is no color prop. Bars and the line use the primary token, so they follow the theme.
+- Render it as a sibling of `Message`. Do not draw bars with styled divs inside the message text.
+- If a point has no value, omit it. Do not send zero unless zero is a real measurement.

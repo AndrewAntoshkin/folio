@@ -1,0 +1,43 @@
+---
+description: agent-ui DataTable. Use when an assistant answer compares rows, shows a tool result as columns, or lists records with headers. Not for page layout.
+alwaysApply: false
+---
+
+# DataTable
+
+`import { DataTable } from "@/components/agent-ui/data-table"`
+
+## Use for
+- Tabular data inside an assistant answer: comparisons, file lists, tool results with more than one column.
+
+## Do not use for
+- Page layout, dashboards, or settings screens. Use the project's table.
+- A single key and value. Write a sentence.
+- Code. Use `CodeBlock`.
+- A chart of the same numbers, when the values themselves matter more than the shape. Prefer this table.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `columns` | `{ key, header, align?, mono? }[]` | Required. `align` is `"left"` or `"right"`. `mono` for ids and paths. |
+| `rows` | `Record<string, ReactNode>[]` | Required. Keys match `columns[].key`. |
+| `caption` | `string` | One line above the table: what the rows are. |
+| `empty` | `string` | Shown when `rows` is empty. |
+
+## Example
+```tsx
+<DataTable
+  caption="Token replacements"
+  columns={[
+    { key: "file", header: "File", mono: true },
+    { key: "was", header: "Was", mono: true },
+    { key: "now", header: "Now", mono: true },
+  ]}
+  rows={replacements.map((row) => ({ file: row.file, was: row.was, now: row.now }))}
+/>
+```
+
+## Rules
+- Render it as a sibling of `Message` in the thread, not as a markdown table inside the message text.
+- Right-align numbers. Do not invent column widths.
+- Do not pass more columns than fit a chat column. Split or drop columns instead of shrinking type.

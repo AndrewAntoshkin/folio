@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>agent-ui — Andrew Antoshkin</title>
+    <meta name="description" content="A component library for AI interfaces that coding agents know how to use.">
+    <meta name="theme-color" content="#FDFDFC" id="themeColorMeta">
+    <meta property="og:title" content="agent-ui — Andrew Antoshkin">
+    <meta property="og:description" content="A component library for AI interfaces that coding agents know how to use.">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/svg+xml" href="assets/antoshkin-tech-logo.svg">
+    <link rel="stylesheet" href="assets/wireframe.css">
+    <link rel="stylesheet" href="assets/guides.css">
+    <script>
+        try {
+            if (localStorage.getItem('theme') === 'dark') document.documentElement.dataset.theme = 'dark';
+        } catch (e) {}
+    </script>
+</head>
+<body data-guides="false">
+    <div class="page page--project">
+        <div class="border-strip border-strip--left" aria-hidden="true"></div>
+        <div class="border-strip border-strip--right" aria-hidden="true"></div>
+        <div class="grid-line grid-line--nav" aria-hidden="true"></div>
+        <div class="grid-line grid-line--content-l" aria-hidden="true"></div>
+        <div class="grid-line grid-line--content-r" aria-hidden="true"></div>
+        <div class="grid-line grid-line--shell-r" aria-hidden="true"></div>
+
+        <nav class="top-nav top-nav--project fold" data-fold="50" aria-label='agent-ui'>
+            
+            <a class="project-back" href="projects-en.html"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Projects</a>
+            <p class="project-nav-name">agent-ui</p>
+            <p class="project-nav-label">Basics</p><a class="nav-link" href="#why">Why</a><a class="nav-link" href="#inside">What's Inside</a><a class="nav-link" href="#rules">Rule Next to the Code</a><a class="nav-link" href="#install">Installation</a><a class="nav-link" href="#limits">Limitations</a><p class="project-nav-label">Links</p><a class="nav-link" href="/agent-ui/en.html">Components</a><a class="nav-link" href="/agent-ui/r/llms.txt">llms.txt</a>
+        </nav>
+
+        <div class="nav-contact fold" data-fold="80">
+            <p class="nav-contact-label">Contact:</p>
+            <span>
+                <a href="mailto:andrew.antoshkin@gmail.com" class="nav-contact-email wf-target" data-copy="andrew.antoshkin@gmail.com">
+                    andrew.antoshkin@gmail.com
+                    <span class="copied" hidden>Copied</span>
+                </a>
+            </span>
+        </div>
+
+        <div class="mobile-wrap">
+            <button class="mobile-pill" type="button" aria-expanded="false" aria-label="Menu">
+                <span class="pill-icon"><span class="pill-bar"></span><span class="pill-bar"></span></span>
+                <span>Menu</span>
+            </button>
+            <div class="mobile-menu mobile-menu--project" hidden>
+                
+                <a class="project-back" href="projects-en.html"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Projects</a>
+                <p class="project-nav-name">agent-ui</p>
+                <p class="project-nav-label">Basics</p><a class="nav-link" href="#why">Why</a><a class="nav-link" href="#inside">What's Inside</a><a class="nav-link" href="#rules">Rule Next to the Code</a><a class="nav-link" href="#install">Installation</a><a class="nav-link" href="#limits">Limitations</a><p class="project-nav-label">Links</p><a class="nav-link" href="/agent-ui/en.html">Components</a><a class="nav-link" href="/agent-ui/r/llms.txt">llms.txt</a>
+                <hr>
+                <div class="compact-controls">
+                    <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="Toggle theme">
+                        <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
+                        <span class="theme-symbol theme-symbol--moon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M12.8 10.3A5.5 5.5 0 0 1 5.7 3.2 5.5 5.5 0 1 0 12.8 10.3Z"/></svg></span>
+                    </button>
+                    <nav class="language-switch" aria-label="Language"><a href="agent-ui.html">Ru</a><span aria-current="page">En</span></nav>
+                </div>
+                <a href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
+            </div>
+        </div>
+
+        <main class="main">
+            <div class="main-toggles">
+                <button class="theme-icon-button wf-target" type="button" data-theme-toggle aria-pressed="false" aria-label="Toggle theme">
+                    <span class="theme-symbol theme-symbol--sun" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg></span>
+                    <span class="theme-symbol theme-symbol--moon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M12.8 10.3A5.5 5.5 0 0 1 5.7 3.2 5.5 5.5 0 1 0 12.8 10.3Z"/></svg></span>
+                </button>
+                <nav class="language-switch" aria-label="Language"><a href="agent-ui.html">Ru</a><span aria-current="page">En</span></nav>
+            </div>
+            <div class="follow-right fold" data-fold="120">
+                <div class="nav-divider"></div>
+                <div class="social-links">
+                    <a class="nav-link follow-link wf-target" href="https://t.me/aiantoshkin" target="_blank" rel="noopener noreferrer">
+                        Telegram
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m13.7 2.8-2 9.5c-.15.67-.55.83-1.1.52L7.55 10.6l-1.47 1.42c-.16.16-.3.3-.62.3l.22-3.1 5.64-5.1c.25-.21-.05-.33-.38-.12L3.97 8.4l-3-.94c-.65-.2-.66-.65.14-.96l11.72-4.52c.54-.2 1.02.13.87.82Z" fill="currentColor"/></svg>
+                    </a>
+                    <a class="nav-link follow-link wf-target" href="https://github.com/AndrewAntoshkin" target="_blank" rel="noopener noreferrer">
+                        GitHub
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path fill="currentColor" d="M8 1.35a6.65 6.65 0 0 0-2.1 12.96c.33.06.45-.14.45-.32v-1.16c-1.84.4-2.23-.78-2.23-.78-.3-.76-.74-.96-.74-.96-.6-.42.05-.41.05-.41.67.05 1.02.69 1.02.69.6 1.02 1.56.72 1.94.55.06-.43.23-.72.42-.89-1.47-.17-3.02-.74-3.02-3.29 0-.73.26-1.32.69-1.78-.07-.17-.3-.85.07-1.76 0 0 .56-.18 1.83.68A6.36 6.36 0 0 1 8 4.8c.56 0 1.12.08 1.64.22 1.27-.86 1.83-.68 1.83-.68.37.91.14 1.59.07 1.76.43.46.69 1.05.69 1.78 0 2.56-1.56 3.12-3.03 3.29.24.2.45.61.45 1.24V14c0 .18.12.39.45.32A6.65 6.65 0 0 0 8 1.35Z"/></svg>
+                    </a>
+                    <a class="nav-link follow-link wf-target" href="https://setka.ru/users/84b42bc4-44b4-4b1e-ba76-06d249242bc4" target="_blank" rel="noopener noreferrer">
+                        Setka
+                        <img class="social-icon" src="https://cdn-assets.setka.ru/setka-web/static/favicon/favicon-32x32.a8036291d4eac4cc9ab8cbc378cb6d17.png" alt="" width="16" height="16">
+                    </a>
+                </div>
+            </div>
+
+            <div class="content content--article">
+                
+                
+                <p class="section-label">Components</p>
+                <h1 class="title">agent-ui</h1>
+                <p class="body-text">Fifteen React components for chat and agent UIs. Each one installs with a Cursor rule: when to use it, when not to, and which props matter. Colors come only from theme tokens, so the agent has nothing to hardcode.</p>
+                <div class="prose prose--docs">
+<p><a href="/agent-ui/en.html">Open the components →</a></p>
+<section id="why"><h2>Why build components myself</h2>
+<p>There are plenty of libraries: shadcn, Magic UI, Aceternity, Chamaac. They are made for a person who looks at a demo and copies the code. More and more, the one installing a component is an agent, and that is where the problems my other tools catch begin. ds-lint finds hardcoded colors in copied code. ds-coverage finds local copies next to the system. ds-eval shows an agent drawing its own button more often than taking the existing one.</p>
+<p>You can fix that afterwards, the way ui-repair does. It is cheaper to ship components that need no fixing. That takes three things a regular library does not have:</p>
+<ul>
+<li>a description of when to use it and when not to, in the words of the task rather than a props list;</li>
+<li>theme tokens only: no hex, no <code>bg-zinc-900</code>, so there is nothing wrong to copy;</li>
+<li>a place where the agent finds all of this before installing anything.</li>
+</ul>
+<p>The second reason is AI interfaces themselves. A tool call, a permission request, model reasoning, the context window: general kits do not have these primitives, and every product draws them again. I build them once, the way I want them in my own interfaces.</p>
+</section>
+<section id="inside"><h2>What's inside</h2>
+<ul class="feature-list">
+<li><strong>Prompt Input</strong><span>Auto-growing prompt box: Enter sends, Send turns into Stop while the reply streams. Attachments and a model picker slot.</span></li>
+<li><strong>Message</strong><span>A user or assistant turn with a streaming caret and hover actions.</span></li>
+<li><strong>Thinking</strong><span>A shimmering "Thinking" that collapses into "Thought for 4s" with the reasoning text.</span></li>
+<li><strong>Tool Call</strong><span>One tool call: status, arguments, output, error.</span></li>
+<li><strong>Approval</strong><span>The agent asks to run one concrete command. After the decision the card collapses into a one-line record.</span></li>
+<li><strong>Context Meter</strong><span>A context-window ring with a warning threshold.</span></li>
+<li><strong>Suggestions</strong><span>Starter prompts and follow-up questions.</span></li>
+<li><strong>Agent Dock</strong><span>A floating status bar for a background agent that opens into its step list on hover.</span></li>
+<li><strong>Plan</strong><span>The steps the assistant proposes before or during a task.</span></li>
+<li><strong>Choice</strong><span>A question with two to five mutually exclusive options.</span></li>
+<li><strong>Data Table</strong><span>A comparison or tool result inside an answer.</span></li>
+<li><strong>Answer Chart</strong><span>One bar or line series, up to eight points, in the primary token.</span></li>
+<li><strong>Code Block</strong><span>Code or a diff in an answer, with a filename and copy.</span></li>
+<li><strong>Sources</strong><span>Citations under an answer: title, address, short excerpt.</span></li>
+<li><strong>Artifact</strong><span>A file card in the thread. Its contents open in a side panel.</span></li>
+</ul>
+<p>The components page opens with a live scene: an agent fixes hardcoded colors and stops to ask for permission. You can allow, deny, or stop it.</p>
+</section>
+<section id="rules"><h2>A rule next to the code</h2>
+<p>Every install writes two files: the component and a <code>.mdc</code> rule. The rule's description names the task, not the component ("an agent asks permission before a risky action"), so Cursor loads it only when it is relevant.</p>
+<p>Every rule has a "do not use for" section that names the project primitive to use instead. That is where agents usually go wrong: an Approval in place of a confirm dialog, or Thinking in place of a loading skeleton.</p>
+<pre><code>components/agent-ui/approval.tsx
+.cursor/rules/agent-ui-approval.mdc
+
+> Ask before the agent deletes the build folder
+
+  agent loads agent-ui-approval.mdc
+  &lt;Approval title="Run a shell command"
+            command="rm -rf ./build"
+            onApprove={...} onDeny={...} /&gt;</code></pre>
+<p>For agents that do not read Cursor rules there is <a href="/agent-ui/r/llms.txt">llms.txt</a> with the component list and <a href="/agent-ui/r/llms-full.txt">llms-full.txt</a> with every rule in one file.</p>
+</section>
+<section id="install"><h2>Installation</h2>
+<p>The registry is shadcn-compatible. It needs Tailwind v4 and the shadcn theme as CSS variables.</p>
+<pre><code>npx shadcn@latest add https://antoshkin.tech/agent-ui/r/approval.json
+npx shadcn@latest add https://antoshkin.tech/agent-ui/r/all.json</code></pre>
+<p>The registry build fails if a component gets a hex value, a palette class like <code>text-neutral-500</code>, or an arbitrary value like <code>text-[14px]</code>. Change the theme tokens and every component follows; the accent switch on the components page shows it.</p>
+</section>
+<section id="limits"><h2>Limitations</h2>
+<p>I have not measured with ds-eval how much the rules raise correct usage. For now it is a hypothesis; the next step is running a task suite with and without the rules.</p>
+<p>The rules use Cursor's format. Other agents get the same text through llms-full.txt but do not load it automatically. Components read <code>var(--muted-foreground)</code> directly, so the older shadcn theme with HSL channels will not work.</p>
+<p>Motion ideas for Dock, AI Input, Shimmer and Gauge come from <a href="https://www.chamaac.com/" target="_blank" rel="noopener noreferrer">Chamaac UI</a> (MIT). The code is new, without Next.js or hardcoded colors.</p>
+</section>
+</div>
+                <nav class="article-nav" aria-label="Projects"><span></span><a href="ds-eval-en.html" class="next"><span class="article-nav-label">Next</span><span class="article-nav-title">ds-eval</span></a></nav>
+            
+            </div>
+        </main>
+
+        <div class="crosshair" aria-hidden="true">
+            <div class="crosshair-h"></div>
+            <div class="crosshair-v"></div>
+            <div class="crosshair-coords">0 · 0</div>
+        </div>
+        <div class="bottom-fade" aria-hidden="true"></div>
+    </div>
+    <script src="assets/wireframe.js"></script>
+</body>
+</html>

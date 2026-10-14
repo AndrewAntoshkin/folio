@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "data-table",
+  "title": "Data Table",
+  "description": "A table for comparisons and tool results inside an assistant answer.",
+  "dependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/agent-ui/data-table.tsx",
+      "content": "\"use client\"\n\nimport type * as React from \"react\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface DataTableColumn {\n  key: string\n  header: string\n  align?: \"left\" | \"right\"\n  mono?: boolean\n}\n\nexport interface DataTableProps {\n  columns: DataTableColumn[]\n  rows: Record<string, React.ReactNode>[]\n  caption?: string\n  empty?: string\n  className?: string\n}\n\nexport function DataTable({ columns, rows, caption, empty = \"Nothing to show\", className }: DataTableProps) {\n  return (\n    <div className={cn(\"w-full shrink-0 overflow-hidden rounded-2xl border border-border bg-card text-card-foreground\", className)}>\n      {caption && <div className=\"border-b border-border px-4 py-2.5 text-sm text-muted-foreground\">{caption}</div>}\n      <div className=\"overflow-x-auto\">\n        <table className=\"w-full border-collapse text-sm\">\n          <thead>\n            <tr className=\"border-b border-border text-left text-xs text-muted-foreground\">\n              {columns.map((column) => (\n                <th\n                  key={column.key}\n                  scope=\"col\"\n                  className={cn(\n                    \"px-4 py-2 font-medium whitespace-nowrap\",\n                    column.align === \"right\" && \"text-right\",\n                    column.mono && \"font-mono\",\n                  )}\n                >\n                  {column.header}\n                </th>\n              ))}\n            </tr>\n          </thead>\n          <tbody>\n            {rows.length === 0 ? (\n              <tr>\n                <td colSpan={columns.length} className=\"px-4 py-6 text-center text-muted-foreground\">\n                  {empty}\n                </td>\n              </tr>\n            ) : (\n              rows.map((row, index) => (\n                <tr key={index} className=\"border-b border-border last:border-b-0\">\n                  {columns.map((column) => (\n                    <td\n                      key={column.key}\n                      className={cn(\n                        \"px-4 py-2.5 align-top text-foreground\",\n                        column.align === \"right\" && \"text-right tabular-nums\",\n                        column.mono && \"font-mono text-xs\",\n                      )}\n                    >\n                      {row[column.key]}\n                    </td>\n                  ))}\n                </tr>\n              ))\n            )}\n          </tbody>\n        </table>\n      </div>\n    </div>\n  )\n}\n",
+      "type": "registry:component",
+      "target": "components/agent-ui/data-table.tsx"
+    },
+    {
+      "path": "registry/rules/data-table.mdc",
+      "content": "---\ndescription: agent-ui DataTable. Use when an assistant answer compares rows, shows a tool result as columns, or lists records with headers. Not for page layout.\nalwaysApply: false\n---\n\n# DataTable\n\n`import { DataTable } from \"@/components/agent-ui/data-table\"`\n\n## Use for\n- Tabular data inside an assistant answer: comparisons, file lists, tool results with more than one column.\n\n## Do not use for\n- Page layout, dashboards, or settings screens. Use the project's table.\n- A single key and value. Write a sentence.\n- Code. Use `CodeBlock`.\n- A chart of the same numbers, when the values themselves matter more than the shape. Prefer this table.\n\n## Props\n| Prop | Type | Notes |\n| --- | --- | --- |\n| `columns` | `{ key, header, align?, mono? }[]` | Required. `align` is `\"left\"` or `\"right\"`. `mono` for ids and paths. |\n| `rows` | `Record<string, ReactNode>[]` | Required. Keys match `columns[].key`. |\n| `caption` | `string` | One line above the table: what the rows are. |\n| `empty` | `string` | Shown when `rows` is empty. |\n\n## Example\n```tsx\n<DataTable\n  caption=\"Token replacements\"\n  columns={[\n    { key: \"file\", header: \"File\", mono: true },\n    { key: \"was\", header: \"Was\", mono: true },\n    { key: \"now\", header: \"Now\", mono: true },\n  ]}\n  rows={replacements.map((row) => ({ file: row.file, was: row.was, now: row.now }))}\n/>\n```\n\n## Rules\n- Render it as a sibling of `Message` in the thread, not as a markdown table inside the message text.\n- Right-align numbers. Do not invent column widths.\n- Do not pass more columns than fit a chat column. Split or drop columns instead of shrinking type.\n",
+      "type": "registry:file",
+      "target": "~/.cursor/rules/agent-ui-data-table.mdc"
+    }
+  ],
+  "type": "registry:component"
+}

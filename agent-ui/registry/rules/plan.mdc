@@ -1,0 +1,40 @@
+---
+description: agent-ui Plan. Use when the assistant proposes an ordered list of steps before or during a task. Not for a live agent status or a single tool call.
+alwaysApply: false
+---
+
+# Plan
+
+`import { Plan } from "@/components/agent-ui/plan"`
+
+## Use for
+- The assistant's intended steps, shown in the thread before it runs them or as it checks them off.
+
+## Do not use for
+- The live status of a running agent. Use `AgentDock`.
+- One tool invocation. Use `ToolCall`.
+- A to-do list that belongs to the user. Use the project's task list.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `title` | `string` | Optional heading, the name of the task. |
+| `steps` | `{ id, label, detail?, status }[]` | Required. `status` is `"pending"`, `"running"`, `"done"`, or `"error"`. |
+| `labels` | `Partial<Record<status, string>>` | Accessible names for the status icons. Set them when the interface is not in English. |
+
+## Example
+```tsx
+<Plan
+  title="Replace hardcoded colors"
+  steps={[
+    { id: "find", label: "Find hex colors", status: "done" },
+    { id: "map", label: "Map each one to a token", status: "running" },
+    { id: "edit", label: "Edit SettingsPage.tsx", status: "pending" },
+  ]}
+/>
+```
+
+## Rules
+- At most one step has `status="running"`.
+- A step that needs permission stays `pending` until `Approval` resolves. Do not mark it `done` early.
+- Render the plan as a sibling of `Message`, not as a markdown numbered list inside the message.

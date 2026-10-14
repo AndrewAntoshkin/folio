@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" class="nojs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Après-prompt: What Happens to Work When the Agent Keeps Going Without You</title>
+  <script>document.documentElement.classList.remove('nojs')</script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="dock"><nav aria-label="Navigation"><i aria-hidden="true"></i><a href="en.html" aria-label="Home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg></a><a href="projects-en.html" aria-label="Projects"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 13h16"/></svg></a><a href="writing-en.html" aria-label="Writing" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M14 5.5 18.5 10 9 19.5H4.5V15L14 5.5Z"/><path d="m12 7.5 4.5 4.5"/></svg></a><a href="approach-en.html" aria-label="Approach"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.25"/><path d="M5.5 19.5c1.2-3 3.4-4.5 6.5-4.5s5.3 1.5 6.5 4.5"/></svg></a><a href="collab-en.html" aria-label="Contact"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></nav></div>
+<nav class="langs" aria-label="Language"><a href="apres-prompt.html">Ru</a><a href="apres-prompt-en.html" aria-current="page">En</a></nav>
+<a class="float" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Say hello<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+<main><div class="col"><article class="art">
+  <header class="art-top">
+    <a class="back" href="writing-en.html" data-r>‹ Back</a>
+    <h1 data-split class="long">Après-prompt: What Happens to&nbsp;Work When the Agent Keeps Going Without You</h1>
+    <div class="tags" data-r style="--d:.3s"><span class="tag">agents</span><span class="tag">interface</span><span class="tag">work</span></div>
+  </header>
+  <div class="art-intro" data-r style="--d:.35s"><p>AI agents are creating a new kind of working time. You have already given the task, the work is in progress, but you are no longer doing anything with your hands. As Claude Code, Codex, and other agents become more autonomous, more of our work will consist not of constantly interacting with an interface, but of assigning tasks, switching between processes, and reviewing results. It feels like a small culture is starting to form around that space. I call it <strong>Après-prompt</strong>.</p><div class="art-meta"><span>Sep 24, 2026</span><i></i><span>10 min</span></div></div>
+  <div class="prose"><img src="../assets/apres-prompt.jpg" alt="A person with a cup of coffee while agents keep working at the computer"><h2>After Enter</h2>
+
+<p>There is a term called <em>après&#8209;ski</em>. Literally, “after skiing.” It started as a simple idea: people would hang out after a day on the slopes. Over time, an entire culture grew around it — clothes, music, mountain bars, chalets, hot drinks, a visual language of its own. At some point, what happened after skiing became almost as important to the trip as the skiing itself.</p>
+
+<p>Something similar seems to be happening with AI. You open Claude Code or Codex, describe the task, add the necessary context, press Enter, and the agent starts working on its own. It reads the repository, looks for the right files, changes the code, runs tests, hits an error, fixes it, and keeps going. Sometimes it realizes it took the wrong path, goes back, and rewrites what it already made.</p>
+
+<p>Meanwhile, you are no longer typing. At first, that feels strange. You are clearly working, but you are not actually doing anything with your hands. Then you get used to it, and the gap between “do this” and “done” starts taking up more and more of your day. I call that gap <strong>Après&#8209;prompt</strong>.</p>
+
+<h2>The Computer No Longer Needs Your Constant Attention</h2>
+
+<p>For the last few decades, working on a computer has followed roughly the same pattern: the person is almost constantly interacting with the interface. Writing text, moving objects around in Figma, switching tabs, editing CSS, going back to the IDE, typing again. Even good tools mostly made individual actions faster. They did not continue doing the work once you stopped interacting with them.</p>
+
+<p>Agents change exactly that. More and more often, the person is no longer the one performing every individual step. Instead, they define the task, provide constraints, and decide whether the result is good enough. Previously, the time you spent working and the time you spent actively interacting with the computer were almost the same thing. Now they are starting to separate. The computer keeps working after you have taken your hands off the keyboard.</p>
+
+<p>That feels like a much bigger shift than simply saying, “AI writes code faster.” The shape of work itself is changing.</p>
+
+<h2>Work Starts to Look Like Process Management</h2>
+
+<p>I increasingly notice myself working in a different mode. Instead of one task that I execute step by step, I have several processes running in parallel. One agent is looking at architecture, another is fixing the UI, a third is writing tests, and somewhere else a build is running.</p>
+
+<p>You start the first task. While it is running, you formulate the second. Then you go back to the first, review the diff, send it back for another pass, switch to the third, and check what the second agent has done. It starts to feel a little like managing a small team, except the entire team lives on your laptop.</p>
+
+<p>And that creates a new problem that barely existed before: <strong>what should the human do while the machine is working?</strong> The longer these autonomous chains become, the more important that question gets.</p>
+
+<h2>Waiting Becomes Part of the Interface</h2>
+
+<p>Traditional interfaces had a fairly simple goal: show the user the result as quickly as possible. You click a button, something happens. You drag an object, it moves immediately. You open a page, it loads.</p>
+
+<p>AI interfaces are different. Some operations take a few seconds. Others take several minutes. An agent may perform dozens of actions before it needs the person again. At that point, waiting can no longer be treated as just a technical delay. It becomes a separate product state.</p>
+
+<p>If Claude is working for 40 seconds, the question is no longer just how fast the model is. The question is what the user does during those 40 seconds. Do they watch the terminal? Read the log? Move on to another task? Get a notification when the agent finishes? Start another agent in parallel?</p>
+
+<p>This is where some of the stranger experiments start to make sense: panels above the prompt, news while the agent is running, breathing animations, completion notifications, separate apps for monitoring multiple sessions. The individual implementation is less interesting than the underlying idea. For decades, software interfaces have tried to keep the user engaged. Now an interface can effectively say: <strong>you do not need to watch me right now.</strong></p>
+
+<h2>The Desktop May Have to Change Too</h2>
+
+<p>If agents keep becoming more autonomous, the software will not be the only thing that changes. The structure of the workspace may change as well. The desktop is still built around the assumption that a person is actively working inside one application: a large window, a cursor, a keyboard, an active focus.</p>
+
+<p>But what happens when five or ten agents are working at the same time? The main interface may start to look very different. Not an IDE filling the whole screen, but a process manager: what is running right now, what has finished, where a conflict appeared, which task is blocked, and where the agent needs my decision.</p>
+
+<p>In other words, the “desktop” starts to become something closer to a control center. I think this is one reason why so many tools are appearing for managing multiple agents, terminals, and parallel sessions. We are trying to fit a new way of working into interfaces that were designed for a different world: one person, one application, one active task. That pattern is starting to break.</p>
+
+<h2>Speed of Execution Matters Less</h2>
+
+<p>If an agent can do in a few minutes what used to take an hour, then the speed of the person stops being the main constraint. It matters less how quickly you type, how fast you can assemble an interface by hand, or how much syntax you can remember.</p>
+
+<p>Other skills become more important. How well can you define the task? What context should you provide? What constraints matter? How should a large problem be broken down? When can you trust the agent? When should you stop it? And, most importantly, how quickly can you recognize that a solution looks convincing but is actually wrong?</p>
+
+<p>Part of the work is moving from <strong>execution</strong> to <strong>judgment</strong>. We spend less time directly producing the result and more time framing the problem, reviewing the output, and making decisions. That is why AI is not simply making the old process faster. It is changing <strong>what human work is made of</strong>.</p>
+
+<h2>Work Gets a Different Rhythm</h2>
+
+<p>Traditional computer work has a fairly steady rhythm: do something, get a result, do the next thing. With agents, the rhythm changes. First comes a short period of high concentration. You need to understand the problem, collect the context, and formulate the task properly. Then Enter. Then a pause. Then you come back, review the result, correct something, and launch the next run.</p>
+
+<p>Sometimes several of these cycles are happening at once. Terminals are working on their own, a notification appears somewhere, another agent is waiting for approval. You might make coffee, walk around the room, or switch to something else, not because you got distracted from work, but because the work is continuing without your direct involvement.</p>
+
+<p>This is where I think a new aesthetic starts to emerge. Terminals running by themselves, tiny status indicators, completion sounds, agent dashboards, a workspace designed around processes running in parallel rather than a person performing every action in sequence.</p>
+
+<h2>This Is Not Free Time</h2>
+
+<p>There is an important distinction here. Après&#8209;prompt does not mean AI has suddenly given us a huge amount of free time. At least not yet.</p>
+
+<p>The gap gets filled with other work almost immediately. You launch another agent, review the previous result, read documentation, think through the next task. If one task gets faster, people tend to find five more things to do.</p>
+
+<p>So the more interesting question is not whether we will work less. It is <strong>what work will look like</strong>. It becomes less continuous, more parallel, and more dependent on assigning tasks and reviewing outputs. Less manual execution. More orchestration.</p>
+
+<h2>And This Is Not Just About Code</h2>
+
+<p>This shift is easiest to see in software development because coding agents are already fairly autonomous. But there is no reason to think it will stop there.</p>
+
+<p>A designer could say: “Create three versions of this page using our design system, check them for accessibility, and compare them with the current version.” An analyst could say: “Review the last three months of data, find anomalies, and suggest five hypotheses.” A product manager could ask: “Analyze recent user feedback, group the problems, and map them to the current roadmap.”</p>
+
+<p>In all of these cases, the person starts the work but does not perform every step themselves. That means Après&#8209;prompt may not remain a quirk of software development. It could become a normal state of knowledge work.</p>
+
+<h2>Maybe the Interface of the Future Is a Queue</h2>
+
+<p>Today, AI is often added to existing products as a chat window. There is the familiar application, and next to it sits a text box where the user can type a request. But if agents really become autonomous, chat may not be the main interface at all.</p>
+
+<p>A queue may matter more. Here are the tasks. Here is what is running. Here is what finished. Here is what needs a decision. Here is where the agent got stuck. Here is what changed since yesterday. Here is what can be started next.</p>
+
+<p>Not conversation history, but working memory and the current state of ongoing processes. In that sense, today’s terminal agents may turn out to be something like the command line in early computing: an extremely powerful interface for specialists that eventually gives rise to an entirely different class of products.</p>
+
+<h2>Après&#8209;prompt</h2>
+
+<p>I like the term not only because it sounds funny. It describes a genuinely new state quite well: the work has already started, the result is not ready yet, and for a while the human is not needed.</p>
+
+<p>In the past, this kind of gap was treated as a technical problem. We called it loading time and tried to make it as short as possible. Now that gap is becoming part of the workflow itself.</p>
+
+<p>And maybe an entire culture really will grow around it: its own apps, rituals, interfaces, workspace setups, and even its own aesthetic. A few years from now, it may feel slightly strange that people once sat in front of a screen for eight hours straight and performed every single action themselves.</p>
+
+<p>For now, I like the name <strong>Après&#8209;prompt</strong>.</p>
+
+<p>The time between “do it” and “done.”</p>
+</div>
+</article></div></main>
+  <section class="cta" data-r>
+    <div class="cta-grid">
+      <div class="cta-card">
+        <div class="shader" aria-hidden="true"><i></i><i></i><i></i></div>
+        <span class="tag top">Work together</span>
+        <div class="mid"><h2>Are you ready to take the next step?</h2></div>
+        <div class="bot"><p>Have a problem you want to ship? Write me and we will shape the next step together.</p></div>
+      </div>
+      <form class="cta-form" data-subject="Collaboration">
+        <input name="name" required placeholder="Your name" autocomplete="name">
+        <input name="email" type="email" required placeholder="Your email" autocomplete="email">
+        <textarea name="question" required placeholder="How can I help?"></textarea>
+        <button type="submit">Send a message</button>
+      </form>
+    </div>
+  </section>
+  <footer class="foot">
+    <div class="foot-art" aria-hidden="true"><img src="img/gen/footer.jpg" alt=""></div>
+    <div class="foot-in">
+      <h2 data-r><span>Let’s create something</span><br>that actually ships.</h2>
+      <div class="social" data-r style="--d:.1s"><a href="https://t.me/andrewaitken" target="_blank" rel="noopener" aria-label="Telegram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M21 4 3 11l5.5 2L10 19l3-4 4.5 3.5L21 4Z"/><path d="m8.5 13 8-5"/></svg></a><a href="https://github.com/AndrewAntoshkin" target="_blank" rel="noopener" aria-label="GitHub"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M9 19c-4 1.2-4-2-5.5-2.5M15 21v-3.5c0-1 .1-1.500-.5-2.200 2.800-.3 5.500-1.400 5.500-6a4.700 4.700 0 0 0-1.300-3.300 4.400 4.400 0 0 0-.1-3.300s-1-.3-3.400 1.300a11.700 11.700 0 0 0-6.200 0C6.600 2.900 5.600 3.200 5.600 3.200a4.400 4.400 0 0 0-.1 3.300A4.700 4.700 0 0 0 4.200 9.800c0 4.600 2.700 5.700 5.500 6-.6.700-.6 1.300-.6 2.200V21"/></svg></a><a href="mailto:andrew.antoshkin@gmail.com" aria-label="Email"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></div>
+      <div class="cols"><div><p>Pages</p><a href="en.html">Home</a><a href="projects-en.html">Projects</a><a href="writing-en.html">Writing</a><a href="approach-en.html">Approach</a><a href="collab-en.html">Collaboration</a></div><div><p>Projects</p><a href="agent-ui-en.html">agent-ui</a><a href="ds-eval-en.html">ds-eval</a><a href="ds-context-en.html">ds-context</a><a href="ui-repair-en.html">ui-repair</a><a href="prompt-regress-en.html">prompt-regress</a></div><div><p>Writing</p><a href="apres-prompt-en.html">Après-prompt</a><a href="ai-changes-processes-en.html">AI Is Not Changing Professions. AI Is Changing Processes</a><a href="halo-working-memory-en.html">Halo</a><a href="cursor-figma-en.html">Cursor + Figma in 2026</a><a href="design-md-en.html">DESIGN.md in 2026</a></div></div>
+      <div class="legal"><span>© Andrew Antoshkin, 2026</span><span>Built by hand, no templates</span></div>
+    </div>
+  </footer>
+  <script src="motion.js"></script>
+</body></html>

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "suggestions",
+  "title": "Suggestions",
+  "description": "Staggered starter prompts and follow-up chips.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/agent-ui/suggestions.tsx",
+      "content": "\"use client\"\n\nimport { motion, useReducedMotion } from \"motion/react\"\nimport { cn } from \"@/lib/utils\"\n\nexport type Suggestion = string | { label: string; value: string }\n\nexport interface SuggestionsProps {\n  items: Suggestion[]\n  onSelect: (value: string) => void\n  className?: string\n}\n\nexport function Suggestions({ items, onSelect, className }: SuggestionsProps) {\n  const reduce = useReducedMotion()\n\n  return (\n    <ul className={cn(\"flex flex-wrap gap-2\", className)} aria-label=\"Suggestions\">\n      {items.map((item, i) => {\n        const { label, value } = typeof item === \"string\" ? { label: item, value: item } : item\n        return (\n          <motion.li\n            key={value}\n            initial={reduce ? false : { opacity: 0, y: 8 }}\n            animate={{ opacity: 1, y: 0 }}\n            transition={{ type: \"spring\", duration: 0.4, bounce: 0, delay: i * 0.05 }}\n          >\n            <button\n              type=\"button\"\n              onClick={() => onSelect(value)}\n              className=\"rounded-full border border-border bg-background px-3.5 py-1.5 text-sm text-foreground transition-colors hover:bg-muted active:scale-95\"\n            >\n              {label}\n            </button>\n          </motion.li>\n        )\n      })}\n    </ul>\n  )\n}\n",
+      "type": "registry:component",
+      "target": "components/agent-ui/suggestions.tsx"
+    },
+    {
+      "path": "registry/rules/suggestions.mdc",
+      "content": "---\ndescription: agent-ui Suggestions. Use when offering clickable starter prompts or follow-up questions in a chat or agent UI.\nalwaysApply: false\n---\n\n# Suggestions\n\n`import { Suggestions } from \"@/components/agent-ui/suggestions\"`\n\n## Use for\n- Starter prompts on an empty conversation.\n- Follow-ups under the last assistant message.\n\n## Do not use for\n- Filters, tags or navigation. Use the project's `Badge`, `ToggleGroup` or `Tabs`.\n\n## Props\n| Prop | Type | Notes |\n| --- | --- | --- |\n| `items` | `(string \\| { label, value })[]` | Required. Use `{ label, value }` when the sent prompt is longer than the chip. |\n| `onSelect` | `(value: string) => void` | Required. Usually submits the value right away. |\n\n## Example\n```tsx\n{messages.length === 0 && (\n  <Suggestions items={[\"Summarize this repo\", \"Find unused tokens\"]} onSelect={send} />\n)}\n```\n\n## Rules\n- Three to five items. More turns into noise.\n- Hide them once the user starts typing or a request is running.\n",
+      "type": "registry:file",
+      "target": "~/.cursor/rules/agent-ui-suggestions.mdc"
+    }
+  ],
+  "type": "registry:component"
+}

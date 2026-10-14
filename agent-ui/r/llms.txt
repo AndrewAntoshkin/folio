@@ -1,0 +1,28 @@
+# agent-ui
+
+> React components for AI and agent interfaces, shipped with Cursor rules that tell a coding agent when and how to use each one. Tailwind v4 + shadcn theme tokens, no hardcoded colors.
+
+Install one: `npx shadcn@latest add https://antoshkin.tech/agent-ui/r/<name>.json`. Install all: `npx shadcn@latest add https://antoshkin.tech/agent-ui/r/all.json`.
+Each install adds `components/agent-ui/<name>.tsx` and `.cursor/rules/agent-ui-<name>.mdc`.
+
+## Components
+
+- [Prompt Input](https://antoshkin.tech/agent-ui/r/prompt-input.json): Auto-growing prompt composer with send/stop, attachments and a toolbar slot.
+- [Message](https://antoshkin.tech/agent-ui/r/message.json): User and assistant turns with a streaming caret and hover actions.
+- [Thinking](https://antoshkin.tech/agent-ui/r/thinking.json): Shimmering reasoning label that collapses into "Thought for Ns".
+- [Tool Call](https://antoshkin.tech/agent-ui/r/tool-call.json): Collapsible card for one agent tool call: status, arguments, output, error.
+- [Approval](https://antoshkin.tech/agent-ui/r/approval.json): Human-in-the-loop permission card that collapses into a one-line record.
+- [Plan](https://antoshkin.tech/agent-ui/r/plan.json): Ordered steps the assistant proposes, with pending, running, done and failed states.
+- [Choice](https://antoshkin.tech/agent-ui/r/choice.json): A question from the assistant with two to five mutually exclusive options.
+- [Data Table](https://antoshkin.tech/agent-ui/r/data-table.json): A table for comparisons and tool results inside an assistant answer.
+- [Answer Chart](https://antoshkin.tech/agent-ui/r/answer-chart.json): One bar or line series, up to eight points, colored with the primary token.
+- [Code Block](https://antoshkin.tech/agent-ui/r/code-block.json): Source or a unified diff in an answer, with a filename and a copy button.
+- [Sources](https://antoshkin.tech/agent-ui/r/sources.json): Citations under an answer: title, address and a short excerpt.
+- [Artifact](https://antoshkin.tech/agent-ui/r/artifact.json): A file or page card in the thread that opens its contents in a side panel.
+- [Context Meter](https://antoshkin.tech/agent-ui/r/context-meter.json): Ring showing context-window token usage, with a warning threshold.
+- [Suggestions](https://antoshkin.tech/agent-ui/r/suggestions.json): Staggered starter prompts and follow-up chips.
+- [Agent Dock](https://antoshkin.tech/agent-ui/r/agent-dock.json): Floating status dock for a running agent that expands into its step list.
+
+## Full reference
+
+- [llms-full.txt](https://antoshkin.tech/agent-ui/r/llms-full.txt): every agent rule in one file

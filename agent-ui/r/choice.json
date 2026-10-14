@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "choice",
+  "title": "Choice",
+  "description": "A question from the assistant with two to five mutually exclusive options.",
+  "dependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/agent-ui/choice.tsx",
+      "content": "\"use client\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface ChoiceOption {\n  value: string\n  label: string\n  description?: string\n}\n\nexport interface ChoiceProps {\n  question: string\n  options: ChoiceOption[]\n  value?: string\n  onSelect?: (value: string) => void\n  disabled?: boolean\n  className?: string\n}\n\nexport function Choice({ question, options, value, onSelect, disabled, className }: ChoiceProps) {\n  return (\n    <div className={cn(\"flex w-full shrink-0 flex-col gap-2\", className)} role=\"radiogroup\" aria-label={question}>\n      <p className=\"text-sm text-foreground\">{question}</p>\n      {options.map((option) => {\n        const selected = option.value === value\n        return (\n          <button\n            key={option.value}\n            type=\"button\"\n            role=\"radio\"\n            aria-checked={selected}\n            disabled={disabled}\n            onClick={() => onSelect?.(option.value)}\n            className={cn(\n              \"rounded-2xl border px-4 py-3 text-left text-sm transition-colors disabled:opacity-50\",\n              selected ? \"border-foreground bg-muted\" : \"border-border bg-card hover:bg-muted/50\",\n            )}\n          >\n            <span className=\"block font-medium text-foreground\">{option.label}</span>\n            {option.description && <span className=\"mt-0.5 block text-muted-foreground\">{option.description}</span>}\n          </button>\n        )\n      })}\n    </div>\n  )\n}\n",
+      "type": "registry:component",
+      "target": "components/agent-ui/choice.tsx"
+    },
+    {
+      "path": "registry/rules/choice.mdc",
+      "content": "---\ndescription: agent-ui Choice. Use when the assistant asks the user to pick one of a few options before it continues. Not for starter prompts.\nalwaysApply: false\n---\n\n# Choice\n\n`import { Choice } from \"@/components/agent-ui/choice\"`\n\n## Use for\n- A question from the assistant that needs exactly one answer, with 2 to 5 options.\n\n## Do not use for\n- Starter prompts and follow-ups the app offers before the user has asked anything. Use `Suggestions`.\n- A permission to run a command. Use `Approval`.\n- More than five options or free text. Ask in a `Message` and let the user type.\n\n## Props\n| Prop | Type | Notes |\n| --- | --- | --- |\n| `question` | `string` | Required. Also the radiogroup label. |\n| `options` | `{ value, label, description? }[]` | Required. Two to five items. `value` is what you send back, `label` is what the user reads. |\n| `value` | `string` | The selected option value. |\n| `onSelect` | `(value: string) => void` | Called with the option value, not the label. |\n| `disabled` | `boolean` | After the run has moved on. |\n\n## Example\n```tsx\n<Choice\n  question=\"Which token should the divider use?\"\n  options={[\n    { value: \"border\", label: \"border-border\", description: \"Follows the theme\" },\n    { value: \"muted\", label: \"border-muted\", description: \"Softer, easy to miss\" },\n  ]}\n  value={picked}\n  onSelect={setPicked}\n/>\n```\n\n## Rules\n- One question per Choice. Do not stack several in one turn.\n- Options must be mutually exclusive.\n- Keep going only after `onSelect`. Do not also accept the same choice typed into the composer.\n",
+      "type": "registry:file",
+      "target": "~/.cursor/rules/agent-ui-choice.mdc"
+    }
+  ],
+  "type": "registry:component"
+}

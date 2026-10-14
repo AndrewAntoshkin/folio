@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en" class="nojs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Why design system designers should understand development in 2026</title>
+  <script>document.documentElement.classList.remove('nojs')</script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="dock"><nav aria-label="Navigation"><i aria-hidden="true"></i><a href="en.html" aria-label="Home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg></a><a href="projects-en.html" aria-label="Projects"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 13h16"/></svg></a><a href="writing-en.html" aria-label="Writing" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M14 5.5 18.5 10 9 19.5H4.5V15L14 5.5Z"/><path d="m12 7.5 4.5 4.5"/></svg></a><a href="approach-en.html" aria-label="Approach"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.25"/><path d="M5.5 19.5c1.2-3 3.4-4.5 6.5-4.5s5.3 1.5 6.5 4.5"/></svg></a><a href="collab-en.html" aria-label="Contact"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></nav></div>
+<nav class="langs" aria-label="Language"><a href="dev-for-designers.html">Ru</a><a href="dev-for-designers-en.html" aria-current="page">En</a></nav>
+<a class="float" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Say hello<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+<main><div class="col"><article class="art">
+  <header class="art-top">
+    <a class="back" href="writing-en.html" data-r>‹ Back</a>
+    <h1 data-split class="long">Why design system designers should understand development in&nbsp;2026</h1>
+    <div class="tags" data-r style="--d:.3s"><span class="tag">design systems</span><span class="tag">Figma Slots</span><span class="tag">Code Connect</span></div>
+  </header>
+  <div class="art-intro" data-r style="--d:.35s"><p>Designers do not need to become frontend developers. But understanding layout, component APIs, states, tokens, and accessibility helps them design systems that can be implemented, evaluate AI-generated results, and communicate with engineers without losing the original intent.</p><div class="art-meta"><span>Aug 21, 2026</span><i></i><span>7 min</span></div></div>
+  <div class="prose"><div class="pcover "><div class="bg" style="background-image:url(img/gen/dev-for-designers.jpg)"></div><span class="plogo">Why design system designers should</span></div><p><strong>Current as of&nbsp;August&nbsp;21, 2026.</strong> A design system designer does not need to become a frontend developer. But without an understanding of layout, component APIs, tokens, accessibility, and change validation, it is difficult to design a system that works consistently in&nbsp;Figma and&nbsp;production.</p>
+
+<h2>The gap between Figma and&nbsp;code has not disappeared</h2>
+
+<p>A component in&nbsp;Figma and&nbsp;a component in&nbsp;React, SwiftUI, or&nbsp;Compose are different objects. They may describe the same interface, but they have different constraints, lifecycles, and methods of composition.</p>
+
+<p>A mockup does not automatically show:</p>
+
+<ul>
+  <li>HTML semantics and&nbsp;the accessibility tree;</li>
+  <li>keyboard interaction and&nbsp;focus management;</li>
+  <li>loading, empty, error, and&nbsp;permission states;</li>
+  <li>localization, long content, and&nbsp;data formatting;</li>
+  <li>API boundaries and&nbsp;component responsibilities;</li>
+  <li>performance and&nbsp;the cost of&nbsp;dependencies.</li>
+</ul>
+
+<p>That is why “pixel-perfect” is not enough. A system designer must be able to discuss behavior, not just appearance.</p>
+
+<h2>Props, state, and&nbsp;composition</h2>
+
+<p>In&nbsp;React, a component receives props and&nbsp;returns UI. Nested JSX is passed through the <code>children</code> prop:</p>
+
+<pre><code>function Card({ children }) {
+  return &lt;div className="card"&gt;{children}&lt;/div&gt;
+}
+
+&lt;Card&gt;
+  &lt;Avatar /&gt;
+  &lt;p&gt;User profile&lt;/p&gt;
+&lt;/Card&gt;</code></pre>
+
+<p>This does not mean every component API should be as flexible as possible. Sometimes <code>children</code> is appropriate, sometimes named content props are better, and sometimes a strict subset of child components is needed. Understanding code helps you choose the right degree of flexibility instead of creating an endless component set.</p>
+
+<h2>Figma Slots: what they actually are</h2>
+
+<p>Native Slots reached general availability in&nbsp;June 2026, not 2025. A Slot is one of&nbsp;five types of component properties in&nbsp;Figma, alongside boolean, instance swap, text, and&nbsp;variant properties.</p>
+
+<p>A Slot creates a flexible area inside a component instance. Content can be added, edited, and&nbsp;reordered within it without detaching the instance. You can define default content, preferred instances, minimum and&nbsp;maximum layer counts, and&nbsp;other slot settings. Slots are available in&nbsp;Figma Design on&nbsp;all plans; any user with permission to edit the file can create them.</p>
+
+<p>This is similar to&nbsp;<code>children</code> or&nbsp;a content slot in&nbsp;code, but it is not a complete equivalent:</p>
+
+<ul>
+  <li>a Figma Slot controls how layers are edited inside an&nbsp;instance;</li>
+  <li>a code API controls types, data, state, and&nbsp;runtime behavior;</li>
+  <li>a visually valid composition may be semantically incorrect;</li>
+  <li>slot constraints do not replace a type system or&nbsp;tests.</li>
+</ul>
+
+<h2>When to use a Slot, instance swap, or&nbsp;variant</h2>
+
+<ul>
+  <li><strong>Variant</strong>&nbsp;— for a constrained set of states or&nbsp;types: size, tone, state.</li>
+  <li><strong>Instance swap</strong>&nbsp;— when a specific nested component needs to be replaced from a controlled set.</li>
+  <li><strong>Slot</strong>&nbsp;— when an area needs to support different content arrangements and&nbsp;combinations: a modal body, an&nbsp;action list, or&nbsp;card content.</li>
+</ul>
+
+<p>Do not migrate everything to&nbsp;Slots. The more flexible an area is, the more responsibility falls on&nbsp;the library user. For a status icon or&nbsp;leading action, instance swap is often safer.</p>
+
+<h2>Code Connect and&nbsp;Slots</h2>
+
+<p>Code Connect can map a native Slot to&nbsp;composition in&nbsp;code. As of&nbsp;August&nbsp;17, 2026, the only actively supported format is framework-agnostic <code>.figma.ts</code> template files. In&nbsp;these files, a Slot is read with <code>getSlot()</code>; the older <code>figma.slot()</code> belongs to&nbsp;the legacy React/HTML parsers.</p>
+
+<pre><code>// url=https://figma.com/design/...?node-id=123
+// source=src/components/Card.tsx
+// component=Card
+
+import figma from 'figma'
+
+const content = figma.selectedInstance.getSlot('Content')
+
+export default {
+  example: figma.code`&lt;Card&gt;${content}&lt;/Card&gt;`,
+  imports: ['import { Card } from "@company/ui"'],
+  id: 'card',
+}</code></pre>
+
+<p>There is an important limitation: by default, Dev Mode displays a slot as a clickable link rather than expanding all of&nbsp;its nested code. <code>connectedInstances</code> can output directly nested code-connected components, but the lookup is shallow: text, regular layers, unconnected instances, and&nbsp;deeply nested instances are omitted. The remote Figma MCP, by&nbsp;contrast, can traverse a slot and&nbsp;retrieve its layout and&nbsp;nested content.</p>
+
+<h2>Tokens: a stable format has arrived</h2>
+
+<p>A design token is more than a name for a HEX value. It provides a durable link between intent and&nbsp;a platform-specific value. A semantic token such as&nbsp;<code>color.text.muted</code> makes it possible to change a theme or&nbsp;contrast mode without rewriting components.</p>
+
+<p>In&nbsp;October 2025, the DTCG published its first stable specification, 2025.10. This is an&nbsp;important step toward exchanging tokens between tools, but it is not a W3C Standard, nor does it guarantee that Figma, your transformer, and&nbsp;every platform support each type in&nbsp;the same way.</p>
+
+<p>The practical implications for designers:</p>
+
+<ul>
+  <li>separate primitive, semantic, and&nbsp;component tokens only where justified;</li>
+  <li>do not manually duplicate values between Figma and&nbsp;the repository;</li>
+  <li>document modes, aliases, and&nbsp;fallback behavior;</li>
+  <li>validate generated outputs on&nbsp;every target platform;</li>
+  <li>do not call arbitrary JSON “DTCG-compatible” without validation.</li>
+</ul>
+
+<h2>Code Connect is not magical synchronization</h2>
+
+<p>Code Connect links a library component in&nbsp;Figma to&nbsp;a component in&nbsp;the repository. Template files are not tied to&nbsp;a framework: a single TypeScript template can generate a snippet for React, Web Components, SwiftUI, Compose, or&nbsp;another language. Framework-specific parsers remain available in&nbsp;older CLI versions but are no&nbsp;longer supported.</p>
+
+<p>The Code Connect UI is simpler: it runs inside Figma and&nbsp;connects to&nbsp;GitHub to map design and&nbsp;code for MCP. However, a UI mapping does not display a custom snippet in&nbsp;Inspect&nbsp;— that requires the CLI.</p>
+
+<p>Neither the UI nor&nbsp;the CLI provides automatic two-way API synchronization. If a prop is renamed, a variant is removed, or&nbsp;behavior changes, the mapping and&nbsp;documentation must be updated and&nbsp;verified.</p>
+
+<h2>AI accelerates execution but does not make product decisions</h2>
+
+<p>Cursor, Claude Code, and&nbsp;other agents can inspect a repository, retrieve Figma context through MCP, modify files, and&nbsp;run checks. This lets a designer build a working prototype more quickly or&nbsp;test a solution in&nbsp;a real layout.</p>
+
+<p>But an agent does not automatically know:</p>
+
+<ul>
+  <li>which product behavior is considered correct;</li>
+  <li>which component is canonical;</li>
+  <li>whether a new dependency is acceptable;</li>
+  <li>whether the interface meets accessibility requirements;</li>
+  <li>which tradeoffs matter to&nbsp;the team.</li>
+</ul>
+
+<p>Designers need a basic understanding of&nbsp;browsers and&nbsp;code to evaluate the result. Otherwise, AI turns an&nbsp;unverified assumption into a convincing-looking diff.</p>
+
+<h2>What designers should actually learn</h2>
+
+<ol>
+  <li><strong>HTML and&nbsp;semantics.</strong> Elements, forms, headings, landmarks, accessible names.</li>
+  <li><strong>CSS layout.</strong> Box model, flex, grid, intrinsic sizing, overflow, container and&nbsp;media queries.</li>
+  <li><strong>Accessibility.</strong> Keyboard, focus, contrast, reduced motion, screen-reader basics.</li>
+  <li><strong>Component APIs.</strong> Props, state, composition, controlled and&nbsp;uncontrolled patterns.</li>
+  <li><strong>Tokens.</strong> Aliases, modes, semantic naming, transformation, and&nbsp;platform outputs.</li>
+  <li><strong>Git and&nbsp;review.</strong> Branches, diffs, commits, pull requests, conflicts.</li>
+  <li><strong>DevTools and&nbsp;tests.</strong> Inspect, computed styles, responsive mode, console, network, visual and&nbsp;interaction tests.</li>
+</ol>
+
+<p>React is not essential if your team uses another platform. What matters is understanding the model of&nbsp;the target environment, not memorizing a single framework.</p>
+
+<h2>Practice with one component</h2>
+
+<p>Choose a moderately complex component&nbsp;— for example, a Dialog or&nbsp;Card&nbsp;— and&nbsp;work through the full cycle:</p>
+
+<ol>
+  <li>describe its purpose and&nbsp;the scenarios it is not suited for;</li>
+  <li>choose variants, swaps, and&nbsp;slots in&nbsp;Figma;</li>
+  <li>map them to&nbsp;the code API;</li>
+  <li>define tokens and&nbsp;responsive behavior;</li>
+  <li>add focus, keyboard, and&nbsp;error states;</li>
+  <li>connect it through Code Connect;</li>
+  <li>verify the implementation in&nbsp;Storybook or&nbsp;the application;</li>
+  <li>update the documentation in&nbsp;the same pull request.</li>
+</ol>
+
+<h2>Conclusion</h2>
+
+<p>Understanding development does not mean writing all production code yourself. It means designing component APIs, recognizing platform constraints, validating implementations, and&nbsp;discussing decisions with engineers without losing the original intent.</p>
+
+<p>Slots, Code Connect, MCP, and&nbsp;AI narrow the mechanical gap between Figma and&nbsp;code. They do not close the architectural gap. That requires a team that has agreed on&nbsp;sources of truth, contracts, and&nbsp;validation.</p>
+
+<h2>Sources</h2>
+
+<ul>
+  <li><a href="https://help.figma.com/hc/en-us/articles/38231200344599-Use-slots-to-build-flexible-components-in-Figma" target="_blank" rel="noopener">Figma: native Slots</a></li>
+  <li><a href="https://developers.figma.com/docs/plugins/updates/2026/06/10/update/" target="_blank" rel="noopener">Figma Developer Docs: Slots GA, June 2026</a></li>
+  <li><a href="https://developers.figma.com/docs/code-connect/react/" target="_blank" rel="noopener">Figma: Code Connect for React and&nbsp;Slots</a></li>
+  <li><a href="https://developers.figma.com/docs/code-connect/template-files/" target="_blank" rel="noopener">Figma: framework-agnostic template files</a></li>
+  <li><a href="https://developers.figma.com/docs/code-connect/templates-migration-guide/" target="_blank" rel="noopener">Figma: migration from legacy parsers</a></li>
+  <li><a href="https://help.figma.com/hc/en-us/articles/23920389749655-Code-Connect" target="_blank" rel="noopener">Figma: Code Connect overview</a></li>
+  <li><a href="https://react.dev/learn/passing-props-to-a-component#passing-jsx-as-children" target="_blank" rel="noopener">React: passing JSX as children</a></li>
+  <li><a href="https://www.designtokens.org/tr/2025.10/" target="_blank" rel="noopener">DTCG Technical Reports&nbsp;2025.10</a></li>
+</ul>
+</div>
+</article></div></main>
+  <section class="cta" data-r>
+    <div class="cta-grid">
+      <div class="cta-card">
+        <div class="shader" aria-hidden="true"><i></i><i></i><i></i></div>
+        <span class="tag top">Work together</span>
+        <div class="mid"><h2>Are you ready to take the next step?</h2></div>
+        <div class="bot"><p>Have a problem you want to ship? Write me and we will shape the next step together.</p></div>
+      </div>
+      <form class="cta-form" data-subject="Collaboration">
+        <input name="name" required placeholder="Your name" autocomplete="name">
+        <input name="email" type="email" required placeholder="Your email" autocomplete="email">
+        <textarea name="question" required placeholder="How can I help?"></textarea>
+        <button type="submit">Send a message</button>
+      </form>
+    </div>
+  </section>
+  <footer class="foot">
+    <div class="foot-art" aria-hidden="true"><img src="img/gen/footer.jpg" alt=""></div>
+    <div class="foot-in">
+      <h2 data-r><span>Let’s create something</span><br>that actually ships.</h2>
+      <div class="social" data-r style="--d:.1s"><a href="https://t.me/andrewaitken" target="_blank" rel="noopener" aria-label="Telegram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M21 4 3 11l5.5 2L10 19l3-4 4.5 3.5L21 4Z"/><path d="m8.5 13 8-5"/></svg></a><a href="https://github.com/AndrewAntoshkin" target="_blank" rel="noopener" aria-label="GitHub"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M9 19c-4 1.2-4-2-5.5-2.5M15 21v-3.5c0-1 .1-1.500-.5-2.200 2.800-.3 5.500-1.400 5.500-6a4.700 4.700 0 0 0-1.300-3.300 4.400 4.400 0 0 0-.1-3.300s-1-.3-3.400 1.300a11.700 11.700 0 0 0-6.200 0C6.600 2.900 5.600 3.200 5.600 3.200a4.400 4.400 0 0 0-.1 3.300A4.700 4.700 0 0 0 4.200 9.800c0 4.600 2.700 5.700 5.500 6-.6.700-.6 1.300-.6 2.200V21"/></svg></a><a href="mailto:andrew.antoshkin@gmail.com" aria-label="Email"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></div>
+      <div class="cols"><div><p>Pages</p><a href="en.html">Home</a><a href="projects-en.html">Projects</a><a href="writing-en.html">Writing</a><a href="approach-en.html">Approach</a><a href="collab-en.html">Collaboration</a></div><div><p>Projects</p><a href="agent-ui-en.html">agent-ui</a><a href="ds-eval-en.html">ds-eval</a><a href="ds-context-en.html">ds-context</a><a href="ui-repair-en.html">ui-repair</a><a href="prompt-regress-en.html">prompt-regress</a></div><div><p>Writing</p><a href="apres-prompt-en.html">Après-prompt</a><a href="ai-changes-processes-en.html">AI Is Not Changing Professions. AI Is Changing Processes</a><a href="halo-working-memory-en.html">Halo</a><a href="cursor-figma-en.html">Cursor + Figma in 2026</a><a href="design-md-en.html">DESIGN.md in 2026</a></div></div>
+      <div class="legal"><span>© Andrew Antoshkin, 2026</span><span>Built by hand, no templates</span></div>
+    </div>
+  </footer>
+  <script src="motion.js"></script>
+</body></html>

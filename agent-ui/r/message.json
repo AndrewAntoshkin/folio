@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "message",
+  "title": "Message",
+  "description": "User and assistant turns with a streaming caret and hover actions.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/agent-ui/message.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { motion, useReducedMotion } from \"motion/react\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface MessageProps {\n  role: \"user\" | \"assistant\"\n  children: React.ReactNode\n  streaming?: boolean\n  actions?: React.ReactNode\n  className?: string\n}\n\nexport function Message({ role, children, streaming, actions, className }: MessageProps) {\n  const reduce = useReducedMotion()\n  const isUser = role === \"user\"\n\n  return (\n    <motion.div\n      initial={reduce ? false : { opacity: 0, y: 6 }}\n      animate={{ opacity: 1, y: 0 }}\n      transition={{ type: \"spring\", duration: 0.35, bounce: 0 }}\n      className={cn(\"group flex w-full shrink-0 flex-col gap-1\", isUser ? \"items-end\" : \"items-start\", className)}\n      data-role={role}\n    >\n      <div\n        className={cn(\n          \"text-sm leading-6 text-foreground\",\n          isUser ? \"max-w-xl rounded-3xl bg-muted px-4 py-2\" : \"w-full\",\n        )}\n      >\n        {children}\n        {streaming && <StreamingCaret />}\n      </div>\n      {actions && !streaming && (\n        <div className=\"flex items-center gap-0.5 opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100\">\n          {actions}\n        </div>\n      )}\n    </motion.div>\n  )\n}\n\nfunction StreamingCaret() {\n  const reduce = useReducedMotion()\n  return (\n    <motion.span\n      aria-hidden\n      className=\"ml-1 inline-block size-2 rounded-full bg-foreground align-middle\"\n      animate={reduce ? undefined : { opacity: [1, 0.25, 1], scale: [1, 0.8, 1] }}\n      transition={{ duration: 1, repeat: Infinity, ease: \"easeInOut\" }}\n    />\n  )\n}\n\nexport interface MessageActionProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {\n  label: string\n}\n\nexport function MessageAction({ label, className, children, ...props }: MessageActionProps) {\n  return (\n    <button\n      type=\"button\"\n      aria-label={label}\n      title={label}\n      className={cn(\n        \"flex size-7 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground\",\n        className,\n      )}\n      {...props}\n    >\n      {children}\n    </button>\n  )\n}\n",
+      "type": "registry:component",
+      "target": "components/agent-ui/message.tsx"
+    },
+    {
+      "path": "registry/rules/message.mdc",
+      "content": "---\ndescription: agent-ui Message and MessageAction. Use when rendering a single user or assistant turn in a chat thread, with a streaming caret and hover actions like copy or retry.\nalwaysApply: false\n---\n\n# Message\n\n`import { Message, MessageAction } from \"@/components/agent-ui/message\"`\n\n## Use for\n- One turn of a conversation. User turns render as a bubble on the right, assistant turns as full-width text.\n\n## Do not use for\n- Tool calls, reasoning, approvals, plans, choices, tables, charts, code, sources, or file artifacts inside an assistant turn. Render `ToolCall`, `Thinking`, `Approval`, `Plan`, `Choice`, `DataTable`, `AnswerChart`, `CodeBlock`, `Sources`, and `Artifact` as siblings in the thread.\n- System notices or errors. Use the project's `Alert`.\n\n## Props\n| Prop | Type | Notes |\n| --- | --- | --- |\n| `role` | `\"user\" \\| \"assistant\"` | Required. |\n| `children` | `ReactNode` | Already-rendered content: plain text or your markdown renderer. |\n| `streaming` | `boolean` | Shows a pulsing caret and hides actions. |\n| `actions` | `ReactNode` | `MessageAction` buttons, shown on hover or focus. |\n\n`MessageAction` takes a required `label` (used as `aria-label` and tooltip) and an icon as children.\n\n## Example\n```tsx\n{messages.map((m) => (\n  <Message\n    key={m.id}\n    role={m.role}\n    streaming={m.id === streamingId}\n    actions={m.role === \"assistant\" && (\n      <MessageAction label=\"Copy\" onClick={() => copy(m.text)}><Copy className=\"size-3.5\" /></MessageAction>\n    )}\n  >\n    <Markdown>{m.text}</Markdown>\n  </Message>\n))}\n```\n\n## Rules\n- Only the last assistant message may have `streaming`.\n- Give each `MessageAction` a `label`. Icon-only buttons without one fail accessibility.\n- Stack messages in a `flex flex-col gap-6` container. Do not wrap them in cards.\n",
+      "type": "registry:file",
+      "target": "~/.cursor/rules/agent-ui-message.mdc"
+    }
+  ],
+  "type": "registry:component"
+}

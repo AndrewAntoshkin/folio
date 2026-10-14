@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" class="nojs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>agent-ui — Andrew Antoshkin</title>
+  <script>document.documentElement.classList.remove('nojs')</script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="dock"><nav aria-label="Navigation"><i aria-hidden="true"></i><a href="en.html" aria-label="Home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg></a><a href="projects-en.html" aria-label="Projects" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 13h16"/></svg></a><a href="writing-en.html" aria-label="Writing"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M14 5.5 18.5 10 9 19.5H4.5V15L14 5.5Z"/><path d="m12 7.5 4.5 4.5"/></svg></a><a href="approach-en.html" aria-label="Approach"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.25"/><path d="M5.5 19.5c1.2-3 3.4-4.5 6.5-4.5s5.3 1.5 6.5 4.5"/></svg></a><a href="collab-en.html" aria-label="Contact"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></nav></div>
+<nav class="langs" aria-label="Language"><a href="agent-ui.html">Ru</a><a href="agent-ui-en.html" aria-current="page">En</a></nav>
+<a class="float" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Say hello<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+<main><div class="col"><article class="art">
+  <header class="art-top">
+    <a class="back" href="projects-en.html" data-r>‹ Back</a>
+    <h1 data-split>agent-ui</h1>
+    <div class="tags" data-r style="--d:.25s"><span class="tag">Components</span><span class="tag">open source</span></div>
+  </header>
+  <div class="art-intro" data-r style="--d:.3s"><p>Fifteen React components for chat and agent UIs. Each one installs with a Cursor rule: when to use it, when not to, and which props matter. Colors come only from theme tokens, so the agent has nothing to hardcode.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="('/agent-ui/', '/agent-ui/en.html')" target="_blank" rel="noopener">Open the components</a></div></div>
+  <div class="prose"><div class="pcover "><div class="bg" style="background-image:url(img/gen/agent-ui.jpg)"></div><span class="plogo">agent-ui</span></div>
+<p><a href="/agent-ui/en.html">Open the components →</a></p>
+<section id="why"><h2>Why build components myself</h2>
+<p>There are plenty of libraries: shadcn, Magic UI, Aceternity, Chamaac. They are made for a person who looks at a demo and copies the code. More and more, the one installing a component is an agent, and that is where the problems my other tools catch begin. ds-lint finds hardcoded colors in copied code. ds-coverage finds local copies next to the system. ds-eval shows an agent drawing its own button more often than taking the existing one.</p>
+<p>You can fix that afterwards, the way ui-repair does. It is cheaper to ship components that need no fixing. That takes three things a regular library does not have:</p>
+<ul>
+<li>a description of when to use it and when not to, in the words of the task rather than a props list;</li>
+<li>theme tokens only: no hex, no <code>bg-zinc-900</code>, so there is nothing wrong to copy;</li>
+<li>a place where the agent finds all of this before installing anything.</li>
+</ul>
+<p>The second reason is AI interfaces themselves. A tool call, a permission request, model reasoning, the context window: general kits do not have these primitives, and every product draws them again. I build them once, the way I want them in my own interfaces.</p>
+</section>
+<section id="inside"><h2>What's inside</h2>
+<ul class="feature-list">
+<li><strong>Prompt Input</strong><span>Auto-growing prompt box: Enter sends, Send turns into Stop while the reply streams. Attachments and a model picker slot.</span></li>
+<li><strong>Message</strong><span>A user or assistant turn with a streaming caret and hover actions.</span></li>
+<li><strong>Thinking</strong><span>A shimmering "Thinking" that collapses into "Thought for 4s" with the reasoning text.</span></li>
+<li><strong>Tool Call</strong><span>One tool call: status, arguments, output, error.</span></li>
+<li><strong>Approval</strong><span>The agent asks to run one concrete command. After the decision the card collapses into a one-line record.</span></li>
+<li><strong>Context Meter</strong><span>A context-window ring with a warning threshold.</span></li>
+<li><strong>Suggestions</strong><span>Starter prompts and follow-up questions.</span></li>
+<li><strong>Agent Dock</strong><span>A floating status bar for a background agent that opens into its step list on hover.</span></li>
+<li><strong>Plan</strong><span>The steps the assistant proposes before or during a task.</span></li>
+<li><strong>Choice</strong><span>A question with two to five mutually exclusive options.</span></li>
+<li><strong>Data Table</strong><span>A comparison or tool result inside an answer.</span></li>
+<li><strong>Answer Chart</strong><span>One bar or line series, up to eight points, in the primary token.</span></li>
+<li><strong>Code Block</strong><span>Code or a diff in an answer, with a filename and copy.</span></li>
+<li><strong>Sources</strong><span>Citations under an answer: title, address, short excerpt.</span></li>
+<li><strong>Artifact</strong><span>A file card in the thread. Its contents open in a side panel.</span></li>
+</ul>
+<p>The components page opens with a live scene: an agent fixes hardcoded colors and stops to ask for permission. You can allow, deny, or stop it.</p>
+</section>
+<section id="rules"><h2>A rule next to the code</h2>
+<p>Every install writes two files: the component and a <code>.mdc</code> rule. The rule's description names the task, not the component ("an agent asks permission before a risky action"), so Cursor loads it only when it is relevant.</p>
+<p>Every rule has a "do not use for" section that names the project primitive to use instead. That is where agents usually go wrong: an Approval in place of a confirm dialog, or Thinking in place of a loading skeleton.</p>
+<pre><code>components/agent-ui/approval.tsx
+.cursor/rules/agent-ui-approval.mdc
+
+> Ask before the agent deletes the build folder
+
+  agent loads agent-ui-approval.mdc
+  &lt;Approval title="Run a shell command"
+            command="rm -rf ./build"
+            onApprove={...} onDeny={...} /&gt;</code></pre>
+<p>For agents that do not read Cursor rules there is <a href="/agent-ui/r/llms.txt">llms.txt</a> with the component list and <a href="/agent-ui/r/llms-full.txt">llms-full.txt</a> with every rule in one file.</p>
+</section>
+<section id="install"><h2>Installation</h2>
+<p>The registry is shadcn-compatible. It needs Tailwind v4 and the shadcn theme as CSS variables.</p>
+<pre><code>npx shadcn@latest add https://antoshkin.tech/agent-ui/r/approval.json
+npx shadcn@latest add https://antoshkin.tech/agent-ui/r/all.json</code></pre>
+<p>The registry build fails if a component gets a hex value, a palette class like <code>text-neutral-500</code>, or an arbitrary value like <code>text-[14px]</code>. Change the theme tokens and every component follows; the accent switch on the components page shows it.</p>
+</section>
+<section id="limits"><h2>Limitations</h2>
+<p>I have not measured with ds-eval how much the rules raise correct usage. For now it is a hypothesis; the next step is running a task suite with and without the rules.</p>
+<p>The rules use Cursor's format. Other agents get the same text through llms-full.txt but do not load it automatically. Components read <code>var(--muted-foreground)</code> directly, so the older shadcn theme with HSL channels will not work.</p>
+<p>Motion ideas for Dock, AI Input, Shimmer and Gauge come from <a href="https://www.chamaac.com/" target="_blank" rel="noopener noreferrer">Chamaac UI</a> (MIT). The code is new, without Next.js or hardcoded colors.</p>
+</section>
+</div>
+</article></div></main>
+  <section class="cta" data-r>
+    <div class="cta-grid">
+      <div class="cta-card">
+        <div class="shader" aria-hidden="true"><i></i><i></i><i></i></div>
+        <span class="tag top">Work together</span>
+        <div class="mid"><h2>Are you ready to take the next step?</h2></div>
+        <div class="bot"><p>Have a problem you want to ship? Write me and we will shape the next step together.</p></div>
+      </div>
+      <form class="cta-form" data-subject="Collaboration">
+        <input name="name" required placeholder="Your name" autocomplete="name">
+        <input name="email" type="email" required placeholder="Your email" autocomplete="email">
+        <textarea name="question" required placeholder="How can I help?"></textarea>
+        <button type="submit">Send a message</button>
+      </form>
+    </div>
+  </section>
+  <footer class="foot">
+    <div class="foot-art" aria-hidden="true"><img src="img/gen/footer.jpg" alt=""></div>
+    <div class="foot-in">
+      <h2 data-r><span>Let’s create something</span><br>that actually ships.</h2>
+      <div class="social" data-r style="--d:.1s"><a href="https://t.me/andrewaitken" target="_blank" rel="noopener" aria-label="Telegram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M21 4 3 11l5.5 2L10 19l3-4 4.5 3.5L21 4Z"/><path d="m8.5 13 8-5"/></svg></a><a href="https://github.com/AndrewAntoshkin" target="_blank" rel="noopener" aria-label="GitHub"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M9 19c-4 1.2-4-2-5.5-2.5M15 21v-3.5c0-1 .1-1.500-.5-2.200 2.800-.3 5.500-1.400 5.500-6a4.700 4.700 0 0 0-1.300-3.300 4.400 4.400 0 0 0-.1-3.300s-1-.3-3.400 1.300a11.700 11.700 0 0 0-6.200 0C6.600 2.900 5.600 3.200 5.600 3.200a4.400 4.400 0 0 0-.1 3.300A4.700 4.700 0 0 0 4.200 9.800c0 4.600 2.700 5.700 5.500 6-.6.700-.6 1.300-.6 2.200V21"/></svg></a><a href="mailto:andrew.antoshkin@gmail.com" aria-label="Email"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></div>
+      <div class="cols"><div><p>Pages</p><a href="en.html">Home</a><a href="projects-en.html">Projects</a><a href="writing-en.html">Writing</a><a href="approach-en.html">Approach</a><a href="collab-en.html">Collaboration</a></div><div><p>Projects</p><a href="agent-ui-en.html">agent-ui</a><a href="ds-eval-en.html">ds-eval</a><a href="ds-context-en.html">ds-context</a><a href="ui-repair-en.html">ui-repair</a><a href="prompt-regress-en.html">prompt-regress</a></div><div><p>Writing</p><a href="apres-prompt-en.html">Après-prompt</a><a href="ai-changes-processes-en.html">AI Is Not Changing Professions. AI Is Changing Processes</a><a href="halo-working-memory-en.html">Halo</a><a href="cursor-figma-en.html">Cursor + Figma in 2026</a><a href="design-md-en.html">DESIGN.md in 2026</a></div></div>
+      <div class="legal"><span>© Andrew Antoshkin, 2026</span><span>Built by hand, no templates</span></div>
+    </div>
+  </footer>
+  <script src="motion.js"></script>
+</body></html>

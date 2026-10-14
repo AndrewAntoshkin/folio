@@ -1,0 +1,39 @@
+---
+description: agent-ui Sources. Use when an assistant answer cites pages, files, or docs. Not for a navigation menu or a generic link list.
+alwaysApply: false
+---
+
+# Sources
+
+`import { Sources } from "@/components/agent-ui/sources"`
+
+## Use for
+- The pages, files, or documents an assistant answer is based on.
+
+## Do not use for
+- Site navigation or a sidebar of chats. Use the project's nav.
+- A file the user can open and read in full. Use `Artifact`.
+- Inline mentions. Link those inside the `Message`.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `items` | `{ title, href, excerpt? }[]` | Required. `href` is a real URL. |
+| `label` | `string` | Heading. Default `"Sources"`. Set it when the interface is not in English. |
+
+## Example
+```tsx
+<Sources
+  label="Sources"
+  items={citations.map((item) => ({
+    title: item.title,
+    href: item.url,
+    excerpt: item.snippet,
+  }))}
+/>
+```
+
+## Rules
+- Render it after the `Message` it supports, as a sibling in the thread.
+- One source per document. Do not repeat the same href.
+- The excerpt is a short quote, not a second answer.

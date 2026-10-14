@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "all",
+  "title": "All agent-ui components",
+  "description": "Every agent-ui component with its agent rule.",
+  "registryDependencies": [
+    "https://antoshkin.tech/agent-ui/r/prompt-input.json",
+    "https://antoshkin.tech/agent-ui/r/message.json",
+    "https://antoshkin.tech/agent-ui/r/thinking.json",
+    "https://antoshkin.tech/agent-ui/r/tool-call.json",
+    "https://antoshkin.tech/agent-ui/r/approval.json",
+    "https://antoshkin.tech/agent-ui/r/plan.json",
+    "https://antoshkin.tech/agent-ui/r/choice.json",
+    "https://antoshkin.tech/agent-ui/r/data-table.json",
+    "https://antoshkin.tech/agent-ui/r/answer-chart.json",
+    "https://antoshkin.tech/agent-ui/r/code-block.json",
+    "https://antoshkin.tech/agent-ui/r/sources.json",
+    "https://antoshkin.tech/agent-ui/r/artifact.json",
+    "https://antoshkin.tech/agent-ui/r/context-meter.json",
+    "https://antoshkin.tech/agent-ui/r/suggestions.json",
+    "https://antoshkin.tech/agent-ui/r/agent-dock.json"
+  ],
+  "files": [],
+  "type": "registry:block"
+}

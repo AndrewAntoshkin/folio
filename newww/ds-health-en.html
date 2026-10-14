@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" class="nojs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ds-health — Andrew Antoshkin</title>
+  <script>document.documentElement.classList.remove('nojs')</script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="dock"><nav aria-label="Navigation"><i aria-hidden="true"></i><a href="en.html" aria-label="Home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg></a><a href="projects-en.html" aria-label="Projects" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 13h16"/></svg></a><a href="writing-en.html" aria-label="Writing"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M14 5.5 18.5 10 9 19.5H4.5V15L14 5.5Z"/><path d="m12 7.5 4.5 4.5"/></svg></a><a href="approach-en.html" aria-label="Approach"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.25"/><path d="M5.5 19.5c1.2-3 3.4-4.5 6.5-4.5s5.3 1.5 6.5 4.5"/></svg></a><a href="collab-en.html" aria-label="Contact"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></nav></div>
+<nav class="langs" aria-label="Language"><a href="ds-health.html">Ru</a><a href="ds-health-en.html" aria-current="page">En</a></nav>
+<a class="float" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Say hello<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+<main><div class="col"><article class="art">
+  <header class="art-top">
+    <a class="back" href="projects-en.html" data-r>‹ Back</a>
+    <h1 data-split>ds-health</h1>
+    <div class="tags" data-r style="--d:.25s"><span class="tag">Web tool</span><span class="tag">open source</span></div>
+  </header>
+  <div class="art-intro" data-r style="--d:.3s"><p>Paste a URL, get a design system health report. Analyzes colors, typography, spacing, and radius on any live website using a real browser.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="https://github.com/AndrewAntoshkin/ds-health" target="_blank" rel="noopener">Repository on GitHub</a></div></div>
+  <div class="prose"><div class="pcover "><div class="bg" style="background-image:url(img/gen/ds-health.jpg)"></div><span class="plogo">ds-health</span></div><section id="measures"><h2>What It Measures</h2>
+<ul class="feature-list"><li><strong>Colors</strong><span>How many text and background colors exist. Rewards fewer unique values and CSS variable usage.</span></li><li><strong>Typography</strong><span>Font families, sizes, and weights in visible text. Fewer means more controlled.</span></li><li><strong>Spacing</strong><span>How many distinct padding and gap values appear. Converging to a scale is ideal.</span></li><li><strong>Radius</strong><span>Distinct non-zero border-radius values. Fewer = more consistent corners.</span></li></ul></section>
+<section id="run"><h2>Run Locally</h2>
+<pre><code>git clone https://github.com/AndrewAntoshkin/ds-health.git
+cd ds-health
+npm install
+npm start</code></pre>
+<p>Open <code>http://localhost:3000</code>. If the port is busy:</p>
+<pre><code>PORT=3002 npm start</code></pre>
+<p>If Playwright can't find a browser:</p>
+<pre><code>npx playwright install chromium</code></pre></section>
+<section id="how"><h2>How It Works</h2>
+<p>The tool loads the page in a real Chromium browser (via Playwright), samples visible elements, reads their computed styles, and generates a health report with scores, signals, and recommendations.</p>
+<pre><code>URL → Playwright (Chromium) → getComputedStyle() on sampled elements
+→ Count unique colors, fonts, spacing, radii
+→ Score each category (0–100)
+→ Generate executive summary + priorities + recommendations</code></pre></section>
+<section id="api"><h2>API</h2>
+<h3>POST /api/analyze</h3>
+<pre><code>curl -X POST http://localhost:3000/api/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"url": "https://example.com"}'</code></pre>
+<h3>Request</h3>
+<table><thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>url</td><td>string</td><td>Public HTTP/HTTPS URL to analyze</td></tr></tbody></table>
+<h3>Response</h3>
+<table><thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>health.overall</td><td>number</td><td>0–100 average score</td></tr><tr><td>health.color</td><td>number</td><td>Color consistency score</td></tr><tr><td>health.typography</td><td>number</td><td>Typography consistency score</td></tr><tr><td>health.spacing</td><td>number</td><td>Spacing consistency score</td></tr><tr><td>health.radius</td><td>number</td><td>Radius consistency score</td></tr><tr><td>health.label</td><td>string</td><td>"Healthy", "Mostly consistent", etc.</td></tr><tr><td>executiveSummary</td><td>string</td><td>Plain-English interpretation</td></tr><tr><td>priorities</td><td>array</td><td>What to fix first</td></tr><tr><td>recommendations</td><td>array</td><td>Actionable next steps</td></tr><tr><td>signals</td><td>array</td><td>Individual observations</td></tr><tr><td>topValues</td><td>object</td><td>Most common values per category</td></tr></tbody></table>
+<h3>GET /health</h3>
+<p>Returns <code>{ "ok": true }</code> — use for uptime checks.</p></section>
+<section id="healthy"><h2>Healthy Site Example</h2>
+<p>Result from analyzing <code>barvian.me</code> — a disciplined, minimalist site:</p>
+<table><thead><tr><th>Score</th><th>Meaning</th></tr></thead><tbody><tr><td>100</td><td>Color</td></tr><tr><td>100</td><td>Typography</td></tr><tr><td>100</td><td>Spacing</td></tr><tr><td>100</td><td>Radius</td></tr></tbody></table>
+<pre><code>{
+"elementsSampled": 69,
+"textNodesSampled": 41,
+"cssVariables": 4,
+"textColors": 3,
+"backgroundColors": 3,
+"fontFamilies": 1,
+"fontSizes": 1,
+"fontWeights": 2,
+"spacingValues": 4,
+"radiusValues": 1
+}
+
+Executive summary:
+"This page looks healthy. 4 CSS variables were
+detected, and no major consistency issues stood
+out in the sampled page."</code></pre></section>
+<section id="fragmented"><h2>Fragmented Site Example</h2>
+<p>A page with many competing values — typical of legacy UIs or rapid prototyping:</p>
+<table><thead><tr><th>Score</th><th>Meaning</th></tr></thead><tbody><tr><td>65</td><td>Color</td></tr><tr><td>45</td><td>Typography</td></tr><tr><td>70</td><td>Spacing</td></tr><tr><td>90</td><td>Radius</td></tr></tbody></table>
+<pre><code>Priority issues:
+⚠ 14 text colors detected — consider consolidating
+⚠ 4 font families in use — reduce to 1–2
+⚠ 8 font sizes found — align to a type scale
+⚠ No CSS variables detected — consider tokenizing
+
+Recommendations:
+→ Audit text colors and create a semantic palette
+→ Standardize on 1–2 font families
+→ Define a spacing scale (4, 8, 12, 16, 24, 32)
+→ Introduce CSS custom properties for tokens</code></pre></section>
+<section id="report"><h2>Reading Reports</h2>
+<p>The most useful pattern: <strong>score first</strong>, then summary, then priorities, then supporting values.</p>
+<table><thead><tr><th>Section</th><th>What it tells you</th></tr></thead><tbody><tr><td>Overall health</td><td>Average of 4 category scores — quick pass/fail signal</td></tr><tr><td>Executive summary</td><td>Plain-English conclusion for stakeholders</td></tr><tr><td>Priority issues</td><td>What's worth fixing first — biggest impact items</td></tr><tr><td>Recommendations</td><td>Practical cleanup steps you can assign to a sprint</td></tr><tr><td>Signals</td><td>Individual observations — raw evidence behind the score</td></tr><tr><td>Top values</td><td>Most common colors/sizes/spacing — where consolidation helps most</td></tr><tr><td>Normalized groups</td><td>Near-identical values collapsed into cleaner buckets</td></tr></tbody></table></section>
+<section id="scores"><h2>Score Guide</h2>
+<table><thead><tr><th>Range</th><th>Label</th><th>Meaning</th></tr></thead><tbody><tr><td>90–100</td><td>Healthy</td><td>Tightly controlled — few colors, restrained typography, small spacing set</td></tr><tr><td>70–89</td><td>Mostly consistent</td><td>Some fragmentation or a few one-off values</td></tr><tr><td>50–69</td><td>Needs attention</td><td>Visual system may be drifting — needs a closer look</td></tr><tr><td>0–49</td><td>Fragmented</td><td>Too many competing values — likely no token layer</td></tr></tbody></table></section>
+<section id="pipeline"><h2>Pipeline</h2>
+<p>ds-health checks the live page after the model loop, when the UI is already in production:</p>
+<pre><code>ds-context prepares the pack
+ds-eval scores generated UI
+ds-health reads the live page ← you are here</code></pre></section>
+<p><a href="https://github.com/AndrewAntoshkin/ds-health" target="_blank" rel="noopener noreferrer">Source</a></p></div>
+</article></div></main>
+  <section class="cta" data-r>
+    <div class="cta-grid">
+      <div class="cta-card">
+        <div class="shader" aria-hidden="true"><i></i><i></i><i></i></div>
+        <span class="tag top">Work together</span>
+        <div class="mid"><h2>Are you ready to take the next step?</h2></div>
+        <div class="bot"><p>Have a problem you want to ship? Write me and we will shape the next step together.</p></div>
+      </div>
+      <form class="cta-form" data-subject="Collaboration">
+        <input name="name" required placeholder="Your name" autocomplete="name">
+        <input name="email" type="email" required placeholder="Your email" autocomplete="email">
+        <textarea name="question" required placeholder="How can I help?"></textarea>
+        <button type="submit">Send a message</button>
+      </form>
+    </div>
+  </section>
+  <footer class="foot">
+    <div class="foot-art" aria-hidden="true"><img src="img/gen/footer.jpg" alt=""></div>
+    <div class="foot-in">
+      <h2 data-r><span>Let’s create something</span><br>that actually ships.</h2>
+      <div class="social" data-r style="--d:.1s"><a href="https://t.me/andrewaitken" target="_blank" rel="noopener" aria-label="Telegram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M21 4 3 11l5.5 2L10 19l3-4 4.5 3.5L21 4Z"/><path d="m8.5 13 8-5"/></svg></a><a href="https://github.com/AndrewAntoshkin" target="_blank" rel="noopener" aria-label="GitHub"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M9 19c-4 1.2-4-2-5.5-2.5M15 21v-3.5c0-1 .1-1.500-.5-2.200 2.800-.3 5.500-1.400 5.500-6a4.700 4.700 0 0 0-1.300-3.300 4.400 4.400 0 0 0-.1-3.300s-1-.3-3.400 1.300a11.700 11.700 0 0 0-6.200 0C6.600 2.900 5.600 3.200 5.600 3.200a4.400 4.400 0 0 0-.1 3.300A4.700 4.700 0 0 0 4.200 9.800c0 4.600 2.700 5.700 5.500 6-.6.700-.6 1.300-.6 2.200V21"/></svg></a><a href="mailto:andrew.antoshkin@gmail.com" aria-label="Email"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></div>
+      <div class="cols"><div><p>Pages</p><a href="en.html">Home</a><a href="projects-en.html">Projects</a><a href="writing-en.html">Writing</a><a href="approach-en.html">Approach</a><a href="collab-en.html">Collaboration</a></div><div><p>Projects</p><a href="agent-ui-en.html">agent-ui</a><a href="ds-eval-en.html">ds-eval</a><a href="ds-context-en.html">ds-context</a><a href="ui-repair-en.html">ui-repair</a><a href="prompt-regress-en.html">prompt-regress</a></div><div><p>Writing</p><a href="apres-prompt-en.html">Après-prompt</a><a href="ai-changes-processes-en.html">AI Is Not Changing Professions. AI Is Changing Processes</a><a href="halo-working-memory-en.html">Halo</a><a href="cursor-figma-en.html">Cursor + Figma in 2026</a><a href="design-md-en.html">DESIGN.md in 2026</a></div></div>
+      <div class="legal"><span>© Andrew Antoshkin, 2026</span><span>Built by hand, no templates</span></div>
+    </div>
+  </footer>
+  <script src="motion.js"></script>
+</body></html>

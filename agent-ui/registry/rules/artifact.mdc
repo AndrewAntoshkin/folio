@@ -1,0 +1,38 @@
+---
+description: agent-ui Artifact. Use when an assistant answer produces a file, page, or diff the user can open in a side panel. Not for app navigation.
+alwaysApply: false
+---
+
+# Artifact
+
+`import { Artifact } from "@/components/agent-ui/artifact"`
+
+## Use for
+- A file, page, or diff the assistant produced. The thread shows a card. Activating it opens a side panel with the contents.
+
+## Do not use for
+- The app sidebar, thread list, or site navigation. Use the project's nav.
+- A short snippet that fits in the thread. Use `CodeBlock`.
+- A citation. Use `Sources`.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `title` | `string` | Required. The file or page name. |
+| `meta` | `string` | One secondary line, such as `+6 −6` or a path. |
+| `children` | `ReactNode` | The panel body: a `CodeBlock`, preview, or the project's viewer. |
+| `open` / `defaultOpen` / `onOpenChange` | | Controlled or uncontrolled panel. |
+| `openLabel` / `closeLabel` | `string` | Button names. Set them when the interface is not in English. |
+| `icon` | `ReactNode` | Replaces the default file icon. |
+
+## Example
+```tsx
+<Artifact title="SettingsPage.tsx" meta="+6 −6" openLabel="Open" closeLabel="Close">
+  <CodeBlock code={patch} language="diff" diff />
+</Artifact>
+```
+
+## Rules
+- One artifact per file. Do not open the panel by default.
+- The panel is part of the answer, not a second page. Close returns to the thread.
+- Do not build a custom sidebar next to the chat for this. The panel is the sidebar.

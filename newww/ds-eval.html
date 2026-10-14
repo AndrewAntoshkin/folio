@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru" class="nojs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ds-eval — Андрей Антошкин</title>
+  <script>document.documentElement.classList.remove('nojs')</script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="dock"><nav aria-label="Навигация"><i aria-hidden="true"></i><a href="index.html" aria-label="Главная"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg></a><a href="projects.html" aria-label="Проекты" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 13h16"/></svg></a><a href="writing.html" aria-label="Статьи"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M14 5.5 18.5 10 9 19.5H4.5V15L14 5.5Z"/><path d="m12 7.5 4.5 4.5"/></svg></a><a href="approach.html" aria-label="Подход"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.25"/><path d="M5.5 19.5c1.2-3 3.4-4.5 6.5-4.5s5.3 1.5 6.5 4.5"/></svg></a><a href="collab.html" aria-label="Связь"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></nav></div>
+<nav class="langs" aria-label="Language"><a href="ds-eval.html" aria-current="page">Ru</a><a href="ds-eval-en.html">En</a></nav>
+<a class="float" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Написать<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+<main><div class="col"><article class="art">
+  <header class="art-top">
+    <a class="back" href="projects.html" data-r>‹ Назад</a>
+    <h1 data-split>ds-eval</h1>
+    <div class="tags" data-r style="--d:.25s"><span class="tag">Бенчмарк</span><span class="tag">open source</span></div>
+  </header>
+  <div class="art-intro" data-r style="--d:.3s"><p>Может ли агент пользоваться дизайн-системой, которую он не придумал сам? ds-eval прогоняет одни и те же UI-задачи через разные модели и оценивает собранный интерфейс.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="https://github.com/AndrewAntoshkin/ds-eval" target="_blank" rel="noopener">Репозиторий на&nbsp;GitHub</a></div></div>
+  <div class="prose"><div class="pcover "><div class="bg" style="background-image:url(img/gen/ds-eval.jpg)"></div><span class="plogo">ds-eval</span></div><figure class="bench"><figcaption><span>Пример · фикстуры, не живой вызов API</span><strong>Ответ со системой против наивного · smoke</strong><em>10 прогонов · $0 · офлайн</em></figcaption><div class="bench-scores"><p><span>Фикстура</span><b>87.8</b></p><p><span>Наивный</span><b>59.3</b></p></div><table><thead><tr><th>Ось</th><th>Фикстура</th><th>Наивный</th></tr></thead><tbody><tr><td>DS</td><td>87</td><td>6</td></tr><tr><td>Функции</td><td>70</td><td>70</td></tr><tr><td>A11y</td><td>100</td><td>78</td></tr><tr><td>Код</td><td>98</td><td>99</td></tr><tr><td>Сборка</td><td>100</td><td>100</td></tr></tbody></table><p>DS −81.3, когда ответ игнорирует дизайн-систему. 10 регрессий.</p></figure>
+<section id="why"><h2>Зачем</h2>
+<p>Агент собирает страницу настроек за секунды. Гораздо хуже он пользуется уже существующей системой: рисует свой Button, хардкодит <code>#8B5CF6</code>, пропускает токены и игнорирует правила композиции.</p>
+<p>ds-eval превращает это в измеримый вопрос. Одни и те же задачи, одна система, разные модели или промпты — и счёт, который можно сравнить и прогнать на регрессию.</p>
+<ul class="feature-list"><li><strong>Сравнить модели</strong><span>Claude, Codex, Gemini, Grok или локальная модель — один набор, один отчёт</span></li><li><strong>Ловить регрессии промпта</strong><span>Промпт v12 против v13: что выросло, что сломалось, какие кейсы перевернулись</span></li><li><strong>Своя система</strong><span>Токены, React-компоненты, Storybook, документация и UX-паттерны как источник правды</span></li></ul></section>
+<section id="how"><h2>Как устроено</h2>
+<p>Каждый кейс стартует из изолированного приложения. Модель получает дизайн-систему и задачу и должна собрать рабочий интерфейс. Дальше harness собирает проект, снимает скриншот и ставит оценку.</p>
+<pre><code>Design System
+↓
+Eval Task
+↓
+AI Coding Agent
+↓
+Generated UI
+↓
+────────────────────────
+AST / DS Compliance
+Runtime + Playwright
+Accessibility (axe)
+Visual Judge
+UX Judge
+Code Quality
+────────────────────────
+↓
+Benchmark + Regression</code></pre></section>
+<section id="run"><h2>Запуск</h2>
+<p>Движок на Python. Фикстуры работают офлайн. Живые модели читают ключи из окружения, не из конфига.</p>
+<pre><code>cd ds-eval
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e .
+
+ds-eval run --model fixture --suite smoke
+ds-eval run --model fixture-naive --suite smoke
+ds-eval compare RUN_FIXTURE RUN_NAIVE
+ds-eval dashboard --port 8001</code></pre>
+<p>С ключами API:</p>
+<pre><code>export ANTHROPIC_API_KEY=…
+export OPENAI_API_KEY=…
+ds-eval run --model claude --suite smoke
+ds-eval run --model codex --suite smoke</code></pre></section>
+<section id="cli"><h2>CLI</h2>
+<pre><code>ds-eval init                         scaffold a DS manifest
+ds-eval list                         print the dataset
+ds-eval run --model claude --limit 20
+ds-eval compare RUN_1 RUN_2
+ds-eval report ./runs/run-id</code></pre>
+<p><code>report</code> пишет <code>report.json</code>, <code>report.html</code> и <code>summary.md</code> из артефактов прогона. Таблица ниже — офлайн smoke на фикстурах, не Claude и не Codex.</p>
+<table><thead><tr><th>Модель</th><th>Общий</th><th>DS</th><th>A11y</th><th>Код</th></tr></thead><tbody><tr><td>fixture</td><td>87.8</td><td>87</td><td>100</td><td>98</td></tr><tr><td>fixture-naive</td><td>59.3</td><td>5.7</td><td>78</td><td>99</td></tr></tbody></table></section>
+<section id="dataset"><h2>Датасет</h2>
+<p>100 кейсов, написанных как продуктовые задачи, а не сто копий «сделай кнопку». Лёгкие, средние и сложные, плюс кейсы, которые специально спорят с правилами системы.</p>
+<table><thead><tr><th>Категория</th><th>Сколько</th><th>Что проверяет</th></tr></thead><tbody><tr><td>Компоненты</td><td>25</td><td>Верное использование Button, Select, Tabs, Dialog, Toast…</td></tr><tr><td>Паттерны</td><td>20</td><td>Подтверждение удаления, пустые состояния, массовые действия, несколько шагов</td></tr><tr><td>Страницы</td><td>25</td><td>Настройки, оплата, права, профиль сотрудника</td></tr><tr><td>Доступность</td><td>10</td><td>Клавиатура, подписи, ARIA, контраст, фокус</td></tr><tr><td>Крайние случаи</td><td>10</td><td>Длинные строки, пустые данные, 100+ строк, мобильный, i18n</td></tr><tr><td>Намеренные ловушки</td><td>10</td><td>Промпт подталкивает к сырому цвету или лишним действиям, которые система запрещает</td></tr></tbody></table>
+<p>Кейсы — это YAML со схемой Pydantic: обязательные компоненты, запрещённые паттерны, проверки, рубрика, вьюпорт.</p>
+<pre><code>id: component-select-001
+category: component
+prompt: |
+  Create a country selector containing 10 countries.
+  It should have a label, helper text and error state.
+requirements:
+  required_components: [Select]
+  forbidden: [native-select]
+  accessibility:
+    keyboard_navigation: true
+    label_required: true</code></pre></section>
+<section id="graders"><h2>Проверки</h2>
+<p>Общий счёт — не одно мнение модели. Проверки по правилам и судьи на LLM на дашборде лежат отдельно.</p>
+<ul class="feature-list"><li><strong>Статика / AST <span class="tag tag-det">правило</span></strong><span>Импорты из системы против сырого <code>&lt;button&gt;</code>, захардкоженные цвета, токены отступов, дубли компонентов</span></li><li><strong>Соответствие компонентам <span class="tag tag-det">правило</span></strong><span>Обязательные и запрещённые компоненты, варианты, пропсы, правила композиции</span></li><li><strong>Рантайм <span class="tag tag-det">правило</span></strong><span>Сборка, Playwright, ошибки консоли, диалоги, табы, отправка формы</span></li><li><strong>Доступность <span class="tag tag-det">правило</span></strong><span>axe-core плюс подписи, клавиатура, фокус, семантика, ARIA</span></li><li><strong>Визуал <span class="tag tag-llm">LLM</span></strong><span>Раскладка, иерархия, отступы, выравнивание, цельность, аккуратность — каждый критерий от 0 до 5 с объяснением</span></li><li><strong>Продуктовый UX <span class="tag tag-llm">LLM</span></strong><span>Задача сделана, паттерн верный, ошибки предотвращаются, есть обратная связь, ясна структура</span></li><li><strong>Качество кода <span class="tag tag-llm">LLM</span></strong><span>Структура, дубли, типы, практики React, лишняя абстракция</span></li></ul></section>
+<section id="scores"><h2>Оценка</h2>
+<p>Веса настраиваются. Смесь по умолчанию для общего счёта:</p>
+<table><thead><tr><th>Ось</th><th>Вес</th><th>Источник</th></tr></thead><tbody><tr><td>Следование системе</td><td>25%</td><td>AST и проверка компонентов</td></tr><tr><td>Функции</td><td>20%</td><td>Взаимодействия в Playwright</td></tr><tr><td>Визуал</td><td>15%</td><td>Vision-модель, рубрика 0–5</td></tr><tr><td>Продуктовый UX</td><td>15%</td><td>UX-судья</td></tr><tr><td>Доступность</td><td>10%</td><td>axe и проверки</td></tr><tr><td>Качество кода</td><td>10%</td><td>Статика и LLM</td></tr><tr><td>Надёжность сборки</td><td>5%</td><td>Установка, сборка, запуск</td></tr></tbody></table>
+<p>Каждый вызов генерации и судьи сохраняет входные и выходные токены, оценку стоимости и задержку. Дашборд показывает стоимость бенчмарка и цену одного кейса.</p></section>
+<section id="regression"><h2>Регрессия</h2>
+<p>Сравнивает два прогона — версии модели или версии промпта — и показывает, что сдвинулось.</p>
+<pre><code>ds-eval compare runs/sonnet-v1 runs/sonnet-v2</code></pre>
+<pre><code>overall +2.7
+DS compliance +4.1
+Visual +1.2
+Accessibility −3.4 ⚠
+
+7 improved · 3 regressions · 90 unchanged</code></pre>
+<p>У каждого перевернувшегося кейса остаются скриншоты до и после, объяснения проверок и сгенерированный код.</p></section>
+<section id="dashboard"><h2>Дашборд</h2>
+<p>Локальный интерфейс исследователя поверх истории прогонов в SQLite. Обзор, модели, прогоны, кейсы и сравнение двух ответов на одну задачу.</p>
+<ul class="feature-list"><li><strong>Обзор</strong><span>Общий счёт, категории, доля прошедших, стоимость, токены, задержка</span></li><li><strong>Кейсы</strong><span>Фильтр по модели, категории, сложности, прошёл или нет, проверке</span></li><li><strong>Карточка кейса</strong><span>Промпт, собранный интерфейс, скриншот, исходник, рубрика, логи, стоимость</span></li></ul></section>
+<section id="custom"><h2>Своя система</h2>
+<p>В репозитории есть демо-система (Button, Input, Select, Dialog, Table, токены и несколько UX-паттернов), чтобы проект запускался сразу после клона. Своя система подключается манифестом:</p>
+<pre><code>name: Demo DS
+version: 1.0
+components:
+  path: ./src/components
+tokens:
+  path: ./src/tokens
+documentation:
+  path: ./docs
+storybook:
+  url: http://localhost:6006</code></pre>
+<pre><code>ds-eval init ./my-design-system
+ds-eval run --system ./my-design-system --suite smoke</code></pre></section>
+<section id="limits"><h2>Пределы</h2>
+<p>Судьи на LLM — не истина. Визуал и UX субъективны, даже с рубрикой и несколькими судьями. Надёжное ядро — проверки по правилам: импорты, токены, axe, Playwright. Остальное — сигнал, не приговор.</p>
+<p>Высокий балл значит, что модель следовала этой системе на этом наборе. Он не значит, что экран готов в продакшен вашего продукта.</p></section>
+<section id="published"><h2>Опубликованный прогон</h2><p>Таблица из 100 кейсов выше — устройство датасета, а не размер этого прогона. Опубликованный smoke лежит в <code>ds-eval/runs/fixture-good</code>: модель <code>fixture</code>, 10 кейсов, общий балл 87.8, стоимость $0. Это не вызов Claude или Codex. Блок compare в разделе «Регрессия» показывает форму отчёта, не этот прогон.</p><table><thead><tr><th>Кейс</th><th>Категория</th><th>Общий</th><th>DS</th><th>A11y</th><th>Код</th></tr></thead><tbody><tr><td>a11y-labels-001</td><td>accessibility</td><td>88.3</td><td>87.5</td><td>100.0</td><td>100.0</td></tr><tr><td>adversarial-actions-001</td><td>adversarial</td><td>88.3</td><td>87.5</td><td>100.0</td><td>100.0</td></tr><tr><td>adversarial-color-001</td><td>adversarial</td><td>88.3</td><td>87.5</td><td>100.0</td><td>100.0</td></tr><tr><td>component-button-001</td><td>component</td><td>88.3</td><td>87.5</td><td>100.0</td><td>100.0</td></tr><tr><td>component-input-001</td><td>component</td><td>88.3</td><td>87.5</td><td>100.0</td><td>100.0</td></tr><tr><td>component-select-001</td><td>component</td><td>86.7</td><td>87.5</td><td>100.0</td><td>90.0</td></tr><tr><td>edge-long-001</td><td>edge-cases</td><td>85.2</td><td>82.5</td><td>100.0</td><td>90.0</td></tr><tr><td>page-settings-001</td><td>pages</td><td>88.3</td><td>87.5</td><td>100.0</td><td>100.0</td></tr><tr><td>pattern-confirm-001</td><td>patterns</td><td>88.3</td><td>87.5</td><td>100.0</td><td>100.0</td></tr><tr><td>pattern-empty-001</td><td>patterns</td><td>88.3</td><td>87.5</td><td>100.0</td><td>100.0</td></tr></tbody></table><p>Один кейс целиком: <code>component-select-001</code>. Задача — селект страны с подписью, подсказкой и ошибкой. Ответ фикстуры — <code>source/Task.tsx</code>.</p><pre><code>import { Select } from &quot;@ds&quot;;
+
+const COUNTRIES = [&quot;Austria&quot;,&quot;Belgium&quot;,&quot;Canada&quot;,&quot;Denmark&quot;,&quot;Estonia&quot;,&quot;Finland&quot;,&quot;Germany&quot;,&quot;Hungary&quot;,&quot;Ireland&quot;,&quot;Japan&quot;];
+
+export function Task() {
+  return (
+    &lt;Select label=&quot;Country&quot; helper=&quot;Used for billing&quot; error=&quot;Select a country to continue&quot; defaultValue=&quot;&quot;&gt;
+      &lt;option value=&quot;&quot;&gt;Choose one&lt;/option&gt;
+      {COUNTRIES.map((name) =&gt; (
+        &lt;option key={name} value={name}&gt;{name}&lt;/option&gt;
+      ))}
+    &lt;/Select&gt;
+  );
+}</code></pre><p>Оси этого кейса. Визуальный и UX-судьи выключены: ноль в записи означает пропуск, не оценку экрана. Их вес перераспределяется на остальные оси, поэтому общий балл не равен нулю.</p><table><thead><tr><th>Ось</th><th>Балл</th><th></th></tr></thead><tbody><tr><td>DS</td><td>87.5</td><td></td></tr><tr><td>Функции</td><td>70.0</td><td></td></tr><tr><td>Визуал</td><td>0.0</td><td>пропуск, вес ушёл на остальные оси</td></tr><tr><td>UX</td><td>0.0</td><td>пропуск, вес ушёл на остальные оси</td></tr><tr><td>A11y</td><td>100.0</td><td></td></tr><tr><td>Код</td><td>90.0</td><td></td></tr><tr><td>Сборка</td><td>100.0</td><td></td></tr><tr><td>Общий</td><td>86.7</td><td></td></tr></tbody></table></section><section id="pipeline"><h2>Цепочка</h2>
+<p>ds-eval ставит счёт после того, как у модели есть пакет контекста и, если нужно, проход починки:</p>
+<pre><code>ds-context prepares the pack
+model writes UI
+ui-repair patches violations
+ds-eval scores the result ← you are here
+prompt-regress diffs the next prompt</code></pre></section>
+<p><a href="https://github.com/AndrewAntoshkin/ds-eval" target="_blank" rel="noopener noreferrer">Код</a></p></div>
+</article></div></main>
+  <section class="cta" data-r>
+    <div class="cta-grid">
+      <div class="cta-card">
+        <div class="shader" aria-hidden="true"><i></i><i></i><i></i></div>
+        <span class="tag top">Вместе</span>
+        <div class="mid"><h2>Готовы сделать следующий шаг?</h2></div>
+        <div class="bot"><p>Есть задача, которую хочется довести до работающего состояния? Напишите, и разберём, с чего начать.</p></div>
+      </div>
+      <form class="cta-form" data-subject="Сотрудничество">
+        <input name="name" required placeholder="Ваше имя" autocomplete="name">
+        <input name="email" type="email" required placeholder="Ваша почта" autocomplete="email">
+        <textarea name="question" required placeholder="Чем могу помочь?"></textarea>
+        <button type="submit">Отправить</button>
+      </form>
+    </div>
+  </section>
+  <footer class="foot">
+    <div class="foot-art" aria-hidden="true"><img src="img/gen/footer.jpg" alt=""></div>
+    <div class="foot-in">
+      <h2 data-r><span>Давайте сделаем</span><br>что-нибудь настоящее.</h2>
+      <div class="social" data-r style="--d:.1s"><a href="https://t.me/andrewaitken" target="_blank" rel="noopener" aria-label="Telegram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M21 4 3 11l5.5 2L10 19l3-4 4.5 3.5L21 4Z"/><path d="m8.5 13 8-5"/></svg></a><a href="https://github.com/AndrewAntoshkin" target="_blank" rel="noopener" aria-label="GitHub"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M9 19c-4 1.2-4-2-5.5-2.5M15 21v-3.5c0-1 .1-1.500-.5-2.200 2.800-.3 5.500-1.400 5.500-6a4.700 4.700 0 0 0-1.300-3.300 4.400 4.400 0 0 0-.1-3.300s-1-.3-3.400 1.300a11.700 11.700 0 0 0-6.200 0C6.600 2.900 5.600 3.200 5.600 3.200a4.400 4.400 0 0 0-.1 3.300A4.700 4.700 0 0 0 4.200 9.800c0 4.600 2.700 5.700 5.500 6-.6.700-.6 1.300-.6 2.200V21"/></svg></a><a href="mailto:andrew.antoshkin@gmail.com" aria-label="Email"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></div>
+      <div class="cols"><div><p>Страницы</p><a href="index.html">Главная</a><a href="projects.html">Проекты</a><a href="writing.html">Статьи</a><a href="approach.html">Подход</a><a href="collab.html">Сотрудничество</a></div><div><p>Проекты</p><a href="agent-ui.html">agent-ui</a><a href="ds-eval.html">ds-eval</a><a href="ds-context.html">ds-context</a><a href="ui-repair.html">ui-repair</a><a href="prompt-regress.html">prompt-regress</a></div><div><p>Статьи</p><a href="apres-prompt.html">Après-prompt</a><a href="ai-changes-processes.html">AI меняет не профессии. AI меняет процессы</a><a href="halo-working-memory.html">Halo</a><a href="cursor-figma.html">Cursor + Figma в 2026</a><a href="design-md.html">DESIGN.md в 2026</a></div></div>
+      <div class="legal"><span>© Андрей Антошкин, 2026</span><span>Сделано вручную, без шаблонов</span></div>
+    </div>
+  </footer>
+  <script src="motion.js"></script>
+</body></html>

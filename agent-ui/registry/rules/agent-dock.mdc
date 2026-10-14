@@ -1,0 +1,43 @@
+---
+description: agent-ui AgentDock. Use when showing the live status of a running background agent (current task, step progress, stop button) as a floating dock that expands into a step list on hover.
+alwaysApply: false
+---
+
+# AgentDock
+
+`import { AgentDock } from "@/components/agent-ui/agent-dock"`
+
+## Use for
+- A long-running agent the user can leave and come back to: coding agents, research runs, batch jobs.
+- One dock per app, for the active run.
+
+## Do not use for
+- Site navigation. This is not a macOS-style app dock.
+- Single-shot chat replies. `Thinking` and a streaming `Message` already cover that.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `status` | `"idle" \| "running" \| "waiting" \| "done" \| "error"` | Required. `waiting` means blocked on the user, e.g. a pending `Approval`. |
+| `title` | `string` | Required. The current task in a few words. |
+| `steps` | `{ id, label, status }[]` | Step status is `pending \| running \| done \| error`. Enables the hover panel and the `3/7` counter. |
+| `onStop` | `() => void` | Shows Stop while `running` or `waiting`. |
+| `actions` | `ReactNode` | Buttons at the bottom of the expanded panel, e.g. "Open run". |
+| `floating` | `boolean` | Default `true`: fixed at the bottom center. `false` renders inline. |
+| `closeDelay` | `number` | ms before the panel closes after the pointer leaves. Default 150. |
+| `labels` | `Partial<Record<AgentStatus \| "stop", string>>` | Status texts and the Stop button label. Set them when the interface is not in English. |
+
+## Example
+```tsx
+<AgentDock
+  status={run.status}
+  title={run.task}
+  steps={run.steps}
+  onStop={() => run.cancel()}
+/>
+```
+
+## Rules
+- Keep step labels short and in the past/present tense of what the agent does: "Reading package.json".
+- Update `steps` in place by `id`. Do not regenerate ids, or the list re-animates.
+- Do not render AgentDock and a second floating bar at the bottom of the page.

@@ -1,0 +1,46 @@
+---
+description: agent-ui PromptInput. Use when building the text box where a user writes a prompt to a model or agent, including send/stop, attachments and a model picker slot.
+alwaysApply: false
+---
+
+# PromptInput
+
+`import { PromptInput } from "@/components/agent-ui/prompt-input"`
+
+## Use for
+- The main composer of a chat or agent screen.
+- Any input whose submit starts a model request that can be cancelled.
+
+## Do not use for
+- Search fields, forms, or single-line inputs. Use the project's `Input`.
+- Editing a previous message inline. Use a plain `Textarea`.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `onSubmit` | `(value: string) => void` | Required. Receives the trimmed value. Clears itself when uncontrolled. |
+| `status` | `"idle" \| "submitting" \| "streaming"` | Anything but `idle` turns Send into Stop and blocks submit. |
+| `onStop` | `() => void` | Wire to your AbortController. Without it Stop is disabled. |
+| `value` / `onValueChange` | `string` | Pass both to control it. |
+| `attachments` | `{ id, name }[]` | Chips above the textarea. Pair with `onRemoveAttachment`. |
+| `onAttach` | `() => void` | Shows the paperclip. Open your own file picker. |
+| `toolbar` | `ReactNode` | Left side of the bottom row: model picker, `ContextMeter`, mode toggles. |
+| `maxRows` | `number` | Default 8, then it scrolls. |
+
+## Example
+```tsx
+const [status, setStatus] = useState<PromptInputStatus>("idle")
+
+<PromptInput
+  status={status}
+  onSubmit={(text) => { setStatus("streaming"); send(text).finally(() => setStatus("idle")) }}
+  onStop={() => controller.abort()}
+  toolbar={<ContextMeter used={usage.input} limit={200_000} />}
+/>
+```
+
+## Rules
+- Drive `status` from the real request state. Do not fake it with timers.
+- Enter submits, Shift+Enter inserts a newline. Do not add another keyboard handler for this.
+- Keep one PromptInput per conversation, pinned to the bottom of the thread.
+- Do not restyle colors with classes like `bg-zinc-900`. The component reads the theme tokens (`background`, `primary`, `ring`).

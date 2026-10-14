@@ -1,0 +1,145 @@
+[
+  {
+    "name": "prompt-input",
+    "title": "Prompt Input",
+    "description": "Auto-growing prompt composer with send/stop, attachments and a toolbar slot.",
+    "dependencies": ["motion", "lucide-react"],
+    "credit": "Inspired by Chamaac UI AI Input",
+    "ru": {
+      "description": "Поле для промпта: растёт по высоте, переключает «Отправить» и «Стоп», держит вложения и панель инструментов.",
+      "credit": "По мотивам AI Input из Chamaac UI"
+    }
+  },
+  {
+    "name": "message",
+    "title": "Message",
+    "description": "User and assistant turns with a streaming caret and hover actions.",
+    "dependencies": ["motion"],
+    "ru": {
+      "description": "Реплики пользователя и ассистента: курсор во время стриминга и действия по наведению."
+    }
+  },
+  {
+    "name": "thinking",
+    "title": "Thinking",
+    "description": "Shimmering reasoning label that collapses into \"Thought for Ns\".",
+    "dependencies": ["motion", "lucide-react"],
+    "credit": "Shimmer inspired by Chamaac UI Shimmer Button",
+    "ru": {
+      "description": "Мерцающая подпись «Думает», которая после ответа сворачивается в «Думал N с».",
+      "credit": "Мерцание по мотивам Shimmer Button из Chamaac UI"
+    }
+  },
+  {
+    "name": "tool-call",
+    "title": "Tool Call",
+    "description": "Collapsible card for one agent tool call: status, arguments, output, error.",
+    "dependencies": ["motion", "lucide-react"],
+    "ru": {
+      "description": "Карточка одного вызова инструмента: статус, аргументы, результат, ошибка. Раскрывается по клику."
+    }
+  },
+  {
+    "name": "approval",
+    "title": "Approval",
+    "description": "Human-in-the-loop permission card that collapses into a one-line record.",
+    "dependencies": ["motion", "lucide-react"],
+    "ru": {
+      "description": "Запрос разрешения перед рискованным действием. После решения сворачивается в одну строку."
+    }
+  },
+  {
+    "name": "plan",
+    "title": "Plan",
+    "description": "Ordered steps the assistant proposes, with pending, running, done and failed states.",
+    "dependencies": ["motion", "lucide-react"],
+    "ru": {
+      "description": "Шаги, которые ассистент предлагает до или во время задачи. У каждого статус: ещё нет, делается, готово, ошибка."
+    }
+  },
+  {
+    "name": "choice",
+    "title": "Choice",
+    "description": "A question from the assistant with two to five mutually exclusive options.",
+    "dependencies": [],
+    "ru": {
+      "description": "Вопрос ассистента с двумя–пятью взаимоисключающими вариантами."
+    }
+  },
+  {
+    "name": "data-table",
+    "title": "Data Table",
+    "description": "A table for comparisons and tool results inside an assistant answer.",
+    "dependencies": [],
+    "ru": {
+      "description": "Таблица для сравнений и результатов инструмента внутри ответа ассистента."
+    }
+  },
+  {
+    "name": "answer-chart",
+    "title": "Answer Chart",
+    "description": "One bar or line series, up to eight points, colored with the primary token.",
+    "dependencies": [],
+    "ru": {
+      "description": "Один ряд столбцов или линия, до восьми точек. Цвет берётся из основного токена."
+    }
+  },
+  {
+    "name": "code-block",
+    "title": "Code Block",
+    "description": "Source or a unified diff in an answer, with a filename and a copy button.",
+    "dependencies": ["lucide-react"],
+    "ru": {
+      "description": "Код или unified diff в ответе: имя файла и кнопка копирования."
+    }
+  },
+  {
+    "name": "sources",
+    "title": "Sources",
+    "description": "Citations under an answer: title, address and a short excerpt.",
+    "dependencies": [],
+    "ru": {
+      "description": "Источники под ответом: название, адрес и короткая выдержка."
+    }
+  },
+  {
+    "name": "artifact",
+    "title": "Artifact",
+    "description": "A file or page card in the thread that opens its contents in a side panel.",
+    "dependencies": ["motion", "lucide-react"],
+    "ru": {
+      "description": "Карточка файла или страницы в треде. По клику содержимое открывается в боковой панели."
+    }
+  },
+  {
+    "name": "context-meter",
+    "title": "Context Meter",
+    "description": "Ring showing context-window token usage, with a warning threshold.",
+    "dependencies": ["motion"],
+    "credit": "Inspired by Chamaac UI Gauge",
+    "ru": {
+      "description": "Кольцо заполненности контекстного окна с порогом предупреждения.",
+      "credit": "По мотивам Gauge из Chamaac UI"
+    }
+  },
+  {
+    "name": "suggestions",
+    "title": "Suggestions",
+    "description": "Staggered starter prompts and follow-up chips.",
+    "dependencies": ["motion"],
+    "ru": {
+      "description": "Стартовые подсказки и уточняющие чипы, появляются по очереди."
+    }
+  },
+  {
+    "name": "agent-dock",
+    "title": "Agent Dock",
+    "description": "Floating status dock for a running agent that expands into its step list.",
+    "dependencies": ["motion", "lucide-react"],
+    "credit": "Adapted from the Chamaac UI Dock, itself inspired by jeton.com",
+    "ru": {
+      "description": "Плавающая плашка статуса агента. По наведению раскрывается в список шагов.",
+      "credit": "Адаптация Dock из Chamaac UI, который вдохновлён jeton.com"
+    }
+  }
+]

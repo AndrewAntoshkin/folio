@@ -26,24 +26,10 @@
     font-display: swap;
     unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
 }
-@font-face {
-    font-family: 'Old Standard';
-    src: url('fonts/OldStandardTT-LatinItalic.woff2') format('woff2');
-    font-weight: 400;
-    font-style: italic;
-    font-display: swap;
-}
-@font-face {
-    font-family: 'Old Standard';
-    src: url('fonts/OldStandardTT-CyrillicItalic.woff2') format('woff2');
-    font-weight: 400;
-    font-style: italic;
-    font-display: swap;
-}
 
 :root {
     --font-hero: 'Google Sans', var(--font);
-    --font-serif: 'Old Standard', Georgia, 'Times New Roman', serif;
+    --font-serif: 'Google Sans', system-ui, -apple-system, sans-serif;
     --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
     --t-display: 3.75rem;
     --t-lg: 0.9375rem;
@@ -140,7 +126,7 @@ html[data-theme="dark"] {
             position: relative;
             display: block;
             font-family: var(--font-serif);
-            font-style: italic;
+            font-style: normal;
             font-weight: 400;
             letter-spacing: -0.01em;
             color: var(--text-secondary);

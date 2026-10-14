@@ -1,0 +1,44 @@
+---
+description: agent-ui ToolCall. Use when showing an agent invoking a tool or function (search, file read, shell command, API call) with its status, arguments and result.
+alwaysApply: false
+---
+
+# ToolCall
+
+`import { ToolCall } from "@/components/agent-ui/tool-call"`
+
+## Use for
+- Every tool/function call in an agent transcript, one ToolCall per call.
+
+## Do not use for
+- Actions that need the user's permission first. Show `Approval`, then a ToolCall once allowed.
+- The model's reasoning. Use `Thinking`.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `name` | `string` | Required. The tool id as the model sees it, e.g. `read_file`. Rendered in mono. |
+| `status` | `"pending" \| "running" \| "success" \| "error"` | Required. |
+| `summary` | `string` | One line with the key argument, e.g. the file path or query. |
+| `input` | `unknown` | Raw arguments. Objects are pretty-printed as JSON. |
+| `output` | `ReactNode` | A string renders in a code block; pass a node for rich results. |
+| `error` | `string` | Shown in destructive color. Set with `status="error"`. |
+| `defaultOpen` | `boolean` | Default `false`. |
+| `labels` | `Partial<Record<ToolCallStatus \| "inputTitle" \| "outputTitle" \| "errorTitle", string>>` | Status texts and section titles. Set them when the interface is not in English. |
+
+## Example
+```tsx
+<ToolCall
+  name="search_docs"
+  status={call.state}
+  summary={call.args.query}
+  input={call.args}
+  output={call.result && `${call.result.length} results`}
+  error={call.error}
+/>
+```
+
+## Rules
+- Map your SDK's states onto the four statuses. Do not invent a fifth with custom colors.
+- Keep `summary` short; long values go in `input`.
+- Consecutive calls go in a `flex flex-col gap-2` group inside the assistant turn.

@@ -1,0 +1,43 @@
+---
+description: agent-ui Choice. Use when the assistant asks the user to pick one of a few options before it continues. Not for starter prompts.
+alwaysApply: false
+---
+
+# Choice
+
+`import { Choice } from "@/components/agent-ui/choice"`
+
+## Use for
+- A question from the assistant that needs exactly one answer, with 2 to 5 options.
+
+## Do not use for
+- Starter prompts and follow-ups the app offers before the user has asked anything. Use `Suggestions`.
+- A permission to run a command. Use `Approval`.
+- More than five options or free text. Ask in a `Message` and let the user type.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `question` | `string` | Required. Also the radiogroup label. |
+| `options` | `{ value, label, description? }[]` | Required. Two to five items. `value` is what you send back, `label` is what the user reads. |
+| `value` | `string` | The selected option value. |
+| `onSelect` | `(value: string) => void` | Called with the option value, not the label. |
+| `disabled` | `boolean` | After the run has moved on. |
+
+## Example
+```tsx
+<Choice
+  question="Which token should the divider use?"
+  options={[
+    { value: "border", label: "border-border", description: "Follows the theme" },
+    { value: "muted", label: "border-muted", description: "Softer, easy to miss" },
+  ]}
+  value={picked}
+  onSelect={setPicked}
+/>
+```
+
+## Rules
+- One question per Choice. Do not stack several in one turn.
+- Options must be mutually exclusive.
+- Keep going only after `onSelect`. Do not also accept the same choice typed into the composer.

@@ -1,0 +1,33 @@
+---
+description: agent-ui ContextMeter. Use when displaying how much of a model's context window (tokens) a conversation has used.
+alwaysApply: false
+---
+
+# ContextMeter
+
+`import { ContextMeter, formatTokens } from "@/components/agent-ui/context-meter"`
+
+## Use for
+- Token usage of the current conversation, usually in the `PromptInput` toolbar.
+
+## Do not use for
+- Billing, quotas or rate limits. Use the project's `Progress`.
+- Upload or task progress.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `used` | `number` | Required. Tokens in context, from the API's usage field. |
+| `limit` | `number` | Required. The model's context window. |
+| `warnAt` | `number` | Ratio, default `0.9`. Above it ring and label turn `destructive`. |
+| `showLabel` | `boolean` | Default `true`, shows `12.4k / 200k`. |
+| `size` | `number` | Ring size in px, default 18. |
+
+## Example
+```tsx
+<PromptInput toolbar={<ContextMeter used={usage.inputTokens} limit={model.contextWindow} />} onSubmit={send} />
+```
+
+## Rules
+- Use real token counts from the API response. Do not estimate from string length in production.
+- Take `limit` from the selected model, not a constant.

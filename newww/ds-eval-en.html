@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" class="nojs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ds-eval — Andrew Antoshkin</title>
+  <script>document.documentElement.classList.remove('nojs')</script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="dock"><nav aria-label="Navigation"><i aria-hidden="true"></i><a href="en.html" aria-label="Home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg></a><a href="projects-en.html" aria-label="Projects" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 13h16"/></svg></a><a href="writing-en.html" aria-label="Writing"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M14 5.5 18.5 10 9 19.5H4.5V15L14 5.5Z"/><path d="m12 7.5 4.5 4.5"/></svg></a><a href="approach-en.html" aria-label="Approach"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.25"/><path d="M5.5 19.5c1.2-3 3.4-4.5 6.5-4.5s5.3 1.5 6.5 4.5"/></svg></a><a href="collab-en.html" aria-label="Contact"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></nav></div>
+<nav class="langs" aria-label="Language"><a href="ds-eval.html">Ru</a><a href="ds-eval-en.html" aria-current="page">En</a></nav>
+<a class="float" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Say hello<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+<main><div class="col"><article class="art">
+  <header class="art-top">
+    <a class="back" href="projects-en.html" data-r>‹ Back</a>
+    <h1 data-split>ds-eval</h1>
+    <div class="tags" data-r style="--d:.25s"><span class="tag">Benchmark</span><span class="tag">open source</span></div>
+  </header>
+  <div class="art-intro" data-r style="--d:.3s"><p>Can AI coding agents actually use your design system correctly? ds-eval is an open-source benchmark that runs the same UI tasks through different models and scores the generated interfaces.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="https://github.com/AndrewAntoshkin/ds-eval" target="_blank" rel="noopener">Repository on GitHub</a></div></div>
+  <div class="prose"><div class="pcover "><div class="bg" style="background-image:url(img/gen/ds-eval.jpg)"></div><span class="plogo">ds-eval</span></div><figure class="bench"><figcaption><span>Example · fixture models, not a live API run</span><strong>DS-aware vs naive · smoke suite</strong><em>10 evals · $0 · offline</em></figcaption><div class="bench-scores"><p><span>Fixture</span><b>87.8</b></p><p><span>Naive</span><b>59.3</b></p></div><table><thead><tr><th>Axis</th><th>Fixture</th><th>Naive</th></tr></thead><tbody><tr><td>DS</td><td>87</td><td>6</td></tr><tr><td>Functional</td><td>70</td><td>70</td></tr><tr><td>A11y</td><td>100</td><td>78</td></tr><tr><td>Code</td><td>98</td><td>99</td></tr><tr><td>Build</td><td>100</td><td>100</td></tr></tbody></table><p>DS −81.3 · when the model ignores the design system · 10 regressions</p></figure>
+<section id="why"><h2>Why</h2>
+<p>Coding agents can produce a settings page in seconds. They are much worse at using the design system you already have: they invent a Button, hardcode <code>#8B5CF6</code>, skip tokens, and ignore composition rules.</p>
+<p>ds-eval turns that into a measurable question. Same tasks, same design system, different models or prompts — then a score you can compare and regress on.</p>
+<ul class="feature-list"><li><strong>Compare models</strong><span>Claude, Codex, Gemini, Grok, or a local model — one suite, one report</span></li><li><strong>Catch prompt regressions</strong><span>Prompt v12 vs v13: what improved, what broke, which cases flipped</span></li><li><strong>Use your own DS</strong><span>Tokens, React components, Storybook, docs, and UX patterns as the source of truth</span></li></ul></section>
+<section id="how"><h2>How It Works</h2>
+<p>Each eval case starts from an isolated starter app. The model receives the design system, the task prompt, and must generate working UI. The harness then builds, screenshots, and grades the result.</p>
+<pre><code>Design System
+↓
+Eval Task
+↓
+AI Coding Agent
+↓
+Generated UI
+↓
+────────────────────────
+AST / DS Compliance
+Runtime + Playwright
+Accessibility (axe)
+Visual Judge
+UX Judge
+Code Quality
+────────────────────────
+↓
+Benchmark + Regression</code></pre></section>
+<section id="run"><h2>Run Locally</h2>
+<p>Python eval engine. Fixture models run offline. Live models read keys from env — never from config.</p>
+<pre><code>cd ds-eval
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e .
+
+ds-eval run --model fixture --suite smoke
+ds-eval run --model fixture-naive --suite smoke
+ds-eval compare RUN_FIXTURE RUN_NAIVE
+ds-eval dashboard --port 8001</code></pre>
+<p>With API keys:</p>
+<pre><code>export ANTHROPIC_API_KEY=…
+export OPENAI_API_KEY=…
+ds-eval run --model claude --suite smoke
+ds-eval run --model codex --suite smoke</code></pre></section>
+<section id="cli"><h2>CLI</h2>
+<pre><code>ds-eval init                         scaffold a DS manifest
+ds-eval list                         print the dataset
+ds-eval run --model claude --limit 20
+ds-eval compare RUN_1 RUN_2
+ds-eval report ./runs/run-id</code></pre>
+<p><code>report</code> writes <code>report.json</code>, <code>report.html</code>, and <code>summary.md</code> from the run artifacts. The table below is the offline fixture smoke run, not Claude or Codex.</p>
+<table><thead><tr><th>Model</th><th>Overall</th><th>DS</th><th>A11y</th><th>Code</th></tr></thead><tbody><tr><td>fixture</td><td>87.8</td><td>87</td><td>100</td><td>98</td></tr><tr><td>fixture-naive</td><td>59.3</td><td>5.7</td><td>78</td><td>99</td></tr></tbody></table></section>
+<section id="dataset"><h2>Dataset</h2>
+<p>100 cases, written as real product tasks — not 100 copies of “make a button”. Easy / medium / hard, plus cases that deliberately conflict with DS rules.</p>
+<table><thead><tr><th>Category</th><th>Count</th><th>What it tests</th></tr></thead><tbody><tr><td>Component</td><td>25</td><td>Correct use of Button, Select, Tabs, Dialog, Toast…</td></tr><tr><td>Patterns</td><td>20</td><td>Destructive confirm, empty states, bulk actions, multi-step</td></tr><tr><td>Pages</td><td>25</td><td>Settings, billing, permissions, employee profile</td></tr><tr><td>Accessibility</td><td>10</td><td>Keyboard, labels, ARIA, contrast, focus</td></tr><tr><td>Edge cases</td><td>10</td><td>Long strings, empty data, 100+ rows, mobile, i18n</td></tr><tr><td>Adversarial</td><td>10</td><td>Prompt pushes a raw color or extra actions the DS forbids</td></tr></tbody></table>
+<p>Cases are YAML with a Pydantic schema: required components, forbidden patterns, assertions, rubric, viewport.</p>
+<pre><code>id: component-select-001
+category: component
+prompt: |
+  Create a country selector containing 10 countries.
+  It should have a label, helper text and error state.
+requirements:
+  required_components: [Select]
+  forbidden: [native-select]
+  accessibility:
+    keyboard_navigation: true
+    label_required: true</code></pre></section>
+<section id="graders"><h2>Graders</h2>
+<p>The overall score is not a single LLM opinion. Deterministic graders and LLM judges are tracked separately on the dashboard.</p>
+<ul class="feature-list"><li><strong>Static / AST <span class="tag tag-det">deterministic</span></strong><span>DS imports vs raw <code>&lt;button&gt;</code>, hardcoded colors, spacing tokens, duplicate components</span></li><li><strong>Component compliance <span class="tag tag-det">deterministic</span></strong><span>Required / forbidden components, variants, props, composition rules</span></li><li><strong>Runtime <span class="tag tag-det">deterministic</span></strong><span>Build, Playwright, console errors, dialogs, tabs, form submit</span></li><li><strong>Accessibility <span class="tag tag-det">deterministic</span></strong><span>axe-core plus labels, keyboard, focus, semantics, ARIA</span></li><li><strong>Visual <span class="tag tag-llm">LLM judge</span></strong><span>Layout, hierarchy, spacing, alignment, consistency, polish — each 0–5 with reasoning</span></li><li><strong>Product UX <span class="tag tag-llm">LLM judge</span></strong><span>Task completion, pattern correctness, error prevention, feedback, IA</span></li><li><strong>Code quality <span class="tag tag-llm">LLM judge</span></strong><span>Structure, duplication, types, React practices, unnecessary abstraction</span></li></ul></section>
+<section id="scores"><h2>Scoring</h2>
+<p>Weights are configurable. Default mix for the overall score:</p>
+<table><thead><tr><th>Axis</th><th>Weight</th><th>Source</th></tr></thead><tbody><tr><td>DS Compliance</td><td>25%</td><td>AST + component grader</td></tr><tr><td>Functional</td><td>20%</td><td>Playwright interactions</td></tr><tr><td>Visual</td><td>15%</td><td>Vision LLM, rubric 0–5</td></tr><tr><td>Product UX</td><td>15%</td><td>UX judge</td></tr><tr><td>Accessibility</td><td>10%</td><td>axe + assertions</td></tr><tr><td>Code Quality</td><td>10%</td><td>Static + LLM</td></tr><tr><td>Build Reliability</td><td>5%</td><td>Install / build / boot</td></tr></tbody></table>
+<p>Every generation and judge call stores input/output tokens, estimated cost, and latency. The dashboard shows benchmark cost and cost per eval.</p></section>
+<section id="regression"><h2>Regression</h2>
+<p>Compare two runs — model versions or prompt versions — and see what moved.</p>
+<pre><code>ds-eval compare runs/sonnet-v1 runs/sonnet-v2</code></pre>
+<pre><code>overall +2.7
+DS compliance +4.1
+Visual +1.2
+Accessibility −3.4 ⚠
+
+7 improved · 3 regressions · 90 unchanged</code></pre>
+<p>Each flipped case keeps before/after screenshots, grader explanations, and the generated source.</p></section>
+<section id="dashboard"><h2>Dashboard</h2>
+<p>A local research UI over SQLite run history. Overview, models, runs, cases, and a comparison view for any two outputs of the same task.</p>
+<ul class="feature-list"><li><strong>Overview</strong><span>Overall score, categories, pass rate, cost, tokens, latency</span></li><li><strong>Cases</strong><span>Filter by model, category, difficulty, pass/fail, grader</span></li><li><strong>Case detail</strong><span>Prompt, rendered UI, screenshot, source, rubric, logs, cost</span></li></ul></section>
+<section id="custom"><h2>Custom Design System</h2>
+<p>Ships with a demo DS (Button, Input, Select, Dialog, Table, tokens, a few UX patterns) so the repo runs from clone. Point it at yours with a manifest:</p>
+<pre><code>name: Demo DS
+version: 1.0
+components:
+  path: ./src/components
+tokens:
+  path: ./src/tokens
+documentation:
+  path: ./docs
+storybook:
+  url: http://localhost:6006</code></pre>
+<pre><code>ds-eval init ./my-design-system
+ds-eval run --system ./my-design-system --suite smoke</code></pre></section>
+<section id="limits"><h2>Limitations</h2>
+<p>LLM judges are not ground truth. Visual and UX scores are subjective, even with a rubric and optional multi-judge setup. Deterministic graders (imports, tokens, axe, Playwright) are the reliable core; treat the rest as signal, not a verdict.</p>
+<p>A high score means the model followed this design system on this suite. It does not mean the generated UI is production-ready for your product.</p></section>
+<section id="published"><h2>Published run</h2><p>The 100-case table above is the shape of the dataset, not the size of this run. The published smoke lives in <code>ds-eval/runs/fixture-good</code>: model <code>fixture</code>, 10 cases, overall 87.8, cost $0. It is not a Claude or Codex call. The compare block under Regression shows the report shape, not this run.</p><table><thead><tr><th>Case</th><th>Category</th><th>Overall</th><th>DS</th><th>A11y</th><th>Code</th></tr></thead><tbody><tr><td>a11y-labels-001</td><td>accessibility</td><td>88.3</td><td>87.5</td><td>100.0</td><td>100.0</td></tr><tr><td>adversarial-actions-001</td><td>adversarial</td><td>88.3</td><td>87.5</td><td>100.0</td><td>100.0</td></tr><tr><td>adversarial-color-001</td><td>adversarial</td><td>88.3</td><td>87.5</td><td>100.0</td><td>100.0</td></tr><tr><td>component-button-001</td><td>component</td><td>88.3</td><td>87.5</td><td>100.0</td><td>100.0</td></tr><tr><td>component-input-001</td><td>component</td><td>88.3</td><td>87.5</td><td>100.0</td><td>100.0</td></tr><tr><td>component-select-001</td><td>component</td><td>86.7</td><td>87.5</td><td>100.0</td><td>90.0</td></tr><tr><td>edge-long-001</td><td>edge-cases</td><td>85.2</td><td>82.5</td><td>100.0</td><td>90.0</td></tr><tr><td>page-settings-001</td><td>pages</td><td>88.3</td><td>87.5</td><td>100.0</td><td>100.0</td></tr><tr><td>pattern-confirm-001</td><td>patterns</td><td>88.3</td><td>87.5</td><td>100.0</td><td>100.0</td></tr><tr><td>pattern-empty-001</td><td>patterns</td><td>88.3</td><td>87.5</td><td>100.0</td><td>100.0</td></tr></tbody></table><p>One case in full: <code>component-select-001</code>. The task is a country select with a label, helper, and error. The fixture answer is <code>source/Task.tsx</code>.</p><pre><code>import { Select } from &quot;@ds&quot;;
+
+const COUNTRIES = [&quot;Austria&quot;,&quot;Belgium&quot;,&quot;Canada&quot;,&quot;Denmark&quot;,&quot;Estonia&quot;,&quot;Finland&quot;,&quot;Germany&quot;,&quot;Hungary&quot;,&quot;Ireland&quot;,&quot;Japan&quot;];
+
+export function Task() {
+  return (
+    &lt;Select label=&quot;Country&quot; helper=&quot;Used for billing&quot; error=&quot;Select a country to continue&quot; defaultValue=&quot;&quot;&gt;
+      &lt;option value=&quot;&quot;&gt;Choose one&lt;/option&gt;
+      {COUNTRIES.map((name) =&gt; (
+        &lt;option key={name} value={name}&gt;{name}&lt;/option&gt;
+      ))}
+    &lt;/Select&gt;
+  );
+}</code></pre><p>Axes for this case. The visual and UX judges are off: a zero in the record means skipped, not a judgment of the screen. Their weight moves onto the other axes, which is why the overall is not zero.</p><table><thead><tr><th>Axis</th><th>Score</th><th></th></tr></thead><tbody><tr><td>DS</td><td>87.5</td><td></td></tr><tr><td>Functional</td><td>70.0</td><td></td></tr><tr><td>Visual</td><td>0.0</td><td>skipped, weight moved to the other axes</td></tr><tr><td>UX</td><td>0.0</td><td>skipped, weight moved to the other axes</td></tr><tr><td>A11y</td><td>100.0</td><td></td></tr><tr><td>Code</td><td>90.0</td><td></td></tr><tr><td>Build</td><td>100.0</td><td></td></tr><tr><td>Overall</td><td>86.7</td><td></td></tr></tbody></table></section><section id="pipeline"><h2>Pipeline</h2>
+<p>ds-eval scores the UI after the model has a context pack and, if needed, a repair pass:</p>
+<pre><code>ds-context prepares the pack
+model writes UI
+ui-repair patches violations
+ds-eval scores the result ← you are here
+prompt-regress diffs the next prompt</code></pre></section>
+<p><a href="https://github.com/AndrewAntoshkin/ds-eval" target="_blank" rel="noopener noreferrer">Source</a></p></div>
+</article></div></main>
+  <section class="cta" data-r>
+    <div class="cta-grid">
+      <div class="cta-card">
+        <div class="shader" aria-hidden="true"><i></i><i></i><i></i></div>
+        <span class="tag top">Work together</span>
+        <div class="mid"><h2>Are you ready to take the next step?</h2></div>
+        <div class="bot"><p>Have a problem you want to ship? Write me and we will shape the next step together.</p></div>
+      </div>
+      <form class="cta-form" data-subject="Collaboration">
+        <input name="name" required placeholder="Your name" autocomplete="name">
+        <input name="email" type="email" required placeholder="Your email" autocomplete="email">
+        <textarea name="question" required placeholder="How can I help?"></textarea>
+        <button type="submit">Send a message</button>
+      </form>
+    </div>
+  </section>
+  <footer class="foot">
+    <div class="foot-art" aria-hidden="true"><img src="img/gen/footer.jpg" alt=""></div>
+    <div class="foot-in">
+      <h2 data-r><span>Let’s create something</span><br>that actually ships.</h2>
+      <div class="social" data-r style="--d:.1s"><a href="https://t.me/andrewaitken" target="_blank" rel="noopener" aria-label="Telegram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M21 4 3 11l5.5 2L10 19l3-4 4.5 3.5L21 4Z"/><path d="m8.5 13 8-5"/></svg></a><a href="https://github.com/AndrewAntoshkin" target="_blank" rel="noopener" aria-label="GitHub"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M9 19c-4 1.2-4-2-5.5-2.5M15 21v-3.5c0-1 .1-1.500-.5-2.200 2.800-.3 5.500-1.400 5.500-6a4.700 4.700 0 0 0-1.300-3.300 4.400 4.400 0 0 0-.1-3.300s-1-.3-3.400 1.300a11.700 11.700 0 0 0-6.200 0C6.600 2.900 5.600 3.200 5.600 3.200a4.400 4.400 0 0 0-.1 3.300A4.700 4.700 0 0 0 4.200 9.800c0 4.600 2.700 5.700 5.500 6-.6.700-.6 1.300-.6 2.200V21"/></svg></a><a href="mailto:andrew.antoshkin@gmail.com" aria-label="Email"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></div>
+      <div class="cols"><div><p>Pages</p><a href="en.html">Home</a><a href="projects-en.html">Projects</a><a href="writing-en.html">Writing</a><a href="approach-en.html">Approach</a><a href="collab-en.html">Collaboration</a></div><div><p>Projects</p><a href="agent-ui-en.html">agent-ui</a><a href="ds-eval-en.html">ds-eval</a><a href="ds-context-en.html">ds-context</a><a href="ui-repair-en.html">ui-repair</a><a href="prompt-regress-en.html">prompt-regress</a></div><div><p>Writing</p><a href="apres-prompt-en.html">Après-prompt</a><a href="ai-changes-processes-en.html">AI Is Not Changing Professions. AI Is Changing Processes</a><a href="halo-working-memory-en.html">Halo</a><a href="cursor-figma-en.html">Cursor + Figma in 2026</a><a href="design-md-en.html">DESIGN.md in 2026</a></div></div>
+      <div class="legal"><span>© Andrew Antoshkin, 2026</span><span>Built by hand, no templates</span></div>
+    </div>
+  </footer>
+  <script src="motion.js"></script>
+</body></html>

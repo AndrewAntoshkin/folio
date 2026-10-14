@@ -475,6 +475,8 @@ def load_doc(slug: str, lang: str) -> dict:
         return load(slug, lang)
     if slug == "spektr":
         return _spektr(lang)
+    if slug == "agent-ui":
+        return _agent_ui(lang)
     html = _raw(slug)
     article = re.search(r"<article>(.*)</article>", html, re.S).group(1)
     body = _blocks(article, lang)
@@ -568,6 +570,149 @@ def _with_published(body: str, groups: list[dict], lang: str) -> tuple[str, list
             group["items"].insert(1, {"href": "#published", "label": nav})
             break
     return body, groups
+
+
+AGENT_UI_INSTALL = """npx shadcn@latest add https://antoshkin.tech/agent-ui/r/approval.json
+npx shadcn@latest add https://antoshkin.tech/agent-ui/r/all.json"""
+
+AGENT_UI_TREE = """components/agent-ui/approval.tsx
+.cursor/rules/agent-ui-approval.mdc
+
+> Спроси разрешения, прежде чем агент удалит папку build
+
+  агент подгружает agent-ui-approval.mdc
+  &lt;Approval title="Run a shell command"
+            command="rm -rf ./build"
+            onApprove={...} onDeny={...} /&gt;"""
+
+
+def _agent_ui(lang: str) -> dict:
+    ru = lang == "ru"
+    groups = [
+        {
+            "label": "Основное" if ru else "Basics",
+            "items": [
+                {"href": "#why", "label": "Зачем" if ru else "Why"},
+                {"href": "#inside", "label": "Что внутри" if ru else "What's Inside"},
+                {"href": "#rules", "label": "Правило рядом с кодом" if ru else "Rule Next to the Code"},
+                {"href": "#install", "label": "Установка" if ru else "Installation"},
+                {"href": "#limits", "label": "Пределы" if ru else "Limitations"},
+            ],
+        },
+        {
+            "label": "Ссылки" if ru else "Links",
+            "items": [
+                {"href": "/agent-ui/" if ru else "/agent-ui/en.html", "label": "Компоненты" if ru else "Components"},
+                {"href": "/agent-ui/r/llms.txt", "label": "llms.txt"},
+            ],
+        },
+    ]
+    tree = AGENT_UI_TREE if ru else AGENT_UI_TREE.replace(
+        "Спроси разрешения, прежде чем агент удалит папку build", "Ask before the agent deletes the build folder"
+    ).replace("агент подгружает", "agent loads")
+    if ru:
+        lead = "Пятнадцать React-компонентов для чатов и агентов. Каждый ставится вместе с правилом для Cursor: когда его брать, когда нет и какие пропсы важны. Цвета только из токенов темы, поэтому агенту нечего захардкодить."
+        body = f"""
+<p><a href="/agent-ui/">Открыть компоненты →</a></p>
+<section id="why"><h2>Зачем делать компоненты самому</h2>
+<p>Готовых библиотек много: shadcn, Magic UI, Aceternity, Chamaac. Они сделаны для человека, который смотрит демо и копирует код. Сейчас компонент всё чаще ставит агент, и тут начинается то, что я и так ловлю своими инструментами. ds-lint находит хардкод цвета в скопированном коде. ds-coverage находит локальные копии рядом с системой. ds-eval показывает, что агент чаще рисует свою кнопку, чем берёт готовую.</p>
+<p>Это можно чинить после, как делает ui-repair. Но дешевле сделать компоненты, которые не придётся чинить. Для этого компоненту нужны три вещи, которых у обычной библиотеки нет:</p>
+<ul>
+<li>описание, когда его брать и когда нет, словами задачи, а не списком пропсов;</li>
+<li>только токены темы: ни hex, ни <code>bg-zinc-900</code>, чтобы в коде нечего было скопировать неправильно;</li>
+<li>место, где агент найдёт всё это ещё до установки.</li>
+</ul>
+<p>Вторая причина в самих AI-интерфейсах. Вызов инструмента, запрос разрешения, рассуждения модели, окно контекста: в обычных китах таких примитивов нет, и каждый продукт рисует их заново. Я делаю их один раз и так, как хотел бы видеть в своих интерфейсах.</p>
+</section>
+<section id="inside"><h2>Что внутри</h2>
+<ul class="feature-list">
+<li><strong>Prompt Input</strong><span>Поле промпта: растёт по высоте, Enter отправляет, во время ответа кнопка становится Stop. Вложения и слот под выбор модели.</span></li>
+<li><strong>Message</strong><span>Реплика пользователя или ассистента, пульсирующий курсор при стриминге, действия по наведению.</span></li>
+<li><strong>Thinking</strong><span>Переливающееся «Thinking», которое сворачивается в «Thought for 4s» с текстом рассуждений.</span></li>
+<li><strong>Tool Call</strong><span>Карточка одного вызова инструмента: статус, аргументы, результат, ошибка.</span></li>
+<li><strong>Approval</strong><span>Агент просит разрешения на конкретную команду. После решения карточка схлопывается в строку-запись.</span></li>
+<li><strong>Context Meter</strong><span>Кольцо заполнения контекстного окна с порогом предупреждения.</span></li>
+<li><strong>Suggestions</strong><span>Стартовые промпты и follow-up вопросы.</span></li>
+<li><strong>Agent Dock</strong><span>Плавающая плашка статуса фонового агента. При наведении раскрывается в список шагов.</span></li>
+<li><strong>Plan</strong><span>Шаги, которые ассистент предлагает до или во время задачи.</span></li>
+<li><strong>Choice</strong><span>Вопрос с двумя–пятью взаимоисключающими вариантами.</span></li>
+<li><strong>Data Table</strong><span>Таблица сравнения или результата инструмента внутри ответа.</span></li>
+<li><strong>Answer Chart</strong><span>Один ряд столбцов или линия, до восьми точек, цветом основного токена.</span></li>
+<li><strong>Code Block</strong><span>Код или diff в ответе, с именем файла и копированием.</span></li>
+<li><strong>Sources</strong><span>Источники под ответом: название, адрес, короткая выдержка.</span></li>
+<li><strong>Artifact</strong><span>Карточка файла в треде. По клику содержимое открывается в боковой панели.</span></li>
+</ul>
+<p>На странице компонентов вверху живая сцена: агент чинит захардкоженные цвета и останавливается спросить разрешения. Её можно разрешить, запретить или остановить.</p>
+</section>
+<section id="rules"><h2>Правило рядом с кодом</h2>
+<p>Каждая установка кладёт два файла: компонент и правило <code>.mdc</code>. В описании правила написана задача, а не имя компонента («агент просит разрешения перед рискованным действием»). Поэтому Cursor подгружает его только тогда, когда оно нужно.</p>
+<p>В каждом правиле есть раздел «не использовать для» с подсказкой, какой примитив проекта взять вместо него. Именно здесь агенты обычно ошибаются: ставят Approval вместо обычного диалога подтверждения или Thinking вместо скелетона загрузки.</p>
+<pre><code>{tree}</code></pre>
+<p>Для агентов, которые не читают правила Cursor, есть <a href="/agent-ui/r/llms.txt">llms.txt</a> со списком компонентов и <a href="/agent-ui/r/llms-full.txt">llms-full.txt</a> со всеми правилами в одном файле.</p>
+</section>
+<section id="install"><h2>Установка</h2>
+<p>Реестр совместим с shadcn. Нужны Tailwind v4 и тема shadcn в CSS-переменных.</p>
+<pre><code>{AGENT_UI_INSTALL}</code></pre>
+<p>Сборка реестра падает, если в компоненте появится hex, класс палитры вроде <code>text-neutral-500</code> или произвольное значение вроде <code>text-[14px]</code>. Поменяй токены темы, и все компоненты поменяются вместе с ними: на странице компонентов это можно проверить переключателем акцента.</p>
+</section>
+<section id="limits"><h2>Пределы</h2>
+<p>Я ещё не измерял через ds-eval, насколько правила повышают долю правильных вставок. Пока это гипотеза, и следующий шаг — прогнать её на наборе задач с правилами и без них.</p>
+<p>Правила написаны в формате Cursor. Другие агенты получают тот же текст через llms-full.txt, но сами по нему не подгружаются. Компоненты читают <code>var(--muted-foreground)</code> напрямую, поэтому старая тема shadcn на HSL-каналах не подойдёт.</p>
+<p>Идеи анимаций для Dock, AI Input, Shimmer и Gauge взяты у <a href="https://www.chamaac.com/" target="_blank" rel="noopener noreferrer">Chamaac UI</a> (MIT). Код написан заново, без Next.js и захардкоженных цветов.</p>
+</section>
+"""
+    else:
+        lead = "Fifteen React components for chat and agent UIs. Each one installs with a Cursor rule: when to use it, when not to, and which props matter. Colors come only from theme tokens, so the agent has nothing to hardcode."
+        body = f"""
+<p><a href="/agent-ui/en.html">Open the components →</a></p>
+<section id="why"><h2>Why build components myself</h2>
+<p>There are plenty of libraries: shadcn, Magic UI, Aceternity, Chamaac. They are made for a person who looks at a demo and copies the code. More and more, the one installing a component is an agent, and that is where the problems my other tools catch begin. ds-lint finds hardcoded colors in copied code. ds-coverage finds local copies next to the system. ds-eval shows an agent drawing its own button more often than taking the existing one.</p>
+<p>You can fix that afterwards, the way ui-repair does. It is cheaper to ship components that need no fixing. That takes three things a regular library does not have:</p>
+<ul>
+<li>a description of when to use it and when not to, in the words of the task rather than a props list;</li>
+<li>theme tokens only: no hex, no <code>bg-zinc-900</code>, so there is nothing wrong to copy;</li>
+<li>a place where the agent finds all of this before installing anything.</li>
+</ul>
+<p>The second reason is AI interfaces themselves. A tool call, a permission request, model reasoning, the context window: general kits do not have these primitives, and every product draws them again. I build them once, the way I want them in my own interfaces.</p>
+</section>
+<section id="inside"><h2>What's inside</h2>
+<ul class="feature-list">
+<li><strong>Prompt Input</strong><span>Auto-growing prompt box: Enter sends, Send turns into Stop while the reply streams. Attachments and a model picker slot.</span></li>
+<li><strong>Message</strong><span>A user or assistant turn with a streaming caret and hover actions.</span></li>
+<li><strong>Thinking</strong><span>A shimmering "Thinking" that collapses into "Thought for 4s" with the reasoning text.</span></li>
+<li><strong>Tool Call</strong><span>One tool call: status, arguments, output, error.</span></li>
+<li><strong>Approval</strong><span>The agent asks to run one concrete command. After the decision the card collapses into a one-line record.</span></li>
+<li><strong>Context Meter</strong><span>A context-window ring with a warning threshold.</span></li>
+<li><strong>Suggestions</strong><span>Starter prompts and follow-up questions.</span></li>
+<li><strong>Agent Dock</strong><span>A floating status bar for a background agent that opens into its step list on hover.</span></li>
+<li><strong>Plan</strong><span>The steps the assistant proposes before or during a task.</span></li>
+<li><strong>Choice</strong><span>A question with two to five mutually exclusive options.</span></li>
+<li><strong>Data Table</strong><span>A comparison or tool result inside an answer.</span></li>
+<li><strong>Answer Chart</strong><span>One bar or line series, up to eight points, in the primary token.</span></li>
+<li><strong>Code Block</strong><span>Code or a diff in an answer, with a filename and copy.</span></li>
+<li><strong>Sources</strong><span>Citations under an answer: title, address, short excerpt.</span></li>
+<li><strong>Artifact</strong><span>A file card in the thread. Its contents open in a side panel.</span></li>
+</ul>
+<p>The components page opens with a live scene: an agent fixes hardcoded colors and stops to ask for permission. You can allow, deny, or stop it.</p>
+</section>
+<section id="rules"><h2>A rule next to the code</h2>
+<p>Every install writes two files: the component and a <code>.mdc</code> rule. The rule's description names the task, not the component ("an agent asks permission before a risky action"), so Cursor loads it only when it is relevant.</p>
+<p>Every rule has a "do not use for" section that names the project primitive to use instead. That is where agents usually go wrong: an Approval in place of a confirm dialog, or Thinking in place of a loading skeleton.</p>
+<pre><code>{tree}</code></pre>
+<p>For agents that do not read Cursor rules there is <a href="/agent-ui/r/llms.txt">llms.txt</a> with the component list and <a href="/agent-ui/r/llms-full.txt">llms-full.txt</a> with every rule in one file.</p>
+</section>
+<section id="install"><h2>Installation</h2>
+<p>The registry is shadcn-compatible. It needs Tailwind v4 and the shadcn theme as CSS variables.</p>
+<pre><code>{AGENT_UI_INSTALL}</code></pre>
+<p>The registry build fails if a component gets a hex value, a palette class like <code>text-neutral-500</code>, or an arbitrary value like <code>text-[14px]</code>. Change the theme tokens and every component follows; the accent switch on the components page shows it.</p>
+</section>
+<section id="limits"><h2>Limitations</h2>
+<p>I have not measured with ds-eval how much the rules raise correct usage. For now it is a hypothesis; the next step is running a task suite with and without the rules.</p>
+<p>The rules use Cursor's format. Other agents get the same text through llms-full.txt but do not load it automatically. Components read <code>var(--muted-foreground)</code> directly, so the older shadcn theme with HSL channels will not work.</p>
+<p>Motion ideas for Dock, AI Input, Shimmer and Gauge come from <a href="https://www.chamaac.com/" target="_blank" rel="noopener noreferrer">Chamaac UI</a> (MIT). The code is new, without Next.js or hardcoded colors.</p>
+</section>
+"""
+    return {"lead": lead, "groups": groups, "body": body}
 
 
 def _spektr(lang: str) -> dict:

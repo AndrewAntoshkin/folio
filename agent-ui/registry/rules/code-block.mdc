@@ -1,0 +1,41 @@
+---
+description: agent-ui CodeBlock. Use when an assistant answer shows source code or a unified diff, with a filename and a copy button. Not for syntax highlighting themes.
+alwaysApply: false
+---
+
+# CodeBlock
+
+`import { CodeBlock } from "@/components/agent-ui/code-block"`
+
+## Use for
+- Source code or a unified diff inside an assistant answer.
+
+## Do not use for
+- A syntax-highlighting theme. Pass already-highlighted nodes through the project's highlighter, or leave the text plain.
+- Tool arguments and raw JSON. Those stay inside `ToolCall`.
+- A whole file the user will edit. Use `Artifact` and put a `CodeBlock` in its panel.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `code` | `string` | Required. The exact text the copy button writes. |
+| `language` | `string` | Shown as a label, not used to color tokens. |
+| `filename` | `string` | Optional path in the header. |
+| `diff` | `boolean` | Colors lines that start with `+` or `-`. Do not color `+++` or `---`. |
+| `copyLabel` / `copiedLabel` | `string` | Accessible name of the copy button. Set them when the interface is not in English. |
+
+## Example
+```tsx
+<CodeBlock
+  filename="src/settings/SettingsPage.tsx"
+  language="diff"
+  diff
+  code={patch}
+  copyLabel="Copy"
+  copiedLabel="Copied"
+/>
+```
+
+## Rules
+- Render it as a sibling of `Message`, not inside a fenced markdown block that you also style yourself.
+- Do not add a color prop. Added and removed lines use the primary and destructive tokens.

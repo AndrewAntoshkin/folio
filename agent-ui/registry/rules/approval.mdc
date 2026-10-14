@@ -1,0 +1,44 @@
+---
+description: agent-ui Approval. Use when an agent must ask the user for permission before a risky action (running a shell command, writing files, sending email, spending money). Human-in-the-loop confirmation.
+alwaysApply: false
+---
+
+# Approval
+
+`import { Approval } from "@/components/agent-ui/approval"`
+
+## Use for
+- Pausing an agent until the user allows or denies one concrete action.
+
+## Do not use for
+- Generic "are you sure" dialogs outside the agent thread. Use the project's `AlertDialog`.
+- Asking the user a free-form question. That is a normal assistant `Message`.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `title` | `string` | Required. What the agent wants to do, as a sentence: "Run a shell command". |
+| `command` | `string` | Exact command, path or payload. Shown in mono and kept after the decision. |
+| `description` | `ReactNode` | Why, or what it will affect. |
+| `onApprove` | `({ always }) => void` | Required. `always` is the "don't ask again" checkbox. |
+| `onDeny` | `() => void` | Required. |
+| `allowAlways` | `boolean` | Shows the checkbox. Only for actions that are safe to auto-approve later. |
+| `state` | `"pending" \| "approved" \| "denied"` | Pass to control it, e.g. when restoring a transcript. |
+| `autoFocus` | `boolean` | Focus Allow on mount. Only for the newest approval in a live run, never when restoring history. |
+| `approveLabel`, `denyLabel`, `approvedLabel`, `deniedLabel`, `alwaysLabel` | `string` | UI copy. Set them when the interface is not in English. |
+
+## Example
+```tsx
+<Approval
+  title="Run a shell command"
+  command="rm -rf ./build"
+  description="Deletes the build folder before rebuilding."
+  onApprove={({ always }) => resume(call.id, { allow: true, always })}
+  onDeny={() => resume(call.id, { allow: false })}
+/>
+```
+
+## Rules
+- Always show the exact `command`. Never ask for approval of a vague summary.
+- Do not set `allowAlways` for destructive or paid actions.
+- While an Approval is pending, show `AgentDock` with `status="waiting"`.

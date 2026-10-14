@@ -1,0 +1,32 @@
+---
+description: agent-ui Suggestions. Use when offering clickable starter prompts or follow-up questions in a chat or agent UI.
+alwaysApply: false
+---
+
+# Suggestions
+
+`import { Suggestions } from "@/components/agent-ui/suggestions"`
+
+## Use for
+- Starter prompts on an empty conversation.
+- Follow-ups under the last assistant message.
+
+## Do not use for
+- Filters, tags or navigation. Use the project's `Badge`, `ToggleGroup` or `Tabs`.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `items` | `(string \| { label, value })[]` | Required. Use `{ label, value }` when the sent prompt is longer than the chip. |
+| `onSelect` | `(value: string) => void` | Required. Usually submits the value right away. |
+
+## Example
+```tsx
+{messages.length === 0 && (
+  <Suggestions items={["Summarize this repo", "Find unused tokens"]} onSelect={send} />
+)}
+```
+
+## Rules
+- Three to five items. More turns into noise.
+- Hide them once the user starts typing or a request is running.

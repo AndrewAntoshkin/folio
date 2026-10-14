@@ -201,7 +201,6 @@ def shell(
     <meta property="og:description" content="{description}">
     <meta property="og:type" content="{og_type}">
     <link rel="icon" type="image/svg+xml" href="assets/antoshkin-tech-logo.svg">
-    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <link rel="stylesheet" href="assets/wireframe.css">
     <link rel="stylesheet" href="assets/guides.css">
     <script>
@@ -325,7 +324,7 @@ def home_content() -> str:
                 <div class="hero">
                     <h1 class="hero-title">
                         <span class="t-line enter" style="--i: 1">Андрей&nbsp;Антошкин<span class="annot annot--x" aria-hidden="true">x-height<i class="tick tick--end" style="--len: 28px"></i></span></span>
-                        <span class="serif enter" style="--i: 2"><span class="ink">Design <span class="sel">Engineer<i class="handle h-tl"></i><i class="handle h-tr"></i><i class="handle h-bl"></i><i class="handle h-br"></i><span class="annot annot--size" id="selSize" aria-hidden="true">&mdash;</span></span><span class="annot annot--color" id="selColor" aria-hidden="true"><i class="swatch" style="background: var(--text-secondary)"></i>&mdash;<i class="tick tick--left" style="--len: 16px"></i></span></span><span class="annot annot--font" aria-hidden="true">old-standard-italic<i class="tick tick--right" style="--len: 16px"></i></span></span>
+                        <span class="serif enter" style="--i: 2"><span class="ink">Design <span class="sel">Engineer<i class="handle h-tl"></i><i class="handle h-tr"></i><i class="handle h-bl"></i><i class="handle h-br"></i><span class="annot annot--size" id="selSize" aria-hidden="true">&mdash;</span></span><span class="annot annot--color" id="selColor" aria-hidden="true"><i class="swatch" style="background: var(--text-secondary)"></i>&mdash;<i class="tick tick--left" style="--len: 16px"></i></span></span><span class="annot annot--font" aria-hidden="true">Google Sans<i class="tick tick--right" style="--len: 16px"></i></span></span>
                     </h1>
 
                     <div class="hero-intro">
@@ -624,7 +623,7 @@ def home_content_en() -> str:
                 <div class="hero">
                     <h1 class="hero-title">
                         <span class="t-line enter" style="--i: 1">Andrew&nbsp;Antoshkin<span class="annot annot--x" aria-hidden="true">x-height<i class="tick tick--end" style="--len: 28px"></i></span></span>
-                        <span class="serif enter" style="--i: 2"><span class="ink">Design <span class="sel">Engineer<i class="handle h-tl"></i><i class="handle h-tr"></i><i class="handle h-bl"></i><i class="handle h-br"></i><span class="annot annot--size" id="selSize" aria-hidden="true">&mdash;</span></span><span class="annot annot--color" id="selColor" aria-hidden="true"><i class="swatch" style="background: var(--text-secondary)"></i>&mdash;<i class="tick tick--left" style="--len: 16px"></i></span></span><span class="annot annot--font" aria-hidden="true">old-standard-italic<i class="tick tick--right" style="--len: 16px"></i></span></span>
+                        <span class="serif enter" style="--i: 2"><span class="ink">Design <span class="sel">Engineer<i class="handle h-tl"></i><i class="handle h-tr"></i><i class="handle h-bl"></i><i class="handle h-br"></i><span class="annot annot--size" id="selSize" aria-hidden="true">&mdash;</span></span><span class="annot annot--color" id="selColor" aria-hidden="true"><i class="swatch" style="background: var(--text-secondary)"></i>&mdash;<i class="tick tick--left" style="--len: 16px"></i></span></span><span class="annot annot--font" aria-hidden="true">Google Sans<i class="tick tick--right" style="--len: 16px"></i></span></span>
                     </h1>
 
                     <div class="hero-intro">

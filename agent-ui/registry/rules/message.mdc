@@ -1,0 +1,46 @@
+---
+description: agent-ui Message and MessageAction. Use when rendering a single user or assistant turn in a chat thread, with a streaming caret and hover actions like copy or retry.
+alwaysApply: false
+---
+
+# Message
+
+`import { Message, MessageAction } from "@/components/agent-ui/message"`
+
+## Use for
+- One turn of a conversation. User turns render as a bubble on the right, assistant turns as full-width text.
+
+## Do not use for
+- Tool calls, reasoning, approvals, plans, choices, tables, charts, code, sources, or file artifacts inside an assistant turn. Render `ToolCall`, `Thinking`, `Approval`, `Plan`, `Choice`, `DataTable`, `AnswerChart`, `CodeBlock`, `Sources`, and `Artifact` as siblings in the thread.
+- System notices or errors. Use the project's `Alert`.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `role` | `"user" \| "assistant"` | Required. |
+| `children` | `ReactNode` | Already-rendered content: plain text or your markdown renderer. |
+| `streaming` | `boolean` | Shows a pulsing caret and hides actions. |
+| `actions` | `ReactNode` | `MessageAction` buttons, shown on hover or focus. |
+
+`MessageAction` takes a required `label` (used as `aria-label` and tooltip) and an icon as children.
+
+## Example
+```tsx
+{messages.map((m) => (
+  <Message
+    key={m.id}
+    role={m.role}
+    streaming={m.id === streamingId}
+    actions={m.role === "assistant" && (
+      <MessageAction label="Copy" onClick={() => copy(m.text)}><Copy className="size-3.5" /></MessageAction>
+    )}
+  >
+    <Markdown>{m.text}</Markdown>
+  </Message>
+))}
+```
+
+## Rules
+- Only the last assistant message may have `streaming`.
+- Give each `MessageAction` a `label`. Icon-only buttons without one fail accessibility.
+- Stack messages in a `flex flex-col gap-6` container. Do not wrap them in cards.

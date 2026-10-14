@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" class="nojs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ui-repair — Andrew Antoshkin</title>
+  <script>document.documentElement.classList.remove('nojs')</script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="dock"><nav aria-label="Navigation"><i aria-hidden="true"></i><a href="en.html" aria-label="Home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg></a><a href="projects-en.html" aria-label="Projects" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 13h16"/></svg></a><a href="writing-en.html" aria-label="Writing"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M14 5.5 18.5 10 9 19.5H4.5V15L14 5.5Z"/><path d="m12 7.5 4.5 4.5"/></svg></a><a href="approach-en.html" aria-label="Approach"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.25"/><path d="M5.5 19.5c1.2-3 3.4-4.5 6.5-4.5s5.3 1.5 6.5 4.5"/></svg></a><a href="collab-en.html" aria-label="Contact"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></nav></div>
+<nav class="langs" aria-label="Language"><a href="ui-repair.html">Ru</a><a href="ui-repair-en.html" aria-current="page">En</a></nav>
+<a class="float" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Say hello<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+<main><div class="col"><article class="art">
+  <header class="art-top">
+    <a class="back" href="projects-en.html" data-r>‹ Back</a>
+    <h1 data-split>ui-repair</h1>
+    <div class="tags" data-r style="--d:.25s"><span class="tag">Repair</span><span class="tag">open source</span></div>
+  </header>
+  <div class="art-intro" data-r style="--d:.3s"><p>A linter says the file has a raw button and #8B5CF6. ui-repair applies system rules and writes a patch. On the fixture a 10-check rubric moves from 50 to 100. That is not a model call and not a ds-eval run.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="https://github.com/AndrewAntoshkin/ui-repair" target="_blank" rel="noopener">Repository on GitHub</a></div></div>
+  <div class="prose"><div class="pcover "><div class="bg" style="background-image:url(img/gen/ui-repair.jpg)"></div><span class="plogo">ui-repair</span></div><section id="why"><h2>Why</h2><p>Finding a violation is the small half. The team needs a patch: a raw <code>&lt;button&gt;</code> becomes Button, <code>#8B5CF6</code> becomes a token, a homemade modal becomes Dialog. ui-repair makes that replacement with rules and shows which check flipped.</p><p>A live agent should emit a patch of the same shape. This MVP keeps the rules deterministic so the example runs without a key.</p></section><section id="rules"><h2>Rules</h2><p>Each rule reads the fixture text and the <code>tokens.css</code> beside it. On Acme, <code>--color-accent</code> is <code>#8B5CF6</code> and <code>--space-3</code> is <code>12px</code>.</p><table><thead><tr><th>Finds</th><th>Writes</th></tr></thead><tbody><tr><td>a hex that matches a token value</td><td><code>var(--color-accent)</code></td></tr><tr><td><code>padding: 13</code></td><td><code>var(--space-3)</code></td></tr><tr><td><code>&lt;div className="modal"&gt;</code></td><td><code>&lt;Dialog&gt;</code></td></tr><tr><td>a raw <code>&lt;button&gt;</code></td><td><code>&lt;Button&gt;</code> and an import from <code>@ds</code></td></tr><tr><td>a button whose only child is ×</td><td><code>aria-label="Close"</code></td></tr></tbody></table><p>The import is one line, added when the file has no <code>from "@ds"</code> yet: <code>import { Button, Dialog } from "@ds";</code></p></section><section id="run"><h2>Run</h2><pre><code>python3 ui-repair/ui_repair.py scan ui-repair/fixtures
+python3 ui-repair/ui_repair.py fix ui-repair/fixtures --out ui-repair/examples</code></pre><p><code>scan</code> prints the list and writes nothing. <code>fix</code> puts <code>Settings.jsx</code> in <code>ui-repair/examples</code> and prints the local score before and after. On the fixture, scan reports:</p><pre><code>6 issues
+  raw &lt;button&gt;
+  hardcoded hex color
+  hand-rolled modal
+  padding 13 is off the space scale
+  icon button without an accessible name
+  no design-system import</code></pre></section><section id="before"><h2>Before</h2><p><code>ui-repair/fixtures/Settings.jsx</code>. A purple background as a number, padding 13, Save as a raw button, a div modal, and a close mark with no name.</p><pre><code>export function Settings() {
+  const open = () =&gt; {};
+  return (
+    &lt;section&gt;
+      &lt;h1&gt;Settings&lt;/h1&gt;
+      &lt;div style={{ background: &quot;#8B5CF6&quot;, padding: 13 }}&gt;
+        &lt;button onClick={open}&gt;Save&lt;/button&gt;
+        &lt;div className=&quot;modal&quot;&gt;
+          &lt;h2&gt;Delete account&lt;/h2&gt;
+          &lt;button&gt;×&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+  );
+}</code></pre></section><section id="after"><h2>After</h2><p>The same file after <code>fix</code>. This is the rule result, not a model reply.</p><pre><code>import { Button, Dialog } from &quot;@ds&quot;;
+export function Settings() {
+  const open = () =&gt; {};
+  return (
+    &lt;section&gt;
+      &lt;h1&gt;Settings&lt;/h1&gt;
+      &lt;div style={{ background: &quot;var(--color-accent)&quot;, padding: &quot;var(--space-3)&quot; }}&gt;
+        &lt;Button onClick={open}&gt;Save&lt;/Button&gt;
+        &lt;Dialog&gt;
+          &lt;h2&gt;Delete account&lt;/h2&gt;
+          &lt;Button aria-label=&quot;Close&quot;&gt;×&lt;/Button&gt;
+        &lt;/Dialog&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+  );
+}</code></pre></section><section id="score"><h2>Checks</h2><p>Ten checks, equal weight. Before the repair the score is 50: five structural checks already passed, five system checks did not. After, it is 100.</p><table><thead><tr><th>Check</th><th>Before</th><th>After</th></tr></thead><tbody><tr><td>exports a component</td><td>pass</td><td>pass</td></tr><tr><td>handles a click</td><td>pass</td><td>pass</td></tr><tr><td>no dangerouslySetInnerHTML</td><td>pass</td><td>pass</td></tr><tr><td>has a heading</td><td>pass</td><td>pass</td></tr><tr><td>no !important</td><td>pass</td><td>pass</td></tr><tr><td>imports the design system</td><td>fail</td><td>pass</td></tr><tr><td>no raw button</td><td>fail</td><td>pass</td></tr><tr><td>no hardcoded hex</td><td>fail</td><td>pass</td></tr><tr><td>uses Dialog, not a modal div</td><td>fail</td><td>pass</td></tr><tr><td>no magic padding number</td><td>fail</td><td>pass</td></tr></tbody></table><p>This is not a <a href="ds-eval-en.html">ds-eval</a> score and not a Claude result. The next step is to run the patch through that harness: build, axe, Playwright. What you see here is a rule repair and which checks it closed.</p></section><section id="chain"><h2>Where it sits</h2><p><a href="ds-context-en.html">ds-context</a> says which components and tokens exist. ui-repair moves a file onto that list. <a href="ds-eval-en.html">ds-eval</a> checks whether the screen works, not only whether the tags look clean.</p></section><section id="limits"><h2>Limit</h2><p>The rules know this fixture: one hex, padding 13, a modal class, a close mark. They will not repair an arbitrary codebase. There is no git-style diff, no screenshot, and no live agent. A jump from 50 to 100 is easy to read and easy to over-read.</p></section></div>
+</article></div></main>
+  <section class="cta" data-r>
+    <div class="cta-grid">
+      <div class="cta-card">
+        <div class="shader" aria-hidden="true"><i></i><i></i><i></i></div>
+        <span class="tag top">Work together</span>
+        <div class="mid"><h2>Are you ready to take the next step?</h2></div>
+        <div class="bot"><p>Have a problem you want to ship? Write me and we will shape the next step together.</p></div>
+      </div>
+      <form class="cta-form" data-subject="Collaboration">
+        <input name="name" required placeholder="Your name" autocomplete="name">
+        <input name="email" type="email" required placeholder="Your email" autocomplete="email">
+        <textarea name="question" required placeholder="How can I help?"></textarea>
+        <button type="submit">Send a message</button>
+      </form>
+    </div>
+  </section>
+  <footer class="foot">
+    <div class="foot-art" aria-hidden="true"><img src="img/gen/footer.jpg" alt=""></div>
+    <div class="foot-in">
+      <h2 data-r><span>Let’s create something</span><br>that actually ships.</h2>
+      <div class="social" data-r style="--d:.1s"><a href="https://t.me/andrewaitken" target="_blank" rel="noopener" aria-label="Telegram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M21 4 3 11l5.5 2L10 19l3-4 4.5 3.5L21 4Z"/><path d="m8.5 13 8-5"/></svg></a><a href="https://github.com/AndrewAntoshkin" target="_blank" rel="noopener" aria-label="GitHub"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M9 19c-4 1.2-4-2-5.5-2.5M15 21v-3.5c0-1 .1-1.500-.5-2.200 2.800-.3 5.500-1.400 5.500-6a4.700 4.700 0 0 0-1.300-3.300 4.400 4.400 0 0 0-.1-3.300s-1-.3-3.400 1.300a11.700 11.700 0 0 0-6.200 0C6.600 2.900 5.600 3.200 5.600 3.200a4.400 4.400 0 0 0-.1 3.300A4.700 4.700 0 0 0 4.200 9.800c0 4.600 2.700 5.700 5.500 6-.6.700-.6 1.300-.6 2.200V21"/></svg></a><a href="mailto:andrew.antoshkin@gmail.com" aria-label="Email"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></div>
+      <div class="cols"><div><p>Pages</p><a href="en.html">Home</a><a href="projects-en.html">Projects</a><a href="writing-en.html">Writing</a><a href="approach-en.html">Approach</a><a href="collab-en.html">Collaboration</a></div><div><p>Projects</p><a href="agent-ui-en.html">agent-ui</a><a href="ds-eval-en.html">ds-eval</a><a href="ds-context-en.html">ds-context</a><a href="ui-repair-en.html">ui-repair</a><a href="prompt-regress-en.html">prompt-regress</a></div><div><p>Writing</p><a href="apres-prompt-en.html">Après-prompt</a><a href="ai-changes-processes-en.html">AI Is Not Changing Professions. AI Is Changing Processes</a><a href="halo-working-memory-en.html">Halo</a><a href="cursor-figma-en.html">Cursor + Figma in 2026</a><a href="design-md-en.html">DESIGN.md in 2026</a></div></div>
+      <div class="legal"><span>© Andrew Antoshkin, 2026</span><span>Built by hand, no templates</span></div>
+    </div>
+  </footer>
+  <script src="motion.js"></script>
+</body></html>

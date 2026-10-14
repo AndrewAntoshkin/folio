@@ -1,0 +1,578 @@
+# PromptInput
+
+`import { PromptInput } from "@/components/agent-ui/prompt-input"`
+
+## Use for
+- The main composer of a chat or agent screen.
+- Any input whose submit starts a model request that can be cancelled.
+
+## Do not use for
+- Search fields, forms, or single-line inputs. Use the project's `Input`.
+- Editing a previous message inline. Use a plain `Textarea`.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `onSubmit` | `(value: string) => void` | Required. Receives the trimmed value. Clears itself when uncontrolled. |
+| `status` | `"idle" \| "submitting" \| "streaming"` | Anything but `idle` turns Send into Stop and blocks submit. |
+| `onStop` | `() => void` | Wire to your AbortController. Without it Stop is disabled. |
+| `value` / `onValueChange` | `string` | Pass both to control it. |
+| `attachments` | `{ id, name }[]` | Chips above the textarea. Pair with `onRemoveAttachment`. |
+| `onAttach` | `() => void` | Shows the paperclip. Open your own file picker. |
+| `toolbar` | `ReactNode` | Left side of the bottom row: model picker, `ContextMeter`, mode toggles. |
+| `maxRows` | `number` | Default 8, then it scrolls. |
+
+## Example
+```tsx
+const [status, setStatus] = useState<PromptInputStatus>("idle")
+
+<PromptInput
+  status={status}
+  onSubmit={(text) => { setStatus("streaming"); send(text).finally(() => setStatus("idle")) }}
+  onStop={() => controller.abort()}
+  toolbar={<ContextMeter used={usage.input} limit={200_000} />}
+/>
+```
+
+## Rules
+- Drive `status` from the real request state. Do not fake it with timers.
+- Enter submits, Shift+Enter inserts a newline. Do not add another keyboard handler for this.
+- Keep one PromptInput per conversation, pinned to the bottom of the thread.
+- Do not restyle colors with classes like `bg-zinc-900`. The component reads the theme tokens (`background`, `primary`, `ring`).
+
+---
+
+# Message
+
+`import { Message, MessageAction } from "@/components/agent-ui/message"`
+
+## Use for
+- One turn of a conversation. User turns render as a bubble on the right, assistant turns as full-width text.
+
+## Do not use for
+- Tool calls, reasoning, approvals, plans, choices, tables, charts, code, sources, or file artifacts inside an assistant turn. Render `ToolCall`, `Thinking`, `Approval`, `Plan`, `Choice`, `DataTable`, `AnswerChart`, `CodeBlock`, `Sources`, and `Artifact` as siblings in the thread.
+- System notices or errors. Use the project's `Alert`.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `role` | `"user" \| "assistant"` | Required. |
+| `children` | `ReactNode` | Already-rendered content: plain text or your markdown renderer. |
+| `streaming` | `boolean` | Shows a pulsing caret and hides actions. |
+| `actions` | `ReactNode` | `MessageAction` buttons, shown on hover or focus. |
+
+`MessageAction` takes a required `label` (used as `aria-label` and tooltip) and an icon as children.
+
+## Example
+```tsx
+{messages.map((m) => (
+  <Message
+    key={m.id}
+    role={m.role}
+    streaming={m.id === streamingId}
+    actions={m.role === "assistant" && (
+      <MessageAction label="Copy" onClick={() => copy(m.text)}><Copy className="size-3.5" /></MessageAction>
+    )}
+  >
+    <Markdown>{m.text}</Markdown>
+  </Message>
+))}
+```
+
+## Rules
+- Only the last assistant message may have `streaming`.
+- Give each `MessageAction` a `label`. Icon-only buttons without one fail accessibility.
+- Stack messages in a `flex flex-col gap-6` container. Do not wrap them in cards.
+
+---
+
+# Thinking
+
+`import { Thinking, ShimmerText } from "@/components/agent-ui/thinking"`
+
+## Use for
+- The reasoning phase of a reasoning model, before the answer text arrives.
+- `ShimmerText` alone for short in-progress labels ("Searching the web").
+
+## Do not use for
+- Page or data loading. Use the project's `Skeleton` or `Spinner`.
+- Tool execution progress. Use `ToolCall` with `status="running"`.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `active` | `boolean` | Required. `true` shimmers the label, `false` shows `doneLabel`. |
+| `children` | `ReactNode` | Reasoning text. When absent the header is not clickable. |
+| `duration` | `number` | Seconds. If omitted, measured from `active` true to false. |
+| `label` | `string` | Default `"Thinking"`. |
+| `doneLabel` | `(s) => string` | Default `` s => `Thought for ${s}s` ``. |
+| `defaultOpen` | `boolean` | Default `false`. Keep reasoning collapsed unless the product is a debugging tool. |
+
+## Example
+```tsx
+<Thinking active={phase === "reasoning"}>{reasoningText}</Thinking>
+<Message role="assistant" streaming={phase === "answering"}>{answer}</Message>
+```
+
+## Rules
+- Set `active` from the stream: true on the first reasoning chunk, false on the first answer chunk.
+- One Thinking per assistant turn, placed above that turn's Message.
+- Shimmer respects `prefers-reduced-motion`. Do not add your own animation on top.
+
+---
+
+# ToolCall
+
+`import { ToolCall } from "@/components/agent-ui/tool-call"`
+
+## Use for
+- Every tool/function call in an agent transcript, one ToolCall per call.
+
+## Do not use for
+- Actions that need the user's permission first. Show `Approval`, then a ToolCall once allowed.
+- The model's reasoning. Use `Thinking`.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `name` | `string` | Required. The tool id as the model sees it, e.g. `read_file`. Rendered in mono. |
+| `status` | `"pending" \| "running" \| "success" \| "error"` | Required. |
+| `summary` | `string` | One line with the key argument, e.g. the file path or query. |
+| `input` | `unknown` | Raw arguments. Objects are pretty-printed as JSON. |
+| `output` | `ReactNode` | A string renders in a code block; pass a node for rich results. |
+| `error` | `string` | Shown in destructive color. Set with `status="error"`. |
+| `defaultOpen` | `boolean` | Default `false`. |
+| `labels` | `Partial<Record<ToolCallStatus \| "inputTitle" \| "outputTitle" \| "errorTitle", string>>` | Status texts and section titles. Set them when the interface is not in English. |
+
+## Example
+```tsx
+<ToolCall
+  name="search_docs"
+  status={call.state}
+  summary={call.args.query}
+  input={call.args}
+  output={call.result && `${call.result.length} results`}
+  error={call.error}
+/>
+```
+
+## Rules
+- Map your SDK's states onto the four statuses. Do not invent a fifth with custom colors.
+- Keep `summary` short; long values go in `input`.
+- Consecutive calls go in a `flex flex-col gap-2` group inside the assistant turn.
+
+---
+
+# Approval
+
+`import { Approval } from "@/components/agent-ui/approval"`
+
+## Use for
+- Pausing an agent until the user allows or denies one concrete action.
+
+## Do not use for
+- Generic "are you sure" dialogs outside the agent thread. Use the project's `AlertDialog`.
+- Asking the user a free-form question. That is a normal assistant `Message`.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `title` | `string` | Required. What the agent wants to do, as a sentence: "Run a shell command". |
+| `command` | `string` | Exact command, path or payload. Shown in mono and kept after the decision. |
+| `description` | `ReactNode` | Why, or what it will affect. |
+| `onApprove` | `({ always }) => void` | Required. `always` is the "don't ask again" checkbox. |
+| `onDeny` | `() => void` | Required. |
+| `allowAlways` | `boolean` | Shows the checkbox. Only for actions that are safe to auto-approve later. |
+| `state` | `"pending" \| "approved" \| "denied"` | Pass to control it, e.g. when restoring a transcript. |
+| `autoFocus` | `boolean` | Focus Allow on mount. Only for the newest approval in a live run, never when restoring history. |
+| `approveLabel`, `denyLabel`, `approvedLabel`, `deniedLabel`, `alwaysLabel` | `string` | UI copy. Set them when the interface is not in English. |
+
+## Example
+```tsx
+<Approval
+  title="Run a shell command"
+  command="rm -rf ./build"
+  description="Deletes the build folder before rebuilding."
+  onApprove={({ always }) => resume(call.id, { allow: true, always })}
+  onDeny={() => resume(call.id, { allow: false })}
+/>
+```
+
+## Rules
+- Always show the exact `command`. Never ask for approval of a vague summary.
+- Do not set `allowAlways` for destructive or paid actions.
+- While an Approval is pending, show `AgentDock` with `status="waiting"`.
+
+---
+
+# Plan
+
+`import { Plan } from "@/components/agent-ui/plan"`
+
+## Use for
+- The assistant's intended steps, shown in the thread before it runs them or as it checks them off.
+
+## Do not use for
+- The live status of a running agent. Use `AgentDock`.
+- One tool invocation. Use `ToolCall`.
+- A to-do list that belongs to the user. Use the project's task list.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `title` | `string` | Optional heading, the name of the task. |
+| `steps` | `{ id, label, detail?, status }[]` | Required. `status` is `"pending"`, `"running"`, `"done"`, or `"error"`. |
+| `labels` | `Partial<Record<status, string>>` | Accessible names for the status icons. Set them when the interface is not in English. |
+
+## Example
+```tsx
+<Plan
+  title="Replace hardcoded colors"
+  steps={[
+    { id: "find", label: "Find hex colors", status: "done" },
+    { id: "map", label: "Map each one to a token", status: "running" },
+    { id: "edit", label: "Edit SettingsPage.tsx", status: "pending" },
+  ]}
+/>
+```
+
+## Rules
+- At most one step has `status="running"`.
+- A step that needs permission stays `pending` until `Approval` resolves. Do not mark it `done` early.
+- Render the plan as a sibling of `Message`, not as a markdown numbered list inside the message.
+
+---
+
+# Choice
+
+`import { Choice } from "@/components/agent-ui/choice"`
+
+## Use for
+- A question from the assistant that needs exactly one answer, with 2 to 5 options.
+
+## Do not use for
+- Starter prompts and follow-ups the app offers before the user has asked anything. Use `Suggestions`.
+- A permission to run a command. Use `Approval`.
+- More than five options or free text. Ask in a `Message` and let the user type.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `question` | `string` | Required. Also the radiogroup label. |
+| `options` | `{ value, label, description? }[]` | Required. Two to five items. `value` is what you send back, `label` is what the user reads. |
+| `value` | `string` | The selected option value. |
+| `onSelect` | `(value: string) => void` | Called with the option value, not the label. |
+| `disabled` | `boolean` | After the run has moved on. |
+
+## Example
+```tsx
+<Choice
+  question="Which token should the divider use?"
+  options={[
+    { value: "border", label: "border-border", description: "Follows the theme" },
+    { value: "muted", label: "border-muted", description: "Softer, easy to miss" },
+  ]}
+  value={picked}
+  onSelect={setPicked}
+/>
+```
+
+## Rules
+- One question per Choice. Do not stack several in one turn.
+- Options must be mutually exclusive.
+- Keep going only after `onSelect`. Do not also accept the same choice typed into the composer.
+
+---
+
+# DataTable
+
+`import { DataTable } from "@/components/agent-ui/data-table"`
+
+## Use for
+- Tabular data inside an assistant answer: comparisons, file lists, tool results with more than one column.
+
+## Do not use for
+- Page layout, dashboards, or settings screens. Use the project's table.
+- A single key and value. Write a sentence.
+- Code. Use `CodeBlock`.
+- A chart of the same numbers, when the values themselves matter more than the shape. Prefer this table.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `columns` | `{ key, header, align?, mono? }[]` | Required. `align` is `"left"` or `"right"`. `mono` for ids and paths. |
+| `rows` | `Record<string, ReactNode>[]` | Required. Keys match `columns[].key`. |
+| `caption` | `string` | One line above the table: what the rows are. |
+| `empty` | `string` | Shown when `rows` is empty. |
+
+## Example
+```tsx
+<DataTable
+  caption="Token replacements"
+  columns={[
+    { key: "file", header: "File", mono: true },
+    { key: "was", header: "Was", mono: true },
+    { key: "now", header: "Now", mono: true },
+  ]}
+  rows={replacements.map((row) => ({ file: row.file, was: row.was, now: row.now }))}
+/>
+```
+
+## Rules
+- Render it as a sibling of `Message` in the thread, not as a markdown table inside the message text.
+- Right-align numbers. Do not invent column widths.
+- Do not pass more columns than fit a chat column. Split or drop columns instead of shrinking type.
+
+---
+
+# AnswerChart
+
+`import { AnswerChart } from "@/components/agent-ui/answer-chart"`
+
+## Use for
+- One series in an assistant answer, when the shape matters: a bar comparison or a line over a short sequence.
+
+## Do not use for
+- Dashboards, pie charts, scatter plots, or a second series. Use the project's chart.
+- Exact values the reader must compare. Use `DataTable`.
+- More than eight points. Aggregate or use a table.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `data` | `{ label, value }[]` | Required. Up to eight points. `value` is a number. |
+| `type` | `"bar" \| "line"` | Default `"bar"`. Use `"line"` only when the order is a sequence. |
+| `caption` | `string` | One line under the chart saying what the numbers are. |
+| `empty` | `string` | Shown when `data` is empty. |
+
+## Example
+```tsx
+<AnswerChart
+  type="bar"
+  caption="Violations per file"
+  data={[
+    { label: "settings", value: 6 },
+    { label: "nav", value: 2 },
+    { label: "dialog", value: 1 },
+  ]}
+/>
+```
+
+## Rules
+- There is no color prop. Bars and the line use the primary token, so they follow the theme.
+- Render it as a sibling of `Message`. Do not draw bars with styled divs inside the message text.
+- If a point has no value, omit it. Do not send zero unless zero is a real measurement.
+
+---
+
+# CodeBlock
+
+`import { CodeBlock } from "@/components/agent-ui/code-block"`
+
+## Use for
+- Source code or a unified diff inside an assistant answer.
+
+## Do not use for
+- A syntax-highlighting theme. Pass already-highlighted nodes through the project's highlighter, or leave the text plain.
+- Tool arguments and raw JSON. Those stay inside `ToolCall`.
+- A whole file the user will edit. Use `Artifact` and put a `CodeBlock` in its panel.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `code` | `string` | Required. The exact text the copy button writes. |
+| `language` | `string` | Shown as a label, not used to color tokens. |
+| `filename` | `string` | Optional path in the header. |
+| `diff` | `boolean` | Colors lines that start with `+` or `-`. Do not color `+++` or `---`. |
+| `copyLabel` / `copiedLabel` | `string` | Accessible name of the copy button. Set them when the interface is not in English. |
+
+## Example
+```tsx
+<CodeBlock
+  filename="src/settings/SettingsPage.tsx"
+  language="diff"
+  diff
+  code={patch}
+  copyLabel="Copy"
+  copiedLabel="Copied"
+/>
+```
+
+## Rules
+- Render it as a sibling of `Message`, not inside a fenced markdown block that you also style yourself.
+- Do not add a color prop. Added and removed lines use the primary and destructive tokens.
+
+---
+
+# Sources
+
+`import { Sources } from "@/components/agent-ui/sources"`
+
+## Use for
+- The pages, files, or documents an assistant answer is based on.
+
+## Do not use for
+- Site navigation or a sidebar of chats. Use the project's nav.
+- A file the user can open and read in full. Use `Artifact`.
+- Inline mentions. Link those inside the `Message`.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `items` | `{ title, href, excerpt? }[]` | Required. `href` is a real URL. |
+| `label` | `string` | Heading. Default `"Sources"`. Set it when the interface is not in English. |
+
+## Example
+```tsx
+<Sources
+  label="Sources"
+  items={citations.map((item) => ({
+    title: item.title,
+    href: item.url,
+    excerpt: item.snippet,
+  }))}
+/>
+```
+
+## Rules
+- Render it after the `Message` it supports, as a sibling in the thread.
+- One source per document. Do not repeat the same href.
+- The excerpt is a short quote, not a second answer.
+
+---
+
+# Artifact
+
+`import { Artifact } from "@/components/agent-ui/artifact"`
+
+## Use for
+- A file, page, or diff the assistant produced. The thread shows a card. Activating it opens a side panel with the contents.
+
+## Do not use for
+- The app sidebar, thread list, or site navigation. Use the project's nav.
+- A short snippet that fits in the thread. Use `CodeBlock`.
+- A citation. Use `Sources`.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `title` | `string` | Required. The file or page name. |
+| `meta` | `string` | One secondary line, such as `+6 −6` or a path. |
+| `children` | `ReactNode` | The panel body: a `CodeBlock`, preview, or the project's viewer. |
+| `open` / `defaultOpen` / `onOpenChange` | | Controlled or uncontrolled panel. |
+| `openLabel` / `closeLabel` | `string` | Button names. Set them when the interface is not in English. |
+| `icon` | `ReactNode` | Replaces the default file icon. |
+
+## Example
+```tsx
+<Artifact title="SettingsPage.tsx" meta="+6 −6" openLabel="Open" closeLabel="Close">
+  <CodeBlock code={patch} language="diff" diff />
+</Artifact>
+```
+
+## Rules
+- One artifact per file. Do not open the panel by default.
+- The panel is part of the answer, not a second page. Close returns to the thread.
+- Do not build a custom sidebar next to the chat for this. The panel is the sidebar.
+
+---
+
+# ContextMeter
+
+`import { ContextMeter, formatTokens } from "@/components/agent-ui/context-meter"`
+
+## Use for
+- Token usage of the current conversation, usually in the `PromptInput` toolbar.
+
+## Do not use for
+- Billing, quotas or rate limits. Use the project's `Progress`.
+- Upload or task progress.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `used` | `number` | Required. Tokens in context, from the API's usage field. |
+| `limit` | `number` | Required. The model's context window. |
+| `warnAt` | `number` | Ratio, default `0.9`. Above it ring and label turn `destructive`. |
+| `showLabel` | `boolean` | Default `true`, shows `12.4k / 200k`. |
+| `size` | `number` | Ring size in px, default 18. |
+
+## Example
+```tsx
+<PromptInput toolbar={<ContextMeter used={usage.inputTokens} limit={model.contextWindow} />} onSubmit={send} />
+```
+
+## Rules
+- Use real token counts from the API response. Do not estimate from string length in production.
+- Take `limit` from the selected model, not a constant.
+
+---
+
+# Suggestions
+
+`import { Suggestions } from "@/components/agent-ui/suggestions"`
+
+## Use for
+- Starter prompts on an empty conversation.
+- Follow-ups under the last assistant message.
+
+## Do not use for
+- Filters, tags or navigation. Use the project's `Badge`, `ToggleGroup` or `Tabs`.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `items` | `(string \| { label, value })[]` | Required. Use `{ label, value }` when the sent prompt is longer than the chip. |
+| `onSelect` | `(value: string) => void` | Required. Usually submits the value right away. |
+
+## Example
+```tsx
+{messages.length === 0 && (
+  <Suggestions items={["Summarize this repo", "Find unused tokens"]} onSelect={send} />
+)}
+```
+
+## Rules
+- Three to five items. More turns into noise.
+- Hide them once the user starts typing or a request is running.
+
+---
+
+# AgentDock
+
+`import { AgentDock } from "@/components/agent-ui/agent-dock"`
+
+## Use for
+- A long-running agent the user can leave and come back to: coding agents, research runs, batch jobs.
+- One dock per app, for the active run.
+
+## Do not use for
+- Site navigation. This is not a macOS-style app dock.
+- Single-shot chat replies. `Thinking` and a streaming `Message` already cover that.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `status` | `"idle" \| "running" \| "waiting" \| "done" \| "error"` | Required. `waiting` means blocked on the user, e.g. a pending `Approval`. |
+| `title` | `string` | Required. The current task in a few words. |
+| `steps` | `{ id, label, status }[]` | Step status is `pending \| running \| done \| error`. Enables the hover panel and the `3/7` counter. |
+| `onStop` | `() => void` | Shows Stop while `running` or `waiting`. |
+| `actions` | `ReactNode` | Buttons at the bottom of the expanded panel, e.g. "Open run". |
+| `floating` | `boolean` | Default `true`: fixed at the bottom center. `false` renders inline. |
+| `closeDelay` | `number` | ms before the panel closes after the pointer leaves. Default 150. |
+| `labels` | `Partial<Record<AgentStatus \| "stop", string>>` | Status texts and the Stop button label. Set them when the interface is not in English. |
+
+## Example
+```tsx
+<AgentDock
+  status={run.status}
+  title={run.task}
+  steps={run.steps}
+  onStop={() => run.cancel()}
+/>
+```
+
+## Rules
+- Keep step labels short and in the past/present tense of what the agent does: "Reading package.json".
+- Update `steps` in place by `id`. Do not regenerate ids, or the list re-animates.
+- Do not render AgentDock and a second floating bar at the bottom of the page.

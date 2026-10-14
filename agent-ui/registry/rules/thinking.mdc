@@ -1,0 +1,37 @@
+---
+description: agent-ui Thinking and ShimmerText. Use when showing that a model is reasoning, and afterwards a collapsible "Thought for Ns" block with the reasoning text.
+alwaysApply: false
+---
+
+# Thinking
+
+`import { Thinking, ShimmerText } from "@/components/agent-ui/thinking"`
+
+## Use for
+- The reasoning phase of a reasoning model, before the answer text arrives.
+- `ShimmerText` alone for short in-progress labels ("Searching the web").
+
+## Do not use for
+- Page or data loading. Use the project's `Skeleton` or `Spinner`.
+- Tool execution progress. Use `ToolCall` with `status="running"`.
+
+## Props
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `active` | `boolean` | Required. `true` shimmers the label, `false` shows `doneLabel`. |
+| `children` | `ReactNode` | Reasoning text. When absent the header is not clickable. |
+| `duration` | `number` | Seconds. If omitted, measured from `active` true to false. |
+| `label` | `string` | Default `"Thinking"`. |
+| `doneLabel` | `(s) => string` | Default `` s => `Thought for ${s}s` ``. |
+| `defaultOpen` | `boolean` | Default `false`. Keep reasoning collapsed unless the product is a debugging tool. |
+
+## Example
+```tsx
+<Thinking active={phase === "reasoning"}>{reasoningText}</Thinking>
+<Message role="assistant" streaming={phase === "answering"}>{answer}</Message>
+```
+
+## Rules
+- Set `active` from the stream: true on the first reasoning chunk, false on the first answer chunk.
+- One Thinking per assistant turn, placed above that turn's Message.
+- Shimmer respects `prefers-reduced-motion`. Do not add your own animation on top.
