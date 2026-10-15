@@ -65,6 +65,20 @@ img { display: block; max-width: 100%; }
 h1, h2, h3, h4 { margin: 0; font-family: var(--serif); font-weight: 400; letter-spacing: var(--track-h); }
 p { margin: 0; }
 
+/* ── Page transitions: the dock and the floating button stay put between pages ── */
+@view-transition { navigation: auto; }
+.dock { view-transition-name: dock; }
+.float { view-transition-name: float; }
+::view-transition-group(root) { animation-duration: 0.28s; }
+::view-transition-group(dock), ::view-transition-group(float) { animation-duration: 0s; }
+::view-transition-old(dock), ::view-transition-old(float) { display: none; }
+::view-transition-new(dock), ::view-transition-new(float) { animation: none; }
+/* Entrance animation only on the first page of a visit */
+.dock-seen .dock nav, .dock-seen .lang { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}
+
 /* ── Dock ─────────────────────────────────────────── */
 .dock {
   position: fixed;
