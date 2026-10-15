@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import re
+import shutil
 import sys
 from pathlib import Path
 
@@ -523,7 +524,21 @@ def main() -> None:
             write(p["slug"], f'{p["name"]} — {who}', "projects", project_page(p, lang))
         for s in ORDER:
             write(s, article(s, lang)["title"], "writing", article_page(s, lang))
+    publish_root()
     print("done")
+
+
+def publish_root() -> None:
+    """Copy the preview onto the repo root so the domain serves it."""
+    for src in OUT.iterdir():
+        if src.suffix in {".html", ".css", ".js"}:
+            text = src.read_text(encoding="utf-8").replace("../assets/", "assets/")
+            (ROOT / src.name).write_text(text, encoding="utf-8")
+        elif src.name == "img" and src.is_dir():
+            dest = ROOT / "img"
+            if dest.exists():
+                shutil.rmtree(dest)
+            shutil.copytree(src, dest)
 
 
 if __name__ == "__main__":
