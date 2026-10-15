@@ -148,13 +148,13 @@ def reveal(inner_tag: str, delay: float = 0) -> str:
 def cta_and_footer(lang: str, cta: bool = True) -> str:
     ru = lang == "ru"
     if ru:
-        title, text = "Есть задача на стыке дизайна и разработки?", "Давайте обсудим."
+        title, text = "Есть задача?", "Если хочется довести её до дела — напишите. Разберём, с чего начать."
         fields = ("Имя", "Почта", "Пару слов о задаче", "Написать", "Сотрудничество")
         lead = "Хотите обсудить проект?<br>Расскажите о задаче и о том, чем я могу помочь."
     else:
-        title, text = "Have a design engineering challenge?", "Let's talk."
+        title, text = "Got a task?", "If you want to get it into a working state, write me. We’ll figure out where to start."
         fields = ("Name", "Email", "A few words about the task", "Write", "Collaboration")
-        lead = "Want to discuss a project?<br>Tell me about the task and how I can help."
+        lead = "Want to discuss a project?<br>Would love to hear about your company and how I can help."
 
     cta_html = ""
     if cta:
