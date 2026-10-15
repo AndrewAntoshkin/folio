@@ -424,7 +424,7 @@ main { display: block; padding: 240px 16px 160px; }
 /* ── Experience marquee (testimonials) ────────────── */
 .voices { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .voices > div { display: flex; }
-.vcard { flex: 1; transition: transform .5s var(--ease), background .3s; display: flex; flex-direction: column; gap: 16px; padding: 24px; border-radius: 16px; background: var(--card-2); border: 1px solid var(--line); }
+.vcard { flex: 1; transition: transform .5s var(--ease), background .3s; display: flex; flex-direction: column; gap: 16px; padding: 24px; border-radius: 16px; background: var(--card-2); }
 .vhead { display: flex; align-items: center; gap: 12px; }
 .vava { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: #1d1d1d; overflow: hidden; }
 .vava img { width: 28px; height: 28px; object-fit: contain; }

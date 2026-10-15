@@ -26,7 +26,7 @@ HEAD = """<!DOCTYPE html>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{title}</title>
   <script>document.documentElement.classList.remove('nojs')</script>
-  <link rel="stylesheet" href="style.css?v=24">
+  <link rel="stylesheet" href="style.css?v=25">
 </head>
 <body>
 """
