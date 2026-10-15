@@ -328,7 +328,7 @@ def home_content() -> str:
                     </h1>
 
                     <div class="hero-intro">
-                        <p class="enter" style="--i: 3">Соединяю дизайн и&nbsp;разработку: создаю дизайн&#8209;системы, инструменты и&nbsp;код, с&nbsp;которыми команда работает из&nbsp;одной спецификации.</p>
+                        <p class="enter" style="--i: 3">Product design, engineering и&nbsp;AI. Превращаю идеи в&nbsp;работающие продукты, создаю инструменты и&nbsp;соединяю дизайн с&nbsp;кодом.</p>
                         <p class="enter" style="--i: 4">Сейчас развиваю дизайн&#8209;систему Яндекс HR&nbsp;Tech и&nbsp;создаю open&#8209;source инструменты для дизайнеров и&nbsp;разработчиков.</p>
                     </div>
 
@@ -627,7 +627,7 @@ def home_content_en() -> str:
                     </h1>
 
                     <div class="hero-intro">
-                        <p class="enter" style="--i: 3">I connect design and engineering by building design systems, tools, and code that let teams work from a shared specification.</p>
+                        <p class="enter" style="--i: 3">Product design, engineering, and AI. I turn ideas into working products, build tools, and connect design with code.</p>
                         <p class="enter" style="--i: 4">I currently lead the design system at Yandex HR Tech and build open&#8209;source tools for designers and developers.</p>
                     </div>
 

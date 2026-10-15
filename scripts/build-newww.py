@@ -264,7 +264,7 @@ def home(lang: str) -> str:
     ru = lang == "ru"
     if ru:
         h1a, h1b = "Андрей Антошкин,", "Design Engineer."
-        sub = "Соединяю дизайн и разработку: создаю дизайн-системы, инструменты и код, с которыми команда работает из одной спецификации."
+        sub = "Product design, engineering и AI. Превращаю идеи в работающие продукты, создаю инструменты и соединяю дизайн с кодом."
         b1, b2 = "Смотреть проекты", "Написать"
         s_proj, s_how, s_art, s_exp, s_faq, s_all = "Проекты", "Практика", "Статьи", "Опыт", "Частые вопросы", "Все"
         steps = [
@@ -281,7 +281,7 @@ def home(lang: str) -> str:
         ]
     else:
         h1a, h1b = "Andrew Antoshkin,", "Design Engineer."
-        sub = "I connect design and engineering by building design systems, tools, and code that let teams work from a shared specification."
+        sub = "Product design, engineering, and AI. I turn ideas into working products, build tools, and connect design with code."
         b1, b2 = "See projects", "Say hello"
         s_proj, s_how, s_art, s_exp, s_faq, s_all = "Projects", "Practice", "Writing", "Experience", "Most asked questions", "See all"
         steps = [
@@ -444,6 +444,7 @@ def collab_page(lang: str) -> str:
           <p class="contact-k">{k1}</p>
           <a href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
           <a href="{TG}" target="_blank" rel="noopener">{tg}</a>
+          <a href="https://setka.ru/users/84b42bc4-44b4-4b1e-ba76-06d249242bc4" target="_blank" rel="noopener">setka.ru</a>
         </div>
       </div></div>
       <div class="contact-shell"><div class="contact-in">
