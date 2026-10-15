@@ -542,8 +542,6 @@ main { display: block; padding: 240px 16px 160px; }
 .jmeta { display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 21px; color: var(--muted); }
 .journal .jleft p { margin: 0; color: var(--muted); font-size: 15px; line-height: 22px; }
 .jmeta i { width: 3px; height: 3px; border-radius: 50%; background: currentColor; }
-.dot { display: inline-block; width: 8px; height: 8px; margin-right: 12px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 12px #4ade80; animation: pulse 2.4s ease-in-out infinite; }
-
 /* ── Experience marquee (testimonials) ────────────── */
 .voices { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .voices > div { display: flex; }
@@ -821,8 +819,6 @@ main.approach { padding-top: 176px; }
 @keyframes ticker { to { transform: translateX(-50%); } }
 @keyframes scrollUp { to { transform: translateY(calc(-50% - 8px)); } }
 @keyframes breathe { to { transform: scale(1.08) translate(1.5%, -1%); } }
-@keyframes pulse { 50% { opacity: 0.45; } }
-
 /* ── Contact ──────────────────────────────────────── */
 .contact-head { align-items: center; text-align: center; }
 .contact-head h1 { width: 100%; letter-spacing: -0.05em; }

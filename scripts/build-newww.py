@@ -244,10 +244,9 @@ def journal(lang: str, stems: list[str]) -> str:
     rows = []
     for n, s in enumerate(stems):
         a = article(s, lang)
-        dot = '<span class="dot"></span>' if n == 0 else ""
         rows.append(
             f'<a class="jrow" href="{name_for(s, lang)}" data-r style="--d:{n * 0.05}s"><div class="jleft">'
-            f'<div class="jtitle">{dot}{a["h1"]}</div>'
+            f'<div class="jtitle">{a["h1"]}</div>'
             f'<div class="jmeta"><span>{fmt_date(a["date"], lang)}</span><i></i><span>{a["min"]} {"мин" if ru else "min"}</span></div></div>'
             f'<span class="arrow-btn">{ARROW}</span></a>'
         )
