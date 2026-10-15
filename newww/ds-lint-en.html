@@ -4,28 +4,33 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ds-lint — Andrew Antoshkin</title>
+  <meta name="description" content="Scan your codebase for hardcoded colors, spacing, font sizes, and border-radius values that should use design tokens.">
+  <meta property="og:title" content="ds-lint — Andrew Antoshkin">
+  <meta property="og:description" content="Scan your codebase for hardcoded colors, spacing, font sizes, and border-radius values that should use design tokens.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
   <script>document.documentElement.classList.remove('nojs')</script>
-  <link rel="stylesheet" href="style.css?v=25">
+  <link rel="stylesheet" href="/style.css?v=28">
 </head>
 <body>
 
-<div class="dock"><nav aria-label="Navigation"><i aria-hidden="true"></i><a href="en.html" aria-label="Home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg></a><a href="projects-en.html" aria-label="Projects" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 13h16"/></svg></a><a href="writing-en.html" aria-label="Writing"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M14 5.5 18.5 10 9 19.5H4.5V15L14 5.5Z"/><path d="m12 7.5 4.5 4.5"/></svg></a><a href="approach-en.html" aria-label="Approach"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.25"/><path d="M5.5 19.5c1.2-3 3.4-4.5 6.5-4.5s5.3 1.5 6.5 4.5"/></svg></a><a href="collab-en.html" aria-label="Contact"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></nav><a class="lang" href="ds-lint.html" aria-label="Русский">Ru</a></div>
-<a class="float" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Say hello<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+<div class="dock"><nav aria-label="Navigation"><i aria-hidden="true"></i><a href="/en" aria-label="Home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg></a><a href="/en/projects" aria-label="Projects" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 13h16"/></svg></a><a href="/en/writing" aria-label="Writing"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M14 5.5 18.5 10 9 19.5H4.5V15L14 5.5Z"/><path d="m12 7.5 4.5 4.5"/></svg></a><a href="/en/approach" aria-label="Approach"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.25"/><path d="M5.5 19.5c1.2-3 3.4-4.5 6.5-4.5s5.3 1.5 6.5 4.5"/></svg></a><a href="/en/collab" aria-label="Contact"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></nav><a class="lang" href="/ds-lint" aria-label="Русский">Ru</a></div>
+<a class="float" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Say hello<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
 <main><div class="col"><article class="art">
   <header class="art-top">
-    <a class="back" href="projects-en.html" data-r>‹ Back</a>
+    <a class="back" href="/en/projects" data-r>‹ Back</a>
     <h1 data-split>ds-lint</h1>
     <div class="tags" data-r style="--d:.25s"><span class="tag">Scanner</span><span class="tag">open source</span></div>
   </header>
   <div class="art-intro" data-r style="--d:.3s"><p>Scan your codebase for hardcoded colors, spacing, font sizes, and border-radius values that should use design tokens.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="https://github.com/AndrewAntoshkin/ds-lint" target="_blank" rel="noopener">Repository on GitHub</a></div></div>
-  <div class="prose"><div class="pcover "><div class="bg" style="background-image:url(img/gen/ds-lint.jpg)"></div><span class="plogo">ds-lint</span></div><section id="problem"><h2>The Problem</h2>
+  <div class="prose"><div class="pcover "><div class="bg" style="background-image:url(/img/gen/ds-lint.jpg)"></div><span class="plogo">ds-lint</span></div><section id="problem"><h2>The Problem</h2>
 <p>A design system leaks when a component next to the tokens still writes a raw color or spacing value. ds-lint finds those values and, when a token file is nearby, suggests the system name.</p></section>
 <section id="install"><h2>Installation</h2>
 <pre><code># Run directly (no install)
-npx ds-lint src/
+npx @andrewaitken/ds-lint src/
 
 # Or install globally
-npm i -g ds-lint</code></pre></section>
+npm i -g @andrewaitken/ds-lint</code></pre></section>
 <section id="usage"><h2>Usage</h2>
 <pre><code># Basic scan
 ds-lint src/
@@ -64,7 +69,7 @@ ds-lint src/ --tokens tokens.css --strict</code></pre></section>
   }
 }</code></pre>
 <h3>Markdown tables</h3>
-<p>Works with output from <a href="figma-to-design-md-en.html">figma-to-design-md</a> — token tables are parsed automatically.</p></section>
+<p>Works with output from <a href="/en/figma-to-design-md">figma-to-design-md</a> — token tables are parsed automatically.</p></section>
 <section id="output-example"><h2>Output Example</h2>
 <pre><code>src/components/Button.tsx
 L14:5 #3b82f6 → var(--color-primary) (Color)
@@ -90,26 +95,20 @@ const borderColor = "#333";</code></pre></section>
 <section id="ci"><h2>CI Integration</h2>
 <pre><code># GitHub Actions
 - name: Check design tokens
-  run: npx ds-lint src/ --tokens tokens.css --strict
+  run: npx @andrewaitken/ds-lint src/ --tokens tokens.css --strict
 
 # Generate PR report
 - name: DS Lint Report
-  run: npx ds-lint src/ --tokens tokens.css --format markdown --out ds-lint.md</code></pre>
+  run: npx @andrewaitken/ds-lint src/ --tokens tokens.css --format markdown --out ds-lint.md</code></pre>
 <p><code>--strict</code> exits with code 1 when violations are found, failing the CI step.</p></section>
-<section id="pipeline"><h2>Pipeline</h2>
-<p>ds-lint is the gate in code, before a model is allowed to see the system:</p>
-<pre><code>figma-to-design-md extracts the spec
-ds-lint blocks raw values ← you are here
-ds-context packs what the model may see
-ds-eval scores the generated UI</code></pre></section>
 <p><a href="https://github.com/AndrewAntoshkin/ds-lint" target="_blank" rel="noopener noreferrer">Source</a></p></div>
 </article></div></main>
   <section class="cta" data-r>
     <div class="cta-grid">
       <div class="cta-card">
         <div class="shader" aria-hidden="true"></div>
-        <div class="mid"><h2>Got a task?</h2></div>
-        <div class="bot"><p>If you want to get it into a working state, write me. We’ll figure out where to start.</p></div>
+        <div class="mid"><h2>Have a design engineering challenge?</h2></div>
+        <div class="bot"><p>Let's talk.</p></div>
       </div>
       <form class="cta-form" data-subject="Collaboration">
         <input name="name" required placeholder="Name" autocomplete="name">
@@ -123,10 +122,10 @@ ds-eval scores the generated UI</code></pre></section>
     <div class="foot-in">
       <p class="foot-mark">antoshkin.tech</p>
       <div class="foot-copy">
-        <p class="foot-lead">Want to discuss a project?<br>Would love to hear about your company and how I can help.</p>
+        <p class="foot-lead">Want to discuss a project?<br>Tell me about the task and how I can help.</p>
         <a class="foot-mail" href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
       </div>
     </div>
   </footer>
-  <script src="motion.js?v=3"></script>
+  <script src="/motion.js?v=4"></script>
 </body></html>

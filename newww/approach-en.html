@@ -4,29 +4,34 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Approach — Andrew Antoshkin</title>
+  <meta name="description" content="From ambiguity to shipping software: flows, prototypes, tokens, and production code.">
+  <meta property="og:title" content="Approach — Andrew Antoshkin">
+  <meta property="og:description" content="From ambiguity to shipping software: flows, prototypes, tokens, and production code.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
   <script>document.documentElement.classList.remove('nojs')</script>
-  <link rel="stylesheet" href="style.css?v=25">
+  <link rel="stylesheet" href="/style.css?v=28">
 </head>
 <body>
 
-<div class="dock"><nav aria-label="Navigation"><i aria-hidden="true"></i><a href="en.html" aria-label="Home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg></a><a href="projects-en.html" aria-label="Projects"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 13h16"/></svg></a><a href="writing-en.html" aria-label="Writing"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M14 5.5 18.5 10 9 19.5H4.5V15L14 5.5Z"/><path d="m12 7.5 4.5 4.5"/></svg></a><a href="approach-en.html" aria-label="Approach" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.25"/><path d="M5.5 19.5c1.2-3 3.4-4.5 6.5-4.5s5.3 1.5 6.5 4.5"/></svg></a><a href="collab-en.html" aria-label="Contact"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></nav><a class="lang" href="approach.html" aria-label="Русский">Ru</a></div>
-<a class="float" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Say hello<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+<div class="dock"><nav aria-label="Navigation"><i aria-hidden="true"></i><a href="/en" aria-label="Home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg></a><a href="/en/projects" aria-label="Projects"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 13h16"/></svg></a><a href="/en/writing" aria-label="Writing"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M14 5.5 18.5 10 9 19.5H4.5V15L14 5.5Z"/><path d="m12 7.5 4.5 4.5"/></svg></a><a href="/en/approach" aria-label="Approach" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.25"/><path d="M5.5 19.5c1.2-3 3.4-4.5 6.5-4.5s5.3 1.5 6.5 4.5"/></svg></a><a href="/en/collab" aria-label="Contact"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></nav><a class="lang" href="/approach" aria-label="Русский">Ru</a></div>
+<a class="float" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Say hello<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
 <main class="approach"><div class="col">
   <header class="page-head approach-top">
     <h1 data-split>From ambiguity to production.</h1>
-    <p class="sub" data-r style="--d:.3s">I join when a task is not ready to hand to engineering. First I work out what has to be done, and by which rules. Then I build something the decision can be tested on. I stay until it reaches people and the team can carry it without me.</p>
+    <p class="sub" data-r style="--d:.3s">I join before a task is ready for engineering: map the scenarios, build a prototype in Figma or code, write down the states and tokens, and see it through to production.</p>
     <p class="where" data-r style="--d:.4s">This is how I work on the design system at <b>Yandex HR Tech</b> now. Before that, design systems at <b>Sber</b>, and products at Otkritie Broker and MTS.</p>
     <div class="actions" data-r style="--d:.48s"><a class="btn mint" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Discuss a task</a></div>
   </header>
-  <section class="stack"><div class="sec-head"><h2>How the work goes</h2><sup>(4)</sup><span class="rule"></span></div><div class="layers"><div class="layer" data-r style="--d:0.00s"><span class="layer-n">01</span><h3>Context</h3><p>The problem, the scenarios, the constraints, and how we will know it worked. Until that can be said, a mockup only hides the ambiguity.</p></div><div class="layer" data-r style="--d:0.05s"><span class="layer-n">02</span><h3>Prototype</h3><p>Not the whole product. The scenarios where the decision could fall apart. Figma or code, whichever gets something real to argue about sooner. The argument should be about the thing, not about an opinion.</p></div><div class="layer" data-r style="--d:0.10s"><span class="layer-n">03</span><h3>Rules</h3><p>States, components, tokens. One specification for design, engineering, and an agent if it will assemble the interface later. Otherwise everyone builds their own version.</p></div><div class="layer" data-r style="--d:0.15s"><span class="layer-n">04</span><h3>To people</h3><p>A mockup is not the end of the work for me. I stay for the implementation, the checks, and the way the team will change it later without losing quality.</p></div></div></section>
-  <section class="stack"><div class="sec-head"><h2>With an agent</h2><span class="rule"></span></div><div class="prose essay" data-r><p>An agent takes the sequence: find what the system already has, draft, run the checks. I set the task, set the boundaries, and look at the result.</p><p>I don’t use one long prompt. In it, the agent is author and reviewer of its own work. A step has an input, an output, and a moment where I say whether it is done.</p><p>The product decision, the tradeoff between quality and time, and anything that goes out under my name stay with me.</p><p class="hold"><b>A good process does not promise the model will never be wrong.</b> It makes the error visible and stops it from passing unnoticed.</p><p class="more">More on this is in the essay <a href="ai-changes-processes-en.html">on how AI changes processes</a>.</p></div></section>
+  <section class="stack"><div class="sec-head"><h2>How the work goes</h2><sup>(4)</sup><span class="rule"></span></div><div class="layers"><div class="layer" data-r style="--d:0.00s"><span class="layer-n">01</span><h3>Context</h3><p>The problem, scenarios, constraints, and how we will know it works. Without that, a mockup only hides the ambiguity.</p></div><div class="layer" data-r style="--d:0.05s"><span class="layer-n">02</span><h3>Prototype</h3><p>Not the whole product — just the scenarios where the design might break. Built in Figma or directly in code, whichever exposes the edge cases faster.</p></div><div class="layer" data-r style="--d:0.10s"><span class="layer-n">03</span><h3>Rules</h3><p>States, components, tokens. One specification for design, engineering, and coding agents so nobody invents a parallel version.</p></div><div class="layer" data-r style="--d:0.15s"><span class="layer-n">04</span><h3>In production</h3><p>A mockup is not the finish line. I stay through implementation, browser checks, and linting rules so the system holds together over time.</p></div></div></section>
+  <section class="stack"><div class="sec-head"><h2>With an agent</h2><span class="rule"></span></div><div class="prose essay" data-r><p>The agent handles the draft work step by step: checks what already exists in the system, assembles a first pass, and runs the checks. I scope the task, set the constraints, and review each step.</p><p>One giant prompt for the whole job doesn't work: the model writes the code and grades its own homework. Generation and verification have to be separate steps.</p><p>The product decision, the scope tradeoffs, and anything that ships under my name stay with me.</p><p class="hold"><b>A good process does not promise the model will never fail.</b> It catches the failure before it quietly ships.</p><p class="more">More on this in the essay <a href="/en/ai-changes-processes">on how AI changes processes</a>.</p></div></section>
 </div></main>
   <section class="cta" data-r>
     <div class="cta-grid">
       <div class="cta-card">
         <div class="shader" aria-hidden="true"></div>
-        <div class="mid"><h2>Got a task?</h2></div>
-        <div class="bot"><p>If you want to get it into a working state, write me. We’ll figure out where to start.</p></div>
+        <div class="mid"><h2>Have a design engineering challenge?</h2></div>
+        <div class="bot"><p>Let's talk.</p></div>
       </div>
       <form class="cta-form" data-subject="Collaboration">
         <input name="name" required placeholder="Name" autocomplete="name">
@@ -40,10 +45,10 @@
     <div class="foot-in">
       <p class="foot-mark">antoshkin.tech</p>
       <div class="foot-copy">
-        <p class="foot-lead">Want to discuss a project?<br>Would love to hear about your company and how I can help.</p>
+        <p class="foot-lead">Want to discuss a project?<br>Tell me about the task and how I can help.</p>
         <a class="foot-mail" href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
       </div>
     </div>
   </footer>
-  <script src="motion.js?v=3"></script>
+  <script src="/motion.js?v=4"></script>
 </body></html>

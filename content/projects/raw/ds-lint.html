@@ -119,12 +119,11 @@ pre{margin:0;padding:14px 16px;font-size:12.5px;font-family:ui-monospace,SFMono-
       <a href="#output-example" class="nav-item">Output Example</a>
       <a href="#ignore" class="nav-item">Inline Ignore</a>
       <a href="#ci" class="nav-item">CI Integration</a>
-      <a href="#pipeline" class="nav-item">Pipeline</a>
     </div>
     <div class="nav-section">
       <p class="nav-label">Links</p>
       <a href="https://github.com/AndrewAntoshkin/ds-lint" target="_blank" rel="noopener" class="nav-item">GitHub</a>
-      <a href="https://www.npmjs.com/package/ds-lint" target="_blank" rel="noopener" class="nav-item">npm</a>
+      <a href="https://www.npmjs.com/package/@andrewaitken/ds-lint" target="_blank" rel="noopener" class="nav-item">npm</a>
     </div>
   </div>
   <a href="https://antoshkin.tech" class="sidebar-link">antoshkin.tech</a>
@@ -144,10 +143,10 @@ pre{margin:0;padding:14px 16px;font-size:12.5px;font-family:ui-monospace,SFMono-
 <section id="install">
 <h2>Installation</h2>
 <div class="code-wrap"><pre><span style="color:#6b6b6b"># Run directly (no install)</span>
-npx ds-lint src/
+npx @andrewaitken/ds-lint src/
 
 <span style="color:#6b6b6b"># Or install globally</span>
-npm i -g ds-lint</pre></div>
+npm i -g @andrewaitken/ds-lint</pre></div>
 </section>
 
 <section id="usage">
@@ -250,21 +249,12 @@ const borderColor = "#333";</pre></div>
 <h2>CI Integration</h2>
 <div class="code-wrap"><pre><span style="color:#6b6b6b"># GitHub Actions</span>
 - name: Check design tokens
-  run: npx ds-lint src/ --tokens tokens.css --strict
+  run: npx @andrewaitken/ds-lint src/ --tokens tokens.css --strict
 
 <span style="color:#6b6b6b"># Generate PR report</span>
 - name: DS Lint Report
-  run: npx ds-lint src/ --tokens tokens.css --format markdown --out ds-lint.md</pre></div>
+  run: npx @andrewaitken/ds-lint src/ --tokens tokens.css --format markdown --out ds-lint.md</pre></div>
 <p class="body"><code class="ic">--strict</code> exits with code 1 when violations are found, failing the CI step.</p>
-</section>
-
-<section id="pipeline">
-<h2>Pipeline</h2>
-<p class="body">ds-lint is the gate in code, before a model is allowed to see the system:</p>
-<div class="preview">figma-to-design-md extracts the spec
-ds-lint blocks raw values  ← you are here
-ds-context packs what the model may see
-ds-eval scores the generated UI</div>
 </section>
 
 <div class="page-nav">

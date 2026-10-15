@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" class="nojs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>prompt-regress — Andrew Antoshkin</title>
+  <meta name="description" content="Prompt v13 can fix the select and break the delete confirm. prompt-regress compares two recorded runs of one suite: which cases rose, which fell, and what the grader note says. The published diff is 16 fixture cases, not a live model call.">
+  <meta property="og:title" content="prompt-regress — Andrew Antoshkin">
+  <meta property="og:description" content="Prompt v13 can fix the select and break the delete confirm. prompt-regress compares two recorded runs of one suite: which cases rose, which fell, and what the grader note says. The published diff is 16 fixture cases, not a live model call.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
+  <script>document.documentElement.classList.remove('nojs')</script>
+  <link rel="stylesheet" href="/style.css?v=28">
+</head>
+<body>
+
+<div class="dock"><nav aria-label="Navigation"><i aria-hidden="true"></i><a href="/en" aria-label="Home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg></a><a href="/en/projects" aria-label="Projects" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 13h16"/></svg></a><a href="/en/writing" aria-label="Writing"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M14 5.5 18.5 10 9 19.5H4.5V15L14 5.5Z"/><path d="m12 7.5 4.5 4.5"/></svg></a><a href="/en/approach" aria-label="Approach"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.25"/><path d="M5.5 19.5c1.2-3 3.4-4.5 6.5-4.5s5.3 1.5 6.5 4.5"/></svg></a><a href="/en/collab" aria-label="Contact"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></nav><a class="lang" href="/prompt-regress" aria-label="Русский">Ru</a></div>
+<a class="float" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Say hello<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+<main><div class="col"><article class="art">
+  <header class="art-top">
+    <a class="back" href="/en/projects" data-r>‹ Back</a>
+    <h1 data-split>prompt-regress</h1>
+    <div class="tags" data-r style="--d:.25s"><span class="tag">Regression</span><span class="tag">open source</span></div>
+  </header>
+  <div class="art-intro" data-r style="--d:.3s"><p>Prompt v13 can fix the select and break the delete confirm. prompt-regress compares two recorded runs of one suite: which cases rose, which fell, and what the grader note says. The published diff is 16 fixture cases, not a live model call.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="https://github.com/AndrewAntoshkin/prompt-regress" target="_blank" rel="noopener">Repository on GitHub</a></div></div>
+  <div class="prose"><div class="pcover "><div class="bg" style="background-image:url(/img/gen/prompt-regress.jpg)"></div><span class="plogo">prompt-regress</span></div><section id="why"><h2>Why</h2><p>A new system prompt is rarely better everywhere. It lifts some UI tasks and drops others: the model starts using Select and forgets the danger variant on delete. An average score hides that.</p><p>prompt-regress versions the prompt and shows a per-case diff. The diff reads a recorded run, the same kind of fixture <a href="/en/ds-eval">ds-eval</a> already publishes.</p></section><section id="prompts"><h2>Prompts</h2><p><code>prompts/v12.md</code> asks for speed and allows a native control when a system component is unclear.</p><pre><code>You build the screen from the design system.
+Prefer speed. If a system component is unclear, use a native control.</code></pre><p><code>prompts/v13.md</code> names the components and bans a raw button, a hex, and a custom modal. When a case conflicts with the system, the prompt says to follow the system.</p><pre><code>You build the screen from the design system.
+Use Button, Input, Select, and Dialog. Never emit a raw button, a hardcoded hex color, or a custom modal.
+If a case conflicts with the system, follow the system and say so.</code></pre></section><section id="run"><h2>Run</h2><pre><code>python3 prompt-regress/prompt_regress.py diff \
+  prompt-regress/prompts/v12.md \
+  prompt-regress/prompts/v13.md</code></pre><p>The prompt filename finds its JSON: <code>prompts/v12.md</code> reads <code>runs/v12.json</code>. A case stores pass, DS score, tokens, and a note. This fixture has no screenshot. The field can be filled when a run saves one.</p></section><section id="diff"><h2>Diff</h2><p>A case is improved or regressed when pass/fail flips, or the DS score moves by 10 points or more. Otherwise it is unchanged.</p><table><thead><tr><th>Condition</th><th>Label</th></tr></thead><tbody><tr><td>pass flips to fail, or DS drops by 10+</td><td>regressed</td></tr><tr><td>fail flips to pass, or DS rises by 10+</td><td>improved</td></tr><tr><td>pass stays and DS moves by less than 10</td><td>unchanged</td></tr></tbody></table><p>On 16 recorded cases the command prints:</p><pre><code>v12 → v13
+6 improved / 2 regressed / 8 unchanged
+tokens  26270 → 26230</code></pre><p>The token column is the sum stored on the recorded run, not an API bill.</p></section><section id="cases"><h2>Every case</h2><p>Notes are copied from <code>runs/v13.json</code>. Eight cases did not move enough to enter the diff. An average would hide that.</p><table><thead><tr><th>Case</th><th>Pass</th><th>DS</th><th>Verdict</th><th>Note</th></tr></thead><tbody><tr><td><code>select-001</code></td><td>fail → pass</td><td>38 → 91</td><td>improved</td><td>Select with a label.</td></tr><tr><td><code>settings-002</code></td><td>fail → pass</td><td>44 → 93</td><td>improved</td><td>Button and color token.</td></tr><tr><td><code>dialog-003</code></td><td>fail → pass</td><td>41 → 90</td><td>improved</td><td>Dialog instead of a div.</td></tr><tr><td><code>empty-004</code></td><td>pass</td><td>86 → 87</td><td>unchanged</td><td>Still the empty-state pattern.</td></tr><tr><td><code>table-005</code></td><td>pass</td><td>80 → 82</td><td>unchanged</td><td>Table unchanged in substance.</td></tr><tr><td><code>form-006</code></td><td>fail → pass</td><td>52 → 89</td><td>improved</td><td>Every field has a label.</td></tr><tr><td><code>delete-007</code></td><td>pass → fail</td><td>84 → 61</td><td>regressed</td><td>Confirm button lost its danger variant.</td></tr><tr><td><code>tabs-008</code></td><td>pass</td><td>79 → 80</td><td>unchanged</td><td>Tabs still from the system.</td></tr><tr><td><code>toast-009</code></td><td>fail → pass</td><td>47 → 85</td><td>improved</td><td>Toast uses the system component.</td></tr><tr><td><code>billing-010</code></td><td>pass</td><td>83 → 84</td><td>unchanged</td><td>Billing stays on tokens.</td></tr><tr><td><code>permissions-011</code></td><td>fail → pass</td><td>55 → 86</td><td>improved</td><td>Checkbox group from the system.</td></tr><tr><td><code>profile-012</code></td><td>pass → fail</td><td>88 → 58</td><td>regressed</td><td>Avatar control became a raw button.</td></tr><tr><td><code>bulk-013</code></td><td>pass</td><td>76 → 78</td><td>unchanged</td><td>Bulk bar still acceptable.</td></tr><tr><td><code>filters-014</code></td><td>fail</td><td>49 → 51</td><td>unchanged</td><td>Chips still hardcoded.</td></tr><tr><td><code>search-015</code></td><td>pass</td><td>81 → 83</td><td>unchanged</td><td>Search field still labeled.</td></tr><tr><td><code>nav-016</code></td><td>pass</td><td>77 → 79</td><td>unchanged</td><td>Side nav unchanged.</td></tr></tbody></table></section><section id="record"><h2>Record</h2><p>One case in both runs. The record shape is the same: id, pass, ds, tokens, note.</p><pre><code>{
+  &quot;v12&quot;: {
+    &quot;id&quot;: &quot;select-001&quot;,
+    &quot;pass&quot;: false,
+    &quot;ds&quot;: 38,
+    &quot;tokens&quot;: 1640,
+    &quot;note&quot;: &quot;Native select, no label.&quot;
+  },
+  &quot;v13&quot;: {
+    &quot;id&quot;: &quot;select-001&quot;,
+    &quot;pass&quot;: true,
+    &quot;ds&quot;: 91,
+    &quot;tokens&quot;: 1720,
+    &quot;note&quot;: &quot;Select with a label.&quot;
+  }
+}</code></pre></section><section id="chain"><h2>How it relates to the other tools</h2><p><a href="/en/ds-context">ds-context</a> records what the model was allowed to see. <a href="/en/ds-eval">ds-eval</a> scores a case. prompt-regress compares two of those runs when the prompt, the context pack, or the model changes. Regression here is the list of cases that flipped, not a drop in one headline number.</p></section><section id="limits"><h2>Limit</h2><p>The command does not call a model and does not render UI. Notes and scores live in JSON that was recorded earlier. Until a run stores screenshots, the explanation is one line per case. 6 / 2 / 8 belongs to these 16 fixtures, not to a 100-case suite.</p></section></div>
+</article></div></main>
+  <section class="cta" data-r>
+    <div class="cta-grid">
+      <div class="cta-card">
+        <div class="shader" aria-hidden="true"></div>
+        <div class="mid"><h2>Have a design engineering challenge?</h2></div>
+        <div class="bot"><p>Let's talk.</p></div>
+      </div>
+      <form class="cta-form" data-subject="Collaboration">
+        <input name="name" required placeholder="Name" autocomplete="name">
+        <input name="email" type="email" required placeholder="Email" autocomplete="email">
+        <textarea name="question" required placeholder="A few words about the task"></textarea>
+        <button type="submit">Write</button>
+      </form>
+    </div>
+    </section>
+  <footer class="foot">
+    <div class="foot-in">
+      <p class="foot-mark">antoshkin.tech</p>
+      <div class="foot-copy">
+        <p class="foot-lead">Want to discuss a project?<br>Tell me about the task and how I can help.</p>
+        <a class="foot-mail" href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
+      </div>
+    </div>
+  </footer>
+  <script src="/motion.js?v=4"></script>
+</body></html>

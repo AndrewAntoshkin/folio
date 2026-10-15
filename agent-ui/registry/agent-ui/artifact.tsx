@@ -55,7 +55,7 @@ export function Artifact({
         aria-expanded={open}
         aria-label={openLabel}
         onClick={() => setOpen(true)}
-        className="flex w-full items-center gap-3 rounded-2xl border border-border bg-card px-4 py-3 text-left transition-colors hover:bg-muted/50"
+        className="flex w-full items-center gap-3 rounded-2xl border border-border bg-card px-4 py-3 text-left shadow-xs transition-all hover:bg-muted/60 active:scale-99"
       >
         <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-muted text-foreground">
           {icon ?? <FileText className="size-4" />}
@@ -86,7 +86,7 @@ export function Artifact({
               animate={{ x: 0, opacity: 1 }}
               exit={reduce ? undefined : { x: 24, opacity: 0 }}
               transition={{ type: "spring", duration: 0.35, bounce: 0 }}
-              className="relative flex h-full w-full max-w-md flex-col border-l border-border bg-background"
+              className="relative flex h-full w-full max-w-2xl flex-col border-l border-border bg-background"
             >
               <div className="flex items-center gap-3 border-b border-border px-4 py-3">
                 <div className="min-w-0 flex-1">
@@ -104,7 +104,7 @@ export function Artifact({
                   <X className="size-4" />
                 </button>
               </div>
-              <div className="min-h-0 flex-1 overflow-auto p-4">{children}</div>
+              <div className="min-h-0 flex-1 overflow-auto p-5">{children}</div>
             </motion.aside>
           </div>
         )}

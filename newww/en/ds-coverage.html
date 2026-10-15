@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" class="nojs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ds-coverage — Andrew Antoshkin</title>
+  <meta name="description" content="Measure how much of your codebase actually uses your design system. Find unused components, duplicates, and adoption gaps.">
+  <meta property="og:title" content="ds-coverage — Andrew Antoshkin">
+  <meta property="og:description" content="Measure how much of your codebase actually uses your design system. Find unused components, duplicates, and adoption gaps.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
+  <script>document.documentElement.classList.remove('nojs')</script>
+  <link rel="stylesheet" href="/style.css?v=28">
+</head>
+<body>
+
+<div class="dock"><nav aria-label="Navigation"><i aria-hidden="true"></i><a href="/en" aria-label="Home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg></a><a href="/en/projects" aria-label="Projects" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 13h16"/></svg></a><a href="/en/writing" aria-label="Writing"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M14 5.5 18.5 10 9 19.5H4.5V15L14 5.5Z"/><path d="m12 7.5 4.5 4.5"/></svg></a><a href="/en/approach" aria-label="Approach"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.25"/><path d="M5.5 19.5c1.2-3 3.4-4.5 6.5-4.5s5.3 1.5 6.5 4.5"/></svg></a><a href="/en/collab" aria-label="Contact"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></nav><a class="lang" href="/ds-coverage" aria-label="Русский">Ru</a></div>
+<a class="float" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Say hello<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+<main><div class="col"><article class="art">
+  <header class="art-top">
+    <a class="back" href="/en/projects" data-r>‹ Back</a>
+    <h1 data-split>ds-coverage</h1>
+    <div class="tags" data-r style="--d:.25s"><span class="tag">Scanner</span><span class="tag">open source</span></div>
+  </header>
+  <div class="art-intro" data-r style="--d:.3s"><p>Measure how much of your codebase actually uses your design system. Find unused components, duplicates, and adoption gaps.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="https://github.com/AndrewAntoshkin/ds-coverage" target="_blank" rel="noopener">Repository on GitHub</a></div></div>
+  <div class="prose"><div class="pcover "><div class="bg" style="background-image:url(/img/gen/ds-coverage.jpg)"></div><span class="plogo">ds-coverage</span></div><section id="why"><h2>Why This Exists</h2>
+<p>A repository can have a forty-component library while product screens right next to it still build their own <code>Button</code> and <code>Modal</code>.</p>
+<p>ds-coverage scans imports across the codebase and reports which system components are actually used, which sit unused, and where a local component duplicates a system name.</p></section>
+<section id="install"><h2>Installation</h2>
+<pre><code># Run directly (no install)
+npx @andrewaitken/ds-coverage src/ --ds @acme/ui
+
+# Or install globally
+npm i -g @andrewaitken/ds-coverage</code></pre></section>
+<section id="usage"><h2>Usage</h2>
+<pre><code># Basic scan
+ds-coverage src/ --ds @acme/ui
+
+# Multiple packages
+ds-coverage . --ds @acme/ui,@acme/icons
+
+# With component inventory (finds unused)
+ds-coverage src/ --ds @acme/ui --inventory components.json
+
+# Markdown report
+ds-coverage src/ --ds @acme/ui --format markdown --out coverage.md
+
+# CI threshold (fail below 70%)
+ds-coverage src/ --ds @acme/ui --inventory components.json --min 70</code></pre></section>
+<section id="cli"><h2>CLI Options</h2>
+<table><thead><tr><th>Flag</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td>[path]</td><td>.</td><td>Directory to scan</td></tr><tr><td>--ds &lt;packages&gt;</td><td>—</td><td>Comma-separated DS package names (required)</td></tr><tr><td>--inventory &lt;file&gt;</td><td>—</td><td>JSON file listing all DS components</td></tr><tr><td>--format &lt;type&gt;</td><td>terminal</td><td>terminal | markdown | json</td></tr><tr><td>--out &lt;file&gt;</td><td>—</td><td>Write report to file</td></tr><tr><td>--min &lt;percent&gt;</td><td>—</td><td>Fail if coverage below threshold</td></tr><tr><td>--version</td><td></td><td>Print version</td></tr><tr><td>--help</td><td></td><td>Print help</td></tr></tbody></table></section>
+<section id="metrics"><h2>What It Measures</h2>
+<ul class="feature-list"><li><strong>Components Used</strong><span>How many DS components appear in import statements across the codebase</span></li><li><strong>Total Imports</strong><span>Total number of DS import occurrences — measures adoption depth</span></li><li><strong>Custom Components</strong><span>Local components imported from relative paths — potential DS candidates</span></li><li><strong>Duplicates</strong><span>Local components with the same name as DS components — likely reimplementations</span></li><li><strong>Unused Components</strong><span>DS components never imported anywhere — deprecation candidates (requires --inventory)</span></li></ul></section>
+<section id="output-good"><h2>Healthy Codebase</h2>
+<p>A team that actively uses their design system:</p>
+<table><thead><tr><th>Score</th><th>Meaning</th></tr></thead><tbody><tr><td>34</td><td>DS Components</td></tr><tr><td>87%</td><td>Coverage</td></tr><tr><td>0</td><td>Duplicates</td></tr></tbody></table>
+<pre><code>Design System Coverage Report
+──────────────────────────────
+
+Package: @acme/ui
+Components used: 34 of 39 (87%)
+Total imports: 412
+Unused components: Alert, Breadcrumb, Stepper, Timeline, Tree
+
+─────────────────────────────
+Files scanned: 186
+DS component uses: 412
+Custom components: 12
+
+Top used:
+Button (142)
+Text (98)
+Card (67)
+Input (45)
+Badge (38)</code></pre></section>
+<section id="output-bad"><h2>Low Adoption</h2>
+<p>A codebase where teams bypass the design system:</p>
+<table><thead><tr><th>Score</th><th>Meaning</th></tr></thead><tbody><tr><td>12</td><td>DS Components</td></tr><tr><td>31%</td><td>Coverage</td></tr><tr><td>5</td><td>Duplicates</td></tr></tbody></table>
+<pre><code>Package: @acme/ui
+Components used: 12 of 39 (31%)
+Total imports: 54
+Unused components: 27 components never imported
+
+─────────────────────────────
+Files scanned: 340
+DS component uses: 54
+Custom components: 89
+⚠ Possible dupes: Button, Modal, Badge, Card, Input
+
+Least used (1-2 imports):
+Tooltip (2)
+Accordion (1)
+Tabs (1)</code></pre></section>
+<section id="inventory"><h2>Inventory File</h2>
+<p>To detect unused components, provide a JSON file listing all exports from your DS package:</p>
+<h3>Array format</h3>
+<pre><code>["Button", "Card", "Modal", "Tooltip", "Badge", "Input", "Select"]</code></pre>
+<h3>Object format</h3>
+<pre><code>{
+  "components": ["Button", "Card", "Modal", "Tooltip", "Badge"]
+}</code></pre>
+<p>You can also point to the index file of your DS package — ds-coverage will parse its exports.</p></section>
+<section id="ci"><h2>CI Integration</h2>
+<pre><code># GitHub Actions
+- name: Check DS adoption
+  run: npx @andrewaitken/ds-coverage src/ --ds @acme/ui --inventory components.json --min 60
+
+# Generate PR report
+- name: DS Coverage Report
+  run: npx @andrewaitken/ds-coverage src/ --ds @acme/ui --format markdown --out coverage.md</code></pre>
+<p><code>--min</code> exits with code 1 when coverage is below the threshold.</p></section>
+<p><a href="https://github.com/AndrewAntoshkin/ds-coverage" target="_blank" rel="noopener noreferrer">Source</a></p></div>
+</article></div></main>
+  <section class="cta" data-r>
+    <div class="cta-grid">
+      <div class="cta-card">
+        <div class="shader" aria-hidden="true"></div>
+        <div class="mid"><h2>Have a design engineering challenge?</h2></div>
+        <div class="bot"><p>Let's talk.</p></div>
+      </div>
+      <form class="cta-form" data-subject="Collaboration">
+        <input name="name" required placeholder="Name" autocomplete="name">
+        <input name="email" type="email" required placeholder="Email" autocomplete="email">
+        <textarea name="question" required placeholder="A few words about the task"></textarea>
+        <button type="submit">Write</button>
+      </form>
+    </div>
+    </section>
+  <footer class="foot">
+    <div class="foot-in">
+      <p class="foot-mark">antoshkin.tech</p>
+      <div class="foot-copy">
+        <p class="foot-lead">Want to discuss a project?<br>Tell me about the task and how I can help.</p>
+        <a class="foot-mail" href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
+      </div>
+    </div>
+  </footer>
+  <script src="/motion.js?v=4"></script>
+</body></html>

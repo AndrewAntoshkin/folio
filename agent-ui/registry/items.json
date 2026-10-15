@@ -4,10 +4,8 @@
     "title": "Prompt Input",
     "description": "Auto-growing prompt composer with send/stop, attachments and a toolbar slot.",
     "dependencies": ["motion", "lucide-react"],
-    "credit": "Inspired by Chamaac UI AI Input",
     "ru": {
-      "description": "Поле для промпта: растёт по высоте, переключает «Отправить» и «Стоп», держит вложения и панель инструментов.",
-      "credit": "По мотивам AI Input из Chamaac UI"
+      "description": "Поле для промпта: растёт по высоте, переключает «Отправить» и «Стоп», держит вложения и панель инструментов."
     }
   },
   {
@@ -24,10 +22,8 @@
     "title": "Thinking",
     "description": "Shimmering reasoning label that collapses into \"Thought for Ns\".",
     "dependencies": ["motion", "lucide-react"],
-    "credit": "Shimmer inspired by Chamaac UI Shimmer Button",
     "ru": {
-      "description": "Мерцающая подпись «Думает», которая после ответа сворачивается в «Думал N с».",
-      "credit": "Мерцание по мотивам Shimmer Button из Chamaac UI"
+      "description": "Мерцающая подпись «Думает», которая после ответа сворачивается в «Думал N с»."
     }
   },
   {
@@ -79,7 +75,7 @@
     "name": "answer-chart",
     "title": "Answer Chart",
     "description": "One bar or line series, up to eight points, colored with the primary token.",
-    "dependencies": [],
+    "dependencies": ["motion"],
     "ru": {
       "description": "Один ряд столбцов или линия, до восьми точек. Цвет берётся из основного токена."
     }
@@ -116,10 +112,8 @@
     "title": "Context Meter",
     "description": "Ring showing context-window token usage, with a warning threshold.",
     "dependencies": ["motion"],
-    "credit": "Inspired by Chamaac UI Gauge",
     "ru": {
-      "description": "Кольцо заполненности контекстного окна с порогом предупреждения.",
-      "credit": "По мотивам Gauge из Chamaac UI"
+      "description": "Кольцо заполненности контекстного окна с порогом предупреждения."
     }
   },
   {
@@ -136,10 +130,8 @@
     "title": "Agent Dock",
     "description": "Floating status dock for a running agent that expands into its step list.",
     "dependencies": ["motion", "lucide-react"],
-    "credit": "Adapted from the Chamaac UI Dock, itself inspired by jeton.com",
     "ru": {
-      "description": "Плавающая плашка статуса агента. По наведению раскрывается в список шагов.",
-      "credit": "Адаптация Dock из Chamaac UI, который вдохновлён jeton.com"
+      "description": "Плавающая плашка статуса агента. По наведению раскрывается в список шагов."
     }
   }
 ]

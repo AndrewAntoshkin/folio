@@ -45,12 +45,14 @@ export function CodeBlock({
           {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
         </button>
       </div>
-      <pre className="overflow-x-auto p-3 font-mono text-xs leading-5 whitespace-pre">
-        {lines.map((line, index) => (
-          <div key={index} className={cn("px-1.5 whitespace-pre", lineTone(line, diff))}>
-            {line || " "}
-          </div>
-        ))}
+      <pre className="overflow-x-auto py-3 font-mono text-xs leading-5 whitespace-pre">
+        <code className="block w-max min-w-full">
+          {lines.map((line, index) => (
+            <span key={index} className={cn("block px-4 whitespace-pre", lineTone(line, diff))}>
+              {line || " "}
+            </span>
+          ))}
+        </code>
       </pre>
     </div>
   )

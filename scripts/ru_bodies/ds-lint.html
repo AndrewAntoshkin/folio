@@ -1,11 +1,11 @@
-<section id="problem"><h2>Проблема</h2>
-<p>ds-lint находит в коде цвета, отступы, размеры шрифта и радиусы, прописанные вручную. Если рядом есть файл токенов, предлагает имя токена.</p></section>
+<section id="problem"><h2>Зачем</h2>
+<p>Даже когда в проекте есть <code>tokens.css</code>, в компоненты всё равно пролезают случайные <code>#3b82f6</code> и <code>padding: 13px</code> — особенно после быстрой правки или генерации кода агентом. Если передать ds-lint файл токенов, он не просто укажет строку, а сразу подскажет подходящую переменную.</p></section>
 <section id="install"><h2>Установка</h2>
 <pre><code># Run directly (no install)
-npx ds-lint src/
+npx @andrewaitken/ds-lint src/
 
 # Or install globally
-npm i -g ds-lint</code></pre></section>
+npm i -g @andrewaitken/ds-lint</code></pre></section>
 <section id="usage"><h2>Запуск</h2>
 <pre><code># Basic scan
 ds-lint src/
@@ -44,7 +44,7 @@ ds-lint src/ --tokens tokens.css --strict</code></pre></section>
   }
 }</code></pre>
 <h3>Markdown-таблицы</h3>
-<p>Читает таблицы токенов из вывода <a href="figma-to-design-md.html">figma-to-design-md</a>. Разбирает их сам.</p></section>
+<p>Читает таблицы токенов из вывода <a href="/figma-to-design-md">figma-to-design-md</a>. Разбирает их сам.</p></section>
 <section id="output-example"><h2>Пример отчёта</h2>
 <pre><code>src/components/Button.tsx
 L14:5 #3b82f6 → var(--color-primary) (Color)
@@ -70,16 +70,10 @@ const borderColor = "#333";</code></pre></section>
 <section id="ci"><h2>CI</h2>
 <pre><code># GitHub Actions
 - name: Check design tokens
-  run: npx ds-lint src/ --tokens tokens.css --strict
+  run: npx @andrewaitken/ds-lint src/ --tokens tokens.css --strict
 
 # Generate PR report
 - name: DS Lint Report
-  run: npx ds-lint src/ --tokens tokens.css --format markdown --out ds-lint.md</code></pre>
+  run: npx @andrewaitken/ds-lint src/ --tokens tokens.css --format markdown --out ds-lint.md</code></pre>
 <p><code>--strict</code> выходит с кодом 1, если нарушения есть. Шаг CI падает.</p></section>
-<section id="pipeline"><h2>Цепочка</h2>
-<p>ds-lint проверяет код до того, как модель увидит систему:</p>
-<pre><code>figma-to-design-md extracts the spec
-ds-lint blocks raw values ← you are here
-ds-context packs what the model may see
-ds-eval scores the generated UI</code></pre></section>
-<p><a href="https://github.com/AndrewAntoshkin/ds-lint" target="_blank" rel="noopener noreferrer">Код</a></p>
+<p><a href="https://github.com/AndrewAntoshkin/ds-lint" target="_blank" rel="noopener noreferrer">Код на GitHub</a></p>

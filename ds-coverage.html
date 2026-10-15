@@ -4,29 +4,34 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ds-coverage — Андрей Антошкин</title>
+  <meta name="description" content="ds-coverage считает, какие компоненты дизайн-системы код импортирует. Показывает, какие не используются и где то же самое написали заново.">
+  <meta property="og:title" content="ds-coverage — Андрей Антошкин">
+  <meta property="og:description" content="ds-coverage считает, какие компоненты дизайн-системы код импортирует. Показывает, какие не используются и где то же самое написали заново.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
   <script>document.documentElement.classList.remove('nojs')</script>
-  <link rel="stylesheet" href="style.css?v=25">
+  <link rel="stylesheet" href="/style.css?v=28">
 </head>
 <body>
 
-<div class="dock"><nav aria-label="Навигация"><i aria-hidden="true"></i><a href="index.html" aria-label="Главная"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg></a><a href="projects.html" aria-label="Проекты" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 13h16"/></svg></a><a href="writing.html" aria-label="Статьи"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M14 5.5 18.5 10 9 19.5H4.5V15L14 5.5Z"/><path d="m12 7.5 4.5 4.5"/></svg></a><a href="approach.html" aria-label="Подход"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.25"/><path d="M5.5 19.5c1.2-3 3.4-4.5 6.5-4.5s5.3 1.5 6.5 4.5"/></svg></a><a href="collab.html" aria-label="Связь"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></nav><a class="lang" href="ds-coverage-en.html" aria-label="English">En</a></div>
-<a class="float" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Написать<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+<div class="dock"><nav aria-label="Навигация"><i aria-hidden="true"></i><a href="/" aria-label="Главная"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg></a><a href="/projects" aria-label="Проекты" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 13h16"/></svg></a><a href="/writing" aria-label="Статьи"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M14 5.5 18.5 10 9 19.5H4.5V15L14 5.5Z"/><path d="m12 7.5 4.5 4.5"/></svg></a><a href="/approach" aria-label="Подход"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.25"/><path d="M5.5 19.5c1.2-3 3.4-4.5 6.5-4.5s5.3 1.5 6.5 4.5"/></svg></a><a href="/collab" aria-label="Связь"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></nav><a class="lang" href="/en/ds-coverage" aria-label="English">En</a></div>
+<a class="float" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Написать<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
 <main><div class="col"><article class="art">
   <header class="art-top">
-    <a class="back" href="projects.html" data-r>‹ Назад</a>
+    <a class="back" href="/projects" data-r>‹ Назад</a>
     <h1 data-split>ds-coverage</h1>
     <div class="tags" data-r style="--d:.25s"><span class="tag">Сканер</span><span class="tag">open source</span></div>
   </header>
   <div class="art-intro" data-r style="--d:.3s"><p>ds-coverage считает, какие компоненты дизайн-системы код импортирует. Показывает, какие не используются и где то же самое написали заново.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="https://github.com/AndrewAntoshkin/ds-coverage" target="_blank" rel="noopener">Репозиторий на&nbsp;GitHub</a></div></div>
-  <div class="prose"><div class="pcover "><div class="bg" style="background-image:url(img/gen/ds-coverage.jpg)"></div><span class="plogo">ds-coverage</span></div><section id="why"><h2>Зачем это есть</h2>
-<p>Библиотеку собирают, а доказать, что ей пользуются, не могут. За год удовлетворённость может упасть с 68% до 31%.</p>
-<p>ds-coverage считает, какие компоненты код импортирует, как часто и что рядом написано заново.</p></section>
+  <div class="prose"><div class="pcover "><div class="bg" style="background-image:url(/img/gen/ds-coverage.jpg)"></div><span class="plogo">ds-coverage</span></div><section id="why"><h2>Зачем</h2>
+<p>В репозитории может лежать дизайн-система на сорок компонентов, а продуктовые экраны рядом всё равно собирают из своих <code>Button</code> и <code>Modal</code>. На ревью это всплывает поздно.</p>
+<p>ds-coverage проходит по импортам и показывает три вещи: какие компоненты системы реально используются, какие лежат мёртвым грузом и где в продукте написали локальный дубль с тем же именем.</p></section>
 <section id="install"><h2>Установка</h2>
 <pre><code># Run directly (no install)
-npx ds-coverage src/ --ds @acme/ui
+npx @andrewaitken/ds-coverage src/ --ds @acme/ui
 
 # Or install globally
-npm i -g ds-coverage</code></pre></section>
+npm i -g @andrewaitken/ds-coverage</code></pre></section>
 <section id="usage"><h2>Запуск</h2>
 <pre><code># Basic scan
 ds-coverage src/ --ds @acme/ui
@@ -98,27 +103,21 @@ Tabs (1)</code></pre></section>
 <section id="ci"><h2>CI</h2>
 <pre><code># GitHub Actions
 - name: Check DS adoption
-  run: npx ds-coverage src/ --ds @acme/ui --inventory components.json --min 60
+  run: npx @andrewaitken/ds-coverage src/ --ds @acme/ui --inventory components.json --min 60
 
 # Generate PR report
 - name: DS Coverage Report
-  run: npx ds-coverage src/ --ds @acme/ui --format markdown --out coverage.md</code></pre>
+  run: npx @andrewaitken/ds-coverage src/ --ds @acme/ui --format markdown --out coverage.md</code></pre>
 <p><code>--min</code> завершается с кодом 1, если покрытие ниже порога.</p></section>
-<section id="pipeline"><h2>Цепочка</h2>
-<p>ds-coverage считает, импортирует ли код ту систему, которую показали модели:</p>
-<pre><code>ds-lint blocks raw values
-ds-context packs the system
-ds-coverage counts real imports ← you are here
-ds-health reads the live page</code></pre></section>
-<p><a href="https://github.com/AndrewAntoshkin/ds-coverage" target="_blank" rel="noopener noreferrer">Код</a></p>
+<p><a href="https://github.com/AndrewAntoshkin/ds-coverage" target="_blank" rel="noopener noreferrer">Код на GitHub</a></p>
 </div>
 </article></div></main>
   <section class="cta" data-r>
     <div class="cta-grid">
       <div class="cta-card">
         <div class="shader" aria-hidden="true"></div>
-        <div class="mid"><h2>Есть задача?</h2></div>
-        <div class="bot"><p>Если хочется довести её до дела — напишите. Разберём, с чего начать.</p></div>
+        <div class="mid"><h2>Есть задача на стыке дизайна и разработки?</h2></div>
+        <div class="bot"><p>Давайте обсудим.</p></div>
       </div>
       <form class="cta-form" data-subject="Сотрудничество">
         <input name="name" required placeholder="Имя" autocomplete="name">
@@ -137,5 +136,5 @@ ds-health reads the live page</code></pre></section>
       </div>
     </div>
   </footer>
-  <script src="motion.js?v=3"></script>
+  <script src="/motion.js?v=4"></script>
 </body></html>

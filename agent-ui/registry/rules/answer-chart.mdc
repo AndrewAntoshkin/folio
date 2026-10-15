@@ -20,7 +20,7 @@ alwaysApply: false
 | --- | --- | --- |
 | `data` | `{ label, value }[]` | Required. Up to eight points. `value` is a number. |
 | `type` | `"bar" \| "line"` | Default `"bar"`. Use `"line"` only when the order is a sequence. |
-| `caption` | `string` | One line under the chart saying what the numbers are. |
+| `caption` | `string` | One line above the plot saying what the numbers are. |
 | `empty` | `string` | Shown when `data` is empty. |
 
 ## Example
@@ -38,5 +38,8 @@ alwaysApply: false
 
 ## Rules
 - There is no color prop. Bars and the line use the primary token, so they follow the theme.
+- The chart is a bordered card with its own padding. Do not wrap it in another card.
+- Hovering or focusing a bar or point shows a tooltip with its label and value, so do not print values next to the points. The entrance animation is skipped under `prefers-reduced-motion`.
+- Requires the `motion` package.
 - Render it as a sibling of `Message`. Do not draw bars with styled divs inside the message text.
 - If a point has no value, omit it. Do not send zero unless zero is a real measurement.

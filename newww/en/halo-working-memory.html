@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" class="nojs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Halo: how I&#x27;m building a team&#x27;s working memory</title>
+  <meta name="description" content="Halo brings together fragmented team context from Tracker, Wiki, and meetings into a connected working memory. Rather than presenting a list of documents, it answers questions about decisions, changes, and ownership—with dates, links, and an explanation.">
+  <meta property="og:title" content="Halo: how I&#x27;m building a team&#x27;s working memory">
+  <meta property="og:description" content="Halo brings together fragmented team context from Tracker, Wiki, and meetings into a connected working memory. Rather than presenting a list of documents, it answers questions about decisions, changes, and ownership—with dates, links, and an explanation.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
+  <script>document.documentElement.classList.remove('nojs')</script>
+  <link rel="stylesheet" href="/style.css?v=28">
+</head>
+<body>
+
+<div class="dock"><nav aria-label="Navigation"><i aria-hidden="true"></i><a href="/en" aria-label="Home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg></a><a href="/en/projects" aria-label="Projects"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 13h16"/></svg></a><a href="/en/writing" aria-label="Writing" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M14 5.5 18.5 10 9 19.5H4.5V15L14 5.5Z"/><path d="m12 7.5 4.5 4.5"/></svg></a><a href="/en/approach" aria-label="Approach"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.25"/><path d="M5.5 19.5c1.2-3 3.4-4.5 6.5-4.5s5.3 1.5 6.5 4.5"/></svg></a><a href="/en/collab" aria-label="Contact"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></nav><a class="lang" href="/halo-working-memory" aria-label="Русский">Ru</a></div>
+<a class="float" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Say hello<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+<main><div class="col"><article class="art">
+  <header class="art-top">
+    <a class="back" href="/en/writing" data-r>‹ Back</a>
+    <h1 data-split class="long">Halo: how I&rsquo;m building a team&rsquo;s working memory</h1>
+    <div class="tags" data-r style="--d:.3s"><span class="tag">Halo</span><span class="tag">knowledge graph</span><span class="tag">AI agents</span></div>
+  </header>
+  <div class="art-intro" data-r style="--d:.35s"><p>Halo brings together fragmented team context from Tracker, Wiki, and meetings into a connected working memory. Rather than presenting a list of documents, it answers questions about decisions, changes, and ownership—with dates, links, and an explanation.</p><div class="art-meta"><span>Sep 2026</span><i></i><span>9 min</span></div></div>
+  <div class="prose"><img src="/assets/halo-working-memory.png" alt="Andrew with a laptop beside a clothes rack and suitcase"><p><strong>Over the past few weeks, I&rsquo;ve been building Halo</strong>&nbsp;&mdash; a working prototype that brings together team context from Tracker, Wiki, meetings, and other internal sources. You can ask it questions such as &ldquo;What changed this week?&rdquo;, &ldquo;Why did we make this decision?&rdquo;, or &ldquo;Who is responsible for this now?&rdquo; and get an answer with dates, links, and an explanation of the evidence behind it.</p>
+
+<p>You can see the project on the <a href="https://andrewantoshkin.github.io/orbit-landing/" target="_blank" rel="noopener">Halo page</a>. Here, I&rsquo;ll take a closer look at why we need working memory in the first place, why conventional search proved insufficient, and how I&rsquo;m building the prototype around real questions from a design team.</p>
+
+<h2>The context exists, but it&rsquo;s scattered</h2>
+
+<p>A team generates a great deal of useful context every day. Statuses and assignees change in Tracker. Risks are discussed and decisions are made in meetings. Goals, processes, and specifications live in Wiki. Staff shows people&rsquo;s roles, while Calendar can help reconstruct the sequence of events.</p>
+
+<p>The problem isn&rsquo;t a lack of information. The problem is that answering a single work-related question often means manually checking several systems:</p>
+
+<ol>
+  <li>find the task and review its status history;</li>
+  <li>remember which meeting it was discussed in;</li>
+  <li>open the summary and find the wording of the decision;</li>
+  <li>check Wiki to see whether the goals have changed;</li>
+  <li>confirm who is now responsible for the next step.</li>
+</ol>
+
+<p>Each system works perfectly well on its own. What gets lost is the connection between them. A few weeks later, the task is still there, but the rationale behind the decision lives only in a meeting summary or in the memories of a few participants.</p>
+
+<h2>What I mean by working memory</h2>
+
+<p>Halo isn&rsquo;t another Wiki or a chat that &ldquo;knows everything.&rdquo; I see it as a layer on top of the systems a team already uses. It doesn&rsquo;t ask the team to move its processes somewhere new; instead, it connects existing entities:</p>
+
+<ul>
+  <li>tasks and their status changes;</li>
+  <li>meetings, participants, and recorded decisions;</li>
+  <li>Wiki pages, goals, and projects;</li>
+  <li>people, roles, and areas of responsibility;</li>
+  <li>links between all these objects.</li>
+</ul>
+
+<p>Working memory isn&rsquo;t a document archive. It should be able to show <strong>what happened, when it happened, what it relates to, and where the fact came from</strong>. That&rsquo;s why Halo cares not only about text, but also about events: a task moved from <code>inProgress</code> to <code>closed</code>, a decision was recorded in a meeting, or a project&rsquo;s assignee changed.</p>
+
+<h2>Why a graph, rather than just search</h2>
+
+<p>Search is good at answering, &ldquo;Where does this phrase appear?&rdquo; But most work-related questions are structured differently. &ldquo;What changed in the project after the sync?&rdquo;, &ldquo;Which decisions are related to this task?&rdquo;, and &ldquo;Who took part in the discussion, and who is responsible now?&rdquo; are questions about relationships and time.</p>
+
+<p>That&rsquo;s why I organized the team&rsquo;s context as a graph. In it, a task can be connected to a project, meeting, decision, person, and Wiki page. Every connection has a source, and every change has a date. This layer helps you do more than find a document: it lets you follow the chain:</p>
+
+<pre><code>project → meeting → decision → task → status change
+                         ↘ assignee</code></pre>
+
+<p>A graph doesn&rsquo;t make an answer automatically true. It simply provides a verifiable structure: every conclusion can be traced back to a specific task, page, or meeting.</p>
+
+<h2>What a Halo answer looks like</h2>
+
+<p>I want an answer to be immediately useful without hiding uncertainty. So it has several layers:</p>
+
+<ul>
+  <li><strong>Brief conclusion</strong>&nbsp;&mdash; a plain-language answer to the question.</li>
+  <li><strong>Facts and dates</strong>&nbsp;&mdash; exactly what happened and when.</li>
+  <li><strong>Sources</strong>&nbsp;&mdash; links to Tracker, Wiki, and meetings.</li>
+  <li><strong>Why this answer</strong>&nbsp;&mdash; the changes and connections that support the conclusion.</li>
+  <li><strong>Limitations</strong>&nbsp;&mdash; what is missing when the available data is insufficient.</li>
+</ul>
+
+<p>For example, when answering, &ldquo;What changed in the component?&rdquo;, it isn&rsquo;t enough to restate the task&rsquo;s current description. The history matters: when the task was created, which meeting led to its status changing, where the decision was recorded, and who became responsible for it.</p>
+
+<p>If the relevant fact isn&rsquo;t in the graph, Halo should say so directly: &ldquo;I couldn&rsquo;t find it.&rdquo; For a work tool, an honest gap is more useful than confident, plausible-sounding text. An answer like this shows exactly what needs to be checked or added to the sources.</p>
+
+<h2>From chat to exploration</h2>
+
+<p>Chat is a convenient entry point, but it isn&rsquo;t the whole product. An answer often raises another question: what is this task, how has its status changed, who was involved, and what documents are connected to it?</p>
+
+<p>That&rsquo;s why the prototype includes Explore. From an answer, you can open a task, person, or decision and inspect the history of its connections. This is an important difference from a conventional AI&#8209;generated summary: rather than being confined to generated text, the user can explore the original work context.</p>
+
+<h2>Workflows instead of a single empty field</h2>
+
+<p>Not every work-related question needs an open-ended chat. Many tasks recur: preparing a weekly update, getting ready for a 1:1, returning from vacation, finding blockers, or compiling decisions from meetings.</p>
+
+<p>For these, I&rsquo;m building workflows&nbsp;&mdash; ready-made recipes that run on top of the same memory. The user selects a period, participants, or project, and Halo knows which sources and connections to check. This makes the results more consistent and lowers the barrier to entry: there&rsquo;s no need to invent the perfect prompt every time.</p>
+
+<h2>What happens under the hood</h2>
+
+<p>Several parts are already running in the prototype:</p>
+
+<ul>
+  <li><strong>Ingest</strong> retrieves available data from work systems and maps it to a shared model.</li>
+  <li><strong>Context graph</strong> connects tasks, meetings, documents, people, decisions, and events.</li>
+  <li><strong>Chat</strong> turns a question into a context search and assembles the answer.</li>
+  <li><strong>Explore</strong> displays entities, change histories, and adjacent connections.</li>
+  <li><strong>Evals</strong> verify whether the system finds the right facts, preserves its sources, and can acknowledge when data is missing.</li>
+  <li><strong>MCP</strong> provides agents with the same context, so they don&rsquo;t have to begin with a blank slate.</li>
+</ul>
+
+<p>Access control is also crucial. Halo should see exactly what the user can see in the source systems. If someone doesn&rsquo;t have access to a task or page, it must not appear in either the answer or the source list.</p>
+
+<h2>Why MCP and agents matter here</h2>
+
+<p>I work in Cursor almost every day, and I&rsquo;ve noticed a consistent pattern: an agent speeds up work when it has high-quality context. In a repository, that context consists of the architecture, rules, documentation, and a clear task. Within a team, similar context is usually scattered across tickets, Wiki pages, and meeting summaries.</p>
+
+<p>If you give an agent only the task description, it may be able to write code or text, but it won&rsquo;t know why the team rejected a similar solution a month ago. Give it working memory, and it can first check related decisions, current goals, and assignees.</p>
+
+<p>That&rsquo;s why I&rsquo;m designing Halo as more than a human-facing interface. The MCP&#8209;layer allows an agent to ask the same question and receive structured context with links to the sources. The person and the agent work from the same verifiable memory, rather than from two different retellings.</p>
+
+<h2>Why I started with a design scope</h2>
+
+<p>At this stage, Halo isn&rsquo;t a product &ldquo;for every company.&rdquo; It&rsquo;s a working prototype tailored to the context of a design organization. A narrow scope is useful here: I know the real entities, the team&rsquo;s language, and the questions that come up every day.</p>
+
+<p>This means I can test the system with practical questions rather than abstract demo queries:</p>
+
+<ul>
+  <li>what changed in the design system this week;</li>
+  <li>which decisions were made in the latest syncs;</li>
+  <li>why a process or status changed;</li>
+  <li>which tasks are linked to the quarter&rsquo;s goals;</li>
+  <li>what someone needs to know after returning from vacation;</li>
+  <li>where the available data is insufficient for a confident answer.</li>
+</ul>
+
+<p>This quickly reveals real problems: duplicate entities, outdated connections, incomplete summaries, ambiguous names, and events without dates. These details have a greater impact on the quality of working memory than an impressive chat interface does.</p>
+
+<h2>What I&rsquo;m testing now</h2>
+
+<p>For me, the main question isn&rsquo;t, &ldquo;Can the model produce an eloquent answer?&rdquo; Modern models can do that without Halo. I&rsquo;m testing something else:</p>
+
+<ul>
+  <li>does the answer save time compared with manual searching;</li>
+  <li>can every important conclusion be verified quickly;</li>
+  <li>can the system reconstruct the sequence of changes;</li>
+  <li>can it distinguish a recorded decision from an assumption;</li>
+  <li>does it notice contradictions between sources;</li>
+  <li>does it know when to stop if there isn&rsquo;t enough data;</li>
+  <li>does the same context help agents complete real tasks?</li>
+</ul>
+
+<p>The answers to these questions emerge only through use. Right now, it&rsquo;s more important for me to gradually add real workflows, build evals, and see where Halo goes wrong than to rapidly expand the list of integrations.</p>
+
+<h2>Where the project is heading</h2>
+
+<p>The immediate goal is to make working memory reliable enough for recurring tasks: weekly updates, meeting preparation, context recovery, and decision exploration. At the same time, I&rsquo;m testing how a single context layer can serve both the product interface and agents through MCP.</p>
+
+<p>For now, it&rsquo;s a living prototype: some parts already work, while others change in response to the first real questions. I&rsquo;ll periodically write about how Halo performs in practice, which connections prove genuinely useful, and where the idea of working memory collides with reality.</p>
+
+<p><a href="https://andrewantoshkin.github.io/orbit-landing/" target="_blank" rel="noopener"><strong>Open the Halo page&nbsp;→</strong></a></p>
+</div>
+</article></div></main>
+  <section class="cta" data-r>
+    <div class="cta-grid">
+      <div class="cta-card">
+        <div class="shader" aria-hidden="true"></div>
+        <div class="mid"><h2>Have a design engineering challenge?</h2></div>
+        <div class="bot"><p>Let's talk.</p></div>
+      </div>
+      <form class="cta-form" data-subject="Collaboration">
+        <input name="name" required placeholder="Name" autocomplete="name">
+        <input name="email" type="email" required placeholder="Email" autocomplete="email">
+        <textarea name="question" required placeholder="A few words about the task"></textarea>
+        <button type="submit">Write</button>
+      </form>
+    </div>
+    </section>
+  <footer class="foot">
+    <div class="foot-in">
+      <p class="foot-mark">antoshkin.tech</p>
+      <div class="foot-copy">
+        <p class="foot-lead">Want to discuss a project?<br>Tell me about the task and how I can help.</p>
+        <a class="foot-mail" href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
+      </div>
+    </div>
+  </footer>
+  <script src="/motion.js?v=4"></script>
+</body></html>

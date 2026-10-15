@@ -29,7 +29,7 @@ function DemoButton(props: React.ButtonHTMLAttributes<HTMLButtonElement>) {
     <button
       type="button"
       {...props}
-      className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground aria-pressed:bg-muted aria-pressed:text-foreground"
+      className="rounded-full border border-border/60 bg-background/90 px-3.5 py-1.5 text-xs font-medium text-muted-foreground shadow-xs transition-all hover:border-border hover:bg-background hover:text-foreground active:scale-95 aria-pressed:border-foreground aria-pressed:bg-foreground aria-pressed:text-background"
     />
   )
 }
@@ -71,7 +71,7 @@ export function PromptInputDemo() {
 
 export function MessageDemo() {
   return (
-    <div className="flex w-full max-w-xl flex-col gap-6">
+    <div className="flex w-full max-w-xl flex-col gap-5 rounded-2xl border border-border bg-card p-5 text-card-foreground shadow-xs">
       <Message role="user">{copy.demos.msgUser}</Message>
       <Message
         role="assistant"
@@ -118,10 +118,12 @@ export function ThinkingDemo() {
   }, [active, key])
 
   return (
-    <div className="flex w-full max-w-xl flex-col items-start gap-4">
-      <Thinking key={key} active={active} {...thinkingLabels}>
-        {copy.demos.thinkingBody}
-      </Thinking>
+    <div className="flex w-full max-w-xl flex-col items-center gap-4">
+      <div className="w-full rounded-2xl border border-border bg-card p-5 text-card-foreground shadow-xs">
+        <Thinking key={key} active={active} defaultOpen {...thinkingLabels}>
+          {copy.demos.thinkingBody}
+        </Thinking>
+      </div>
       <DemoButton
         onClick={() => {
           setKey((k) => k + 1)
@@ -163,7 +165,7 @@ export function ToolCallDemo() {
 export function ApprovalDemo() {
   const [key, setKey] = React.useState(0)
   return (
-    <div className="flex w-full max-w-xl flex-col items-start gap-4">
+    <div className="flex w-full max-w-xl flex-col items-center gap-4">
       <Approval
         key={key}
         title={copy.demos.approvalTitle}
@@ -182,8 +184,8 @@ export function ApprovalDemo() {
 export function ContextMeterDemo() {
   const [used, setUsed] = React.useState(64_000)
   return (
-    <div className="flex w-full max-w-sm flex-col items-center gap-5">
-      <div className="flex items-center gap-6">
+    <div className="flex w-full max-w-sm flex-col items-center gap-5 rounded-2xl border border-border bg-card p-6 text-card-foreground shadow-xs">
+      <div className="flex items-center gap-8">
         <ContextMeter used={used} limit={200_000} />
         <ContextMeter used={used} limit={200_000} size={32} showLabel={false} />
       </div>
@@ -230,10 +232,36 @@ const patch = `--- a/src/settings/SettingsPage.tsx
 -    <Button className="bg-[#111111] text-white">
 +    <Button className="bg-primary text-primary-foreground">`
 
+const artifactPatch = `--- a/src/settings/SettingsPage.tsx
++++ b/src/settings/SettingsPage.tsx
+@@ -12,9 +12,9 @@ export function SettingsPage() {
+   return (
+     <section className="flex flex-col gap-6">
+       <header className="flex items-center justify-between">
+-        <h1 className="text-[#111111] text-2xl">Settings</h1>
++        <h1 className="text-foreground text-2xl">Settings</h1>
+         <Button variant="outline">Export</Button>
+       </header>
+-      <hr className="border-[#e5e5e5]" />
++      <hr className="border-border" />
+       <ProfileForm />
+@@ -41,8 +41,8 @@ export function SettingsPage() {
+       <footer className="flex justify-end gap-2">
+-        <Button className="bg-[#f5f5f5] text-[#737373]">Cancel</Button>
+-        <Button className="bg-[#111111] text-white">Save</Button>
++        <Button variant="secondary">Cancel</Button>
++        <Button className="bg-primary text-primary-foreground">Save</Button>
+       </footer>
+     </section>
+   )
+ }`
+
 const chartPoints: ChartPoint[] = [
-  { label: "settings", value: 6 },
-  { label: "nav", value: 2 },
-  { label: "dialog", value: 1 },
+  { label: "settings", value: 12 },
+  { label: "checkout", value: 8 },
+  { label: "profile", value: 5 },
+  { label: "nav", value: 3 },
+  { label: "dialog", value: 2 },
   { label: "table", value: 0 },
 ]
 
@@ -245,17 +273,19 @@ export function PlanDemo() {
     return "pending"
   })
   return (
-    <div className="flex w-full max-w-xl flex-col items-start gap-4">
-      <Plan
-        title={copy.demos.planTitle}
-        labels={copy.demos.planLabels}
-        steps={copy.demos.planSteps.map((label, index) => ({
-          id: String(index),
-          label,
-          detail: index === 0 ? copy.demos.planDetail : undefined,
-          status: statuses[index],
-        }))}
-      />
+    <div className="flex w-full max-w-xl flex-col items-center gap-4">
+      <div className="w-full rounded-2xl border border-border bg-card p-5 text-card-foreground shadow-xs">
+        <Plan
+          title={copy.demos.planTitle}
+          labels={copy.demos.planLabels}
+          steps={copy.demos.planSteps.map((label, index) => ({
+            id: String(index),
+            label,
+            detail: index === 0 ? copy.demos.planDetail : undefined,
+            status: statuses[index],
+          }))}
+        />
+      </div>
       <DemoButton onClick={() => setStep((n) => (n + 1) % (copy.demos.planSteps.length + 1))}>
         {copy.demos.runAgain}
       </DemoButton>
@@ -264,7 +294,7 @@ export function PlanDemo() {
 }
 
 export function ChoiceDemo() {
-  const [value, setValue] = React.useState<string>()
+  const [value, setValue] = React.useState<string>("border")
   return (
     <Choice
       className="max-w-xl"
@@ -302,8 +332,14 @@ export function DataTableDemo() {
 export function AnswerChartDemo() {
   const [type, setType] = React.useState<"bar" | "line">("bar")
   return (
-    <div className="flex w-full max-w-xl flex-col items-start gap-4">
-      <AnswerChart className="w-full" type={type} caption={copy.demos.chartCaption} empty={copy.demos.chartEmpty} data={chartPoints} />
+    <div className="flex w-full max-w-xl flex-col items-center gap-4">
+      <AnswerChart
+        className="w-full"
+        type={type}
+        caption={copy.demos.chartCaption}
+        empty={copy.demos.chartEmpty}
+        data={chartPoints}
+      />
       <div className="flex gap-1.5">
         <DemoButton aria-pressed={type === "bar"} onClick={() => setType("bar")}>
           {copy.demos.chartBar}
@@ -343,7 +379,7 @@ export function SourcesDemo() {
         },
         {
           title: copy.demos.sourceLint,
-          href: "https://antoshkin.tech/ds-lint.html",
+          href: "https://antoshkin.tech/ds-lint",
           excerpt: copy.demos.sourceLintExcerpt,
         },
       ]}
@@ -360,7 +396,13 @@ export function ArtifactDemo() {
       openLabel={copy.demos.artifactOpen}
       closeLabel={copy.demos.artifactClose}
     >
-      <CodeBlock code={patch} language="diff" diff copyLabel={copy.demos.copy} copiedLabel={copy.hero.copied} />
+      <CodeBlock
+        code={artifactPatch}
+        language="diff"
+        diff
+        copyLabel={copy.demos.copy}
+        copiedLabel={copy.hero.copied}
+      />
     </Artifact>
   )
 }
@@ -370,8 +412,8 @@ const dockStates: AgentStatus[] = ["running", "waiting", "done", "error", "idle"
 export function AgentDockDemo() {
   const [status, setStatus] = React.useState<AgentStatus>("running")
   return (
-    <div className="flex w-full flex-col items-center gap-6">
-      <div className="flex min-h-80 items-end">
+    <div className="flex w-full max-w-xl flex-col items-center gap-4">
+      <div className="flex min-h-48 w-full items-end justify-center pb-1">
         <AgentDock
           floating={false}
           status={status}

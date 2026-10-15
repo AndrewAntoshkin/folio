@@ -209,7 +209,7 @@ def _inline(html: str, lang: str) -> str:
         if href in INTERNAL or href.rstrip("/") + "/" in INTERNAL:
             key = href if href in INTERNAL else href.rstrip("/") + "/"
             slug = INTERNAL[key]
-            page = f"{slug}.html" if lang == "ru" else f"{slug}-en.html"
+            page = f"/{slug}" if lang == "ru" else f"/en/{slug}"
             return f'<a href="{page}">{body}</a>'
         if href == "https://github.com/AndrewAntoshkin/ds-eval":
             href = GITHUB["ds-eval"]
@@ -430,7 +430,7 @@ def english_doc(slug: str) -> dict:
 
 
 LEADS_RU = {
-    "ds-eval": "Может ли агент пользоваться дизайн-системой, которую он не придумал сам? ds-eval прогоняет одни и те же UI-задачи через разные модели и оценивает собранный интерфейс.",
+    "ds-eval": "Агент, который пишет интерфейс, часто рисует кнопку и цвет сам, хотя в дизайн-системе уже есть готовый компонент. ds-eval нужен, чтобы это поймать: одна задача, два ответа и проверка, взял ли ответ компонент системы. Ниже — один опубликованный прогон и то, каким его цифрам можно верить.",
     "ds-health": "Вставляешь URL и получаешь отчёт о здоровье дизайн-системы. Инструмент считает цвета, типографику, отступы и радиусы на живом сайте в настоящем браузере.",
     "figma-to-design-md": "Забирает переменные, стили и компоненты из Figma через REST API и собирает markdown-спеки, которые агент может читать напрямую.",
     "ds-lint": "Сканирует код и находит захардкоженные цвета, отступы, размеры шрифта и радиусы, которые должны быть токенами.",
@@ -494,9 +494,7 @@ def load_doc(slug: str, lang: str) -> dict:
     import json
 
     doc = _load_doc(slug, lang)
-    if lang != "ru":
-        return doc
-    folder = ROOT / "scripts" / "ru_bodies"
+    folder = ROOT / "scripts" / ("ru_bodies" if lang == "ru" else "en_bodies")
     body_path = folder / f"{slug}.html"
     meta_path = folder / f"{slug}.json"
     if body_path.exists():
@@ -620,7 +618,7 @@ def _agent_ui(lang: str) -> dict:
         {
             "label": "Ссылки" if ru else "Links",
             "items": [
-                {"href": "/agent-ui/" if ru else "/agent-ui/en.html", "label": "Компоненты" if ru else "Components"},
+                {"href": "/agent-ui/" if ru else "/agent-ui/en", "label": "Компоненты" if ru else "Components"},
                 {"href": "/agent-ui/r/llms.txt", "label": "llms.txt"},
             ],
         },
@@ -631,9 +629,8 @@ def _agent_ui(lang: str) -> dict:
     if ru:
         lead = "Пятнадцать React-компонентов для чатов и агентов. Каждый ставится вместе с правилом для Cursor: когда его брать, когда нет и какие пропсы важны. Цвета только из токенов темы, поэтому агенту нечего захардкодить."
         body = f"""
-<p><a href="/agent-ui/">Открыть компоненты →</a></p>
 <section id="why"><h2>Зачем делать компоненты самому</h2>
-<p>Готовых библиотек много: shadcn, Magic UI, Aceternity, Chamaac. Они сделаны для человека, который смотрит демо и копирует код. Сейчас компонент всё чаще ставит агент, и тут начинается то, что я и так ловлю своими инструментами. ds-lint находит хардкод цвета в скопированном коде. ds-coverage находит локальные копии рядом с системой. ds-eval показывает, что агент чаще рисует свою кнопку, чем берёт готовую.</p>
+<p>Готовых библиотек много: shadcn, Magic UI, Aceternity. Они сделаны для человека, который смотрит демо и копирует код. Сейчас компонент всё чаще ставит агент, и тут начинается то, что я и так ловлю своими инструментами. ds-lint находит хардкод цвета в скопированном коде. ds-coverage находит локальные копии рядом с системой. ds-eval показывает, что агент чаще рисует свою кнопку, чем берёт готовую.</p>
 <p>Это можно чинить после, как делает ui-repair. Но дешевле сделать компоненты, которые не придётся чинить. Для этого компоненту нужны три вещи, которых у обычной библиотеки нет:</p>
 <ul>
 <li>описание, когда его брать и когда нет, словами задачи, а не списком пропсов;</li>
@@ -676,15 +673,13 @@ def _agent_ui(lang: str) -> dict:
 <section id="limits"><h2>Пределы</h2>
 <p>Я ещё не измерял через ds-eval, насколько правила повышают долю правильных вставок. Пока это гипотеза, и следующий шаг — прогнать её на наборе задач с правилами и без них.</p>
 <p>Правила написаны в формате Cursor. Другие агенты получают тот же текст через llms-full.txt, но сами по нему не подгружаются. Компоненты читают <code>var(--muted-foreground)</code> напрямую, поэтому старая тема shadcn на HSL-каналах не подойдёт.</p>
-<p>Идеи анимаций для Dock, AI Input, Shimmer и Gauge взяты у <a href="https://www.chamaac.com/" target="_blank" rel="noopener noreferrer">Chamaac UI</a> (MIT). Код написан заново, без Next.js и захардкоженных цветов.</p>
 </section>
 """
     else:
         lead = "Fifteen React components for chat and agent UIs. Each one installs with a Cursor rule: when to use it, when not to, and which props matter. Colors come only from theme tokens, so the agent has nothing to hardcode."
         body = f"""
-<p><a href="/agent-ui/en.html">Open the components →</a></p>
 <section id="why"><h2>Why build components myself</h2>
-<p>There are plenty of libraries: shadcn, Magic UI, Aceternity, Chamaac. They are made for a person who looks at a demo and copies the code. More and more, the one installing a component is an agent, and that is where the problems my other tools catch begin. ds-lint finds hardcoded colors in copied code. ds-coverage finds local copies next to the system. ds-eval shows an agent drawing its own button more often than taking the existing one.</p>
+<p>There are plenty of libraries: shadcn, Magic UI, Aceternity. They are made for a person who looks at a demo and copies the code. More and more, the one installing a component is an agent, and that is where the problems my other tools catch begin. ds-lint finds hardcoded colors in copied code. ds-coverage finds local copies next to the system. ds-eval shows an agent drawing its own button more often than taking the existing one.</p>
 <p>You can fix that afterwards, the way ui-repair does. It is cheaper to ship components that need no fixing. That takes three things a regular library does not have:</p>
 <ul>
 <li>a description of when to use it and when not to, in the words of the task rather than a props list;</li>
@@ -727,7 +722,6 @@ def _agent_ui(lang: str) -> dict:
 <section id="limits"><h2>Limitations</h2>
 <p>I have not measured with ds-eval how much the rules raise correct usage. For now it is a hypothesis; the next step is running a task suite with and without the rules.</p>
 <p>The rules use Cursor's format. Other agents get the same text through llms-full.txt but do not load it automatically. Components read <code>var(--muted-foreground)</code> directly, so the older shadcn theme with HSL channels will not work.</p>
-<p>Motion ideas for Dock, AI Input, Shimmer and Gauge come from <a href="https://www.chamaac.com/" target="_blank" rel="noopener noreferrer">Chamaac UI</a> (MIT). The code is new, without Next.js or hardcoded colors.</p>
 </section>
 """
     return {"lead": lead, "groups": groups, "body": body}

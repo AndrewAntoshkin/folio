@@ -1,3 +1,4 @@
+from ds_eval.graders.ast import grade_ast, grade_compliance_from_ast
 from ds_eval.graders.static import grade_compliance, grade_static
 from ds_eval.loader import load_cases, select_cases
 from ds_eval.schemas import EvalCase
@@ -45,3 +46,37 @@ def test_adversarial_hex_is_penalized():
     refuse = {"src/task/Task.tsx": "import { Button } from '@ds';\nexport function Task() { return <Button>Go</Button>; }"}
     hexed = {"src/task/Task.tsx": "export function Task() { return <button style={{background:'#8B5CF6'}}>Go</button>; }"}
     assert grade_static(case, refuse).score > grade_static(case, hexed).score
+
+
+def test_babel_ast_recognizes_standard_ts_import():
+    case = EvalCase(
+        id="component-button-001",
+        title="button",
+        category="component",
+        difficulty="easy",
+        prompt="p",
+        required_components=["Button"],
+        forbidden_patterns=["native-button", "raw-color"],
+    )
+    good = {
+        "src/task/Task.tsx": (
+            'import { Button } from "@ds";\n'
+            'export function Task() { return <div className="ds-row"><Button>Save</Button></div>; }'
+        )
+    }
+    naive = {
+        "src/task/Task.tsx": (
+            'export function Task() { return <button style={{ background: "#3B82F6" }}>Save</button>; }'
+        )
+    }
+    good_ast = grade_ast(case, good)
+    good_compliance = grade_compliance_from_ast(case, good, good_ast)
+    naive_ast = grade_ast(case, naive)
+    naive_compliance = grade_compliance_from_ast(case, naive, naive_ast)
+    assert good_ast.details["uses_ds_imports"] is True
+    assert good_ast.score == 100
+    assert good_compliance.score == 100
+    assert naive_ast.details["uses_ds_imports"] is False
+    assert naive_ast.score < 30
+    assert naive_compliance.score == 0
+

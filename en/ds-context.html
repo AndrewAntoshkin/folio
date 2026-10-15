@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en" class="nojs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ds-context — Andrew Antoshkin</title>
+  <meta name="description" content="A model misses the design system when the context is wrong: nothing, or the entire Storybook. ds-context turns a local folder into a short pack and shows what each packing strategy costs in tokens.">
+  <meta property="og:title" content="ds-context — Andrew Antoshkin">
+  <meta property="og:description" content="A model misses the design system when the context is wrong: nothing, or the entire Storybook. ds-context turns a local folder into a short pack and shows what each packing strategy costs in tokens.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
+  <script>document.documentElement.classList.remove('nojs')</script>
+  <link rel="stylesheet" href="/style.css?v=28">
+</head>
+<body>
+
+<div class="dock"><nav aria-label="Navigation"><i aria-hidden="true"></i><a href="/en" aria-label="Home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg></a><a href="/en/projects" aria-label="Projects" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 13h16"/></svg></a><a href="/en/writing" aria-label="Writing"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M14 5.5 18.5 10 9 19.5H4.5V15L14 5.5Z"/><path d="m12 7.5 4.5 4.5"/></svg></a><a href="/en/approach" aria-label="Approach"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.25"/><path d="M5.5 19.5c1.2-3 3.4-4.5 6.5-4.5s5.3 1.5 6.5 4.5"/></svg></a><a href="/en/collab" aria-label="Contact"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></nav><a class="lang" href="/ds-context" aria-label="Русский">Ru</a></div>
+<a class="float" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Say hello<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+<main><div class="col"><article class="art">
+  <header class="art-top">
+    <a class="back" href="/en/projects" data-r>‹ Back</a>
+    <h1 data-split>ds-context</h1>
+    <div class="tags" data-r style="--d:.25s"><span class="tag">Context</span><span class="tag">open source</span></div>
+  </header>
+  <div class="art-intro" data-r style="--d:.3s"><p>A model misses the design system when the context is wrong: nothing, or the entire Storybook. ds-context turns a local folder into a short pack and shows what each packing strategy costs in tokens.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="https://github.com/AndrewAntoshkin/ds-context" target="_blank" rel="noopener">Repository on GitHub</a></div></div>
+  <div class="prose"><div class="pcover "><div class="bg" style="background-image:url(/img/gen/ds-context.jpg)"></div><span class="plogo">ds-context</span></div><section id="why"><h2>Why</h2><p>An agent drifts off the system for two different reasons. Sometimes it receives no spec. Sometimes it receives every token and every example at once. In the first case it invents a Button. In the second it drowns.</p><p>ds-context sits in front of the model. It builds the pack you can hand to Claude or Codex and then measure with <a href="/en/ds-eval">ds-eval</a>.</p></section><section id="inputs"><h2>Input</h2><p>The MVP reads a folder. It does not crawl Storybook or call the Figma API. A Figma file arrives as markdown, for example from figma-to-design-md. The Acme fixture is five files:</p><pre><code>fixtures/acme/
+  tokens.css
+  components.json
+  patterns.md
+  anti-patterns.md
+  examples.md
+  dist/
+    design-system.md
+    components.md
+    patterns.md
+    anti-patterns.md
+    examples.md
+    manifest.json</code></pre><p><code>tokens.css</code> is the scale a later repair checks against.</p><pre><code>:root {
+  --color-accent: #8B5CF6;
+  --color-text: #212223;
+  --color-surface: #ffffff;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --radius-2: 8px;
+  --font-size-body: 14px;
+}</code></pre><p><code>components.json</code> holds the name, props, example, and what to avoid. The example is copied into the pack only for the full strategy.</p><pre><code>[
+  {
+    &quot;name&quot;: &quot;Button&quot;,
+    &quot;props&quot;: [&quot;variant&quot;, &quot;size&quot;, &quot;children&quot;],
+    &quot;example&quot;: &quot;&lt;Button variant=\&quot;primary\&quot;&gt;Save&lt;/Button&gt;&quot;,
+    &quot;avoid&quot;: &quot;A raw &lt;button&gt; with an inline background.&quot;
+  },
+  {
+    &quot;name&quot;: &quot;Input&quot;,
+    &quot;props&quot;: [&quot;label&quot;, &quot;hint&quot;, &quot;error&quot;],
+    &quot;example&quot;: &quot;&lt;Input label=\&quot;Email\&quot; /&gt;&quot;,
+    &quot;avoid&quot;: &quot;An unlabeled &lt;input&gt;.&quot;
+  },
+  {
+    &quot;name&quot;: &quot;Dialog&quot;,
+    &quot;props&quot;: [&quot;open&quot;, &quot;title&quot;, &quot;onClose&quot;],
+    &quot;example&quot;: &quot;&lt;Dialog open title=\&quot;Delete account\&quot; /&gt;&quot;,
+    &quot;avoid&quot;: &quot;A &lt;div className=\&quot;modal\&quot;&gt; with a hand-rolled overlay.&quot;
+  },
+  {
+    &quot;name&quot;: &quot;Select&quot;,
+    &quot;props&quot;: [&quot;label&quot;, &quot;options&quot;, &quot;value&quot;],
+    &quot;example&quot;: &quot;&lt;Select label=\&quot;Country\&quot; options={countries} /&gt;&quot;,
+    &quot;avoid&quot;: &quot;A native &lt;select&gt; when the system Select exists.&quot;
+  }
+]</code></pre><p>Three markdown files set the patterns, the bans, and short screen examples.</p><pre><code># Patterns
+
+## Destructive confirm
+Ask for confirmation before a delete. Use Dialog, name the object, and make the confirm button the danger variant.
+
+## Empty state
+Show one next action. Do not invent a second illustration style.
+
+## Settings
+Group fields by task. Use Input with a label. Actions sit in the page footer, not inside the form card.</code></pre><pre><code># Anti-patterns
+
+- Do not hardcode #8B5CF6. Use var(--color-accent).
+- Do not build a modal from a positioned div.
+- Do not add a button with no accessible name.
+- Do not pick 13px of padding. Use the space scale.</code></pre><pre><code># Examples
+
+A settings page uses Input for the name and email, Select for the country, and Button for save.
+A delete flow opens Dialog. The confirm action is variant=&quot;danger&quot;. The close control has an accessible name.
+Empty lists use the empty-state pattern: one sentence and one Button.</code></pre></section><section id="run"><h2>Run</h2><pre><code>python3 ds-context/ds_context.py build ds-context/fixtures/acme</code></pre><p>The command writes the pack to <code>ds-context/fixtures/acme/dist</code>. Offline. No keys and no model call. On this fixture it prints:</p><pre><code>source  ds-context/fixtures/acme
+out     ds-context/fixtures/acme/dist
+pack    files
+        design-system.md   ~ 292 tokens
+        components.md      ~ 160 tokens
+        patterns.md        ~  87 tokens
+        anti-patterns.md   ~  54 tokens
+        examples.md        ~  72 tokens
+strategies (estimate, ~4 chars/token, manifest excluded)
+        full         ~ 665
+        compact      ~ 375
+        components   ~ 180</code></pre></section><section id="output"><h2>Output</h2><p><code>design-system.md</code> is the file you can put in context whole. The full strategy inlines patterns, anti-patterns, and examples. The separate files in <code>dist/</code> repeat the source markdown.</p><pre><code># Design system
+
+Components: Button, Input, Dialog, Select.
+
+## Tokens
+
+| Token | Value |
+| --- | --- |
+| `--color-accent` | #8B5CF6 |
+| `--color-text` | #212223 |
+| `--color-surface` | #ffffff |
+| `--space-2` | 8px |
+| `--space-3` | 12px |
+| `--space-4` | 16px |
+| `--radius-2` | 8px |
+| `--font-size-body` | 14px |
+
+# Patterns
+
+## Destructive confirm
+Ask for confirmation before a delete. Use Dialog, name the object, and make the confirm button the danger variant.
+
+## Empty state
+Show one next action. Do not invent a second illustration style.
+
+## Settings
+Group fields by task. Use Input with a label. Actions sit in the page footer, not inside the form card.
+
+# Anti-patterns
+
+- Do not hardcode #8B5CF6. Use var(--color-accent).
+- Do not build a modal from a positioned div.
+- Do not add a button with no accessible name.
+- Do not pick 13px of padding. Use the space scale.
+
+# Examples
+
+A settings page uses Input for the name and email, Select for the country, and Button for save.
+A delete flow opens Dialog. The confirm action is variant=&quot;danger&quot;. The close control has an accessible name.
+Empty lists use the empty-state pattern: one sentence and one Button.</code></pre><p><code>components.md</code> is the API. The example and the Avoid line come from the JSON.</p><pre><code># Component API
+
+### Button
+
+Props: `variant`, `size`, `children`
+
+Example:
+
+```jsx
+&lt;Button variant=&quot;primary&quot;&gt;Save&lt;/Button&gt;
+```
+
+Avoid: A raw &lt;button&gt; with an inline background.
+
+### Input
+
+Props: `label`, `hint`, `error`
+
+Example:
+
+```jsx
+&lt;Input label=&quot;Email&quot; /&gt;
+```
+
+Avoid: An unlabeled &lt;input&gt;.
+
+### Dialog
+
+Props: `open`, `title`, `onClose`
+
+Example:
+
+```jsx
+&lt;Dialog open title=&quot;Delete account&quot; /&gt;
+```
+
+Avoid: A &lt;div className=&quot;modal&quot;&gt; with a hand-rolled overlay.
+
+### Select
+
+Props: `label`, `options`, `value`
+
+Example:
+
+```jsx
+&lt;Select label=&quot;Country&quot; options={countries} /&gt;
+```
+
+Avoid: A native &lt;select&gt; when the system Select exists.</code></pre></section><section id="strategies"><h2>Strategies</h2><p>The size estimate is about 4 characters per token. It is not the Claude tokenizer. The manifest is excluded from the total. On the Acme fixture:</p><table><thead><tr><th>Strategy</th><th>Estimate</th><th>Contents</th></tr></thead><tbody><tr><td>full</td><td>~665</td><td>Tokens, API with examples, patterns, anti-patterns, and screen examples</td></tr><tr><td>compact</td><td>~375</td><td>Tokens, API without examples, and anti-patterns. No separate examples.md</td></tr><tr><td>components</td><td>~180</td><td>Overview with tokens and the API only. No patterns or examples</td></tr></tbody></table><p>Full pack by file:</p><table><thead><tr><th>File</th><th>Estimate</th></tr></thead><tbody><tr><td><code>design-system.md</code></td><td>~292</td></tr><tr><td><code>components.md</code></td><td>~160</td></tr><tr><td><code>patterns.md</code></td><td>~87</td></tr><tr><td><code>anti-patterns.md</code></td><td>~54</td></tr><tr><td><code>examples.md</code></td><td>~72</td></tr></tbody></table></section><section id="manifest"><h2>Manifest</h2><p>The manifest is for the next step in the loop: pick a strategy under a token budget and pass only those files to the model. Component and token names are listed so <a href="/en/ui-repair">ui-repair</a> and <a href="/en/ds-eval">ds-eval</a> can check against the same source.</p><pre><code>{
+  &quot;strategy&quot;: &quot;full&quot;,
+  &quot;source&quot;: &quot;ds-context/fixtures/acme&quot;,
+  &quot;components&quot;: [
+    &quot;Button&quot;,
+    &quot;Input&quot;,
+    &quot;Dialog&quot;,
+    &quot;Select&quot;
+  ],
+  &quot;tokens&quot;: [
+    &quot;--color-accent&quot;,
+    &quot;--color-text&quot;,
+    &quot;--color-surface&quot;,
+    &quot;--space-2&quot;,
+    &quot;--space-3&quot;,
+    &quot;--space-4&quot;,
+    &quot;--radius-2&quot;,
+    &quot;--font-size-body&quot;
+  ],
+  &quot;files&quot;: {
+    &quot;design-system.md&quot;: 292,
+    &quot;components.md&quot;: 160,
+    &quot;patterns.md&quot;: 87,
+    &quot;anti-patterns.md&quot;: 54,
+    &quot;examples.md&quot;: 72
+  },
+  &quot;tokens_total&quot;: 665
+}</code></pre></section><section id="chain"><h2>How it relates to the other tools</h2><p>The tools run independently, each covering one part of the same problem: <code>ds-context</code> packs the system into a compact context, <a href="/en/ui-repair">ui-repair</a> fixes common violations against the same tokens, <a href="/en/ds-eval">ds-eval</a> grades the built screen, and <a href="/en/prompt-regress">prompt-regress</a> diffs two runs after a prompt change.</p></section><section id="limits"><h2>Limit</h2><p>The tool does not open Storybook or Figma. It does not choose a slice of the pack for one screen: the strategies are global. The token estimate is for comparing packs, not for an API bill.</p></section></div>
+</article></div></main>
+  <section class="cta" data-r>
+    <div class="cta-grid">
+      <div class="cta-card">
+        <div class="shader" aria-hidden="true"></div>
+        <div class="mid"><h2>Have a design engineering challenge?</h2></div>
+        <div class="bot"><p>Let's talk.</p></div>
+      </div>
+      <form class="cta-form" data-subject="Collaboration">
+        <input name="name" required placeholder="Name" autocomplete="name">
+        <input name="email" type="email" required placeholder="Email" autocomplete="email">
+        <textarea name="question" required placeholder="A few words about the task"></textarea>
+        <button type="submit">Write</button>
+      </form>
+    </div>
+    </section>
+  <footer class="foot">
+    <div class="foot-in">
+      <p class="foot-mark">antoshkin.tech</p>
+      <div class="foot-copy">
+        <p class="foot-lead">Want to discuss a project?<br>Tell me about the task and how I can help.</p>
+        <a class="foot-mail" href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
+      </div>
+    </div>
+  </footer>
+  <script src="/motion.js?v=4"></script>
+</body></html>

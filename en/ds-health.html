@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" class="nojs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ds-health — Andrew Antoshkin</title>
+  <meta name="description" content="Paste a URL, get a design system health report. Analyzes colors, typography, spacing, and radius on any live website using a real browser.">
+  <meta property="og:title" content="ds-health — Andrew Antoshkin">
+  <meta property="og:description" content="Paste a URL, get a design system health report. Analyzes colors, typography, spacing, and radius on any live website using a real browser.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
+  <script>document.documentElement.classList.remove('nojs')</script>
+  <link rel="stylesheet" href="/style.css?v=28">
+</head>
+<body>
+
+<div class="dock"><nav aria-label="Navigation"><i aria-hidden="true"></i><a href="/en" aria-label="Home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg></a><a href="/en/projects" aria-label="Projects" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 13h16"/></svg></a><a href="/en/writing" aria-label="Writing"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M14 5.5 18.5 10 9 19.5H4.5V15L14 5.5Z"/><path d="m12 7.5 4.5 4.5"/></svg></a><a href="/en/approach" aria-label="Approach"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.25"/><path d="M5.5 19.5c1.2-3 3.4-4.5 6.5-4.5s5.3 1.5 6.5 4.5"/></svg></a><a href="/en/collab" aria-label="Contact"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></nav><a class="lang" href="/ds-health" aria-label="Русский">Ru</a></div>
+<a class="float" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Say hello<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+<main><div class="col"><article class="art">
+  <header class="art-top">
+    <a class="back" href="/en/projects" data-r>‹ Back</a>
+    <h1 data-split>ds-health</h1>
+    <div class="tags" data-r style="--d:.25s"><span class="tag">Web tool</span><span class="tag">open source</span></div>
+  </header>
+  <div class="art-intro" data-r style="--d:.3s"><p>Paste a URL, get a design system health report. Analyzes colors, typography, spacing, and radius on any live website using a real browser.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="https://github.com/AndrewAntoshkin/ds-health" target="_blank" rel="noopener">Repository on GitHub</a></div></div>
+  <div class="prose"><div class="pcover "><div class="bg" style="background-image:url(/img/gen/ds-health.jpg)"></div><span class="plogo">ds-health</span></div><section id="measures"><h2>What It Measures</h2>
+<ul class="feature-list"><li><strong>Colors</strong><span>How many text and background colors exist. Rewards fewer unique values and CSS variable usage.</span></li><li><strong>Typography</strong><span>Font families, sizes, and weights in visible text. Fewer means more controlled.</span></li><li><strong>Spacing</strong><span>How many distinct padding and gap values appear. Converging to a scale is ideal.</span></li><li><strong>Radius</strong><span>Distinct non-zero border-radius values. Fewer = more consistent corners.</span></li></ul></section>
+<section id="run"><h2>Run Locally</h2>
+<pre><code>git clone https://github.com/AndrewAntoshkin/ds-health.git
+cd ds-health
+npm install
+npm start</code></pre>
+<p>Open <code>http://localhost:3000</code>. If the port is busy:</p>
+<pre><code>PORT=3002 npm start</code></pre>
+<p>If Playwright can't find a browser:</p>
+<pre><code>npx playwright install chromium</code></pre></section>
+<section id="how"><h2>How It Works</h2>
+<p>The tool loads the page in a real Chromium browser (via Playwright), samples visible elements, reads their computed styles, and generates a health report with scores, signals, and recommendations.</p>
+<pre><code>URL → Playwright (Chromium) → getComputedStyle() on sampled elements
+→ Count unique colors, fonts, spacing, radii
+→ Score each category (0–100)
+→ Generate executive summary + priorities + recommendations</code></pre></section>
+<section id="api"><h2>API</h2>
+<h3>POST /api/analyze</h3>
+<pre><code>curl -X POST http://localhost:3000/api/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"url": "https://example.com"}'</code></pre>
+<h3>Request</h3>
+<table><thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>url</td><td>string</td><td>Public HTTP/HTTPS URL to analyze</td></tr></tbody></table>
+<h3>Response</h3>
+<table><thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>health.overall</td><td>number</td><td>0–100 average score</td></tr><tr><td>health.color</td><td>number</td><td>Color consistency score</td></tr><tr><td>health.typography</td><td>number</td><td>Typography consistency score</td></tr><tr><td>health.spacing</td><td>number</td><td>Spacing consistency score</td></tr><tr><td>health.radius</td><td>number</td><td>Radius consistency score</td></tr><tr><td>health.label</td><td>string</td><td>"Healthy", "Mostly consistent", etc.</td></tr><tr><td>executiveSummary</td><td>string</td><td>Plain-English interpretation</td></tr><tr><td>priorities</td><td>array</td><td>What to fix first</td></tr><tr><td>recommendations</td><td>array</td><td>Actionable next steps</td></tr><tr><td>signals</td><td>array</td><td>Individual observations</td></tr><tr><td>topValues</td><td>object</td><td>Most common values per category</td></tr></tbody></table>
+<h3>GET /health</h3>
+<p>Returns <code>{ "ok": true }</code> — use for uptime checks.</p></section>
+<section id="healthy"><h2>Healthy Site Example</h2>
+<p>Result from analyzing <code>barvian.me</code> — a disciplined, minimalist site:</p>
+<table><thead><tr><th>Score</th><th>Meaning</th></tr></thead><tbody><tr><td>100</td><td>Color</td></tr><tr><td>100</td><td>Typography</td></tr><tr><td>100</td><td>Spacing</td></tr><tr><td>100</td><td>Radius</td></tr></tbody></table>
+<pre><code>{
+"elementsSampled": 69,
+"textNodesSampled": 41,
+"cssVariables": 4,
+"textColors": 3,
+"backgroundColors": 3,
+"fontFamilies": 1,
+"fontSizes": 1,
+"fontWeights": 2,
+"spacingValues": 4,
+"radiusValues": 1
+}
+
+Executive summary:
+"This page looks healthy. 4 CSS variables were
+detected, and no major consistency issues stood
+out in the sampled page."</code></pre></section>
+<section id="fragmented"><h2>Fragmented Site Example</h2>
+<p>A page with many competing values — typical of legacy UIs or rapid prototyping:</p>
+<table><thead><tr><th>Score</th><th>Meaning</th></tr></thead><tbody><tr><td>65</td><td>Color</td></tr><tr><td>45</td><td>Typography</td></tr><tr><td>70</td><td>Spacing</td></tr><tr><td>90</td><td>Radius</td></tr></tbody></table>
+<pre><code>Priority issues:
+⚠ 14 text colors detected — consider consolidating
+⚠ 4 font families in use — reduce to 1–2
+⚠ 8 font sizes found — align to a type scale
+⚠ No CSS variables detected — consider tokenizing
+
+Recommendations:
+→ Audit text colors and create a semantic palette
+→ Standardize on 1–2 font families
+→ Define a spacing scale (4, 8, 12, 16, 24, 32)
+→ Introduce CSS custom properties for tokens</code></pre></section>
+<section id="report"><h2>Reading Reports</h2>
+<p>The most useful pattern: <strong>score first</strong>, then summary, then priorities, then supporting values.</p>
+<table><thead><tr><th>Section</th><th>What it tells you</th></tr></thead><tbody><tr><td>Overall health</td><td>Average of 4 category scores — quick pass/fail signal</td></tr><tr><td>Executive summary</td><td>Plain-English conclusion for stakeholders</td></tr><tr><td>Priority issues</td><td>What's worth fixing first — biggest impact items</td></tr><tr><td>Recommendations</td><td>Practical cleanup steps you can assign to a sprint</td></tr><tr><td>Signals</td><td>Individual observations — raw evidence behind the score</td></tr><tr><td>Top values</td><td>Most common colors/sizes/spacing — where consolidation helps most</td></tr><tr><td>Normalized groups</td><td>Near-identical values collapsed into cleaner buckets</td></tr></tbody></table></section>
+<section id="scores"><h2>Score Guide</h2>
+<table><thead><tr><th>Range</th><th>Label</th><th>Meaning</th></tr></thead><tbody><tr><td>90–100</td><td>Healthy</td><td>Tightly controlled — few colors, restrained typography, small spacing set</td></tr><tr><td>70–89</td><td>Mostly consistent</td><td>Some fragmentation or a few one-off values</td></tr><tr><td>50–69</td><td>Needs attention</td><td>Visual system may be drifting — needs a closer look</td></tr><tr><td>0–49</td><td>Fragmented</td><td>Too many competing values — likely no token layer</td></tr></tbody></table></section>
+<p><a href="https://github.com/AndrewAntoshkin/ds-health" target="_blank" rel="noopener noreferrer">Source</a></p></div>
+</article></div></main>
+  <section class="cta" data-r>
+    <div class="cta-grid">
+      <div class="cta-card">
+        <div class="shader" aria-hidden="true"></div>
+        <div class="mid"><h2>Have a design engineering challenge?</h2></div>
+        <div class="bot"><p>Let's talk.</p></div>
+      </div>
+      <form class="cta-form" data-subject="Collaboration">
+        <input name="name" required placeholder="Name" autocomplete="name">
+        <input name="email" type="email" required placeholder="Email" autocomplete="email">
+        <textarea name="question" required placeholder="A few words about the task"></textarea>
+        <button type="submit">Write</button>
+      </form>
+    </div>
+    </section>
+  <footer class="foot">
+    <div class="foot-in">
+      <p class="foot-mark">antoshkin.tech</p>
+      <div class="foot-copy">
+        <p class="foot-lead">Want to discuss a project?<br>Tell me about the task and how I can help.</p>
+        <a class="foot-mail" href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
+      </div>
+    </div>
+  </footer>
+  <script src="/motion.js?v=4"></script>
+</body></html>

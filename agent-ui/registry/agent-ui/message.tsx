@@ -27,7 +27,7 @@ export function Message({ role, children, streaming, actions, className }: Messa
       <div
         className={cn(
           "text-sm leading-6 text-foreground",
-          isUser ? "max-w-xl rounded-3xl bg-muted px-4 py-2" : "w-full",
+          isUser ? "max-w-md rounded-2xl bg-muted px-4 py-2.5" : "w-full",
         )}
       >
         {children}

@@ -28,7 +28,7 @@ export function Suggestions({ items, onSelect, className }: SuggestionsProps) {
             <button
               type="button"
               onClick={() => onSelect(value)}
-              className="rounded-full border border-border bg-background px-3.5 py-1.5 text-sm text-foreground transition-colors hover:bg-muted active:scale-95"
+              className="rounded-full bg-muted px-3.5 py-1.5 text-sm text-foreground transition-all hover:bg-accent active:scale-95"
             >
               {label}
             </button>

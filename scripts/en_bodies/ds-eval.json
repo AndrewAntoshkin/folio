@@ -1,0 +1,3 @@
+{
+  "lead": "An agent writing an interface often draws the button and the color itself, even when the design system already has a component. ds-eval exists to catch that: one task, two answers, and a check of whether the answer used the system component. Below is one published run, and which of its numbers can be trusted."
+}

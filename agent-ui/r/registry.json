@@ -201,7 +201,9 @@
       "type": "registry:component",
       "title": "Answer Chart",
       "description": "One bar or line series, up to eight points, colored with the primary token.",
-      "dependencies": [],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [
         "utils"
       ],

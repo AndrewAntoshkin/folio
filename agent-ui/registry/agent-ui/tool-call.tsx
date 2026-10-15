@@ -52,8 +52,8 @@ export function ToolCall({
   return (
     <div
       className={cn(
-        "w-full shrink-0 overflow-hidden rounded-2xl border bg-card text-card-foreground",
-        status === "error" ? "border-destructive/40" : "border-border",
+        "w-full shrink-0 overflow-hidden rounded-2xl bg-muted/60 text-foreground",
+        status === "error" && "border border-destructive/40 bg-destructive/10",
         className,
       )}
       data-status={status}
@@ -102,7 +102,7 @@ export function ToolCall({
             <div className="flex flex-col gap-3 border-t border-border px-3 py-3">
               {input !== undefined && (
                 <Section title={labels.inputTitle}>
-                  <pre className="overflow-x-auto rounded-lg bg-muted p-2.5 font-mono text-xs leading-5 text-foreground">
+                  <pre className="overflow-x-auto rounded-lg bg-background p-2.5 font-mono text-xs leading-5 text-foreground">
                     {typeof input === "string" ? input : JSON.stringify(input, null, 2)}
                   </pre>
                 </Section>
@@ -110,7 +110,7 @@ export function ToolCall({
               {output !== undefined && (
                 <Section title={labels.outputTitle}>
                   {typeof output === "string" ? (
-                    <pre className="overflow-x-auto rounded-lg bg-muted p-2.5 font-mono text-xs leading-5 text-foreground">
+                    <pre className="overflow-x-auto rounded-lg bg-background p-2.5 font-mono text-xs leading-5 text-foreground">
                       {output}
                     </pre>
                   ) : (

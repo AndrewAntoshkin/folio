@@ -100,10 +100,10 @@ export const copy = {
     light: t("Светлая тема", "Light theme"),
     dark: t("Тёмная тема", "Dark theme"),
     lang: t("EN", "RU"),
-    langHref: t("/agent-ui/en.html", "/agent-ui/"),
-    whyHref: t("/agent-ui.html", "/agent-ui-en.html"),
-    projectsHref: t("/projects.html", "/projects-en.html"),
-    homeHref: t("/index.html", "/en.html"),
+    langHref: t("/agent-ui/en", "/agent-ui/"),
+    whyHref: t("/agent-ui", "/en/agent-ui"),
+    projectsHref: t("/projects", "/en/projects"),
+    homeHref: t("/", "/en"),
   },
   hero: {
     title: t(
@@ -113,11 +113,6 @@ export const copy = {
     lead: t(
       "Пятнадцать React-компонентов для чатов и агентов. Каждый ставится вместе с правилом для Cursor: когда его брать, когда нет и какие пропсы важны. Цвета только из токенов темы — агенту нечего захардкодить.",
       "Fifteen React components for chat and agent UIs. Each one installs together with a Cursor rule that says when to use it, when not to, and which props matter. They use only theme tokens, so a coding agent can't drift into hardcoded colors.",
-    ),
-    pointFiles: t("в одной установке", "in one install"),
-    pointLlms: t(
-      "чтобы агент нашёл библиотеку без установки",
-      "so an agent can find the library without installing it",
     ),
     pointLint: t(
       "Сборка падает на hex, палитре и произвольных значениях. Поменяли токены — все компоненты следуют:",
@@ -181,7 +176,6 @@ export const copy = {
   footer: {
     by: t("от", "by"),
     why: t("Зачем я делаю это сам", "Why I built it"),
-    motion: t("Идеи движения из", "Motion ideas from"),
   },
   demo: {
     title: t("Живое демо: агент убирает захардкоженные цвета", "Live demo: an agent fixing hardcoded colors"),
@@ -191,6 +185,9 @@ export const copy = {
     s1: t("Убрать захардкоженные цвета", "Fix hardcoded colors"),
     s2: t("Заменить отступы на токены", "Swap spacing for tokens"),
     s3: t("Проверить использование кнопок", "Audit the button usage"),
+    s1Short: t("Цвета", "Colors"),
+    s2Short: t("Отступы", "Spacing"),
+    s3Short: t("Кнопки", "Buttons"),
     prompt: t(
       "Найди захардкоженные цвета на странице настроек и замени их токенами",
       "Find hardcoded colors on the settings page and replace them with tokens",
@@ -199,32 +196,66 @@ export const copy = {
       "Замени сырые пиксельные отступы на странице настроек токенами spacing",
       "Replace raw pixel spacing on the settings page with spacing tokens",
     ),
+    prompt3: t(
+      "Проверь, где на странице настроек используются сырые <button> вместо компонента Button",
+      "Check where the settings page uses raw <button> elements instead of the Button component",
+    ),
     thinking: t(
       "Пользователь хочет замену на токены, а не редизайн. Сначала найти литеральные цвета, потом прочитать файл и сопоставить каждый с ближайшим семантическим токеном.",
       "The user wants token replacements, not a redesign. Find literal colors first, then read the file to map each one to the closest semantic token.",
     ),
+    thinking2: t(
+      "Ищу произвольные классы вроде p-[18px] и gap-[14px], чтобы заменить их на стандартную шкалу отступов темы.",
+      "Scanning for arbitrary spacing classes like p-[18px] and gap-[14px] to map them onto the theme spacing scale.",
+    ),
+    thinking3: t(
+      "Проверю JSX в SettingsPage.tsx на нативные <button> и сверю их пропсы с API компонента Button из системы.",
+      "Checking JSX in SettingsPage.tsx for native <button> elements and mapping their props to the design system Button API.",
+    ),
     step1: t("Ищу hex-цвета", "Searching for hex colors"),
+    step1Spacing: t("Ищу произвольные отступы", "Searching for arbitrary spacing"),
+    step1Buttons: t("Ищу нативные <button>", "Searching for raw <button> tags"),
     step2: t("Читаю SettingsPage.tsx", "Reading SettingsPage.tsx"),
     step3: t("Прошу разрешить правку файла", "Asking to edit the file"),
     step4: t("Меняю 6 значений на токены", "Replacing 6 values with tokens"),
+    step4Spacing: t("Меняю 4 отступа на шкалу", "Replacing 4 spacing values"),
+    step4Buttons: t("Меняю 2 кнопки на <Button>", "Replacing 2 buttons with <Button>"),
     step5: t("Кратко рассказываю, что изменилось", "Summarizing the change"),
     approvalTitle: t("Изменить файл", "Edit a file"),
     approvalDesc: t(
       "Заменить литеральные цвета на text-muted-foreground, border-border и bg-primary.",
       "Replace literal colors with text-muted-foreground, border-border and bg-primary.",
     ),
+    approvalDesc2: t(
+      "Заменить p-[18px], gap-[14px] и mt-[22px] на p-4, gap-3.5 и mt-6.",
+      "Replace p-[18px], gap-[14px], and mt-[22px] with p-4, gap-3.5, and mt-6.",
+    ),
+    approvalDesc3: t(
+      "Заменить 2 нативных <button> на компонент <Button> из дизайн-системы.",
+      "Replace 2 native <button> elements with the design system <Button> component.",
+    ),
     answerOk: t(
       "Заменил 6 захардкоженных значений в SettingsPage.tsx на токены темы: 4 цвета текста теперь text-muted-foreground, разделитель — border-border, кнопка сохранения — bg-primary. ds-lint по файлу: 0 нарушений.",
       "Replaced 6 hardcoded values in SettingsPage.tsx with theme tokens: 4 text colors now use text-muted-foreground, the divider uses border-border, and the save button uses bg-primary. ds-lint reports 0 violations for the file.",
     ),
+    answerOk2: t(
+      "Заменил 4 произвольных отступа в SettingsPage.tsx на токены шкалы: p-4, gap-3.5 и mt-6. Сетка страницы теперь выровнена по шагу 4px, ds-lint: 0 нарушений.",
+      "Replaced 4 arbitrary spacing classes in SettingsPage.tsx with scale tokens: p-4, gap-3.5, and mt-6. The layout now aligns to the 4px grid with 0 ds-lint violations.",
+    ),
+    answerOk3: t(
+      "Заменил 2 сырых <button> в SettingsPage.tsx на <Button variant=\"secondary\"> и <Button variant=\"destructive\">. Фокус-кольца и состояния disabled теперь идут из системы.",
+      "Replaced 2 raw <button> elements in SettingsPage.tsx with <Button variant=\"secondary\"> and <Button variant=\"destructive\">. Focus rings and disabled states now come from the system.",
+    ),
     answerNo: t(
-      "Ок, SettingsPage.tsx не трогал. 6 совпадений перечислены в результате grep выше.",
-      "Okay, I left SettingsPage.tsx unchanged. The 6 matches are listed in the grep result above.",
+      "Ок, SettingsPage.tsx не трогал. Совпадения перечислены в результате grep выше.",
+      "Okay, I left SettingsPage.tsx unchanged. The matches are listed in the grep result above.",
     ),
     dockDone: t("Страница настроек на токенах", "Settings page uses tokens"),
     dockRun: t("Убрать захардкоженные цвета", "Fix hardcoded colors"),
     stopped: t("Остановлено пользователем", "Stopped by user"),
     matches: t("SettingsPage.tsx: 6 совпадений", "SettingsPage.tsx: 6 matches"),
+    matches2: t("SettingsPage.tsx: 4 совпадения", "SettingsPage.tsx: 4 matches"),
+    matches3: t("SettingsPage.tsx: 2 совпадения", "SettingsPage.tsx: 2 matches"),
   },
   demos: {
     msgUser: t("Какой токен взять для разделителя?", "Which token should the divider use?"),

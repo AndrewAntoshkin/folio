@@ -1,12 +1,12 @@
-<section id="why"><h2>Зачем это есть</h2>
-<p>Библиотеку собирают, а доказать, что ей пользуются, не могут. За год удовлетворённость может упасть с 68% до 31%.</p>
-<p>ds-coverage считает, какие компоненты код импортирует, как часто и что рядом написано заново.</p></section>
+<section id="why"><h2>Зачем</h2>
+<p>В репозитории может лежать дизайн-система на сорок компонентов, а продуктовые экраны рядом всё равно собирают из своих <code>Button</code> и <code>Modal</code>. На ревью это всплывает поздно.</p>
+<p>ds-coverage проходит по импортам и показывает три вещи: какие компоненты системы реально используются, какие лежат мёртвым грузом и где в продукте написали локальный дубль с тем же именем.</p></section>
 <section id="install"><h2>Установка</h2>
 <pre><code># Run directly (no install)
-npx ds-coverage src/ --ds @acme/ui
+npx @andrewaitken/ds-coverage src/ --ds @acme/ui
 
 # Or install globally
-npm i -g ds-coverage</code></pre></section>
+npm i -g @andrewaitken/ds-coverage</code></pre></section>
 <section id="usage"><h2>Запуск</h2>
 <pre><code># Basic scan
 ds-coverage src/ --ds @acme/ui
@@ -78,16 +78,10 @@ Tabs (1)</code></pre></section>
 <section id="ci"><h2>CI</h2>
 <pre><code># GitHub Actions
 - name: Check DS adoption
-  run: npx ds-coverage src/ --ds @acme/ui --inventory components.json --min 60
+  run: npx @andrewaitken/ds-coverage src/ --ds @acme/ui --inventory components.json --min 60
 
 # Generate PR report
 - name: DS Coverage Report
-  run: npx ds-coverage src/ --ds @acme/ui --format markdown --out coverage.md</code></pre>
+  run: npx @andrewaitken/ds-coverage src/ --ds @acme/ui --format markdown --out coverage.md</code></pre>
 <p><code>--min</code> завершается с кодом 1, если покрытие ниже порога.</p></section>
-<section id="pipeline"><h2>Цепочка</h2>
-<p>ds-coverage считает, импортирует ли код ту систему, которую показали модели:</p>
-<pre><code>ds-lint blocks raw values
-ds-context packs the system
-ds-coverage counts real imports ← you are here
-ds-health reads the live page</code></pre></section>
-<p><a href="https://github.com/AndrewAntoshkin/ds-coverage" target="_blank" rel="noopener noreferrer">Код</a></p>
+<p><a href="https://github.com/AndrewAntoshkin/ds-coverage" target="_blank" rel="noopener noreferrer">Код на GitHub</a></p>

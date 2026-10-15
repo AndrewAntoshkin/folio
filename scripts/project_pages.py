@@ -3,7 +3,7 @@ from __future__ import annotations
 
 
 def href(slug: str, lang: str) -> str:
-    return f"{slug}.html" if lang == "ru" else f"{slug}-en.html"
+    return f"/{slug}" if lang == "ru" else f"/en/{slug}"
 
 
 PROJECTS = [
@@ -13,15 +13,15 @@ PROJECTS = [
         "name": "agent-ui",
         "kicker": ("Компоненты", "Components"),
         "desc": (
-            "Компоненты для AI-интерфейсов: поле промпта, вызов инструмента, запрос разрешения, статус агента. Каждый ставится вместе с правилом для агента.",
-            "Components for AI interfaces: prompt input, tool call, approval, agent status. Each one installs with a rule for the coding agent.",
+            "Компоненты для чатов и агентов вместе с правилами для Cursor.",
+            "Components for chat and agent UIs, installed with Cursor rules.",
         ),
         "meta": (
             "Библиотека компонентов для AI-интерфейсов, которыми агент умеет пользоваться.",
             "A component library for AI interfaces that coding agents know how to use.",
         ),
         "lead": ("", ""),
-        "github": ("/agent-ui/", "/agent-ui/en.html"),
+        "github": ("/agent-ui/", "/agent-ui/en"),
         "github_label": ("Открыть компоненты", "Open the components"),
         "legacy": "",
     },
@@ -114,8 +114,8 @@ ds-eval compare RUN_FIXTURE RUN_NAIVE</code></pre>
         "name": "ds-context",
         "kicker": ("Контекст", "Context"),
         "desc": (
-            "Собирает из токенов, компонентов и спеки короткий пакет и показывает, сколько токенов занимает каждая стратегия. Модель не вызывается.",
-            "Builds a short model pack from tokens, components, and a spec, and prices each packing strategy in tokens.",
+            "Собирает дизайн-систему в короткий пакет для агента и считает объём в токенах.",
+            "Packs a design system into a short context for the agent and estimates its size in tokens.",
         ),
         "meta": (
             "Компилятор контекста дизайн-системы для coding-агента.",
@@ -132,8 +132,8 @@ ds-eval compare RUN_FIXTURE RUN_NAIVE</code></pre>
         "name": "ui-repair",
         "kicker": ("Починка", "Repair"),
         "desc": (
-            "Заменяет сырой button, цвет, прописанный вручную, и самодельный modal на компоненты системы. Показывает, какие проверки раньше не проходили, а теперь проходят.",
-            "Replaces raw controls, hex, and a homemade modal with system components, and shows which checks flipped.",
+            "Меняет сырые контролы и цвета на компоненты системы.",
+            "Replaces raw controls and hardcoded colors with system components.",
         ),
         "meta": (
             "Правила починки интерфейса под дизайн-систему.",
@@ -150,8 +150,8 @@ ds-eval compare RUN_FIXTURE RUN_NAIVE</code></pre>
         "name": "prompt-regress",
         "kicker": ("Регрессия", "Regression"),
         "desc": (
-            "Сравнивает два сохранённых прогона одних и тех же UI-кейсов: какие стали лучше, какие сломались, а не средний балл.",
-            "Compares two prompt versions on one UI suite: what improved, what broke, instead of an average score.",
+            "Дифф двух прогонов после смены промпта: какие кейсы выросли, а какие сломались.",
+            "A diff of two runs after a prompt change: which cases improved and which ones broke.",
         ),
         "meta": (
             "Дифф записанных прогонов между версиями промпта.",
@@ -168,8 +168,8 @@ ds-eval compare RUN_FIXTURE RUN_NAIVE</code></pre>
         "name": "figma-to-design-md",
         "kicker": ("CLI", "CLI"),
         "desc": (
-            "Вытаскивает переменные, стили и компоненты из Figma и кладёт их в markdown, который читает агент.",
-            "Extracts variables, styles, and components from Figma into a markdown spec an agent can read.",
+            "Вытаскивает переменные и компоненты из Figma в markdown для агента.",
+            "Extracts Figma variables and components into a markdown spec for agents.",
         ),
         "meta": (
             "CLI: Figma-файл становится markdown-спекой для AI-агентов.",
@@ -207,8 +207,8 @@ ds-eval compare RUN_FIXTURE RUN_NAIVE</code></pre>
         "name": "ds-lint",
         "kicker": ("Сканер", "Scanner"),
         "desc": (
-            "Находит в коде цвета, отступы и шрифты, прописанные вручную. Предлагает токен на замену.",
-            "Finds hardcoded colors, spacing, and fonts in code and suggests a token instead.",
+            "Находит в коде сырые цвета, отступы и шрифты и подсказывает токен.",
+            "Finds hardcoded colors, spacing, and fonts and suggests a token instead.",
         ),
         "meta": (
             "Сканер захардкоженных цветов, отступов и шрифтов.",
@@ -226,7 +226,7 @@ ds-eval compare RUN_FIXTURE RUN_NAIVE</code></pre>
 <h2>Что ловит</h2>
 <p>Цвета, отступы и&nbsp;типографику, записанные числом или hex прямо в&nbsp;компоненте. Рядом можно положить <code>tokens.css</code>, и&nbsp;тогда в&nbsp;отчёте будет не&nbsp;только нарушение, но&nbsp;и&nbsp;кандидат на&nbsp;замену.</p>
 <h2>Как запустить</h2>
-<pre><code>npx ds-lint src/
+<pre><code>npx @andrewaitken/ds-lint src/
 ds-lint src/ --tokens tokens.css
 ds-lint src/ --format markdown --out report.md
 ds-lint src/ --tokens tokens.css --strict</code></pre>
@@ -236,7 +236,7 @@ ds-lint src/ --tokens tokens.css --strict</code></pre>
 <h2>What it catches</h2>
 <p>Colors, spacing, and type written as a raw number or hex inside a component. Point it at <code>tokens.css</code> and the report includes a replacement candidate, not only the violation.</p>
 <h2>Run it</h2>
-<pre><code>npx ds-lint src/
+<pre><code>npx @andrewaitken/ds-lint src/
 ds-lint src/ --tokens tokens.css
 ds-lint src/ --format markdown --out report.md
 ds-lint src/ --tokens tokens.css --strict</code></pre>
@@ -250,8 +250,8 @@ ds-lint src/ --tokens tokens.css --strict</code></pre>
         "name": "ds-coverage",
         "kicker": ("Сканер", "Scanner"),
         "desc": (
-            "Считает, какая часть кода реально импортирует дизайн-систему, и где компоненты написаны заново.",
-            "Measures how much of the codebase actually imports the design system, and where components were rebuilt locally.",
+            "Считает, где код импортирует дизайн-систему, а где дублирует её.",
+            "Measures where the codebase imports the design system vs. rebuilds it.",
         ),
         "meta": (
             "Отчёт о том, насколько код пользуется дизайн-системой.",
@@ -273,7 +273,7 @@ ds-lint src/ --tokens tokens.css --strict</code></pre>
 <li>где рядом с&nbsp;системой появляется местная копия</li>
 </ul>
 <h2>Как запустить</h2>
-<pre><code>npx ds-coverage src/ --ds @acme/ui
+<pre><code>npx @andrewaitken/ds-coverage src/ --ds @acme/ui
 ds-coverage src/ --ds @acme/ui --inventory components.json
 ds-coverage src/ --ds @acme/ui --inventory components.json --min 70</code></pre>
 <p><code>--min</code> задаёт порог для CI. Ниже него команда завершается с&nbsp;ошибкой.</p>
@@ -286,7 +286,7 @@ ds-coverage src/ --ds @acme/ui --inventory components.json --min 70</code></pre>
 <li>where a local copy appears next to the system</li>
 </ul>
 <h2>Run it</h2>
-<pre><code>npx ds-coverage src/ --ds @acme/ui
+<pre><code>npx @andrewaitken/ds-coverage src/ --ds @acme/ui
 ds-coverage src/ --ds @acme/ui --inventory components.json
 ds-coverage src/ --ds @acme/ui --inventory components.json --min 70</code></pre>
 <p><code>--min</code> is the CI threshold. Below it, the command exits with an error.</p>

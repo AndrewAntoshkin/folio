@@ -53,7 +53,11 @@ export function Approval({
 
   return (
     <div
-      className={cn("w-full shrink-0 overflow-hidden rounded-2xl border border-border bg-card text-card-foreground", className)}
+      className={cn(
+        "w-full shrink-0 overflow-hidden rounded-2xl text-card-foreground",
+        state === "pending" ? "border border-border bg-card shadow-sm" : "bg-muted/60",
+        className,
+      )}
       role={state === "pending" ? "alertdialog" : undefined}
       aria-label={state === "pending" ? title : undefined}
       data-state={state}
@@ -91,7 +95,7 @@ export function Approval({
                   <button
                     type="button"
                     onClick={() => decide("denied")}
-                    className="h-8 rounded-full border border-border px-3.5 text-sm text-foreground transition-colors hover:bg-muted"
+                    className="h-8 rounded-full bg-muted px-3.5 text-sm text-foreground transition-all hover:bg-accent active:scale-95"
                   >
                     {denyLabel}
                   </button>
@@ -99,7 +103,7 @@ export function Approval({
                     type="button"
                     autoFocus={autoFocus}
                     onClick={() => decide("approved")}
-                    className="h-8 rounded-full bg-primary px-3.5 text-sm text-primary-foreground transition-opacity hover:opacity-90"
+                    className="h-8 rounded-full bg-primary px-3.5 text-sm text-primary-foreground transition-all hover:opacity-90 active:scale-95"
                   >
                     {approveLabel}
                   </button>

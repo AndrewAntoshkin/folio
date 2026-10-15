@@ -2,6 +2,7 @@
 """Whole-site preview in the Refined (Framer) layout, generated into /newww."""
 from __future__ import annotations
 
+import html
 import json
 import re
 import shutil
@@ -25,8 +26,13 @@ HEAD = """<!DOCTYPE html>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{title}</title>
+  <meta name="description" content="{desc}">
+  <meta property="og:title" content="{title}">
+  <meta property="og:description" content="{desc}">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
   <script>document.documentElement.classList.remove('nojs')</script>
-  <link rel="stylesheet" href="style.css?v=25">
+  <link rel="stylesheet" href="/style.css?v=28">
 </head>
 <body>
 """
@@ -52,6 +58,12 @@ SVC_ICONS = [
 
 
 def name_for(stem: str, lang: str) -> str:
+    if lang == "ru":
+        return "/" if stem == "home" else f"/{stem}"
+    return "/en" if stem == "home" else f"/en/{stem}"
+
+
+def legacy_file_for(stem: str, lang: str) -> str:
     if stem == "home":
         return "index.html" if lang == "ru" else "en.html"
     return f"{stem}.html" if lang == "ru" else f"{stem}-en.html"
@@ -96,7 +108,7 @@ def cover(key: str, label: str, badge: str = "", extra: str = "") -> str:
     """Generated abstract cover (newww/img/gen/<key>.jpg, made by scripts/art.html)."""
     tag = f'<span class="tag">{badge}</span>' if badge else ""
     return (
-        f'<div class="pcover {extra}"><div class="bg" style="background-image:url(img/gen/{key}.jpg)"></div>'
+        f'<div class="pcover {extra}"><div class="bg" style="background-image:url(/img/gen/{key}.jpg)"></div>'
         f'<span class="plogo">{label}</span>{tag}</div>'
     )
 
@@ -119,7 +131,7 @@ def chrome(lang: str, active: str, stem: str) -> str:
         f'\n<div class="dock"><nav aria-label="{"Навигация" if ru else "Navigation"}"><i aria-hidden="true"></i>{links}</nav>'
         f'<a class="lang" href="{name_for(stem, other)}" aria-label="{"English" if ru else "Русский"}">{"En" if ru else "Ru"}</a></div>\n'
         f'<a class="float" href="{TG}" target="_blank" rel="noopener">{"Написать" if ru else "Say hello"}'
-        f'{svg("<path d=\"M7 17 17 7M8 7h9v9\"/>", 16)}</a>\n'
+        f'{svg("<path d=\"M7 17 17 7M8 7h9v9\"/>", 16, "aria-hidden=\"true\"")}</a>\n'
     )
 
 
@@ -136,13 +148,13 @@ def reveal(inner_tag: str, delay: float = 0) -> str:
 def cta_and_footer(lang: str, cta: bool = True) -> str:
     ru = lang == "ru"
     if ru:
-        title, text = "Есть задача?", "Если хочется довести её до дела — напишите. Разберём, с чего начать."
+        title, text = "Есть задача на стыке дизайна и разработки?", "Давайте обсудим."
         fields = ("Имя", "Почта", "Пару слов о задаче", "Написать", "Сотрудничество")
         lead = "Хотите обсудить проект?<br>Расскажите о задаче и о том, чем я могу помочь."
     else:
-        title, text = "Got a task?", "If you want to get it into a working state, write me. We’ll figure out where to start."
+        title, text = "Have a design engineering challenge?", "Let's talk."
         fields = ("Name", "Email", "A few words about the task", "Write", "Collaboration")
-        lead = "Want to discuss a project?<br>Would love to hear about your company and how I can help."
+        lead = "Want to discuss a project?<br>Tell me about the task and how I can help."
 
     cta_html = ""
     if cta:
@@ -172,27 +184,59 @@ def cta_and_footer(lang: str, cta: bool = True) -> str:
       </div>
     </div>
   </footer>
-  <script src="motion.js?v=3"></script>
+  <script src="/motion.js?v=4"></script>
 </body></html>
 '''
 
 
-def shell(lang: str, title: str, active: str, stem: str, inner: str, cta: bool = True) -> str:
-    return HEAD.format(lang=lang, title=title) + chrome(lang, active, stem) + inner + cta_and_footer(lang, cta)
+def shell(lang: str, title: str, active: str, stem: str, inner: str, cta: bool = True, desc: str = "") -> str:
+    default_desc = (
+        "Ведущий дизайнер дизайн-системы в Яндексе (HR Tech). Проектирую продукты, дизайн-системы и инструменты для работы с AI-агентами."
+        if lang == "ru"
+        else "Lead Design Systems Designer at Yandex (HR Tech). Designing products, design systems, and developer tools for AI coding agents."
+    )
+    clean_desc = html.escape(plain(desc or default_desc), quote=True)
+    clean_title = html.escape(plain(title), quote=True)
+    return HEAD.format(lang=lang, title=clean_title, desc=clean_desc) + chrome(lang, active, stem) + inner + cta_and_footer(lang, cta)
 
 
 # ── Shared blocks ───────────────────────────────────────────────────────────
 
-def project_cards(lang: str, items: list[tuple[int, dict]]) -> str:
+FEATURED = ["ds-eval"]
+WORKFLOW = ["agent-ui", "figma-to-design-md", "ds-lint", "ds-coverage"]
+UTILITIES = ["ds-context", "ui-repair", "prompt-regress", "ds-health"]
+
+
+def projects_by(slugs: list[str]) -> list[tuple[int, dict]]:
+    by = {p["slug"]: p for p in PROJECTS}
+    return [(0, by[slug]) for slug in slugs]
+
+
+def project_cards(lang: str, items: list[tuple[int, dict]], layout: str = "plist") -> str:
     i = 0 if lang == "ru" else 1
     out = []
     for n, (idx, p) in enumerate(items):
         out.append(
-            f'<a class="pcard" href="{name_for(p["slug"], lang)}" data-r>'
+            f'<a class="pcard" href="{name_for(p["slug"], lang)}" data-r style="--d:{n * 0.05}s">'
             f'{cover(p["slug"], p["name"], p["kicker"][i])}'
             f'<div class="meta-row"><p>{p["desc"][i]}</p><span class="arrow-btn">{ARROW}</span></div></a>'
         )
-    return f'<div class="plist">{"".join(out)}</div>'
+    return f'<div class="{layout}">{"".join(out)}</div>'
+
+
+def utility_rows(lang: str, slugs: list[str]) -> str:
+    i = 0 if lang == "ru" else 1
+    by = {p["slug"]: p for p in PROJECTS}
+    rows = []
+    for n, slug in enumerate(slugs):
+        p = by[slug]
+        rows.append(
+            f'<a class="jrow" href="{name_for(slug, lang)}" data-r style="--d:{n * 0.05}s"><div class="jleft">'
+            f'<div class="jtitle">{p["name"]}</div>'
+            f'<p>{p["desc"][i]}</p></div>'
+            f'<span class="arrow-btn">{ARROW}</span></a>'
+        )
+    return f'<div class="journal">{"".join(rows)}</div>'
 
 
 def journal(lang: str, stems: list[str]) -> str:
@@ -218,7 +262,7 @@ def article_cards(lang: str, stems: list[str]) -> str:
         a = article(s, lang)
         c = a.get("cover")
         if c:
-            img = f'<img src="../{c["src"]}" alt="{c.get("alt", "")}">'
+            img = f'<img src="/{c["src"]}" alt="{c.get("alt", "")}">'
         else:
             img = cover(s, re.sub(r"&nbsp;|&#8209;", " ", a["title"]).split(":")[0].split(" — ")[0][:28])
         tags = a["tag_list"][0] if a["tag_list"] else ""
@@ -268,16 +312,16 @@ def home(lang: str) -> str:
         b1, b2 = "Смотреть проекты", "Написать"
         s_proj, s_how, s_art, s_exp, s_faq, s_all = "Проекты", "Практика", "Статьи", "Опыт", "Частые вопросы", "Все"
         steps = [
-            ("Дизайн-системы", "Развиваю дизайн-систему Яндекс HR Tech: компоненты, токены, документацию и код."),
-            ("Инструменты", "Собираю инфраструктуру для AI-native дизайн-систем: контекст для агента, починка интерфейса, измерение качества."),
-            ("AI и код", "Проектирую в Figma, пишу код и строю инструменты, которые помогают агентам читать дизайн-систему."),
-            ("Процесс", "Работаю со всем процессом: от идеи и интерфейса до спецификации, реализации и инструментов команды."),
+            ("Дизайн-системы", "Проектирую компоненты, токены и правила так, чтобы макет в Figma и код в репозитории не расходились."),
+            ("Инструменты", "Делаю утилиты вокруг дизайн-системы: собрать контекст для агента, починить сырой код, проверить результат."),
+            ("AI и код", "Пишу спецификации и правила, по которым интерфейс собирает не только разработчик, но и агент."),
+            ("Проверка", "Сверяю результат не на глаз: сборка, импорты из системы, доступность через axe и сценарии в Playwright."),
         ]
         voices = [
-            ("../assets/logos/yandex.svg", "Яндекс HR Tech", "Product Designer — Design Systems · Сейчас", "Развиваю дизайн-систему: компоненты, токены, документацию и код."),
-            ("../assets/logos/sber-icon.svg", "Сбер", "Design System Lead · 2021 — 2025", "Вёл работу над дизайн-системами: от компонентов до правил их использования."),
-            ("../assets/logos/otkritie-icon.svg", "Открытие Брокер", "Senior Product Designer · 2020 — 2021", "Проектировал продукты брокера для частных инвесторов."),
-            ("../assets/logos/mts-icon.svg", "МТС", "Product Designer · 2019 — 2020", "Проектировал продукты и интерфейсы в МТС."),
+            ("/assets/logos/yandex.svg", "Яндекс HR Tech", "Product Designer — Design Systems · Сейчас", "Веду компоненты, токены и документацию системы; связываю макеты в Figma с кодом и правилами для агентов."),
+            ("/assets/logos/sber-icon.svg", "Сбер", "Design System Lead · 2021 — 2025", "Отвечал за архитектуру дизайн-систем, библиотеку компонентов и процесс внедрения в продуктовых командах."),
+            ("/assets/logos/otkritie-icon.svg", "Открытие Брокер", "Senior Product Designer · 2020 — 2021", "Проектировал торговые сценарии, портфель и онбординг в веб- и мобильном приложении для частных инвесторов."),
+            ("/assets/logos/mts-icon.svg", "МТС", "Product Designer · 2019 — 2020", "Проектировал пользовательские сценарии и паттерны интерфейса для цифровых сервисов экосистемы."),
         ]
     else:
         h1a, h1b = "Andrew Antoshkin,", "Design Engineer."
@@ -285,16 +329,16 @@ def home(lang: str) -> str:
         b1, b2 = "See projects", "Say hello"
         s_proj, s_how, s_art, s_exp, s_faq, s_all = "Projects", "Practice", "Writing", "Experience", "Most asked questions", "See all"
         steps = [
-            ("Design systems", "I develop the Yandex HR Tech design system: components, tokens, documentation, and code."),
-            ("Tools", "I build infrastructure for AI-native design systems: agent context, interface repair, and quality measurement."),
-            ("AI and code", "I design in Figma, write code, and build tools that help agents read a design system."),
-            ("Process", "I work across the whole process: from an idea and an interface to specification, implementation, and team tooling."),
+            ("Design systems", "I design components, tokens, and rules so the Figma file and the codebase stay in sync."),
+            ("Tools", "I build utilities around the design system: pack context for an agent, repair raw code, and check the output."),
+            ("AI and code", "I write specifications and rules that both engineers and coding agents can build from."),
+            ("Verification", "I check the result with code, not by eye: build, system imports, axe accessibility, and Playwright flows."),
         ]
         voices = [
-            ("../assets/logos/yandex.svg", "Yandex HR Tech", "Product Designer — Design Systems · Now", "Developing the design system: components, tokens, documentation, and code."),
-            ("../assets/logos/sber-icon.svg", "Sber", "Design System Lead · 2021 — 2025", "Led work on design systems, from components to the rules for using them."),
-            ("../assets/logos/otkritie-icon.svg", "Otkritie Broker", "Senior Product Designer · 2020 — 2021", "Designed brokerage products for private investors."),
-            ("../assets/logos/mts-icon.svg", "MTS", "Product Designer · 2019 — 2020", "Designed products and interfaces at MTS."),
+            ("/assets/logos/yandex.svg", "Yandex HR Tech", "Product Designer — Design Systems · Now", "Own components, tokens, and documentation; connect Figma libraries with code and agent rules."),
+            ("/assets/logos/sber-icon.svg", "Sber", "Design System Lead · 2021 — 2025", "Led design system architecture, component libraries, and adoption across product teams."),
+            ("/assets/logos/otkritie-icon.svg", "Otkritie Broker", "Senior Product Designer · 2020 — 2021", "Designed trading flows, portfolio views, and onboarding across web and mobile for retail investors."),
+            ("/assets/logos/mts-icon.svg", "MTS", "Product Designer · 2019 — 2020", "Designed user flows and shared interface patterns across consumer digital services."),
         ]
     svc = "".join(
         f'<div class="svc" data-r style="--d:{n * 0.06}s"><div class="svc-in"><div class="svc-top"><span class="svc-n">0{n + 1}.</span><span class="ico">{SVC_ICONS[n]}</span></div>'
@@ -310,7 +354,7 @@ def home(lang: str) -> str:
 
     vgrid = "".join(f'<div data-r style="--d:{n * 0.07}s">{vcard(v)}</div>' for n, v in enumerate(voices))
     faqs = collab_faqs(lang)
-    top_projects = list(enumerate(PROJECTS))[:2]
+    top_projects = projects_by(["ds-eval", "agent-ui"])
     return f'''
 <svg width="0" height="0" aria-hidden="true" style="position:absolute"><filter id="hero-key" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="linear" slope="1.15" intercept="-0.064"/><feFuncG type="linear" slope="1.15" intercept="-0.064"/><feFuncB type="linear" slope="1.15" intercept="-0.064"/></feComponentTransfer></filter></svg>
 <main><div class="col">
@@ -318,7 +362,7 @@ def home(lang: str) -> str:
     <h1 data-split><span class="dim">{h1a}</span><br>{h1b}</h1>
     <p class="sub" data-r style="--d:.35s">{sub}</p>
     <div class="actions" data-r style="--d:.45s"><a class="btn mint" href="{name_for("projects", lang)}">{b1}</a><a class="btn dark" href="{TG}" target="_blank" rel="noopener">{b2}</a></div>
-    <div class="hero-art" data-r style="--d:.6s"><div class="hero-frame" data-parallax><img src="img/portrait.jpg" alt="{h1a.rstrip(',')}"></div></div>
+    <div class="hero-art" data-r style="--d:.6s"><div class="hero-frame" data-parallax><img src="/img/portrait.jpg" alt="{h1a.rstrip(',')}"></div></div>
   </header>
   <section class="stack">{sec_head(s_proj, len(PROJECTS), (name_for("projects", lang), s_all))}{project_cards(lang, top_projects)}</section>
   <section class="stack">{sec_head(s_how, len(steps))}<div class="cards2">{svc}</div></section>
@@ -337,9 +381,21 @@ def page_head(title: str, sub: str = "", back: str = "") -> str:
 
 def projects_page(lang: str) -> str:
     ru = lang == "ru"
-    sub = ("Open-source инструменты для AI-native дизайн-систем: контекст, починка, измерение и сравнение промптов." if ru
-           else "Open-source tools for AI-native design systems: context, repair, measurement, and prompt comparison.")
-    return f'<main><div class="col">{page_head("Проекты" if ru else "Projects", sub)}<section class="stack">{sec_head("Все проекты" if ru else "All projects", len(PROJECTS))}{project_cards(lang, list(enumerate(PROJECTS)))}</section></div></main>'
+    if ru:
+        title, sub = "Проекты", "Инструменты и проверки вокруг одной задачи: чтобы AI-агент собирал интерфейс из компонентов дизайн-системы, а не рисовал свои."
+        h_case, h_work, h_util = "Кейс", "Инструменты", "Прототипы и утилиты"
+        note = "Компоненты с правилами для Cursor и три CLI-пакета в npm: спека из Figma, проверка токенов и покрытие импортов."
+    else:
+        title, sub = "Projects", "Tools and checks built around one problem: getting coding agents to use an existing design system instead of inventing their own controls."
+        h_case, h_work, h_util = "Case", "Tools", "Prototypes & utilities"
+        note = "Components with Cursor rules and three npm CLIs: Figma-to-markdown specs, token linting, and import coverage."
+    return (
+        f'<main><div class="col">{page_head(title, sub)}'
+        f'<section class="stack">{sec_head(h_case, len(FEATURED))}{project_cards(lang, projects_by(FEATURED))}</section>'
+        f'<section class="stack">{sec_head(h_work, len(WORKFLOW))}<p class="sec-note">{note}</p>{project_cards(lang, projects_by(WORKFLOW), "workflow")}</section>'
+        f'<section class="stack">{sec_head(h_util, len(UTILITIES))}{utility_rows(lang, UTILITIES)}</section>'
+        f'</div></main>'
+    )
 
 
 def writing_page(lang: str) -> str:
@@ -357,44 +413,44 @@ def approach_page(lang: str) -> str:
     essay = name_for("ai-changes-processes", lang)
     if ru:
         title = "От неопределённости к работающему продукту."
-        sub = "Подключаюсь, когда задачу ещё нельзя отдать в разработку. Сначала понимаю, что нужно сделать и по каким правилам. Потом собираю то, на чём это можно проверить. Остаюсь, пока решение не дошло до людей и команда не может вести его сама."
+        sub = "Беру задачу до того, как её можно отдать в разработку: разбираюсь в сценариях, собираю прототип в Figma или коде, описываю состояния и токены и довожу до продакшена."
         where = "Сейчас так устроена работа над дизайн-системой <b>Яндекс HR Tech</b>. До этого — дизайн-системы в <b>Сбере</b>, продукты в «Открытии Брокер» и МТС."
         cta_t = "Обсудить задачу"
         steps_t = "Как идёт работа"
         steps = [
-            ("Контекст", "Проблема, сценарии, ограничения и то, по чему поймём, что получилось. Пока это нельзя сказать, макет только прячет неопределённость."),
-            ("Прототип", "Не весь продукт, а сценарии, на которых решение может развалиться. В Figma или в коде — что быстрее даст предмет для спора. Спорить нужно о вещи, а не о мнении."),
-            ("Правила", "Состояния, компоненты, токены. Одна спецификация для дизайна, разработки и для агента, если он потом собирает интерфейс. Иначе каждый сделает свою версию."),
-            ("До людей", "Макет для меня не конец работы. Я остаюсь на реализации, проверках и на том, как команда будет менять это дальше, не теряя качества."),
+            ("Контекст", "Проблема, сценарии, ограничения и критерии, по которым поймём, что решение работает. Без этого макет только прячет неопределённость."),
+            ("Прототип", "Не весь продукт целиком, а те сценарии, где решение может сломаться. Собираю в Figma или сразу в коде — смотря что быстрее покажет узкие места."),
+            ("Правила", "Состояния, компоненты, токены. Одна спецификация для дизайнера, разработчика и агента, чтобы каждый не собирал свою версию."),
+            ("Реализация", "Макет — не конец работы. Остаюсь на вёрстке, проверках в браузере и настройке правил, чтобы система не расползалась дальше."),
         ]
         agent_t = "С агентом"
         agent = [
-            "Агент забирает последовательность: найти, что уже есть в системе, собрать черновик, прогнать проверки. Я ставлю задачу, задаю границы и смотрю результат.",
-            "Один длинный промпт не использую. В нём агент одновременно автор и ревьюер своей работы. У шага есть вход, выход и момент, где я говорю, готово это или нет.",
-            "Продуктовое решение, компромисс качества и срока и всё, что выходит от моего имени, я оставляю себе.",
+            "Агент делает черновую работу по шагам: ищет, что уже есть в системе, собирает первый вариант и прогоняет проверки. Я ставлю задачу, задаю ограничения и принимаю результат на каждом шаге.",
+            "Один длинный промпт на всю задачу не работает: в нём модель сама пишет код и сама себя хвалит. Поэтому сборка, линтер и проверки отделены от генерации.",
+            "Продуктовое решение, компромиссы по срокам и всё, что уходит в продакшен от моего имени, остаются за мной.",
         ]
-        hold = "<b>Хороший процесс не обещает, что модель никогда не ошибётся.</b> Он делает ошибку заметной и не даёт ей пройти дальше незаметно."
+        hold = "<b>Хороший процесс не обещает, что модель не ошибётся.</b> Он делает ошибку заметной до того, как она попадёт в код."
         more = f'Подробнее — в статье <a href="{essay}">про то, как AI меняет процессы</a>.'
     else:
         title = "From ambiguity to production."
-        sub = "I join when a task is not ready to hand to engineering. First I work out what has to be done, and by which rules. Then I build something the decision can be tested on. I stay until it reaches people and the team can carry it without me."
+        sub = "I join before a task is ready for engineering: map the scenarios, build a prototype in Figma or code, write down the states and tokens, and see it through to production."
         where = "This is how I work on the design system at <b>Yandex HR Tech</b> now. Before that, design systems at <b>Sber</b>, and products at Otkritie Broker and MTS."
         cta_t = "Discuss a task"
         steps_t = "How the work goes"
         steps = [
-            ("Context", "The problem, the scenarios, the constraints, and how we will know it worked. Until that can be said, a mockup only hides the ambiguity."),
-            ("Prototype", "Not the whole product. The scenarios where the decision could fall apart. Figma or code, whichever gets something real to argue about sooner. The argument should be about the thing, not about an opinion."),
-            ("Rules", "States, components, tokens. One specification for design, engineering, and an agent if it will assemble the interface later. Otherwise everyone builds their own version."),
-            ("To people", "A mockup is not the end of the work for me. I stay for the implementation, the checks, and the way the team will change it later without losing quality."),
+            ("Context", "The problem, scenarios, constraints, and how we will know it works. Without that, a mockup only hides the ambiguity."),
+            ("Prototype", "Not the whole product — just the scenarios where the design might break. Built in Figma or directly in code, whichever exposes the edge cases faster."),
+            ("Rules", "States, components, tokens. One specification for design, engineering, and coding agents so nobody invents a parallel version."),
+            ("In production", "A mockup is not the finish line. I stay through implementation, browser checks, and linting rules so the system holds together over time."),
         ]
         agent_t = "With an agent"
         agent = [
-            "An agent takes the sequence: find what the system already has, draft, run the checks. I set the task, set the boundaries, and look at the result.",
-            "I don’t use one long prompt. In it, the agent is author and reviewer of its own work. A step has an input, an output, and a moment where I say whether it is done.",
-            "The product decision, the tradeoff between quality and time, and anything that goes out under my name stay with me.",
+            "The agent handles the draft work step by step: checks what already exists in the system, assembles a first pass, and runs the checks. I scope the task, set the constraints, and review each step.",
+            "One giant prompt for the whole job doesn't work: the model writes the code and grades its own homework. Generation and verification have to be separate steps.",
+            "The product decision, the scope tradeoffs, and anything that ships under my name stay with me.",
         ]
-        hold = "<b>A good process does not promise the model will never be wrong.</b> It makes the error visible and stops it from passing unnoticed."
-        more = f'More on this is in the essay <a href="{essay}">on how AI changes processes</a>.'
+        hold = "<b>A good process does not promise the model will never fail.</b> It catches the failure before it quietly ships."
+        more = f'More on this in the essay <a href="{essay}">on how AI changes processes</a>.'
     steps_html = "".join(
         f'<div class="layer" data-r style="--d:{n * 0.05:.2f}s"><span class="layer-n">0{n + 1}</span><h3>{h}</h3><p>{p}</p></div>'
         for n, (h, p) in enumerate(steps)
@@ -443,6 +499,7 @@ def collab_page(lang: str) -> str:
         <div class="contact-body">
           <p class="contact-k">{k1}</p>
           <a href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
+          <a href="https://github.com/AndrewAntoshkin" target="_blank" rel="noopener">github.com/AndrewAntoshkin</a>
           <a href="{TG}" target="_blank" rel="noopener">{tg}</a>
           <a href="https://setka.ru/users/84b42bc4-44b4-4b1e-ba76-06d249242bc4" target="_blank" rel="noopener">setka.ru</a>
         </div>
@@ -474,8 +531,10 @@ def project_page(project: dict, lang: str) -> str:
     idx = PROJECTS.index(project)
     doc = load_doc(project["slug"], lang)
     lead = doc["lead"] or project["desc"][i]
-    gh = project.get("github") or ""
-    link = f'<a class="btn mint" href="{gh}" target="_blank" rel="noopener">{project["github_label"][i]}</a>' if gh else ""
+    raw_gh = project.get("github") or ""
+    gh = raw_gh[i] if isinstance(raw_gh, tuple) else raw_gh
+    ext = ' target="_blank" rel="noopener"' if gh.startswith("http") else ""
+    link = f'<a class="btn mint" href="{gh}"{ext}>{project["github_label"][i]}</a>' if gh else ""
     return f'''<main><div class="col"><article class="art">
   <header class="art-top">
     <a class="back" href="{name_for("projects", lang)}" data-r>‹ {"Назад" if ru else "Back"}</a>
@@ -492,7 +551,7 @@ def article_page(stem: str, lang: str) -> str:
     a = article(stem, lang)
     c = a.get("cover")
     if c:
-        img = f'<img src="../{c["src"]}" alt="{c.get("alt", "")}">'
+        img = f'<img src="/{c["src"]}" alt="{c.get("alt", "")}">'
     else:
         img = cover(stem, re.sub(r"&nbsp;|&#8209;", " ", a["title"]).split(":")[0].split(" — ")[0][:34])
     tag_html = "".join(f'<span class="tag">{t}</span>' for t in a["tag_list"])
@@ -509,22 +568,30 @@ def article_page(stem: str, lang: str) -> str:
 
 def main() -> None:
     OUT.mkdir(exist_ok=True)
+    (OUT / "en").mkdir(exist_ok=True)
     for lang in ("ru", "en"):
         ru = lang == "ru"
         who = "Андрей Антошкин" if ru else "Andrew Antoshkin"
+        i = 0 if ru else 1
 
-        def write(stem: str, title: str, active: str, inner: str, cta: bool = True) -> None:
-            (OUT / name_for(stem, lang)).write_text(shell(lang, title, active, stem, inner, cta), encoding="utf-8")
+        def write(stem: str, title: str, active: str, inner: str, cta: bool = True, desc: str = "") -> None:
+            page_html = shell(lang, title, active, stem, inner, cta, desc)
+            (OUT / legacy_file_for(stem, lang)).write_text(page_html, encoding="utf-8")
+            if not ru:
+                en_name = "index.html" if stem == "home" else f"{stem}.html"
+                (OUT / "en" / en_name).write_text(page_html, encoding="utf-8")
 
         write("home", f"{who} — Design Engineer", "home", home(lang))
-        write("projects", f"{'Проекты' if ru else 'Projects'} — {who}", "projects", projects_page(lang))
-        write("writing", f"{'Статьи' if ru else 'Writing'} — {who}", "writing", writing_page(lang))
-        write("approach", f"{'Подход' if ru else 'Approach'} — {who}", "approach", approach_page(lang))
-        write("collab", f"{'Сотрудничество' if ru else 'Collaboration'} — {who}", "collab", collab_page(lang), cta=False)
+        write("projects", f"{'Проекты' if ru else 'Projects'} — {who}", "projects", projects_page(lang), desc="Инструменты и проверки для дизайн-систем и AI-агентов." if ru else "Open-source tools and benchmarks for design systems and AI coding agents.")
+        write("writing", f"{'Статьи' if ru else 'Writing'} — {who}", "writing", writing_page(lang), desc="Заметки о дизайне, системах и AI." if ru else "Notes on design, systems, and AI.")
+        write("approach", f"{'Подход' if ru else 'Approach'} — {who}", "approach", approach_page(lang), desc="От неопределённости к работающему продукту: сценарии, прототипы, токены и код." if ru else "From ambiguity to shipping software: flows, prototypes, tokens, and production code.")
+        write("collab", f"{'Сотрудничество' if ru else 'Collaboration'} — {who}", "collab", collab_page(lang), cta=False, desc="Контакты для связи: почта, GitHub, Telegram." if ru else "Contact details: email, GitHub, Telegram.")
         for p in PROJECTS:
-            write(p["slug"], f'{p["name"]} — {who}', "projects", project_page(p, lang))
+            doc = load_doc(p["slug"], lang)
+            write(p["slug"], f'{p["name"]} — {who}', "projects", project_page(p, lang), desc=doc["lead"] or p["desc"][i])
         for s in ORDER:
-            write(s, article(s, lang)["title"], "writing", article_page(s, lang))
+            a = article(s, lang)
+            write(s, a["title"], "writing", article_page(s, lang), desc=a["tldr"])
     publish_root()
     print("done")
 
@@ -533,8 +600,13 @@ def publish_root() -> None:
     """Copy the preview onto the repo root so the domain serves it."""
     for src in OUT.iterdir():
         if src.suffix in {".html", ".css", ".js"}:
-            text = src.read_text(encoding="utf-8").replace("../assets/", "assets/")
+            text = src.read_text(encoding="utf-8").replace("../assets/", "/assets/")
             (ROOT / src.name).write_text(text, encoding="utf-8")
+        elif src.name == "en" and src.is_dir():
+            dest = ROOT / "en"
+            dest.mkdir(exist_ok=True)
+            for en_file in src.glob("*.html"):
+                (dest / en_file.name).write_text(en_file.read_text(encoding="utf-8"), encoding="utf-8")
         elif src.name == "img" and src.is_dir():
             dest = ROOT / "img"
             if dest.exists():

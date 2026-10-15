@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Check, Copy, Diamond, Layers, Moon, Square, Sun, Tag } from "lucide-react"
+import { Check, Copy, Moon, Sun } from "lucide-react"
 import { cn } from "@/lib/utils"
 import items from "../registry/items.json"
 import { HeroDemo } from "./hero"
@@ -59,41 +59,34 @@ const installAll = `npx shadcn@latest add ${BASE}/r/all.json`
 export function App() {
   return (
     <div className="flex flex-col gap-24 pb-24">
-      <div className="mx-auto w-full max-w-[88rem] px-4 pt-6 sm:px-6 lg:px-10">
+      <div className="mx-auto w-full max-w-[84rem] px-4 pt-6 sm:px-6 lg:px-10">
         <Header />
       </div>
 
       <Hero />
 
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-24 px-5 sm:px-8">
-      <section id="components" className="flex scroll-mt-8 flex-col gap-20" aria-label={copy.nav.components}>
-        {items.map((item) => (
-          <ComponentSection key={item.name} item={item} />
-        ))}
-      </section>
+      <div className="mx-auto flex w-full max-w-5xl flex-col gap-24 px-5 sm:px-8">
+        <section id="components" className="flex scroll-mt-8 flex-col gap-20" aria-label={copy.nav.components}>
+          {items.map((item) => (
+            <ComponentSection key={item.name} item={item} />
+          ))}
+        </section>
 
-      <AgentsSection />
+        <AgentsSection />
 
-      <footer className="flex flex-col gap-2 border-t border-border pt-8 text-sm text-muted-foreground sm:flex-row sm:justify-between">
-        <span>
-          agent-ui {copy.footer.by}{" "}
-          <a className="text-foreground" href={copy.nav.homeHref}>
-            Andrew Antoshkin
-          </a>
-          . MIT.{" "}
-          <a className="text-foreground" href={copy.nav.whyHref}>
-            {copy.footer.why}
-          </a>
-          .
-        </span>
-        <span>
-          {copy.footer.motion}{" "}
-          <a className="text-foreground" href="https://www.chamaac.com/">
-            Chamaac UI
-          </a>{" "}
-          (MIT).
-        </span>
-      </footer>
+        <footer className="flex flex-col gap-2 border-t border-border pt-8 text-sm text-muted-foreground sm:flex-row sm:justify-between">
+          <span>
+            agent-ui {copy.footer.by}{" "}
+            <a className="text-foreground transition-colors hover:underline" href={copy.nav.homeHref}>
+              Andrew Antoshkin
+            </a>
+            . MIT.{" "}
+            <a className="text-foreground transition-colors hover:underline" href={copy.nav.whyHref}>
+              {copy.footer.why}
+            </a>
+            .
+          </span>
+        </footer>
       </div>
     </div>
   )
@@ -102,99 +95,52 @@ export function App() {
 function Hero() {
   return (
     <section className="px-4 sm:px-6 lg:px-10">
-      <div className="relative mx-auto max-w-[88rem] overflow-hidden rounded-[2rem] border border-border bg-muted/70 px-5 pt-16 pb-6 sm:px-10 sm:pt-20 sm:pb-10 dark:bg-muted/30">
-        <HeroPattern />
+      <div className="relative mx-auto max-w-[84rem] overflow-hidden rounded-[2rem] bg-muted/40 px-5 pt-14 pb-8 sm:px-10 sm:pt-20 sm:pb-12 dark:bg-card/60">
         <div className="relative mx-auto flex max-w-3xl flex-col items-center gap-6 text-center">
-          <p className="text-sm text-muted-foreground">React · Cursor rules · MIT</p>
-          <h1 className="text-4xl leading-[1.05] font-semibold tracking-tight text-balance sm:text-6xl">
-            {copy.hero.title}
-          </h1>
-          <p className="max-w-2xl text-base leading-7 text-pretty text-muted-foreground sm:text-lg">{copy.hero.lead}</p>
-          <p className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 text-sm text-muted-foreground">
-            <span>{copy.hero.openSource}</span>
+          <p className="inline-flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 rounded-full bg-background/70 px-4 py-1.5 text-xs font-medium text-muted-foreground dark:bg-background/50">
+            <span>React</span>
+            <span aria-hidden className="size-1 rounded-full bg-current opacity-40" />
+            <span>Cursor rules</span>
             <span aria-hidden className="size-1 rounded-full bg-current opacity-40" />
             <span>MIT</span>
             <span aria-hidden className="size-1 rounded-full bg-current opacity-40" />
-            <a className="text-foreground" href={copy.nav.homeHref}>
+            <a className="text-foreground transition-colors hover:underline" href={copy.nav.homeHref}>
               Andrew Antoshkin
             </a>
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-3">
+
+          <h1 className="text-4xl leading-[1.04] font-semibold tracking-tight text-balance sm:text-6xl">
+            {copy.hero.title}
+          </h1>
+
+          <p className="max-w-2xl text-base leading-7 text-pretty text-muted-foreground sm:text-lg">
+            {copy.hero.lead}
+          </p>
+
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
             <CopyCommand command={installAll} label={copy.hero.install} done={copy.hero.copied} />
             <a
               href="#components"
-              className="inline-flex items-center rounded-full border border-border bg-background px-5 py-2.5 text-sm font-medium hover:bg-muted"
+              className="inline-flex items-center rounded-full bg-background/80 px-5 py-2.5 text-sm font-medium text-foreground transition-all hover:bg-background active:scale-95 dark:bg-muted dark:hover:bg-accent"
             >
               {copy.hero.browse}
             </a>
           </div>
-          <p className="text-sm text-muted-foreground">{copy.hero.note}</p>
-          <p className="max-w-full truncate font-mono text-xs text-muted-foreground">{installAll}</p>
-          <ul className="flex max-w-xl flex-col gap-2 text-left text-sm text-muted-foreground">
-            <Point>
-              <code className="font-mono text-xs text-foreground">components/agent-ui/*.tsx</code>
-              {" · "}
-              <code className="font-mono text-xs text-foreground">.cursor/rules/agent-ui-*.mdc</code>
-              {" — "}
-              {copy.hero.pointFiles}
-            </Point>
-            <Point>
-              <a className="text-foreground underline underline-offset-4" href={`${BASE}/r/llms.txt`}>
-                llms.txt
-              </a>{" "}
-              {copy.hero.pointLlms}
-            </Point>
-            <Point>{copy.hero.pointLint}</Point>
-          </ul>
+
+          <div className="w-full max-w-xl pt-1">
+            <InstallLine command={installAll} />
+          </div>
+
+          <p className="max-w-xl pt-2 text-sm leading-6 text-pretty text-muted-foreground">{copy.hero.pointLint}</p>
+
           <AccentPicker />
         </div>
 
-        <div className="relative mt-12">
-          <PreviewFrame url={copy.hero.frame}>
-            <HeroDemo />
-          </PreviewFrame>
+        <div className="relative mt-10">
+          <HeroDemo />
         </div>
       </div>
     </section>
-  )
-}
-
-function HeroPattern() {
-  const marks = [
-    { Icon: Layers, className: "top-[8%] left-[6%] size-7" },
-    { Icon: Square, className: "top-[22%] left-[14%] size-4" },
-    { Icon: Diamond, className: "top-[14%] right-[10%] size-6" },
-    { Icon: Tag, className: "top-[28%] right-[18%] size-5" },
-    { Icon: Square, className: "top-[6%] right-[28%] size-3.5" },
-    { Icon: Layers, className: "right-[7%] bottom-[18%] size-7" },
-    { Icon: Diamond, className: "bottom-[12%] left-[9%] size-5" },
-    { Icon: Tag, className: "bottom-[22%] left-[20%] size-4" },
-  ]
-  return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 text-foreground/15">
-      {marks.map(({ Icon, className }, i) => (
-        <Icon key={i} strokeWidth={1.25} className={cn("absolute", className)} />
-      ))}
-    </div>
-  )
-}
-
-function PreviewFrame({ url, children }: { url: string; children: React.ReactNode }) {
-  return (
-    <div className="overflow-hidden rounded-2xl border border-border bg-background shadow-2xl shadow-black/10">
-      <div className="flex items-center gap-3 border-b border-border bg-muted/60 px-4 py-2.5">
-        <span className="flex gap-1.5" aria-hidden>
-          <i className="size-2.5 rounded-full bg-[#ff5f57]" />
-          <i className="size-2.5 rounded-full bg-[#febc2e]" />
-          <i className="size-2.5 rounded-full bg-[#28c840]" />
-        </span>
-        <span className="mx-auto truncate rounded-md bg-background px-3 py-1 font-mono text-xs text-muted-foreground">
-          {url}
-        </span>
-        <span className="w-10 shrink-0" />
-      </div>
-      {children}
-    </div>
   )
 }
 
@@ -208,20 +154,11 @@ function CopyCommand({ command, label, done }: { command: string; label: string;
         setCopied(true)
         setTimeout(() => setCopied(false), 1500)
       }}
-      className="inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-2.5 text-sm font-medium text-background"
+      className="inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-2.5 text-sm font-medium text-background transition-all hover:opacity-90 active:scale-95"
     >
       {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
       {copied ? done : label}
     </button>
-  )
-}
-
-function Point({ children }: { children: React.ReactNode }) {
-  return (
-    <li className="flex gap-2.5">
-      <Check className="mt-0.5 size-4 shrink-0 text-foreground" />
-      <span>{children}</span>
-    </li>
   )
 }
 
@@ -233,27 +170,36 @@ function Header() {
 
   return (
     <header className="flex items-center justify-between gap-3">
-      <a href={lang === "ru" ? "/agent-ui/" : "/agent-ui/en.html"} className="font-mono text-sm font-medium">
+      <a href={lang === "ru" ? "/agent-ui/" : "/agent-ui/en"} className="font-mono text-sm font-medium">
         {copy.brand}
       </a>
       <nav className="flex flex-wrap items-center justify-end gap-1 text-sm text-muted-foreground">
-        <a className="rounded-full px-3 py-1.5 hover:bg-muted hover:text-foreground" href="#components">
+        <a
+          className="rounded-full px-3 py-1.5 transition-all hover:bg-muted hover:text-foreground active:scale-95"
+          href="#components"
+        >
           {copy.nav.components}
         </a>
-        <a className="rounded-full px-3 py-1.5 hover:bg-muted hover:text-foreground" href="#agents">
+        <a
+          className="rounded-full px-3 py-1.5 transition-all hover:bg-muted hover:text-foreground active:scale-95"
+          href="#agents"
+        >
           {copy.nav.agents}
         </a>
-        <a className="rounded-full px-3 py-1.5 hover:bg-muted hover:text-foreground" href={copy.nav.whyHref}>
+        <a
+          className="rounded-full px-3 py-1.5 transition-all hover:bg-muted hover:text-foreground active:scale-95"
+          href={copy.nav.whyHref}
+        >
           {copy.nav.why}
         </a>
         <a
-          className="hidden rounded-full px-3 py-1.5 hover:bg-muted hover:text-foreground sm:block"
+          className="hidden rounded-full px-3 py-1.5 transition-all hover:bg-muted hover:text-foreground active:scale-95 sm:block"
           href={copy.nav.projectsHref}
         >
           {copy.nav.projects}
         </a>
         <a
-          className="rounded-full px-3 py-1.5 font-mono text-xs hover:bg-muted hover:text-foreground"
+          className="rounded-full px-3 py-1.5 font-mono text-xs transition-all hover:bg-muted hover:text-foreground active:scale-95"
           href={copy.nav.langHref}
           hrefLang={lang === "ru" ? "en" : "ru"}
         >
@@ -263,7 +209,7 @@ function Header() {
           type="button"
           aria-label={dark ? copy.nav.light : copy.nav.dark}
           onClick={() => setDark((d) => !d)}
-          className="flex size-8 items-center justify-center rounded-full hover:bg-muted hover:text-foreground"
+          className="flex size-8 items-center justify-center rounded-full transition-all hover:bg-muted hover:text-foreground active:scale-90"
         >
           {dark ? <Sun className="size-4" /> : <Moon className="size-4" />}
         </button>
@@ -287,7 +233,11 @@ function AccentPicker() {
   }, [accent])
 
   return (
-    <div className="flex flex-wrap justify-center gap-1.5" role="radiogroup" aria-label={copy.accentsLabel}>
+    <div
+      className="inline-flex flex-wrap justify-center gap-1 rounded-full bg-background/70 p-1 dark:bg-background/50"
+      role="radiogroup"
+      aria-label={copy.accentsLabel}
+    >
       {(Object.keys(accentValues) as AccentKey[]).map((name) => (
         <button
           key={name}
@@ -295,7 +245,7 @@ function AccentPicker() {
           role="radio"
           aria-checked={accent === name}
           onClick={() => setAccent(name)}
-          className="flex items-center gap-2 rounded-full border border-border px-3 py-1 text-xs text-muted-foreground transition-colors hover:text-foreground aria-checked:bg-muted aria-checked:text-foreground"
+          className="flex items-center gap-2 rounded-full px-3 py-1.5 text-xs text-muted-foreground transition-all hover:text-foreground active:scale-95 aria-checked:bg-muted aria-checked:font-medium aria-checked:text-foreground"
         >
           <span
             className="size-2.5 rounded-full"
@@ -317,16 +267,12 @@ function ComponentSection({ item }: { item: (typeof items)[number] }) {
   const rule = rules[`../registry/rules/${item.name}.mdc`]
   const ru = "ru" in item ? item.ru : undefined
   const description = lang === "ru" && ru?.description ? ru.description : item.description
-  const credit = lang === "ru" && ru && "credit" in ru && ru.credit ? ru.credit : "credit" in item ? item.credit : undefined
 
   return (
     <article id={item.name} className="flex scroll-mt-8 flex-col gap-4">
       <div className="flex flex-col gap-1">
         <h2 className="text-2xl font-medium tracking-tight">{item.title}</h2>
-        <p className="text-sm text-muted-foreground">
-          {description}
-          {credit && <span className="text-muted-foreground"> {credit}.</span>}
-        </p>
+        <p className="text-sm text-muted-foreground">{description}</p>
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -344,7 +290,7 @@ function ComponentSection({ item }: { item: (typeof items)[number] }) {
               role="tab"
               aria-selected={tab === id}
               onClick={() => setTab(id)}
-              className="rounded-full px-3 py-1 text-muted-foreground transition-colors aria-selected:bg-background aria-selected:text-foreground aria-selected:shadow-sm"
+              className="rounded-full px-3.5 py-1 text-muted-foreground transition-all hover:text-foreground active:scale-95 aria-selected:bg-background aria-selected:font-medium aria-selected:text-foreground aria-selected:shadow-xs"
             >
               {label}
             </button>
@@ -353,9 +299,9 @@ function ComponentSection({ item }: { item: (typeof items)[number] }) {
         <InstallLine command={`npx shadcn@latest add ${BASE}/r/${item.name}.json`} compact />
       </div>
 
-      <div className="overflow-hidden rounded-3xl border border-border">
+      <div className="overflow-hidden rounded-3xl bg-muted/40 dark:bg-muted/35">
         {tab === "preview" && (
-          <div className="flex min-h-80 items-center justify-center bg-muted/30 px-5 py-12">
+          <div className="flex min-h-80 items-center justify-center px-5 py-12 sm:px-8">
             <Demo />
           </div>
         )}
@@ -388,12 +334,12 @@ function InstallLine({ command, compact }: { command: string; compact?: boolean 
   return (
     <div
       className={cn(
-        "flex min-w-0 items-center gap-2 rounded-full border border-border bg-card pl-4 font-mono text-xs",
-        compact ? "max-w-full py-0.5 pr-0.5" : "w-full py-1 pr-1",
+        "flex min-w-0 items-center gap-2 rounded-full bg-background/70 pl-4 font-mono text-xs dark:bg-card",
+        compact ? "max-w-full py-1 pr-1" : "w-full py-1.5 pr-1.5",
       )}
     >
       <span className="text-muted-foreground">$</span>
-      <span className="min-w-0 flex-1 truncate">{command}</span>
+      <span className="min-w-0 flex-1 truncate text-muted-foreground">{command}</span>
       <CopyButton text={command} />
     </div>
   )
@@ -411,7 +357,7 @@ function CopyButton({ text, className }: { text: string; className?: string }) {
         setTimeout(() => setCopied(false), 1500)
       }}
       className={cn(
-        "flex size-7 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground",
+        "flex size-7 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-all hover:bg-muted hover:text-foreground active:scale-90",
         className,
       )}
     >
@@ -454,7 +400,7 @@ function AgentsSection() {
           </li>
         </ol>
       </div>
-      <pre className="overflow-auto rounded-3xl border border-border bg-card p-5 font-mono text-xs leading-6 text-card-foreground">
+      <pre className="overflow-auto rounded-3xl bg-card p-6 font-mono text-xs leading-6 text-card-foreground">
 {`$ npx shadcn@latest add ${BASE}/r/approval.json
 
   components/agent-ui/approval.tsx

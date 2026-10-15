@@ -117,12 +117,11 @@ pre{margin:0;padding:14px 16px;font-size:12.5px;font-family:ui-monospace,SFMono-
       <a href="#output-bad" class="nav-item">Low Adoption</a>
       <a href="#inventory" class="nav-item">Inventory File</a>
       <a href="#ci" class="nav-item">CI Integration</a>
-      <a href="#pipeline" class="nav-item">Pipeline</a>
     </div>
     <div class="nav-section">
       <p class="nav-label">Links</p>
       <a href="https://github.com/AndrewAntoshkin/ds-coverage" target="_blank" rel="noopener" class="nav-item">GitHub</a>
-      <a href="https://www.npmjs.com/package/ds-coverage" target="_blank" rel="noopener" class="nav-item">npm</a>
+      <a href="https://www.npmjs.com/package/@andrewaitken/ds-coverage" target="_blank" rel="noopener" class="nav-item">npm</a>
     </div>
   </div>
   <a href="https://antoshkin.tech" class="sidebar-link">antoshkin.tech</a>
@@ -136,17 +135,17 @@ pre{margin:0;padding:14px 16px;font-size:12.5px;font-family:ui-monospace,SFMono-
 
 <section id="why">
 <h2>Why This Exists</h2>
-<p class="body">Adoption is the #1 challenge in design systems. Teams build component libraries but can't prove they're being used. Satisfaction can drop from 68% to 31% within a year while "adoption" metrics look healthy.</p>
-<p class="body">ds-coverage gives you real numbers: which components are imported, how often, and what's being reimplemented locally instead.</p>
+<p class="body">A repository can have a forty-component library while product screens right next to it still build their own <code>Button</code> and <code>Modal</code>.</p>
+<p class="body">ds-coverage scans imports across the codebase and reports which system components are actually used, which sit unused, and where a local component duplicates a system name.</p>
 </section>
 
 <section id="install">
 <h2>Installation</h2>
 <div class="code-wrap"><pre><span style="color:#6b6b6b"># Run directly (no install)</span>
-npx ds-coverage src/ --ds @acme/ui
+npx @andrewaitken/ds-coverage src/ --ds @acme/ui
 
 <span style="color:#6b6b6b"># Or install globally</span>
-npm i -g ds-coverage</pre></div>
+npm i -g @andrewaitken/ds-coverage</pre></div>
 </section>
 
 <section id="usage">
@@ -266,21 +265,12 @@ ds-coverage src/ --ds @acme/ui --inventory components.json --min 70</pre></div>
 <h2>CI Integration</h2>
 <div class="code-wrap"><pre><span style="color:#6b6b6b"># GitHub Actions</span>
 - name: Check DS adoption
-  run: npx ds-coverage src/ --ds @acme/ui --inventory components.json --min 60
+  run: npx @andrewaitken/ds-coverage src/ --ds @acme/ui --inventory components.json --min 60
 
 <span style="color:#6b6b6b"># Generate PR report</span>
 - name: DS Coverage Report
-  run: npx ds-coverage src/ --ds @acme/ui --format markdown --out coverage.md</pre></div>
+  run: npx @andrewaitken/ds-coverage src/ --ds @acme/ui --format markdown --out coverage.md</pre></div>
 <p class="body"><code class="ic">--min</code> exits with code 1 when coverage is below the threshold.</p>
-</section>
-
-<section id="pipeline">
-<h2>Pipeline</h2>
-<p class="body">ds-coverage counts whether the codebase imports the system the model was told to use:</p>
-<div class="preview">ds-lint blocks raw values
-ds-context packs the system
-ds-coverage counts real imports  ← you are here
-ds-health reads the live page</div>
 </section>
 
 <div class="page-nav">

@@ -32,8 +32,8 @@ export function Choice({ question, options, value, onSelect, disabled, className
             disabled={disabled}
             onClick={() => onSelect?.(option.value)}
             className={cn(
-              "rounded-2xl border px-4 py-3 text-left text-sm transition-colors disabled:opacity-50",
-              selected ? "border-foreground bg-muted" : "border-border bg-card hover:bg-muted/50",
+              "rounded-2xl border px-4 py-3 text-left text-sm shadow-xs transition-all active:scale-99 disabled:opacity-50",
+              selected ? "border-foreground bg-muted" : "border-border bg-card hover:bg-muted/60",
             )}
           >
             <span className="block font-medium text-foreground">{option.label}</span>

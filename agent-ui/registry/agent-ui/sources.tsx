@@ -31,7 +31,7 @@ export function Sources({ items, label = "Sources", className }: SourcesProps) {
           <li key={item.href}>
             <a
               href={item.href}
-              className="block rounded-2xl border border-border bg-card px-4 py-3 transition-colors hover:bg-muted/50"
+              className="block rounded-2xl border border-border bg-card px-4 py-3 shadow-xs transition-colors hover:bg-muted/60"
             >
               <span className="block text-sm text-foreground">{item.title}</span>
               <span className="mt-0.5 block truncate font-mono text-xs text-muted-foreground">{hostOf(item.href)}</span>

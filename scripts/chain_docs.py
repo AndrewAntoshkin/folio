@@ -27,7 +27,7 @@ VERDICT_RU = {"improved": "вырос", "regressed": "упал", "unchanged": "�
 
 
 def _page(slug: str, lang: str) -> str:
-    return f"{slug}.html" if lang == "ru" else f"{slug}-en.html"
+    return f"/{slug}" if lang == "ru" else f"/en/{slug}"
 
 
 def _link(slug: str, lang: str) -> str:
@@ -122,7 +122,7 @@ def _context(ru: bool, lang: str) -> dict:
         groups = [
             ("Основное", [("Зачем", "#why"), ("Вход", "#inputs"), ("Запуск", "#run")]),
             ("Пакет", [("Выход", "#output"), ("Стратегии", "#strategies"), ("Манифест", "#manifest")]),
-            ("Контур", [("Куда встаёт", "#chain"), ("Предел", "#limits")]),
+            ("Связь", [("С остальными", "#chain"), ("Предел", "#limits")]),
             ("Ссылки", [("GitHub", GITHUB + "ds-context")]),
         ]
         body = "".join([
@@ -159,9 +159,8 @@ def _context(ru: bool, lang: str) -> dict:
             _section("manifest", "Манифест",
                 f"<p>Манифест нужен следующему шагу контура: выбрать стратегию под бюджет токенов и отдать модели только эти файлы. Имена компонентов и токенов лежат списком, чтобы {repair} и {eval_} сверялись с тем же источником.</p>",
                 _pre(manifest)),
-            _section("chain", "Куда встаёт",
-                _pre("Figma / локальная спека\n→ ds-context\n→ модель\n→ ui-repair\n→ ds-eval\n→ prompt-regress"),
-                f"<p>ds-context готовит контекст. {eval_} измеряет, помог ли он. {regress} показывает, не сломала ли новая версия промпта то, что уже проходило.</p>"),
+            _section("chain", "Связь с остальными инструментами",
+                f"<p>Инструменты запускаются по отдельности, но решают соседние шаги одной задачи: <code>ds-context</code> упаковывает систему в компактный контекст, {repair} чинит типичные нарушения по тем же токенам, {eval_} проверяет собранный экран, а {regress} сравнивает два прогона после смены промпта.</p>"),
             _section("limits", "Предел",
                 "<p>Инструмент не открывает Storybook и не ходит в Figma. Он не выбирает кусок пакета под один экран: стратегии глобальные. Оценка токенов годится, чтобы сравнить пакеты между собой, и не годится как счёт из API.</p>"),
         ])
@@ -170,7 +169,7 @@ def _context(ru: bool, lang: str) -> dict:
         groups = [
             ("Basics", [("Why", "#why"), ("Input", "#inputs"), ("Run", "#run")]),
             ("Pack", [("Output", "#output"), ("Strategies", "#strategies"), ("Manifest", "#manifest")]),
-            ("Loop", [("Where it sits", "#chain"), ("Limit", "#limits")]),
+            ("Context", [("Related tools", "#chain"), ("Limit", "#limits")]),
             ("Links", [("GitHub", GITHUB + "ds-context")]),
         ]
         body = "".join([
@@ -207,9 +206,8 @@ def _context(ru: bool, lang: str) -> dict:
             _section("manifest", "Manifest",
                 f"<p>The manifest is for the next step in the loop: pick a strategy under a token budget and pass only those files to the model. Component and token names are listed so {repair} and {eval_} can check against the same source.</p>",
                 _pre(manifest)),
-            _section("chain", "Where it sits",
-                _pre("Figma / local spec\n→ ds-context\n→ model\n→ ui-repair\n→ ds-eval\n→ prompt-regress"),
-                f"<p>ds-context prepares the context. {eval_} measures whether it helped. {regress} shows whether a new prompt broke cases that used to pass.</p>"),
+            _section("chain", "How it relates to the other tools",
+                f"<p>The tools run independently, each covering one part of the same problem: <code>ds-context</code> packs the system into a compact context, {repair} fixes common violations against the same tokens, {eval_} grades the built screen, and {regress} diffs two runs after a prompt change.</p>"),
             _section("limits", "Limit",
                 "<p>The tool does not open Storybook or Figma. It does not choose a slice of the pack for one screen: the strategies are global. The token estimate is for comparing packs, not for an API bill.</p>"),
         ])
@@ -260,7 +258,7 @@ def _repair(ru: bool, lang: str) -> dict:
         groups = [
             ("Основное", [("Зачем", "#why"), ("Правила", "#rules"), ("Запуск", "#run")]),
             ("Фикстура", [("До", "#before"), ("После", "#after"), ("Проверки", "#score")]),
-            ("Контур", [("Куда встаёт", "#chain"), ("Предел", "#limits")]),
+            ("Связь", [("С остальными", "#chain"), ("Предел", "#limits")]),
             ("Ссылки", [("GitHub", GITHUB + "ui-repair")]),
         ]
         body = "".join([
@@ -292,7 +290,7 @@ def _repair(ru: bool, lang: str) -> dict:
                 "<table><thead><tr><th>Проверка</th><th>До</th><th>После</th></tr></thead><tbody>"
                 + "".join(rows) + "</tbody></table>",
                 f"<p>Это не балл {eval_} и не результат Claude. Следующий шаг контура — прогнать патч тем же harness: сборка, axe, Playwright. Здесь виден только ремонт по правилам и то, какие проверки он закрыл.</p>"),
-            _section("chain", "Куда встаёт",
+            _section("chain", "Связь с остальными инструментами",
                 f"<p>{context} говорит, какие компоненты и токены существуют. ui-repair приводит файл к этому списку. {eval_} проверяет, стал ли экран рабочим, а не только формально чистым.</p>"),
             _section("limits", "Предел",
                 "<p>Правила знают фикстуру: конкретный hex, padding 13, класс modal, крестик. Чужой код с другими нарушениями они не починят. Нет диффа в стиле git, нет скриншота и нет живого агента. Счёт "
@@ -303,7 +301,7 @@ def _repair(ru: bool, lang: str) -> dict:
         groups = [
             ("Basics", [("Why", "#why"), ("Rules", "#rules"), ("Run", "#run")]),
             ("Fixture", [("Before", "#before"), ("After", "#after"), ("Checks", "#score")]),
-            ("Loop", [("Where it sits", "#chain"), ("Limit", "#limits")]),
+            ("Context", [("Related tools", "#chain"), ("Limit", "#limits")]),
             ("Links", [("GitHub", GITHUB + "ui-repair")]),
         ]
         body = "".join([
@@ -335,7 +333,7 @@ def _repair(ru: bool, lang: str) -> dict:
                 "<table><thead><tr><th>Check</th><th>Before</th><th>After</th></tr></thead><tbody>"
                 + "".join(rows) + "</tbody></table>",
                 f"<p>This is not a {eval_} score and not a Claude result. The next step is to run the patch through that harness: build, axe, Playwright. What you see here is a rule repair and which checks it closed.</p>"),
-            _section("chain", "Where it sits",
+            _section("chain", "How it relates to the other tools",
                 f"<p>{context} says which components and tokens exist. ui-repair moves a file onto that list. {eval_} checks whether the screen works, not only whether the tags look clean.</p>"),
             _section("limits", "Limit",
                 f"<p>The rules know this fixture: one hex, padding 13, a modal class, a close mark. They will not repair an arbitrary codebase. There is no git-style diff, no screenshot, and no live agent. A jump from {before_score} to {after_score} is easy to read and easy to over-read.</p>"),
@@ -386,7 +384,7 @@ def _regress(ru: bool, lang: str) -> dict:
         groups = [
             ("Основное", [("Зачем", "#why"), ("Промпты", "#prompts"), ("Запуск", "#run")]),
             ("Отчёт", [("Дифф", "#diff"), ("Все кейсы", "#cases"), ("Запись", "#record")]),
-            ("Контур", [("Куда встаёт", "#chain"), ("Предел", "#limits")]),
+            ("Связь", [("С остальными", "#chain"), ("Предел", "#limits")]),
             ("Ссылки", [("GitHub", GITHUB + "prompt-regress")]),
         ]
         body = "".join([
@@ -418,7 +416,7 @@ def _regress(ru: bool, lang: str) -> dict:
             _section("record", "Запись",
                 "<p>Один кейс в двух прогонах. Форма записи одинаковая: id, pass, ds, tokens, note.</p>",
                 _pre(json.dumps(sample, indent=2))),
-            _section("chain", "Куда встаёт",
+            _section("chain", "Связь с остальными инструментами",
                 f"<p>{context} фиксирует, какой контекст видела модель. {eval_} считает кейс. prompt-regress сравнивает два таких прогона, когда меняется промпт, пакет контекста или модель. Регрессия здесь — не падение общего числа, а список кейсов, которые перевернулись.</p>"),
             _section("limits", "Предел",
                 f"<p>Команда не запускает модель и не рендерит UI. Заметки и баллы лежат в JSON, который записан заранее. Пока нет скриншотов, объяснение — одна строка на кейс. {counts['improved']} / {counts['regressed']} / {counts['unchanged']} относится к этим {len(before)} фикстурам, не к набору из ста задач.</p>"),
@@ -428,7 +426,7 @@ def _regress(ru: bool, lang: str) -> dict:
         groups = [
             ("Basics", [("Why", "#why"), ("Prompts", "#prompts"), ("Run", "#run")]),
             ("Report", [("Diff", "#diff"), ("Every case", "#cases"), ("Record", "#record")]),
-            ("Loop", [("Where it sits", "#chain"), ("Limit", "#limits")]),
+            ("Context", [("Related tools", "#chain"), ("Limit", "#limits")]),
             ("Links", [("GitHub", GITHUB + "prompt-regress")]),
         ]
         body = "".join([
@@ -460,7 +458,7 @@ def _regress(ru: bool, lang: str) -> dict:
             _section("record", "Record",
                 "<p>One case in both runs. The record shape is the same: id, pass, ds, tokens, note.</p>",
                 _pre(json.dumps(sample, indent=2))),
-            _section("chain", "Where it sits",
+            _section("chain", "How it relates to the other tools",
                 f"<p>{context} records what the model was allowed to see. {eval_} scores a case. prompt-regress compares two of those runs when the prompt, the context pack, or the model changes. Regression here is the list of cases that flipped, not a drop in one headline number.</p>"),
             _section("limits", "Limit",
                 f"<p>The command does not call a model and does not render UI. Notes and scores live in JSON that was recorded earlier. Until a run stores screenshots, the explanation is one line per case. {counts['improved']} / {counts['regressed']} / {counts['unchanged']} belongs to these {len(before)} fixtures, not to a 100-case suite.</p>"),

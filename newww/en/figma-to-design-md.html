@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" class="nojs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>figma-to-design-md — Andrew Antoshkin</title>
+  <meta name="description" content="Extract variables, styles, and components from Figma via REST API and generate markdown specs that AI agents can consume directly.">
+  <meta property="og:title" content="figma-to-design-md — Andrew Antoshkin">
+  <meta property="og:description" content="Extract variables, styles, and components from Figma via REST API and generate markdown specs that AI agents can consume directly.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
+  <script>document.documentElement.classList.remove('nojs')</script>
+  <link rel="stylesheet" href="/style.css?v=28">
+</head>
+<body>
+
+<div class="dock"><nav aria-label="Navigation"><i aria-hidden="true"></i><a href="/en" aria-label="Home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg></a><a href="/en/projects" aria-label="Projects" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 13h16"/></svg></a><a href="/en/writing" aria-label="Writing"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M14 5.5 18.5 10 9 19.5H4.5V15L14 5.5Z"/><path d="m12 7.5 4.5 4.5"/></svg></a><a href="/en/approach" aria-label="Approach"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.25"/><path d="M5.5 19.5c1.2-3 3.4-4.5 6.5-4.5s5.3 1.5 6.5 4.5"/></svg></a><a href="/en/collab" aria-label="Contact"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></nav><a class="lang" href="/figma-to-design-md" aria-label="Русский">Ru</a></div>
+<a class="float" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Say hello<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+<main><div class="col"><article class="art">
+  <header class="art-top">
+    <a class="back" href="/en/projects" data-r>‹ Back</a>
+    <h1 data-split>figma-to-design-md</h1>
+    <div class="tags" data-r style="--d:.25s"><span class="tag">CLI</span><span class="tag">open source</span></div>
+  </header>
+  <div class="art-intro" data-r style="--d:.3s"><p>Extract variables, styles, and components from Figma via REST API and generate markdown specs that AI agents can consume directly.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="https://github.com/AndrewAntoshkin/figma-to-design-md" target="_blank" rel="noopener">Repository on GitHub</a></div></div>
+  <div class="prose"><div class="pcover "><div class="bg" style="background-image:url(/img/gen/figma-to-design-md.jpg)"></div><span class="plogo">figma-to-design-md</span></div><section id="how"><h2>How It Works</h2>
+<pre><code>Figma file ──▶ figma-to-design-md ──▶ specs/
+├── design-system.md
+├── foundations/
+│ ├── colors.md
+│ ├── typography.md
+│ ├── spacing.md
+│ └── radii.md
+├── components/
+│ ├── README.md
+│ ├── button.md
+│ └── ...
+└── gaps.md</code></pre></section>
+<section id="install"><h2>Installation</h2>
+<pre><code># Run directly
+npx figma-to-design-md extract --file &lt;key&gt; --token &lt;token&gt;
+
+# Or install globally
+npm i -g figma-to-design-md</code></pre></section>
+<section id="setup"><h2>Setup</h2>
+<h3>1. Get a Figma token</h3>
+<p>Open <a href="https://www.figma.com/settings" target="_blank" rel="noopener noreferrer">Figma Settings</a> → Personal access tokens → Create with <strong>File content: Read-only</strong> scope.</p>
+<h3>2. Get the file key</h3>
+<p>From any Figma URL:</p>
+<pre><code>https://www.figma.com/design/ABC123xyz/My-Design-System
+                              ^^^^^^^^^^^
+                              this is the file key</code></pre>
+<h3>3. Run</h3>
+<pre><code>figma-to-design-md extract \
+  --file ABC123xyz \
+  --token figd_xxx</code></pre></section>
+<section id="cli"><h2>CLI Options</h2>
+<table><thead><tr><th>Flag</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td>--file &lt;key&gt;</td><td>—</td><td>Figma file key (required)</td></tr><tr><td>--token &lt;token&gt;</td><td>$FIGMA_TOKEN</td><td>Figma personal access token</td></tr><tr><td>--out &lt;dir&gt;</td><td>./specs</td><td>Output directory</td></tr><tr><td>--mode &lt;mode&gt;</td><td>full</td><td>full | foundations | components</td></tr><tr><td>--node &lt;id&gt;</td><td>—</td><td>Scope to a specific page/frame</td></tr><tr><td>--version</td><td></td><td>Print version</td></tr><tr><td>--help</td><td></td><td>Print help</td></tr></tbody></table></section>
+<section id="output"><h2>Output Structure</h2>
+<h3>design-system.md</h3>
+<p>Top-level overview with counts and links to all detailed files.</p>
+<h3>foundations/*.md</h3>
+<table><thead><tr><th>File</th><th>Contents</th></tr></thead><tbody><tr><td>colors.md</td><td>All COLOR variables + FILL styles in markdown tables</td></tr><tr><td>typography.md</td><td>Font-related variables + TEXT styles</td></tr><tr><td>spacing.md</td><td>Variables matching space, gap, padding, margin</td></tr><tr><td>radii.md</td><td>Variables matching radius, round, corner</td></tr></tbody></table>
+<p>Variables with multiple modes (e.g., Light / Dark) show all values.</p></section>
+<section id="foundations"><h2>Foundations Example</h2>
+<p>What a generated <code>colors.md</code> looks like:</p>
+<pre><code># Colors
+
+## Variables (12 tokens)
+
+| Name | Collection | Light | Dark |
+|-------------------|------------|-----------|-----------|
+| color/primary | Theme | #3b82f6 | #60a5fa |
+| color/secondary | Theme | #6366f1 | #818cf8 |
+| color/bg | Theme | #fafafa | #0a0a0a |
+| color/text | Theme | #0a0a0a | #f5f5f5 |
+| color/muted | Theme | #737373 | #a3a3a3 |
+
+## Styles (3 styles)
+
+| Name | Type |
+|-----------------|-------|
+| Primary Fill | FILL |
+| Background | FILL |
+| Text Default | FILL |</code></pre></section>
+<section id="components"><h2>Components Example</h2>
+<p>What a generated component file looks like:</p>
+<pre><code># Button
+
+> Primary action element with label and optional icon.
+
+- **Figma node:** 123:456
+- **Type:** COMPONENT_SET
+
+## Variants
+
+| Property | Values |
+|----------|-------------------|
+| Size | sm, md, lg |
+| Style | primary, outline |
+| State | default, hover |
+
+## Usage
+
+_Add usage guidelines here._</code></pre></section>
+<section id="gaps"><h2>Gap Detection</h2>
+<p>The tool automatically detects potential issues and writes them to <code>gaps.md</code>:</p>
+<ul class="feature-list"><li><strong>Missing descriptions</strong><span>Components without Figma descriptions — agents can't understand intent</span></li><li><strong>No tokens found</strong><span>File has no local variables — specs will be incomplete</span></li><li><strong>Undocumented components</strong><span>Components exist but lack descriptions for agent consumption</span></li></ul></section>
+<p><a href="https://github.com/AndrewAntoshkin/figma-to-design-md" target="_blank" rel="noopener noreferrer">Source</a></p></div>
+</article></div></main>
+  <section class="cta" data-r>
+    <div class="cta-grid">
+      <div class="cta-card">
+        <div class="shader" aria-hidden="true"></div>
+        <div class="mid"><h2>Have a design engineering challenge?</h2></div>
+        <div class="bot"><p>Let's talk.</p></div>
+      </div>
+      <form class="cta-form" data-subject="Collaboration">
+        <input name="name" required placeholder="Name" autocomplete="name">
+        <input name="email" type="email" required placeholder="Email" autocomplete="email">
+        <textarea name="question" required placeholder="A few words about the task"></textarea>
+        <button type="submit">Write</button>
+      </form>
+    </div>
+    </section>
+  <footer class="foot">
+    <div class="foot-in">
+      <p class="foot-mark">antoshkin.tech</p>
+      <div class="foot-copy">
+        <p class="foot-lead">Want to discuss a project?<br>Tell me about the task and how I can help.</p>
+        <a class="foot-mail" href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
+      </div>
+    </div>
+  </footer>
+  <script src="/motion.js?v=4"></script>
+</body></html>
