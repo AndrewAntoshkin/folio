@@ -32,7 +32,7 @@ HEAD = """<!DOCTYPE html>
   <meta property="og:type" content="website">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
   <script>document.documentElement.classList.remove('nojs');try{{if(sessionStorage.getItem('dock-seen'))document.documentElement.classList.add('dock-seen');else sessionStorage.setItem('dock-seen','1')}}catch(e){{}}</script>
-  <link rel="stylesheet" href="/style.css?v=33">
+  <link rel="stylesheet" href="/style.css?v=38">
 </head>
 <body>
 """
@@ -206,6 +206,273 @@ FEATURED = ["pulse-ui", "intent-os", "ds-eval"]
 WORKFLOW = ["agent-ui", "figma-to-design-md", "ds-lint", "ds-coverage"]
 UTILITIES = ["ds-context", "ui-repair", "prompt-regress", "ds-health"]
 
+SKILLS = [
+    ("token-map", "Token map", "Карта токенов",
+     "Replaces hardcoded colors, spacing, and radii with design tokens.",
+     "Заменяет жёстко заданные цвета, отступы и радиусы на токены.",
+     """---
+name: token-map
+description: Use when code has hardcoded colors, spacing, font sizes, or radii that should use design tokens.
+---
+
+# Token map
+
+Replace raw UI values with the project's existing tokens.
+
+## Steps
+1. Find the token file (`tokens.css`, `tokens.json`, or `DESIGN.md`). If there is none, stop and say so.
+2. Scan the files you changed:
+```bash
+npx @andrewaitken/ds-lint src/ --tokens tokens.css
+```
+3. For each finding, pick the token by meaning first (e.g. "primary action"), then by value.
+4. Replace only clear matches. Never invent a token.
+5. Run the scan again until the changed files are clean.
+
+## Done when
+- `ds-lint` reports no fixable findings in the changed files
+- No new tokens were added
+- Values without a match are listed with a reason
+"""),
+    ("design-md", "DESIGN.md", "DESIGN.md",
+     "Builds a short DESIGN.md that agents can follow.",
+     "Собирает короткий DESIGN.md, по которому работает агент.",
+     """---
+name: design-md
+description: Use when a project needs a DESIGN.md so coding agents follow the design system.
+---
+
+# DESIGN.md
+
+Write a short file that tells agents how the UI should look.
+
+## Steps
+1. If the system lives in Figma, extract it:
+```bash
+npx figma-to-design-md extract --file <key> --token <token>
+```
+2. Otherwise read the token files and 3 to 5 core components.
+3. Write `DESIGN.md` with these sections: colors, type, spacing, radii, components, rules.
+4. Every value must come from a token or a component in the code. Mark guesses as `unverified`.
+5. Keep it under 150 lines.
+
+## Done when
+- Each rule points to a token or file
+- An agent can build a new screen from this file alone
+"""),
+    ("component-adoption", "Component adoption", "Покрытие системы",
+     "Finds local copies of design-system components and swaps them back.",
+     "Находит локальные копии компонентов системы и возвращает их к системным.",
+     """---
+name: component-adoption
+description: Use when a codebase may contain local copies of design-system components such as its own Button or Modal.
+---
+
+# Component adoption
+
+Find where the product bypasses the design system.
+
+## Steps
+1. Measure usage:
+```bash
+npx @andrewaitken/ds-coverage src/ --ds @acme/ui
+```
+2. List local components that share a name with a system export.
+3. For each one, compare props. If the system component covers it, replace it.
+4. If it does not, report the missing prop. Do not patch the system component.
+5. Run the scan again and compare the numbers.
+
+## Done when
+- Coverage went up, or each remaining duplicate has a reason
+- No behavior changed on the touched screens
+"""),
+    ("ui-review", "UI review", "Ревью интерфейса",
+     "Checks a screen at 390 and 1280 px, with keyboard and real data.",
+     "Проверяет экран на 390 и 1280 px, с клавиатурой и реальными данными.",
+     """---
+name: ui-review
+description: Use before shipping a screen or flow to check layout, states, and keyboard access.
+---
+
+# UI review
+
+Review one screen the way a user would use it.
+
+## Steps
+1. Open the screen at 390 px and at 1280 px.
+2. Use it with the keyboard only: Tab order, visible focus, Escape closes overlays.
+3. Check the states: loading, empty, error, long text.
+4. Compare spacing, type, and color with the design system.
+5. Write findings in three groups: `blocking`, `should-fix`, `note`.
+
+## Each finding has
+- the element
+- what is wrong
+- the fix
+- how to check it
+
+## Done when
+- No `blocking` items remain
+- Both widths were checked after the fixes
+"""),
+    ("component-docs", "Component docs", "Документация компонента",
+     "Documents a component from its real code and usage.",
+     "Описывает компонент по реальному коду и местам использования.",
+     """---
+name: component-docs
+description: Use when a shared component needs documentation or a new variant.
+---
+
+# Component docs
+
+Document what the component does today, not what it should do.
+
+## Steps
+1. Read the component, its types, tests, and 3 real call sites.
+2. Write: purpose, props table, states, keyboard behavior.
+3. Add 2 pairs of "Do" and "Don't" taken from real usage.
+4. Add a "Do not use for" line.
+5. Mark anything you could not verify as `unknown`.
+
+## Done when
+- Every prop and variant in the doc exists in the code
+- No invented props
+"""),
+    ("ds-migrate", "DS migrate", "Миграция на систему",
+     "Moves one screen to design-system components without changing behavior.",
+     "Переводит один экран на компоненты системы, не меняя поведение.",
+     """---
+name: ds-migrate
+description: Use when a screen with custom or raw controls should move to design-system components.
+---
+
+# DS migrate
+
+Migrate one screen at a time.
+
+## Steps
+1. List the controls on the screen: buttons, inputs, selects, modals.
+2. Match each one to a system component. List gaps. Do not invent props.
+3. Replace the controls one by one.
+4. After each replacement, check the states, events, and keyboard behavior.
+5. Run the token scan:
+```bash
+npx @andrewaitken/ds-lint src/<screen> --tokens tokens.css
+```
+
+## Done when
+- The screen behaves exactly as before
+- No raw controls or hardcoded values are left
+- Missing system features are reported separately
+"""),
+    ("ui-states", "UI states", "Состояния UI",
+     "Renders every state of a component before you call it done.",
+     "Показывает все состояния компонента, прежде чем считать его готовым.",
+     """---
+name: ui-states
+description: Use when a component looks finished but only the happy path has been tested.
+---
+
+# UI states
+
+Make every state visible.
+
+## Steps
+1. Make a temporary page or story for the component.
+2. Render these states: default, hover, focus, disabled, loading, empty, error, success.
+3. Add stress cases: very long text, 0 items, 1000 items, 320 px width.
+4. Fix what breaks.
+5. Keep the page as a story or delete it. Do not leave it in production routes.
+
+## Done when
+- Every state renders without overflow or layout jumps
+- Error and loading states tell the user what to do next
+"""),
+    ("motion", "Motion", "Анимация",
+     "Adds motion only where it helps, and respects reduced motion.",
+     "Добавляет анимацию только там, где она помогает, и уважает reduced motion.",
+     """---
+name: motion
+description: Use when adding or reviewing animation and transitions in a UI.
+---
+
+# Motion
+
+Animate only when it explains a change.
+
+## Steps
+1. Skip it if the action happens all the time or comes from a keyboard shortcut.
+2. Say what the motion explains: where something came from, what changed, or that an action worked.
+3. Use CSS transitions first. Animate only `transform` and `opacity`.
+4. Keep it under 300 ms with an ease-out curve: `cubic-bezier(0.23, 1, 0.32, 1)`.
+5. Never scale from `0`. Start at `0.95`.
+6. Add the fallback:
+```css
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+```
+
+## Done when
+- Fast repeated clicks do not break it
+- It works with reduced motion on
+"""),
+    ("a11y-pass", "A11y pass", "Доступность",
+     "Checks contrast, focus, names, and readable type in the running UI.",
+     "Проверяет контраст, фокус, имена и читаемость текста в работающем UI.",
+     """---
+name: a11y-pass
+description: Use when a screen needs a quick accessibility and typography check.
+---
+
+# A11y pass
+
+Check the running page, not only the code.
+
+## Steps
+1. Text contrast is at least 4.5:1. Borders and focus rings are at least 3:1.
+2. Every button, link, and input has a name a screen reader can read.
+3. Tab through the page. Focus is always visible and never trapped, except inside an open dialog.
+4. Dialogs: focus moves in on open, Escape closes, focus returns to the trigger.
+5. Inputs on mobile use at least 16 px text.
+6. Numbers in tables use `font-variant-numeric: tabular-nums`.
+
+## Done when
+- Each issue has the element, the measured value, and a fix
+- The page works with keyboard only
+"""),
+    ("interaction-spec", "Interaction spec", "Спека взаимодействия",
+     "Writes down what happens on click, on error, and on cancel.",
+     "Фиксирует, что происходит при клике, ошибке и отмене.",
+     """---
+name: interaction-spec
+description: Use before building an action that saves data, calls a server, or can be undone.
+---
+
+# Interaction spec
+
+Write the behavior before the code.
+
+## Steps
+1. Write one line each for: trigger, pending state, success, error, cancel, undo.
+2. Say where focus goes after the action.
+3. For destructive actions, name the point of no return.
+4. Turn the spec into two tests: one keyboard path and one error path.
+5. Build it.
+
+## Example
+- Trigger: click "Save"
+- Pending: button disabled, label "Saving..."
+- Error: message under the form, button enabled, input values kept
+- Cancel: closes the form, nothing saved
+
+## Done when
+- No state is left to guesswork
+- Both tests pass
+"""),
+]
+ALL_SKILLS = SKILLS
+
 
 def projects_by(slugs: list[str]) -> list[tuple[int, dict]]:
     by = {p["slug"]: p for p in PROJECTS}
@@ -235,6 +502,18 @@ def utility_rows(lang: str, slugs: list[str]) -> str:
             f'<div class="jtitle">{p["name"]}</div>'
             f'<p>{p["desc"][i]}</p></div>'
             f'<span class="arrow-btn">{ARROW}</span></a>'
+        )
+    return f'<div class="journal">{"".join(rows)}</div>'
+
+def skill_rows(lang: str) -> str:
+    i = 2 if lang == "ru" else 1
+    rows = []
+    for n, (slug, en, ru, _, _, _) in enumerate(ALL_SKILLS):
+        desc = ALL_SKILLS[n][4] if lang == "ru" else ALL_SKILLS[n][3]
+        rows.append(
+            f'<a class="jrow" href="{name_for(f"skills/{slug}", lang)}" data-r style="--d:{n * 0.04}s">'
+            f'<div class="jleft"><div class="jtitle">{ru if i == 2 else en}</div>'
+            f'<p>{desc}</p></div><span class="arrow-btn">{ARROW}</span></a>'
         )
     return f'<div class="journal">{"".join(rows)}</div>'
 
@@ -380,20 +659,47 @@ def page_head(title: str, sub: str = "", back: str = "") -> str:
 def projects_page(lang: str) -> str:
     ru = lang == "ru"
     if ru:
-        title, sub = "Проекты", "Дизайн-системы, продуктовые кейсы и инструменты вокруг одной задачи: чтобы интерфейс собирался из компонентов системы, а не рисовался каждый раз заново."
-        h_case, h_work, h_util = "Кейсы", "Инструменты", "Прототипы и утилиты"
+        title, sub = "Проекты", "Кейсы, инструменты, утилиты и скиллы: всё, что я проектирую и собираю на стыке дизайна, кода и AI."
+        h_case, h_work, h_util, h_skills = "Кейсы", "Инструменты", "Утилиты", "Скиллы"
         note = "Компоненты с правилами для Cursor и три CLI-пакета в npm: спека из Figma, проверка токенов и покрытие импортов."
         util_note = "Три воспроизводимых прототипа на локальных фикстурах (упаковка контекста, патч по правилам, дифф промптов) и браузерная утилита первичного аудита живого URL."
+        skills_note = ""
     else:
-        title, sub = "Projects", "Design systems, product case studies, and tools built around one problem: assembling interfaces from a shared system instead of reinventing controls."
-        h_case, h_work, h_util = "Cases", "Tools", "Prototypes & utilities"
+        title, sub = "Projects", "Case studies, tools, utilities, and skills: what I design and build where design, code, and AI meet."
+        h_case, h_work, h_util, h_skills = "Cases", "Tools", "Utilities", "Skills"
         note = "Components with Cursor rules and three npm CLIs: Figma-to-markdown specs, token linting, and import coverage."
         util_note = "Three reproducible prototypes on local fixtures (context packing, rule-based repair, prompt diffing) plus a browser utility for auditing computed styles on a live URL."
+        skills_note = ""
+    tabs = [
+        ("cases", h_case, len(FEATURED), "", project_cards(lang, projects_by(FEATURED))),
+        ("tools", h_work, len(WORKFLOW), note, project_cards(lang, projects_by(WORKFLOW), "workflow")),
+        ("utilities", h_util, len(UTILITIES), util_note, utility_rows(lang, UTILITIES)),
+        ("skills", h_skills, len(ALL_SKILLS), skills_note, skill_rows(lang)),
+    ]
+    buttons = "".join(
+        f'<button type="button" role="tab" id="tab-{k}" aria-controls="panel-{k}" aria-selected="{"true" if n == 0 else "false"}" data-tab="{k}">{t}<sup>{c}</sup></button>'
+        for n, (k, t, c, _, _) in enumerate(tabs)
+    )
+    panels = "".join(
+        f'<section class="tab-panel" role="tabpanel" id="panel-{k}" aria-labelledby="tab-{k}"{"" if n == 0 else " hidden"}>'
+        + body + "</section>"
+        for n, (k, _, _, nt, body) in enumerate(tabs)
+    )
+    script = (
+        "<script>(function(){var tabs=[].slice.call(document.querySelectorAll('[data-tab]'));"
+        "function show(k,push){var ok=tabs.some(function(t){return t.dataset.tab===k});if(!ok)k=tabs[0].dataset.tab;"
+        "tabs.forEach(function(t){var on=t.dataset.tab===k;t.setAttribute('aria-selected',on);"
+        "var p=document.getElementById('panel-'+t.dataset.tab);if(p)p.hidden=!on});"
+        "if(push)history.replaceState(null,'','#'+k)}"
+        "tabs.forEach(function(t){t.addEventListener('click',function(){show(t.dataset.tab,true)})});"
+        "tabs.forEach(function(t,i){t.addEventListener('keydown',function(e){var d=e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0;"
+        "if(!d)return;var n=tabs[(i+d+tabs.length)%tabs.length];n.focus();show(n.dataset.tab,true);e.preventDefault()})});"
+        "show(location.hash.slice(1),false)})();</script>"
+    )
     return (
         f'<main><div class="col">{page_head(title, sub)}'
-        f'<section class="stack">{sec_head(h_case, len(FEATURED))}{project_cards(lang, projects_by(FEATURED))}</section>'
-        f'<section class="stack">{sec_head(h_work, len(WORKFLOW))}<p class="sec-note">{note}</p>{project_cards(lang, projects_by(WORKFLOW), "workflow")}</section>'
-        f'<section class="stack">{sec_head(h_util, len(UTILITIES))}<p class="sec-note">{util_note}</p>{utility_rows(lang, UTILITIES)}</section>'
+        f'<div class="tabs-wrap"><div class="tabs" role="tablist" data-r>{buttons}</div>'
+        f'<div class="tab-panels stack">{panels}</div></div>{script}'
         f'</div></main>'
     )
 
@@ -569,6 +875,152 @@ def article_page(stem: str, lang: str) -> str:
   <div class="prose">{img}{a["body"]}</div>
 </article></div></main>'''
 
+def skill_body_html(body: str) -> str:
+    """Small Markdown renderer for the deliberately narrow SKILL.md format."""
+    output: list[str] = []
+    list_tag = ""
+    in_code = False
+
+    def inline(text: str) -> str:
+        return re.sub(r"`([^`]+)`", r"<code>\1</code>", html.escape(text))
+
+    for raw in body.strip().splitlines():
+        line = raw.strip()
+        if line.startswith("```"):
+            if list_tag:
+                output.append(f"</{list_tag}>")
+                list_tag = ""
+            output.append("</code></pre>" if in_code else "<pre><code>")
+            in_code = not in_code
+            continue
+        if in_code:
+            output.append(html.escape(raw) + "\n")
+            continue
+        if not line:
+            if list_tag:
+                output.append(f"</{list_tag}>")
+                list_tag = ""
+            continue
+        if line.startswith("## "):
+            if list_tag:
+                output.append(f"</{list_tag}>")
+                list_tag = ""
+            output.append(f"<h2>{inline(line[3:])}</h2>")
+        elif line.startswith("### "):
+            if list_tag:
+                output.append(f"</{list_tag}>")
+                list_tag = ""
+            output.append(f"<h3>{inline(line[4:])}</h3>")
+        elif re.match(r"^\d+\. ", line):
+            if list_tag != "ol":
+                if list_tag:
+                    output.append(f"</{list_tag}>")
+                start = int(re.match(r"^(\d+)\. ", line).group(1))
+                output.append("<ol>" if start == 1 else f'<ol start="{start}">')
+                list_tag = "ol"
+            output.append(f"<li>{inline(re.sub(r'^\d+\. ', '', line))}</li>")
+        elif line.startswith("- "):
+            if list_tag != "ul":
+                if list_tag:
+                    output.append(f"</{list_tag}>")
+                output.append("<ul>")
+                list_tag = "ul"
+            output.append(f"<li>{inline(line[2:])}</li>")
+        else:
+            if list_tag:
+                output.append(f"</{list_tag}>")
+                list_tag = ""
+            output.append(f"<p>{inline(line)}</p>")
+    if list_tag:
+        output.append(f"</{list_tag}>")
+    if in_code:
+        output.append("</code></pre>")
+    return "".join(output)
+
+
+def split_frontmatter(doc: str) -> tuple[str, str]:
+    _, fm, body = doc.split("---\n", 2)
+    return fm.strip(), re.sub(r"^# .+\n+", "", body.lstrip())
+
+
+def write_skills() -> None:
+    """Write installable English SKILL.md files and localized presentation pages."""
+    skills_dir = OUT / "skills"
+    if skills_dir.exists():
+        shutil.rmtree(skills_dir)
+    en_skills = OUT / "en" / "skills"
+    if en_skills.exists():
+        shutil.rmtree(en_skills)
+    for slug, en, ru, en_desc, ru_desc, body in ALL_SKILLS:
+        target = skills_dir / slug
+        target.mkdir(parents=True)
+        doc = body
+        target.joinpath("SKILL.md").write_text(doc, encoding="utf-8")
+        frontmatter, body_markdown = split_frontmatter(doc)
+        body_html = f'<h1>{html.escape(en)}</h1>' + skill_body_html(body_markdown)
+        raw_skill = html.escape(doc)
+        for lang in ("ru", "en"):
+            is_ru = lang == "ru"
+            title = ru if is_ru else en
+            desc = ru_desc if is_ru else en_desc
+            t = {
+                "crumb_a": "Проекты" if is_ru else "Projects",
+                "crumb_b": "Скиллы" if is_ru else "Skills",
+                "kind": "Скилл для агента" if is_ru else "Agent skill",
+                "copy": "Копировать" if is_ru else "Copy",
+                "copied": "Скопировано" if is_ru else "Copied",
+                "save": "Сохранить .md" if is_ru else "Save .md",
+                "raw": "Исходник" if is_ru else "Source",
+                "close": "Закрыть" if is_ru else "Close",
+            }
+            page = shell(
+                lang,
+                f"{title} — {'Андрей Антошкин' if is_ru else 'Andrew Antoshkin'}",
+                "projects",
+                f"skills/{slug}",
+                f'''<main><div class="col"><article class="art skill-page">
+  <header class="art-top">
+    <nav class="crumbs" data-r aria-label="breadcrumb"><a href="{name_for("projects", lang)}">{t["crumb_a"]}</a><span>›</span><a href="{name_for("projects", lang)}#skills">{t["crumb_b"]}</a><span>›</span><span>{slug}</span></nav>
+    <h1 data-split>{title}</h1>
+    <div class="tags" data-r style="--d:.25s"><span class="tag">{t["kind"]}</span><span class="tag">SKILL.md</span></div>
+  </header>
+  <div class="art-intro" data-r style="--d:.3s"><p>{desc}</p></div>
+  <section class="skill-card" data-r>
+    <div class="skill-card-bar"><span>SKILL.md</span><div><button type="button" class="cmd-copy" data-copy-target="skill-raw">{t["copy"]}</button><button type="button" class="cmd-copy skill-open">{t["raw"]}</button><a class="cmd-copy" href="/skills/{slug}/SKILL.md" download="{slug}-SKILL.md">{t["save"]}</a></div></div>
+    <pre class="skill-fm"><code>---\n{html.escape(frontmatter)}\n---</code></pre>
+    <div class="skill-doc">{body_html}</div>
+  </section>
+</article></div></main>
+<textarea id="skill-raw" hidden>{raw_skill}</textarea>
+<dialog class="skill-modal" id="skill-source" aria-label="{slug}">
+  <div class="skill-modal-in">
+    <div class="skill-modal-top"><strong>{slug}/SKILL.md</strong><button class="skill-close" type="button" data-skill-close>{t["close"]}</button></div>
+    <pre><code>{raw_skill}</code></pre>
+    <div class="skill-modal-actions"><a class="btn mint" href="/skills/{slug}/SKILL.md" download="{slug}-SKILL.md">{t["save"]}</a></div>
+  </div>
+</dialog>
+<script>(function(){{var d=document.getElementById("skill-source");document.querySelector(".skill-open").addEventListener("click",function(){{d.showModal()}});document.querySelector("[data-skill-close]").addEventListener("click",function(){{d.close()}});d.addEventListener("click",function(e){{if(e.target===d)d.close()}});document.querySelectorAll("[data-copy-target]").forEach(function(b){{b.addEventListener("click",function(){{var el=document.getElementById(b.dataset.copyTarget);var txt=el.value!==undefined?el.value:el.textContent;navigator.clipboard.writeText(txt).then(function(){{var o=b.textContent;b.textContent="{t["copied"]}";setTimeout(function(){{b.textContent=o}},1400)}})}})}})}})();</script>''',
+                cta=False,
+                desc=desc,
+            )
+            if is_ru:
+                target.joinpath("index.html").write_text(page, encoding="utf-8")
+            else:
+                en_target = en_skills / slug
+                en_target.mkdir(parents=True, exist_ok=True)
+                en_target.joinpath("index.html").write_text(page, encoding="utf-8")
+    catalog = "\n".join(
+        f"- [{en}]({slug}/SKILL.md) — {desc}"
+        for slug, en, _, desc, _, _ in ALL_SKILLS
+    )
+    skills_dir.joinpath("README.md").write_text(
+        "# Agent skills\n\n"
+        "Portable instructions for design-engineering and AI-native design-system work. "
+        "Copy an individual `SKILL.md` into an agent's skills directory.\n\n"
+        + catalog + "\n",
+        encoding="utf-8",
+    )
+
 
 def main() -> None:
     OUT.mkdir(exist_ok=True)
@@ -586,7 +1038,7 @@ def main() -> None:
                 (OUT / "en" / en_name).write_text(page_html, encoding="utf-8")
 
         write("home", f"{who} — Design Engineer", "home", home(lang))
-        write("projects", f"{'Проекты' if ru else 'Projects'} — {who}", "projects", projects_page(lang), desc="Инструменты и проверки для дизайн-систем и AI-агентов." if ru else "Open-source tools and benchmarks for design systems and AI coding agents.")
+        write("projects", f"{'Проекты' if ru else 'Projects'} — {who}", "projects", projects_page(lang), desc="Кейсы, инструменты, утилиты и скиллы на стыке дизайна, кода и AI." if ru else "Case studies, tools, utilities, and skills where design, code, and AI meet.")
         write("writing", f"{'Статьи' if ru else 'Writing'} — {who}", "writing", writing_page(lang), desc="Заметки о дизайне, системах и AI." if ru else "Notes on design, systems, and AI.")
         write("approach", f"{'Подход' if ru else 'Approach'} — {who}", "approach", approach_page(lang), desc="От неопределённости к работающему продукту: сценарии, прототипы, токены и код." if ru else "From ambiguity to shipping software: flows, prototypes, tokens, and production code.")
         write("collab", f"{'Сотрудничество' if ru else 'Collaboration'} — {who}", "collab", collab_page(lang), cta=False, desc="Контакты для связи: почта, GitHub, Telegram." if ru else "Contact details: email, GitHub, Telegram.")
@@ -596,6 +1048,7 @@ def main() -> None:
         for s in ORDER:
             a = article(s, lang)
             write(s, a["title"], "writing", article_page(s, lang), desc=a["tldr"])
+    write_skills()
     publish_root()
     print("done")
 
@@ -611,8 +1064,19 @@ def publish_root() -> None:
             dest.mkdir(exist_ok=True)
             for en_file in src.glob("*.html"):
                 (dest / en_file.name).write_text(en_file.read_text(encoding="utf-8"), encoding="utf-8")
+            en_skills = src / "skills"
+            if en_skills.exists():
+                dest_skills = dest / "skills"
+                if dest_skills.exists():
+                    shutil.rmtree(dest_skills)
+                shutil.copytree(en_skills, dest_skills)
         elif src.name == "img" and src.is_dir():
             dest = ROOT / "img"
+            if dest.exists():
+                shutil.rmtree(dest)
+            shutil.copytree(src, dest)
+        elif src.name == "skills" and src.is_dir():
+            dest = ROOT / "skills"
             if dest.exists():
                 shutil.rmtree(dest)
             shutil.copytree(src, dest)

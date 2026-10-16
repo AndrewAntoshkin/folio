@@ -4,13 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Intent OS — Andrew Antoshkin</title>
-  <meta name="description" content="A study interpreting Mercury OS architecture and art direction for an AI agent. Its Modules, Flows, Spaces, and Locus principles are adapted to agent-ui components and design-system verification.">
+  <meta name="description" content="A prototype of a responsive operating system with no apps or folders: Spaces assemble from intent, modules are defined by item, action, and condition, and the interface adapts to the task.">
   <meta property="og:title" content="Intent OS — Andrew Antoshkin">
-  <meta property="og:description" content="A study interpreting Mercury OS architecture and art direction for an AI agent. Its Modules, Flows, Spaces, and Locus principles are adapted to agent-ui components and design-system verification.">
+  <meta property="og:description" content="A prototype of a responsive operating system with no apps or folders: Spaces assemble from intent, modules are defined by item, action, and condition, and the interface adapts to the task.">
   <meta property="og:type" content="website">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
   <script>document.documentElement.classList.remove('nojs');try{if(sessionStorage.getItem('dock-seen'))document.documentElement.classList.add('dock-seen');else sessionStorage.setItem('dock-seen','1')}catch(e){}</script>
-  <link rel="stylesheet" href="/style.css?v=33">
+  <link rel="stylesheet" href="/style.css?v=38">
 </head>
 <body>
 
@@ -20,49 +20,54 @@
   <header class="art-top">
     <a class="back" href="/en/projects" data-r>‹ Back</a>
     <h1 data-split>Intent OS</h1>
-    <div class="tags" data-r style="--d:.25s"><span class="tag">Spatial UI</span><span class="tag">Live Prototype</span></div>
+    <div class="tags" data-r style="--d:.25s"><span class="tag">Operating System</span><span class="tag">Live Prototype</span></div>
   </header>
-  <div class="art-intro" data-r style="--d:.3s"><p>A study interpreting Mercury OS architecture and art direction for an AI agent. Its Modules, Flows, Spaces, and Locus principles are adapted to agent-ui components and design-system verification.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="/demos/intent-os/?lang=en">Open live prototype</a></div></div>
-  <div class="prose"><div class="pcover "><div class="bg" style="background-image:url(/img/gen/intent-os.jpg)"></div><span class="plogo">Intent OS</span></div><section id="concept"><h2>A Mercury interaction study for AI agents</h2>
-<p><strong>This is a study interpreting the architecture and art direction of Jason Yuan’s <a href="https://www.mercuryos.com" target="_blank" rel="noopener">Mercury OS</a>, not an original operating-system concept.</strong> I adapted its Modules, Flows, Spaces, and Locus principles to my own <code>agent-ui</code> components and design-system tooling.</p>
-<p>Traditional IDEs and desktop shells cram AI agents into a narrow chat sidebar. When an agent audits a design system, proposes a six-file token patch, or diffs two prompt runs, the human is forced to bounce manually between the chat thread, code editor, browser, and terminal.</p>
-<p>In <strong>Intent OS</strong>, the primary unit of interface is not an application window or folder—it is the user's <strong>Intent</strong>. As soon as a task is stated, the workspace dynamically choreographs a three-module constellation (Locus):</p>
+  <div class="art-intro" data-r style="--d:.3s"><p>A prototype of a responsive operating system with no apps or folders: Spaces assemble from intent, modules are defined by item, action, and condition, and the interface adapts to the task.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="/demos/intent-os/?lang=en">Open live prototype</a></div></div>
+  <div class="prose"><div class="pcover "><div class="bg" style="background-image:url(/img/gen/intent-os.jpg)"></div><span class="plogo">Intent OS</span></div><section id="concept"><h2>An operating system that responds to intent</h2>
+<p><strong>Intent OS</strong> is an interactive prototype of an operating system with no apps or folders. Instead of remembering which program handles a task, you state what you intend to do, and the system assembles a workspace of the content and actions you need.</p>
+<p>Today a single task — say, arranging a trip — is scattered across mail, chat, calendar, airline sites, and notes. Every jump between apps breaks focus. In Intent OS the task lives in one Space, and the interface adapts to it rather than the other way around.</p>
 <ul class="feature-list">
-<li><strong>Locus Stream</strong><span>Live <code>Thinking</code>, <code>Tool Call</code>, <code>Approval</code>, and <code>Choice</code> primitives from <code>agent-ui</code> surface model reasoning, static analysis matches, and explicit human-in-the-loop sign-off.</span></li>
-<li><strong>Live Artifact Stage</strong><span>Synchronized component renderer with instant "Before Patch / DS Semantics" switching and live DOM token inspection.</span></li>
-<li><strong>Context &amp; Telemetry</strong><span>A <code>Context Meter</code> ring, interactive <code>Plan</code> checklist, and real-time evaluation bars (DS Compliance, axe A11y, Token Drift).</span></li>
+<li><strong>Spaces from intent</strong><span>“Plan a trip to Lisbon” assembles a Space with three flows: flights, stay, and itinerary. The more specific the intent, the smaller the Space: “Remind me to call Mom when I get home” becomes a single module.</span></li>
+<li><strong>Flows and modules</strong><span>A flow is a horizontal chain of modules; move between flows with ↑ ↓. Each module is defined by an item, an action, and a condition, and generates its own interface: an email, a chat, a calendar, an interactive map with directions, a music player, listings with photos, a conditional alarm, weather, a product card.</span></li>
+<li><strong>Everything works on mock data</strong><span>Every button does something: books a flight, creates an event, sends an email when a condition is met, forwards to a contact, draws a route. Voice input, selection-to-module, and an RU / EN switch for both interface and data.</span></li>
+<li><strong>An intent line on every module</strong><span>Command line, natural language, and interface hints in one field. As you type, the sentence is parsed into item, action, and condition: “remind me to pack when the flight is booked” rebuilds the module into a triggered reminder.</span></li>
 </ul>
 <figure class="case-fig">
-  <img src="/img/demos/intent-os-1.jpg" alt="Intent OS: token audit and repair flow powered by agent-ui primitives" loading="lazy">
-  <figcaption>Scenario 01 in Intent OS: reasoning and Approval.tsx sign-off on the left, live raw-vs-semantic component preview in the center, and context telemetry on the right.</figcaption>
+  <img src="/img/demos/intent-os-1.jpg" alt="Intent OS: a Lisbon trip Space with an interactive map and route in focus" loading="lazy">
+  <figcaption>The “Plan a trip to Lisbon” Space: the map with a drawn route is in focus, neighbouring modules and flows recede into fog, and “+” spawns an adjacent module.</figcaption>
 </figure>
 </section>
 
-<section id="scenarios"><h2>Three interactive intents inside the prototype</h2>
-<p>Switch between three complete workflows using keys <code>1</code>, <code>2</code>, <code>3</code> or the floating command dock:</p>
+<section id="architecture"><h2>How interaction works</h2>
 <table>
   <thead>
-    <tr><th>Intent Scenario</th><th>Active Primitives</th><th>What It Verifies</th></tr>
+    <tr><th>Input</th><th>What happens</th></tr>
   </thead>
   <tbody>
-    <tr><td><strong>1. Token Repair</strong></td><td><code>Thinking</code> · <code>ToolCall (ds-lint)</code> · <code>Approval</code></td><td>Replaces 6 hardcoded hex values and raw buttons in <code>SettingsPage.tsx</code> with semantic tokens after user approval.</td></tr>
-    <tr><td><strong>2. Checkout Assembly</strong></td><td><code>Choice</code> · <code>Plan</code> · <code>Artifact</code></td><td>Clarifies container architecture (side <code>Sheet</code> vs centered <code>Modal</code>) and composes the flow with zero custom controls.</td></tr>
-    <tr><td><strong>3. Prompt Regression</strong></td><td><code>ToolCall (prompt-regress)</code> · <code>AnswerChart</code></td><td>Diffs system prompts <code>v12 → v13</code> across 10 benchmark cases, showing a +34.1 pt jump in DS compliance.</td></tr>
+    <tr><td><strong>Enter on the home screen</strong></td><td>The system assembles a Space from the stated intent.</td></tr>
+    <tr><td><strong>← → and ↑ ↓, trackpad gestures</strong></td><td>Move between modules in a flow and between flows.</td></tr>
+    <tr><td><strong>Tab or “+”</strong></td><td>An adjacent module with actions predicted from the parent’s context.</td></tr>
+    <tr><td><strong>⌘ — tap or hold</strong></td><td>One standard list of actions for every module; typing filters it instantly.</td></tr>
+    <tr><td><strong>Text selection</strong></td><td>A new module from the selected fragment; the parent stays untouched.</td></tr>
+    <tr><td><strong>Pinch or O</strong></td><td>Space overview: flows, generation rules, and collaborators.</td></tr>
+    <tr><td><strong>↑ on the home screen</strong></td><td>Timeline — a history of Spaces searchable by description: “the blue chart Leo sent” finds the right screenshot.</td></tr>
   </tbody>
 </table>
+<p>Collaborators — services and people — are sandboxed: each sees only the modules it touches and can add new ones on its own. A few seconds in, Weather suggests swapping days because of rain, and Calendar moves a meeting so it no longer overlaps the critique.</p>
 <figure class="case-fig">
-  <img src="/img/demos/intent-os-2.jpg" alt="Intent OS: checkout composition and live Alt token spec overlay" loading="lazy">
-  <figcaption>Scenario 02 with Token Spec X-Ray enabled (hold Alt): every glass module reveals its semantic surface variables, blur budget, and border radius tokens.</figcaption>
+  <img src="/img/demos/intent-os-2.jpg" alt="Intent OS: Space overview with flows, rules, and collaborators" loading="lazy">
+  <figcaption>Space overview: flows run as rows and modules drag between them; generation rules and collaborators with their access boundaries sit on the left.</figcaption>
 </figure>
 </section>
 
-<section id="visual"><h2>Visual craft &amp; token physics</h2>
+<section id="visual"><h2>Responsiveness and visual language</h2>
 <ul>
-<li><strong>Reactive ambient light field:</strong> a 60fps canvas shader shifts color temperature in sync with the active accent token (<code>Mint</code>, <code>Iris</code>, <code>Amber</code>, <code>Sky</code>);</li>
-<li><strong>Zero hardcoded palette classes:</strong> every primitive binds strictly to CSS variables, so flipping the theme swatch recolors charts, rings, and approvals simultaneously;</li>
-<li><strong>Built-in Spec X-Ray:</strong> holding <code>Alt</code> overlays live token badges directly across the spatial modules.</li>
+<li><strong>Focus over noise:</strong> only the module you are working in stays sharp; everything else recedes into a soft fog, so contrast appears only where it is needed;</li>
+<li><strong>Choreography without resistance:</strong> modules arrive on spring curves, the overview unfolds from the active module and gathers back into it, and neighbours glide apart when you reorder cards;</li>
+<li><strong>Instant feedback:</strong> intent is parsed live, key presses register in the hints, and collaborators add modules without a reload or losing your typing focus;</li>
+<li><strong>Day and night:</strong> at night, modules glow with a soft backlight.</li>
 </ul>
-<p><a class="btn mint" href="/demos/intent-os/?lang=en">Open live Intent OS prototype →</a></p>
+<p><a class="btn mint" href="/demos/intent-os/?lang=en">Open the live Intent OS prototype →</a></p>
 </section>
 </div>
 </article></div></main>

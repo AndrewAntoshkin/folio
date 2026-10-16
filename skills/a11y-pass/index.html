@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru" class="nojs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Доступность — Андрей Антошкин</title>
+  <meta name="description" content="Проверяет контраст, фокус, имена и читаемость текста в работающем UI.">
+  <meta property="og:title" content="Доступность — Андрей Антошкин">
+  <meta property="og:description" content="Проверяет контраст, фокус, имена и читаемость текста в работающем UI.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
+  <script>document.documentElement.classList.remove('nojs');try{if(sessionStorage.getItem('dock-seen'))document.documentElement.classList.add('dock-seen');else sessionStorage.setItem('dock-seen','1')}catch(e){}</script>
+  <link rel="stylesheet" href="/style.css?v=38">
+</head>
+<body>
+
+<div class="dock"><nav aria-label="Навигация"><i aria-hidden="true"></i><a href="/" aria-label="Главная"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg></a><a href="/projects" aria-label="Проекты" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 13h16"/></svg></a><a href="/writing" aria-label="Статьи"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M14 5.5 18.5 10 9 19.5H4.5V15L14 5.5Z"/><path d="m12 7.5 4.5 4.5"/></svg></a><a href="/approach" aria-label="Подход"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.25"/><path d="M5.5 19.5c1.2-3 3.4-4.5 6.5-4.5s5.3 1.5 6.5 4.5"/></svg></a><a href="/collab" aria-label="Связь"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></nav><a class="lang" href="/en/skills/a11y-pass" aria-label="English">En</a></div>
+<a class="float" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Написать<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+<main><div class="col"><article class="art skill-page">
+  <header class="art-top">
+    <nav class="crumbs" data-r aria-label="breadcrumb"><a href="/projects">Проекты</a><span>›</span><a href="/projects#skills">Скиллы</a><span>›</span><span>a11y-pass</span></nav>
+    <h1 data-split>Доступность</h1>
+    <div class="tags" data-r style="--d:.25s"><span class="tag">Скилл для агента</span><span class="tag">SKILL.md</span></div>
+  </header>
+  <div class="art-intro" data-r style="--d:.3s"><p>Проверяет контраст, фокус, имена и читаемость текста в работающем UI.</p></div>
+  <section class="skill-card" data-r>
+    <div class="skill-card-bar"><span>SKILL.md</span><div><button type="button" class="cmd-copy" data-copy-target="skill-raw">Копировать</button><button type="button" class="cmd-copy skill-open">Исходник</button><a class="cmd-copy" href="/skills/a11y-pass/SKILL.md" download="a11y-pass-SKILL.md">Сохранить .md</a></div></div>
+    <pre class="skill-fm"><code>---
+name: a11y-pass
+description: Use when a screen needs a quick accessibility and typography check.
+---</code></pre>
+    <div class="skill-doc"><h1>A11y pass</h1><p>Check the running page, not only the code.</p><h2>Steps</h2><ol><li>Text contrast is at least 4.5:1. Borders and focus rings are at least 3:1.</li><li>Every button, link, and input has a name a screen reader can read.</li><li>Tab through the page. Focus is always visible and never trapped, except inside an open dialog.</li><li>Dialogs: focus moves in on open, Escape closes, focus returns to the trigger.</li><li>Inputs on mobile use at least 16 px text.</li><li>Numbers in tables use <code>font-variant-numeric: tabular-nums</code>.</li></ol><h2>Done when</h2><ul><li>Each issue has the element, the measured value, and a fix</li><li>The page works with keyboard only</li></ul></div>
+  </section>
+</article></div></main>
+<textarea id="skill-raw" hidden>---
+name: a11y-pass
+description: Use when a screen needs a quick accessibility and typography check.
+---
+
+# A11y pass
+
+Check the running page, not only the code.
+
+## Steps
+1. Text contrast is at least 4.5:1. Borders and focus rings are at least 3:1.
+2. Every button, link, and input has a name a screen reader can read.
+3. Tab through the page. Focus is always visible and never trapped, except inside an open dialog.
+4. Dialogs: focus moves in on open, Escape closes, focus returns to the trigger.
+5. Inputs on mobile use at least 16 px text.
+6. Numbers in tables use `font-variant-numeric: tabular-nums`.
+
+## Done when
+- Each issue has the element, the measured value, and a fix
+- The page works with keyboard only
+</textarea>
+<dialog class="skill-modal" id="skill-source" aria-label="a11y-pass">
+  <div class="skill-modal-in">
+    <div class="skill-modal-top"><strong>a11y-pass/SKILL.md</strong><button class="skill-close" type="button" data-skill-close>Закрыть</button></div>
+    <pre><code>---
+name: a11y-pass
+description: Use when a screen needs a quick accessibility and typography check.
+---
+
+# A11y pass
+
+Check the running page, not only the code.
+
+## Steps
+1. Text contrast is at least 4.5:1. Borders and focus rings are at least 3:1.
+2. Every button, link, and input has a name a screen reader can read.
+3. Tab through the page. Focus is always visible and never trapped, except inside an open dialog.
+4. Dialogs: focus moves in on open, Escape closes, focus returns to the trigger.
+5. Inputs on mobile use at least 16 px text.
+6. Numbers in tables use `font-variant-numeric: tabular-nums`.
+
+## Done when
+- Each issue has the element, the measured value, and a fix
+- The page works with keyboard only
+</code></pre>
+    <div class="skill-modal-actions"><a class="btn mint" href="/skills/a11y-pass/SKILL.md" download="a11y-pass-SKILL.md">Сохранить .md</a></div>
+  </div>
+</dialog>
+<script>(function(){var d=document.getElementById("skill-source");document.querySelector(".skill-open").addEventListener("click",function(){d.showModal()});document.querySelector("[data-skill-close]").addEventListener("click",function(){d.close()});d.addEventListener("click",function(e){if(e.target===d)d.close()});document.querySelectorAll("[data-copy-target]").forEach(function(b){b.addEventListener("click",function(){var el=document.getElementById(b.dataset.copyTarget);var txt=el.value!==undefined?el.value:el.textContent;navigator.clipboard.writeText(txt).then(function(){var o=b.textContent;b.textContent="Скопировано";setTimeout(function(){b.textContent=o},1400)})})})})();</script>
+  <footer class="foot">
+    <div class="foot-in">
+      <p class="foot-mark">antoshkin.tech</p>
+      <div class="foot-copy">
+        <p class="foot-lead">Хотите обсудить проект?<br>Расскажите о задаче и о том, чем я могу помочь.</p>
+        <a class="foot-mail" href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
+      </div>
+    </div>
+  </footer>
+  <script src="/motion.js?v=4"></script>
+</body></html>
