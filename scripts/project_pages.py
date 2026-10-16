@@ -8,6 +8,49 @@ def href(slug: str, lang: str) -> str:
 
 PROJECTS = [
     {
+        "slug": "pulse-ui",
+        "icon": "ds",
+        "name": "Pulse UI",
+        "kicker": ("Дизайн-система", "Design System"),
+        "badge": ("Сбер · 65+ сервисов", "Sber · 65+ services"),
+        "desc": (
+            "Дизайн-система HR-платформы «Пульс» в Сбере (65+ сервисов): семантические токены, контрибьют продуктовых команд, Design Gate и рост Adoption до 60% при CSI 81%.",
+            "Design system for Sber's Pulse HR platform (65+ services): semantic tokens, product-team contribution, Design Gate, 60% Adoption, and 81% CSI.",
+        ),
+        "meta": (
+            "Кейс дизайн-системы Pulse UI для HR-платформы «Пульс» (65+ сервисов): токены, процессы, контрибьют и метрики.",
+            "Case study of the Pulse UI design system for Sber's Pulse HR platform (65+ services): tokens, processes, contribution, and metrics.",
+        ),
+        "lead": (
+            "Дизайн-система HR-платформы «Пульс» в Сбере (65+ сервисов): семантические токены, процесс контрибьюта, Design Gate и метрики за 1,5 года.",
+            "Design system for Sber's Pulse HR platform (65+ services): semantic tokens, contribution model, Design Gate, and 1.5-year metrics.",
+        ),
+        "github": "https://pulse-hcm.ru/",
+        "github_label": ("Платформа «Пульс»", "Pulse HCM platform"),
+        "legacy": "",
+        "body": {"ru": "", "en": ""},
+    },
+    {
+        "slug": "intent-os",
+        "icon": "os",
+        "name": "Intent OS",
+        "kicker": ("Пространственный UI", "Spatial UI"),
+        "badge": ("Интерактивный прототип", "Live Prototype"),
+        "desc": (
+            "Модульная среда вокруг намерения на базе примитивов agent-ui: поток рассуждений и разрешений агента, живой дифф компонента и телеметрия контекста.",
+            "Intent-driven spatial workspace built on agent-ui primitives: agent reasoning and approvals, live component diffing, and context telemetry.",
+        ),
+        "meta": (
+            "Интерактивный прототип пространственной среды вокруг намерения на базе компонентов agent-ui.",
+            "Interactive prototype of an intent-driven spatial workspace built on agent-ui components.",
+        ),
+        "lead": ("", ""),
+        "github": ("/demos/intent-os/", "/demos/intent-os/?lang=en"),
+        "github_label": ("Открыть интерактивный прототип", "Open live prototype"),
+        "legacy": "",
+        "body": {"ru": "", "en": ""},
+    },
+    {
         "slug": "agent-ui",
         "icon": "ui",
         "name": "agent-ui",
@@ -250,12 +293,12 @@ ds-lint src/ --tokens tokens.css --strict</code></pre>
         "name": "ds-coverage",
         "kicker": ("Сканер", "Scanner"),
         "desc": (
-            "Считает, где код импортирует дизайн-систему, а где дублирует её.",
-            "Measures where the codebase imports the design system vs. rebuilds it.",
+            "Считает по импортам, какие компоненты системы задействованы в коде, а где появились локальные дубли.",
+            "Scans imports to see which design-system exports are used and where local components duplicate system names.",
         ),
         "meta": (
-            "Отчёт о том, насколько код пользуется дизайн-системой.",
-            "A report on how much of the code actually uses the design system.",
+            "Отчёт об импортах компонентов дизайн-системы в коде.",
+            "An import-level report on design-system component usage.",
         ),
         "lead": (
             "Библиотека может быть большой, а&nbsp;продукт&nbsp;— написанным мимо неё. ds&#8209;coverage считает импорты: какие компоненты берутся из&nbsp;системы, какие не&nbsp;используются и&nbsp;что собрано рядом своим кодом.",
@@ -299,12 +342,12 @@ ds-coverage src/ --ds @acme/ui --inventory components.json --min 70</code></pre>
         "name": "ds-health",
         "kicker": ("Веб-тул", "Web tool"),
         "desc": (
-            "Даёшь URL. На выходе видно, сколько на странице цветов, шрифтов, отступов и радиусов.",
-            "Paste a live URL and get a report on how many colors, type styles, spacings, and radii the page actually uses.",
+            "Первичный аудит вычисленных стилей живой страницы по URL: разброс цветов, шрифтов, отступов и радиусов.",
+            "Computed-style inventory of a live URL: how many distinct colors, type sizes, spacings, and radii the page renders.",
         ),
         "meta": (
-            "Отчёт о здоровье дизайн-системы на живом сайте.",
-            "A design-system health report for a live website.",
+            "Аудит вычисленных стилей живой страницы в браузере.",
+            "A computed-style inventory of a live web page.",
         ),
         "lead": (
             "Дизайн&#8209;система в&nbsp;Figma и&nbsp;система на&nbsp;проде часто расходятся. ds&#8209;health открывает страницу в&nbsp;настоящем браузере и&nbsp;считает, насколько вёрстка держится на&nbsp;небольшом наборе значений.",

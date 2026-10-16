@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Agent Modules — Mercury interaction study</title>
+  <style>
+    @font-face{font-family:GoogleSans;src:url("/assets/fonts/GoogleSans-Latin.woff2") format("woff2");font-weight:100 900;font-display:swap}
+    @font-face{font-family:GoogleSans;src:url("/assets/fonts/GoogleSans-Cyrillic.woff2") format("woff2");font-weight:100 900;font-display:swap}
+    :root{
+      --fog:#dedede;--ink:#333;--quiet:rgba(51,51,51,.48);--line:rgba(51,51,51,.10);
+      --paper:rgba(250,250,250,.84);--paper-solid:#f5f5f5;--radius:10px;--ease:cubic-bezier(.16,1,.3,1);
+    }
+    *{box-sizing:border-box}html,body{height:100%;margin:0}
+    body{overflow:hidden;background:var(--fog);color:var(--ink);font:14px/1.45 GoogleSans,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+    button,input{font:inherit;color:inherit}button{cursor:pointer}
+    .mist{position:fixed;inset:0;pointer-events:none;background:
+      radial-gradient(70% 60% at 14% 90%,rgba(239,198,187,.58),transparent 67%),
+      radial-gradient(60% 55% at 53% 100%,rgba(185,209,220,.66),transparent 70%),
+      radial-gradient(62% 58% at 90% 86%,rgba(220,215,199,.62),transparent 68%),
+      linear-gradient(#e4e4e4,#d9d9d9);transition:opacity .5s}
+    .grain{position:fixed;inset:0;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E")}
+    .shell{position:relative;height:100%;display:grid;grid-template-rows:54px 1fr 58px}
+    .topbar,.footer{z-index:20;display:flex;align-items:center;justify-content:space-between;padding:0 36px;color:var(--quiet);font-size:12px}
+    .topbar a{color:inherit;text-decoration:none}.topbar a:hover{color:var(--ink)}
+    .top-left,.top-right{display:flex;align-items:center;gap:22px}
+    .mark{display:flex;align-items:center;gap:8px;color:var(--ink)}.mark i{width:7px;height:7px;background:#555;border-radius:1px}
+    .mode{border:0;background:none;color:inherit;padding:5px 0}.mode.active{color:var(--ink)}
+    .study{padding:5px 9px;border:1px solid var(--line);border-radius:5px;background:rgba(255,255,255,.2)}
+    .viewport{position:relative;min-height:0;overflow:hidden}
+    .space{position:absolute;inset:0;display:flex;align-items:center;gap:24px;padding:38px max(5vw,56px);transition:transform .75s var(--ease)}
+    .module{
+      flex:0 0 440px;min-height:430px;border-radius:var(--radius);overflow:hidden;
+      background:var(--paper);border:1px solid rgba(255,255,255,.68);
+      box-shadow:0 18px 45px rgba(34,34,34,.08),0 1px 0 rgba(255,255,255,.8) inset;
+      backdrop-filter:blur(24px) saturate(.7);transition:transform .65s var(--ease),opacity .65s var(--ease),box-shadow .65s var(--ease)
+    }
+    .module:not(.active){transform:scale(.93);opacity:.68}.module.active{box-shadow:0 24px 60px rgba(34,34,34,.12),0 1px 0 white inset}
+    .module.new{animation:arrive .7s var(--ease) both}@keyframes arrive{from{opacity:0;transform:translateX(60px) scale(.9)}}
+    .module-head{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid rgba(51,51,51,.055);color:var(--quiet);font-size:11px}
+    .module-head strong{font-weight:500;color:rgba(51,51,51,.7)}.head-title{display:flex;align-items:center;gap:8px}.head-title i{width:7px;height:7px;border-radius:50%;background:#777}
+    .mic{border:0;background:none;color:var(--quiet);font-size:15px}
+    .module-body{min-height:342px;padding:27px 32px 24px}
+    .eyebrow{font-size:11px;color:var(--quiet);margin-bottom:9px}.module h2{margin:0 0 22px;font-size:24px;line-height:1.15;font-weight:500;letter-spacing:-.025em}
+    .message{font-size:14px;line-height:1.6}.message p{margin:0 0 14px}
+    .soft{color:var(--quiet)}.rule{height:1px;background:var(--line);margin:18px 0}
+    .tool{display:grid;grid-template-columns:auto 1fr auto;gap:11px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}
+    .tool b{font-size:12px;font-weight:500}.tool span{font-size:11px;color:var(--quiet)}.status{font-size:10px;color:#4d775d!important}
+    .choice{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+    .choice button,.action{border:1px solid var(--line);background:rgba(255,255,255,.34);border-radius:6px;padding:10px 12px;text-align:left;font-size:12px;transition:.2s}
+    .choice button:hover,.choice button.selected,.action:hover{background:rgba(255,255,255,.78);border-color:rgba(51,51,51,.18)}
+    .choice small{display:block;margin-top:3px;color:var(--quiet)}
+    .code{font:11px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace;color:rgba(51,51,51,.68);background:rgba(51,51,51,.035);padding:12px;border-radius:6px;white-space:pre-wrap}
+    .metric{display:flex;justify-content:space-between;align-items:end;margin:15px 0}.metric b{font-size:32px;line-height:1;font-weight:400}.metric span{font-size:11px;color:var(--quiet)}
+    .bar{height:3px;background:rgba(51,51,51,.08)}.bar i{display:block;height:100%;background:#777}
+    .locus{height:44px;display:flex;align-items:center;gap:10px;padding:0 14px 0 18px;border-top:1px solid rgba(51,51,51,.065);background:rgba(246,246,246,.66)}
+    .locus .command{color:var(--quiet);font-size:12px;white-space:nowrap}.locus input{width:100%;border:0;background:none;outline:0;font-size:12px}.locus input::placeholder{color:rgba(51,51,51,.3)}
+    .locus button{border:0;background:none;color:var(--quiet);font-size:12px}.locus button:hover{color:var(--ink)}
+    .plus{flex:0 0 46px;width:46px;height:46px;border:0;border-radius:50%;background:rgba(245,245,245,.52);box-shadow:0 8px 22px rgba(0,0,0,.08);font-size:26px;font-weight:200;color:#777;transition:.3s var(--ease)}
+    .plus:hover{transform:scale(1.08);background:rgba(255,255,255,.85)}
+    .overview{position:absolute;inset:0;z-index:30;display:none;background:rgba(225,225,225,.43);backdrop-filter:blur(26px)}
+    .overview.open{display:block}.overview-shell{height:100%;padding:24px 7vw 38px;overflow:auto}.overview-title{display:flex;align-items:center;justify-content:space-between;margin:0 0 28px;font-size:32px;font-weight:300;letter-spacing:-.035em;color:rgba(51,51,51,.43)}
+    .overview-controls{display:flex;align-items:center;gap:10px}.overview-title button{border:0;background:none;color:var(--quiet);font-size:12px}.overview-title .create-module{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.58);font-size:22px;font-weight:200;box-shadow:0 6px 18px rgba(0,0,0,.06)}.overview-layout{display:grid;grid-template-columns:238px 1fr;gap:28px;align-items:start}
+    .space-rules{padding:14px 15px 18px;border:1px solid rgba(255,255,255,.6);border-radius:8px;background:rgba(247,247,247,.22);font-size:11px;color:var(--quiet)}
+    .find-rule{display:flex;align-items:center;border-bottom:1px solid var(--line);padding:2px 0 10px;margin-bottom:13px}.find-rule input{min-width:0;width:100%;border:0;outline:0;background:none;font-size:10px}.space-rules h3{margin:12px 0 7px;color:var(--ink);font-size:11px;font-weight:500}
+    .rule-item,.collab{display:grid;grid-template-columns:15px 1fr;gap:9px;padding:7px;border-radius:5px;cursor:pointer}.rule-item:hover,.collab:hover,.collab.on{background:rgba(255,255,255,.45);color:var(--ink)}
+    .rule-item i,.collab i{width:7px;height:7px;margin-top:4px;border-radius:1px;background:#858585}.rule-item.off{opacity:.35}.collab i{border-radius:50%}.collab small{display:block;margin-bottom:2px;font-size:8px;letter-spacing:.08em;text-transform:uppercase;opacity:.65}
+    .overview-board{position:relative;min-width:760px;min-height:650px;border-radius:12px;background-image:radial-gradient(rgba(51,51,51,.10) .6px,transparent .6px);background-size:24px 24px;background-position:7px 7px}
+    .mini{position:absolute;width:285px;min-height:208px;border-radius:9px;background:rgba(253,253,253,.91);border:1px solid rgba(255,255,255,.94);padding:0 20px 14px;box-shadow:0 9px 26px rgba(0,0,0,.065);transition:box-shadow .25s var(--ease),opacity .2s;user-select:none;touch-action:none}
+    .mini:hover{box-shadow:0 17px 38px rgba(0,0,0,.11)}.mini.dragging{z-index:100;box-shadow:0 26px 60px rgba(0,0,0,.16);cursor:grabbing}.mini.filtered{display:none}.mini-head{height:42px;margin:0 -20px 18px;padding:0 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(51,51,51,.055);font-size:9px;color:var(--quiet);cursor:grab}.mini b{display:block;font-size:20px;line-height:1.18;font-weight:500;letter-spacing:-.025em;margin-bottom:12px}.mini p{font-size:11px;line-height:1.55;color:rgba(51,51,51,.71);margin:0 0 18px}.mini-actions{display:flex;gap:7px;padding-top:12px;border-top:1px solid var(--line)}.mini-actions button{border:0;border-radius:14px;background:rgba(51,51,51,.045);padding:6px 12px;color:var(--quiet);font-size:9px}.mini-actions button:hover{background:rgba(51,51,51,.10);color:var(--ink)}.more-actions{margin-top:11px;color:rgba(51,51,51,.30);font-size:9px}
+    .empty-flow{min-height:170px;border:1px dashed rgba(51,51,51,.12);border-radius:7px;display:grid;place-items:center;color:var(--quiet);font-size:10px}
+    .toast{position:absolute;right:28px;bottom:24px;z-index:50;padding:10px 14px;border-radius:6px;background:rgba(40,40,40,.86);color:#fff;font-size:11px;opacity:0;transform:translateY(8px);transition:.3s}.toast.show{opacity:1;transform:none}
+    .footer{justify-content:center;gap:24px}.footer button{border:0;background:none;color:var(--quiet);font-size:11px}.footer button:hover{color:var(--ink)}
+    .kbd{display:inline-block;min-width:18px;padding:1px 5px;border:1px solid var(--line);border-radius:4px;background:rgba(255,255,255,.25);font:10px ui-monospace,monospace;text-align:center}
+    body.dark{--fog:#161718;--ink:#ededed;--quiet:rgba(237,237,237,.52);--line:rgba(255,255,255,.09);--paper:rgba(43,44,45,.82);--paper-solid:#292a2b}
+    body.dark .mist{opacity:.12}body.dark .module{border-color:rgba(255,255,255,.07);box-shadow:0 25px 70px rgba(0,0,0,.38)}
+    body.dark .locus{background:rgba(38,39,40,.72)}body.dark .choice button,body.dark .action{background:rgba(255,255,255,.035)}body.dark .overview{background:rgba(17,18,19,.68)}body.dark .overview-title{color:rgba(255,255,255,.32)}body.dark .space-rules,body.dark .mini{background:rgba(42,43,44,.78);border-color:rgba(255,255,255,.06)}body.dark .mini p{color:rgba(255,255,255,.55)}
+    @media(max-width:760px){.topbar{padding:0 14px}.top-right .mode{display:none}.space{padding:20px;gap:14px}.module{flex-basis:86vw}.module-body{padding:24px}.footer{padding:0 12px}.study{display:none}.overview-shell{padding:20px}.overview-layout{grid-template-columns:1fr}.space-rules{display:none}.overview-board{min-width:960px}}
+  </style>
+</head>
+<body>
+  <div class="mist"></div><div class="grain"></div>
+  <div class="shell">
+    <header class="topbar">
+      <div class="top-left"><a href="/intent-os">‹ К кейсу</a><span class="mark"><i></i> Agent Modules</span></div>
+      <div class="top-right">
+        <button class="mode active" onclick="setSpace('repair')">Repair Flow</button>
+        <button class="mode" onclick="setSpace('release')">Release Flow</button>
+        <button class="mode" onclick="toggleDark()">Kiri / Night</button>
+        <span class="study">Interaction study after <a href="https://www.mercuryos.com" target="_blank" rel="noopener">Mercury OS</a></span>
+      </div>
+    </header>
+    <main class="viewport">
+      <div class="space" id="space"></div>
+      <div class="overview" id="overview">
+        <div class="overview-shell">
+          <h1 class="overview-title"><span>↩ Review agent work: Overview</span><span class="overview-controls"><button class="create-module" onclick="createOverviewModule()" title="Create module">+</button><button onclick="toggleOverview()">Close <span class="kbd">Esc</span></button></span></h1>
+          <div class="overview-layout">
+            <aside class="space-rules">
+              <label class="find-rule"><input id="spaceSearch" placeholder="Find and add rules or collaborators…" oninput="filterSpace(this.value)"><span>⌕</span></label>
+              <h3>Rules</h3>
+              <div class="rule-item" onclick="toggleRule(this)"><i></i><span>Sort modules by agent chronology</span></div>
+              <div class="rule-item" onclick="toggleRule(this)"><i></i><span>Remove modules after approval or rejection</span></div>
+              <h3>Collaborators</h3>
+              <div class="collab on" data-source="all" onclick="filterCollaborator(this)"><i></i><span><small>All sources</small>Show every module</span></div>
+              <div class="collab" data-source="agent" onclick="filterCollaborator(this)"><i></i><span><small>Agent UI</small>Reasoning and approvals</span></div>
+              <div class="collab" data-source="lint" onclick="filterCollaborator(this)"><i></i><span><small>DS Lint</small>Design-system checks</span></div>
+              <div class="collab" data-source="repo" onclick="filterCollaborator(this)"><i></i><span><small>Repository</small>Patches and artifacts</span></div>
+            </aside>
+            <div class="overview-board" id="overviewRow"></div>
+          </div>
+        </div>
+      </div>
+      <div class="toast" id="toast"></div>
+    </main>
+    <footer class="footer">
+      <button onclick="move(-1)"><span class="kbd">←</span> Previous module</button>
+      <button onclick="toggleOverview()"><span class="kbd">⌘</span> Space overview</button>
+      <button onclick="move(1)">Next module <span class="kbd">→</span></button>
+      <button onclick="addModule()"><span class="kbd">Tab</span> Adjacent module</button>
+    </footer>
+  </div>
+  <script>
+    const flows={
+      repair:[
+        {kind:"brief",source:"Intent",title:"Repair design-system drift",body:`<div class="message"><p>Replace hardcoded colors and raw controls in <b>SettingsPage.tsx</b> with existing semantic tokens and components.</p><p class="soft">Keep behavior unchanged. Ask before editing files.</p></div>`},
+        {kind:"scan",source:"ds-lint · Scan",title:"6 values need attention",body:`<div class="tool"><b>#4f46e5</b><span>accent.primary</span><span class="status">replace</span></div><div class="tool"><b>#1e293b</b><span>surface.elevated</span><span class="status">replace</span></div><div class="tool"><b>&lt;button&gt;</b><span>Button / primary</span><span class="status">2 matches</span></div><div class="rule"></div><p class="soft">No behavioral regressions detected in the proposed patch.</p>`},
+        {kind:"approval",source:"Agent UI · Approval",title:"Apply the semantic patch?",body:`<div class="code">ui-repair apply SettingsPage.tsx\n6 replacements · 2 component swaps</div><div class="choice"><button onclick="approve(this)"><b>Apply patch</b><small>Write changes and verify</small></button><button onclick="deny(this)"><b>Keep preview</b><small>No files will change</small></button></div>`},
+        {kind:"result",source:"Artifact · Result",title:"SettingsPage is aligned",body:`<div class="metric"><div><span>DS compliance</span><br><b>98%</b></div><span>+34 points</span></div><div class="bar"><i style="width:98%"></i></div><div class="tool"><b>Raw colors</b><span>0 remaining</span><span class="status">pass</span></div><div class="tool"><b>Accessibility</b><span>axe + keyboard</span><span class="status">pass</span></div>`}
+      ],
+      release:[
+        {kind:"brief",source:"Intent",title:"Prepare component release",body:`<div class="message"><p>Review the <b>agent-ui</b> registry before release. Check tokens, accessibility and component guidance.</p><p class="soft">Generate a concise release summary when all checks pass.</p></div>`},
+        {kind:"plan",source:"Agent · Plan",title:"Release checks",body:`<div class="tool"><b>Token policy</b><span>No palette classes</span><span class="status">pass</span></div><div class="tool"><b>Registry build</b><span>15 components</span><span class="status">pass</span></div><div class="tool"><b>Rules index</b><span>llms-full.txt</span><span class="status">ready</span></div>`},
+        {kind:"choice",source:"Agent UI · Choice",title:"Choose release channel",body:`<p class="soft">The change is additive and keeps the existing component API.</p><div class="choice"><button onclick="selectChoice(this)"><b>Minor</b><small>New component primitive</small></button><button onclick="selectChoice(this)"><b>Patch</b><small>Documentation only</small></button></div>`}
+      ]
+    };
+    const overviewData=[
+      {flow:0,source:"agent",meta:"Agent · 09:42",title:"Audit token drift",text:"I found six raw values in SettingsPage.tsx. Four map directly to semantic tokens; two controls should use the existing Button primitive."},
+      {flow:0,source:"repo",meta:"Repository · 09:44",title:"Settings patch",text:"Preview: 6 token replacements and 2 component swaps. Behavior and public APIs remain unchanged."},
+      {flow:0,source:"agent",meta:"Agent · 09:46",title:"Approval",text:"The patch is ready to write. Accessibility and visual-regression checks will run immediately after approval."},
+      {flow:1,source:"lint",meta:"DS Lint · 09:43",title:"6 values need attention",text:"#4f46e5 → accent.primary · #1e293b → surface.elevated · two raw buttons → Button / primary."},
+      {flow:1,source:"lint",meta:"DS Health · 09:47",title:"Component health",text:"Coverage rises from 64% to 98%. No unsupported token aliases or contrast regressions were detected."},
+      {flow:2,source:"repo",meta:"Artifact · 09:49",title:"Verification complete",text:"Typecheck, lint, keyboard navigation, and visual snapshots pass. The patch can be included in the next release."},
+      {flow:2,source:"agent",meta:"Agent UI · 09:50",title:"Release note",text:"Settings now uses semantic surfaces and shared controls, reducing local styling and improving theme compatibility."}
+    ];
+    const defaultPositions=[[0,0],[0,238],[0,476],[310,0],[310,238],[620,0],[620,238]];
+    try{const saved=JSON.parse(localStorage.getItem("agent-space-layout")||"[]");overviewData.forEach((m,i)=>Object.assign(m,saved[i]||{x:defaultPositions[i][0],y:defaultPositions[i][1]}))}catch(e){overviewData.forEach((m,i)=>Object.assign(m,{x:defaultPositions[i][0],y:defaultPositions[i][1]}))}
+    let current="repair",active=0,modules=[],visibleSource="all",dragState=null;
+    const space=document.getElementById("space");
+    function render(){
+      space.innerHTML="";
+      modules.forEach((m,i)=>{
+        const el=document.createElement("section");el.className="module"+(i===active?" active":"");
+        el.innerHTML=`<header class="module-head"><span class="head-title"><i></i><strong>${m.source}</strong></span><button class="mic" aria-label="Voice">⌁</button></header>
+        <div class="module-body"><div class="eyebrow">${String(i+1).padStart(2,"0")} · ${m.kind}</div><h2>${m.title}</h2>${m.body}</div>
+        <form class="locus" onsubmit="runLocus(event,${i})"><span class="command">⌘</span><input placeholder="Define or refine this module…"><button>Run</button></form>`;
+        el.onclick=e=>{if(!e.target.closest("button,input")){active=i;render()}};
+        space.appendChild(el);
+      });
+      const plus=document.createElement("button");plus.className="plus";plus.textContent="+";plus.onclick=addModule;space.appendChild(plus);
+      const card=space.querySelector(".module");const width=card?card.getBoundingClientRect().width+24:464;
+      const center=innerWidth/2-220;space.style.transform=`translateX(${center-active*width-Math.max(56,innerWidth*.05)}px)`;
+      renderOverview();
+    }
+    function setSpace(id){current=id;modules=flows[id].map(x=>({...x}));active=0;document.querySelectorAll(".mode").forEach((b,i)=>b.classList.toggle("active",i===(id==="repair"?0:1)));render()}
+    function move(d){active=Math.max(0,Math.min(modules.length-1,active+d));render()}
+    function addModule(){modules.push({kind:"context",source:"Adjacent Module",title:"What should happen next?",body:`<p class="soft">This module inherited context from “${modules[active].title}”. Use Locus below to define a new action without changing the parent module.</p><div class="choice"><button onclick="selectChoice(this)"><b>Inspect sources</b><small>Open related context</small></button><button onclick="selectChoice(this)"><b>Continue flow</b><small>Predict the next action</small></button></div>`});active=modules.length-1;render();requestAnimationFrame(()=>space.querySelectorAll(".module")[active].classList.add("new"))}
+    function runLocus(e,i){e.preventDefault();const input=e.target.querySelector("input");if(!input.value.trim())return;modules[i].title=input.value.trim();modules[i].body=`<p class="soft">The module has been redefined through Locus. Context from adjacent modules remains available.</p><div class="tool"><b>Natural language action</b><span>${input.value.trim()}</span><span class="status">ready</span></div>`;input.value="";render()}
+    function approve(btn){btn.classList.add("selected");modules[2].title="Patch approved";modules[2].body=`<p>The patch was written after explicit approval.</p><div class="tool"><b>SettingsPage.tsx</b><span>+8 −8</span><span class="status">verified</span></div>`;setTimeout(()=>{active=3;render()},380)}
+    function deny(){modules[2].title="Preview retained";modules[2].body=`<p class="soft">No files were changed. The semantic proposal remains available as a preview.</p>`;render()}
+    function selectChoice(btn){btn.parentElement.querySelectorAll("button").forEach(b=>b.classList.remove("selected"));btn.classList.add("selected")}
+    function toggleOverview(force){const el=document.getElementById("overview");el.classList.toggle("open",typeof force==="boolean"?force:!el.classList.contains("open"))}
+    function renderOverview(){
+      const board=document.getElementById("overviewRow");if(!board)return;
+      board.innerHTML=overviewData.map((m,index)=>`<article class="mini${visibleSource!=="all"&&visibleSource!==m.source?" filtered":""}" data-source="${m.source}" data-index="${index}" style="left:${m.x||0}px;top:${m.y||0}px">
+        <div class="mini-head"><span>▪ ${m.meta}</span><span>⌁</span></div>
+        <b contenteditable="true" spellcheck="false" onpointerdown="event.stopPropagation()" onblur="editMini(${index},'title',this.textContent)">${m.title}</b>
+        <p contenteditable="true" spellcheck="false" onpointerdown="event.stopPropagation()" onblur="editMini(${index},'text',this.textContent)">${m.text}</p>
+        <div class="mini-actions"><button onclick="event.stopPropagation();miniAction('Reply',${index})">Reply</button><button onclick="event.stopPropagation();miniAction('Forward',${index})">Duplicate</button><button onclick="event.stopPropagation();deleteMini(${index})">Delete</button></div>
+        <div class="more-actions">⌘ &nbsp;More actions</div>
+      </article>`).join("");
+      board.querySelectorAll(".mini").forEach(card=>{
+        card.querySelector(".mini-head").addEventListener("pointerdown",startDrag);
+        card.addEventListener("dblclick",()=>openMini(+card.dataset.index));
+      });
+    }
+    function saveLayout(){localStorage.setItem("agent-space-layout",JSON.stringify(overviewData.map(({x,y})=>({x,y}))))}
+    function startDrag(e){const card=e.currentTarget.closest(".mini"),index=+card.dataset.index;dragState={card,index,dx:e.clientX-card.offsetLeft,dy:e.clientY-card.offsetTop,moved:false};card.classList.add("dragging");card.setPointerCapture(e.pointerId);card.addEventListener("pointermove",dragMove);card.addEventListener("pointerup",endDrag,{once:true})}
+    function dragMove(e){if(!dragState)return;const board=document.getElementById("overviewRow");let x=e.clientX-board.getBoundingClientRect().left-dragState.dx;let y=e.clientY-board.getBoundingClientRect().top-dragState.dy;x=Math.max(0,Math.min(board.clientWidth-dragState.card.offsetWidth,Math.round(x/12)*12));y=Math.max(0,Math.round(y/12)*12);dragState.card.style.left=x+"px";dragState.card.style.top=y+"px";Object.assign(overviewData[dragState.index],{x,y});dragState.moved=true}
+    function endDrag(e){if(!dragState)return;dragState.card.classList.remove("dragging");dragState.card.removeEventListener("pointermove",dragMove);saveLayout();dragState=null}
+    function editMini(index,key,value){overviewData[index][key]=value.trim()||overviewData[index][key]}
+    function createOverviewModule(){
+      const board=document.getElementById("overviewRow"),n=overviewData.length;
+      overviewData.push({flow:0,source:"agent",meta:"New module · now",title:"Untitled module",text:"Click the title or description to define this module. Drag its header to place it in your space.",x:Math.min(board.clientWidth-285,72+(n%3)*120),y:60+(n%4)*108});
+      renderOverview();saveLayout();const card=board.querySelector(`[data-index="${overviewData.length-1}"]`);card.animate([{opacity:0,transform:"scale(.92)"},{opacity:1,transform:"scale(1)"}],{duration:420,easing:"cubic-bezier(.16,1,.3,1)"});card.querySelector("b").focus();document.execCommand("selectAll",false,null)
+    }
+    function openMini(index){const item=overviewData[index];active=Math.min(item.flow,modules.length-1);toggleOverview(false);render()}
+    function miniAction(action,index){
+      const item=overviewData[index];
+      if(action==="Forward"){overviewData.push({...item,title:`${item.title} copy`,x:item.x+36,y:item.y+36});renderOverview();saveLayout()}
+      if(action==="Reply"){modules.push({kind:"reply",source:"Agent UI · Reply",title:`Reply to “${item.title}”`,body:`<p class="soft">${item.text}</p><div class="choice"><button><b>Send response</b><small>Continue in this flow</small></button><button><b>Add context</b><small>Attach another module</small></button></div>`});active=modules.length-1;toggleOverview(false);render()}
+      showToast(`${action}: ${item.title}`);
+    }
+    function deleteMini(index){const title=overviewData[index].title;overviewData.splice(index,1);renderOverview();saveLayout();showToast(`Removed “${title}” from this Space`)}
+    function toggleRule(el){el.classList.toggle("off");showToast(el.classList.contains("off")?"Rule disabled":"Rule enabled")}
+    function filterCollaborator(el){document.querySelectorAll(".collab").forEach(x=>x.classList.remove("on"));el.classList.add("on");visibleSource=el.dataset.source;renderOverview()}
+    function filterSpace(query){query=query.toLowerCase();document.querySelectorAll(".mini").forEach(el=>{const matches=el.textContent.toLowerCase().includes(query);const source=visibleSource==="all"||el.dataset.source===visibleSource;el.classList.toggle("filtered",!matches||!source)})}
+    let toastTimer;function showToast(text){const toast=document.getElementById("toast");toast.textContent=text;toast.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove("show"),1800)}
+    function toggleDark(){document.body.classList.toggle("dark")}
+    addEventListener("keydown",e=>{if(e.key==="Escape"){toggleOverview(false);return}if(e.target.tagName==="INPUT")return;if(e.key==="ArrowRight")move(1);if(e.key==="ArrowLeft")move(-1);if(e.key==="Tab"){e.preventDefault();addModule()}if(e.key==="Meta")toggleOverview(true)});
+    addEventListener("keyup",e=>{if(e.key==="Meta")toggleOverview(false)});
+    addEventListener("resize",render);setSpace("repair");toggleOverview(true);
+  </script>
+</body>
+</html>

@@ -167,42 +167,44 @@ def _context(ru: bool, lang: str) -> dict:
     else:
         lead = "A model misses the design system when the context is wrong: nothing, or the entire Storybook. ds-context turns a local folder into a short pack and shows what each packing strategy costs in tokens."
         groups = [
-            ("Basics", [("Why", "#why"), ("Input", "#inputs"), ("Run", "#run")]),
-            ("Pack", [("Output", "#output"), ("Strategies", "#strategies"), ("Manifest", "#manifest")]),
+            ("Basics", [("Why", "#why"), ("Strategies", "#strategies"), ("Run", "#run")]),
+            ("Pack", [("Input", "#inputs"), ("Output", "#output"), ("Manifest", "#manifest")]),
             ("Context", [("Related tools", "#chain"), ("Limit", "#limits")]),
             ("Links", [("GitHub", GITHUB + "ds-context")]),
         ]
         body = "".join([
             _section("why", "Why",
                 "<p>An agent drifts off the system for two different reasons. Sometimes it receives no spec. Sometimes it receives every token and every example at once. In the first case it invents a Button. In the second it drowns.</p>",
-                f"<p>ds-context sits in front of the model. It builds the pack you can hand to Claude or Codex and then measure with {eval_}.</p>"),
-            _section("inputs", "Input",
-                "<p>The MVP reads a folder. It does not crawl Storybook or call the Figma API. A Figma file arrives as markdown, for example from figma-to-design-md. The Acme fixture is five files:</p>",
-                _pre(tree),
-                "<p><code>tokens.css</code> is the scale a later repair checks against.</p>",
-                _pre(_text("ds-context/fixtures/acme/tokens.css")),
-                "<p><code>components.json</code> holds the name, props, example, and what to avoid. The example is copied into the pack only for the full strategy.</p>",
-                _pre(_text("ds-context/fixtures/acme/components.json")),
-                "<p>Three markdown files set the patterns, the bans, and short screen examples.</p>",
-                _pre(_text("ds-context/fixtures/acme/patterns.md")),
-                _pre(_text("ds-context/fixtures/acme/anti-patterns.md")),
-                _pre(_text("ds-context/fixtures/acme/examples.md"))),
-            _section("run", "Run",
-                _pre("python3 ds-context/ds_context.py build ds-context/fixtures/acme"),
-                "<p>The command writes the pack to <code>ds-context/fixtures/acme/dist</code>. Offline. No keys and no model call. On this fixture it prints:</p>",
-                _pre(stdout)),
-            _section("output", "Output",
-                "<p><code>design-system.md</code> is the file you can put in context whole. The full strategy inlines patterns, anti-patterns, and examples. The separate files in <code>dist/</code> repeat the source markdown.</p>",
-                _pre(full["design-system.md"]),
-                "<p><code>components.md</code> is the API. The example and the Avoid line come from the JSON.</p>",
-                _pre(full["components.md"])),
+                f"<p>ds-context sits in front of the model. It builds the pack you can hand to Claude or Codex and then measure with {eval_}.</p>",
+                "<table><thead><tr><th>Step</th><th>Input</th><th>Output</th></tr></thead><tbody>"
+                "<tr><td>1. Parse sources</td><td><code>tokens.css</code> and <code>components.json</code></td><td>Token table (<code>design-system.md</code>) and component API (<code>components.md</code>)</td></tr>"
+                "<tr><td>2. Inline rules</td><td><code>patterns.md</code>, <code>anti-patterns.md</code>, <code>examples.md</code></td><td>Combined spec plus standalone markdown files in <code>dist/</code></td></tr>"
+                "<tr><td>3. Budget tokens</td><td>Strategy choice (<code>full</code> / <code>compact</code> / <code>components</code>)</td><td><code>manifest.json</code> with character-based token estimates (~4 chars/token)</td></tr>"
+                "</tbody></table>"),
             _section("strategies", "Strategies",
-                "<p>The size estimate is about 4 characters per token. It is not the Claude tokenizer. The manifest is excluded from the total. On the Acme fixture:</p>",
+                "<p>The size estimate is about 4 characters per token. It is not the Claude tokenizer. The manifest is excluded from the total. Strategies are chosen globally per pack rather than sliced per screen. On the Acme fixture:</p>",
                 "<table><thead><tr><th>Strategy</th><th>Estimate</th><th>Contents</th></tr></thead><tbody>"
                 + "".join(strategy_rows) + "</tbody></table>",
                 "<p>Full pack by file:</p>",
                 "<table><thead><tr><th>File</th><th>Estimate</th></tr></thead><tbody>"
                 + "".join(file_rows) + "</tbody></table>"),
+            _section("run", "Run",
+                _pre("python3 ds-context/ds_context.py build ds-context/fixtures/acme"),
+                "<p>The command writes the pack to <code>ds-context/fixtures/acme/dist</code>. Offline. No keys and no model call. On this fixture it prints:</p>",
+                _pre(stdout)),
+            _section("inputs", "Input",
+                "<p>The MVP reads a folder. It does not crawl Storybook or call the Figma API. A Figma file arrives as markdown, for example from <a href=\"/en/figma-to-design-md\">figma-to-design-md</a>. The Acme fixture is five files:</p>",
+                _pre(tree),
+                "<p><code>tokens.css</code> is the scale a later repair checks against.</p>",
+                _pre(_text("ds-context/fixtures/acme/tokens.css")),
+                "<p><code>components.json</code> holds the name, props, example, and what to avoid. The example is copied into the pack only for the full strategy.</p>",
+                _pre(_text("ds-context/fixtures/acme/components.json")),
+                "<p>Three markdown files (<code>patterns.md</code>, <code>anti-patterns.md</code>, <code>examples.md</code>) define composition patterns, bans, and short screen examples — their full text appears below inside the assembled <code>design-system.md</code>.</p>"),
+            _section("output", "Output",
+                "<p><code>design-system.md</code> is the file you can put in context whole. The full strategy inlines patterns, anti-patterns, and examples. The separate files in <code>dist/</code> repeat the source markdown.</p>",
+                _pre(full["design-system.md"]),
+                "<p><code>components.md</code> is the API. The example and the Avoid line come from the JSON.</p>",
+                _pre(full["components.md"])),
             _section("manifest", "Manifest",
                 f"<p>The manifest is for the next step in the loop: pick a strategy under a token budget and pass only those files to the model. Component and token names are listed so {repair} and {eval_} can check against the same source.</p>",
                 _pre(manifest)),
@@ -336,7 +338,7 @@ def _repair(ru: bool, lang: str) -> dict:
             _section("chain", "How it relates to the other tools",
                 f"<p>{context} says which components and tokens exist. ui-repair moves a file onto that list. {eval_} checks whether the screen works, not only whether the tags look clean.</p>"),
             _section("limits", "Limit",
-                f"<p>The rules know this fixture: one hex, padding 13, a modal class, a close mark. They will not repair an arbitrary codebase. There is no git-style diff, no screenshot, and no live agent. A jump from {before_score} to {after_score} is easy to read and easy to over-read.</p>"),
+                f"<p>The rules know this fixture: one hex, padding 13, a modal class, a close mark. Applying automated rewrites to an arbitrary React codebase requires AST parsing, TypeScript type checks, build verification, and behavioral tests in Playwright. Here there is no git-style diff, no screenshot, and no live agent — a jump from {before_score} to {after_score} is a controlled fixture demo, not a production codemod.</p>"),
         ])
     return {"lead": lead, "groups": _groups(groups), "body": body}
 

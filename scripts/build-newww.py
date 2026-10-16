@@ -32,7 +32,7 @@ HEAD = """<!DOCTYPE html>
   <meta property="og:type" content="website">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
   <script>document.documentElement.classList.remove('nojs');try{{if(sessionStorage.getItem('dock-seen'))document.documentElement.classList.add('dock-seen');else sessionStorage.setItem('dock-seen','1')}}catch(e){{}}</script>
-  <link rel="stylesheet" href="/style.css?v=29">
+  <link rel="stylesheet" href="/style.css?v=33">
 </head>
 <body>
 """
@@ -202,7 +202,7 @@ def shell(lang: str, title: str, active: str, stem: str, inner: str, cta: bool =
 
 # ── Shared blocks ───────────────────────────────────────────────────────────
 
-FEATURED = ["ds-eval"]
+FEATURED = ["pulse-ui", "intent-os", "ds-eval"]
 WORKFLOW = ["agent-ui", "figma-to-design-md", "ds-lint", "ds-coverage"]
 UTILITIES = ["ds-context", "ui-repair", "prompt-regress", "ds-health"]
 
@@ -239,14 +239,15 @@ def utility_rows(lang: str, slugs: list[str]) -> str:
     return f'<div class="journal">{"".join(rows)}</div>'
 
 
-def journal(lang: str, stems: list[str]) -> str:
+def journal(lang: str, stems: list[str], show_desc: bool = False) -> str:
     ru = lang == "ru"
     rows = []
     for n, s in enumerate(stems):
         a = article(s, lang)
+        desc = f'<p>{a["tldr"]}</p>' if show_desc and a.get("tldr") else ""
         rows.append(
             f'<a class="jrow" href="{name_for(s, lang)}" data-r style="--d:{n * 0.05}s"><div class="jleft">'
-            f'<div class="jtitle">{a["h1"]}</div>'
+            f'<div class="jtitle">{a["h1"]}</div>{desc}'
             f'<div class="jmeta"><span>{fmt_date(a["date"], lang)}</span><i></i><span>{a["min"]} {"мин" if ru else "min"}</span></div></div>'
             f'<span class="arrow-btn">{ARROW}</span></a>'
         )
@@ -284,19 +285,17 @@ def faq_block(items: list[tuple[str, str]]) -> str:
 def collab_faqs(lang: str) -> list[tuple[str, str]]:
     if lang == "ru":
         faqs = [
-            ("Кто такой Design Engineer?", "Я не останавливаюсь на макете. Проектирую интерфейс, записываю правила — состояния, компоненты, токены — и довожу это до кода. Если интерфейс потом собирает агент, та же спецификация лежит и у него. Иначе у дизайна, разработки и агента получаются три разные версии."),
-            ("Чем вы занимаетесь сейчас?", "Развиваю дизайн-систему Яндекс HR Tech: компоненты, токены, документацию и код. Рядом собираю инструменты, которые проверяют, берёт ли агент уже существующую систему, а не рисует свою."),
-            ("Где вы работали до этого?", "С 2021 по 2025 вёл дизайн-системы в Сбере: от компонентов до правил, как ими пользоваться. До этого проектировал продукты для частных инвесторов в «Открытии Брокер» и интерфейсы в МТС."),
-            ("Зачем свои инструменты?", "Агент часто рисует свой Button и хардкодит цвет, потому что система не лежит рядом с задачей и результат никто не сверяет. Инструменты собирают короткий контекст, чинят интерфейс под систему и измеряют, взял ли ответ её компоненты."),
-            ("Как вы работаете с агентом?", "Агент ищет, что уже есть в системе, собирает черновик и прогоняет проверки. Я ставлю задачу, задаю границы и смотрю результат. Продуктовое решение и всё, что выходит от моего имени, остаётся за мной."),
+            ("Кто такой Design Engineer?", "Я не останавливаюсь на макете: проектирую сценарии, описываю состояния и токены и довожу решение до кода. Тогда у дизайна, разработки и coding-агента один источник правды, а не три разные трактовки."),
+            ("Чем вы занимаетесь сейчас?", "Веду компоненты, токены и документацию дизайн-системы Яндекс HR Tech. Параллельно развиваю открытые инструменты вокруг AI-агентов: упаковку контекста системы, статические проверки и бенчмарк ds-eval."),
+            ("Зачем свои инструменты вокруг дизайн-системы?", "Без явного контекста и автоматической проверки агент рисует свой Button и хардкодит цвета. Утилиты закрывают три шага: компактно упаковать правила системы, проверить импорты и токены в коде и измерить дифф между промптами."),
+            ("Где проходит граница между вашей работой и агентом?", "Агент собирает черновик по спецификации и прогоняет проверки. Постановка задачи, продуктовые компромиссы, архитектура системы и приёмка того, что уходит в продакшен, остаются за мной."),
         ]
     else:
         faqs = [
-            ("What is a Design Engineer?", "I don't stop at the mockup. I design the interface, write the rules — states, components, tokens — and take that through to code. If an agent assembles the interface later, it gets the same specification. Otherwise design, engineering, and the agent each build their own version."),
-            ("What are you doing now?", "I develop the Yandex HR Tech design system: components, tokens, documentation, and code. Alongside it I build tools that check whether an agent uses a system that already exists, instead of drawing its own."),
-            ("Where did you work before?", "From 2021 to 2025 I led design systems at Sber, from components to the rules for using them. Before that I designed products for private investors at Otkritie Broker and interfaces at MTS."),
-            ("Why build your own tools?", "An agent often draws its own Button and hardcodes a color, because the system is not next to the task and nobody checks the result. The tools pack a short context, repair the interface onto the system, and measure whether the answer used its components."),
-            ("How do you work with an agent?", "The agent finds what the system already has, drafts, and runs the checks. I set the task, set the boundaries, and look at the result. The product decision, and anything that goes out under my name, stays with me."),
+            ("What is a Design Engineer?", "I don't stop at the mockup: I map the flows, specify states and tokens, and carry the work into code. That gives design, engineering, and coding agents one shared source of truth instead of three competing interpretations."),
+            ("What are you working on now?", "I lead components, tokens, and documentation for the Yandex HR Tech design system. Alongside it, I build open-source tools around coding agents: context packing, static token/import checks, and the ds-eval benchmark."),
+            ("Why build custom tools around the design system?", "Without explicit context and automated checks, an agent invents its own Button and hardcodes colors. The tools cover three steps: pack system rules under a token budget, lint imports and tokens in code, and diff prompt runs."),
+            ("Where is the boundary between your work and the agent?", "The agent drafts against the spec and runs the checks. Problem framing, product tradeoffs, system architecture, and sign-off on what ships to production stay with me."),
         ]
     return faqs
 
@@ -314,7 +313,7 @@ def home(lang: str) -> str:
             ("Дизайн-системы", "Проектирую компоненты, токены и правила так, чтобы макет в Figma и код в репозитории не расходились."),
             ("Инструменты", "Делаю утилиты вокруг дизайн-системы: собрать контекст для агента, починить сырой код, проверить результат."),
             ("AI и код", "Пишу спецификации и правила, по которым интерфейс собирает не только разработчик, но и агент."),
-            ("Проверка", "Сверяю результат не на глаз: сборка, импорты из системы, доступность через axe и сценарии в Playwright."),
+            ("Проверка", "Проверяю результат кодом: разбор AST и токенов на исходниках, а при полном прогоне в браузере — сборка, axe и Playwright."),
         ]
         voices = [
             ("/assets/logos/yandex.svg", "Яндекс HR Tech", "Product Designer — Design Systems · Сейчас", "Веду компоненты, токены и документацию системы; связываю макеты в Figma с кодом и правилами для агентов."),
@@ -331,7 +330,7 @@ def home(lang: str) -> str:
             ("Design systems", "I design components, tokens, and rules so the Figma file and the codebase stay in sync."),
             ("Tools", "I build utilities around the design system: pack context for an agent, repair raw code, and check the output."),
             ("AI and code", "I write specifications and rules that both engineers and coding agents can build from."),
-            ("Verification", "I check the result with code, not by eye: build, system imports, axe accessibility, and Playwright flows."),
+            ("Verification", "I verify output with code: AST and token checks on source files, plus build, axe, and Playwright on full browser runs."),
         ]
         voices = [
             ("/assets/logos/yandex.svg", "Yandex HR Tech", "Product Designer — Design Systems · Now", "Own components, tokens, and documentation; connect Figma libraries with code and agent rules."),
@@ -353,7 +352,7 @@ def home(lang: str) -> str:
 
     vgrid = "".join(f'<div data-r style="--d:{n * 0.07}s">{vcard(v)}</div>' for n, v in enumerate(voices))
     faqs = collab_faqs(lang)
-    top_projects = projects_by(["ds-eval", "agent-ui"])
+    top_projects = projects_by(["pulse-ui", "intent-os", "ds-eval"])
     return f'''
 <svg width="0" height="0" aria-hidden="true" style="position:absolute"><filter id="hero-key" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="linear" slope="1.15" intercept="-0.064"/><feFuncG type="linear" slope="1.15" intercept="-0.064"/><feFuncB type="linear" slope="1.15" intercept="-0.064"/></feComponentTransfer></filter></svg>
 <main><div class="col">
@@ -381,29 +380,34 @@ def page_head(title: str, sub: str = "", back: str = "") -> str:
 def projects_page(lang: str) -> str:
     ru = lang == "ru"
     if ru:
-        title, sub = "Проекты", "Инструменты и проверки вокруг одной задачи: чтобы AI-агент собирал интерфейс из компонентов дизайн-системы, а не рисовал свои."
-        h_case, h_work, h_util = "Кейс", "Инструменты", "Прототипы и утилиты"
+        title, sub = "Проекты", "Дизайн-системы, продуктовые кейсы и инструменты вокруг одной задачи: чтобы интерфейс собирался из компонентов системы, а не рисовался каждый раз заново."
+        h_case, h_work, h_util = "Кейсы", "Инструменты", "Прототипы и утилиты"
         note = "Компоненты с правилами для Cursor и три CLI-пакета в npm: спека из Figma, проверка токенов и покрытие импортов."
+        util_note = "Три воспроизводимых прототипа на локальных фикстурах (упаковка контекста, патч по правилам, дифф промптов) и браузерная утилита первичного аудита живого URL."
     else:
-        title, sub = "Projects", "Tools and checks built around one problem: getting coding agents to use an existing design system instead of inventing their own controls."
-        h_case, h_work, h_util = "Case", "Tools", "Prototypes & utilities"
+        title, sub = "Projects", "Design systems, product case studies, and tools built around one problem: assembling interfaces from a shared system instead of reinventing controls."
+        h_case, h_work, h_util = "Cases", "Tools", "Prototypes & utilities"
         note = "Components with Cursor rules and three npm CLIs: Figma-to-markdown specs, token linting, and import coverage."
+        util_note = "Three reproducible prototypes on local fixtures (context packing, rule-based repair, prompt diffing) plus a browser utility for auditing computed styles on a live URL."
     return (
         f'<main><div class="col">{page_head(title, sub)}'
         f'<section class="stack">{sec_head(h_case, len(FEATURED))}{project_cards(lang, projects_by(FEATURED))}</section>'
         f'<section class="stack">{sec_head(h_work, len(WORKFLOW))}<p class="sec-note">{note}</p>{project_cards(lang, projects_by(WORKFLOW), "workflow")}</section>'
-        f'<section class="stack">{sec_head(h_util, len(UTILITIES))}{utility_rows(lang, UTILITIES)}</section>'
+        f'<section class="stack">{sec_head(h_util, len(UTILITIES))}<p class="sec-note">{util_note}</p>{utility_rows(lang, UTILITIES)}</section>'
         f'</div></main>'
     )
 
 
 def writing_page(lang: str) -> str:
     ru = lang == "ru"
-    sub = "Заметки о дизайне, системах и AI." if ru else "Notes on design, systems, and AI."
+    sub = "Эссе и практические разборы о дизайн-системах, процессах и работе с AI-агентами." if ru else "Essays and field notes on design systems, engineering workflows, and AI coding agents."
+    core = ["apres-prompt", "ai-changes-processes", "halo-working-memory"]
+    guides = ["cursor-figma", "design-md", "dev-for-designers"]
     return (
         f'<main><div class="col">{page_head("Статьи" if ru else "Writing", sub)}'
         f'<section class="stack">{sec_head("Свежее" if ru else "Latest", 2)}{article_cards(lang, ORDER[:2])}</section>'
-        f'<section class="stack">{sec_head("Все статьи" if ru else "All articles", len(ORDER))}{journal(lang, ORDER)}</section></div></main>'
+        f'<section class="stack">{sec_head("Главные эссе" if ru else "Core essays", len(core))}{journal(lang, core, show_desc=True)}</section>'
+        f'<section class="stack">{sec_head("Практика и разборы" if ru else "Field notes & guides", len(guides))}{journal(lang, guides, show_desc=True)}</section></div></main>'
     )
 
 
@@ -413,7 +417,7 @@ def approach_page(lang: str) -> str:
     if ru:
         title = "От неопределённости к работающему продукту."
         sub = "Беру задачу до того, как её можно отдать в разработку: разбираюсь в сценариях, собираю прототип в Figma или коде, описываю состояния и токены и довожу до продакшена."
-        where = "Сейчас так устроена работа над дизайн-системой <b>Яндекс HR Tech</b>. До этого — дизайн-системы в <b>Сбере</b>, продукты в «Открытии Брокер» и МТС."
+        where = "Сейчас применяю этот контур в дизайн-системе <b>Яндекс HR Tech</b> (ранее — в дизайн-системах <b>Сбера</b>)."
         cta_t = "Обсудить задачу"
         steps_t = "Как идёт работа"
         steps = [
@@ -433,7 +437,7 @@ def approach_page(lang: str) -> str:
     else:
         title = "From ambiguity to production."
         sub = "I join before a task is ready for engineering: map the scenarios, build a prototype in Figma or code, write down the states and tokens, and see it through to production."
-        where = "This is how I work on the design system at <b>Yandex HR Tech</b> now. Before that, design systems at <b>Sber</b>, and products at Otkritie Broker and MTS."
+        where = "I currently run this loop on the design system at <b>Yandex HR Tech</b> (previously across design systems at <b>Sber</b>)."
         cta_t = "Discuss a task"
         steps_t = "How the work goes"
         steps = [
@@ -534,11 +538,12 @@ def project_page(project: dict, lang: str) -> str:
     gh = raw_gh[i] if isinstance(raw_gh, tuple) else raw_gh
     ext = ' target="_blank" rel="noopener"' if gh.startswith("http") else ""
     link = f'<a class="btn mint" href="{gh}"{ext}>{project["github_label"][i]}</a>' if gh else ""
+    badge = project.get("badge", ("open source", "open source"))[i]
     return f'''<main><div class="col"><article class="art">
   <header class="art-top">
     <a class="back" href="{name_for("projects", lang)}" data-r>‹ {"Назад" if ru else "Back"}</a>
     <h1 data-split>{project["name"]}</h1>
-    <div class="tags" data-r style="--d:.25s"><span class="tag">{project["kicker"][i]}</span><span class="tag">open source</span></div>
+    <div class="tags" data-r style="--d:.25s"><span class="tag">{project["kicker"][i]}</span><span class="tag">{badge}</span></div>
   </header>
   <div class="art-intro" data-r style="--d:.3s"><p>{lead}</p><div class="actions" style="justify-content:flex-start">{link}</div></div>
   <div class="prose">{cover(project["slug"], project["name"])}{doc["body"]}</div>

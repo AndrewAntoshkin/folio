@@ -4,13 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ds-health — Андрей Антошкин</title>
-  <meta name="description" content="Даёшь URL. Инструмент открывает страницу в Chromium и считает цвета текста, фоны, размеры шрифта, отступы и радиусы. Чем меньше разных значений и чем больше из них переменные CSS, тем ближе страница к одной шкале.">
+  <meta name="description" content="Даёшь URL — инструмент открывает страницу в Chromium, снимает вычисленные стили видимых элементов и собирает первичный аудит: сколько разных цветов, кеглей, отступов и радиусов реально рендерит браузер.">
   <meta property="og:title" content="ds-health — Андрей Антошкин">
-  <meta property="og:description" content="Даёшь URL. Инструмент открывает страницу в Chromium и считает цвета текста, фоны, размеры шрифта, отступы и радиусы. Чем меньше разных значений и чем больше из них переменные CSS, тем ближе страница к одной шкале.">
+  <meta property="og:description" content="Даёшь URL — инструмент открывает страницу в Chromium, снимает вычисленные стили видимых элементов и собирает первичный аудит: сколько разных цветов, кеглей, отступов и радиусов реально рендерит браузер.">
   <meta property="og:type" content="website">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
   <script>document.documentElement.classList.remove('nojs');try{if(sessionStorage.getItem('dock-seen'))document.documentElement.classList.add('dock-seen');else sessionStorage.setItem('dock-seen','1')}catch(e){}</script>
-  <link rel="stylesheet" href="/style.css?v=29">
+  <link rel="stylesheet" href="/style.css?v=33">
 </head>
 <body>
 
@@ -22,9 +22,10 @@
     <h1 data-split>ds-health</h1>
     <div class="tags" data-r style="--d:.25s"><span class="tag">Веб-тул</span><span class="tag">open source</span></div>
   </header>
-  <div class="art-intro" data-r style="--d:.3s"><p>Даёшь URL. Инструмент открывает страницу в Chromium и считает цвета текста, фоны, размеры шрифта, отступы и радиусы. Чем меньше разных значений и чем больше из них переменные CSS, тем ближе страница к одной шкале.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="https://github.com/AndrewAntoshkin/ds-health" target="_blank" rel="noopener">Репозиторий на&nbsp;GitHub</a></div></div>
+  <div class="art-intro" data-r style="--d:.3s"><p>Даёшь URL — инструмент открывает страницу в Chromium, снимает вычисленные стили видимых элементов и собирает первичный аудит: сколько разных цветов, кеглей, отступов и радиусов реально рендерит браузер.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="https://github.com/AndrewAntoshkin/ds-health" target="_blank" rel="noopener">Репозиторий на&nbsp;GitHub</a></div></div>
   <div class="prose"><div class="pcover "><div class="bg" style="background-image:url(/img/gen/ds-health.jpg)"></div><span class="plogo">ds-health</span></div><section id="measures"><h2>Что считает</h2>
-<ul class="feature-list"><li><strong>Цвета</strong><span>Сколько уникальных цветов текста и фона встретилось на странице и какая доля задана через CSS-переменные.</span></li><li><strong>Типографика</strong><span>Семейства, кегли и начертания видимого текста — держится ли страница на компактной типографической шкале.</span></li><li><strong>Отступы</strong><span>Сколько разных значений <code>padding</code> и <code>gap</code> реально отрендерил браузер.</span></li><li><strong>Радиус</strong><span>Сколько ненулевых значений <code>border-radius</code> используется у контейнеров и контролов.</span></li></ul></section>
+<ul class="feature-list"><li><strong>Цвета</strong><span>Сколько уникальных цветов текста и фона встретилось на странице и видны ли CSS-переменные в стилях документа.</span></li><li><strong>Типографика</strong><span>Семейства, кегли и начертания видимого текста — насколько компактна типографическая шкала страницы.</span></li><li><strong>Отступы</strong><span>Сколько разных значений <code>padding</code> и <code>gap</code> реально отрендерил браузер.</span></li><li><strong>Радиус</strong><span>Сколько ненулевых значений <code>border-radius</code> используется у контейнеров и контролов.</span></li></ul>
+<p>Граница метода: инструмент оценивает сходимость вычисленных стилей (<code>getComputedStyle</code>) на открытой странице. Меньшее число уникальных значений и наличие CSS-переменных — полезная эвристика для первичного аудита вёрстки, но не прямое доказательство качества архитектуры дизайн-системы в исходниках.</p></section>
 <section id="run"><h2>Запуск</h2>
 <pre><code>git clone https://github.com/AndrewAntoshkin/ds-health.git
 cd ds-health

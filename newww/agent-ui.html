@@ -10,7 +10,7 @@
   <meta property="og:type" content="website">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
   <script>document.documentElement.classList.remove('nojs');try{if(sessionStorage.getItem('dock-seen'))document.documentElement.classList.add('dock-seen');else sessionStorage.setItem('dock-seen','1')}catch(e){}</script>
-  <link rel="stylesheet" href="/style.css?v=29">
+  <link rel="stylesheet" href="/style.css?v=33">
 </head>
 <body>
 
@@ -34,6 +34,7 @@
 <p>Вторая причина в самих AI-интерфейсах. Вызов инструмента, запрос разрешения, рассуждения модели, окно контекста: в обычных библиотеках таких компонентов нет, и каждый продукт рисует их заново. Я делаю их один раз и так, как хотел бы видеть в своих интерфейсах.</p>
 </section>
 <section id="inside"><h2>Что внутри</h2>
+<p>На <a href="/agent-ui/">странице компонентов</a> вверху открыта живая интерактивная сцена: агент чинит захардкоженные цвета и останавливается, чтобы спросить разрешения на команду. Её можно разрешить, запретить или остановить прямо в браузере, а также переключить акцентный токен темы.</p>
 <ul class="feature-list">
 <li><strong>Prompt Input</strong><span>Поле промпта: растёт по высоте, Enter отправляет, во время ответа кнопка становится Stop. Вложения и слот под выбор модели.</span></li>
 <li><strong>Message</strong><span>Реплика пользователя или ассистента, пульсирующий курсор при стриминге, действия по наведению.</span></li>
@@ -51,7 +52,6 @@
 <li><strong>Sources</strong><span>Источники под ответом: название, адрес, короткая выдержка.</span></li>
 <li><strong>Artifact</strong><span>Карточка файла в треде. По клику содержимое открывается в боковой панели.</span></li>
 </ul>
-<p>На странице компонентов вверху живая сцена: агент чинит захардкоженные цвета и останавливается, чтобы спросить разрешения. Её можно разрешить, запретить или остановить.</p>
 </section>
 <section id="rules"><h2>Правило рядом с кодом</h2>
 <p>Каждая установка кладёт два файла: компонент и правило <code>.mdc</code>. В описании правила написана задача, а не имя компонента («агент просит разрешения перед рискованным действием»). Поэтому Cursor подгружает его только тогда, когда оно нужно.</p>
@@ -65,7 +65,11 @@
   &lt;Approval title="Run a shell command"
             command="rm -rf ./build"
             onApprove={...} onDeny={...} /&gt;</code></pre>
-<p>Для агентов, которые не читают правила Cursor, есть <a href="/agent-ui/r/llms.txt">llms.txt</a> со списком компонентов и <a href="/agent-ui/r/llms-full.txt">llms-full.txt</a> со всеми правилами в одном файле.</p>
+<p>Как разные агенты читают правила библиотеки:</p>
+<table><thead><tr><th>Среда / агент</th><th>Откуда берёт правила</th><th>Как подключается</th></tr></thead><tbody>
+<tr><td>Cursor</td><td><code>.cursor/rules/agent-ui-*.mdc</code></td><td>Ставится автоматически вместе с компонентом через <code>shadcn add</code> и подгружается по описанию задачи</td></tr>
+<tr><td>Claude Code / Codex / другие агенты</td><td><a href="/agent-ui/r/llms.txt">llms.txt</a> и <a href="/agent-ui/r/llms-full.txt">llms-full.txt</a></td><td>Индекс компонентов или все 15 правил одним файлом для передачи в контекст или <code>CLAUDE.md</code> / <code>AGENTS.md</code></td></tr>
+</tbody></table>
 </section>
 <section id="install"><h2>Установка</h2>
 <p>Реестр совместим с shadcn. Нужны Tailwind v4 и тема shadcn в CSS-переменных.</p>

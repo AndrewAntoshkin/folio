@@ -10,7 +10,7 @@
   <meta property="og:type" content="website">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
   <script>document.documentElement.classList.remove('nojs');try{if(sessionStorage.getItem('dock-seen'))document.documentElement.classList.add('dock-seen');else sessionStorage.setItem('dock-seen','1')}catch(e){}</script>
-  <link rel="stylesheet" href="/style.css?v=29">
+  <link rel="stylesheet" href="/style.css?v=33">
 </head>
 <body>
 
@@ -35,6 +35,7 @@
 <p>The second reason is AI interfaces themselves. A tool call, a permission request, model reasoning, the context window: general kits do not have these primitives, and every product draws them again. I build them once, the way I want them in my own interfaces.</p>
 </section>
 <section id="inside"><h2>What's inside</h2>
+<p>The <a href="/agent-ui/en">components page</a> opens with a live interactive scene: an agent fixes hardcoded colors and pauses to ask permission for a command. You can approve, deny, or stop it directly in the browser and switch the theme accent token.</p>
 <ul class="feature-list">
 <li><strong>Prompt Input</strong><span>Auto-growing prompt box: Enter sends, Send turns into Stop while the reply streams. Attachments and a model picker slot.</span></li>
 <li><strong>Message</strong><span>A user or assistant turn with a streaming caret and hover actions.</span></li>
@@ -52,7 +53,6 @@
 <li><strong>Sources</strong><span>Citations under an answer: title, address, short excerpt.</span></li>
 <li><strong>Artifact</strong><span>A file card in the thread. Its contents open in a side panel.</span></li>
 </ul>
-<p>The components page opens with a live scene: an agent fixes hardcoded colors and stops to ask for permission. You can allow, deny, or stop it.</p>
 </section>
 <section id="rules"><h2>A rule next to the code</h2>
 <p>Every install writes two files: the component and a <code>.mdc</code> rule. The rule's description names the task, not the component ("an agent asks permission before a risky action"), so Cursor loads it only when it is relevant.</p>
@@ -66,7 +66,11 @@
   &lt;Approval title="Run a shell command"
             command="rm -rf ./build"
             onApprove={...} onDeny={...} /&gt;</code></pre>
-<p>For agents that do not read Cursor rules there is <a href="/agent-ui/r/llms.txt">llms.txt</a> with the component list and <a href="/agent-ui/r/llms-full.txt">llms-full.txt</a> with every rule in one file.</p>
+<p>How different agents read the library rules:</p>
+<table><thead><tr><th>Environment / agent</th><th>Rule source</th><th>How it connects</th></tr></thead><tbody>
+<tr><td>Cursor</td><td><code>.cursor/rules/agent-ui-*.mdc</code></td><td>Installed automatically with the component via <code>shadcn add</code> and loaded by task description</td></tr>
+<tr><td>Claude Code / Codex / other agents</td><td><a href="/agent-ui/r/llms.txt">llms.txt</a> and <a href="/agent-ui/r/llms-full.txt">llms-full.txt</a></td><td>Component index or all 15 rules in a single file to pass into context or link from <code>CLAUDE.md</code> / <code>AGENTS.md</code></td></tr>
+</tbody></table>
 </section>
 <section id="install"><h2>Installation</h2>
 <p>The registry is shadcn-compatible. It needs Tailwind v4 and the shadcn theme as CSS variables.</p>

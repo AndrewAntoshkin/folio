@@ -1,0 +1,112 @@
+<section id="about"><h2>Product &amp; context</h2>
+<p><strong>Pulse UI</strong> (originally <em>Impulse DS</em>) is the design system powering Sber’s <a href="https://pulse-hcm.ru/" target="_blank" rel="noopener noreferrer">Pulse HR platform</a> across <strong>more than 65 services</strong>. It spans everything from lightweight landing pages to high-density enterprise workspaces: data tables, analytics dashboards, and team calendars.</p>
+<p>A core architectural capability of Pulse UI is multi-brand theming. Through semantic design tokens and structured palette relationships, teams can adjust color themes, typography, corner radii, and surface parameters without rebuilding product screens.</p>
+<dl class="fact-list">
+<div class="fact-row"><dt>Role</dt><dd>Design System Lead (Sber)</dd></div>
+<div class="fact-row"><dt>Contribution</dt><dd>Audit &amp; research · Strategy &amp; planning · Design &amp; engineering · Product adoption · Operations &amp; growth</dd></div>
+<div class="fact-row"><dt>Core team</dt><dd>Product Owner · Product Designer (×2) · Frontend Engineer (×2)</dd></div>
+<div class="fact-row"><dt>Scale</dt><dd>65+ services on the Pulse platform · 50+ product teams</dd></div>
+<div class="fact-row"><dt>Timeline</dt><dd>2021 — 2025 (key metrics checkpoint: Q1 / 2024, 1.5-year results)</dd></div>
+</dl>
+<figure class="case-fig">
+  <img src="/img/pulse-ui/cover.jpg" alt="Pulse UI: Design (Figma) × Code (Storybook) × Documentation (Notion)" loading="lazy">
+  <figcaption>The three pillars of Pulse UI: design libraries in Figma, component code in Storybook, and guidelines and process docs in Notion.</figcaption>
+</figure>
+<figure class="case-fig">
+  <img src="/img/pulse-ui/overview.jpg" alt="Pulse UI foundations overview: spacing scale, typography, components, and WCAG-checked color ramp" loading="lazy">
+  <figcaption>Core system layers: spacing scale (4–60 px), typography hierarchy, core components (buttons, spinners, avatars, chips, tags), and color ramps annotated with WCAG AAA/AA contrast ratios.</figcaption>
+</figure>
+</section>
+
+<section id="problems"><h2>What needed fixing</h2>
+<p>When we began restructuring the system, six recurring bottlenecks were slowing down both the core DS team and product squads across the platform:</p>
+<ul class="feature-list">
+<li><strong>High share of custom components</strong><span>Product teams were building local one-off buttons, modals, and tables instead of reusing shared library primitives.</span></li>
+<li><strong>No repeatable delivery pipeline</strong><span>Component creation and updates lacked explicit stages for discovery, scoping, testing, review, and team demos.</span></li>
+<li><strong>No long-term roadmap</strong><span>The library operated reactively off ad-hoc tickets rather than a strategy aligned with platform and business goals.</span></li>
+<li><strong>Low buy-in from product teams</strong><span>Designers and engineers often viewed the design system as an external constraint rather than a shared accelerator.</span></li>
+<li><strong>Missing components and unclear boundaries</strong><span>Teams lacked key patterns and had no clear criteria for what belonged in the shared core versus local product folders.</span></li>
+<li><strong>Design–code drift</strong><span>Figma libraries and Storybook were out of sync; designers regularly used components in mockups before they existed in code.</span></li>
+</ul>
+</section>
+
+<section id="solutions"><h2>How we solved it</h2>
+<h3>1. Library audit &amp; custom replacement strategy</h3>
+<p>We audited the existing component library to identify unused, duplicate, or overlapping components, then built a phased replacement plan with product squads to retire custom controls and raise system Adoption.</p>
+
+<h3>2. End-to-end component delivery process</h3>
+<p>We rebuilt the component lifecycle around explicit stages: research, estimation, testing, design/code review, and live functional demos for product teams, paired with automated build and release pipelines to reduce manual errors.</p>
+
+<h3>3. Long-term strategy &amp; open backlog</h3>
+<p>We benchmarked mature enterprise design systems against the needs of current and upcoming Pulse services, establishing a long-term roadmap and an open backlog visible to every product squad.</p>
+
+<h3>4. Core vs. local triage &amp; Figma–Storybook sync</h3>
+<p>We cataloged missing components across teams and separated shared core primitives from local product-specific modules. A full gap analysis between Figma and Storybook mapped every discrepancy, synchronized library and code releases so designers could no longer ship unbuilt components in mockups, and introduced regular <strong>DS Check up</strong> audits.</p>
+
+<h3>5. Education, workshops &amp; community</h3>
+<p>We launched hands-on training sessions, onboarding guides, and regular platform-wide meetups where teams reviewed the open backlog, upcoming releases, and component assembly practices.</p>
+</section>
+
+<section id="architecture"><h2>Semantic tokens, foundations &amp; component specs</h2>
+<p>When the business needed runtime theme switching across the platform, we redesigned our color architecture from the ground up. We separated the base palette (10 color ramps graded <code>10–100</code> plus utility gradients) from functional <strong>semantic tokens</strong> (<code>bg-primary</code>, <code>text-secondary</code>, interactive states, and illustration tokens) across both Light and Dark modes.</p>
+<figure class="case-fig">
+  <img src="/img/pulse-ui/slide-8.jpg" alt="Pulse UI semantic tokens and base color palette across Light and Dark modes" loading="lazy">
+  <figcaption>Semantic token mapping and the 10-ramp base color palette (10–100 + gradients) across Light and Dark themes.</figcaption>
+</figure>
+<p>We wrote a step-by-step migration playbook for both Figma and code. Migrating legacy screens was hardest for large product squads — through hands-on support and clear tooling, we <strong>migrated more than 50 product teams to the new color tokens in 4 months</strong>.</p>
+<p>In parallel, we formalized the <code>v1.0.0</code> foundations with direct links to Storybook and usage guidelines:</p>
+<ul>
+<li><strong>Shadows (elevation):</strong> four elevation tiers (<code>small</code> for cards, <code>medium</code> for popovers and dropdowns, <code>large</code> for modals and offcanvas panels, <code>extraLarge</code> for drag &amp; drop) tuned separately for Light and Dark modes;</li>
+<li><strong>Typography:</strong> heading scale on <code>SB Sans Display</code> and body copy on <code>SB Sans Text</code>, engineered for <strong>WCAG 2.1 AA</strong> contrast compliance;</li>
+<li><strong>Layout grid &amp; spacing:</strong> 12-column responsive and fixed grid rules across breakpoints from <code>1024dp</code> (Tablet) to <code>2560dp</code> (with and without sidebar), plus a strict <code>4px (0.5rem)</code> spatial scale.</li>
+</ul>
+<figure class="case-fig">
+  <img src="/img/pulse-ui/slide-5.jpg" alt="Pulse UI v1.0.0 documentation for shadows (light and dark) and typography (SB Sans Display and SB Sans Text)" loading="lazy">
+  <figcaption>Foundations documentation (v1.0.0): light/dark elevation shadows and WCAG 2.1 AA typographic hierarchy in SB Sans Display &amp; SB Sans Text.</figcaption>
+</figure>
+<figure class="case-fig">
+  <img src="/img/pulse-ui/slide-6.jpg" alt="Pulse UI v1.0.0 documentation for layout grids (1024dp–2560dp) and 4px spacing scale" loading="lazy">
+  <figcaption>Responsive layout grid specifications (with and without sidebar across 1024–2560dp) and the 4px spacing scale.</figcaption>
+</figure>
+<p>Every complex component was documented down to its edge cases so designers and engineers shared one specification — covering anatomy, do/don’t usage rules, desktop breakpoint behavior, header/footer variants, and internal scroll pinning.</p>
+<figure class="case-fig">
+  <img src="/img/pulse-ui/slide-7.jpg" alt="Pulse UI Modal component specification: anatomy, desktop adaptivity, header/footer variants, and scroll behavior" loading="lazy">
+  <figcaption>Modal component specification (v1.0.0): anatomy, S–XL sizing, desktop responsive gutters (1024–1440px), header/footer configurations, and sticky header/footer scroll behavior.</figcaption>
+</figure>
+</section>
+
+<section id="initiatives"><h2>Key organizational shifts</h2>
+<ul class="feature-list">
+<li><strong>Product-team contribution model</strong><span>With a compact core team (2 designers and 2 frontend engineers) supporting 65+ services, we designed and launched a federated contribution workflow: product squads could fix bugs, propose improvements, and ship new components into the shared library.</span></li>
+<li><strong>Design Gate quality control process</strong><span>We introduced a structured Design Gate review before mockups entered engineering and before coded screens shipped to production. Because of its executive visibility and scale, Design Gate eventually spun out of the design system into its own dedicated quality team.</span></li>
+<li><strong>Lifecycle &amp; migration documentation</strong><span>We wrote practical playbooks covering the full component lifecycle, building local composite components, and migrating screens to semantic tokens.</span></li>
+<li><strong>Cultural shift around the design system</strong><span>Open roadmaps, regular demos, and federated contribution turned product squads from passive consumers into active co-owners of the system.</span></li>
+</ul>
+</section>
+
+<section id="metrics"><h2>Impact &amp; metrics (Q1 / 2024 — 1.5-year results)</h2>
+<p>We tracked system health through three core metrics: team satisfaction (<strong>CSI — Component Satisfaction Index</strong>), platform-wide component coverage (<strong>Adoption</strong>), and the share of custom one-off controls remaining in products (<strong>Custom Usage</strong>).</p>
+<figure class="bench">
+  <figcaption>
+    <span>Pulse UI metrics as of Q1 / 2024 · 1.5 years into the transformation</span>
+    <strong>Design system satisfaction and adoption across the Pulse platform</strong>
+    <em>Scope: 65+ platform services and 50+ product teams migrated to semantic color tokens in 4 months</em>
+  </figcaption>
+  <div class="bench-scores cols-3">
+    <p><span>CSI (satisfaction)</span><b>81%</b></p>
+    <p><span>Adoption</span><b>60%</b></p>
+    <p><span>Custom Usage</span><b>15%</b></p>
+  </div>
+</figure>
+<table>
+  <thead>
+    <tr><th>Metric / outcome</th><th>Result</th><th>How it was achieved</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>CSI (Component Satisfaction Index)</strong></td><td>81%</td><td>Regular platform meetups, structured feedback loops with product designers and engineers, and a predictable release pipeline.</td></tr>
+    <tr><td><strong>Adoption</strong></td><td>60%</td><td>Hands-on training sessions, clear Notion &amp; Storybook documentation, and active migration support from the core DS team.</td></tr>
+    <tr><td><strong>Custom Usage</strong></td><td>15%</td><td>Library gap closure, federated contribution from product squads, Design Gate reviews, and faster turnaround on component requests.</td></tr>
+    <tr><td><strong>Semantic token migration</strong></td><td>50+ teams in 4 mos.</td><td>Full semantic token architecture for Light/Dark theming, a step-by-step migration guide, and hands-on support across squads.</td></tr>
+  </tbody>
+</table>
+</section>

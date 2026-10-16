@@ -4,13 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ds-coverage — Андрей Антошкин</title>
-  <meta name="description" content="ds-coverage считает, какие компоненты дизайн-системы код импортирует. Показывает, какие не используются и где то же самое написали заново.">
+  <meta name="description" content="ds-coverage считает по импортам, какая доля каталога дизайн-системы задействована в коде, какие экспорты не используются и где рядом появились локальные компоненты с теми же именами.">
   <meta property="og:title" content="ds-coverage — Андрей Антошкин">
-  <meta property="og:description" content="ds-coverage считает, какие компоненты дизайн-системы код импортирует. Показывает, какие не используются и где то же самое написали заново.">
+  <meta property="og:description" content="ds-coverage считает по импортам, какая доля каталога дизайн-системы задействована в коде, какие экспорты не используются и где рядом появились локальные компоненты с теми же именами.">
   <meta property="og:type" content="website">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
   <script>document.documentElement.classList.remove('nojs');try{if(sessionStorage.getItem('dock-seen'))document.documentElement.classList.add('dock-seen');else sessionStorage.setItem('dock-seen','1')}catch(e){}</script>
-  <link rel="stylesheet" href="/style.css?v=29">
+  <link rel="stylesheet" href="/style.css?v=33">
 </head>
 <body>
 
@@ -22,7 +22,7 @@
     <h1 data-split>ds-coverage</h1>
     <div class="tags" data-r style="--d:.25s"><span class="tag">Сканер</span><span class="tag">open source</span></div>
   </header>
-  <div class="art-intro" data-r style="--d:.3s"><p>ds-coverage считает, какие компоненты дизайн-системы код импортирует. Показывает, какие не используются и где то же самое написали заново.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="https://github.com/AndrewAntoshkin/ds-coverage" target="_blank" rel="noopener">Репозиторий на&nbsp;GitHub</a></div></div>
+  <div class="art-intro" data-r style="--d:.3s"><p>ds-coverage считает по импортам, какая доля каталога дизайн-системы задействована в коде, какие экспорты не используются и где рядом появились локальные компоненты с теми же именами.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="https://github.com/AndrewAntoshkin/ds-coverage" target="_blank" rel="noopener">Репозиторий на&nbsp;GitHub</a></div></div>
   <div class="prose"><div class="pcover "><div class="bg" style="background-image:url(/img/gen/ds-coverage.jpg)"></div><span class="plogo">ds-coverage</span></div><section id="why"><h2>Зачем</h2>
 <p>В репозитории может лежать дизайн-система на сорок компонентов, а продуктовые экраны рядом всё равно собирают из своих <code>Button</code> и <code>Modal</code>. На ревью это всплывает поздно.</p>
 <p>ds-coverage проходит по импортам и показывает три вещи: какие компоненты системы реально используются, какие лежат мёртвым грузом и где в продукте написали локальный дубль с тем же именем.</p></section>
@@ -50,10 +50,11 @@ ds-coverage src/ --ds @acme/ui --inventory components.json --min 70</code></pre>
 <section id="cli"><h2>Параметры</h2>
 <table><thead><tr><th>Флаг</th><th>По умолчанию</th><th>Описание</th></tr></thead><tbody><tr><td>[path]</td><td>.</td><td>Папка для проверки</td></tr><tr><td>--ds &lt;packages&gt;</td><td>—</td><td>Имена пакетов системы через запятую (обязательно)</td></tr><tr><td>--inventory &lt;file&gt;</td><td>—</td><td>JSON со всеми компонентами системы</td></tr><tr><td>--format &lt;type&gt;</td><td>terminal</td><td>terminal | markdown | json</td></tr><tr><td>--out &lt;file&gt;</td><td>—</td><td>Записать отчёт в файл</td></tr><tr><td>--min &lt;percent&gt;</td><td>—</td><td>Ошибка, если покрытие ниже порога</td></tr><tr><td>--version</td><td></td><td>Показать версию</td></tr><tr><td>--help</td><td></td><td>Показать справку</td></tr></tbody></table></section>
 <section id="metrics"><h2>Что измеряет</h2>
-<ul class="feature-list"><li><strong>Используемые компоненты</strong><span>Сколько компонентов системы встречается в импортах</span></li><li><strong>Всего импортов</strong><span>Сколько раз систему импортировали</span></li><li><strong>Локальные компоненты</strong><span>Компоненты из относительных путей — кандидаты в систему</span></li><li><strong>Дубли</strong><span>Локальные компоненты с тем же именем, что у системных — скорее всего написаны заново</span></li><li><strong>Неиспользуемые</strong><span>Компоненты системы, которые нигде не импортированы — кандидаты на удаление (нужен --inventory)</span></li></ul></section>
+<ul class="feature-list"><li><strong>Используемые компоненты</strong><span>Сколько компонентов из инвентаря системы хотя бы раз импортировано в коде</span></li><li><strong>Всего импортов</strong><span>Сколько раз пакет системы импортировали по файлам проекта</span></li><li><strong>Локальные компоненты</strong><span>Компоненты из относительных путей — кандидаты на вынос в систему</span></li><li><strong>Дубли по имени</strong><span>Локальные компоненты с тем же именем, что у системных — сигнал возможной повторной реализации</span></li><li><strong>Неиспользуемые</strong><span>Экспорты системы, которые нигде не импортированы (нужен <code>--inventory</code>)</span></li></ul>
+<p>Под «покрытием» здесь понимается именно <strong>доля задействованного каталога системы</strong> (например, 34 из 39 экспортируемых компонентов = 87%) и карта совпадений имён, а не оценка визуального качества экранов.</p></section>
 <section id="output-good"><h2>Системой пользуются</h2>
-<p>Команда, которая системой реально пользуется:</p>
-<table><thead><tr><th>Значение</th><th>Что значит</th></tr></thead><tbody><tr><td>34</td><td>Компоненты системы</td></tr><tr><td>87%</td><td>Покрытие</td></tr><tr><td>0</td><td>Дубли</td></tr></tbody></table>
+<p>Команда, которая использует почти весь каталог системы:</p>
+<table><thead><tr><th>Значение</th><th>Что значит</th></tr></thead><tbody><tr><td>34</td><td>Компоненты системы</td></tr><tr><td>87%</td><td>Доля каталога в импортах</td></tr><tr><td>0</td><td>Дубли</td></tr></tbody></table>
 <pre><code>Design System Coverage Report
 ──────────────────────────────
 

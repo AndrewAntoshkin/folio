@@ -26,25 +26,29 @@ export function Task() {
 </section>
 <section id="record"><h2>What the published run shows</h2>
 <p>The smoke suite is 10 cases and costs $0. The recorded models are <code>fixture</code> and <code>fixture-naive</code>: prepared files, not a call to Claude or Codex. The tasks and the demo system stay fixed. The answer pack changes.</p>
-<figure class="bench"><figcaption><span>Ten prepared answers · $0 · not a live model</span><strong>Design-system compliance, read from source</strong><em>This check did not count the import in the good file</em></figcaption><div class="bench-scores"><p><span>Uses the system</span><b>87</b></p><p><span>Draws its own</span><b>5.7</b></p></div></figure>
+<figure class="bench"><figcaption><span>Archived fixture run · 10 prepared answers · $0 · not a live model</span><strong>Design-system compliance, read from source (pre-fix checker)</strong><em>Values below come from the older checker; import parsing is fixed in current code, while the archived JSON is kept untouched</em></figcaption><div class="bench-scores"><p><span>Uses the system</span><b>87</b></p><p><span>Draws its own</span><b>5.7</b></p></div></figure>
 <table><thead><tr><th>Axis</th><th>Uses the system</th><th>Draws its own</th><th>What matters</th></tr></thead><tbody>
-<tr><td>DS</td><td>87</td><td>5.7</td><td>In the published run the <code>Button</code> import was recognized incorrectly</td></tr>
+<tr><td>DS</td><td>87</td><td>5.7</td><td>In the archived run the <code>Button</code> import was recognized incorrectly</td></tr>
 <tr><td>Accessibility</td><td>100</td><td>78</td><td>A text heuristic, not an axe audit</td></tr>
 <tr><td>Functional</td><td>Not measured</td><td>Not measured</td><td>The JSON fills in 70</td></tr>
 <tr><td>Build</td><td>Not measured</td><td>Not measured</td><td>The browser did not run</td></tr>
-<tr><td>Aggregate</td><td>87.8</td><td>59.3</td><td>An aggregate of the available checks, not an interface-quality score</td></tr>
+<tr><td>Aggregate</td><td>87.8</td><td>59.3</td><td>Aggregate of the pre-fix run’s available checks, not a model score</td></tr>
 </tbody></table>
-<p>The gap in the aggregate comes almost entirely from the design-system check. The published figures were produced by the old checker: it did not recognize the <code>Button</code> import that is in the file. So 87.8 and 59.3 are the result of that specific run, not a reliable judgment of the two interfaces.</p>
+<p>The gap in the aggregate comes almost entirely from the design-system check. The published figures were produced by the old checker: it did not recognize the <code>Button</code> import that is in the file. So 87.8 and 59.3 are the archived record of that specific pre-fix run, not a final score of the two interfaces.</p>
 <p>The code axis barely moves, 98 against 99. The naive buttons pass it. The check looks for <code>any</code>, file length, and <code>export function Task</code>, not for whose button it is.</p>
 </section>
 <section id="import"><h2>The import check deducts for a line the file already has</h2>
 <ul class="feature-list">
 <li><strong>The file</strong><span><code>import { Button } from "@ds"</code>, and three <code>Button</code> variants.</span></li>
 <li><strong>The run’s regular expression</strong><span>It expects <code>from "@ds" import</code>. An ordinary TypeScript import does not match. The note says “no @ds imports.”</span></li>
-<li><strong>The score</strong><span>Minus 25. Static score 75. The <code>Button</code> tag is found separately, and compliance scores 100. The DS axis for the case is the average, 87.5. Across the suite it is 87.</span></li>
+<li><strong>The archived score</strong><span>Minus 25. Static score 75. The <code>Button</code> tag is found separately, and compliance scores 100. The DS axis for the case is the average, 87.5. Across the suite it is 87.</span></li>
 </ul>
-<p>The old checker does find differences between the files: the naive one has no <code>Button</code>, uses native <code>button</code> elements, and the colors <code>#3B82F6</code>, <code>#6B7280</code>, and <code>#EF4444</code>. The final gap of 87 against 5.7 cannot be treated as a correct design-system score. The import in the good file was not recognized, and the tests do not confirm that the final score is right.</p>
-<p>In the current runner the import check has moved to Babel (<code>grade_ast</code>) and is covered in <code>tests/test_graders.py</code>: on this file the parser recognizes <code>import { Button } from "@ds"</code> and scores 100 instead of 75, while the naive button scores 20 on static and 0 on compliance. The published JSON record in <code>runs/fixture-good</code> is kept as-is from the pre-fix run.</p>
+<p>The old checker does find differences between the files: the naive one has no <code>Button</code>, uses native <code>button</code> elements, and the colors <code>#3B82F6</code>, <code>#6B7280</code>, and <code>#EF4444</code>. Still, the archived gap of 87 against 5.7 cannot be treated as a clean design-system score because the existing import in the good file was missed.</p>
+<p>In the current runner the import check has moved to Babel (<code>grade_ast</code>) and is covered in <code>tests/test_graders.py</code>. The published JSON record in <code>runs/fixture-good</code> is deliberately kept as-is from the pre-fix run.</p>
+<table><thead><tr><th>Post-fix check on the two files</th><th>Old regex (archived run)</th><th>Current Babel AST (<code>grade_ast</code>)</th></tr></thead><tbody>
+<tr><td><code>fixture</code> (with <code>import { Button } from "@ds"</code>)</td><td>75 static · 100 compliance · 87.5 DS axis</td><td>100 static · 100 compliance · 100 DS axis</td></tr>
+<tr><td><code>fixture-naive</code> (raw <code>&lt;button&gt;</code> and hex)</td><td>20 static · 0 compliance · 10 DS axis</td><td>20 static · 0 compliance · 10 DS axis</td></tr>
+</tbody></table>
 </section>
 <section id="split"><h2>Why this is not one judge</h2>
 <p>Deterministic checks cover concrete violations in the source. The browser and a model judge cover properties that one reading of the code cannot establish. If a check did not run, its result is not a measurement.</p>

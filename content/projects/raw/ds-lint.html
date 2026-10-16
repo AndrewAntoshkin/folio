@@ -188,6 +188,7 @@ ds-lint src/ --tokens tokens.css --strict</pre></div>
 </div>
 <p class="body" style="margin-top:16px">Scans: <code class="ic">.js</code> <code class="ic">.jsx</code> <code class="ic">.ts</code> <code class="ic">.tsx</code> <code class="ic">.css</code> <code class="ic">.scss</code> <code class="ic">.vue</code> <code class="ic">.svelte</code></p>
 <p class="body">Skips: <code class="ic">node_modules</code>, <code class="ic">dist</code>, <code class="ic">build</code>, <code class="ic">.next</code>, <code class="ic">.git</code>, CSS variable declarations</p>
+<p class="body">Scope: fast literal pattern matching and token-table lookup across source files, not a full CSS cascade or runtime style resolver.</p>
 </section>
 
 <section id="tokens">

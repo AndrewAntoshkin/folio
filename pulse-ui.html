@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ru" class="nojs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pulse UI — Андрей Антошкин</title>
+  <meta name="description" content="Дизайн-система HR-платформы «Пульс» в Сбере (65+ сервисов): от разрозненных кастомных экранов к единой архитектуре семантических токенов, процессу контрибьюта продуктовых команд и контролю качества Design Gate. За 1,5 года: 81% CSI, 60% Adoption, доля кастома снижена до 15%, на новые токены переведены 50+ команд за 4 месяца.">
+  <meta property="og:title" content="Pulse UI — Андрей Антошкин">
+  <meta property="og:description" content="Дизайн-система HR-платформы «Пульс» в Сбере (65+ сервисов): от разрозненных кастомных экранов к единой архитектуре семантических токенов, процессу контрибьюта продуктовых команд и контролю качества Design Gate. За 1,5 года: 81% CSI, 60% Adoption, доля кастома снижена до 15%, на новые токены переведены 50+ команд за 4 месяца.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
+  <script>document.documentElement.classList.remove('nojs');try{if(sessionStorage.getItem('dock-seen'))document.documentElement.classList.add('dock-seen');else sessionStorage.setItem('dock-seen','1')}catch(e){}</script>
+  <link rel="stylesheet" href="/style.css?v=33">
+</head>
+<body>
+
+<div class="dock"><nav aria-label="Навигация"><i aria-hidden="true"></i><a href="/" aria-label="Главная"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg></a><a href="/projects" aria-label="Проекты" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 13h16"/></svg></a><a href="/writing" aria-label="Статьи"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M14 5.5 18.5 10 9 19.5H4.5V15L14 5.5Z"/><path d="m12 7.5 4.5 4.5"/></svg></a><a href="/approach" aria-label="Подход"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.25"/><path d="M5.5 19.5c1.2-3 3.4-4.5 6.5-4.5s5.3 1.5 6.5 4.5"/></svg></a><a href="/collab" aria-label="Связь"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></nav><a class="lang" href="/en/pulse-ui" aria-label="English">En</a></div>
+<a class="float" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Написать<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+<main><div class="col"><article class="art">
+  <header class="art-top">
+    <a class="back" href="/projects" data-r>‹ Назад</a>
+    <h1 data-split>Pulse UI</h1>
+    <div class="tags" data-r style="--d:.25s"><span class="tag">Дизайн-система</span><span class="tag">Сбер · 65+ сервисов</span></div>
+  </header>
+  <div class="art-intro" data-r style="--d:.3s"><p>Дизайн-система HR-платформы «Пульс» в Сбере (65+ сервисов): от разрозненных кастомных экранов к единой архитектуре семантических токенов, процессу контрибьюта продуктовых команд и контролю качества Design Gate. За 1,5 года: 81% CSI, 60% Adoption, доля кастома снижена до 15%, на новые токены переведены 50+ команд за 4 месяца.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="https://pulse-hcm.ru/" target="_blank" rel="noopener">Платформа «Пульс»</a></div></div>
+  <div class="prose"><div class="pcover "><div class="bg" style="background-image:url(/img/gen/pulse-ui.jpg)"></div><span class="plogo">Pulse UI</span></div><section id="about"><h2>О продукте и контексте</h2>
+<p>Дизайн-система <strong>Pulse UI</strong> (в ранних версиях — <em>Impulse DS</em>), на которой построена HR-платформа <a href="https://pulse-hcm.ru/" target="_blank" rel="noopener noreferrer">«Пульс»</a> в Сбере, охватывает <strong>более 65 сервисов</strong>. Она закрывает сценарии от промо-лендингов до высоконагруженных рабочих интерфейсов: таблиц, аналитических дашбордов и командных календарей.</p>
+<p>Ключевая архитектурная особенность Pulse UI — гибкая настройка тем. Через семантические дизайн-токены и связи между уровнями палитры система позволяет менять цветовую схему, типографику, скругления и другие визуальные параметры без пересборки продуктовых экранов — под разные бренды и пользовательские предпочтения.</p>
+<dl class="fact-list">
+<div class="fact-row"><dt>Роль</dt><dd>Design System Lead (Сбер)</dd></div>
+<div class="fact-row"><dt>Мой вклад</dt><dd>Аудит и исследование · Стратегия и планирование · Проектирование и разработка · Внедрение в продукты · Поддержка и развитие</dd></div>
+<div class="fact-row"><dt>Команда</dt><dd>Владелец продукта · Дизайнер (×2) · Frontend-разработчик (×2)</dd></div>
+<div class="fact-row"><dt>Масштаб</dt><dd>65+ сервисов платформы «Пульс» · 50+ продуктовых команд</dd></div>
+<div class="fact-row"><dt>Период</dt><dd>2021 — 2025 (ключевой срез метрик — Q1 / 2024, результаты за 1,5 года)</dd></div>
+</dl>
+<figure class="case-fig">
+  <img src="/img/pulse-ui/cover.jpg" alt="Pulse UI: связка Design (Figma) × Code (Storybook) × Documentation (Notion)" loading="lazy">
+  <figcaption>Три опоры Pulse UI: библиотека макетов в Figma, код компонентов в Storybook и документация процессов и гайдлайнов в Notion.</figcaption>
+</figure>
+<figure class="case-fig">
+  <img src="/img/pulse-ui/overview.jpg" alt="Обзор фундамента Pulse UI: спейсинги, типографика, базовые компоненты и палитра с WCAG-контрастом" loading="lazy">
+  <figcaption>Базовые слои системы: шкала спейсингов (4–60 px), типографика, компоненты (кнопки, спиннеры, аватары, чипсы, тэги) и цветовая растяжка с проверкой контраста WCAG AAA/AA.</figcaption>
+</figure>
+</section>
+
+<section id="problems"><h2>Что нужно было полечить</h2>
+<p>На старте системной пересборки вокруг библиотеки накопилось шесть узких мест, которые тормозили и команду ДС, и продуктовые команды платформы:</p>
+<ul class="feature-list">
+<li><strong>Много кастомных компонентов</strong><span>Продуктовые команды собирали собственные локальные версии кнопок, модалок и таблиц вместо переиспользования общей библиотеки.</span></li>
+<li><strong>Нет налаженного производственного процесса</strong><span>Отсутствовали прозрачные этапы исследования, оценки, тестирования, ревью и демо перед выкаткой новых и обновлённых компонентов.</span></li>
+<li><strong>Нет долгосрочной стратегии развития</strong><span>Система жила в режиме реактивного закрытия точечных тикетов без единого плана развития под цели бизнеса и будущие сервисы.</span></li>
+<li><strong>Команды не понимают ценности дизайн-системы</strong><span>Продуктовые дизайнеры и разработчики воспринимали библиотеку как внешнее ограничение, а не как общий инструмент ускорения.</span></li>
+<li><strong>Не хватает нужных компонентов</strong><span>В библиотеке отсутствовали паттерны для сложных сценариев, и не было критериев, что должно жить в ядре ДС, а что — оставаться локальным.</span></li>
+<li><strong>Расхождения дизайна с разработкой</strong><span>Компоненты в Figma и в Storybook расходились по состояниям и API; дизайнеры брали в макеты элементы раньше, чем они появлялись в коде.</span></li>
+</ul>
+</section>
+
+<section id="solutions"><h2>Как решали проблемы</h2>
+<h3>1. Аудит библиотеки и сокращение кастома</h3>
+<p>Мы начали с ревизии текущей библиотеки компонентов: нашли дубли, неиспользуемые и устаревшие элементы. На основе аудита собрали стратегию поэтапной замены кастомных решений у продуктовых команд на компоненты из дизайн-системы, чтобы сократить процент кастома и поднять Adoption.</p>
+
+<h3>2. Перезапуск производственного пайплайна</h3>
+<p>Пересмотрели весь цикл разработки и обновления компонента: закрепили обязательные этапы исследования, оценки, тестирования, дизайн- и код-ревью, а также регулярные демо функционала для продуктовых команд. Чтобы минимизировать ручные ошибки, внедрили автоматизацию сборки и деплоя компонентов.</p>
+
+<h3>3. Долгосрочная стратегия и открытый бэклог</h3>
+<p>Провели исследование практик зрелых дизайн-систем и сопоставили их с дорожной картой текущих и будущих сервисов «Пульса». Сформировали долгосрочную стратегию развития и открытый бэклог, где каждая продуктовая команда видит приоритеты и статус нужных ей компонентов.</p>
+
+<h3>4. Разделение «ядро vs локальное» и закрытие гэпов</h3>
+<p>Собрали полный список недостающих компонентов по запросам команд и разделили его на две группы: универсальные примитивы и паттерны, которые идут в общую библиотеку, и узкоспецифичные продуктовые блоки, которые остаются локальными. Провели гэп-анализ между Figma и кодом, разметили все расхождения и синхронизировали выпуск обновлений библиотеки и Storybook — чтобы дизайнеры не использовали в макетах компоненты, которых ещё нет в разработке. Для поддержания синхронности запустили регулярный процесс проверки <strong>DS Check up</strong>.</p>
+
+<h3>5. Обучение и вовлечение команд</h3>
+<p>Запустили серию обучающих встреч, практических сессий и регулярных митапов для дизайнеров и разработчиков со всей платформы: разбирали устройство библиотеки, планы команды и правила сборки экранов.</p>
+</section>
+
+<section id="architecture"><h2>Токены, основы и спецификации компонентов</h2>
+<p>Когда бизнес поставил задачу поддерживать смену цветовых тем в интерфейсе платформы, нам пришлось полностью переосмыслить работу с цветом и семантикой. Мы разделили базовую палитру (10 цветовых рядов в шкале <code>10–100</code> плюс дополнительные градиенты) и функциональный слой <strong>semantic tokens</strong> (<code>bg-primary</code>, <code>text-secondary</code>, интерактивные состояния и токены иллюстраций) для светлой и тёмной тем.</p>
+<figure class="case-fig">
+  <img src="/img/pulse-ui/slide-8.jpg" alt="Архитектура семантических токенов и базовой палитры Pulse UI для светлой и тёмной темы" loading="lazy">
+  <figcaption>Семантические токены и базовая палитра из 10 цветовых растяжек (10–100) и градиентов в светлой и тёмной темах.</figcaption>
+</figure>
+<p>Мы разработали пошаговый план миграции в макетах и в коде. Сложнее всего переезд давался продуктовым командам с большим числом экранов: вместе с ними и за счёт плотной поддержки мы <strong>перевели на новые цветовые токены более 50 команд за 4 месяца</strong>.</p>
+<p>Параллельно формализовали все базовые уровни системы в версии <code>1.0.0</code> со сквозными ссылками на Storybook и гайдлайны:</p>
+<ul>
+<li><strong>Тени (shadows):</strong> четыре уровня высоты (<code>small</code> для карточек, <code>medium</code> для поповеров и дропдаунов, <code>large</code> для модалок и offcanvas, <code>extraLarge</code> для drag &amp; drop) отдельно для светлой и тёмной темы;</li>
+<li><strong>Типографика:</strong> иерархия заголовков на <code>SB Sans Display</code> и наборного текста на <code>SB Sans Text</code> по стандарту контрастности <strong>WCAG 2.1 AA</strong>;</li>
+<li><strong>Сетка и отступы:</strong> правила 12-колоночной сетки для разрешений от <code>1024dp</code> (планшеты) до <code>2560dp</code> с учётом свёрнутого и развёрнутого сайдбара, а также единый пространственный ритм на базе модуля <code>4px (0.5rem)</code>.</li>
+</ul>
+<figure class="case-fig">
+  <img src="/img/pulse-ui/slide-5.jpg" alt="Документация теней (light и dark) и типографической шкалы SB Sans Display / SB Sans Text" loading="lazy">
+  <figcaption>Спецификации основ v1.0.0: система теней (light / dark) и типографическая шкала на базе SB Sans Display и SB Sans Text.</figcaption>
+</figure>
+<figure class="case-fig">
+  <img src="/img/pulse-ui/slide-6.jpg" alt="Документация адаптивной сетки (layout grid) и шкалы отступов (spacing 4px)" loading="lazy">
+  <figcaption>Правила адаптивной сетки (с сайдбаром и без него для экранов 1024–2560dp) и шкала отступов на модуле 4px.</figcaption>
+</figure>
+<p>Каждый сложный компонент документировался так, чтобы у дизайнера и фронтенд-разработчика не оставалось серых зон при сборке экрана: от анатомии и сценариев «когда использовать / когда не использовать» до адаптива, вариантов шапки и подвала и поведения при внутреннем скролле.</p>
+<figure class="case-fig">
+  <img src="/img/pulse-ui/slide-7.jpg" alt="Спецификация компонента Modal: анатомия, адаптив для десктопа, варианты хедера и футера, поведение при скролле" loading="lazy">
+  <figcaption>Пример документации компонента Modal (v1.0.0): анатомия, размеры S–XL, адаптив под десктоп (1024–1440px), варианты хедера и футера и закрепление шапки/подвала при скролле контента.</figcaption>
+</figure>
+</section>
+
+<section id="initiatives"><h2>Что ещё было сделано</h2>
+<ul class="feature-list">
+<li><strong>Описали и внедрили процесс контрибьюта от продуктовых команд</strong><span>Небольшой командой ядра (2 дизайнера и 2 фронтенд-разработчика) невозможно закрыть все продуктовые запросы на 65+ сервисов. Мы описали прозрачный процесс контрибьюта: продуктовые команды сами предлагают и разрабатывают новые компоненты, чинят баги и вносят доработки в общую библиотеку.</span></li>
+<li><strong>Разработали и запустили процесс контроля качества Design Gate</strong><span>Внедрили обязательный контур проверки макетов перед передачей в разработку и сверстанных экранов перед релизом. Со временем это направление выросло и выделилось из дизайн-системы в отдельную команду, так как стало критичным контуром качества для руководства платформы.</span></li>
+<li><strong>Собрали прикладную документацию для команд</strong><span>Описали жизненный цикл компонента от идеи до депрекейта, гайды по сборке локальных компонентов, инструкции по миграции на новые семантические токены и правила прохождения ревью.</span></li>
+<li><strong>Изменили отношение команд к дизайн-системе</strong><span>За счёт открытого бэклога, демо, обучения и контрибьюта продуктовые команды перестали воспринимать ДС как внешний барьер и стали активно участвовать в обсуждении архитектуры и развитии библиотеки.</span></li>
+</ul>
+</section>
+
+<section id="metrics"><h2>Итоги и метрики (Q1 / 2024 — за 1,5 года)</h2>
+<p>Для оценки здоровья и эффективности дизайн-системы мы отслеживали три ключевых показателя: индекс удовлетворённости команд (<strong>CSI — Component Satisfaction Index</strong>), долю покрытия интерфейсов компонентами системы (<strong>Adoption</strong>) и долю кастомных решений в продуктах (<strong>Custom Usage</strong>).</p>
+<figure class="bench">
+  <figcaption>
+    <span>Метрики Pulse UI на Q1 / 2024 · Результаты за 1,5 года работы</span>
+    <strong>Здоровье и принятие дизайн-системы на платформе «Пульс»</strong>
+    <em>Охват: 65+ сервисов платформы и 50+ продуктовых команд, переведённых на семантические токены за 4 месяца</em>
+  </figcaption>
+  <div class="bench-scores cols-3">
+    <p><span>CSI (удовлетворённость)</span><b>81%</b></p>
+    <p><span>Adoption (принятие)</span><b>60%</b></p>
+    <p><span>Custom Usage (доля кастома)</span><b>15%</b></p>
+  </div>
+</figure>
+<table>
+  <thead>
+    <tr><th>Метрика / результат</th><th>Значение</th><th>За счёт чего достигли</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>CSI (Component Satisfaction Index)</strong></td><td>81%</td><td>Регулярные митапы с командами, сбор и разбор обратной связи от пользователей библиотеки, ускорение и прозрачность производственного процесса.</td></tr>
+    <tr><td><strong>Adoption</strong></td><td>60%</td><td>Обучающие сессии для дизайнеров и разработчиков, подробная документация в Notion и Storybook, активная поддержка команд на внедрении.</td></tr>
+    <tr><td><strong>Custom Usage</strong></td><td>15%</td><td>Регулярное обновление библиотек, запуск процесса контрибьюта, внедрение Quality / Design Gate и быстрая реакция на продуктовые запросы.</td></tr>
+    <tr><td><strong>Миграция на новые цветовые токены</strong></td><td>50+ команд за 4 мес.</td><td>Пересборка семантической палитры под темизацию, пошаговый план переезда в дизайне и коде и сопровождение продуктовых команд.</td></tr>
+  </tbody>
+</table>
+</section>
+</div>
+</article></div></main>
+  <section class="cta" data-r>
+    <div class="cta-grid">
+      <div class="cta-card">
+        <div class="shader" aria-hidden="true"></div>
+        <div class="mid"><h2>Есть задача?</h2></div>
+        <div class="bot"><p>Напишите мне. Вместе разберёмся, с чего начать.</p></div>
+      </div>
+      <form class="cta-form" data-subject="Сотрудничество">
+        <input name="name" required placeholder="Имя" autocomplete="name">
+        <input name="email" type="email" required placeholder="Почта" autocomplete="email">
+        <textarea name="question" required placeholder="Пару слов о задаче"></textarea>
+        <button type="submit">Написать</button>
+      </form>
+    </div>
+    </section>
+  <footer class="foot">
+    <div class="foot-in">
+      <p class="foot-mark">antoshkin.tech</p>
+      <div class="foot-copy">
+        <p class="foot-lead">Хотите обсудить проект?<br>Расскажите о задаче и о том, чем я могу помочь.</p>
+        <a class="foot-mail" href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
+      </div>
+    </div>
+  </footer>
+  <script src="/motion.js?v=4"></script>
+</body></html>

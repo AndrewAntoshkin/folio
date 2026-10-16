@@ -4,13 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ds-coverage — Andrew Antoshkin</title>
-  <meta name="description" content="Measure how much of your codebase actually uses your design system. Find unused components, duplicates, and adoption gaps.">
+  <meta name="description" content="Scan imports across your codebase to see which design-system exports are used, which sit unused, and where local components duplicate system names.">
   <meta property="og:title" content="ds-coverage — Andrew Antoshkin">
-  <meta property="og:description" content="Measure how much of your codebase actually uses your design system. Find unused components, duplicates, and adoption gaps.">
+  <meta property="og:description" content="Scan imports across your codebase to see which design-system exports are used, which sit unused, and where local components duplicate system names.">
   <meta property="og:type" content="website">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
   <script>document.documentElement.classList.remove('nojs');try{if(sessionStorage.getItem('dock-seen'))document.documentElement.classList.add('dock-seen');else sessionStorage.setItem('dock-seen','1')}catch(e){}</script>
-  <link rel="stylesheet" href="/style.css?v=29">
+  <link rel="stylesheet" href="/style.css?v=33">
 </head>
 <body>
 
@@ -22,10 +22,10 @@
     <h1 data-split>ds-coverage</h1>
     <div class="tags" data-r style="--d:.25s"><span class="tag">Scanner</span><span class="tag">open source</span></div>
   </header>
-  <div class="art-intro" data-r style="--d:.3s"><p>Measure how much of your codebase actually uses your design system. Find unused components, duplicates, and adoption gaps.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="https://github.com/AndrewAntoshkin/ds-coverage" target="_blank" rel="noopener">Repository on GitHub</a></div></div>
+  <div class="art-intro" data-r style="--d:.3s"><p>Scan imports across your codebase to see which design-system exports are used, which sit unused, and where local components duplicate system names.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="https://github.com/AndrewAntoshkin/ds-coverage" target="_blank" rel="noopener">Repository on GitHub</a></div></div>
   <div class="prose"><div class="pcover "><div class="bg" style="background-image:url(/img/gen/ds-coverage.jpg)"></div><span class="plogo">ds-coverage</span></div><section id="why"><h2>Why This Exists</h2>
 <p>A repository can have a forty-component library while product screens right next to it still build their own <code>Button</code> and <code>Modal</code>.</p>
-<p>ds-coverage scans imports across the codebase and reports which system components are actually used, which sit unused, and where a local component duplicates a system name.</p></section>
+<p>ds-coverage scans import statements across the codebase and reports what share of the system catalog is imported, which exports sit unused, and where a local component shares a name with a system export.</p></section>
 <section id="install"><h2>Installation</h2>
 <pre><code># Run directly (no install)
 npx @andrewaitken/ds-coverage src/ --ds @acme/ui
@@ -50,7 +50,8 @@ ds-coverage src/ --ds @acme/ui --inventory components.json --min 70</code></pre>
 <section id="cli"><h2>CLI Options</h2>
 <table><thead><tr><th>Flag</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td>[path]</td><td>.</td><td>Directory to scan</td></tr><tr><td>--ds &lt;packages&gt;</td><td>—</td><td>Comma-separated DS package names (required)</td></tr><tr><td>--inventory &lt;file&gt;</td><td>—</td><td>JSON file listing all DS components</td></tr><tr><td>--format &lt;type&gt;</td><td>terminal</td><td>terminal | markdown | json</td></tr><tr><td>--out &lt;file&gt;</td><td>—</td><td>Write report to file</td></tr><tr><td>--min &lt;percent&gt;</td><td>—</td><td>Fail if coverage below threshold</td></tr><tr><td>--version</td><td></td><td>Print version</td></tr><tr><td>--help</td><td></td><td>Print help</td></tr></tbody></table></section>
 <section id="metrics"><h2>What It Measures</h2>
-<ul class="feature-list"><li><strong>Components Used</strong><span>How many DS components appear in import statements across the codebase</span></li><li><strong>Total Imports</strong><span>Total number of DS import occurrences — measures adoption depth</span></li><li><strong>Custom Components</strong><span>Local components imported from relative paths — potential DS candidates</span></li><li><strong>Duplicates</strong><span>Local components with the same name as DS components — likely reimplementations</span></li><li><strong>Unused Components</strong><span>DS components never imported anywhere — deprecation candidates (requires --inventory)</span></li></ul></section>
+<ul class="feature-list"><li><strong>Components Used</strong><span>How many DS components appear in import statements across the codebase</span></li><li><strong>Total Imports</strong><span>Total number of DS import occurrences — measures adoption depth</span></li><li><strong>Custom Components</strong><span>Local components imported from relative paths — potential DS candidates</span></li><li><strong>Duplicates</strong><span>Local components with the same name as DS components — likely reimplementations</span></li><li><strong>Unused Components</strong><span>DS components never imported anywhere — deprecation candidates (requires --inventory)</span></li></ul>
+<p>Here “coverage” specifically means the share of exported DS components imported at least once (for example, 34 of 39 exports = 87%) plus name-collision detection, not a standalone grade of UI quality.</p></section>
 <section id="output-good"><h2>Healthy Codebase</h2>
 <p>A team that actively uses their design system:</p>
 <table><thead><tr><th>Score</th><th>Meaning</th></tr></thead><tbody><tr><td>34</td><td>DS Components</td></tr><tr><td>87%</td><td>Coverage</td></tr><tr><td>0</td><td>Duplicates</td></tr></tbody></table>

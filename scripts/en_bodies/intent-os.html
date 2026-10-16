@@ -1,0 +1,41 @@
+<section id="concept"><h2>A Mercury interaction study for AI agents</h2>
+<p><strong>This is a study interpreting the architecture and art direction of Jason Yuan’s <a href="https://www.mercuryos.com" target="_blank" rel="noopener">Mercury OS</a>, not an original operating-system concept.</strong> I adapted its Modules, Flows, Spaces, and Locus principles to my own <code>agent-ui</code> components and design-system tooling.</p>
+<p>Traditional IDEs and desktop shells cram AI agents into a narrow chat sidebar. When an agent audits a design system, proposes a six-file token patch, or diffs two prompt runs, the human is forced to bounce manually between the chat thread, code editor, browser, and terminal.</p>
+<p>In <strong>Intent OS</strong>, the primary unit of interface is not an application window or folder—it is the user's <strong>Intent</strong>. As soon as a task is stated, the workspace dynamically choreographs a three-module constellation (Locus):</p>
+<ul class="feature-list">
+<li><strong>Locus Stream</strong><span>Live <code>Thinking</code>, <code>Tool Call</code>, <code>Approval</code>, and <code>Choice</code> primitives from <code>agent-ui</code> surface model reasoning, static analysis matches, and explicit human-in-the-loop sign-off.</span></li>
+<li><strong>Live Artifact Stage</strong><span>Synchronized component renderer with instant "Before Patch / DS Semantics" switching and live DOM token inspection.</span></li>
+<li><strong>Context &amp; Telemetry</strong><span>A <code>Context Meter</code> ring, interactive <code>Plan</code> checklist, and real-time evaluation bars (DS Compliance, axe A11y, Token Drift).</span></li>
+</ul>
+<figure class="case-fig">
+  <img src="/img/demos/intent-os-1.jpg" alt="Intent OS: token audit and repair flow powered by agent-ui primitives" loading="lazy">
+  <figcaption>Scenario 01 in Intent OS: reasoning and Approval.tsx sign-off on the left, live raw-vs-semantic component preview in the center, and context telemetry on the right.</figcaption>
+</figure>
+</section>
+
+<section id="scenarios"><h2>Three interactive intents inside the prototype</h2>
+<p>Switch between three complete workflows using keys <code>1</code>, <code>2</code>, <code>3</code> or the floating command dock:</p>
+<table>
+  <thead>
+    <tr><th>Intent Scenario</th><th>Active Primitives</th><th>What It Verifies</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>1. Token Repair</strong></td><td><code>Thinking</code> · <code>ToolCall (ds-lint)</code> · <code>Approval</code></td><td>Replaces 6 hardcoded hex values and raw buttons in <code>SettingsPage.tsx</code> with semantic tokens after user approval.</td></tr>
+    <tr><td><strong>2. Checkout Assembly</strong></td><td><code>Choice</code> · <code>Plan</code> · <code>Artifact</code></td><td>Clarifies container architecture (side <code>Sheet</code> vs centered <code>Modal</code>) and composes the flow with zero custom controls.</td></tr>
+    <tr><td><strong>3. Prompt Regression</strong></td><td><code>ToolCall (prompt-regress)</code> · <code>AnswerChart</code></td><td>Diffs system prompts <code>v12 → v13</code> across 10 benchmark cases, showing a +34.1 pt jump in DS compliance.</td></tr>
+  </tbody>
+</table>
+<figure class="case-fig">
+  <img src="/img/demos/intent-os-2.jpg" alt="Intent OS: checkout composition and live Alt token spec overlay" loading="lazy">
+  <figcaption>Scenario 02 with Token Spec X-Ray enabled (hold Alt): every glass module reveals its semantic surface variables, blur budget, and border radius tokens.</figcaption>
+</figure>
+</section>
+
+<section id="visual"><h2>Visual craft &amp; token physics</h2>
+<ul>
+<li><strong>Reactive ambient light field:</strong> a 60fps canvas shader shifts color temperature in sync with the active accent token (<code>Mint</code>, <code>Iris</code>, <code>Amber</code>, <code>Sky</code>);</li>
+<li><strong>Zero hardcoded palette classes:</strong> every primitive binds strictly to CSS variables, so flipping the theme swatch recolors charts, rings, and approvals simultaneously;</li>
+<li><strong>Built-in Spec X-Ray:</strong> holding <code>Alt</code> overlays live token badges directly across the spatial modules.</li>
+</ul>
+<p><a class="btn mint" href="/demos/intent-os/?lang=en">Open live Intent OS prototype →</a></p>
+</section>

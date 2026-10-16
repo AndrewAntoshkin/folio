@@ -10,7 +10,7 @@
   <meta property="og:type" content="website">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
   <script>document.documentElement.classList.remove('nojs');try{if(sessionStorage.getItem('dock-seen'))document.documentElement.classList.add('dock-seen');else sessionStorage.setItem('dock-seen','1')}catch(e){}</script>
-  <link rel="stylesheet" href="/style.css?v=29">
+  <link rel="stylesheet" href="/style.css?v=33">
 </head>
 <body>
 
@@ -23,7 +23,18 @@
     <div class="tags" data-r style="--d:.25s"><span class="tag">Context</span><span class="tag">open source</span></div>
   </header>
   <div class="art-intro" data-r style="--d:.3s"><p>A model misses the design system when the context is wrong: nothing, or the entire Storybook. ds-context turns a local folder into a short pack and shows what each packing strategy costs in tokens.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="https://github.com/AndrewAntoshkin/ds-context" target="_blank" rel="noopener">Repository on GitHub</a></div></div>
-  <div class="prose"><div class="pcover "><div class="bg" style="background-image:url(/img/gen/ds-context.jpg)"></div><span class="plogo">ds-context</span></div><section id="why"><h2>Why</h2><p>An agent drifts off the system for two different reasons. Sometimes it receives no spec. Sometimes it receives every token and every example at once. In the first case it invents a Button. In the second it drowns.</p><p>ds-context sits in front of the model. It builds the pack you can hand to Claude or Codex and then measure with <a href="/en/ds-eval">ds-eval</a>.</p></section><section id="inputs"><h2>Input</h2><p>The MVP reads a folder. It does not crawl Storybook or call the Figma API. A Figma file arrives as markdown, for example from figma-to-design-md. The Acme fixture is five files:</p><pre><code>fixtures/acme/
+  <div class="prose"><div class="pcover "><div class="bg" style="background-image:url(/img/gen/ds-context.jpg)"></div><span class="plogo">ds-context</span></div><section id="why"><h2>Why</h2><p>An agent drifts off the system for two different reasons. Sometimes it receives no spec. Sometimes it receives every token and every example at once. In the first case it invents a Button. In the second it drowns.</p><p>ds-context sits in front of the model. It builds the pack you can hand to Claude or Codex and then measure with <a href="/en/ds-eval">ds-eval</a>.</p><table><thead><tr><th>Step</th><th>Input</th><th>Output</th></tr></thead><tbody><tr><td>1. Parse sources</td><td><code>tokens.css</code> and <code>components.json</code></td><td>Token table (<code>design-system.md</code>) and component API (<code>components.md</code>)</td></tr><tr><td>2. Inline rules</td><td><code>patterns.md</code>, <code>anti-patterns.md</code>, <code>examples.md</code></td><td>Combined spec plus standalone markdown files in <code>dist/</code></td></tr><tr><td>3. Budget tokens</td><td>Strategy choice (<code>full</code> / <code>compact</code> / <code>components</code>)</td><td><code>manifest.json</code> with character-based token estimates (~4 chars/token)</td></tr></tbody></table></section><section id="strategies"><h2>Strategies</h2><p>The size estimate is about 4 characters per token. It is not the Claude tokenizer. The manifest is excluded from the total. Strategies are chosen globally per pack rather than sliced per screen. On the Acme fixture:</p><table><thead><tr><th>Strategy</th><th>Estimate</th><th>Contents</th></tr></thead><tbody><tr><td>full</td><td>~665</td><td>Tokens, API with examples, patterns, anti-patterns, and screen examples</td></tr><tr><td>compact</td><td>~375</td><td>Tokens, API without examples, and anti-patterns. No separate examples.md</td></tr><tr><td>components</td><td>~180</td><td>Overview with tokens and the API only. No patterns or examples</td></tr></tbody></table><p>Full pack by file:</p><table><thead><tr><th>File</th><th>Estimate</th></tr></thead><tbody><tr><td><code>design-system.md</code></td><td>~292</td></tr><tr><td><code>components.md</code></td><td>~160</td></tr><tr><td><code>patterns.md</code></td><td>~87</td></tr><tr><td><code>anti-patterns.md</code></td><td>~54</td></tr><tr><td><code>examples.md</code></td><td>~72</td></tr></tbody></table></section><section id="run"><h2>Run</h2><pre><code>python3 ds-context/ds_context.py build ds-context/fixtures/acme</code></pre><p>The command writes the pack to <code>ds-context/fixtures/acme/dist</code>. Offline. No keys and no model call. On this fixture it prints:</p><pre><code>source  ds-context/fixtures/acme
+out     ds-context/fixtures/acme/dist
+pack    files
+        design-system.md   ~ 292 tokens
+        components.md      ~ 160 tokens
+        patterns.md        ~  87 tokens
+        anti-patterns.md   ~  54 tokens
+        examples.md        ~  72 tokens
+strategies (estimate, ~4 chars/token, manifest excluded)
+        full         ~ 665
+        compact      ~ 375
+        components   ~ 180</code></pre></section><section id="inputs"><h2>Input</h2><p>The MVP reads a folder. It does not crawl Storybook or call the Figma API. A Figma file arrives as markdown, for example from <a href="/en/figma-to-design-md">figma-to-design-md</a>. The Acme fixture is five files:</p><pre><code>fixtures/acme/
   tokens.css
   components.json
   patterns.md
@@ -69,36 +80,7 @@
     &quot;example&quot;: &quot;&lt;Select label=\&quot;Country\&quot; options={countries} /&gt;&quot;,
     &quot;avoid&quot;: &quot;A native &lt;select&gt; when the system Select exists.&quot;
   }
-]</code></pre><p>Three markdown files set the patterns, the bans, and short screen examples.</p><pre><code># Patterns
-
-## Destructive confirm
-Ask for confirmation before a delete. Use Dialog, name the object, and make the confirm button the danger variant.
-
-## Empty state
-Show one next action. Do not invent a second illustration style.
-
-## Settings
-Group fields by task. Use Input with a label. Actions sit in the page footer, not inside the form card.</code></pre><pre><code># Anti-patterns
-
-- Do not hardcode #8B5CF6. Use var(--color-accent).
-- Do not build a modal from a positioned div.
-- Do not add a button with no accessible name.
-- Do not pick 13px of padding. Use the space scale.</code></pre><pre><code># Examples
-
-A settings page uses Input for the name and email, Select for the country, and Button for save.
-A delete flow opens Dialog. The confirm action is variant=&quot;danger&quot;. The close control has an accessible name.
-Empty lists use the empty-state pattern: one sentence and one Button.</code></pre></section><section id="run"><h2>Run</h2><pre><code>python3 ds-context/ds_context.py build ds-context/fixtures/acme</code></pre><p>The command writes the pack to <code>ds-context/fixtures/acme/dist</code>. Offline. No keys and no model call. On this fixture it prints:</p><pre><code>source  ds-context/fixtures/acme
-out     ds-context/fixtures/acme/dist
-pack    files
-        design-system.md   ~ 292 tokens
-        components.md      ~ 160 tokens
-        patterns.md        ~  87 tokens
-        anti-patterns.md   ~  54 tokens
-        examples.md        ~  72 tokens
-strategies (estimate, ~4 chars/token, manifest excluded)
-        full         ~ 665
-        compact      ~ 375
-        components   ~ 180</code></pre></section><section id="output"><h2>Output</h2><p><code>design-system.md</code> is the file you can put in context whole. The full strategy inlines patterns, anti-patterns, and examples. The separate files in <code>dist/</code> repeat the source markdown.</p><pre><code># Design system
+]</code></pre><p>Three markdown files (<code>patterns.md</code>, <code>anti-patterns.md</code>, <code>examples.md</code>) define composition patterns, bans, and short screen examples — their full text appears below inside the assembled <code>design-system.md</code>.</p></section><section id="output"><h2>Output</h2><p><code>design-system.md</code> is the file you can put in context whole. The full strategy inlines patterns, anti-patterns, and examples. The separate files in <code>dist/</code> repeat the source markdown.</p><pre><code># Design system
 
 Components: Button, Input, Dialog, Select.
 
@@ -185,7 +167,7 @@ Example:
 &lt;Select label=&quot;Country&quot; options={countries} /&gt;
 ```
 
-Avoid: A native &lt;select&gt; when the system Select exists.</code></pre></section><section id="strategies"><h2>Strategies</h2><p>The size estimate is about 4 characters per token. It is not the Claude tokenizer. The manifest is excluded from the total. On the Acme fixture:</p><table><thead><tr><th>Strategy</th><th>Estimate</th><th>Contents</th></tr></thead><tbody><tr><td>full</td><td>~665</td><td>Tokens, API with examples, patterns, anti-patterns, and screen examples</td></tr><tr><td>compact</td><td>~375</td><td>Tokens, API without examples, and anti-patterns. No separate examples.md</td></tr><tr><td>components</td><td>~180</td><td>Overview with tokens and the API only. No patterns or examples</td></tr></tbody></table><p>Full pack by file:</p><table><thead><tr><th>File</th><th>Estimate</th></tr></thead><tbody><tr><td><code>design-system.md</code></td><td>~292</td></tr><tr><td><code>components.md</code></td><td>~160</td></tr><tr><td><code>patterns.md</code></td><td>~87</td></tr><tr><td><code>anti-patterns.md</code></td><td>~54</td></tr><tr><td><code>examples.md</code></td><td>~72</td></tr></tbody></table></section><section id="manifest"><h2>Manifest</h2><p>The manifest is for the next step in the loop: pick a strategy under a token budget and pass only those files to the model. Component and token names are listed so <a href="/en/ui-repair">ui-repair</a> and <a href="/en/ds-eval">ds-eval</a> can check against the same source.</p><pre><code>{
+Avoid: A native &lt;select&gt; when the system Select exists.</code></pre></section><section id="manifest"><h2>Manifest</h2><p>The manifest is for the next step in the loop: pick a strategy under a token budget and pass only those files to the model. Component and token names are listed so <a href="/en/ui-repair">ui-repair</a> and <a href="/en/ds-eval">ds-eval</a> can check against the same source.</p><pre><code>{
   &quot;strategy&quot;: &quot;full&quot;,
   &quot;source&quot;: &quot;ds-context/fixtures/acme&quot;,
   &quot;components&quot;: [

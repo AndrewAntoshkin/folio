@@ -131,12 +131,12 @@ pre{margin:0;padding:14px 16px;font-size:12.5px;font-family:ui-monospace,SFMono-
 <article>
 
 <h1>Getting Started</h1>
-<p class="lead">Measure how much of your codebase actually uses your design system. Find unused components, duplicates, and adoption gaps.</p>
+<p class="lead">Scan imports across your codebase to see which design-system exports are used, which sit unused, and where local components duplicate system names.</p>
 
 <section id="why">
 <h2>Why This Exists</h2>
 <p class="body">A repository can have a forty-component library while product screens right next to it still build their own <code>Button</code> and <code>Modal</code>.</p>
-<p class="body">ds-coverage scans imports across the codebase and reports which system components are actually used, which sit unused, and where a local component duplicates a system name.</p>
+<p class="body">ds-coverage scans import statements across the codebase and reports what share of the system catalog is imported, which exports sit unused, and where a local component shares a name with a system export.</p>
 </section>
 
 <section id="install">
@@ -190,6 +190,7 @@ ds-coverage src/ --ds @acme/ui --inventory components.json --min 70</pre></div>
   <div class="f-row"><div class="f-dot" style="background:#f87171"></div><div><div class="f-title">Duplicates</div><p class="f-desc">Local components with the same name as DS components — likely reimplementations</p></div></div>
   <div class="f-row"><div class="f-dot" style="background:#a78bfa"></div><div><div class="f-title">Unused Components</div><p class="f-desc">DS components never imported anywhere — deprecation candidates (requires --inventory)</p></div></div>
 </div>
+<p class="body" style="margin-top:12px">Here “coverage” specifically means the share of exported DS components imported at least once (for example, 34 of 39 exports = 87%) plus name-collision detection, not a standalone grade of UI quality.</p>
 </section>
 
 <section id="output-good">

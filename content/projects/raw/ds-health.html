@@ -130,16 +130,17 @@ pre{margin:0;padding:14px 16px;font-size:12.5px;font-family:ui-monospace,SFMono-
 <article>
 
 <h1>Getting Started</h1>
-<p class="lead">Paste a URL, get a design system health report. Analyzes colors, typography, spacing, and radius on any live website using a real browser.</p>
+<p class="lead">Paste a URL to run a computed-style inventory in Chromium: how many distinct colors, type sizes, spacings, and radii the live page actually renders.</p>
 
 <section id="measures">
 <h2>What It Measures</h2>
 <div class="fl">
-  <div class="f-row"><div class="f-dot" style="background:#3b82f6"></div><div><div class="f-title">Colors</div><p class="f-desc">How many text and background colors exist. Rewards fewer unique values and CSS variable usage.</p></div></div>
-  <div class="f-row"><div class="f-dot" style="background:#8b5cf6"></div><div><div class="f-title">Typography</div><p class="f-desc">Font families, sizes, and weights in visible text. Fewer means more controlled.</p></div></div>
-  <div class="f-row"><div class="f-dot" style="background:#22c55e"></div><div><div class="f-title">Spacing</div><p class="f-desc">How many distinct padding and gap values appear. Converging to a scale is ideal.</p></div></div>
-  <div class="f-row"><div class="f-dot" style="background:#fb923c"></div><div><div class="f-title">Radius</div><p class="f-desc">Distinct non-zero border-radius values. Fewer = more consistent corners.</p></div></div>
+  <div class="f-row"><div class="f-dot" style="background:#3b82f6"></div><div><div class="f-title">Colors</div><p class="f-desc">How many text and background colors exist, plus whether CSS custom properties are present.</p></div></div>
+  <div class="f-row"><div class="f-dot" style="background:#8b5cf6"></div><div><div class="f-title">Typography</div><p class="f-desc">Font families, sizes, and weights in visible text. Fewer means a tighter type scale.</p></div></div>
+  <div class="f-row"><div class="f-dot" style="background:#22c55e"></div><div><div class="f-title">Spacing</div><p class="f-desc">How many distinct padding and gap values appear across sampled elements.</p></div></div>
+  <div class="f-row"><div class="f-dot" style="background:#fb923c"></div><div><div class="f-title">Radius</div><p class="f-desc">Distinct non-zero border-radius values across containers and controls.</p></div></div>
 </div>
+<p class="body" style="margin-top:12px">Scope: this is a heuristic audit of rendered <code>getComputedStyle()</code> values on a live URL. Fewer unique values indicate a tighter visual scale on that page, not a full audit of source-code token architecture.</p>
 </section>
 
 <section id="run">

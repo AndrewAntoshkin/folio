@@ -10,7 +10,7 @@
   <meta property="og:type" content="website">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
   <script>document.documentElement.classList.remove('nojs');try{if(sessionStorage.getItem('dock-seen'))document.documentElement.classList.add('dock-seen');else sessionStorage.setItem('dock-seen','1')}catch(e){}</script>
-  <link rel="stylesheet" href="/style.css?v=29">
+  <link rel="stylesheet" href="/style.css?v=33">
 </head>
 <body>
 
@@ -102,10 +102,12 @@ npm i -g figma-to-design-md</code></pre></section>
 
 ## Usage
 
-_Add usage guidelines here._</code></pre></section>
+_Add usage guidelines here._</code></pre>
+<p>The <code>_Add usage guidelines here._</code> placeholder is intentional: the CLI extracts factual node descriptions, properties, and variants from Figma rather than inventing usage rules.</p></section>
 <section id="gaps"><h2>Gap Detection</h2>
 <p>The tool automatically detects potential issues and writes them to <code>gaps.md</code>:</p>
-<ul class="feature-list"><li><strong>Missing descriptions</strong><span>Components without Figma descriptions — agents can't understand intent</span></li><li><strong>No tokens found</strong><span>File has no local variables — specs will be incomplete</span></li><li><strong>Undocumented components</strong><span>Components exist but lack descriptions for agent consumption</span></li></ul></section>
+<ul class="feature-list"><li><strong>Missing descriptions</strong><span>Components without Figma descriptions — agents can't understand intent</span></li><li><strong>No tokens found</strong><span>File has no local variables — specs will be incomplete</span></li><li><strong>Undocumented components</strong><span>Components exist but lack descriptions for agent consumption</span></li></ul>
+<p>Once gaps are filled, the exported markdown tables can be passed directly to <a href="/en/ds-lint">ds-lint</a> (<code>--tokens</code>) or packed under a token budget with <a href="/en/ds-context">ds-context</a>.</p></section>
 <p><a href="https://github.com/AndrewAntoshkin/figma-to-design-md" target="_blank" rel="noopener noreferrer">Source</a></p></div>
 </article></div></main>
   <section class="cta" data-r>

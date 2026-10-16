@@ -477,6 +477,8 @@ def _load_doc(slug: str, lang: str) -> dict:
         return _spektr(lang)
     if slug == "agent-ui":
         return _agent_ui(lang)
+    if not (RAW / f"{slug}.html").exists():
+        return {"lead": "", "groups": [], "body": ""}
     html = _raw(slug)
     article = re.search(r"<article>(.*)</article>", html, re.S).group(1)
     body = _blocks(article, lang)
@@ -689,6 +691,7 @@ def _agent_ui(lang: str) -> dict:
 <p>The second reason is AI interfaces themselves. A tool call, a permission request, model reasoning, the context window: general kits do not have these primitives, and every product draws them again. I build them once, the way I want them in my own interfaces.</p>
 </section>
 <section id="inside"><h2>What's inside</h2>
+<p>The <a href="/agent-ui/en">components page</a> opens with a live interactive scene: an agent fixes hardcoded colors and pauses to ask permission for a command. You can approve, deny, or stop it directly in the browser and switch the theme accent token.</p>
 <ul class="feature-list">
 <li><strong>Prompt Input</strong><span>Auto-growing prompt box: Enter sends, Send turns into Stop while the reply streams. Attachments and a model picker slot.</span></li>
 <li><strong>Message</strong><span>A user or assistant turn with a streaming caret and hover actions.</span></li>
@@ -706,13 +709,16 @@ def _agent_ui(lang: str) -> dict:
 <li><strong>Sources</strong><span>Citations under an answer: title, address, short excerpt.</span></li>
 <li><strong>Artifact</strong><span>A file card in the thread. Its contents open in a side panel.</span></li>
 </ul>
-<p>The components page opens with a live scene: an agent fixes hardcoded colors and stops to ask for permission. You can allow, deny, or stop it.</p>
 </section>
 <section id="rules"><h2>A rule next to the code</h2>
 <p>Every install writes two files: the component and a <code>.mdc</code> rule. The rule's description names the task, not the component ("an agent asks permission before a risky action"), so Cursor loads it only when it is relevant.</p>
 <p>Every rule has a "do not use for" section that names the project primitive to use instead. That is where agents usually go wrong: an Approval in place of a confirm dialog, or Thinking in place of a loading skeleton.</p>
 <pre><code>{tree}</code></pre>
-<p>For agents that do not read Cursor rules there is <a href="/agent-ui/r/llms.txt">llms.txt</a> with the component list and <a href="/agent-ui/r/llms-full.txt">llms-full.txt</a> with every rule in one file.</p>
+<p>How different agents read the library rules:</p>
+<table><thead><tr><th>Environment / agent</th><th>Rule source</th><th>How it connects</th></tr></thead><tbody>
+<tr><td>Cursor</td><td><code>.cursor/rules/agent-ui-*.mdc</code></td><td>Installed automatically with the component via <code>shadcn add</code> and loaded by task description</td></tr>
+<tr><td>Claude Code / Codex / other agents</td><td><a href="/agent-ui/r/llms.txt">llms.txt</a> and <a href="/agent-ui/r/llms-full.txt">llms-full.txt</a></td><td>Component index or all 15 rules in a single file to pass into context or link from <code>CLAUDE.md</code> / <code>AGENTS.md</code></td></tr>
+</tbody></table>
 </section>
 <section id="install"><h2>Installation</h2>
 <p>The registry is shadcn-compatible. It needs Tailwind v4 and the shadcn theme as CSS variables.</p>

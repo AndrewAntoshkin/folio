@@ -77,8 +77,10 @@ npm i -g figma-to-design-md</code></pre></section>
 
 ## Usage
 
-_Add usage guidelines here._</code></pre></section>
-<section id="gaps"><h2>Пробелы</h2>
-<p>Инструмент сам замечает возможные проблемы и пишет их в <code>gaps.md</code>:</p>
-<ul class="feature-list"><li><strong>Нет описаний</strong><span>У компонентов нет описания в Figma. Агент не понимает, для чего они.</span></li><li><strong>Нет токенов</strong><span>В файле нет локальных переменных. Markdown получится неполным.</span></li><li><strong>Компоненты без документации</strong><span>Компоненты есть, а описания для агента нет.</span></li></ul></section>
+_Add usage guidelines here._</code></pre>
+<p>Заглушка <code>_Add usage guidelines here._</code> оставлена намеренно: CLI выгружает из Figma только фактическую структуру (описание ноды, свойства и варианты) и не додумывает за команду правила применения.</p></section>
+<section id="gaps"><h2>Пробелы и передача в контекст</h2>
+<p>Инструмент сам замечает пустые места в файле Figma и пишет их в <code>gaps.md</code>:</p>
+<ul class="feature-list"><li><strong>Нет описаний</strong><span>У компонентов нет описания в Figma. Агент не понимает, для чего они.</span></li><li><strong>Нет токенов</strong><span>В файле нет локальных переменных. Markdown получится неполным.</span></li><li><strong>Компоненты без документации</strong><span>Компоненты есть, а описания для агента нет.</span></li></ul>
+<p>После того как пробелы заполнены, полученные markdown-таблицы можно напрямую подать в <a href="/ds-lint">ds-lint</a> (флаг <code>--tokens</code>) или упаковать под бюджет токенов через <a href="/ds-context">ds-context</a>.</p></section>
 <p><a href="https://github.com/AndrewAntoshkin/figma-to-design-md" target="_blank" rel="noopener noreferrer">Код на GitHub</a></p>

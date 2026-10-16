@@ -1,4 +1,15 @@
-<section id="why"><h2>Зачем</h2><p>Агенту часто отдают либо ничего, либо весь Storybook сразу. В первом случае он рисует свой Button. Во втором случае в контексте много токенов и примеров, которые к задаче не относятся.</p><p>ds-context собирает короткий пакет из локальных файлов. Пакет можно отдать Claude или Codex и проверить в <a href="/ds-eval">ds-eval</a>. Он не вызывает модель.</p></section><section id="inputs"><h2>Вход</h2><p>Инструмент читает локальную папку. Storybook он не открывает и в Figma API не ходит. Файл из Figma попадает сюда уже как markdown, например после figma-to-design-md. Пример Acme — пять файлов:</p><pre><code>fixtures/acme/
+<section id="why"><h2>Зачем</h2><p>Агенту часто отдают либо ничего, либо весь Storybook сразу. В первом случае он рисует свой Button. Во втором случае в контексте много токенов и примеров, которые к задаче не относятся.</p><p>ds-context собирает короткий пакет из локальных файлов. Пакет можно отдать Claude или Codex и проверить в <a href="/ds-eval">ds-eval</a>. Он не вызывает модель.</p><table><thead><tr><th>Шаг</th><th>Вход</th><th>Выход</th></tr></thead><tbody><tr><td>1. Разбор исходников</td><td><code>tokens.css</code> и <code>components.json</code></td><td>Таблица токенов (<code>design-system.md</code>) и API компонентов (<code>components.md</code>)</td></tr><tr><td>2. Правила и примеры</td><td><code>patterns.md</code>, <code>anti-patterns.md</code>, <code>examples.md</code></td><td>Сшитая спецификация и отдельные файлы правил в <code>dist/</code></td></tr><tr><td>3. Бюджетирование</td><td>Выбор стратегии (<code>full</code> / <code>compact</code> / <code>components</code>)</td><td>Манифест <code>manifest.json</code> с оценкой токенов (~4 символа на токен)</td></tr></tbody></table></section><section id="strategies"><h2>Стратегии</h2><p>Оценка размера — около 4 символов на токен. Это не токенайзер Claude. Манифест в сумму не входит. Стратегия выбирается глобально на весь пакет, а не режет контекст под отдельный экран. На примере Acme:</p><table><thead><tr><th>Стратегия</th><th>Оценка</th><th>Что внутри</th></tr></thead><tbody><tr><td>full</td><td>~665</td><td>Токены, API с примерами, паттерны, запреты и примеры экранов</td></tr><tr><td>compact</td><td>~375</td><td>Токены, API без примеров и запреты. Отдельный examples.md не пишется</td></tr><tr><td>components</td><td>~180</td><td>Только обзор с токенами и API. Паттерны и примеры не пишутся</td></tr></tbody></table><p>Полный пакет по файлам:</p><table><thead><tr><th>Файл</th><th>Оценка</th></tr></thead><tbody><tr><td><code>design-system.md</code></td><td>~292</td></tr><tr><td><code>components.md</code></td><td>~160</td></tr><tr><td><code>patterns.md</code></td><td>~87</td></tr><tr><td><code>anti-patterns.md</code></td><td>~54</td></tr><tr><td><code>examples.md</code></td><td>~72</td></tr></tbody></table></section><section id="run"><h2>Запуск</h2><pre><code>python3 ds-context/ds_context.py build ds-context/fixtures/acme</code></pre><p>Команда пишет пакет в <code>ds-context/fixtures/acme/dist</code>. Ключи не нужны, модель не вызывается. На этом примере команда печатает:</p><pre><code>source  ds-context/fixtures/acme
+out     ds-context/fixtures/acme/dist
+pack    files
+        design-system.md   ~ 292 tokens
+        components.md      ~ 160 tokens
+        patterns.md        ~  87 tokens
+        anti-patterns.md   ~  54 tokens
+        examples.md        ~  72 tokens
+strategies (estimate, ~4 chars/token, manifest excluded)
+        full         ~ 665
+        compact      ~ 375
+        components   ~ 180</code></pre></section><section id="inputs"><h2>Вход</h2><p>Инструмент читает локальную папку. Storybook он не открывает и в Figma API не ходит. Файл из Figma попадает сюда уже как markdown, например после <a href="/figma-to-design-md">figma-to-design-md</a>. Пример Acme — пять файлов:</p><pre><code>fixtures/acme/
   tokens.css
   components.json
   patterns.md
@@ -44,36 +55,7 @@
     &quot;example&quot;: &quot;&lt;Select label=\&quot;Country\&quot; options={countries} /&gt;&quot;,
     &quot;avoid&quot;: &quot;A native &lt;select&gt; when the system Select exists.&quot;
   }
-]</code></pre><p>Три markdown-файла задают паттерны, запреты и короткие примеры экранов.</p><pre><code># Patterns
-
-## Destructive confirm
-Ask for confirmation before a delete. Use Dialog, name the object, and make the confirm button the danger variant.
-
-## Empty state
-Show one next action. Do not invent a second illustration style.
-
-## Settings
-Group fields by task. Use Input with a label. Actions sit in the page footer, not inside the form card.</code></pre><pre><code># Anti-patterns
-
-- Do not hardcode #8B5CF6. Use var(--color-accent).
-- Do not build a modal from a positioned div.
-- Do not add a button with no accessible name.
-- Do not pick 13px of padding. Use the space scale.</code></pre><pre><code># Examples
-
-A settings page uses Input for the name and email, Select for the country, and Button for save.
-A delete flow opens Dialog. The confirm action is variant=&quot;danger&quot;. The close control has an accessible name.
-Empty lists use the empty-state pattern: one sentence and one Button.</code></pre></section><section id="run"><h2>Запуск</h2><pre><code>python3 ds-context/ds_context.py build ds-context/fixtures/acme</code></pre><p>Команда пишет пакет в <code>ds-context/fixtures/acme/dist</code>. Ключи не нужны, модель не вызывается. На этом примере команда печатает:</p><pre><code>source  ds-context/fixtures/acme
-out     ds-context/fixtures/acme/dist
-pack    files
-        design-system.md   ~ 292 tokens
-        components.md      ~ 160 tokens
-        patterns.md        ~  87 tokens
-        anti-patterns.md   ~  54 tokens
-        examples.md        ~  72 tokens
-strategies (estimate, ~4 chars/token, manifest excluded)
-        full         ~ 665
-        compact      ~ 375
-        components   ~ 180</code></pre></section><section id="output"><h2>Выход</h2><p><code>design-system.md</code> можно положить в контекст целиком. В стратегии full сюда же встроены паттерны, запреты и примеры. Отдельные файлы в <code>dist/</code> повторяют исходные markdown.</p><pre><code># Design system
+]</code></pre><p>Три markdown-файла (<code>patterns.md</code>, <code>anti-patterns.md</code>, <code>examples.md</code>) задают паттерны композиции, запреты и короткие примеры экранов — их полный текст виден ниже внутри собранного <code>design-system.md</code>.</p></section><section id="output"><h2>Выход</h2><p><code>design-system.md</code> можно положить в контекст целиком. В стратегии full сюда же встроены паттерны, запреты и примеры. Отдельные файлы в <code>dist/</code> повторяют исходные markdown.</p><pre><code># Design system
 
 Components: Button, Input, Dialog, Select.
 
@@ -160,7 +142,7 @@ Example:
 &lt;Select label=&quot;Country&quot; options={countries} /&gt;
 ```
 
-Avoid: A native &lt;select&gt; when the system Select exists.</code></pre></section><section id="strategies"><h2>Стратегии</h2><p>Оценка размера — около 4 символов на токен. Это не токенайзер Claude. Манифест в сумму не входит. На примере Acme:</p><table><thead><tr><th>Стратегия</th><th>Оценка</th><th>Что внутри</th></tr></thead><tbody><tr><td>full</td><td>~665</td><td>Токены, API с примерами, паттерны, запреты и примеры экранов</td></tr><tr><td>compact</td><td>~375</td><td>Токены, API без примеров и запреты. Отдельный examples.md не пишется</td></tr><tr><td>components</td><td>~180</td><td>Только обзор с токенами и API. Паттерны и примеры не пишутся</td></tr></tbody></table><p>Полный пакет по файлам:</p><table><thead><tr><th>Файл</th><th>Оценка</th></tr></thead><tbody><tr><td><code>design-system.md</code></td><td>~292</td></tr><tr><td><code>components.md</code></td><td>~160</td></tr><tr><td><code>patterns.md</code></td><td>~87</td></tr><tr><td><code>anti-patterns.md</code></td><td>~54</td></tr><tr><td><code>examples.md</code></td><td>~72</td></tr></tbody></table></section><section id="manifest"><h2>Манифест</h2><p>Манифест нужен следующему шагу: выбрать стратегию под бюджет токенов и отдать модели только эти файлы. Имена компонентов и токенов лежат списком, чтобы <a href="/ui-repair">ui-repair</a> и <a href="/ds-eval">ds-eval</a> сверялись с тем же источником.</p><pre><code>{
+Avoid: A native &lt;select&gt; when the system Select exists.</code></pre></section><section id="manifest"><h2>Манифест</h2><p>Манифест нужен следующему шагу: выбрать стратегию под бюджет токенов и отдать модели только эти файлы. Имена компонентов и токенов лежат списком, чтобы <a href="/ui-repair">ui-repair</a> и <a href="/ds-eval">ds-eval</a> сверялись с тем же источником.</p><pre><code>{
   &quot;strategy&quot;: &quot;full&quot;,
   &quot;source&quot;: &quot;ds-context/fixtures/acme&quot;,
   &quot;components&quot;: [

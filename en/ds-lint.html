@@ -10,7 +10,7 @@
   <meta property="og:type" content="website">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
   <script>document.documentElement.classList.remove('nojs');try{if(sessionStorage.getItem('dock-seen'))document.documentElement.classList.add('dock-seen');else sessionStorage.setItem('dock-seen','1')}catch(e){}</script>
-  <link rel="stylesheet" href="/style.css?v=29">
+  <link rel="stylesheet" href="/style.css?v=33">
 </head>
 <body>
 
@@ -48,7 +48,8 @@ ds-lint src/ --tokens tokens.css --strict</code></pre></section>
 <section id="detects"><h2>What It Detects</h2>
 <ul class="feature-list"><li><strong>Colors</strong><span><code>#hex</code>, <code>rgb()</code>, <code>rgba()</code>, <code>hsl()</code>, <code>hsla()</code>, named CSS colors (red, blue, etc.)</span></li><li><strong>Spacing</strong><span><code>padding</code>, <code>margin</code>, <code>gap</code>, <code>top/right/bottom/left</code>, <code>width/height</code> in px/rem</span></li><li><strong>Font Sizes</strong><span><code>font-size</code>, <code>line-height</code>, <code>letter-spacing</code> in px/rem</span></li><li><strong>Radius</strong><span><code>border-radius</code> in px/rem (skips 0px)</span></li></ul>
 <p>Scans: <code>.js</code> <code>.jsx</code> <code>.ts</code> <code>.tsx</code> <code>.css</code> <code>.scss</code> <code>.vue</code> <code>.svelte</code></p>
-<p>Skips: <code>node_modules</code>, <code>dist</code>, <code>build</code>, <code>.next</code>, <code>.git</code>, CSS variable declarations</p></section>
+<p>Skips: <code>node_modules</code>, <code>dist</code>, <code>build</code>, <code>.next</code>, <code>.git</code>, CSS variable declarations</p>
+<p>Scope: fast literal pattern matching and token-table lookup across source files, not a full CSS cascade or runtime style resolver.</p></section>
 <section id="tokens"><h2>Token Sources</h2>
 <p>Provide a token file with <code>--tokens</code> to get replacement suggestions:</p>
 <h3>CSS custom properties</h3>

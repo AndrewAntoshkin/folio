@@ -23,7 +23,8 @@ ds-lint src/ --tokens tokens.css --strict</code></pre></section>
 <section id="detects"><h2>Что находит</h2>
 <ul class="feature-list"><li><strong>Цвета</strong><span><code>#hex</code>, <code>rgb()</code>, <code>rgba()</code>, <code>hsl()</code>, <code>hsla()</code> и именованные цвета CSS (red, blue и другие)</span></li><li><strong>Отступы</strong><span><code>padding</code>, <code>margin</code>, <code>gap</code>, <code>top/right/bottom/left</code>, <code>width/height</code> в px/rem</span></li><li><strong>Размеры шрифта</strong><span><code>font-size</code>, <code>line-height</code>, <code>letter-spacing</code> в px/rem</span></li><li><strong>Радиус</strong><span><code>border-radius</code> в px/rem (пропускает 0px)</span></li></ul>
 <p>Смотрит: <code>.js</code> <code>.jsx</code> <code>.ts</code> <code>.tsx</code> <code>.css</code> <code>.scss</code> <code>.vue</code> <code>.svelte</code></p>
-<p>Пропускает: <code>node_modules</code>, <code>dist</code>, <code>build</code>, <code>.next</code>, <code>.git</code> и объявления CSS-переменных</p></section>
+<p>Пропускает: <code>node_modules</code>, <code>dist</code>, <code>build</code>, <code>.next</code>, <code>.git</code> и объявления CSS-переменных</p>
+<p>Граница проверки: это быстрый текстовый сканер сырых литералов и совпадений со словарём токенов, а не полноценный парсер CSS-каскада или вычисляемых в рантайме стилей.</p></section>
 <section id="tokens"><h2>Откуда токены</h2>
 <p>Передай файл токенов через <code>--tokens</code>. ds-lint предложит имя токена на замену.</p>
 <h3>CSS-переменные</h3>
