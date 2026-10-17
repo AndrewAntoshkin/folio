@@ -348,22 +348,22 @@
     .toast{position:absolute;right:28px;bottom:70px;z-index:80;display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;background:rgba(40,40,40,.9);color:#fff;font-size:12px;opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .3s,transform .45s var(--spring)}
     .toast.show{opacity:1;transform:none;pointer-events:auto}.toast button{border:0;border-radius:999px;background:rgba(255,255,255,.16);padding:4px 10px;color:#fff;font-size:11px}
 
-    body.night{--fog:#131415;--ink:#ececec;--quiet:rgba(236,236,236,.5);--faint:rgba(236,236,236,.26);--line:rgba(255,255,255,.07);--paper:#1d1e20;--head:#232426;--chip:rgba(255,255,255,.07);--rim:rgba(255,255,255,.04);--accent:#86a8ff;--accent-soft:rgba(134,168,255,.18);--m-street:#303134;--m-block:#252629;--water:#1b2a34;--park:#22302a}
-    body.night .mist{opacity:.07}
-    body.night .palette{background:#26272a;border-color:rgba(255,255,255,.06)}
+    body.night{--fog:#171717;--ink:#ececec;--quiet:#afafaf;--faint:#6b6b6b;--line:rgba(255,255,255,.07);--paper:#212121;--head:#212121;--chip:rgba(255,255,255,.07);--rim:rgba(255,255,255,.05);--accent:#86a8ff;--accent-soft:rgba(134,168,255,.18);--m-street:#2f2f2f;--m-block:#262626;--water:#1a2630;--park:#1e2923}
+    body.night .mist{opacity:0}body.night .grain{opacity:.02}
+    body.night .palette{background:#2f2f2f;border-color:rgba(255,255,255,.1)}
     body.night .module,body.night .module.active,body.night .mini,body.night .mini:hover,body.night .palette,body.night .plus,body.night .home-line,body.night .home-line:focus-within,body.night .tl-search,body.night .toast{box-shadow:none}
-    body.night .module.active{background:#222325}
+    body.night .module{border-color:rgba(255,255,255,.05)}body.night .module.active{background:#212121;border-color:rgba(255,255,255,.08)}
     body.night .mini.lifted{box-shadow:0 0 0 1px rgba(255,255,255,.08)}
     body.night .home-time,body.night .ov-title,body.night .tl-title{color:rgba(236,236,236,.5)}
     body.night .opt,body.night .card,body.night .chip,body.night .tl-item,body.night .blueprints button,body.night .lst{background:rgba(255,255,255,.04)}
     body.night .opt.sel,body.night .opt:hover,body.night button.chip:hover,body.night .tl-item:hover,body.night .tl-item.hit{background:rgba(255,255,255,.09)}
-    body.night .overview{background:rgba(16,17,18,.7)}body.night .rules{background:rgba(255,255,255,.03)}body.night .mini{background:#1d1e20}
+    body.night .overview{background:rgba(15,15,15,.72)}body.night .rules{background:rgba(255,255,255,.03)}body.night .mini{background:#212121}
     body.night .hints button:hover,body.night .hints button.on,body.night .lang button.on{background:rgba(255,255,255,.08)}
     body.night .kbd{background:rgba(255,255,255,.06)}body.night .kbd.pressed{background:rgba(255,255,255,.18)}
-    body.night .plus{background:#26272a;color:#bbb}
+    body.night .plus{background:#2f2f2f;color:#afafaf}
     body.night .cond{background:rgba(255,255,255,.1)}
     body.night .cal-ev.prop{color:#dbe5ff}
-    body.night .map .lbl{fill:rgba(236,236,236,.35)}body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:#303134;stroke:#ddd}body.night .map-ctl{background:rgba(48,49,52,.95)}body.night .map-ctl button{color:#ddd}body.night .eta{background:rgba(48,49,52,.95);color:#ececec}
+    body.night .map .lbl{fill:rgba(236,236,236,.35)}body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:#2f2f2f;stroke:#ddd}body.night .map-ctl{background:rgba(47,47,47,.95)}body.night .map-ctl button{color:#ddd}body.night .eta{background:rgba(47,47,47,.95);color:#ececec}
 
     @media(max-width:760px){.statusbar{padding:0 16px}.clock{display:none}.hints{gap:0}.hints button span.lbl{display:none}.ov-layout{grid-template-columns:1fr}.rules{position:static;max-height:none}.home-time{font-size:56px}.player{grid-template-columns:110px 1fr}.lst{grid-template-columns:1fr 110px}}
     @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
