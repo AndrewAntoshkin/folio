@@ -48,7 +48,58 @@
     .lang{display:flex;padding:2px;border:1px solid var(--line);border-radius:8px}
     .lang button{border:0;border-radius:6px;background:none;padding:3px 8px;color:var(--quiet);font-size:11px;transition:background .25s,color .25s}
     .lang button.on{background:rgba(255,255,255,.7);color:var(--ink)}
-    .clock{font-variant-numeric:tabular-nums}
+    .clock{font-variant-numeric:tabular-nums}.clock .tz{margin-left:5px;font-size:9.5px;letter-spacing:.08em;color:var(--faint)}
+    .sb-right{position:relative}
+    .wx-btn{display:flex;align-items:center;gap:6px;height:28px;margin-right:-8px;padding:0 10px 0 8px;border:0;border-radius:999px;background:transparent;color:var(--quiet);font-size:12px;font-variant-numeric:tabular-nums;transition:background .2s,color .2s,transform .35s var(--spring)}
+    .wx-btn:hover,.wx-wrap.open .wx-btn{background:var(--chip);color:var(--ink)}.wx-btn:active{transform:scale(.95)}.wx-btn:focus-visible{outline:1.5px solid var(--quiet);outline-offset:2px}
+    .wx-ico svg{display:block;width:17px;height:17px}
+    .wx-pop{position:absolute;top:calc(100% + 10px);right:-6px;width:356px;max-height:calc(100vh - 76px);overflow-y:auto;scrollbar-width:none;padding:18px 18px 14px;border-radius:22px;color:var(--ink);font-size:12px;opacity:0;transform:translateY(-6px) scale(.97);transform-origin:top right;pointer-events:none;transition:opacity .25s var(--ease),transform .4s var(--ease)}
+    .wx-pop::-webkit-scrollbar{display:none}
+    .wx-wrap.open .wx-pop{opacity:1;transform:none;pointer-events:auto}
+    .wz-top{display:flex;justify-content:space-between;align-items:baseline;color:var(--quiet);font-size:11px}.wz-top b{color:var(--ink);font-size:13px;font-weight:500}
+    .wz-now{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;margin-top:10px}
+    .wz-now .glyph svg{display:block;width:50px;height:50px}
+    .wz-now .glyph .rays{transform-box:fill-box;transform-origin:center;animation:wxspin 40s linear infinite}
+    .wz-big{font-size:48px;font-weight:300;letter-spacing:-.045em;line-height:1}
+    .wz-cond b{display:block;font-size:13px;font-weight:500}.wz-cond span{display:block;margin-top:2px;color:var(--quiet);font-size:11.5px}
+    .wz-hl{max-width:150px;text-align:right;color:var(--quiet);font-size:11.5px;line-height:1.6;font-variant-numeric:tabular-nums}.wz-hl b{color:var(--ink);font-weight:500}
+    .wz-sec{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+    .wz-label{margin-bottom:6px;font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--faint)}
+    .wz-hours svg{display:block;width:100%;height:auto;overflow:visible}
+    .wz-hours text{font-family:inherit;font-variant-numeric:tabular-nums}
+    .wz-line{stroke-dasharray:1;stroke-dashoffset:1;animation:wxdraw 1.1s var(--ease) .12s forwards}
+    .wz-area{opacity:0;animation:wxfade .8s var(--ease) .45s forwards}
+    .wz-day{display:grid;grid-template-columns:64px 20px 30px 28px 1fr 28px;align-items:center;gap:8px;height:30px;font-variant-numeric:tabular-nums}
+    .wz-day svg{display:block;width:19px;height:19px}.wz-day .p{color:#4f8fe8;font-size:10.5px}.wz-day .mn{color:var(--quiet);text-align:right}.wz-day .mx{text-align:right}
+    .wz-day:first-of-type .d{font-weight:500}
+    .wz-range{position:relative;height:5px;border-radius:3px;background:var(--chip)}
+    .wz-range i{position:absolute;top:0;bottom:0;border-radius:3px;background:linear-gradient(90deg,var(--c1),var(--c2));transform-origin:left;animation:wxgrow .8s var(--ease) both}
+    .wz-range b{position:absolute;top:50%;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:#fff;box-shadow:0 0 0 2px rgba(0,0,0,.55)}
+    .wz-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .wz-tile{padding:10px 12px;border-radius:14px;background:var(--chip)}
+    .wz-tile small{display:block;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+    .wz-tile b{display:block;margin-top:4px;font-size:17px;font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums}.wz-tile b em{margin-left:3px;font-style:normal;font-size:11px;font-weight:400;color:var(--quiet)}
+    .wz-tile span{display:block;margin-top:1px;color:var(--quiet);font-size:11px}
+    .wz-meter{position:relative;height:4px;margin-top:8px;border-radius:2px;background:var(--line)}.wz-meter i{position:absolute;inset:0 auto 0 0;border-radius:2px;background:var(--mc,var(--ink));transform-origin:left;animation:wxgrow .8s var(--ease) .2s both}
+    .wz-meter.uv{background:linear-gradient(90deg,#6cc070,#f2c94c,#f2994a,#eb5757,#9b51e0)}.wz-meter.uv b{position:absolute;top:50%;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:#fff;box-shadow:0 0 0 2px rgba(0,0,0,.55)}
+    .wz-sun{grid-column:1/-1;display:grid;grid-template-columns:132px 1fr;align-items:center;gap:14px}
+    .wz-sun svg{display:block;width:132px;height:52px;overflow:visible}
+    .wz-sun dl{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;margin:0;font-size:11.5px}.wz-sun dt{color:var(--quiet)}.wz-sun dd{margin:0;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+    .wz-foot{margin-top:12px;color:var(--faint);font-size:10.5px;text-align:center}
+    @keyframes wxdraw{to{stroke-dashoffset:0}}@keyframes wxfade{to{opacity:1}}@keyframes wxgrow{from{transform:scaleX(0)}}@keyframes wxspin{to{transform:rotate(360deg)}}
+    .me-wrap{position:relative;display:flex}
+    .me-btn{width:28px;height:28px;padding:0;border:0;border-radius:50%;background:var(--chip);color:var(--ink);font-size:11px;font-weight:500;display:grid;place-items:center;transition:background .2s,transform .35s var(--spring)}
+    .me-btn:hover,.me-wrap.open .me-btn{background:rgba(47,47,47,.12)}.me-btn:active{transform:scale(.93)}
+    .umenu{position:absolute;top:calc(100% + 10px);right:0;width:232px;padding:6px;border-radius:16px;background:var(--paper);border:1px solid var(--rim);box-shadow:0 1px 2px rgba(0,0,0,.04),0 24px 60px -22px rgba(0,0,0,.3);color:var(--ink);opacity:0;transform:translateY(-6px) scale(.97);transform-origin:top right;pointer-events:none;transition:opacity .25s var(--ease),transform .4s var(--ease)}
+    .me-wrap.open .umenu{opacity:1;transform:none;pointer-events:auto}
+    .um-head{display:flex;align-items:center;gap:10px;padding:10px 10px 12px;border-bottom:1px solid var(--line);margin-bottom:4px}
+    .um-head .me-btn{width:32px;height:32px;pointer-events:none}
+    .um-head b{display:block;font-weight:500;font-size:13px}.um-head div span{display:block;margin-top:1px;color:var(--quiet);font-size:11px}
+    .um-row{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:36px;padding:0 10px;border:0;border-radius:10px;background:none;color:var(--ink);font-size:12.5px;text-align:left;text-decoration:none;transition:background .2s}
+    .um-row:hover{background:var(--chip)}
+    .um-row .lang{margin:-2px -4px -2px 0}
+    .um-row em{font-style:normal;color:var(--quiet);font-size:11.5px}
+    .um-sep{height:1px;margin:4px 6px;background:var(--line)}
 
     .home{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity .6s var(--ease),transform .8s var(--ease),filter .6s var(--ease)}
     .os:not(.view-home) .home{opacity:0;transform:scale(1.05);filter:blur(8px);pointer-events:none}
@@ -77,6 +128,7 @@
 
     .space{position:absolute;inset:52px 0 56px;overflow:hidden;opacity:0;pointer-events:none;transition:opacity .45s var(--ease)}
     .view-space .space{opacity:1;pointer-events:auto}
+    .space.notrans,.space.notrans *{transition:none!important}
     .flows{position:absolute;inset:0 0 auto;transition:transform .7s var(--ease)}
     .flow{position:absolute;left:0;right:0;height:var(--mh);transition:opacity .7s var(--ease),filter .7s var(--ease)}
     .flow:not(.current){opacity:.36;filter:blur(1.6px);cursor:pointer}
@@ -291,12 +343,12 @@
 
     .overview{position:absolute;inset:52px 0 0;z-index:30;display:none;background:rgba(222,222,222,.5);backdrop-filter:blur(26px);-webkit-backdrop-filter:blur(26px)}
     .overview.open{display:block}.overview.closing{pointer-events:none}
-    .ov-shell{height:100%;overflow-y:auto;overflow-x:hidden;padding:22px clamp(24px,5vw,72px) 120px;scrollbar-width:none;-webkit-mask-image:linear-gradient(#000 calc(100% - 110px),transparent calc(100% - 40px));mask-image:linear-gradient(#000 calc(100% - 110px),transparent calc(100% - 40px))}.ov-shell::-webkit-scrollbar{display:none}
+    .ov-shell{height:100%;overflow-y:auto;overflow-x:hidden;scroll-padding:60px 0 130px;padding:22px clamp(24px,5vw,72px) 120px;scrollbar-width:none;-webkit-mask-image:linear-gradient(#000 calc(100% - 110px),transparent calc(100% - 40px));mask-image:linear-gradient(#000 calc(100% - 110px),transparent calc(100% - 40px))}.ov-shell::-webkit-scrollbar{display:none}
     .ov-title,.ov-layout{max-width:1320px;margin:0 auto}
     .ov-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px;font-size:32px;font-weight:300;letter-spacing:-.035em;color:rgba(47,47,47,.45)}
     .ov-title button{border:0;background:none;color:var(--quiet);font-size:12px}
     .ov-layout{display:grid;grid-template-columns:260px 1fr;gap:32px;align-items:start}
-    .rules{position:sticky;top:12px;z-index:2;max-height:calc(100vh - 160px);overflow-y:auto;scrollbar-width:none;padding:16px;border:1px solid rgba(255,255,255,.6);border-radius:16px;background:rgba(247,247,247,.3);font-size:12px;color:var(--quiet)}
+    .rules{position:absolute;top:94px;left:max(clamp(24px,5vw,72px),calc((100% - 1320px)/2));width:260px;z-index:2;max-height:calc(100% - 94px - 72px);overflow-y:auto;scrollbar-width:none;padding:16px;border:1px solid rgba(255,255,255,.6);border-radius:16px;background:rgba(247,247,247,.3);font-size:12px;color:var(--quiet)}
     .rules h3{margin:4px 0 8px;color:var(--ink);font-size:12px;font-weight:500}.rules h3+p{margin:0 0 12px;font-size:11px;line-height:1.5}
     .rule,.collab,.flowlink{display:grid;grid-template-columns:18px 1fr;align-items:start;gap:10px;padding:8px;border-radius:9px;cursor:pointer;transition:background .2s,opacity .2s}
     .rule:hover,.collab:hover,.flowlink:hover{background:rgba(255,255,255,.55);color:var(--ink)}
@@ -314,6 +366,7 @@
     .mini{position:relative;flex:none;width:224px;min-height:150px;padding:0 16px 30px;border:1px solid var(--rim);border-radius:14px;background:rgba(252,252,252,.96);box-shadow:0 1px 2px rgba(0,0,0,.04),0 12px 30px -14px rgba(0,0,0,.16);cursor:grab;user-select:none;touch-action:none;transition:box-shadow .3s var(--ease),transform .35s var(--ease),opacity .3s}
     .mini:hover{transform:translateY(-2px);box-shadow:0 1px 2px rgba(0,0,0,.04),0 20px 44px -16px rgba(0,0,0,.22)}
     .mini.parent{width:264px}.mini.dim{opacity:.28}
+    .ov-flows.kb .mini.kbsel{outline:2px solid var(--ink);outline-offset:3px}
     .mini.lifted{transform:scale(1.04) rotate(-1.2deg);box-shadow:0 34px 80px -20px rgba(0,0,0,.32)}
     .mini.settling{transition:left .32s var(--ease),top .32s var(--ease),transform .32s var(--ease),box-shadow .32s var(--ease)}
     .mini-head{display:flex;align-items:center;gap:7px;height:36px;margin:0 -16px 12px;padding:0 14px;border-bottom:1px solid var(--line);font-size:10px;color:var(--quiet)}.mini-head .ic{width:12px;height:12px}.mini-head span:last-child{margin-left:auto}
@@ -359,13 +412,23 @@
     body.night .opt.sel,body.night .opt:hover,body.night button.chip:hover,body.night .tl-item:hover,body.night .tl-item.hit{background:rgba(255,255,255,.09)}
     body.night .overview{background:rgba(15,15,15,.72)}body.night .rules{background:rgba(255,255,255,.03)}body.night .mini{background:#212121}
     body.night .hints button:hover,body.night .hints button.on,body.night .lang button.on{background:rgba(255,255,255,.08)}
+    body.night .me-btn:hover,body.night .me-wrap.open .me-btn{background:rgba(255,255,255,.14)}body.night .umenu{background:#2a2a2a;border-color:rgba(255,255,255,.08);box-shadow:none}
     body.night .kbd{background:rgba(255,255,255,.06)}body.night .kbd.pressed{background:rgba(255,255,255,.18)}
     body.night .plus{background:#2f2f2f;color:#afafaf}
     body.night .cond{background:rgba(255,255,255,.1)}
     body.night .cal-ev.prop{color:#dbe5ff}
+    :root{--glass:rgba(252,252,252,.6);--glass-edge:rgba(255,255,255,.9);--glass-shadow:0 8px 24px rgba(0,0,0,.08),0 -8px 24px rgba(255,255,255,.35)}
+    body.night{--glass:rgba(50,50,52,.6);--glass-edge:rgba(255,255,255,.1);--glass-shadow:0 8px 24px rgba(0,0,0,.5),0 -8px 24px rgba(255,255,255,.04)}
+    .hints{inset:auto 0 10px;width:max-content;height:44px;margin:0 auto;padding:4px;border-radius:999px}
+    .hints button{border-radius:999px}
+    .hints,.palette,.umenu,.plus,.map-ctl,.eta,.rules,body.night .palette,body.night .umenu,body.night .plus,body.night .map-ctl,body.night .eta,body.night .rules{background:var(--glass);border:1px solid var(--glass-edge);border-right-width:0;border-bottom-width:0;box-shadow:var(--glass-shadow);-webkit-backdrop-filter:blur(40px) saturate(1.6);backdrop-filter:blur(40px) saturate(1.6)}
+    .wx-pop{background:rgba(250,250,250,.8);border:1px solid var(--glass-edge);border-right-width:0;border-bottom-width:0;box-shadow:var(--glass-shadow),0 30px 70px -30px rgba(0,0,0,.25);-webkit-backdrop-filter:blur(40px) saturate(1.6);backdrop-filter:blur(40px) saturate(1.6)}
+    body.night .wx-pop{background:rgba(42,42,44,.78)}
+    body.night .wz-range b,body.night .wz-meter.uv b{box-shadow:0 0 0 2px #2a2a2c}
+    .toast,body.night .toast{background:rgba(18,18,22,.62);border:1px solid rgba(255,255,255,.1);border-right-width:0;border-bottom-width:0;box-shadow:0 8px 24px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(40px) saturate(1.6);backdrop-filter:blur(40px) saturate(1.6)}
     body.night .map .lbl{fill:rgba(236,236,236,.35)}body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:#2f2f2f;stroke:#ddd}body.night .map-ctl{background:rgba(47,47,47,.95)}body.night .map-ctl button{color:#ddd}body.night .eta{background:rgba(47,47,47,.95);color:#ececec}
 
-    @media(max-width:760px){.statusbar{padding:0 16px}.clock{display:none}.hints{gap:0}.hints button span.lbl{display:none}.ov-layout{grid-template-columns:1fr}.rules{position:static;max-height:none}.home-time{font-size:56px}.player{grid-template-columns:110px 1fr}.lst{grid-template-columns:1fr 110px}}
+    @media(max-width:760px){.statusbar{padding:0 16px}.clock{display:none}.hints{gap:0}.hints button span.lbl{display:none}.ov-layout{grid-template-columns:1fr}.rules,.rules-slot{display:none}.home-time{font-size:56px}.player{grid-template-columns:110px 1fr}.lst{grid-template-columns:1fr 110px}}
     @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
   </style>
 </head>
@@ -373,8 +436,24 @@
   <div class="mist"></div><div class="grain"></div>
   <div class="os view-home" id="os">
     <header class="statusbar">
-      <div class="sb-left"><a href="/intent-os" id="backLink"></a><span class="space-title" id="spaceTitle"><i></i><span></span></span><span class="collabs" id="collabStack"></span></div>
-      <div class="sb-right"><div class="lang" id="langSwitch"><button data-lang="ru">RU</button><button data-lang="en">EN</button></div><button class="sb-btn" id="nightBtn"></button><span class="clock" id="clock"></span></div>
+      <div class="sb-left"><span class="space-title" id="spaceTitle"><i></i><span></span></span><span class="collabs" id="collabStack"></span></div>
+      <div class="sb-right">
+        <div class="wx-wrap" id="wxWrap">
+          <button class="wx-btn" id="wxBtn" aria-haspopup="dialog" aria-expanded="false"><span class="wx-ico" id="wxIco"></span><span id="wxTemp">—°</span></button>
+          <div class="wx-pop" id="wxPop" role="dialog"></div>
+        </div>
+        <span class="clock" id="clock"></span>
+        <div class="me-wrap" id="meWrap">
+          <button class="me-btn" id="meBtn" aria-haspopup="menu" aria-expanded="false">A</button>
+          <div class="umenu" id="userMenu" role="menu">
+            <div class="um-head"><span class="me-btn">A</span><div><b>Andrew</b><span id="umSub"></span></div></div>
+            <div class="um-row"><span id="umLang"></span><div class="lang" id="langSwitch"><button data-lang="ru">RU</button><button data-lang="en">EN</button></div></div>
+            <button class="um-row" id="nightBtn" role="menuitem"><span id="umTheme"></span><em id="umThemeVal"></em></button>
+            <div class="um-sep"></div>
+            <a class="um-row" id="backLink" href="/intent-os" role="menuitem"></a>
+          </div>
+        </div>
+      </div>
     </header>
 
     <section class="home" id="home">
@@ -392,10 +471,11 @@
       <div class="ov-shell">
         <h1 class="ov-title"><span id="ovTitle"></span><button id="ovClose"></button></h1>
         <div class="ov-layout">
-          <aside class="rules" id="rules"></aside>
+          <div class="rules-slot"></div>
           <div class="ov-flows" id="ovFlows"></div>
         </div>
       </div>
+      <aside class="rules" id="rules"></aside>
     </section>
 
     <section class="timeline" id="timeline">
@@ -444,6 +524,13 @@
     }
 
     const WX={sun:'<circle cx="12" cy="12" r="4.5" fill="#f2b84b"/><g stroke="#f2b84b" stroke-width="1.6" stroke-linecap="round"><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.7 1.7M17 17l1.7 1.7M5.3 18.7 7 17M17 7l1.7-1.7"/></g>',cloud:'<path d="M7 18h10a4 4 0 0 0 .4-8A5.5 5.5 0 0 0 6.8 11 3.5 3.5 0 0 0 7 18z" fill="#b8c2cc"/>',rain:'<path d="M7 15h10a4 4 0 0 0 .4-8A5.5 5.5 0 0 0 6.8 8 3.5 3.5 0 0 0 7 15z" fill="#9fb0c0"/><g stroke="#3f74f0" stroke-width="1.6" stroke-linecap="round"><path d="M8.5 17.5l-1 2.5M12.5 17.5l-1 2.5M16.5 17.5l-1 2.5"/></g>',snow:'<path d="M7 15h10a4 4 0 0 0 .4-8A5.5 5.5 0 0 0 6.8 8 3.5 3.5 0 0 0 7 15z" fill="#c4ccd4"/><g fill="#7fa2d8"><circle cx="8.5" cy="18.5" r="1.1"/><circle cx="12.5" cy="20" r="1.1"/><circle cx="16" cy="18.5" r="1.1"/></g>',part:'<circle cx="9" cy="9" r="3.6" fill="#f2b84b"/><path d="M9 19h9a3.5 3.5 0 0 0 .3-7A4.8 4.8 0 0 0 9 12.8 3.2 3.2 0 0 0 9 19z" fill="#c2cbd4"/>'};
+    Object.assign(WX,{
+      sun:WX.sun.replace("<g ",'<g class="rays" '),
+      moon:'<path d="M15.5 4.2a7.8 7.8 0 1 0 4.3 12.9A6.6 6.6 0 0 1 15.5 4.2z" fill="#c9d2e3"/>',
+      partn:'<path d="M10.6 4a4.6 4.6 0 1 0 3.6 7.6A3.9 3.9 0 0 1 10.6 4z" fill="#c9d2e3"/><path d="M9 19h9a3.5 3.5 0 0 0 .3-7A4.8 4.8 0 0 0 9 12.8 3.2 3.2 0 0 0 9 19z" fill="#aab4bf"/>',
+      fog:'<g stroke="#a8b2bd" stroke-width="1.8" stroke-linecap="round"><path d="M4 9h16M6 13h12M4 17h16"/></g>',
+      storm:'<path d="M7 15h10a4 4 0 0 0 .4-8A5.5 5.5 0 0 0 6.8 8 3.5 3.5 0 0 0 7 15z" fill="#8e9aa6"/><path d="M12.6 14 9.8 18.4h2.6l-1.2 3.6 3.6-5h-2.6l1.4-3z" fill="#f2b84b"/>'
+    });
     const wx=n=>`<svg viewBox="0 0 24 24">${WX[n]||WX.sun}</svg>`;
 
     function photoSVG(seed,type){
@@ -1072,39 +1159,95 @@
       $("#rules").innerHTML=`<h3>${T("Flows","Потоки")}</h3><p>${T("Jump to a flow or start a new one.","Перейдите к потоку или начните новый.")}</p>${S.flows.map((f,i)=>`<div class="flowlink" data-flow="${i}">${ic(KIND_IC[f.modules[0].kind]||"spark")}<b>${esc(f.name)}</b><small>${f.modules.length}</small></div>`).join("")}<div class="flowlink new" data-newflow="1">${ic("plus")}<span>${T("New flow","Новый поток")}</span></div><h3 style="margin-top:18px">${T("Rules","Правила")}</h3><p>${T("How this Space was generated, and what it may do on its own.","Как собрано пространство и что оно может делать само.")}</p>${S.rules.map((r,i)=>`<div class="rule${r.on?" on":""}" data-rule="${i}"><i></i><span>${esc(r.text)}</span></div>`).join("")}${S.collabs.length?`<h3 style="margin-top:18px">${T("Collaborators","Участники")}</h3><p>${T("Sandboxed: each sees only the modules it touches.","Песочница: каждый видит только свои модули.")}</p>${S.collabs.map(c=>`<div class="collab" data-collab="${c.id}">${avatar(c.name,c.kind)}<span>${esc(c.name)}<small>${esc(c.access)}</small></span></div>`).join("")}`:""}`;
       $("#ovFlows").innerHTML=S.flows.map((fl,fi)=>`<section class="ov-flow" data-f="${fi}"><div class="ov-head"><b>${esc(fl.name)}</b><span>${count(fl.modules.length,["module","modules"],["модуль","модуля","модулей"])}</span></div><div class="ov-list">${fl.modules.map((m,mi)=>`<article class="mini${mi===0?" parent":""}" data-id="${m.id}" data-src="${m.source}"><div class="mini-head">${ic(KIND_IC[m.kind]||"spark")}<span class="who-line">${avatar(collabName(m.source),"xs")}${esc(collabName(m.source))}</span></div><b>${esc(m.item)}</b><p>${esc(textOf(m).join(" "))}</p>${mi===0?`<span class="tag">${T("Parent","Родитель")}</span>`:""}</article>`).join("")}</div></section>`).join("")+`<button class="new-flow" data-newflow="1">${ic("plus")}${T("New flow","Новый поток")}</button>`;
       $$("#ovFlows .mini").forEach(c=>c.addEventListener("pointerdown",pressMini));
+      if(!ovSel)ovSel={f:S.f,m:S.m[S.f]};markOvSel(false);
     }
+    let ovSel=null;
+    function markOvSel(scroll=true){
+      const rows=S.flows;ovSel.f=clamp(ovSel.f,0,rows.length-1);ovSel.m=clamp(ovSel.m,0,rows[ovSel.f].modules.length-1);
+      $$("#ovFlows .mini").forEach(c=>c.classList.remove("kbsel"));
+      const c=$$("#ovFlows .ov-flow")[ovSel.f]?.querySelectorAll(".mini")[ovSel.m];
+      if(c){c.classList.add("kbsel");if(scroll)c.scrollIntoView({block:"nearest",inline:"nearest",behavior:"smooth"})}
+    }
+    function moveOvSel(df,dm){const box=$("#ovFlows");if(box.classList.contains("kb")){ovSel.f+=df;ovSel.m+=dm}box.classList.add("kb");markOvSel()}
+    $("#ovFlows").addEventListener("pointermove",e=>{if(e.movementX||e.movementY)e.currentTarget.classList.remove("kb")});
+    function openOvSel(){const m=S.flows[ovSel.f]?.modules[ovSel.m];const loc=m&&findModule(m.id);if(loc){focusModule(loc.fi,loc.mi);toggleOverview(false)}}
     function newFlow(){
       const m=M("suggest",T("New flow","Новый поток"),"intent",{note:T("Describe what this flow is for in the module header.","Опишите в шапке модуля, для чего этот поток."),items:[S.title],actions:predict({kind:"",data:{},item:""})});
       S.flows.push({name:T(`Flow ${S.flows.length+1}`,`Поток ${S.flows.length+1}`),modules:[m]});S.m.push(0);S.f=S.flows.length-1;
       renderSpace();toggleOverview(false);setTimeout(()=>{arrive(m,"down");focusLine()},500);
     }
-    let ovRun=0;
+    let ovRun=0,morphGhost=null;
+    /* One card, two sizes: the mini and the full module are the same object, so it grows / shrinks in place
+       (frame animates size + radius, the compact and full faces cross-fade inside it) instead of one replacing the other. */
+    function morphCard(mini,card,toMini,dur,fadeAt=0){
+      const a=mini.getBoundingClientRect(),b=card.getBoundingClientRect(),W=card.offsetWidth,H=card.offsetHeight;
+      if(!a.width||!b.width||a.bottom<0||a.top>innerHeight)return null;
+      const from=toMini?b:a,to=toMini?a:b,rad=toMini?[20,14]:[14,20];
+      const g=document.createElement("div"),mc=mini.cloneNode(true),cc=card.cloneNode(true);
+      g.className="morph";
+      Object.assign(g.style,{position:"fixed",zIndex:60,overflow:"hidden",pointerEvents:"none",background:"var(--paper)",boxShadow:"0 0 0 1px var(--rim),0 30px 70px -28px rgba(0,0,0,.35)",willChange:"left,top,width,height"});
+      mc.classList.remove("kbsel","lifted","settling","dim");mc.removeAttribute("data-id");
+      cc.removeAttribute("data-id");cc.classList.add("active");cc.querySelector(".plus")?.remove();cc.querySelectorAll("[id]").forEach(n=>n.removeAttribute("id"));
+      const base={position:"absolute",left:0,top:0,margin:0,transition:"none",transform:"none",filter:"none",boxShadow:"none",background:"transparent",boxSizing:"border-box"};
+      Object.assign(mc.style,base,{width:a.width+"px",height:a.height+"px",minHeight:0});
+      Object.assign(cc.style,base,{width:W+"px",height:H+"px",opacity:1});
+      g.append(cc,mc);os.appendChild(g);
+      const geo=r=>({left:r.left+"px",top:r.top+"px",width:r.width+"px",height:r.height+"px"});
+      const opt={duration:dur,easing:EASE,fill:"forwards"};
+      g.animate([{...geo(from),borderRadius:rad[0]+"px"},{...geo(to),borderRadius:rad[1]+"px"}],opt);
+      const lin={duration:dur,easing:"linear",fill:"forwards"};
+      if(toMini){
+        cc.animate([{opacity:1},{opacity:1,offset:.4},{opacity:0,offset:.88},{opacity:0}],lin);
+        mc.animate([{opacity:0},{opacity:0,offset:.6},{opacity:1}],lin);
+      }else{
+        mc.animate([{opacity:1},{opacity:1,offset:.1},{opacity:0,offset:.5},{opacity:0}],lin);
+        cc.animate([{opacity:0},{opacity:0,offset:.12},{opacity:1,offset:.6},{opacity:1}],lin);
+      }
+      if(fadeAt)g.animate([{opacity:1},{opacity:0}],{duration:300,delay:fadeAt,fill:"forwards"});
+      mini.style.opacity="0";
+      return g;
+    }
     function toggleOverview(force,instant){
       if(!S)return;
       const el=$("#overview"),isOpen=el.classList.contains("open")&&!el.classList.contains("closing");
       const open=typeof force==="boolean"?force:!isOpen;
       if(open===isOpen)return;
-      const run=++ovRun;overviewOpen=open;closePalette();renderHints();
+      const run=++ovRun;overviewOpen=open;if(open)ovSel=null;$("#ovFlows").classList.remove("kb");closePalette();renderHints();
       el.getAnimations({subtree:true}).forEach(a=>a.cancel());
       if(open){el.classList.remove("closing");renderOverview();el.classList.add("open")}
+      const flows=$("#flows");flowsFade?.cancel();flowsFade=null;
       if(instant||reduce.matches){el.classList.toggle("open",open);el.classList.remove("closing");return}
-      const src=cardOf(activeModule())?.getBoundingClientRect()||{left:innerWidth/2,top:innerHeight/2,width:0,height:0};
-      const ox=src.left+src.width/2,oy=src.top+src.height/2;
+      if(!open){const sp=$("#space");sp.classList.add("notrans");layout();sp.offsetWidth;requestAnimationFrame(()=>sp.classList.remove("notrans"))}
       const minis=$$("#ovFlows .mini"),chrome=$$("#overview .ov-title,#overview .rules,#overview .ov-head,#overview .new-flow");
-      const scatter=minis.map((c,i)=>{const r=c.getBoundingClientRect();return `translate(${ox-r.left-r.width/2}px,${oy-r.top-r.height/2}px) scale(.5) rotate(${(i%2?1:-1)*(3+i%3*2)}deg)`});
+      const home=minis.map(c=>{
+        const r=c.getBoundingClientRect(),mr=cardOf(findModuleById(c.dataset.id))?.getBoundingClientRect();
+        if(!mr)return "translateY(24px) scale(.96)";
+        return `translate(${mr.left-r.left}px,${mr.top-r.top}px) scale(${mr.width/r.width})`;
+      });
+      const active=activeModule()?.id,order=minis.map((c,i)=>i).sort((a,b)=>(minis[b].dataset.id===active)-(minis[a].dataset.id===active));
+      morphGhost?.remove();morphGhost=null;minis.forEach(c=>c.style.opacity="");
+      const aMini=minis.find(c=>c.dataset.id===active),aCard=cardOf(activeModule());
       if(open){
-        el.animate([{opacity:0},{opacity:1}],{duration:320,easing:"ease-out"});
-        minis.forEach((c,i)=>c.animate([{transform:scatter[i],opacity:0},{opacity:1,offset:.3},{transform:"none",opacity:1}],{duration:820,delay:40+i*40,easing:"cubic-bezier(.2,1.22,.32,1)",fill:"backwards"}));
-        chrome.forEach((n,i)=>n.animate([{opacity:0,transform:"translateY(14px)"},{opacity:1,transform:"none"}],{duration:560,delay:40+i*45,easing:EASE,fill:"backwards"}));
+        el.animate([{opacity:0},{opacity:1}],{duration:360,easing:"ease-out"});
+        flowsFade=flows.animate([{opacity:1},{opacity:0}],{duration:300,easing:"ease-out",fill:"forwards"});
+        const gh=aMini&&aCard?morphCard(aMini,aCard,true,720):null;
+        if(gh){morphGhost=gh;setTimeout(()=>{if(run!==ovRun)return;gh.remove();if(morphGhost===gh)morphGhost=null;aMini.style.opacity=""},740)}
+        order.filter(i=>!(gh&&minis[i]===aMini)).forEach((i,k)=>minis[i].animate([{transformOrigin:"0 0",transform:home[i],opacity:0},{opacity:1,offset:.28},{transformOrigin:"0 0",transform:"none",opacity:1}],{duration:680,delay:k*18,easing:EASE,fill:"backwards"}));
+        chrome.forEach((n,i)=>n.animate([{opacity:0,transform:"translateY(10px)"},{opacity:1,transform:"none"}],{duration:520,delay:120+i*35,easing:EASE,fill:"backwards"}));
       }else{
         el.classList.add("closing");
-        const step=22,dur=420,total=dur+minis.length*step;
-        minis.forEach((c,i)=>c.animate([{transform:"none",opacity:1},{opacity:1,offset:.6},{transform:scatter[i],opacity:0}],{duration:dur,delay:(minis.length-1-i)*step,easing:"cubic-bezier(.55,0,.75,.2)",fill:"forwards"}));
-        chrome.forEach(n=>n.animate([{opacity:1},{opacity:0,transform:"translateY(-8px)"}],{duration:240,easing:EASE,fill:"forwards"}));
-        el.animate([{opacity:1},{opacity:0}],{duration:260,delay:total-200,easing:"ease-in",fill:"forwards"});
+        const dur=560,total=dur+minis.length*14;
+        const gh=aMini&&aCard?morphCard(aMini,aCard,false,640,total-320):null;
+        if(gh){morphGhost=gh;setTimeout(()=>{if(morphGhost===gh){gh.remove();morphGhost=null}},total+60)}
+        order.filter(i=>!(gh&&minis[i]===aMini)).forEach((i,k)=>minis[i].animate([{transformOrigin:"0 0",transform:"none",opacity:1},{opacity:1,offset:.55},{transformOrigin:"0 0",transform:home[i],opacity:0}],{duration:dur,delay:k*14,easing:"cubic-bezier(.65,0,.25,1)",fill:"forwards"}));
+        /* menu, title and flow labels stay put while the cards travel; they leave together with the overlay below */
+        el.animate([{opacity:1},{opacity:0}],{duration:300,delay:total-300,easing:"ease-in",fill:"forwards"});
+        flowsFade=flows.animate([{opacity:0},{opacity:1}],{duration:300,delay:total-320,easing:"ease-out",fill:"backwards"});
         setTimeout(()=>{if(run!==ovRun)return;el.classList.remove("open","closing");el.getAnimations({subtree:true}).forEach(a=>a.cancel())},total+60);
       }
     }
+    let flowsFade=null;
+    function findModuleById(id){return allModules().find(m=>m.id===id)}
 
     let drag=null;
     function pressMini(e){if(e.button!==0||drag)return;drag={card:e.currentTarget,x0:e.clientX,y0:e.clientY,started:false};addEventListener("pointermove",moveMini);addEventListener("pointerup",releaseMini);addEventListener("pointercancel",releaseMini)}
@@ -1178,9 +1321,10 @@
       const H={
         home:[["↵",T("Create Space","Собрать пространство"),()=>$("#homeLine").requestSubmit()],["↑",T("Timeline","Хронология"),()=>setView("timeline")]],
         timeline:[["↓",T("Home","Домой"),()=>setView("home")],["⌕",T("Describe to search","Опишите, чтобы найти"),()=>$("#tlSearch").focus()]],
-        space:[["← →",T("Modules","Модули"),null],["↑ ↓",T("Flows","Потоки"),null],["Tab",T("New module","Новый модуль"),()=>addAdjacent()],["⌘",T("Actions","Действия"),()=>paletteOpen?closePalette():openPalette()],["O",T("Overview · pinch","Обзор · щипок"),()=>toggleOverview()],["Esc",T("Home","Домой"),()=>goHome()]]
-      }[view];
-      $("#hints").innerHTML=H.map(([k,l],i)=>`<button data-h="${i}" class="${i===4&&view==="space"&&overviewOpen?"on":""}"><span class="kbd" ${k==="⌘"?'id="metaKbd"':""}>${k}</span><span class="lbl">${l}</span></button>`).join("");
+        space:[["← →",T("Modules","Модули"),null],["↑ ↓",T("Flows","Потоки"),null],["Tab",T("New module","Новый модуль"),()=>addAdjacent()],["⌘",T("Actions","Действия"),()=>paletteOpen?closePalette():openPalette()],["O",T("Overview · pinch","Обзор · щипок"),()=>toggleOverview()],["Esc",T("Home","Домой"),()=>goHome()]],
+        overview:[["← → ↑ ↓",T("Select","Выбрать"),null],["↵",T("Open","Открыть"),()=>openOvSel()],["N",T("New flow","Новый поток"),()=>newFlow()],["Esc",T("Close","Закрыть"),()=>toggleOverview(false)]]
+      }[overviewOpen?"overview":view];
+      $("#hints").innerHTML=H.map(([k,l],i)=>`<button data-h="${i}"><span class="kbd" ${k==="⌘"?'id="metaKbd"':""}>${k}</span><span class="lbl">${l}</span></button>`).join("");
       $$("#hints button").forEach((b,i)=>b.onclick=()=>H[i][2]?.());
     }
     let toastTimer;
@@ -1189,8 +1333,9 @@
     function applyLang(){
       document.documentElement.lang=LANG;
       $$("#langSwitch button").forEach(b=>b.classList.toggle("on",b.dataset.lang===LANG));
-      $("#backLink").textContent=T("‹ Case","‹ К кейсу");$("#backLink").href=LANG==="en"?"/en/intent-os":"/intent-os";
-      $("#nightBtn").textContent=T("Day / Night","День / Ночь");
+      $("#backLink").textContent=T("Back to case","Вернуться к кейсу");$("#backLink").href=LANG==="en"?"/en/intent-os":"/intent-os";
+      $("#umSub").textContent=T("Personal","Личный аккаунт");$("#umLang").textContent=T("Language","Язык");$("#umTheme").textContent=T("Theme","Тема");
+      $("#umThemeVal").textContent=document.body.classList.contains("night")?T("Night","Ночь"):T("Day","День");
       $("#intentInput").placeholder=T("What do you intend to do?","Что вы хотите сделать?");
       $("#homeMic").innerHTML=ic("mic");$("#tlIcon").innerHTML=ic("search");
       $("#blueprints").innerHTML=BLUEPRINT_CHIPS().map(([id,i,l])=>`<button data-bp="${id}" data-intent="${esc(l)}">${ic(i)}${esc(l)}</button>`).join("");
@@ -1205,7 +1350,7 @@
     function setLang(l){
       if(l===LANG)return;LANG=l;
       const u=new URL(location.href);if(l==="en")u.searchParams.set("lang","en");else u.searchParams.delete("lang");history.replaceState(null,"",u);
-      applyLang();
+      applyLang();renderWx();
       if(S){const keep={f:S.f,m:S.m.slice()};const was=view;toggleOverview(false,true);const bp=S.id==="custom"?blueprintFor(S.intent):BP[S.id]();if(was==="space")openSpace(bp,keep);else S=bp}
     }
 
@@ -1216,7 +1361,11 @@
     $("#timelineHint").onclick=()=>setView("timeline");
     $("#tlSearch").addEventListener("input",e=>searchTimeline(e.target.value));
     $("#tlList").addEventListener("click",e=>{const b=e.target.closest(".tl-item");if(!b)return;const it=tlData[b.dataset.g].items[b.dataset.i];openSpace(it.bp?BP[it.bp]():blueprintFor(it.intent))});
-    $("#nightBtn").onclick=()=>document.body.classList.toggle("night");
+    $("#nightBtn").onclick=()=>{document.body.classList.toggle("night");$("#umThemeVal").textContent=document.body.classList.contains("night")?T("Night","Ночь"):T("Day","День")};
+    const meWrap=$("#meWrap"),setMenu=o=>{meWrap.classList.toggle("open",o);$("#meBtn").setAttribute("aria-expanded",o)};
+    $("#meBtn").onclick=e=>{e.stopPropagation();setMenu(!meWrap.classList.contains("open"))};
+    document.addEventListener("click",e=>{if(!e.target.closest("#userMenu"))setMenu(false)});
+    addEventListener("keydown",e=>{if(e.key==="Escape"&&meWrap.classList.contains("open")){e.stopImmediatePropagation();setMenu(false)}},true);
     $("#langSwitch").onclick=e=>{const b=e.target.closest("button");if(b)setLang(b.dataset.lang)};
     $("#ovClose").onclick=()=>toggleOverview(false);
     $("#navdots").addEventListener("click",e=>{const b=e.target.closest("button");if(b){S.f=+b.dataset.f;layout()}});
@@ -1314,7 +1463,14 @@
       if(view==="timeline"){if(e.key==="ArrowDown"&&!$("#tlSearch").value){e.preventDefault();setView("home")}return}
       if(view!=="space")return;
       if(!inField&&(e.key==="o"||e.key==="O"||e.key==="щ"||e.key==="Щ")){toggleOverview();return}
-      if(overviewOpen)return;
+      if(overviewOpen){
+        if(inField||drag)return;
+        const mv={ArrowRight:[0,1],ArrowLeft:[0,-1],ArrowDown:[1,0],ArrowUp:[-1,0]}[e.key];
+        if(mv){e.preventDefault();moveOvSel(...mv)}
+        else if(e.key==="Enter"){e.preventDefault();openOvSel()}
+        else if(/^[nNтТ]$/.test(e.key)&&!e.metaKey&&!e.ctrlKey){e.preventDefault();newFlow()}
+        return;
+      }
       if(inField&&!emptyLine)return;
       if(e.key==="ArrowRight"){e.preventDefault();go(0,1)}
       else if(e.key==="ArrowLeft"){e.preventDefault();go(0,-1)}
@@ -1365,7 +1521,113 @@
     },{passive:true});
     addEventListener("resize",()=>layout());
 
-    function tickClock(){const d=new Date(),t=timeStr(d);$("#clock").textContent=t;$("#homeTime").textContent=t;$("#homeDate").textContent=d.toLocaleDateString(LANG==="ru"?"ru-RU":"en-GB",{weekday:"long",day:"numeric",month:"long"})}
+    const MSK="Europe/Moscow";
+    const mskParts=(d=new Date())=>Object.fromEntries(new Intl.DateTimeFormat("en-GB",{timeZone:MSK,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(d).map(p=>[p.type,p.value]));
+    const mskTime=d=>d.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit",timeZone:MSK});
+
+    let WXD=null;
+    const omKind=c=>c===0?"clear":c<=2?"partly":c===3?"cloudy":c<=48?"fog":c<=57?"drizzle":c<=67?"rain":c<=77?"snow":c<=82?"rain":c<=86?"snow":"storm";
+    const wwoKind=c=>{c=+c;if(c===113)return"clear";if(c===116)return"partly";if(c===119||c===122)return"cloudy";if([143,248,260].includes(c))return"fog";if([200,386,389,392,395].includes(c))return"storm";if([179,182,185,227,230,317,320,323,326,329,332,335,338,350,362,365,368,371,374,377].includes(c))return"snow";if([263,266,281,284].includes(c))return"drizzle";return"rain"};
+    const wxGlyph=(k,day=true)=>({clear:day?"sun":"moon",partly:day?"part":"partn",cloudy:"cloud",fog:"fog",drizzle:"rain",rain:"rain",snow:"snow",storm:"storm"}[k]||"cloud");
+    const wxName=k=>({clear:T("Clear","Ясно"),partly:T("Partly cloudy","Переменная облачность"),cloudy:T("Overcast","Пасмурно"),fog:T("Fog","Туман"),drizzle:T("Drizzle","Морось"),rain:T("Rain","Дождь"),snow:T("Snow","Снег"),storm:T("Thunderstorm","Гроза")}[k]||"");
+    const deg=t=>`${Math.round(t)}°`;
+    function getJSON(url,ms){const c=new AbortController(),t=setTimeout(()=>c.abort(),ms);return fetch(url,{signal:c.signal}).then(r=>r.ok?r.json():Promise.reject(r.status)).finally(()=>clearTimeout(t))}
+    function fromOM(j){
+      const c=j.current,H=j.hourly,D=j.daily;let i=H.time.findIndex(t=>t.startsWith(c.time.slice(0,13)));if(i<0)i=0;
+      const hours=[0,3,6,9,12,15,18,21,24].map(o=>i+o).filter(k=>H.time[k]).map(k=>({h:+H.time[k].slice(11,13),t:H.temperature_2m[k],p:H.precipitation_probability[k]??0,kind:omKind(H.weather_code[k]),day:!!H.is_day[k]}));
+      return{src:"Open-Meteo",now:{t:c.temperature_2m,feels:c.apparent_temperature,kind:omKind(c.weather_code),day:!!c.is_day,wind:c.wind_speed_10m,hum:c.relative_humidity_2m,pres:c.pressure_msl},hours,
+        days:D.time.map((d,k)=>({date:d,min:D.temperature_2m_min[k],max:D.temperature_2m_max[k],p:D.precipitation_probability_max[k]??0,kind:omKind(D.weather_code[k]),rise:D.sunrise[k].slice(11,16),set:D.sunset[k].slice(11,16),uv:D.uv_index_max[k]??0}))};
+    }
+    function fromWttr(j){
+      const to24=s=>{const m=String(s).match(/(\d+):(\d+)\s*(AM|PM)/i);if(!m)return s;let h=+m[1]%12;if(/pm/i.test(m[3]))h+=12;return String(h).padStart(2,"0")+":"+m[2]};
+      const cur=j.current_condition[0],P=mskParts(),key=`${P.year}-${P.month}-${P.day}`,hr=+P.hour;
+      const days=j.weather.map(w=>({date:w.date,min:+w.mintempC,max:+w.maxtempC,p:Math.max(...w.hourly.map(h=>Math.max(+h.chanceofrain,+h.chanceofsnow))),kind:wwoKind((w.hourly[4]||w.hourly[0]).weatherCode),rise:to24(w.astronomy[0].sunrise),set:to24(w.astronomy[0].sunset),uv:+w.uvIndex||0}));
+      const flat=j.weather.flatMap(w=>w.hourly.map(h=>({date:w.date,h:+h.time/100,t:+h.tempC,p:Math.max(+h.chanceofrain,+h.chanceofsnow),kind:wwoKind(h.weatherCode),day:+h.time>=700&&+h.time<1900})));
+      const s=Math.max(0,flat.findIndex(x=>x.date>key||(x.date===key&&x.h+3>hr)));
+      const rise=days[0]?.rise||"07:00",set=days[0]?.set||"18:00",nm=hr*60+ +P.minute,mins=s=>{const[a,b]=s.split(":");return+a*60+ +b};
+      const now={t:+cur.temp_C,feels:+cur.FeelsLikeC,kind:wwoKind(cur.weatherCode),day:nm>=mins(rise)&&nm<mins(set),wind:+cur.windspeedKmph/3.6,hum:+cur.humidity,pres:+cur.pressure};
+      return{src:"wttr.in",now,hours:[{h:hr,t:now.t,p:flat[s]?.p||0,kind:now.kind,day:now.day},...flat.slice(s+1,s+9)],days};
+    }
+    function wxMock(){
+      const P=mskParts(),hr=+P.hour,base=new Date(`${P.year}-${P.month}-${P.day}T12:00`);
+      const days=[...Array(7)].map((_,k)=>{const d=new Date(base);d.setDate(d.getDate()+k);const mx=11-k*.6+(k%3?1.5:-1),kinds=["partly","cloudy","rain","partly","clear","cloudy","drizzle"];return{date:d.toISOString().slice(0,10),min:Math.round(mx-6),max:Math.round(mx),p:[10,30,80,20,0,40,60][k],kind:kinds[k],rise:"07:32",set:"17:48",uv:[2,1,1,2,3,1,1][k]}});
+      const hours=[...Array(9)].map((_,i)=>{const h=(hr+i*3)%24;return{h,t:6+5*Math.sin((h-9)/24*2*Math.PI),p:i>4?40:10,kind:i>4?"rain":"partly",day:h>=8&&h<18}});
+      return{src:T("demo data","демо-данные"),now:{t:hours[0].t,feels:hours[0].t-2,kind:"partly",day:hr>=8&&hr<18,wind:4,hum:72,pres:1016},hours,days};
+    }
+    async function loadWeather(){
+      try{const c=JSON.parse(sessionStorage.getItem("wx")||"null");if(c&&Date.now()-c.at<15*60e3){WXD=c.d;WXD.at=c.at;return renderWx()}}catch{}
+      const om="https://api.open-meteo.com/v1/forecast?latitude=55.7558&longitude=37.6173&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,relative_humidity_2m,is_day,pressure_msl&hourly=temperature_2m,precipitation_probability,weather_code,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset,uv_index_max&timezone=Europe%2FMoscow&forecast_days=7&wind_speed_unit=ms";
+      let d=null;
+      try{d=fromOM(await getJSON(om,5000))}catch{try{d=fromWttr(await getJSON("https://wttr.in/Moscow?format=j1",9000))}catch{}}
+      const at=Date.now();
+      if(d)try{sessionStorage.setItem("wx",JSON.stringify({at,d}))}catch{}
+      WXD=d||wxMock();WXD.at=at;renderWx();
+    }
+    const TSTOPS=[[-15,[110,150,255]],[0,[95,185,240]],[10,[110,205,165]],[17,[240,205,90]],[25,[245,150,70]],[33,[235,85,80]]];
+    function tempColor(t){
+      if(t<=TSTOPS[0][0])return`rgb(${TSTOPS[0][1]})`;
+      for(let i=1;i<TSTOPS.length;i++){const[a,ca]=TSTOPS[i-1],[b,cb]=TSTOPS[i];if(t<=b){const f=(t-a)/(b-a);return`rgb(${ca.map((v,k)=>Math.round(v+(cb[k]-v)*f))})`}}
+      return`rgb(${TSTOPS.at(-1)[1]})`;
+    }
+    function hoursSVG(hs){
+      const W=320,n=hs.length,x=i=>14+i*(W-28)/(n-1),ts=hs.map(h=>h.t),mn=Math.min(...ts),mx=Math.max(mn+4,Math.max(...ts)),y=t=>30+(1-(t-mn)/(mx-mn))*28;
+      const P=hs.map((h,i)=>[x(i),y(h.t)]);
+      let d=`M${P[0][0]},${P[0][1]}`;
+      for(let i=0;i<n-1;i++){const p0=P[i-1]||P[i],p1=P[i],p2=P[i+1],p3=P[i+2]||p2;d+=` C${p1[0]+(p2[0]-p0[0])/6},${p1[1]+(p2[1]-p0[1])/6} ${p2[0]-(p3[0]-p1[0])/6},${p2[1]-(p3[1]-p1[1])/6} ${p2[0]},${p2[1]}`}
+      const avg=ts.reduce((a,b)=>a+b,0)/n;
+      return`<svg viewBox="0 0 ${W} 118"><defs><linearGradient id="wxg" x1="${x(0)}" x2="${x(n-1)}" gradientUnits="userSpaceOnUse">${hs.map((h,i)=>`<stop offset="${i/(n-1)}" stop-color="${tempColor(h.t)}"/>`).join("")}</linearGradient><linearGradient id="wxa" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${tempColor(avg)}" stop-opacity=".32"/><stop offset="1" stop-color="${tempColor(avg)}" stop-opacity="0"/></linearGradient></defs>
+        <path class="wz-area" d="${d} L${x(n-1)},70 L${x(0)},70Z" fill="url(#wxa)"/>
+        <path class="wz-line" d="${d}" pathLength="1" fill="none" stroke="url(#wxg)" stroke-width="2.4" stroke-linecap="round"/>
+        ${hs.map((h,i)=>`<circle cx="${P[i][0]}" cy="${P[i][1]}" r="${i?2.4:3.6}" fill="${i?"var(--paper)":tempColor(h.t)}" stroke="${tempColor(h.t)}" stroke-width="1.6"/>
+        <text x="${P[i][0]}" y="${P[i][1]-9}" text-anchor="middle" font-size="10.5" fill="var(--ink)" font-weight="${i?400:600}">${deg(h.t)}</text>
+        <svg x="${P[i][0]-8}" y="76" width="16" height="16" viewBox="0 0 24 24">${WX[wxGlyph(h.kind,h.day)]}</svg>
+        ${h.p>=20?`<text x="${P[i][0]}" y="101" text-anchor="middle" font-size="8.5" fill="#4f8fe8">${Math.round(h.p)}%</text>`:""}
+        <text x="${P[i][0]}" y="114" text-anchor="middle" font-size="9.5" fill="var(--quiet)">${i?String(h.h).padStart(2,"0"):T("Now","Сейчас")}</text>`).join("")}</svg>`;
+    }
+    function renderWx(){
+      if(!WXD)return;const n=WXD.now;
+      $("#wxIco").innerHTML=wx(wxGlyph(n.kind,n.day));$("#wxTemp").textContent=deg(n.t);
+      $("#wxBtn").title=`${T("Moscow","Москва")} · ${wxName(n.kind)}`;
+      if($("#wxWrap").classList.contains("open"))renderWxPop();
+    }
+    function renderWxPop(){
+      if(!WXD){$("#wxPop").innerHTML=`<div class="wz-top"><b>${T("Moscow","Москва")}</b><span>${T("Loading…","Загружаю…")}</span></div>`;return}
+      const W=WXD,n=W.now,t0=W.days[0]||{min:n.t,max:n.t,rise:"07:00",set:"18:00",uv:0};
+      const gmin=Math.min(n.t,...W.days.map(d=>d.min)),gmax=Math.max(n.t,...W.days.map(d=>d.max)),span=Math.max(1,gmax-gmin);
+      const loc=LANG==="ru"?"ru-RU":"en-GB",cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+      const days=W.days.map((d,k)=>{
+        const name=k?cap(new Date(d.date+"T12:00").toLocaleDateString(loc,{weekday:"short"}).replace(".","")):T("Today","Сегодня");
+        const l=(d.min-gmin)/span*100,w=Math.max(4,(d.max-d.min)/span*100);
+        return`<div class="wz-day"><span class="d">${name}</span>${wx(wxGlyph(d.kind))}<span class="p">${d.p>=20?Math.round(d.p)+"%":""}</span><span class="mn">${deg(d.min)}</span><div class="wz-range"><i style="left:${l}%;width:${w}%;--c1:${tempColor(d.min)};--c2:${tempColor(d.max)};animation-delay:${.15+k*.05}s"></i>${k?"":`<b style="left:${(n.t-gmin)/span*100}%"></b>`}</div><span class="mx">${deg(d.max)}</span></div>`;
+      }).join("");
+      const P=mskParts(),nm=+P.hour*60+ +P.minute,mins=s=>{const[a,b]=s.split(":");return+a*60+ +b},rise=mins(t0.rise),set=mins(t0.set),f=Math.min(1,Math.max(0,(nm-rise)/(set-rise)));
+      const sx=66-56*Math.cos(Math.PI*f),sy=46-38*Math.sin(Math.PI*f),dl=set-rise;
+      const wind=n.wind,windTxt=wind<2?T("Calm","Штиль"):wind<5?T("Light","Слабый"):wind<9?T("Moderate","Умеренный"):T("Strong","Сильный");
+      const hum=Math.round(n.hum),humTxt=hum<35?T("Dry","Сухо"):hum<70?T("Comfortable","Комфортно"):T("Humid","Влажно");
+      const mm=Math.round(n.pres*.750062),presTxt=mm<750?T("Low","Пониженное"):mm>770?T("High","Повышенное"):T("Normal","В норме");
+      const uv=Math.round(t0.uv),uvTxt=uv<=2?T("Low","Низкий"):uv<=5?T("Moderate","Умеренный"):uv<=7?T("High","Высокий"):T("Very high","Очень высокий");
+      $("#wxPop").innerHTML=`
+        <div class="wz-top"><b>${T("Moscow","Москва")}</b><span>${mskTime(new Date())} MSK</span></div>
+        <div class="wz-now"><span class="glyph">${wx(wxGlyph(n.kind,n.day))}</span><div><div class="wz-big">${deg(n.t)}</div></div><div class="wz-hl"><b>${wxName(n.kind)}</b><br>${T("Feels like","Ощущается как")} ${deg(n.feels)}<br>↑${deg(t0.max)} ↓${deg(t0.min)}</div></div>
+        <div class="wz-sec wz-hours"><div class="wz-label">${T("Next 24 hours","Ближайшие сутки")}</div>${hoursSVG(W.hours)}</div>
+        <div class="wz-sec"><div class="wz-label">${count(W.days.length,["day","days"],["день","дня","дней"])}</div>${days}</div>
+        <div class="wz-sec wz-grid">
+          <div class="wz-tile"><small>${T("Wind","Ветер")}</small><b>${Math.round(wind)}<em>${T("m/s","м/с")}</em></b><span>${windTxt}</span><div class="wz-meter"><i style="width:${Math.min(100,wind/15*100)}%"></i></div></div>
+          <div class="wz-tile"><small>${T("Humidity","Влажность")}</small><b>${hum}<em>%</em></b><span>${humTxt}</span><div class="wz-meter"><i style="width:${hum}%;--mc:#4f8fe8"></i></div></div>
+          <div class="wz-tile"><small>${T("Pressure","Давление")}</small><b>${LANG==="ru"?mm:Math.round(n.pres)}<em>${T("hPa","мм рт. ст.")}</em></b><span>${presTxt}</span><div class="wz-meter"><i style="width:${Math.min(100,Math.max(0,(mm-730)/60*100))}%"></i></div></div>
+          <div class="wz-tile"><small>${T("UV index","УФ-индекс")}</small><b>${uv}</b><span>${uvTxt}</span><div class="wz-meter uv"><b style="left:${Math.min(100,uv/11*100)}%"></b></div></div>
+          <div class="wz-tile wz-sun"><svg viewBox="0 0 132 52"><path d="M10 46 A56 38 0 0 1 122 46" fill="none" stroke="var(--line)" stroke-width="2" stroke-dasharray="3 4"/><path class="wz-line" d="M10 46 A56 38 0 0 1 122 46" pathLength="1" fill="none" stroke="#f2b84b" stroke-width="2" style="stroke-dasharray:${f} 1;stroke-dashoffset:${f};animation-name:wxdraw"/><line x1="2" x2="130" y1="46" y2="46" stroke="var(--line)"/>${f>0&&f<1?`<circle cx="${sx}" cy="${sy}" r="5" fill="#f2b84b"/><circle cx="${sx}" cy="${sy}" r="9" fill="#f2b84b" opacity=".2"/>`:""}</svg>
+            <dl><dt>${T("Sunrise","Восход")}</dt><dd>${t0.rise}</dd><dt>${T("Sunset","Закат")}</dt><dd>${t0.set}</dd><dt>${T("Daylight","Световой день")}</dt><dd>${Math.floor(dl/60)} ${T("h","ч")} ${dl%60} ${T("min","мин")}</dd></dl></div>
+        </div>
+        <div class="wz-foot">${T("Updated","Обновлено")} ${mskTime(new Date(W.at))} · ${W.src}</div>`;
+    }
+    const wxWrap=$("#wxWrap"),setWx=o=>{wxWrap.classList.toggle("open",o);$("#wxBtn").setAttribute("aria-expanded",o);if(o){setMenu(false);renderWxPop()}};
+    $("#wxBtn").onclick=e=>{e.stopPropagation();setWx(!wxWrap.classList.contains("open"))};
+    document.addEventListener("click",e=>{if(!e.target.closest("#wxPop,#wxBtn"))setWx(false)});
+    addEventListener("keydown",e=>{if(e.key==="Escape"&&wxWrap.classList.contains("open")){e.stopImmediatePropagation();setWx(false)}},true);
+    loadWeather();setInterval(loadWeather,15*60e3);
+
+    function tickClock(){const d=new Date(),t=timeStr(d);$("#clock").innerHTML=`${mskTime(d)}<span class="tz">MSK</span>`;$("#homeTime").textContent=t;$("#homeDate").textContent=d.toLocaleDateString(LANG==="ru"?"ru-RU":"en-GB",{weekday:"long",day:"numeric",month:"long"})}
     setInterval(tickClock,15000);
     applyLang();
     const qs=params.get("space");
