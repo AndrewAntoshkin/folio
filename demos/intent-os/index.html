@@ -1507,7 +1507,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     let ovRun=0,morphGhosts=[];
     /* One card, two sizes: the mini and the full module are the same object, so it grows / shrinks in place
        (frame animates size + radius, the compact and full faces cross-fade inside it) instead of one replacing the other. */
-    function morphCard(mini,card,toMini,dur,fadeAt=0){
+    function morphCard(mini,card,toMini,dur,fadeAt=0,simple=false){
       const a=mini.getBoundingClientRect(),b=card.getBoundingClientRect(),W=card.offsetWidth,H=card.offsetHeight;
       if(!a.width||!b.width||a.bottom<0||a.top>innerHeight||b.right<0||b.left>innerWidth||b.bottom<0||b.top>innerHeight)return null;
       const from=toMini?b:a,to=toMini?a:b,rad=toMini?[20,14]:[14,20];
@@ -1520,11 +1520,11 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
          travel on their own (position, size, font-size, line-height, colour), so type grows / shrinks instead of dissolving. */
       const norm=t=>t.replace(/\s+/g," ").trim(),pairs=[];
       const mt=mini.querySelector("b"),ct=card.querySelector(".m-title");
-      if(mt&&ct&&norm(mt.textContent)===norm(ct.textContent))pairs.push({m:mt,c:ct,text:1});
+      if(!simple&&mt&&ct&&norm(mt.textContent)===norm(ct.textContent))pairs.push({m:mt,c:ct,text:1});
       const mp=mini.querySelector("p");
-      if(mp){const t=norm(mp.textContent),cp=[...card.querySelectorAll(".m-body .text,.m-body p")].find(n=>norm(n.textContent)===t);if(cp)pairs.push({m:mp,c:cp,text:1})}
+      if(!simple&&mp){const t=norm(mp.textContent),cp=[...card.querySelectorAll(".m-body .text,.m-body p")].find(n=>norm(n.textContent)===t);if(cp)pairs.push({m:mp,c:cp,text:1})}
       const mi=mini.querySelector(".mini-head .ic"),ci=card.querySelector(".m-head .ic");
-      if(mi&&ci)pairs.push({m:mi,c:ci});
+      if(!simple&&mi&&ci)pairs.push({m:mi,c:ci});
       const box=(el,o,z)=>{const r=el.getBoundingClientRect(),s=getComputedStyle(el),p=n=>(parseFloat(s[n])||0)*z,l=p("borderLeftWidth")+p("paddingLeft"),t=p("borderTopWidth")+p("paddingTop");
         return{left:r.left-o.left+l,top:r.top-o.top+t,width:r.width-l-p("borderRightWidth")-p("paddingRight"),height:r.height-t-p("borderBottomWidth")-p("paddingBottom")}};
       const look=(el,z)=>{const s=getComputedStyle(el),ls=parseFloat(s.letterSpacing),px=v=>(parseFloat(v)*z)+"px";return{fontSize:px(s.fontSize),lineHeight:px(s.lineHeight),letterSpacing:(isNaN(ls)?0:ls*z)+"px",fontWeight:s.fontWeight,color:s.color,opacity:s.opacity}};
@@ -1553,7 +1553,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         g.appendChild(n);
       });
       g.animate([{...geo(from),borderRadius:rad[0]+"px"},{...geo(to),borderRadius:rad[1]+"px"}],opt);
-      if(dimO<1||dimF){const dim={opacity:dimO,filter:dimF||calm},clear={opacity:1,filter:calm};g.animate(toMini?[dim,clear]:[clear,dim],opt)}
+      if(dimO<1){const dim={opacity:dimO},clear={opacity:1};g.animate(toMini?[dim,clear]:[clear,dim],opt)}
       const lin={duration:dur,easing:"linear",fill:"forwards"};
       if(toMini){
         /* the frame shrinks fast (ease-out), so the unscaled full face has to leave early and the mini face arrive late */
@@ -1587,7 +1587,10 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       /* every card that is on screen morphs with its mini (the active one first, then neighbours / other flows);
          the rest — far off-screen — just ease in or out in place instead of flying across the canvas */
       const morphs=new Map();
-      const morphAll=(toMini,dur,fadeAt)=>order.forEach(i=>{const c=minis[i],card=cardOf(findModuleById(c.dataset.id));const gh=card?morphCard(c,card,toMini,dur,fadeAt):null;if(gh){morphs.set(c,gh);morphGhosts.push(gh)}});
+      const loc=activeModule()?findModule(activeModule().id):null;
+      const morphAll=(toMini,dur,fadeAt)=>order.forEach((i,n)=>{const c=minis[i],mod=findModuleById(c.dataset.id),card=cardOf(mod);
+        if(!card)return;const near=n===0||(loc&&findModule(mod.id).fi===loc.fi&&Math.abs(findModule(mod.id).mi-loc.mi)===1);if(!near)return;
+        const gh=morphCard(c,card,toMini,dur,fadeAt,n!==0);if(gh){morphs.set(c,gh);morphGhosts.push(gh)}});
       if(open){
         el.animate([{opacity:0},{opacity:1}],{duration:340,delay:120,easing:"ease-out",fill:"backwards"});
         flowsFade=flows.animate([{opacity:1},{opacity:0}],{duration:300,easing:"ease-out",fill:"forwards"});
@@ -1613,11 +1616,11 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     function findModuleById(id){return allModules().find(m=>m.id===id)}
 
     let drag=null;
-    function pressMini(e){if(e.button!==0||drag)return;drag={card:e.currentTarget,x0:e.clientX,y0:e.clientY,started:false};addEventListener("pointermove",moveMini);addEventListener("pointerup",releaseMini);addEventListener("pointercancel",releaseMini)}
+    function pressMini(e){if(e.button!==0)return;if(drag){if(drag.dropping)return;if(drag.started){releaseMini({type:"pointercancel"});return}releaseListeners();drag=null}drag={card:e.currentTarget,x0:e.clientX,y0:e.clientY,started:false};addEventListener("pointermove",moveMini);addEventListener("pointerup",releaseMini);addEventListener("pointercancel",releaseMini)}
     function liftMini(){
       const card=drag.card,r=card.getBoundingClientRect(),slot=document.createElement("div");
       slot.className="slot";slot.style.width=r.width+"px";slot.style.height=r.height+"px";card.before(slot);
-      Object.assign(drag,{slot,offX:drag.x0-r.left,offY:drag.y0-r.top,started:true});
+      Object.assign(drag,{slot,offX:drag.x0-r.left,offY:drag.y0-r.top,started:true,row:card.parentElement,idx:[...card.parentElement.children].indexOf(slot)});
       Object.assign(card.style,{position:"fixed",zIndex:1000,pointerEvents:"none",margin:0,width:r.width+"px",left:r.left+"px",top:r.top+"px"});
       document.body.appendChild(card);card.getBoundingClientRect();card.classList.add("lifted");document.body.classList.add("dragging");
     }
@@ -1627,7 +1630,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     }
     function moveMini(e){
       if(!drag)return;
-      if(!drag.started){if(Math.hypot(e.clientX-drag.x0,e.clientY-drag.y0)<5)return;liftMini()}
+      if(!drag.started){if(Math.hypot(e.clientX-drag.x0,e.clientY-drag.y0)<8)return;liftMini()}
       e.preventDefault();drag.card.style.left=e.clientX-drag.offX+"px";drag.card.style.top=e.clientY-drag.offY+"px";
       let row=null,best=Infinity;
       $$("#ovFlows .ov-list").forEach(l=>{const r=l.getBoundingClientRect(),d=e.clientY<r.top?r.top-e.clientY:e.clientY>r.bottom?e.clientY-r.bottom:0;if(d<best){best=d;row=l}});
@@ -1635,10 +1638,16 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       if(!(drag.slot.parentElement===row&&drag.slot.nextElementSibling===before))flip(()=>row.insertBefore(drag.slot,before));
       const sh=$(".ov-shell"),sr=sh.getBoundingClientRect();if(e.clientY<sr.top+70)sh.scrollTop-=14;else if(e.clientY>sr.bottom-70)sh.scrollTop+=14;
     }
-    function releaseMini(){
-      removeEventListener("pointermove",moveMini);removeEventListener("pointerup",releaseMini);removeEventListener("pointercancel",releaseMini);
+    function releaseListeners(){removeEventListener("pointermove",moveMini);removeEventListener("pointerup",releaseMini);removeEventListener("pointercancel",releaseMini)}
+    function releaseMini(e){
+      releaseListeners();
       if(!drag)return;const{card,slot,started}=drag;
-      if(!started){drag=null;const loc=findModule(card.dataset.id);if(loc){focusModule(loc.fi,loc.mi);toggleOverview(false)}return}
+      const open=()=>{const loc=findModule(card.dataset.id);if(loc){focusModule(loc.fi,loc.mi);toggleOverview(false)}};
+      if(!started){drag=null;open();return}
+      /* a hand that drifted a little during a click, and dropped the card where it was, still counts as a click */
+      if(e?.type!=="pointercancel"&&slot.parentElement===drag.row&&[...drag.row.children].indexOf(slot)===drag.idx&&Math.hypot(e.clientX-drag.x0,e.clientY-drag.y0)<48){
+        document.body.classList.remove("dragging");card.classList.remove("lifted");card.removeAttribute("style");slot.replaceWith(card);drag=null;open();return}
+      drag.dropping=true;
       const r=slot.getBoundingClientRect();document.body.classList.remove("dragging");
       card.classList.add("settling");card.classList.remove("lifted");card.style.left=r.left+"px";card.style.top=r.top+"px";
       const done=()=>{card.classList.remove("settling");card.removeAttribute("style");slot.replaceWith(card);drag=null;
