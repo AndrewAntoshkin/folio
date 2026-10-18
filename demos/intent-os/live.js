@@ -251,7 +251,7 @@ ${STYLE}`;
   const style = document.createElement("style");
   style.textContent = `
     .home-line.live-busy .cmd{animation:live-pulse 1.1s ease-in-out infinite}
-    .home-line.live-busy input{opacity:.55}
+    .home-line.live-busy input,.home-line.live-busy textarea{opacity:.55}
     .live-st{display:inline-flex;align-items:center;gap:8px}
     .live-dot{width:6px;height:6px;border-radius:50%;background:currentColor;animation:live-pulse 1.1s ease-in-out infinite}
     @keyframes live-pulse{0%,100%{opacity:.25}50%{opacity:1}}
