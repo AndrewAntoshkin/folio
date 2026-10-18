@@ -105,12 +105,12 @@
     .um-row em{font-style:normal;color:var(--quiet);font-size:11.5px}
     .um-sep{height:1px;margin:4px 6px;background:var(--line)}
 
-    .home{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity .6s var(--ease),transform .8s var(--ease),filter .6s var(--ease)}
+    .home{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding-bottom:34px;transition:opacity .6s var(--ease),transform .8s var(--ease),filter .6s var(--ease)}
     .os:not(.view-home) .home{opacity:0;transform:scale(1.05);filter:blur(8px);pointer-events:none}
     .os.view-timeline .home{transform:translateY(-18%)}
-    .home-time{font-size:76px;line-height:1;font-weight:300;letter-spacing:-.045em;color:rgba(47,47,47,.6);font-variant-numeric:tabular-nums}
-    .home-date{margin-top:-10px;font-size:13px;color:var(--quiet)}
-    .home-line{width:min(600px,86vw);min-height:60px;margin-top:18px;display:flex;align-items:flex-end;gap:10px;padding:13px 14px 13px 22px;border-radius:18px;background:var(--paper);border:1px solid var(--rim);box-shadow:0 1px 2px rgba(0,0,0,.04),0 24px 60px -22px rgba(0,0,0,.2);transition:box-shadow .4s var(--ease),transform .4s var(--ease)}
+    .home-time{font-size:72px;line-height:1;font-weight:300;letter-spacing:-.045em;color:rgba(47,47,47,.6);font-variant-numeric:tabular-nums}
+    .home-date{margin-top:-6px;font-size:13px;color:var(--quiet)}
+    .home-line{width:min(620px,88vw);min-height:58px;margin-top:10px;display:flex;align-items:flex-end;gap:10px;padding:12px 14px 12px 22px;border-radius:18px;background:var(--paper);border:1px solid var(--rim);box-shadow:0 1px 2px rgba(0,0,0,.04),0 24px 60px -22px rgba(0,0,0,.2);transition:box-shadow .4s var(--ease),transform .4s var(--ease)}
     .home-line:focus-within{transform:translateY(-2px);box-shadow:0 1px 2px rgba(0,0,0,.05),0 34px 80px -26px rgba(0,0,0,.28)}
     .home-line textarea{flex:1;min-width:0;align-self:stretch;height:32px;max-height:156px;padding:4px 0;margin:0;border:0;outline:0;background:none;font:inherit;font-size:17px;line-height:24px;resize:none;overflow-y:auto;color:inherit;scrollbar-width:thin}
     .home-line textarea::placeholder{color:var(--faint)}
@@ -123,18 +123,61 @@
     .cmd{color:var(--faint);font-size:13px}
     .kbd{display:inline-block;min-width:18px;padding:1px 5px;border:1px solid var(--line);border-radius:5px;background:rgba(255,255,255,.3);font:10px ui-monospace,SFMono-Regular,Menlo,monospace;text-align:center;box-shadow:0 1px 0 rgba(47,47,47,.12);transition:transform .12s var(--ease),box-shadow .12s var(--ease),background .2s}
     .kbd.pressed{transform:translateY(1px);box-shadow:none;background:#fff}
-    /* parsed tokens stack one under another; the row keeps its 24px so nothing re-centres while typing, and the chips below step aside */
-    .home-parse{height:24px;width:min(600px,86vw);display:flex;flex-direction:column;align-items:center;gap:5px;opacity:0;transition:opacity .3s;position:relative;z-index:1;pointer-events:none}
+    /* parsed tokens sit on one row; the 4 live Space cards below stay visible and react to what you type */
+    .home-parse{min-height:22px;margin:-4px 0 -2px;width:min(620px,88vw);display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;opacity:0;transition:opacity .25s;position:relative;z-index:1;pointer-events:none}
     .home-parse.show{opacity:1}
-    .home:has(.home-parse.show) .blueprints,.home:has(.home-parse.show) .live-badge{opacity:0;pointer-events:none}
+    .home:has(.home-line.live-busy) .blueprints,.home:has(.home-line.live-busy) .live-badge{opacity:.25;pointer-events:none}
     .blueprints,.live-badge{transition:opacity .3s}
     .tok{flex:none;max-width:100%;overflow:hidden;text-overflow:ellipsis;padding:3px 9px;border-radius:999px;background:var(--chip);color:var(--quiet);font-size:10.5px;white-space:nowrap;animation:pop .35s var(--spring) both}
     .tok b{margin-left:4px;color:var(--ink);font-weight:500}
     @keyframes pop{from{opacity:0;transform:scale(.85)}}
-    .blueprints{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:680px}
-    .blueprints button{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.28);padding:7px 14px;color:var(--quiet);font-size:12px;transition:background .25s,color .25s,transform .4s var(--spring)}
-    .blueprints button:hover{background:rgba(255,255,255,.8);color:var(--ink);transform:translateY(-2px)}
-    .blueprints button:active{transform:scale(.95);transition-duration:.08s}
+    .blueprints{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:min(648px,90vw)}
+    .sig{position:relative;display:flex;flex-direction:column;justify-content:space-between;gap:7px;min-height:112px;padding:12px 14px 11px;border:1px solid var(--rim);border-radius:16px;background:rgba(250,250,250,.52);box-shadow:0 1px 2px rgba(0,0,0,.03),0 16px 36px -22px rgba(0,0,0,.15);color:var(--ink);text-align:left;cursor:pointer;overflow:hidden;-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);transition:background .3s var(--ease),transform .45s var(--spring),box-shadow .35s var(--ease),border-color .3s,opacity .3s}
+    .sig:hover{background:var(--paper);transform:translateY(-2px);box-shadow:0 1px 2px rgba(0,0,0,.04),0 24px 50px -22px rgba(0,0,0,.22)}
+    .sig:active{transform:scale(.985);transition-duration:.1s}
+    .sig.pulse{border-color:rgba(63,116,240,.38);box-shadow:0 0 0 3px var(--accent-soft),0 20px 44px -22px rgba(0,0,0,.2)}
+    .sig.match{border-color:var(--accent);background:var(--paper);box-shadow:0 0 0 3px var(--accent-soft),0 22px 48px -20px rgba(0,0,0,.24);transform:translateY(-2px)}
+    .sig.dim{opacity:.42;transform:scale(.985)}
+    .sig-top{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:10.5px;color:var(--quiet)}
+    .sig-who{display:inline-flex;align-items:center;gap:6px;min-width:0}
+    .sig-avs{display:inline-flex;align-items:center}.sig-avs .avatar{margin:0;width:18px;height:18px;font-size:7px;border:1.5px solid rgba(250,250,250,.85)}.sig-avs .avatar+.avatar{margin-left:-5px}
+    .sig-space{font-weight:500;color:var(--ink);opacity:.78;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .sig-rule{display:inline-flex;align-items:center;gap:5px;padding:2px 7px;border-radius:999px;background:var(--chip);font-size:10px;color:var(--quiet);white-space:nowrap;font-variant-numeric:tabular-nums;transition:background .3s,color .3s}
+    .sig.pulse .sig-rule{background:var(--accent-soft);color:var(--accent)}
+    .sig-dot{width:5px;height:5px;border-radius:50%;background:#3fb27f;box-shadow:0 0 0 2px rgba(63,178,127,.2);animation:sig-breathe 2.6s ease-in-out infinite}
+    .sig.pulse .sig-dot{background:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+    @keyframes sig-breathe{0%,100%{opacity:.45;transform:scale(.9)}50%{opacity:1;transform:scale(1.15)}}
+    .sig-body{display:flex;flex-direction:column;gap:2px;min-height:46px}
+    .sig-body.swap{animation:sig-swap .42s var(--ease)}
+    @keyframes sig-swap{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+    .sig-t{display:block;font-size:13px;font-weight:500;letter-spacing:-.015em;line-height:1.25;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .sig-d{margin:0;font-size:11.5px;line-height:1.38;color:var(--quiet);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .sig-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:6px;border-top:1px solid var(--line)}
+    .sig-viz{display:flex;align-items:center;gap:6px;min-width:0;flex:1;font-size:10px;color:var(--quiet);font-variant-numeric:tabular-nums}
+    .sv-tl{position:relative;flex:1;max-width:118px;height:6px;border-radius:3px;background:var(--chip);overflow:hidden}
+    .sv-tl i{position:absolute;top:0;bottom:0;border-radius:2px;background:rgba(47,47,47,.22)}
+    .sv-tl i.prop{background:var(--accent);animation:sig-breathe 1.8s ease-in-out infinite}
+    .sv-tl b{position:absolute;top:-1px;bottom:-1px;width:2px;background:var(--ink);border-radius:1px}
+    .sv-bars{display:inline-flex;align-items:flex-end;gap:2.5px;height:14px}
+    .sv-bars i{width:4px;border-radius:1.5px;background:rgba(47,47,47,.22);transition:height .4s var(--spring),background .3s}
+    .sv-bars i.on{background:var(--accent)}
+    .sv-wx{display:inline-flex;align-items:center;gap:4px}
+    .sv-wx svg{width:14px;height:14px;display:block}
+    .sv-pins{display:inline-flex;align-items:center;gap:4px}
+    .sv-pins span{padding:1px 5px;border-radius:4px;background:var(--chip);font-size:9.5px}
+    .sv-pins span.on{background:var(--accent-soft);color:var(--accent);font-weight:500}
+    .sig-right{display:inline-flex;align-items:center;gap:6px;flex:none}
+    .sig-dots{display:inline-flex;gap:3px;padding:2px}
+    .sig-dots i{width:4px;height:4px;border-radius:2px;background:var(--faint);transition:width .35s var(--spring),background .25s}
+    .sig-dots i.on{width:11px;background:var(--ink)}
+    .sig-act{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border:0;border-radius:999px;background:var(--chip);color:var(--ink);font-size:10.5px;font-weight:500;white-space:nowrap;transition:background .2s,color .2s,transform .3s var(--spring)}
+    .sig-act:hover{background:var(--ink);color:var(--fog);transform:translateX(1px)}
+    body.night .sig{background:rgba(33,33,35,.68);border-color:rgba(255,255,255,.07);box-shadow:none}
+    body.night .sig:hover,body.night .sig.match{background:#252528;border-color:rgba(255,255,255,.14)}
+    body.night .sig.pulse{border-color:rgba(134,168,255,.45)}
+    body.night .sig-avs .avatar{border-color:#212121}
+    body.night .sv-tl i:not(.prop),body.night .sv-bars i:not(.on){background:rgba(255,255,255,.22)}
+    @media(max-width:640px){.blueprints{grid-template-columns:1fr}}
     .timeline-hint{position:absolute;bottom:72px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:4px;border:0;background:none;color:var(--quiet);font-size:11px}
     .timeline-hint span{animation:bob 2.4s var(--ease) infinite}.timeline-hint .ic{width:16px;height:16px}.timeline-hint:hover{color:var(--ink)}
     @keyframes bob{50%{transform:translateY(-4px)}}
@@ -931,6 +974,121 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     };
     const BLUEPRINT_CHIPS=()=>[["inbox","mail",T("Review Inbox","Разобрать входящие")],["trip","plane",T("Plan a trip to Lisbon","Спланировать поездку в Лиссабон")],["flat","home",T("Find an apartment in Berlin","Найти квартиру в Берлине")],["gym","music",T("Get ready for the gym","Собраться в спортзал")],["wake","alarm",T("Wake me at 7:30 unless it snows","Разбуди меня в 7:30, если не будет снега")],["find","search",T("Find black Nike sneakers","Найди чёрные кроссовки Nike")]];
 
+    const sigState=[0,0,0,0];let sigTurn=0;
+    const HOME_SIGNALS=()=>[
+      {id:"inbox",keys:"inbox mail calendar maya leo sofia coffee invite meeting входящие почта календарь майя лео софья кофе встреч письм",
+        states:[
+          {bp:"inbox",f:0,m:2,avs:[T("Maya Chen","Майя Чен"),T("Calendar","Календарь")],space:T("Inbox","Входящие"),rule:T("Free until 13:00","Окно до 13:00"),
+            t:T("Coffee with Maya at 11:00 · 5 unread","Кофе с Майей в 11:00 · 5 писем"),
+            d:T("Calendar checked your morning: slot is open, reply to Maya is drafted.","Календарь проверил утро: окно свободно, черновик ответа Майе готов."),
+            viz:`<div class="sv-tl"><i class="prop" style="left:22%;width:14%"></i><i style="left:45%;width:17%"></i><i style="left:76%;width:12%"></i><b style="left:14%"></b></div><span>11:00 · Fábrica</span>`,
+            act:T("Confirm 11:00 →","В календарь →")},
+          {bp:"inbox",f:2,m:2,needAuto:true,avs:[T("Calendar","Календарь"),T("Leo Park","Лео Пак")],space:T("Inbox","Входящие"),rule:T("Moved by Calendar","Сдвиг в календаре"),
+            t:T("1:1 with Leo moved to 17:30","1:1 с Лео перенесён на 17:30"),
+            d:T("Calendar shifted the call so it doesn’t overlap with Design critique at 16:00.","Календарь сдвинул звонок, чтобы он не перекрывал дизайн-критику в 16:00."),
+            viz:`<div class="sv-tl"><i style="left:22%;width:14%"></i><i style="left:74%;width:11%"></i><i class="prop" style="left:87%;width:10%"></i><b style="left:68%"></b></div><span>17:30 · ${T("Call","Созвон")}</span>`,
+            act:T("See invite →","К встрече →")},
+          {bp:"inbox",f:1,m:0,avs:[T("Leo Park","Лео Пак"),T("Sofia Reyes","Софья Рейес")],space:T("Inbox","Входящие"),rule:T("2 awaiting reply","2 ждут ответа"),
+            t:T("Leo on Q4 draft · Invoice #2291","Лео по черновику Q4 · счёт №2291"),
+            d:T("“Section two feels heavy — maybe a chart?” · Sofia asks to send the receipt.","«Второй раздел тяжеловат — может, график?» · Софья ждёт отправку чека."),
+            viz:`<div class="sv-pins"><span class="on">${T("Leo · 2 new","Лео · 2 новых")}</span><span>${T("Sofia · #2291","Софья · №2291")}</span></div>`,
+            act:T("Reply →","Ответить →")}
+        ]},
+      {id:"trip",keys:"trip lisbon flight tap weather rain hotel stay maya sofia budget поездка лиссабон рейс билет погода дождь жильё отель майя бюджет",
+        states:[
+          {bp:"trip",f:0,m:0,avs:[T("Airline","Авиакомпания"),T("Stays","Жильё")],space:T("Lisbon","Лиссабон"),rule:T("Under €900 · −€124","Лимит €900 · −€124"),
+            t:T("Direct TAP dipped to €184","Прямой TAP снизился до €184"),
+            d:T("Flights for two + 3 nights at Casa do Largo total €776 — well within your €900 cap.","Перелёт на двоих и 3 ночи в Casa do Largo выходят в €776 — внутри лимита €900."),
+            viz:`<div class="sv-bars"><i style="height:11px"></i><i style="height:10px"></i><i style="height:7px"></i><i style="height:13px"></i><i class="on" style="height:9px"></i></div><span>€776 / €900</span>`,
+            act:T("Flights →","К рейсам →")},
+          {bp:"trip",f:2,m:3,needAuto:true,avs:[T("Weather","Погода"),T("Maya Chen","Майя Чен")],space:T("Lisbon","Лиссабон"),rule:T("Friday · 80% rain","Пятница · дождь 80%"),
+            t:T("Rain on Friday — swap museum & walk?","Дождь в пятницу — поменять пт и сб?"),
+            d:T("80% rain Friday afternoon: move Gulbenkian museum to Friday and keep Saturday outdoors.","В пятницу днём 80% дождя: Погода предлагает перенести музей Гюльбенкяна на пятницу."),
+            viz:`<div class="sv-wx">${wx("sun")}<span>21°</span>${wx("rain")}<span>80%</span>${wx("part")}<span>19°</span></div>`,
+            act:T("Swap Fri & Sat →","Поменять дни →")},
+          {bp:"trip",f:0,m:2,avs:[T("Maya Chen","Майя Чен"),T("Sofia Reyes","Софья Рейес")],space:T("Lisbon","Лиссабон"),rule:T("Ready to book","Готово к брони"),
+            t:T("Maya & Sofia confirmed 07:40 TAP","Майя и Софья за рейс в 07:40"),
+            d:T("“TAP at 07:40 works for both of us — let’s book window seats tonight.”","«TAP в 07:40 подходит обеим — давай вечером бронировать места у окна»."),
+            viz:`<div class="sv-pins"><span class="on">07:40 → 10:05</span><span>${T("2 adults","2 взр.")}</span></div>`,
+            act:T("Notify Maya →","Написать Майе →")}
+        ]},
+      {id:"flat",keys:"flat apartment berlin rent map bike viewing weber daniel schufa квартира берлин аренда жильё карта просмотр даниэль офис",
+        states:[
+          {bp:"flat",f:1,m:0,avs:[T("Maya Chen","Майя Чен"),T("Maps","Карты")],space:T("Berlin","Берлин"),rule:T("≤ 25 min to office","≤ 25 мин до офиса"),
+            t:T("Maya shortlisted Kastanienallee 7","Майя отметила Kastanienallee 7"),
+            d:T("South-facing balcony by U2 · 16 min by bike to the office · €2,150 / month.","Балкон на юг рядом с U2 · 16 мин на велосипеде до офиса · €2 150 / мес."),
+            viz:`<div class="sv-pins"><span>11 ${T("min","мин")}</span><span class="on">16 ${T("min","мин")} · U2</span><span>20 ${T("min","мин")}</span></div>`,
+            act:T("On map →","На карте →")},
+          {bp:"flat",f:0,m:1,avs:[T("Homes","Объявления"),T("Sofia Reyes","Софья Рейес")],space:T("Berlin","Берлин"),rule:T("Limit €2,200 / mo","Лимит €2 200 / мес"),
+            t:T("Graefestraße 41 is €310 under limit","Graefestraße 41 на €310 ниже лимита"),
+            d:T("Cheapest 3-room with a garden (€1,890), though 28 min by bike (+3 min over rule).","Самая выгодная трёшка с садом (€1 890), но 28 мин до офиса (+3 мин к правилу)."),
+            viz:`<div class="sv-bars"><i style="height:10px"></i><i style="height:13px"></i><i style="height:12px"></i><i class="on" style="height:8px"></i></div><span>€1 890 / €2 200</span>`,
+            act:T("Compare →","Сравнить →")},
+          {bp:"flat",f:2,m:0,avs:[T("Calendar","Календарь"),"Frau Weber"],space:T("Berlin","Берлин"),rule:T("Saturday · 2 slots","Суббота · 2 окна"),
+            t:T("Viewings at 11:00 and 14:30 Saturday","Просмотры в субботу в 11:00 и 14:30"),
+            d:T("Frau Weber confirmed 11:00 and asked for SCHUFA; Daniel joins at 14:30 on Torstraße.","Frau Weber ждёт в 11:00 с отчётом SCHUFA; в 14:30 Даниэль покажет Torstraße."),
+            viz:`<div class="sv-pins"><span class="on">${T("Sat 11:00","Сб 11:00")}</span><span>${T("Sat 14:30","Сб 14:30")}</span></div>`,
+            act:T("Book slot →","Записаться →")}
+        ]},
+      {id:"gym",keys:"gym workout wake alarm snow music health report q4 leo revenue спортзал тренировка зал будильник снег утро музыка отчёт квартал выручка лео",
+        states:[
+          {bp:"gym",f:2,m:0,avs:[T("Clock","Часы"),T("Weather","Погода")],space:T("Tomorrow","Завтра"),rule:T("If no snow at 07:15","Без снега в 07:15"),
+            t:T("07:30 alarm · 50% snow at −2°","Будильник 07:30 · снег 50% при −2°"),
+            d:T("Weather checks precipitation at 07:15 and cancels the 07:30 alarm automatically if it snows.","Погода проверит осадки в 07:15 и сама отменит будильник на 07:30, если пойдёт снег."),
+            viz:`<div class="sv-pins"><span class="on">07:15 ❄ 50%</span><span>→ 07:30</span></div>`,
+            act:T("Trigger →","К условию →")},
+          {bp:"gym",f:1,m:0,avs:[T("Health","Здоровье"),T("Music","Музыка")],space:T("Gym","Спортзал"),rule:T("Pause when I leave","Пауза при выходе"),
+            t:T("Leg day · 3 of 4 sessions done","День ног · 3 из 4 тренировок"),
+            d:T("Motivational mix is queued and pauses automatically when you leave the gym.","Плейлист «Мотивация» готов и сам встанет на паузу, когда вы выйдете из зала."),
+            viz:`<div class="sv-bars"><i style="height:10px"></i><i style="height:8px"></i><i style="height:13px"></i><i class="on" style="height:6px"></i></div><span>${T("40 min left","План: 50 мин")}</span>`,
+            act:T("Workout →","К тренировке →")},
+          {bp:"report",f:0,m:0,avs:[T("Sheets","Таблицы"),T("Leo Park","Лео Пак")],space:T("Q4 Report","Отчёт Q4"),rule:T("Numbers from Sheets","Цифры из Таблиц"),
+            t:T("Revenue +18% (€7.2M) · Leo’s note","Выручка +18% (€7,2M) · правка Лео"),
+            d:T("Sofia froze Q4 renewals (€1.42M); Leo suggests replacing the section 2 table with a chart.","Софья зафиксировала продления (€1,42M); Лео просит заменить таблицу на график."),
+            viz:`<div class="sv-bars"><i style="height:6px"></i><i style="height:8px"></i><i style="height:10px"></i><i class="on" style="height:13px"></i></div><span>+18% QoQ</span>`,
+            act:T("Open draft →","Черновик →")}
+        ]}
+    ];
+    function sigCardInner(g, idx, swap=false){
+      const st=g.states[sigState[idx]%g.states.length];
+      return `<div class="sig-top"><span class="sig-who"><span class="sig-avs">${st.avs.map(a=>avatar(a,"xs")).join("")}</span><span class="sig-space">${esc(st.space)}</span></span><span class="sig-rule"><i class="sig-dot"></i>${esc(st.rule)}</span></div>
+        <div class="sig-body${swap?" swap":""}"><b class="sig-t">${esc(st.t)}</b><p class="sig-d">${esc(st.d)}</p></div>
+        <div class="sig-foot"><div class="sig-viz">${st.viz}</div><div class="sig-right"><span class="sig-dots">${g.states.map((_,k)=>`<i class="${k===sigState[idx]%g.states.length?"on":""}" data-sdot="${k}"></i>`).join("")}</span><span class="sig-act" data-sact="1">${esc(st.act)}</span></div></div>`;
+    }
+    function renderSignals(){
+      const box=$("#blueprints");if(!box)return;
+      const cards=HOME_SIGNALS();
+      box.innerHTML=cards.map((g,i)=>`<article class="sig" data-sig="${i}" data-bp="${g.states[sigState[i]%g.states.length].bp}" tabindex="0" role="button">${sigCardInner(g,i)}</article>`).join("");
+    }
+    function stepSignal(idx, nextState){
+      const cards=HOME_SIGNALS(),g=cards[idx],el=$$("#blueprints .sig")[idx];
+      if(!g||!el)return;
+      sigState[idx]=nextState!=null?nextState:(sigState[idx]+1)%g.states.length;
+      const st=g.states[sigState[idx]];
+      el.dataset.bp=st.bp;
+      el.innerHTML=sigCardInner(g,idx,true);
+      el.classList.remove("pulse");el.offsetWidth;el.classList.add("pulse");
+      setTimeout(()=>el.classList.remove("pulse"),1800);
+    }
+    function matchSignals(q){
+      const words=q.toLowerCase().trim().split(/\s+/).filter(w=>w.length>1);
+      const cards=HOME_SIGNALS(),els=$$("#blueprints .sig");
+      if(!words.length){els.forEach(e=>e.classList.remove("match","dim"));return}
+      /* if typing about Q4/report/Leo, flip card 4 to its Q4 Report state automatically */
+      if(words.some(w=>/^(report|q4|leo|отч|кварт|лео|выруч|таблиц)/.test(w))&&sigState[3]!==2)stepSignal(3,2);
+      else if(words.some(w=>/^(snow|wake|alarm|7:30|снег|разбуд|будильн|утр)/.test(w))&&sigState[3]!==0)stepSignal(3,0);
+      else if(words.some(w=>/^(gym|workout|leg|спортзал|тренир|зал)/.test(w))&&sigState[3]!==1)stepSignal(3,1);
+      const hits=cards.map((g,i)=>{const hay=(g.keys+" "+g.states.map(s=>`${s.space} ${s.rule} ${s.t} ${s.d}`).join(" ")).toLowerCase();return words.some(w=>hay.includes(w))});
+      const any=hits.some(Boolean);
+      els.forEach((e,i)=>{e.classList.toggle("match",any&&hits[i]);e.classList.toggle("dim",any&&!hits[i])});
+    }
+    let sigHover=false;
+    setInterval(()=>{
+      if(view!=="home"||sigHover||$("#intentInput")?.value.trim())return;
+      stepSignal(sigTurn);
+      sigTurn=(sigTurn+1)%4;
+    },5200);
+
     const VERB={reply:"reply",answer:"reply","ответь":"reply","ответить":"reply",forward:"forward","перешли":"forward","переслать":"forward",archive:"archive",delete:"archive","архивируй":"archive","удали":"archive",summarize:"summarize",summarise:"summarize","перескажи":"summarize","суммируй":"summarize","кратко":"summarize",share:"share","поделись":"share","отправь":"send","отправить":"send",send:"send","поделиться":"share","показать":"show","принять":"accept","забронировать":"book","следить":"track","экспортировать":"export","перенести":"schedule","убери":"archive","убрать":"archive",book:"book","забронируй":"book","запишись":"book","записаться":"book",compare:"compare","сравни":"compare","сравнить":"compare",remind:"remind","напомни":"remind","напомнить":"remind",schedule:"schedule","запланируй":"schedule",draft:"write",write:"write","напиши":"write",translate:"translate","переведи":"translate",find:"find",search:"find","найди":"find","найти":"find",play:"play","включи":"play","включить":"play",wake:"wake","разбуди":"wake",plan:"plan","спланируй":"plan",swap:"swap","поменяй":"swap","поменять":"swap",keep:"keep","оставь":"keep","оставить":"keep",mark:"mark","отметь":"mark","отметить":"mark",call:"call","позвони":"call",open:"open","открой":"open",track:"track","следи":"track",export:"export","экспортируй":"export",add:"add","добавь":"add","добавить":"add",accept:"accept","прими":"accept",decline:"decline","отклони":"decline",show:"show","покажи":"show",start:"start","запусти":"start","таймер":"start",get:"get"};
     const VLABEL={reply:["Reply","Ответить"],forward:["Forward","Переслать"],archive:["Archive","Убрать"],summarize:["Summarize","Кратко"],share:["Share","Поделиться"],send:["Send","Отправить"],book:["Book","Забронировать"],compare:["Compare","Сравнить"],remind:["Remind","Напомнить"],schedule:["Schedule","Запланировать"],write:["Write","Написать"],translate:["Translate","Перевести"],find:["Find","Найти"],play:["Play","Включить"],wake:["Wake","Разбудить"],plan:["Plan","Спланировать"],swap:["Swap","Поменять"],keep:["Keep","Оставить"],mark:["Mark","Отметить"],call:["Call","Позвонить"],open:["Open","Открыть"],track:["Track","Следить"],export:["Export","Экспорт"],add:["Add","Добавить"],accept:["Accept","Принять"],decline:["Decline","Отклонить"],show:["Show","Показать"],start:["Start","Запустить"],get:["Get","Получить"]};
     const vlabel=v=>(VLABEL[v]||[cap(v),cap(v)])[LANG==="ru"?1:0];
@@ -1369,13 +1527,13 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       allModules().forEach(runSteps);
       if(overviewFirst){
         toggleOverview(true,true);
-        flowsFade?.cancel();flowsFade=$("#flows").animate([{opacity:0},{opacity:0}],{duration:1,fill:"forwards"});
+        flowsFade?.cancel();flowsFade=null;$("#flows").style.opacity="0";
         if(!reduce.matches){
           $("#overview").animate([{opacity:0},{opacity:1}],{duration:420,easing:"ease-out"});
           staggerIn($$("#ovFlows .mini"),18,40);
           $$("#overview .ov-title,#overview .rules,#overview .ov-head,#overview .new-flow").forEach((n,i)=>n.animate([{opacity:0,transform:"translateY(10px)"},{opacity:1,transform:"none"}],{duration:520,delay:120+i*35,easing:EASE,fill:"backwards"}));
         }
-      }
+      }else{flowsFade?.cancel();flowsFade=null;$("#flows").style.opacity=""}
       if(S.auto&&!keep){S.autoArmed=true;autoTimer=setTimeout(()=>collaboratorAdds(S.id),S.auto.delay)}
     }
     function collaboratorAdds(id){
@@ -1384,10 +1542,16 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       if(!autoAllowed())return;
       S.autoDone=true;
       const a=S.auto,m=a.make(),fl=S.flows[a.flow];fl.modules.push(m);
-      if(overviewOpen)renderOverview();
+      if(overviewOpen){
+        renderOverview();
+        morphGhosts.forEach(dropGhost);morphGhosts=[];
+        $$("#ovFlows .mini").forEach(c=>c.style.opacity="");
+        const added=$(`#ovFlows .mini[data-id="${m.id}"]`);
+        if(added&&!reduce.matches)added.animate([{opacity:0,transform:"translateY(12px) scale(.95)"},{opacity:1,transform:"none"}],{duration:450,easing:SPRING});
+      }
       $$("#flows .flow")[a.flow].querySelector(".track").insertAdjacentHTML("beforeend",moduleHTML(m,a.flow,fl.modules.length-1));
       layout();arrive(m,"down");
-      showToast(T(`${collabName(a.from)} added a module to ${fl.name}`,`${collabName(a.from)}: новый модуль в «${fl.name}»`),T("Show","Показать"),()=>{toggleOverview(false);const l=findModule(m.id);if(l)focusModule(l.fi,l.mi);setTimeout(()=>cardOf(m)?.classList.add("flash"),300)});
+      showToast(T(`${collabName(a.from)} added a module to ${fl.name}`,`${collabName(a.from)}: новый модуль в «${fl.name}»`),T("Show","Показать"),()=>{const l=findModule(m.id);if(l)focusModule(l.fi,l.mi);toggleOverview(false);setTimeout(()=>cardOf(m)?.classList.add("flash"),300)});
     }
     let navTok=0;
     function goHome(){
@@ -1582,18 +1746,26 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     const dropGhost=g=>{g._hide?.cancel();g.remove()};
     function toggleOverview(force,instant){
       if(!S)return;
-      const el=$("#overview"),isOpen=el.classList.contains("open")&&!el.classList.contains("closing");
-      const open=typeof force==="boolean"?force:!isOpen;
-      if(open===isOpen)return;
+      const el=$("#overview"),flows=$("#flows");
+      const open=typeof force==="boolean"?force:!overviewOpen;
+      if(open===overviewOpen&&!instant)return;
       const run=++ovRun;overviewOpen=open;if(open)ovSel=null;$("#ovFlows").classList.remove("kb");closePalette();renderHints();
       el.getAnimations({subtree:true}).forEach(a=>a.cancel());
+      flows.getAnimations().forEach(a=>a.cancel());
+      flowsFade?.cancel();flowsFade=null;
+      morphGhosts.forEach(dropGhost);morphGhosts=[];
+      el.style.opacity="";
       if(open){el.classList.remove("closing");renderOverview();el.classList.add("open")}
-      const flows=$("#flows");flowsFade?.cancel();flowsFade=null;
-      if(instant||reduce.matches){el.classList.toggle("open",open);el.classList.remove("closing");return}
+      if(instant||reduce.matches){
+        el.classList.toggle("open",open);el.classList.remove("closing");
+        flows.style.opacity=open?"0":"";
+        $$("#ovFlows .mini").forEach(c=>c.style.opacity="");
+        return;
+      }
       if(!open){const sp=$("#space");sp.classList.add("notrans");layout();sp.offsetWidth;requestAnimationFrame(()=>sp.classList.remove("notrans"))}
       const minis=$$("#ovFlows .mini"),chrome=$$("#overview .ov-title,#overview .rules,#overview .ov-head,#overview .new-flow");
       const active=activeModule()?.id,order=minis.map((c,i)=>i).sort((a,b)=>(minis[b].dataset.id===active)-(minis[a].dataset.id===active));
-      morphGhosts.forEach(dropGhost);morphGhosts=[];minis.forEach(c=>c.style.opacity="");
+      minis.forEach(c=>c.style.opacity="");
       /* every card that is on screen morphs with its mini (the active one first, then neighbours / other flows);
          the rest — far off-screen — just ease in or out in place instead of flying across the canvas */
       const morphs=new Map();
@@ -1602,24 +1774,26 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         if(!card)return;const near=n===0||(loc&&findModule(mod.id).fi===loc.fi&&Math.abs(findModule(mod.id).mi-loc.mi)===1);if(!near)return;
         const gh=morphCard(c,card,toMini,dur,fadeAt,n!==0);if(gh){morphs.set(c,gh);morphGhosts.push(gh)}});
       if(open){
+        flows.style.opacity="0";
         el.animate([{opacity:0},{opacity:1}],{duration:340,delay:120,easing:"ease-out",fill:"backwards"});
-        flowsFade=flows.animate([{opacity:1},{opacity:0}],{duration:300,easing:"ease-out",fill:"forwards"});
+        flowsFade=flows.animate([{opacity:1},{opacity:0}],{duration:300,easing:"ease-out"});
         morphAll(true,720);
         const mine=[...morphGhosts];
-        if(mine.length)setTimeout(()=>{if(run!==ovRun)return;mine.forEach(dropGhost);morphGhosts=morphGhosts.filter(g=>!mine.includes(g));morphs.forEach((g,c)=>c.style.opacity="")},740);
+        setTimeout(()=>{if(run!==ovRun)return;mine.forEach(dropGhost);morphGhosts=morphGhosts.filter(g=>!mine.includes(g));minis.forEach(c=>c.style.opacity="");el.getAnimations({subtree:true}).forEach(a=>a.cancel())},740);
         order.filter(i=>!morphs.has(minis[i])).forEach((i,k)=>minis[i].animate([{opacity:0,transform:"translateY(14px) scale(.97)"},{opacity:1,transform:"none"}],{duration:560,delay:120+k*22,easing:EASE,fill:"backwards"}));
         chrome.forEach((n,i)=>n.animate([{opacity:0,transform:"translateY(10px)"},{opacity:1,transform:"none"}],{duration:520,delay:120+i*35,easing:EASE,fill:"backwards"}));
       }else{
+        flows.style.opacity="";
         el.classList.add("closing");
         const dur=560,total=dur+minis.length*14;
         morphAll(false,640,total-320);
         const mine=[...morphGhosts];
-        if(mine.length)setTimeout(()=>{mine.forEach(dropGhost);morphGhosts=morphGhosts.filter(g=>!mine.includes(g))},total+60);
+        setTimeout(()=>{if(run!==ovRun)return;mine.forEach(dropGhost);morphGhosts=morphGhosts.filter(g=>!mine.includes(g))},total+60);
         order.filter(i=>!morphs.has(minis[i])).forEach((i,k)=>minis[i].animate([{opacity:1,transform:"none"},{opacity:0,transform:"scale(.97)"}],{duration:320,delay:k*14,easing:"ease-in",fill:"forwards"}));
         /* the overview chrome (menu, title, labels, other minis) clears out at once so the travelling cards never overlap it */
         el.animate([{opacity:1},{opacity:0}],{duration:220,easing:"ease-out",fill:"forwards"});
         flowsFade=flows.animate([{opacity:0},{opacity:1}],{duration:300,delay:total-320,easing:"ease-out",fill:"backwards"});
-        setTimeout(()=>{if(run!==ovRun)return;el.classList.remove("open","closing");el.getAnimations({subtree:true}).forEach(a=>a.cancel())},total+60);
+        setTimeout(()=>{if(run!==ovRun)return;flowsFade?.cancel();flowsFade=null;flows.style.opacity="";el.classList.remove("open","closing");el.getAnimations({subtree:true}).forEach(a=>a.cancel())},total+60);
       }
     }
     let flowsFade=null;
@@ -1720,7 +1894,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       $("#umThemeVal").textContent=document.body.classList.contains("night")?T("Night","Ночь"):T("Day","День");
       $("#intentInput").placeholder=T("What do you intend to do?","Что вы хотите сделать?");
       $("#homeMic").innerHTML=ic("mic");$("#homeSend").innerHTML=ic("arrowUp");$("#homeSend").setAttribute("aria-label",T("Create Space","Собрать пространство"));$("#tlIcon").innerHTML=ic("search");
-      $("#blueprints").innerHTML=BLUEPRINT_CHIPS().map(([id,i,l])=>`<button data-bp="${id}" data-intent="${esc(l)}">${ic(i)}${esc(l)}</button>`).join("");
+      renderSignals();
       $("#timelineHint").innerHTML=`<span>${ic("up")}</span>${T("Timeline","Хронология")}`;
       $("#tlTitle").textContent=T("Timeline","Хронология");$("#tlSub").textContent=T("Every Space and module, in the order you lived it.","Все пространства и модули — в том порядке, в каком вы их проживали.");
       $("#tlSearch").placeholder=T("Describe what you’re looking for — “the blue chart Leo sent”","Опишите, что ищете — «синий график, который прислал Лео»");
@@ -1747,9 +1921,29 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     intentEl.addEventListener("input",fitIntent);
     intentEl.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey&&!e.isComposing){e.preventDefault();$("#homeLine").requestSubmit()}});
     fitIntent();
-    $("#intentInput").addEventListener("input",e=>{const html=parseTokens(e.target.value);$("#homeParse").innerHTML=html;$("#homeParse").classList.toggle("show",!!html)});
+    $("#intentInput").addEventListener("input",e=>{const html=parseTokens(e.target.value);$("#homeParse").innerHTML=html;$("#homeParse").classList.toggle("show",!!html);matchSignals(e.target.value)});
     $("#homeMic").onclick=()=>{const inp=$("#intentInput"),ph=T("Plan a trip to Lisbon","Спланировать поездку в Лиссабон");inp.value="";inp.placeholder=T("Listening…","Слушаю…");let i=0;setTimeout(()=>{const t=setInterval(()=>{inp.value=ph.slice(0,++i);inp.dispatchEvent(new Event("input"));if(i>=ph.length){clearInterval(t);inp.placeholder=T("What do you intend to do?","Что вы хотите сделать?");setTimeout(()=>$("#homeLine").requestSubmit(),450)}},30)},900)};
-    $("#blueprints").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const id=b.dataset.bp;openSpace(BP[id]?BP[id]():blueprintFor(b.dataset.intent))});
+    function openSignal(idx,direct){
+      const g=HOME_SIGNALS()[idx];if(!g)return;
+      const st=g.states[sigState[idx]%g.states.length],bp=BP[st.bp]?BP[st.bp]():blueprintFor(st.t);
+      if(direct){
+        if(st.needAuto&&bp.auto&&!bp.autoDone){bp.flows[bp.auto.flow].modules.push(bp.auto.make());bp.autoDone=true}
+        const f=clamp(st.f||0,0,bp.flows.length-1),mi=clamp(st.m||0,0,bp.flows[f].modules.length-1);
+        openSpace(bp,{f,m:bp.flows.map((_,k)=>k===f?mi:0)});
+        logMoment(bp.title,bp.title,true);
+        setTimeout(()=>cardOf(activeModule())?.classList.add("flash"),260);
+      }else openSpace(bp);
+    }
+    $("#blueprints").addEventListener("pointerenter",()=>{sigHover=true});
+    $("#blueprints").addEventListener("pointerleave",()=>{sigHover=false});
+    $("#blueprints").addEventListener("click",e=>{
+      const card=e.target.closest(".sig");if(!card)return;
+      const idx=+card.dataset.sig;
+      const dot=e.target.closest("[data-sdot]");if(dot){e.stopPropagation();stepSignal(idx,+dot.dataset.sdot);return}
+      const act=e.target.closest("[data-sact]");if(act){e.stopPropagation();openSignal(idx,true);return}
+      openSignal(idx,false);
+    });
+    $("#blueprints").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){const card=e.target.closest(".sig");if(card){e.preventDefault();openSignal(+card.dataset.sig,false)}}});
     $("#timelineHint").onclick=()=>setView("timeline");
     $("#tlSearch").addEventListener("input",e=>searchTimeline(e.target.value));
     $("#tlList").addEventListener("click",e=>{const b=e.target.closest(".tl-item");if(!b)return;const it=tlData[b.dataset.g].items[b.dataset.i];openSpace(it.bp?BP[it.bp]():blueprintFor(it.intent))});
