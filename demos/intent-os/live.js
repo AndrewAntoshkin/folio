@@ -250,7 +250,7 @@ ${STYLE}`;
   /* ───────── Home screen busy state ───────── */
   const style = document.createElement("style");
   style.textContent = `
-    .home-line.live-busy .cmd{animation:live-pulse 1.1s ease-in-out infinite}
+    .home-line.live-busy .send{animation:live-pulse 1.1s ease-in-out infinite}
     .home-line.live-busy input,.home-line.live-busy textarea{opacity:.55}
     .live-st{display:inline-flex;align-items:center;gap:8px}
     .live-dot{width:6px;height:6px;border-radius:50%;background:currentColor;animation:live-pulse 1.1s ease-in-out infinite}
