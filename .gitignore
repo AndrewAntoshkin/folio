@@ -1,2 +1,6 @@
 __pycache__/
 *.pyc
+
+# local secrets
+config.local.js
+**/config.local.js

@@ -36,6 +36,10 @@
     .space-title i{width:7px;height:7px;border-radius:2px;background:currentColor;opacity:.7}
     .view-space .space-title{opacity:1;transform:none}
     .collabs{display:flex;padding-left:6px;opacity:0;transition:opacity .5s var(--ease)}.view-space .collabs{opacity:1}
+    .cs{position:relative;display:flex;margin-left:-6px}.cs .avatar{margin:0}.collabs:hover .avatar{transform:none}
+    .cs:hover{z-index:2}.cs:hover .avatar{transform:translateY(-1px) scale(1.1)}
+    .cs:after{content:attr(data-name);position:absolute;top:calc(100% + 8px);left:50%;padding:5px 10px;border-radius:999px;background:var(--ink);color:var(--fog);font-size:11px;line-height:1.2;white-space:nowrap;pointer-events:none;opacity:0;transform:translate(-50%,-4px) scale(.94);transition:opacity .18s var(--ease),transform .3s var(--spring);z-index:3}
+    .cs:hover:after{opacity:1;transform:translate(-50%,0)}
     .avatar{width:24px;height:24px;margin-left:-6px;display:grid;place-items:center;flex:none;border-radius:50%;border:1.5px solid var(--fog);color:#2f2f2f;font-size:9px;font-weight:500;transition:transform .35s var(--spring)}
     .avatar.service{border-radius:7px}
     .avatar.photo{overflow:hidden;background:#d8d8d8}.avatar.photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 30%;pointer-events:none}
@@ -113,9 +117,12 @@
     .cmd{color:var(--faint);font-size:13px}
     .kbd{display:inline-block;min-width:18px;padding:1px 5px;border:1px solid var(--line);border-radius:5px;background:rgba(255,255,255,.3);font:10px ui-monospace,SFMono-Regular,Menlo,monospace;text-align:center;box-shadow:0 1px 0 rgba(47,47,47,.12);transition:transform .12s var(--ease),box-shadow .12s var(--ease),background .2s}
     .kbd.pressed{transform:translateY(1px);box-shadow:none;background:#fff}
-    .home-parse{height:24px;display:flex;gap:6px;align-items:center;opacity:0;transition:opacity .3s}
+    /* parsed tokens stack one under another; the row keeps its 24px so nothing re-centres while typing, and the chips below step aside */
+    .home-parse{height:24px;width:min(600px,86vw);display:flex;flex-direction:column;align-items:center;gap:5px;opacity:0;transition:opacity .3s;position:relative;z-index:1;pointer-events:none}
     .home-parse.show{opacity:1}
-    .tok{padding:3px 9px;border-radius:999px;background:var(--chip);color:var(--quiet);font-size:10.5px;white-space:nowrap;animation:pop .35s var(--spring) both}
+    .home:has(.home-parse.show) .blueprints,.home:has(.home-parse.show) .live-badge{opacity:0;pointer-events:none}
+    .blueprints,.live-badge{transition:opacity .3s}
+    .tok{flex:none;max-width:100%;overflow:hidden;text-overflow:ellipsis;padding:3px 9px;border-radius:999px;background:var(--chip);color:var(--quiet);font-size:10.5px;white-space:nowrap;animation:pop .35s var(--spring) both}
     .tok b{margin-left:4px;color:var(--ink);font-weight:500}
     @keyframes pop{from{opacity:0;transform:scale(.85)}}
     .blueprints{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:680px}
@@ -215,6 +222,22 @@
     .bars div{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:7px;font-size:10px;color:var(--quiet)}
     .bars i{position:relative;width:100%;border-radius:7px 7px 2px 2px;background:rgba(47,47,47,.16);transform-origin:bottom;animation:grow 1s var(--spring) both}
     .bars div:last-child i{background:var(--ink)}
+    .bars div{cursor:pointer}
+    .bars div.pin i{filter:brightness(.8)}
+    .bars div.pin .tip{opacity:1;transform:translate(-50%,0)}
+    .bars div:first-child.pin .tip,.bars div:last-child.pin .tip{transform:translate(0,0)}
+    .cal-ev.prop:not(.ok){cursor:grab;touch-action:none;user-select:none}
+    .cal-ev.dragging{transition:background .3s;cursor:grabbing;box-shadow:0 8px 20px -8px rgba(63,116,240,.55);z-index:3}
+    .regen{opacity:0;font-size:15px;line-height:1}.module:hover .regen,.regen:focus-visible{opacity:1}
+    .txt-cnt{margin-top:8px;font-size:10.5px;color:var(--faint);text-align:right}
+    .bars i{transition:filter .15s}
+    .bars div:hover i{filter:brightness(.8)}
+    .bars .tip{position:absolute;left:50%;bottom:100%;margin-bottom:8px;display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 10px;border-radius:9px;background:var(--ink);color:#fff;font-size:12px;font-weight:600;line-height:1.3;text-decoration:none;white-space:nowrap;text-align:center;pointer-events:none;opacity:0;transform:translate(-50%,4px);transition:opacity .15s,transform .22s var(--ease);z-index:6}
+    .bars .tip b{font-size:10px;font-weight:500;color:rgba(255,255,255,.6)}
+    .bars .tip em{font-style:normal;font-size:10px;font-weight:500;color:rgba(255,255,255,.75)}
+    .bars div:hover .tip{opacity:1;transform:translate(-50%,0)}
+    .bars div:first-child .tip{left:0;transform:translate(0,4px)}.bars div:first-child:hover .tip{transform:translate(0,0)}
+    .bars div:last-child .tip{left:auto;right:0;transform:translate(0,4px)}.bars div:last-child:hover .tip{transform:translate(0,0)}
     .bars s{position:absolute;left:0;right:0;bottom:0;border:1.5px dashed var(--accent);border-bottom:0;border-radius:7px 7px 0 0;text-decoration:none;animation:grow .8s var(--spring) both}
     @keyframes grow{from{transform:scaleY(0)}}
     .label{margin:16px 0 9px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
@@ -244,10 +267,9 @@
     .map.grabbing{cursor:grabbing}
     .map svg{display:block;width:100%;height:100%}
     .map .cam,.map .pin{transform-origin:0 0}
-    .map .blk{fill:var(--m-block)}.map .prk{fill:var(--park)}.map .wtr{fill:var(--water)}
-    .map .ave{fill:none;stroke:var(--m-street);stroke-linecap:round}
-    .map .lbl{font:600 7.5px GoogleSans,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;fill:rgba(47,47,47,.38)}
-    .map .lbl.w{fill:rgba(40,90,130,.45);letter-spacing:.3em}
+    .map .tiles image{opacity:0;transition:opacity .35s var(--ease)}
+    .map-attr{position:absolute;left:0;bottom:0;padding:2px 7px 2px 6px;border-radius:0 8px 0 0;background:rgba(255,255,255,.7);color:rgba(0,0,0,.55);font-size:8.5px;line-height:1.5;pointer-events:none}
+    body.night .map-attr{background:rgba(33,33,33,.75);color:rgba(255,255,255,.5)}
     .map .pin{cursor:pointer}
     .map .pin .hit{fill:transparent}
     .map .pin .dot{fill:#fff;stroke:#3a3a3a;stroke-width:1.6;transition:transform .3s var(--spring);transform-box:fill-box;transform-origin:center}
@@ -276,8 +298,9 @@
     .player{display:grid;grid-template-columns:150px 1fr;gap:18px;align-items:center;margin-bottom:14px}
     .cover{position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;box-shadow:0 18px 36px -16px rgba(0,0,0,.45);transition:transform .6s var(--spring)}
     .player.playing .cover{transform:scale(1.03)}
-    .cover i{position:absolute;border-radius:50%;mix-blend-mode:soft-light;background:#fff}
-    .cover b{position:absolute;left:10px;bottom:9px;color:rgba(255,255,255,.92);font-size:11px;font-weight:500;letter-spacing:.02em}
+    .cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;-webkit-user-drag:none}
+    .cover:after{content:"";position:absolute;inset:auto 0 0;height:46%;background:linear-gradient(transparent,rgba(0,0,0,.5));pointer-events:none}
+    .cover b{position:absolute;z-index:1;left:10px;bottom:9px;color:rgba(255,255,255,.95);font-size:11px;font-weight:500;letter-spacing:.02em}
     .pl-title{font-size:21px;font-weight:500;letter-spacing:-.02em;line-height:1.15}.pl-artist{margin:3px 0 14px;font-size:12px;color:var(--quiet)}
     .pl-bar{height:4px;border-radius:2px;background:rgba(47,47,47,.12);overflow:hidden}.pl-fill{height:100%;background:var(--ink);border-radius:2px;transition:width .5s linear}
     .pl-times{display:flex;justify-content:space-between;margin-top:5px;font-size:10px;color:var(--quiet);font-variant-numeric:tabular-nums}
@@ -298,6 +321,7 @@
     .lst.sel{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
     .lst-txt{display:flex;flex-direction:column;padding:14px 16px}.lst-txt small{font-size:11px;color:var(--quiet)}.lst-txt b{margin:3px 0 auto;font-size:15px;font-weight:500;line-height:1.25}.lst-txt span{font-size:13px}
     .lst svg{display:block;width:100%;height:100%}
+    .lst-img{position:relative;min-height:112px;background:rgba(47,47,47,.06)}.lst-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;-webkit-user-drag:none}
     .fav{position:absolute;top:8px;right:8px;width:28px;height:28px;border:0;border-radius:50%;background:rgba(255,255,255,.9);color:#2f2f2f;transition:transform .35s var(--spring)}.fav .ic{width:14px;height:14px}.fav:hover{transform:scale(1.15)}.fav.on{color:#e0475b}.fav.on path{fill:currentColor}
     .by{position:absolute;right:42px;top:8px;width:28px;height:28px;margin:0;border:2px solid #fff;box-shadow:0 4px 10px -4px rgba(0,0,0,.4)}
     .group{display:flex;align-items:center;gap:8px;margin:4px 0 10px;font-size:12px;color:var(--quiet)}.group .avatar{margin:0;width:20px;height:20px;font-size:8px;border:0}
@@ -305,6 +329,28 @@
     .product{display:flex;flex-direction:column;align-items:stretch}
     .product .art{height:190px;margin:4px 0 8px;border-radius:14px;background:rgba(47,47,47,.035)}
     .product .art svg{width:100%;height:100%}
+    .product .art{position:relative;overflow:hidden}.product .art img{width:100%;height:100%;object-fit:cover;display:block;-webkit-user-drag:none}
+    .product .credit{margin:0 0 8px;font-size:9.5px;color:var(--faint)}
+    .pinfo{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--quiet)}.pinfo b{color:var(--ink);font-weight:500}.pinfo i{width:3px;height:3px;border-radius:50%;background:var(--faint)}.pinfo .star{color:#e0a43a}
+    .gal{margin:10px 0 6px}
+    .gal-main{position:relative;height:170px;border-radius:14px;overflow:hidden;background:rgba(47,47,47,.05);touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}.gal-main:active{cursor:grabbing}
+    .gal-main>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;-webkit-user-drag:none;pointer-events:none}
+    .gal-nav{position:absolute;z-index:2;top:50%;width:30px;height:30px;margin-top:-15px;padding:0;border:0;border-radius:50%;background:rgba(255,255,255,.88);color:#2f2f2f;box-shadow:0 6px 16px -6px rgba(0,0,0,.35);display:grid;place-items:center;opacity:0;transition:opacity .25s,transform .4s var(--spring)}
+    .gal-nav svg{width:14px;height:14px}.gal-nav{top:44%}.gal-nav.prev{left:8px;transform:translateX(-6px)}.gal-nav.next{right:8px;transform:translateX(6px)}
+    .gal-main:hover .gal-nav{opacity:1;transform:none}.gal-nav:active{transform:scale(.92)!important}
+    .gal-count{position:absolute;z-index:2;right:9px;top:9px;padding:2px 8px;border-radius:999px;background:rgba(0,0,0,.45);color:#fff;font-size:10px;font-variant-numeric:tabular-nums;backdrop-filter:blur(6px)}
+    .gal-cw{position:absolute;z-index:2;left:9px;top:9px;padding:3px 9px;border-radius:999px;background:rgba(255,255,255,.85);color:#2f2f2f;font-size:10.5px}
+    .gal-th{position:absolute;z-index:2;left:8px;bottom:8px;display:flex;gap:5px}
+    .gal-th button{flex:0 0 auto;width:38px;height:28px;padding:0;border:0;border-radius:8px;overflow:hidden;opacity:.8;outline:1.5px solid rgba(255,255,255,.55);outline-offset:-1.5px;box-shadow:0 4px 10px -4px rgba(0,0,0,.4);background:rgba(255,255,255,.4);transition:opacity .25s,outline-color .25s,transform .4s var(--spring)}
+    .gal-th button:hover{opacity:1;transform:translateY(-1px)}.gal-th button.on{opacity:1;outline:2px solid #fff;transform:translateY(-2px)}
+    .gal-th img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+    .sz-head{display:flex;justify-content:space-between;align-items:baseline;margin:10px 0 7px;font-size:11px;color:var(--quiet)}.sz-head b{color:var(--ink);font-weight:500;font-size:12px}
+    .sizes{display:grid;grid-template-columns:repeat(8,1fr);gap:4px}
+    .sizes button{height:32px;padding:0;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.45);color:var(--ink);font-size:12.5px;font-variant-numeric:tabular-nums;transition:background .2s,color .2s,border-color .2s,transform .4s var(--spring)}
+    .sizes button:hover:not(.off):not(.on){transform:translateY(-1px);background:rgba(255,255,255,.8)}.sizes button:active:not(.off){transform:scale(.95)}
+    .sizes button.on{background:var(--ink);color:var(--fog);border-color:var(--ink)}.sizes button.off{color:var(--faint);text-decoration:line-through;cursor:default;background:none}
+    body.night .sizes button{background:rgba(255,255,255,.06)}body.night .sizes button.on{background:var(--ink)}
+    .sz-note{margin:8px 0 0;font-size:11px;color:var(--quiet);min-height:14px}.sz-note em{font-style:normal;color:#d9822b}
     .alarm-time{display:flex;align-items:center;gap:12px;margin:0 0 18px}
     .alarm-time b{font-size:44px;font-weight:400;letter-spacing:-.03em;font-variant-numeric:tabular-nums;border-bottom:1.5px solid var(--line);line-height:1.1;transition:opacity .3s}
     .alarm-time.off b{opacity:.35;text-decoration:line-through}
@@ -354,6 +400,39 @@
     .rule:hover,.collab:hover,.flowlink:hover{background:rgba(255,255,255,.55);color:var(--ink)}
     .rule i{justify-self:center;width:14px;height:14px;margin-top:1.5px;border:1.5px solid var(--faint);border-radius:4px;transition:.25s var(--ease)}.rule.on i{background:var(--ink);border-color:var(--ink)}
     .rule:not(.on){opacity:.55}
+    /* live rules + collaborators: each row shows what it does and can be edited / removed / revoked */
+    .rule{grid-template-columns:18px 1fr 18px}.collab{grid-template-columns:18px 1fr 18px}
+    .rule>span small,.collab>span small{display:block;margin-top:2px;font-size:10.5px;color:var(--faint)}
+    .rule.on>span small{color:var(--accent)}
+    .rule-x{align-self:center;width:18px;height:18px;padding:0;border:0;border-radius:50%;background:none;color:var(--faint);font-size:13px;line-height:1;opacity:0;transition:opacity .2s,background .2s}
+    .rule:hover .rule-x,.collab:hover .rule-x{opacity:1}.rule-x:hover{background:var(--chip);color:var(--ink)}
+    .rule .rt{font-weight:inherit;border-radius:4px;cursor:text}.rule .rt:hover{color:var(--ink)}
+    .rule .rt[contenteditable="true"]{outline:0;padding:0 3px;margin:0 -3px;background:rgba(255,255,255,.75);box-shadow:0 0 0 2px var(--accent-soft);color:var(--ink)}
+    .sec-head{display:flex;align-items:center;justify-content:space-between;margin:18px 0 6px 0;padding-right:4px}.sec-head.first{margin-top:0}
+    .sec-head h3{margin:0}
+    .sec-add{display:grid;place-items:center;width:24px;height:24px;padding:0;border:0;border-radius:50%;background:none;color:var(--quiet);transition:background .2s,color .2s,transform .35s var(--spring)}
+    .sec-add .ic{width:14px;height:14px;stroke-width:1.5}.sec-add:hover{background:var(--chip);color:var(--ink)}.sec-add:active{transform:scale(.88)}
+    .modal-wrap{position:fixed;inset:0;z-index:90;display:grid;place-items:center;opacity:0;transition:opacity .25s var(--ease)}.modal-wrap.show{opacity:1}
+    .modal-back{position:absolute;inset:0;background:rgba(30,30,30,.18);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+    .modal{position:relative;width:min(420px,calc(100% - 32px));padding:22px 22px 18px;border-radius:20px;background:var(--paper);border:1px solid var(--rim);box-shadow:0 1px 2px rgba(0,0,0,.05),0 40px 90px -30px rgba(0,0,0,.4);color:var(--ink);transform:translateY(10px) scale(.97);transition:transform .5s var(--spring)}.modal-wrap.show .modal{transform:none}
+    .modal h3{margin:0 0 14px;font-size:17px;font-weight:500;letter-spacing:-.02em}
+    .modal-in{width:100%;height:42px;padding:0 14px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.5);font-size:14px;color:var(--ink);outline:0;transition:border-color .2s,box-shadow .2s}
+    .modal-in:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+    .modal-hint{min-height:18px;margin:10px 2px 0;font-size:12px;color:var(--faint);transition:color .2s}.modal-hint.ok{color:var(--accent)}
+    .modal-ex{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+    .modal-ex button,.seg button{border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.45);padding:6px 12px;font-size:12px;color:var(--quiet);transition:background .2s,color .2s,border-color .2s}
+    .modal-ex button:hover{background:#fff;color:var(--ink)}
+    .seg{display:flex;gap:6px;margin-top:12px}.seg button.on{background:var(--ink);border-color:var(--ink);color:var(--fog)}
+    .modal-acts{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}
+    .modal-acts button{height:36px;padding:0 16px;border:0;border-radius:12px;background:var(--chip);color:var(--ink);font-size:13px;transition:background .2s,opacity .2s,transform .4s var(--spring)}
+    .modal-acts button:active{transform:scale(.96)}.modal-acts .primary{background:var(--ink);color:var(--fog)}.modal-acts .primary:disabled{opacity:.35;pointer-events:none}
+    body.night .modal-in,body.night .modal-ex button,body.night .seg button{background:rgba(255,255,255,.06)}
+    .collab.off{opacity:.45}.collab.off .avatar{filter:grayscale(1)}
+    .mini.revoked{opacity:.4;filter:grayscale(1)}
+    .opt.over,.lst.over{opacity:.5}.opt.soft{opacity:.72}
+    .flag{display:inline-block;margin-left:6px;padding:1px 6px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:10px;font-style:normal;white-space:nowrap}
+    .flag.warn{background:rgba(224,71,91,.12);color:#c23a4d}
+    .rule-note{margin:10px 0 0;font-size:11px;color:var(--faint)}
     .collab .avatar{margin:0;width:18px;height:18px;font-size:8px;border-width:1px}.collab small{display:block;margin-top:2px;font-size:10.5px;opacity:.75}
     .flowlink{grid-template-columns:18px 1fr auto;align-items:center}.flowlink .ic{justify-self:center}.flowlink b{color:var(--ink);font-weight:500}.flowlink small{font-variant-numeric:tabular-nums;color:var(--faint)}.flowlink.new{color:var(--quiet)}.rule>span,.collab>span{line-height:17px}.collab .avatar{margin-top:-1px!important}
     .ov-flows{display:flex;flex-direction:column;gap:26px;min-width:0}
@@ -426,7 +505,7 @@
     body.night .wx-pop{background:rgba(42,42,44,.78)}
     body.night .wz-range b,body.night .wz-meter.uv b{box-shadow:0 0 0 2px #2a2a2c}
     .toast,body.night .toast{background:rgba(18,18,22,.62);border:1px solid rgba(255,255,255,.1);border-right-width:0;border-bottom-width:0;box-shadow:0 8px 24px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(40px) saturate(1.6);backdrop-filter:blur(40px) saturate(1.6)}
-    body.night .map .lbl{fill:rgba(236,236,236,.35)}body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:#2f2f2f;stroke:#ddd}body.night .map-ctl{background:rgba(47,47,47,.95)}body.night .map-ctl button{color:#ddd}body.night .eta{background:rgba(47,47,47,.95);color:#ececec}
+body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:#2f2f2f;stroke:#ddd}body.night .map-ctl{background:rgba(47,47,47,.95)}body.night .map-ctl button{color:#ddd}body.night .eta{background:rgba(47,47,47,.95);color:#ececec}
 
     @media(max-width:760px){.statusbar{padding:0 16px}.clock{display:none}.hints{gap:0}.hints button span.lbl{display:none}.ov-layout{grid-template-columns:1fr}.rules,.rules-slot{display:none}.home-time{font-size:56px}.player{grid-template-columns:110px 1fr}.lst{grid-template-columns:1fr 110px}}
     @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
@@ -511,10 +590,10 @@
     let uid=0;
     const M=(kind,item,source,data={},modifier="")=>({id:"m"+(++uid),kind,item,source,data,modifier});
 
-    const IC={mail:'<rect x="2" y="3.5" width="12" height="9" rx="1.5"/><path d="M2.5 4.5 8 9l5.5-4.5"/>',chat:'<path d="M3 3.5h10v7H7l-3 2.5v-2.5H3z"/>',cal:'<rect x="2.5" y="3.5" width="11" height="10" rx="1.5"/><path d="M2.5 6.5h11M5.5 2v3M10.5 2v3"/>',pin:'<path d="M8 14s4.5-4.2 4.5-7.5a4.5 4.5 0 0 0-9 0C3.5 9.8 8 14 8 14z"/><circle cx="8" cy="6.5" r="1.6"/>',music:'<path d="M6 12V4l7-1.5v8"/><circle cx="4.5" cy="12" r="1.5"/><circle cx="11.5" cy="10.5" r="1.5"/>',home:'<path d="M2.5 7.5 8 3l5.5 4.5V13h-11z"/><path d="M6.5 13V9.5h3V13"/>',search:'<circle cx="7" cy="7" r="4"/><path d="m10 10 3.5 3.5"/>',bell:'<path d="M4 11V7a4 4 0 0 1 8 0v4l1 1.5H3z"/><path d="M6.5 14h3"/>',doc:'<path d="M4 2.5h5.5L12 5v8.5H4z"/><path d="M6 8h4M6 10.5h4"/>',chart:'<path d="M3 13.5h10M4.5 11V8M8 11V5M11.5 11V7"/>',plane:'<path d="M2 9.5 14 4l-3.5 9-2.5-3.5z"/>',check:'<rect x="2.5" y="2.5" width="11" height="11" rx="2"/><path d="m5.5 8 2 2 3.5-4"/>',sun:'<circle cx="8" cy="8" r="3"/><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1 1M11.6 11.6l1 1M3.4 12.6l1-1M11.6 4.4l1-1"/>',spark:'<path d="M8 2.5v3M8 10.5v3M2.5 8h3M10.5 8h3M4.2 4.2l1.6 1.6M10.2 10.2l1.6 1.6M4.2 11.8l1.6-1.6M10.2 5.8l1.6-1.6"/>',bag:'<path d="M3.5 5.5h9l-.8 8h-7.4z"/><path d="M6 5.5V4.5a2 2 0 0 1 4 0v1"/>',mic:'<rect x="6" y="2" width="4" height="7.5" rx="2"/><path d="M3.8 7.5a4.2 4.2 0 0 0 8.4 0M8 11.7V14"/>',alarm:'<circle cx="8" cy="8.5" r="5"/><path d="M8 6v2.8l1.8 1.2M2.5 3.5l2-1.5M13.5 3.5l-2-1.5"/>',plus:'<path d="M8 3v10M3 8h10"/>',minus:'<path d="M3 8h10"/>',x:'<path d="m4.5 4.5 7 7M11.5 4.5l-7 7"/>',locate:'<circle cx="8" cy="8" r="4.2"/><circle cx="8" cy="8" r="1.3" fill="currentColor"/><path d="M8 1.8v2M8 12.2v2M1.8 8h2M12.2 8h2"/>',play:'<path d="M5.5 3.5v9l7-4.5z" fill="currentColor"/>',pause:'<path d="M5.5 3.8v8.4M10.5 3.8v8.4" stroke-width="2.2"/>',prev:'<path d="M4 4v8" stroke-width="1.8"/><path d="M12.5 4v8L6 8z" fill="currentColor"/>',next:'<path d="M12 4v8" stroke-width="1.8"/><path d="M3.5 4v8L10 8z" fill="currentColor"/>',heart:'<path d="M8 13S2.5 9.8 2.5 6a2.8 2.8 0 0 1 5.5-1.2A2.8 2.8 0 0 1 13.5 6C13.5 9.8 8 13 8 13z"/>',up:'<path d="m4 10 4-4 4 4"/>',tick:'<path d="m4 8.3 2.6 2.6L12 5.5"/>',sparkle:'<path d="M8 1.5c.55 3.4 2.1 4.95 5.5 5.5-3.4.55-4.95 2.1-5.5 5.5C7.45 9.1 5.9 7.55 2.5 7 5.9 6.45 7.45 4.9 8 1.5z" fill="currentColor" stroke="none"/>'};
+    const IC={chevL:'<path d="M10 3 5 8l5 5"/>',chevR:'<path d="m6 3 5 5-5 5"/>',mail:'<rect x="2" y="3.5" width="12" height="9" rx="1.5"/><path d="M2.5 4.5 8 9l5.5-4.5"/>',chat:'<path d="M3 3.5h10v7H7l-3 2.5v-2.5H3z"/>',cal:'<rect x="2.5" y="3.5" width="11" height="10" rx="1.5"/><path d="M2.5 6.5h11M5.5 2v3M10.5 2v3"/>',pin:'<path d="M8 14s4.5-4.2 4.5-7.5a4.5 4.5 0 0 0-9 0C3.5 9.8 8 14 8 14z"/><circle cx="8" cy="6.5" r="1.6"/>',music:'<path d="M6 12V4l7-1.5v8"/><circle cx="4.5" cy="12" r="1.5"/><circle cx="11.5" cy="10.5" r="1.5"/>',home:'<path d="M2.5 7.5 8 3l5.5 4.5V13h-11z"/><path d="M6.5 13V9.5h3V13"/>',search:'<circle cx="7" cy="7" r="4"/><path d="m10 10 3.5 3.5"/>',bell:'<path d="M4 11V7a4 4 0 0 1 8 0v4l1 1.5H3z"/><path d="M6.5 14h3"/>',doc:'<path d="M4 2.5h5.5L12 5v8.5H4z"/><path d="M6 8h4M6 10.5h4"/>',chart:'<path d="M3 13.5h10M4.5 11V8M8 11V5M11.5 11V7"/>',plane:'<path d="M2 9.5 14 4l-3.5 9-2.5-3.5z"/>',check:'<rect x="2.5" y="2.5" width="11" height="11" rx="2"/><path d="m5.5 8 2 2 3.5-4"/>',sun:'<circle cx="8" cy="8" r="3"/><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1 1M11.6 11.6l1 1M3.4 12.6l1-1M11.6 4.4l1-1"/>',spark:'<path d="M8 2.5v3M8 10.5v3M2.5 8h3M10.5 8h3M4.2 4.2l1.6 1.6M10.2 10.2l1.6 1.6M4.2 11.8l1.6-1.6M10.2 5.8l1.6-1.6"/>',bag:'<path d="M3.5 5.5h9l-.8 8h-7.4z"/><path d="M6 5.5V4.5a2 2 0 0 1 4 0v1"/>',mic:'<rect x="6" y="2" width="4" height="7.5" rx="2"/><path d="M3.8 7.5a4.2 4.2 0 0 0 8.4 0M8 11.7V14"/>',alarm:'<circle cx="8" cy="8.5" r="5"/><path d="M8 6v2.8l1.8 1.2M2.5 3.5l2-1.5M13.5 3.5l-2-1.5"/>',plus:'<path d="M8 3v10M3 8h10"/>',minus:'<path d="M3 8h10"/>',x:'<path d="m4.5 4.5 7 7M11.5 4.5l-7 7"/>',locate:'<circle cx="8" cy="8" r="4.2"/><circle cx="8" cy="8" r="1.3" fill="currentColor"/><path d="M8 1.8v2M8 12.2v2M1.8 8h2M12.2 8h2"/>',play:'<path d="M5.5 3.5v9l7-4.5z" fill="currentColor"/>',pause:'<path d="M5.5 3.8v8.4M10.5 3.8v8.4" stroke-width="2.2"/>',prev:'<path d="M4 4v8" stroke-width="1.8"/><path d="M12.5 4v8L6 8z" fill="currentColor"/>',next:'<path d="M12 4v8" stroke-width="1.8"/><path d="M3.5 4v8L10 8z" fill="currentColor"/>',heart:'<path d="M8 13S2.5 9.8 2.5 6a2.8 2.8 0 0 1 5.5-1.2A2.8 2.8 0 0 1 13.5 6C13.5 9.8 8 13 8 13z"/>',up:'<path d="m4 10 4-4 4 4"/>',tick:'<path d="m4 8.3 2.6 2.6L12 5.5"/>',sparkle:'<path d="M8 1.5c.55 3.4 2.1 4.95 5.5 5.5-3.4.55-4.95 2.1-5.5 5.5C7.45 9.1 5.9 7.55 2.5 7 5.9 6.45 7.45 4.9 8 1.5z" fill="currentColor" stroke="none"/>'};
     const ic=n=>`<svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">${IC[n]||IC.spark}</svg>`;
     const KIND_IC={list:"mail",message:"mail",compose:"mail",chat:"chat",invite:"cal",calendar:"cal",options:"plane",listings:"home",map:"pin",player:"music",alarm:"alarm",weather:"sun",checklist:"check",doc:"doc",chart:"chart",results:"search",product:"bag",remind:"bell"};
-    const PHOTO={"maya chen":"maya","майя чен":"maya","leo park":"leo","лео пак":"leo","sofia reyes":"sofia","софья рейес":"sofia","daniel kim":"daniel","даниэль ким":"daniel","frau weber":"weber",maya:"maya","майя":"maya",leo:"leo","лео":"leo"};
+    const PHOTO={"maya chen":"maya","майя чен":"maya","leo park":"leo","лео пак":"leo","sofia reyes":"sofia","софья рейес":"sofia","daniel kim":"daniel","даниэль ким":"daniel","frau weber":"weber",sofia:"sofia","софья":"sofia",daniel:"daniel","даниэль":"daniel",maya:"maya","майя":"maya",leo:"leo","лео":"leo"};
     const SVC_TILE={mail:["mail",212],"почта":["mail",212],calendar:["cal",4],"календарь":["cal",4],messages:["chat",142],"сообщения":["chat",142],airline:["plane",200],"авиакомпания":["plane",200],stays:["home",22],"жильё":["home",22],maps:["pin",160],"карты":["pin",160],weather:["sun",38],"погода":["sun",38],homes:["home",262],"объявления":["home",262],music:["music",330],"музыка":["music",330],health:["heart",350],"здоровье":["heart",350],clock:["alarm",228],"часы":["alarm",228],docs:["doc",218],"документы":["doc",218],sheets:["chart",128],"таблицы":["chart",128],shopping:["bag",280],"покупки":["bag",280],"studio ops":["doc",24],"студия":["doc",24],"are.na":["spark",0],"atelier nord":["bag",192],"kvadrat store":["bag",16],"market hall":["bag",96],"маркет холл":["bag",96],"intent":["spark",226],"намерение":["spark",226]};
     function avatar(name,cls=""){
       const key=String(name).toLowerCase().trim(),ph=PHOTO[key],tile=SVC_TILE[key];
@@ -548,166 +627,303 @@
       if(isShoe)return `<svg viewBox="0 0 200 110"><ellipse cx="102" cy="100" rx="84" ry="5" fill="rgba(0,0,0,.12)"/><path d="M22 78C24 60 42 50 64 46l28-16c8-4 18-2 24 6l10 14c14 6 42 8 56 16 8 4 8 16 0 20H30c-8 0-12-4-8-8z" fill="${body}"/><path d="M18 86h168c2 6-2 12-10 12H28c-8 0-12-6-10-12z" fill="#f4f4f2" stroke="rgba(0,0,0,.12)"/><path d="M74 46l10 10M84 40l10 10M94 34l10 10" stroke="rgba(255,255,255,.55)" stroke-width="2" stroke-linecap="round"/><path d="M128 62c14 4 32 6 44 10" stroke="rgba(255,255,255,.25)" stroke-width="2"/></svg>`;
       return `<svg viewBox="0 0 200 110"><ellipse cx="100" cy="100" rx="56" ry="5" fill="rgba(0,0,0,.12)"/><rect x="62" y="30" width="76" height="68" rx="10" fill="${body}"/><path d="M80 30v-6a20 20 0 0 1 40 0v6" fill="none" stroke="${body}" stroke-width="5"/><rect x="62" y="52" width="76" height="6" fill="rgba(255,255,255,.18)"/></svg>`;
     }
-    function coverHTML(seed,label){const r=rnd(seed),h=Math.floor(r()*360);return `<div class="cover" style="background:linear-gradient(${Math.floor(r()*180)}deg,hsl(${h} 45% 62%),hsl(${(h+50)%360} 40% 30%))"><i style="width:70%;height:70%;left:${r()*40}%;top:${r()*30}%;opacity:.45"></i><i style="width:30%;height:30%;left:${40+r()*30}%;top:${50+r()*20}%;opacity:.6"></i><b>${esc(label)}</b></div>`}
+    /* real photography (CC0 / CC BY-SA, see demos/intent-os/CREDITS.md) instead of drawn placeholders */
+    const IMG="/demos/intent-os/img/";
+    const COVER_OF={"Slow Motion":3,"Morning Tide":8,"Paper Planes":9,"Quiet Hours":7,"Night Drive":6,"Lift Off":4};
+    function coverHTML(seed,label){const n=COVER_OF[label]||1+Math.abs(hash(label))%11;return `<div class="cover"><img src="${IMG}c-${n}.jpg" alt="" draggable="false"><b>${esc(label)}</b></div>`}
+    const SHOE_IMG={black:["p-black-1","p-black-2","p-black-3","p-black-4"],white:["p-white-1","p-white-2","p-white-3"],red:["p-red-1","p-red-2","p-red-3"],any:["p-any-1","p-any-2","p-any-3","p-any-4"]};
+    const SHOE_ALL=Object.values(SHOE_IMG).flat();
+    const CC0_IMG=new Set(["p-black-4","p-red-3","p-any-4"]);
+    const photoCredit=n=>CC0_IMG.has(n)?T("Photo: Unsplash · CC0 · via Wikimedia Commons","Фото: Unsplash · CC0 · через Wikimedia Commons"):n==="p-black-3"?T("Photo: CARIUMA · CC BY-SA 4.0 · via Wikimedia Commons","Фото: CARIUMA · CC BY-SA 4.0 · через Wikimedia Commons"):T("Photo: Museum Rotterdam · CC BY-SA 3.0 · via Wikimedia Commons","Фото: Museum Rotterdam · CC BY-SA 3.0 · через Wikimedia Commons");
+/* Nike catalogue: real models, real prices (approx. EU retail), photos from Wikimedia Commons (see CREDITS.md). Galleries are per model. */
+    const NIKE={
+      dunk:{model:"SB Dunk Low Pro",price:119,r:4.8,
+        cw:[["Black / Fog","Чёрный / серый"],["Black / Fog","Чёрный / серый"],["Black / Fog","Чёрный / серый"]],
+        who:[["Jacek Halicki","CC BY-SA 4.0"],["Jacek Halicki","CC BY-SA 4.0"],["Jacek Halicki","CC BY-SA 4.0"]],
+        spec:[["Upper: suede, padded collar.","Sole: gum rubber with a Zoom Air insole.","Skate heritage: flat, grippy outsole."],["Верх: замша, мягкий воротник.","Подошва: гумовая, со вставкой Zoom Air.","Скейт-наследие: плоская цепкая подошва."]]},
+      am90:{model:"Air Max 90",price:149,r:4.8,
+        cw:[["Black","Чёрный"],["Black / Grey","Чёрный / серый"],["Infrared","Infrared"],["White / Navy","Белый / тёмно-синий"]],
+        who:[["Mfagoaguna1","CC BY-SA 4.0"],["flows_2000","CC BY-SA 2.0"],["Christian H.","CC BY 2.0"],["Mr. Carter4","Public domain"]],
+        spec:[["Upper: leather and mesh.","Sole: visible Max Air unit in the heel.","Fits true to size."],["Верх: кожа и сетка.","Подошва: видимая вставка Max Air в пятке.","Размер соответствует."]]},
+      am97:{model:"Air Max 97",price:189,r:4.7,
+        cw:[["Black / White","Чёрный / белый"],["Black / Reflective","Чёрный / светоотражающий"],["Silver Bullet","Silver Bullet"],["Olive / Volt","Оливковый / лайм"]],
+        who:[["Lulu45 005","CC BY-SA 4.0"],["Choledocho","CC BY-SA 4.0"],["Choledocho","CC BY-SA 4.0"],["Ssu","CC BY-SA 4.0"]],
+        spec:[["Upper: full-length reflective panels.","Sole: full-length Air unit.","Runs a little narrow: size up if in between."],["Верх: сплошные светоотражающие панели.","Подошва: Air во всю длину.","Чуть узковаты: между размерами берите больше."]]},
+      am270:{model:"Air Max 270",price:159,r:4.6,
+        cw:[["Black / White","Чёрный / белый"],["Multi-colour","Разноцветные"],["Blue / Volt","Синий / салатовый"],["White / Dusty Cactus","Белый / Dusty Cactus"]],
+        who:[["Mfagoaguna1","CC BY-SA 4.0"],["HI 622","CC BY-SA 4.0"],["HI 622","CC BY-SA 4.0"],["HI 622","CC BY-SA 4.0"]],
+        spec:[["Upper: breathable engineered mesh.","Sole: 270° Max Air heel unit.","Light everyday cushioning."],["Верх: дышащая сетка.","Подошва: Max Air 270° в пятке.","Лёгкая амортизация на каждый день."]]},
+      plus:{model:"Air Max Plus",price:189,r:4.7,
+        cw:[["Black","Чёрный"],["Hyper Blue","Hyper Blue"],["Hyper Blue","Hyper Blue"],["Multi-colour","Разноцветные"]],
+        who:[["Bojan Cvetanović","CC BY-SA 4.0"],["Choledocho","CC BY-SA 4.0"],["HI 622","CC BY-SA 4.0"],["HI 622","CC BY-SA 4.0"]],
+        spec:[["Upper: mesh with TPU overlays.","Sole: Tuned Air pods for grip.","Fits true to size."],["Верх: сетка с TPU-накладками.","Подошва: Tuned Air для сцепления.","Размер соответствует."]]},
+      huarache:{model:"Air Huarache",price:119,r:4.7,
+        cw:[["Triple Black","Чёрный"]],who:[["Mfagoaguna1","CC BY-SA 4.0"]],
+        spec:[["Upper: neoprene sock-fit with a heel cage.","Sole: lightweight foam.","Slips on easily."],["Верх: неопреновый «носок» с каркасом на пятке.","Подошва: лёгкая пена.","Легко надеваются."]]},
+      janoski:{model:"SB Janoski",price:85,r:4.5,
+        cw:[["Black / Gold","Чёрный / золотой"]],who:[["Yanki01","CC BY 2.0"]],
+        spec:[["Upper: suede, perforated tongue.","Sole: vulcanized flat cupsole.","Skate-ready from day one."],["Верх: замша, перфорированный язык.","Подошва: вулканизированная плоская.","Готовы к скейту с первого дня."]]}
+    };
+    const NIKE_ORDER=["dunk","am90","am97","am270","plus","huarache","janoski"];
+    const nkN=id=>NIKE[id].cw.length,nkImg=(id,i)=>`${IMG}n-${id}-${i+1}.jpg`;
+    const nkCW=(id,i)=>T(...NIKE[id].cw[i||0]);
+    const nkCredit=(id,i)=>{const w=NIKE[id].who[i];return T(`Photo: ${w[0]} · ${w[1]} · via Wikimedia Commons`,`Фото: ${w[0]} · ${w[1]} · через Wikimedia Commons`)};
+    const SIZES_EU=[39,40,41,42,43,44,45,46];
+    const sizeOff=(d,s)=>!!d.nike&&((Math.abs(d.seed||0)+s*7)%9===0);
+    function sizesHTML(d){
+      const list=d.sizes||SIZES_EU;
+      return `<div class="sz-head"><b>${T("Size","Размер")} · EU</b><span>${d.size?`${d.size}`:T("Pick one","Выберите")}</span></div><div class="sizes">${list.map(s=>`<button class="${d.size===s?"on":""}${sizeOff(d,s)?" off":""}" data-do="size:${s}"${sizeOff(d,s)?" tabindex=-1":""}>${s}</button>`).join("")}</div><p class="sz-note">${sizeNote(d)}</p>`;
+    }
+    const sizeNote=d=>d.size?(((Math.abs(d.seed||0)+d.size*3)%5===0)?`<em>${T(`Only 2 pairs left in ${d.size}`,`Осталось 2 пары в ${d.size}`)}</em>`:T(`Size ${d.size} in stock · ships tomorrow`,`Размер ${d.size} в наличии · отправим завтра`)):"";
+    function galleryHTML(d){
+      const id=d.nike,n=nkN(id),gi=d.gi||0;
+      return `<div class="gal" data-gal><div class="gal-main"><img src="${nkImg(id,gi)}" alt="" draggable="false">${n>1?`<button class="gal-nav prev" data-do="gal:prev" aria-label="Prev">${ic("chevL")}</button><button class="gal-nav next" data-do="gal:next" aria-label="Next">${ic("chevR")}</button><span class="gal-count">${gi+1} / ${n}</span>`:""}<span class="gal-cw">${esc(nkCW(id,gi))}</span>${n>1?`<div class="gal-th">${Array.from({length:n},(_,i)=>`<button class="${i===gi?"on":""}" data-do="gal:${i}" aria-label="${i+1}"><img src="${nkImg(id,i)}" alt="" draggable="false"></button>`).join("")}</div>`:""}</div><p class="credit">${esc(nkCredit(id,gi))}</p>`;
+    }
+    function galGo(m,to,dir){
+      const d=m.data,id=d.nike,n=nkN(id),from=d.gi||0,card=cardOf(m);if(!id)return;
+      let i=to==="next"?from+1:to==="prev"?from-1:+to;i=(i%n+n)%n;if(i===from)return;
+      if(dir==null)dir=to==="prev"?-1:to==="next"?1:(i>from?1:-1);
+      d.gi=i;if(!card)return;
+      const main=card.querySelector(".gal-main"),old=main.querySelector("img"),nu=document.createElement("img");
+      nu.src=nkImg(id,i);nu.alt="";nu.draggable=false;main.insertBefore(nu,old.nextSibling);
+      if(!reduce.matches){
+        old.animate([{opacity:1,transform:"none"},{opacity:0,transform:`translateX(${-dir*34}px) scale(.98)`}],{duration:420,easing:EASE,fill:"forwards"}).onfinish=()=>old.remove();
+        nu.animate([{opacity:0,transform:`translateX(${dir*34}px) scale(1.03)`},{opacity:1,transform:"none"}],{duration:520,easing:EASE});
+      }else old.remove();
+      const c=card.querySelector(".gal-count");if(c)c.textContent=`${i+1} / ${n}`;
+      const cw=card.querySelector(".gal-cw");if(cw)cw.textContent=nkCW(id,i);
+      card.querySelectorAll(".gal-th button").forEach((b,k)=>b.classList.toggle("on",k===i));
+      const cr=card.querySelector(".product .credit");if(cr)cr.textContent=nkCredit(id,i);
+      const pb=card.querySelector(".pbrand");if(pb)pb.textContent=`${d.brand} · ${nkCW(id,i)}`;
+    }
+    function productImg(seed,color){const pool=SHOE_IMG[color]||SHOE_ALL;return pool[Math.abs(seed)%pool.length]}
+    function productHTML(seed,isShoe,color,nike){return nike?`<img src="${nkImg(nike,0)}" alt="" draggable="false" loading="lazy">`:isShoe?`<img src="${IMG}${productImg(seed,color)}.jpg" alt="" draggable="false" loading="lazy">`:productSVG(seed,isShoe,color)}
 
-    const CITY={
-      lisbon:{labels:[[70,58,"Alfama"],[300,36,"Baixa"],[470,96,"Bairro Alto"],[200,212,"Chiado"]],water:"Tejo",parks:[[1,2],[6,4]]},
-      berlin:{labels:[[90,58,"Kreuzberg"],[320,36,"Mitte"],[460,96,"Prenzlauer Berg"],[210,212,"Neukölln"]],water:"Spree",parks:[[2,2],[7,3]]}
+    /* Real map: Web-Mercator raster tiles (© OpenStreetMap contributors, © CARTO) drawn in the same 640×360 unit space the pins use.
+       GEO.c = centre, z = tile zoom at k=1, upp = units per tile pixel, so pins, pan and zoom behave exactly as before. */
+    const GEO={
+      lisbon:{c:[38.71215,-9.1291],z:16,upp:1.5,mode:"foot",osrm:"routed-foot",poi:[
+        {name:"Miradouro das Portas do Sol",lat:38.7119437,lng:-9.1300108,kind:["Viewpoint","Смотровая"]},
+        {name:"Sé de Lisboa",lat:38.7098185,lng:-9.1328001,kind:["Cathedral","Собор"]},
+        {name:"Casa dos Bicos",lat:38.7091589,lng:-9.1326355,kind:["Museum","Музей"]},
+        {name:"Panteão Nacional",lat:38.714978,lng:-9.1246825,kind:["Monument","Памятник"]}]},
+      berlin:{c:[52.51445,13.41275],z:12,upp:1,mode:"bike",osrm:"routed-bike",poi:[
+        {name:"Markthalle Neun",lat:52.5021661,lng:13.4314886,kind:["Market hall","Рынок"]},
+        {name:"Görlitzer Park",lat:52.496579,lng:13.4376053,kind:["Park","Парк"]},
+        {name:"Moritzplatz",lat:52.5036623,lng:13.4107479,kind:["Square","Площадь"]},
+        {name:"Rosenthaler Platz",lat:52.5298999,lng:13.4011206,kind:["Square","Площадь"]}]}
     };
     const MAPW=640,MAPH=360;
-    const GRIDS={};
-    function mapGrid(city){if(GRIDS[city])return GRIDS[city];const r=rnd(hash(city)+3),xs=[-80],ys=[-60];while(xs.at(-1)<760)xs.push(xs.at(-1)+52+Math.round(r()*22));while(ys.at(-1)<440)ys.push(ys.at(-1)+40+Math.round(r()*16));return GRIDS[city]={xs,ys}}
-    function mapBase(city){
-      const c=CITY[city]||CITY.lisbon,{xs,ys}=mapGrid(city);
-      const major=i=>i%3===1;let blocks="";
-      for(let i=0;i<xs.length-1;i++)for(let j=0;j<ys.length-1;j++){
-        const gl=major(i)?5:3,gr=major(i+1)?5:3,gt=major(j)?5:3,gb=major(j+1)?5:3;
-        const park=c.parks.some(([pi,pj])=>pi===i&&pj===j);
-        blocks+=`<rect class="${park?"prk":"blk"}" x="${xs[i]+gl}" y="${ys[j]+gt}" width="${xs[i+1]-xs[i]-gl-gr}" height="${ys[j+1]-ys[j]-gt-gb}" rx="3"/>`;
+    const mercX=(lng,z)=>(lng+180)/360*256*2**z;
+    const mercY=(lat,z)=>{const r=lat*Math.PI/180;return(1-Math.log(Math.tan(r)+1/Math.cos(r))/Math.PI)/2*256*2**z};
+    const LL=(city,lat,lng)=>{const g=GEO[city],r=n=>Math.round(n*10)/10;return{lat,lng,x:r(320+(mercX(lng,g.z)-mercX(g.c[1],g.z))*g.upp),y:r(180+(mercY(lat,g.z)-mercY(g.c[0],g.z))*g.upp)}};
+    const hav=(a,b)=>{const R=6371000,r=Math.PI/180,dl=(b.lat-a.lat)*r,dn=(b.lng-a.lng)*r,h=Math.sin(dl/2)**2+Math.cos(a.lat*r)*Math.cos(b.lat*r)*Math.sin(dn/2)**2;return 2*R*Math.asin(Math.sqrt(h))};
+    /* tile zoom follows the camera: keep one tile pixel close to one screen pixel so labels stay crisp and readable.
+       Esri Gray Canvas (free, no key, light + dark) tops out at z16 */
+    const TILE_MAXZ=16;
+    const tileLOD=(g,k,s)=>clamp(Math.floor(Math.log2(s*k*g.upp)),-2,TILE_MAXZ-g.z);
+    const tileURL=(layer,dark,z,x,y)=>`https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_${dark?"Dark":"Light"}_Gray_${layer}/MapServer/tile/${z}/${y}/${x}`;
+    function tilesHTML(city,n){
+      const g=GEO[city]||GEO.lisbon,z=g.z+n,u=g.upp/2**n,S=256*u,N=2**z,dark=document.body.classList.contains("night")?1:0,X0=mercX(g.c[1],z),Y0=mercY(g.c[0],z);
+      const tx0=Math.floor((X0+(-80-320)/u)/256),tx1=Math.floor((X0+(760-320)/u)/256),ty0=Math.floor((Y0+(-40-180)/u)/256),ty1=Math.floor((Y0+(410-180)/u)/256);
+      let out="",refs="";
+      for(let ty=ty0;ty<=ty1;ty++)for(let tx=tx0;tx<=tx1;tx++){
+        if(tx<0||ty<0||tx>=N||ty>=N)continue;
+        const geo=`x="${(320+(tx*256-X0)*u).toFixed(2)}" y="${(180+(ty*256-Y0)*u).toFixed(2)}" width="${(S+.6).toFixed(2)}" height="${(S+.6).toFixed(2)}" preserveAspectRatio="none" onload="this.style.opacity=1"`;
+        out+=`<image href="${tileURL("Base",dark,z,tx,ty)}" ${geo}/>`;
+        refs+=`<image href="${tileURL("Reference",dark,z,tx,ty)}" ${geo}/>`;
       }
-      return `<rect x="-200" y="-200" width="1100" height="800" fill="var(--m-street)"/>${blocks}<path class="ave" d="M-60 330L700 30" stroke-width="9"/><path class="wtr" d="M-200 300C80 262 220 338 360 296S600 250 900 292V700H-200Z"/>${c.labels.map(([x,y,t])=>`<text class="lbl" x="${x}" y="${y}">${t}</text>`).join("")}<text class="lbl w" x="430" y="318">${c.water}</text>`;
+      return `<g class="tiles" data-n="${n}" data-dark="${dark}">${out}${refs}</g>`;
     }
-    function routePath(a,b,city){
-      const{xs,ys}=mapGrid(city),near=(arr,v)=>arr.reduce((best,x)=>Math.abs(x-v)<Math.abs(best-v)?x:best,arr[0]);
-      const y1=near(ys,a.y),yb=near(ys,b.y),x1=near(xs,b.x);
-      const raw=y1===yb?[[a.x,a.y],[a.x,y1],[b.x,y1],[b.x,b.y]]:[[a.x,a.y],[a.x,y1],[x1,y1],[x1,yb],[b.x,yb],[b.x,b.y]];
-      const pts=raw.filter((q,i,arr)=>!i||Math.hypot(q[0]-arr[i-1][0],q[1]-arr[i-1][1])>2);
-      let d=`M${pts[0][0]} ${pts[0][1]}`;
-      for(let i=1;i<pts.length-1;i++){
-        const[p0,p1,p2]=[pts[i-1],pts[i],pts[i+1]],l1=Math.hypot(p1[0]-p0[0],p1[1]-p0[1]),l2=Math.hypot(p2[0]-p1[0],p2[1]-p1[1]),rr=Math.min(10,l1/2,l2/2);
-        const a1=[p1[0]-(p1[0]-p0[0])/l1*rr,p1[1]-(p1[1]-p0[1])/l1*rr],a2=[p1[0]+(p2[0]-p1[0])/l2*rr,p1[1]+(p2[1]-p1[1])/l2*rr];
-        d+=`L${a1[0]} ${a1[1]}Q${p1[0]} ${p1[1]} ${a2[0]} ${a2[1]}`;
-      }
-      const last=pts.at(-1);return d+`L${last[0]} ${last[1]}`;
+    function mapBase(d){const v=d.view||{k:1};return `<rect x="-200" y="-200" width="1100" height="800" fill="var(--m-street)"/>${tilesHTML(d.city,tileLOD(GEO[d.city]||GEO.lisbon,v.k,.69))}`}
+    /* swap to the right tile level / theme: new layer fades in over the old one, then the old one goes */
+    function syncTiles(m){
+      const el=cardOf(m)?.querySelector(".map"),cam=el?.querySelector(".cam");if(!cam)return;
+      const g=GEO[m.data.city]||GEO.lisbon,s=el.offsetWidth?Math.max(el.offsetWidth/MAPW,el.offsetHeight/MAPH):.69,n=tileLOD(g,m.data.view.k,s),dark=document.body.classList.contains("night")?1:0;
+      const layers=[...cam.querySelectorAll(":scope>.tiles")],cur=layers.at(-1);
+      if(cur&&+cur.dataset.n===n&&+cur.dataset.dark===dark)return;
+      const tmp=document.createElementNS("http://www.w3.org/2000/svg","g");tmp.innerHTML=tilesHTML(m.data.city,n);
+      const layer=tmp.firstElementChild;cur?cur.after(layer):cam.firstElementChild.after(layer);
+      setTimeout(()=>{const all=[...cam.querySelectorAll(":scope>.tiles")];all.slice(0,-1).forEach(l=>l.remove())},900);
     }
+    /* real walking / cycling routes from the public OSM router, cached; a straight line is the offline fallback */
+    const ROUTES={};
+    const rKey=(d,a,b)=>`${d.city}|${a.lat},${a.lng}|${b.lat},${b.lng}`;
+    const routeOf=d=>{const you=d.pins.find(p=>p.kind==="you"),sel=d.pins[d.sel];return you&&sel&&sel!==you?ROUTES[rKey(d,you,sel)]:null};
+    function fetchRoute(m,a,b){
+      const d=m.data,g=GEO[d.city],key=rKey(d,a,b);if(!g||key in ROUTES)return;ROUTES[key]=null;
+      const dist=hav(a,b),fallback=()=>({pts:[[a.x,a.y],[b.x,b.y]],min:Math.max(1,Math.round(dist/(g.mode==="foot"?75:250)))});
+      fetch(`https://routing.openstreetmap.de/${g.osrm}/route/v1/driving/${a.lng},${a.lat};${b.lng},${b.lat}?overview=full&geometries=geojson`)
+        .then(r=>r.json()).then(j=>{const r0=j.routes[0];ROUTES[key]={pts:r0.geometry.coordinates.map(([lng,lat])=>{const q=LL(d.city,lat,lng);return[q.x,q.y]}),min:Math.max(1,Math.round(r0.duration/60))}})
+        .catch(()=>{ROUTES[key]=fallback()}).finally(()=>{if(d.route&&cardOf(m))mapUpdate(m)});
+    }
+    const warmRoutes=m=>{const you=m.data.pins.find(p=>p.kind==="you");if(you)m.data.pins.forEach(p=>{if(p!==you)fetchRoute(m,you,p)})};
     const pinT=(p,v)=>`translate(${v.x+p.x*v.k}px,${v.y+p.y*v.k}px)`;
     function pinHTML(p,i,d){
       const v=d.view,you=p.kind==="you";
       return `<g class="pin${you?" you":""}${i===d.sel&&!you?" sel":""}" data-pin="${i}" style="transform:${pinT(p,v)}"><circle class="hit" r="15"/>${you?`<circle class="halo" r="14"/>`:""}<circle class="dot" r="${you?6:5}"/><path class="drop" d="M0 0C-1.6-5-9-8.5-9-15.5a9 9 0 0 1 18 0C9-8.5 1.6-5 0 0z"/><circle class="core" cy="-15.5" r="3.3"/><text x="9" y="3.5">${esc(you?T("You","Вы"):p.name)}</text></g>`;
     }
-    function routeHTML(d){
+    function routeHTML(d,m){
       const you=d.pins.find(p=>p.kind==="you"),sel=d.pins[d.sel];
       if(!d.route||!you||!sel||sel===you)return "";
-      const path=routePath(you,sel,d.city);
+      if(m)fetchRoute(m,you,sel);
+      const r=routeOf(d);if(!r)return "";
+      const path="M"+[[you.x,you.y],...r.pts,[sel.x,sel.y]].map(q=>`${q[0]} ${q[1]}`).join("L");
       return `<path class="route-c" d="${path}" pathLength="1" vector-effect="non-scaling-stroke"/><path class="route" d="${path}" pathLength="1" vector-effect="non-scaling-stroke"/>`;
     }
-    function etaHTML(d){const you=d.pins.find(p=>p.kind==="you"),sel=d.pins[d.sel];if(!d.route||!you||!sel||sel===you)return "";const min=Math.max(3,Math.round((Math.abs(sel.x-you.x)+Math.abs(sel.y-you.y))/14));return `<div class="eta">${T("Walk","Пешком")} · <b>${min} ${T("min","мин")}</b> · ${esc(sel.name)}</div>`}
+    function etaHTML(d){const sel=d.pins[d.sel],r=d.route&&routeOf(d);if(!r||!sel||sel.kind==="you")return "";const foot=(GEO[d.city]||GEO.lisbon).mode==="foot";return `<div class="eta">${foot?T("Walk","Пешком"):T("Bike","На велосипеде")} · <b>${r.min} ${T("min","мин")}</b> · ${esc(sel.name)}</div>`}
     function mapInfo(d){const sel=d.pins[d.sel];return sel&&sel.kind!=="you"?`<h2 class="m-title" style="font-size:22px;margin-bottom:12px">${esc(sel.name)}</h2><p class="meta" style="margin:-6px 0 0">${esc(sel.sub||"")}</p>`:`<p class="note">${T("Tap a pin to see details. Drag to move, scroll or ± to zoom.","Нажмите на точку, чтобы увидеть детали. Тяните, чтобы двигать, колёсико или ± — масштаб.")}</p>`}
     function mapSVG(m){
       const d=m.data;if(!d.view)d.view={x:0,y:0,k:1};const v=d.view;
-      return `<div class="map" data-map><svg viewBox="0 0 ${MAPW} ${MAPH}" preserveAspectRatio="xMidYMid slice"><g class="cam" style="transform:translate(${v.x}px,${v.y}px) scale(${v.k})">${mapBase(d.city)}<g class="routes">${routeHTML(d)}</g></g><g class="pins">${d.pins.map((p,i)=>pinHTML(p,i,d)).join("")}</g></svg><div class="map-ctl"><button data-do="zin" title="${T("Zoom in","Приблизить")}">${ic("plus")}</button><button data-do="zout" title="${T("Zoom out","Отдалить")}">${ic("minus")}</button><button data-do="locate" title="${T("My location","Где я")}">${ic("locate")}</button></div><div class="eta-slot">${etaHTML(d)}</div></div>`;
+      return `<div class="map" data-map><svg viewBox="0 0 ${MAPW} ${MAPH}" preserveAspectRatio="xMidYMid slice"><g class="cam" style="transform:translate(${v.x}px,${v.y}px) scale(${v.k})">${mapBase(d)}<g class="routes">${routeHTML(d,m)}</g></g><g class="pins">${d.pins.map((p,i)=>pinHTML(p,i,d)).join("")}</g></svg><div class="map-ctl"><button data-do="zin" title="${T("Zoom in","Приблизить")}">${ic("plus")}</button><button data-do="zout" title="${T("Zoom out","Отдалить")}">${ic("minus")}</button><button data-do="locate" title="${T("My location","Где я")}">${ic("locate")}</button></div><div class="eta-slot">${etaHTML(d)}</div><div class="map-attr">Tiles © Esri · © OpenStreetMap</div></div>`;
     }
     function clampView(v){v.k=clamp(v.k,1,3);v.x=clamp(v.x,MAPW-720*v.k,40*v.k);v.y=clamp(v.y,MAPH-400*v.k,30*v.k);return v}
     function camApply(m,animate){
       const el=cardOf(m)?.querySelector(".map");if(!el)return;const v=clampView(m.data.view),tr=animate?"transform .5s cubic-bezier(.16,1,.3,1)":"none";
       const cam=el.querySelector(".cam");cam.style.transition=tr;cam.style.transform=`translate(${v.x}px,${v.y}px) scale(${v.k})`;
       el.querySelectorAll(".pin").forEach(g=>{g.style.transition=tr;g.style.transform=pinT(m.data.pins[g.dataset.pin],v)});
+      syncTiles(m);
     }
     function mapUpdate(m){
       const card=cardOf(m),el=card?.querySelector(".map");if(!el)return;const d=m.data;
       el.querySelectorAll(".pin").forEach(g=>g.classList.toggle("sel",+g.dataset.pin===d.sel&&d.pins[d.sel].kind!=="you"));
-      el.querySelector(".routes").innerHTML=routeHTML(d);el.querySelector(".eta-slot").innerHTML=etaHTML(d);
+      el.querySelector(".routes").innerHTML=routeHTML(d,m);el.querySelector(".eta-slot").innerHTML=etaHTML(d);
       card.querySelector(".map-info").innerHTML=mapInfo(d);card.querySelector(".acts").innerHTML=actsOf(m);
     }
     function mapFocus(m,i,k){const v=m.data.view,p=m.data.pins[i];if(k)v.k=k;v.x=MAPW/2-p.x*v.k;v.y=MAPH/2-p.y*v.k;camApply(m,true)}
     function mapUnits(el,cx,cy){const r=el.getBoundingClientRect(),s=Math.max(r.width/MAPW,r.height/MAPH);return{x:(cx-r.left-(r.width-MAPW*s)/2)/s,y:(cy-r.top-(r.height-MAPH*s)/2)/s,s}}
     function zoomMap(m,f,ux=MAPW/2,uy=MAPH/2,animate=true){const v=m.data.view,k=clamp(v.k*f,1,3);v.x=ux-(ux-v.x)*(k/v.k);v.y=uy-(uy-v.y)*(k/v.k);v.k=k;camApply(m,animate)}
+    /* people of a Space — the only collaborators shown in the top bar (with a name tooltip) and in the Participants panel */
+    const PERSON=(id,en,ru,aEn,aRu)=>({id,name:T(en,ru),kind:"person",access:T(aEn,aRu)});
     const BP={
       inbox:()=>({id:"inbox",title:T("Review Inbox","Разобрать входящие"),
-        collabs:[{id:"mail",name:T("Mail","Почта"),kind:"service",access:T("Sees the Mail flow only","Видит только поток «Почта»")},{id:"calendar",name:T("Calendar","Календарь"),kind:"service",access:T("Availability and invites · may add modules","Занятость и приглашения · может добавлять модули")},{id:"messages",name:T("Messages","Сообщения"),kind:"service",access:T("Sees the Messages flow only","Видит только поток «Сообщения»")},{id:"maya",name:T("Maya Chen","Майя Чен"),kind:"person",access:T("May add and remove inbox items — no password shared","Может добавлять и убирать письма — без доступа к паролю")}],
+        collabs:[{id:"mail",name:T("Mail","Почта"),kind:"service",access:T("Sees the Mail flow only","Видит только поток «Почта»")},{id:"calendar",name:T("Calendar","Календарь"),kind:"service",access:T("Availability and invites · may add modules","Занятость и приглашения · может добавлять модули")},{id:"messages",name:T("Messages","Сообщения"),kind:"service",access:T("Sees the Messages flow only","Видит только поток «Сообщения»")},{id:"maya",name:T("Maya Chen","Майя Чен"),kind:"person",access:T("May add and remove inbox items — no password shared","Может добавлять и убирать письма — без доступа к паролю")},PERSON("leo","Leo Park","Лео Пак","Sees drafts and review threads","Видит черновики и обсуждения"),PERSON("sofia","Sofia Reyes","Софья Рейес","Sees invoices only","Видит только счета"),PERSON("daniel","Daniel Kim","Даниэль Ким","Sees the Invites flow only","Видит только поток «Приглашения»")],
         rules:[{text:T("Show unread items only","Показывать только непрочитанное"),on:true},{text:T("Archive a module after I reply","Убирать модуль после ответа"),on:true},{text:T("Let Calendar add invites on its own","Календарь может сам добавлять приглашения"),on:true,auto:true}],
         flows:[
           {name:T("Mail","Почта"),modules:[
-            M("list",T("Unread mail","Непрочитанные"),"mail",{title:T("4 unread","4 непрочитанных"),rows:[
+            M("list",T("Unread mail","Непрочитанные"),"mail",{title:T("5 unread","5 непрочитанных"),rows:[
               {from:T("Maya Chen","Майя Чен"),subj:T("Coffee?","Кофе?"),time:"09:41",text:T("Want to meet my team at Fábrica at 11?","Хочешь в 11 познакомиться с моей командой в Fábrica?"),body:T(["Hey!","Was wondering if you’d like to meet my team at Fábrica Coffee at 11 today. No pressure if you can’t make it — I think you’d really get along!","Maya"],["Привет!","Хочешь сегодня в 11 познакомиться с моей командой в Fábrica Coffee? Если не получится — ничего страшного, но мне кажется, вы отлично сойдётесь!","Майя"])},
               {from:T("Leo Park","Лео Пак"),subj:T("Q4 narrative, first pass","Черновик отчёта за Q4"),time:"08:47",text:T("Rough, but the structure is there.","Сыро, но структура уже есть."),body:T(["Rough, but the structure is there.","Would love your eyes on section two — I think the regional table hides the story."],["Сыро, но структура уже есть.","Посмотри второй раздел — кажется, таблица по регионам прячет главное."])},
               {from:T("Studio Ops","Студия"),subj:T("Invoice #2291 approved","Счёт №2291 согласован"),time:"08:30",text:T("Payment is scheduled for Friday.","Оплата запланирована на пятницу."),body:T(["Payment for invoice #2291 is scheduled for Friday. No action needed."],["Оплата по счёту №2291 запланирована на пятницу. Ничего делать не нужно."])},
+              {from:T("Daniel Kim","Даниэль Ким"),subj:T("Contract copy","Копия договора"),time:"07:50",text:T("Signed version attached — can you check page 3?","Подписанная версия во вложении — посмотришь страницу 3?"),body:T(["Signed version attached.","Could you check page 3? The delivery date looks off to me.","Daniel"],["Подписанная версия во вложении.","Посмотришь страницу 3? Мне кажется, срок поставки указан неверно.","Даниэль"])},
               {from:"Are.na",subj:T("Your weekly digest","Дайджест недели"),time:"07:05",text:T("12 new blocks in channels you follow.","12 новых блоков в ваших каналах."),body:T(["12 new blocks in channels you follow, including “Soft interfaces”."],["12 новых блоков в ваших каналах, включая «Мягкие интерфейсы»."])}]}),
             M("message",T("Maya Chen","Майя Чен"),"mail",{subj:T("Coffee?","Кофе?"),time:T("Just now","Только что"),body:T(["Hey!","Was wondering if you’d like to meet my team at Fábrica Coffee at 11 today. No pressure if you can’t make it — I think you’d really get along!","Maya"],["Привет!","Хочешь сегодня в 11 познакомиться с моей командой в Fábrica Coffee? Если не получится — ничего страшного, но мне кажется, вы отлично сойдётесь!","Майя"])}),
             M("calendar",T("See my availability: today","Моя занятость: сегодня"),"calendar",{title:T("Available until 13:00","Свободен до 13:00"),ask:T("Create an event for Coffee with Maya at 11:00?","Создать событие «Кофе с Майей» в 11:00?"),range:[9,15],now:9.7,events:[{s:11,e:12,t:T("Coffee with Maya","Кофе с Майей"),w:"Fábrica Coffee",prop:true},{s:13,e:14.5,t:T("Meeting with Leo","Встреча с Лео"),w:T("Studio","Студия")}]}),
             M("compose",T("Reply to Maya","Ответ Майе"),"mail",{to:T("Maya Chen","Майя Чен"),text:T("Count me in! See you at Fábrica at 11.","Я в деле! Увидимся в Fábrica в 11.")},T("when the event is created","когда событие создано"))
           ]},
           {name:T("Messages","Сообщения"),modules:[
-            M("chat",T("Leo Park","Лео Пак"),"messages",{msgs:T([["Leo","Did you see the Q4 draft?"],["me","Not yet — my schedule is a bit crazy today."],["Leo","Haha, no rush."],["Leo","Section two still feels heavy — maybe a chart?"]],[["Лео","Видел черновик Q4?"],["me","Пока нет — сегодня день немного безумный."],["Лео","Ха, не спеши."],["Лео","Второй раздел тяжеловат — может, график?"]]),newAt:2,replies:T(["Perfect, thanks!","Sounds good 👍","Let’s sync after lunch."],["Отлично, спасибо!","Звучит хорошо 👍","Созвонимся после обеда."])})
+            M("chat",T("Leo Park","Лео Пак"),"messages",{msgs:T([["Leo","Did you see the Q4 draft?"],["me","Not yet — my schedule is a bit crazy today."],["Leo","Haha, no rush."],["Leo","Section two still feels heavy — maybe a chart?"]],[["Лео","Видел черновик Q4?"],["me","Пока нет — сегодня день немного безумный."],["Лео","Ха, не спеши."],["Лео","Второй раздел тяжеловат — может, график?"]]),newAt:2,replies:T(["Perfect, thanks!","Sounds good 👍","Let’s sync after lunch."],["Отлично, спасибо!","Звучит хорошо 👍","Созвонимся после обеда."])}),
+            M("chat",T("Sofia Reyes","Софья Рейес"),"messages",{msgs:T([["Sofia","Invoice #2291 is approved — did you see?"],["me","Yes, thanks for pushing it through."],["Sofia","Should I send the receipt to accounting?"]],[["Софья","Счёт №2291 согласован — видел?"],["me","Да, спасибо, что дожала."],["Софья","Отправить чек в бухгалтерию?"]]),newAt:2,replies:T(["Yes, please.","Hold on, I’ll check first."],["Да, пожалуйста.","Подожди, сначала проверю."])})
           ]},
           {name:T("Invites","Приглашения"),modules:[
-            M("invite",T("Design critique","Дизайн-критика"),"calendar",{title:T("Design critique","Дизайн-критика"),when:T("Today · 16:00 – 16:45","Сегодня · 16:00 – 16:45"),who:T("Maya, Leo and 3 others","Майя, Лео и ещё 3"),where:T("Studio, room 2","Студия, переговорка 2")})
+            M("invite",T("Design critique","Дизайн-критика"),"calendar",{title:T("Design critique","Дизайн-критика"),when:T("Today · 16:00 – 16:45","Сегодня · 16:00 – 16:45"),who:T("Maya, Leo and 3 others","Майя, Лео и ещё 3"),where:T("Studio, room 2","Студия, переговорка 2")}),
+            M("invite",T("Sprint planning","Планирование спринта"),"calendar",{title:T("Sprint planning","Планирование спринта"),when:T("Tomorrow · 10:00 – 11:00","Завтра · 10:00 – 11:00"),who:T("Daniel, Leo and 4 others","Даниэль, Лео и ещё 4"),where:T("Studio, big room","Студия, большая комната"),note:T("Agenda: Q4 report, studio invoices, the autumn hiring plan.","Повестка: отчёт за Q4, счета студии, план найма на осень.")})
           ]}
         ],
         auto:{delay:8000,flow:2,from:"calendar",make:()=>M("invite",T("1:1 with Leo","1:1 с Лео"),"calendar",{title:T("1:1 with Leo — moved","1:1 с Лео — перенесено"),when:T("Today · 17:30 – 18:00","Сегодня · 17:30 – 18:00"),who:T("Leo Park","Лео Пак"),where:T("Call","Созвон"),note:T("Calendar moved this to avoid overlapping with the critique.","Календарь перенёс встречу, чтобы она не пересекалась с критикой.")})}
       }),
       trip:()=>({id:"trip",title:T("Plan a trip to Lisbon","Спланировать поездку в Лиссабон"),
-        collabs:[{id:"airline",name:T("Airline","Авиакомпания"),kind:"service",access:T("Sees the Flights flow only","Видит только поток «Рейсы»")},{id:"stays",name:T("Stays","Жильё"),kind:"service",access:T("Sees the Stay flow only","Видит только поток «Жильё»")},{id:"maps",name:T("Maps","Карты"),kind:"service",access:T("Places in this Space","Места из этого пространства")},{id:"weather",name:T("Weather","Погода"),kind:"service",access:T("Itinerary · may add modules","Маршрут · может добавлять модули")},{id:"maya",name:T("Maya Chen","Майя Чен"),kind:"person",access:T("Can edit the itinerary","Может править маршрут")}],
+        collabs:[{id:"airline",name:T("Airline","Авиакомпания"),kind:"service",access:T("Sees the Flights flow only","Видит только поток «Рейсы»")},{id:"stays",name:T("Stays","Жильё"),kind:"service",access:T("Sees the Stay flow only","Видит только поток «Жильё»")},{id:"maps",name:T("Maps","Карты"),kind:"service",access:T("Places in this Space","Места из этого пространства")},{id:"weather",name:T("Weather","Погода"),kind:"service",access:T("Itinerary · may add modules","Маршрут · может добавлять модули")},{id:"maya",name:T("Maya Chen","Майя Чен"),kind:"person",access:T("Can edit the itinerary","Может править маршрут")},PERSON("sofia","Sofia Reyes","Софья Рейес","Travelling with us · sees flights and stays","Летит с нами · видит рейсы и жильё"),PERSON("daniel","Daniel Kim","Даниэль Ким","Meets us on Saturday · sees the itinerary","Встречает в субботу · видит маршрут")],
         rules:[{text:T("Keep the total under €900","Уложиться в €900"),on:true},{text:T("Prefer direct flights","Предпочитать прямые рейсы"),on:true},{text:T("Let Weather suggest changes","Погода может предлагать изменения"),on:true,auto:true}],
         flows:[
           {name:T("Flights","Рейсы"),modules:[
             M("options",T("Flights to Lisbon","Рейсы в Лиссабон"),"airline",{opts:[{t:"TAP Air Portugal",s:T("07:40 → 10:05 · direct","07:40 → 10:05 · прямой"),p:"€184"},{t:"easyJet",s:T("06:15 → 11:50 · 1 stop","06:15 → 11:50 · 1 пересадка"),p:"€139"},{t:"Lufthansa",s:T("12:30 → 17:10 · 1 stop","12:30 → 17:10 · 1 пересадка"),p:"€212"}]},T("Thu 13 Nov · 2 adults","чт, 13 ноября · 2 взрослых")),
+            M("chart",T("TAP fare this week","Цена TAP за неделю"),"airline",{bars:[[T("Mon","Пн"),82,"€196"],[T("Tue","Вт"),76,"€190"],[T("Wed","Ср"),70,"€162"],[T("Thu","Чт"),88,"€209"],[T("Fri","Пт"),74,"€184"]],caption:T("Dipped to €162 on Wednesday, now €184 · direct, 07:40","В среду падала до €162, сейчас €184 · прямой, 07:40")}),
             M("compose",T("Share with Maya","Отправить Майе"),"messages",{to:T("Maya Chen","Майя Чен"),text:T("Found a direct TAP flight at 07:40 for €184. I’ll book for both of us unless you object by tonight.","Нашёл прямой рейс TAP в 07:40 за €184. Забронирую на двоих, если до вечера не будешь против.")})
           ]},
           {name:T("Stay","Жильё"),modules:[
             M("listings",T("Stays in Alfama","Жильё в Алфаме"),"stays",{groups:[{by:"Stays",items:[{t:T("Terrace · sleeps 6","Терраса · до 6 гостей"),addr:"Casa do Largo",price:T("€148 / night","€148 / ночь"),seed:11,type:"interior",pin:1},{t:T("River view · sleeps 4","Вид на реку · до 4 гостей"),addr:"Alfama Loft",price:T("€121 / night","€121 / ночь"),seed:23,type:"interior",pin:2,by:T("Maya Chen","Майя Чен")},{t:T("Patio · sleeps 5","Патио · до 5 гостей"),addr:"Casa Azulejo",price:T("€135 / night","€135 / ночь"),seed:37,type:"facade",pin:3}]}]}),
-            M("map",T("Places in Alfama","Места в Алфаме"),"maps",{city:"lisbon",sel:1,pins:[{x:250,y:200,kind:"you",name:"You"},{x:120,y:96,name:"Casa do Largo",sub:T("Stay · Largo do Chafariz 4","Жильё · Largo do Chafariz 4")},{x:360,y:130,name:"Alfama Loft",sub:T("Stay · Rua dos Remédios 12","Жильё · Rua dos Remédios 12")},{x:470,y:220,name:"Casa Azulejo",sub:T("Stay · Beco do Mirante 3","Жильё · Beco do Mirante 3")},{x:300,y:70,name:"Fábrica Coffee",sub:T("Café · opens 08:00","Кофейня · с 08:00")}]})
+            M("map",T("Places in Alfama","Места в Алфаме"),"maps",{city:"lisbon",sel:1,pins:[{...LL("lisbon",38.7109,-9.1311),kind:"you",name:"You"},{...LL("lisbon",38.71122,-9.12807),name:"Casa do Largo",sub:T("Stay · Largo do Chafariz de Dentro 4","Жильё · Largo do Chafariz de Dentro 4")},{...LL("lisbon",38.71206,-9.12705),name:"Alfama Loft",sub:T("Stay · Rua dos Remédios 12","Жильё · Rua dos Remédios 12")},{...LL("lisbon",38.7108,-9.12924),name:"Casa Azulejo",sub:T("Stay · Rua de São Miguel 3","Жильё · Rua de São Miguel 3")},{...LL("lisbon",38.7135011,-9.1286418),name:"Copenhagen Coffee Lab",sub:T("Café · Escolas Gerais 34","Кофейня · Escolas Gerais 34")}]})
           ]},
           {name:T("Itinerary","Маршрут"),modules:[
             M("checklist",T("Itinerary","Маршрут"),"maya",{items:T([["Thu · Arrive, dinner in Alfama",true],["Fri · Gulbenkian museum",false],["Sat · Workshop with Leo’s team",false],["Sun · Belém before the flight",false]],[["Чт · Прилёт, ужин в Алфаме",true],["Пт · Музей Гюльбенкяна",false],["Сб · Воркшоп с командой Лео",false],["Вс · Белен перед вылетом",false]])}),
+            M("doc",T("Lisbon notes","Заметки о Лиссабоне"),"maya",{title:T("Lisbon, four days","Лиссабон, четыре дня"),paras:T(["Arrive Thursday morning, drop the bags at Casa do Largo and have lunch at Time Out Market.","Friday is flexible: the museum fits only if the rain holds off in the afternoon.","Saturday is the workshop with Leo’s team — leave the evening free for dinner in Alfama."],["Прилетаем в четверг утром, оставляем вещи в Casa do Largo и обедаем на Time Out Market.","Пятница гибкая: музей получится, только если днём не будет дождя.","В субботу воркшоп с командой Лео — вечер оставляем свободным для ужина в Алфаме."])}),
             M("weather",T("Weather in Lisbon","Погода в Лиссабоне"),"weather",{temp:19,icon:"part",cond:T("Partly cloudy · feels like 18°","Переменная облачность · ощущается как 18°"),hours:[[T("Thu","Чт"),"sun",21,0],[T("Fri","Пт"),"rain",16,80],[T("Sat","Сб"),"part",19,20],[T("Sun","Вс"),"sun",22,0],[T("Mon","Пн"),"cloud",18,10],[T("Tue","Вт"),"sun",20,0]]})
+          ]},
+          {name:T("Packing","Сборы"),modules:[
+            M("checklist",T("Packing list","Что взять"),"sofia",{items:T([["Passports and tickets",true],["Chargers and a power bank",false],["Light rain jacket",false],["Comfortable shoes for cobblestones",false],["Sunglasses",false]],[["Паспорта и билеты",true],["Зарядки и повербанк",false],["Лёгкая дождевая куртка",false],["Удобная обувь для брусчатки",false],["Солнечные очки",false]])})
+          ]},
+          {name:T("Chat","Чат"),modules:[
+            M("chat",T("Maya & Sofia","Майя и Софья"),"messages",{msgs:T([["Maya","Booked the window seats?"],["Sofia","Not yet — waiting for the direct flight."],["Maya","TAP at 07:40 works for me."],["Sofia","Same. Let’s book tonight."]],[["Майя","Места у окна забронировали?"],["Софья","Пока нет — ждём прямой рейс."],["Майя","TAP в 07:40 мне подходит."],["Софья","Мне тоже. Бронируем вечером."]]),newAt:2,replies:T(["Booked it!","Sending the receipt."],["Забронировала!","Отправляю чек."])})
           ]}
         ],
         auto:{delay:7000,flow:2,from:"weather",make:()=>M("suggest",T("Rain on Friday","Дождь в пятницу"),"weather",{note:T("80% chance of rain on Friday afternoon. Swap the museum with Saturday’s walk?","В пятницу днём дождь с вероятностью 80%. Поменять музей и прогулку в субботу?"),items:T(["Friday","Gulbenkian museum"],["Пятница","Музей Гюльбенкяна"]),actions:T(["Swap Friday and Saturday","Keep the plan","Remind me on Thursday"],["Поменять пятницу и субботу","Оставить как есть","Напомни в четверг"])})}
       }),
       flat:()=>({id:"flat",title:T("Find an apartment in Berlin","Найти квартиру в Берлине"),
-        collabs:[{id:"homes",name:T("Homes","Объявления"),kind:"service",access:T("Listings flow only","Только поток «Варианты»")},{id:"maps",name:T("Maps","Карты"),kind:"service",access:T("Places in this Space","Места из этого пространства")},{id:"calendar",name:T("Calendar","Календарь"),kind:"service",access:T("Viewings","Просмотры")},{id:"maya",name:T("Maya Chen","Майя Чен"),kind:"person",access:T("Can shortlist apartments · may add modules","Может отмечать варианты · добавлять модули")}],
+        collabs:[{id:"homes",name:T("Homes","Объявления"),kind:"service",access:T("Listings flow only","Только поток «Варианты»")},{id:"maps",name:T("Maps","Карты"),kind:"service",access:T("Places in this Space","Места из этого пространства")},{id:"calendar",name:T("Calendar","Календарь"),kind:"service",access:T("Viewings","Просмотры")},{id:"maya",name:T("Maya Chen","Майя Чен"),kind:"person",access:T("Can shortlist apartments · may add modules","Может отмечать варианты · добавлять модули")},PERSON("weber","Frau Weber","Frau Weber","Landlord · sees viewing requests only","Арендодатель · видит только запросы на просмотр"),PERSON("daniel","Daniel Kim","Даниэль Ким","Knows the neighbourhood · comments only","Знает район · только комментирует"),PERSON("sofia","Sofia Reyes","Софья Рейес","Co-signer · sees budget and documents","Поручитель · видит бюджет и документы")],
         rules:[{text:T("Up to €2,200 a month","До €2 200 в месяц"),on:true},{text:T("Within 25 minutes of the office","Не дальше 25 минут от офиса"),on:true},{text:T("Let Maya shortlist on her own","Майя может отмечать варианты сама"),on:true,auto:true}],
         flows:[
           {name:T("Listings","Варианты"),modules:[
-            M("listings",T("3-room apartments in Berlin","Трёхкомнатные квартиры в Берлине"),"homes",{groups:[{by:"Homes",items:[{t:T("3 rooms · 2 baths","3 комнаты · 2 санузла"),addr:"Oranienstraße 18",price:T("€1,950 / month","€1 950 / мес"),seed:5,type:"facade",pin:1},{t:T("3 rooms · balcony","3 комнаты · балкон"),addr:"Kastanienallee 7",price:T("€2,150 / month","€2 150 / мес"),seed:17,type:"interior",pin:2,by:T("Maya Chen","Майя Чен")},{t:T("3 rooms · loft","3 комнаты · лофт"),addr:"Torstraße 112",price:T("€2,080 / month","€2 080 / мес"),seed:29,type:"interior",pin:3},{t:T("3 rooms · garden","3 комнаты · сад"),addr:"Graefestraße 41",price:T("€1,890 / month","€1 890 / мес"),seed:41,type:"facade",pin:4}]}]})
+            M("listings",T("3-room apartments in Berlin","Трёхкомнатные квартиры в Берлине"),"homes",{groups:[{by:"Homes",items:[{t:T("3 rooms · 2 baths","3 комнаты · 2 санузла"),addr:"Oranienstraße 18",price:T("€1,950 / month","€1 950 / мес"),seed:5,type:"facade",pin:1},{t:T("3 rooms · balcony","3 комнаты · балкон"),addr:"Kastanienallee 7",price:T("€2,150 / month","€2 150 / мес"),seed:17,type:"interior",pin:2,by:T("Maya Chen","Майя Чен")},{t:T("3 rooms · loft","3 комнаты · лофт"),addr:"Torstraße 112",price:T("€2,080 / month","€2 080 / мес"),seed:29,type:"interior",pin:3},{t:T("3 rooms · garden","3 комнаты · сад"),addr:"Graefestraße 41",price:T("€1,890 / month","€1 890 / мес"),seed:41,type:"facade",pin:4}]}]}),
+            M("chart",T("Rent per month","Аренда в месяц"),"homes",{bars:[["Oranien.",88,T("€1,936 / month","€1 936 / мес")],["Kastan.",98,T("€2,156 / month","€2 156 / мес")],["Torstr.",95,T("€2,090 / month","€2 090 / мес")],["Graefe",86,T("€1,890 / month","€1 890 / мес")]],caption:T("Graefestraße 41 is the cheapest at €1,890 — €310 under your limit","Graefestraße 41 дешевле всех — €1 890, на €310 ниже вашего лимита")})
           ]},
           {name:T("Map","Карта"),modules:[
-            M("map",T("Listings near the office","Варианты рядом с офисом"),"maps",{city:"berlin",sel:1,pins:[{x:330,y:180,kind:"you",name:"Office"},{x:170,y:230,name:"Oranienstraße 18",sub:T("€1,950 · 14 min to the office","€1 950 · 14 мин до офиса")},{x:470,y:90,name:"Kastanienallee 7",sub:T("€2,150 · 18 min to the office","€2 150 · 18 мин до офиса")},{x:380,y:60,name:"Torstraße 112",sub:T("€2,080 · 9 min to the office","€2 080 · 9 мин до офиса")},{x:110,y:280,name:"Graefestraße 41",sub:T("€1,890 · 22 min to the office","€1 890 · 22 мин до офиса")}]})
+            M("map",T("Listings near the office","Варианты рядом с офисом"),"maps",{city:"berlin",sel:1,pins:[{...LL("berlin",52.5219814,13.4136358),kind:"you",name:"Office"},{...LL("berlin",52.5008415,13.4225548),name:"Oranienstraße 18",sub:T("€1,950 · 20 min by bike to the office","€1 950 · 20 мин на велосипеде до офиса")},{...LL("berlin",52.5398024,13.4107579),name:"Kastanienallee 7",sub:T("€2,150 · 16 min by bike to the office","€2 150 · 16 мин на велосипеде до офиса")},{...LL("berlin",52.5295729,13.4029287),name:"Torstraße 112",sub:T("€2,080 · 11 min by bike to the office","€2 080 · 11 мин на велосипеде до офиса")},{...LL("berlin",52.4890663,13.4144917),name:"Graefestraße 41",sub:T("€1,890 · 28 min by bike to the office","€1 890 · 28 мин на велосипеде до офиса")}]})
           ]},
           {name:T("Viewings","Просмотры"),modules:[
             M("calendar",T("Viewings this week","Просмотры на неделе"),"calendar",{title:T("Two slots on Saturday","Два окна в субботу"),ask:T("Book a viewing at Oranienstraße 18 at 11:00?","Записаться на просмотр Oranienstraße 18 в 11:00?"),range:[10,16],now:10.4,events:[{s:11,e:11.75,t:T("Viewing · Oranienstraße 18","Просмотр · Oranienstraße 18"),w:T("with the landlord","с арендодателем"),prop:true},{s:13,e:14,t:T("Lunch with Maya","Обед с Майей"),w:"Markthalle Neun"}]}),
-            M("compose",T("Message the landlord","Написать арендодателю"),"homes",{to:"Frau Weber",text:T("Hello! Is the apartment at Oranienstraße 18 still available? Could we view it on Saturday at 11?","Здравствуйте! Квартира на Oranienstraße 18 ещё свободна? Можно посмотреть её в субботу в 11?")})
+            M("compose",T("Message the landlord","Написать арендодателю"),"homes",{to:"Frau Weber",text:T("Hello! Is the apartment at Oranienstraße 18 still available? Could we view it on Saturday at 11?","Здравствуйте! Квартира на Oranienstraße 18 ещё свободна? Можно посмотреть её в субботу в 11?")}),
+            M("invite",T("Viewing · Torstraße 112","Просмотр · Torstraße 112"),"calendar",{title:T("Viewing · Torstraße 112","Просмотр · Torstraße 112"),when:T("Saturday · 14:30 – 15:00","Суббота · 14:30 – 15:00"),who:T("Maya and Daniel","Майя и Даниэль"),where:"Torstraße 112",note:T("Daniel lives two streets away and offered to show the neighbourhood.","Даниэль живёт в двух кварталах и покажет район.")})
+          ]},
+          {name:T("Documents","Документы"),modules:[
+            M("checklist",T("Application documents","Документы для заявки"),"sofia",{items:T([["Passport copies",true],["Proof of income · last 3 payslips",true],["SCHUFA credit report",false],["Landlord reference",false],["Co-signer letter from Sofia",false]],[["Копии паспортов",true],["Подтверждение дохода · 3 последних расчётных листка",true],["Кредитный отчёт SCHUFA",false],["Рекомендация от арендодателя",false],["Письмо поручителя от Софьи",false]])})
+          ]},
+          {name:T("Chat","Чат"),modules:[
+            M("chat",T("Frau Weber","Frau Weber"),"messages",{msgs:T([["Frau Weber","Good morning! Saturday at 11 works for a viewing."],["me","Perfect, we’ll bring the documents."],["Frau Weber","Please also bring the SCHUFA report."],["Frau Weber","The flat is on the third floor, no lift."]],[["Frau Weber","Доброе утро! В субботу в 11 можно на просмотр."],["me","Отлично, возьмём документы."],["Frau Weber","Пожалуйста, возьмите и отчёт SCHUFA."],["Frau Weber","Квартира на третьем этаже, лифта нет."]]),newAt:2,replies:T(["Thank you, see you Saturday.","Understood."],["Спасибо, до субботы.","Поняла."])})
           ]}
         ],
         auto:{delay:7500,flow:0,from:"maya",make:()=>M("suggest",T("Maya shortlisted Kastanienallee 7","Майя отметила Kastanienallee 7"),"maya",{note:T("“Balcony faces south and it’s next to the U2. Worth a viewing?”","«Балкон на юг и рядом U2. Стоит посмотреть?»"),items:["Kastanienallee 7"],actions:T(["Book a viewing","Reply to Maya","Compare with Oranienstraße"],["Записаться на просмотр","Ответить Майе","Сравнить с Oranienstraße"])})}
       }),
       gym:()=>({id:"gym",title:T("Get ready for the gym","Собраться в спортзал"),
-        collabs:[{id:"music",name:T("Music","Музыка"),kind:"service",access:T("Music flow only","Только поток «Музыка»")},{id:"health",name:T("Health","Здоровье"),kind:"service",access:T("Workout · may add modules","Тренировка · может добавлять модули")},{id:"clock",name:T("Clock","Часы"),kind:"service",access:T("Alarms","Будильники")},{id:"weather",name:T("Weather","Погода"),kind:"service",access:T("Tomorrow flow only","Только поток «Завтра»")}],
+        collabs:[{id:"music",name:T("Music","Музыка"),kind:"service",access:T("Music flow only","Только поток «Музыка»")},{id:"health",name:T("Health","Здоровье"),kind:"service",access:T("Workout · may add modules","Тренировка · может добавлять модули")},{id:"clock",name:T("Clock","Часы"),kind:"service",access:T("Alarms","Будильники")},{id:"weather",name:T("Weather","Погода"),kind:"service",access:T("Tomorrow flow only","Только поток «Завтра»")},PERSON("daniel","Daniel Kim","Даниэль Ким","Trainer · sees the Workout flow","Тренер · видит поток «Тренировка»"),PERSON("sofia","Sofia Reyes","Софья Рейес","Gym buddy · sees the plan","Напарница · видит план")],
         rules:[{text:T("Pause music when I leave the gym","Ставить музыку на паузу, когда я ухожу из зала"),on:true},{text:T("Do not disturb during the workout","Не беспокоить во время тренировки"),on:true},{text:T("Let Health suggest breaks","Здоровье может предлагать паузы"),on:true,auto:true}],
         flows:[
           {name:T("Music","Музыка"),modules:[
             M("player",T("Motivational mix","Мотивация"),"music",{seed:7,title:T("Motivational mix","Мотивация"),artist:T("Playlist · 6 tracks","Плейлист · 6 треков"),track:0,t:0,playing:false,tracks:[["Neon Pulse","Kaya","3:24"],["Run It Back","Mira","2:58"],["Afterglow","The Lanterns","3:41"],["Higher Ground","Odo","3:12"],["Glass Hearts","Vela","2:47"],["Cool Down","Sora","4:05"]]},T("repeat until I leave the gym","повторять, пока я не уйду из зала"))
           ]},
           {name:T("Workout","Тренировка"),modules:[
-            M("checklist",T("Leg day","День ног"),"health",{items:T([["Warm-up · 10 min bike",true],["Squats · 4 × 8",false],["Lunges · 3 × 12",false],["Leg press · 3 × 10",false],["Stretch · 5 min",false]],[["Разминка · 10 мин велотренажёр",true],["Присед · 4 × 8",false],["Выпады · 3 × 12",false],["Жим ногами · 3 × 10",false],["Растяжка · 5 мин",false]])})
+            M("checklist",T("Leg day","День ног"),"health",{items:T([["Warm-up · 10 min bike",true],["Squats · 4 × 8",false],["Lunges · 3 × 12",false],["Leg press · 3 × 10",false],["Stretch · 5 min",false]],[["Разминка · 10 мин велотренажёр",true],["Присед · 4 × 8",false],["Выпады · 3 × 12",false],["Жим ногами · 3 × 10",false],["Растяжка · 5 мин",false]])}),
+            M("chart",T("Sessions this week","Тренировки за неделю"),"health",{bars:[[T("Mon","Пн"),70,T("70 min","70 мин")],[T("Wed","Ср"),55,T("55 min","55 мин")],[T("Fri","Пт"),85,T("85 min","85 мин")],[T("Sun","Вс"),40,T("40 min","40 мин")]],caption:T("3 of 4 planned sessions done · Friday was the longest","3 из 4 запланированных тренировок · пятница — самая долгая")})
           ]},
           {name:T("Tomorrow","Завтра"),modules:[
             M("alarm",T("Wake me at 7:30 unless it snows","Разбуди в 7:30, если не будет снега"),"clock",{h:7,mi:30,on:true,conds:[{t:T("If it snows at 07:15, cancel the alarm","Если в 07:15 идёт снег — отменить будильник"),sub:T("−2°, chance of snow 50%","−2°, вероятность снега 50%")}],all:false,alarms:[["06:45",false],["07:30",true],["09:00",false]]}),
             M("weather",T("Tomorrow morning","Завтра утром"),"weather",{temp:-2,icon:"snow",cond:T("Light snow · feels like −6°","Небольшой снег · ощущается как −6°"),hours:[["06:00","cloud",-3,20],["07:00","snow",-2,50],["08:00","snow",-2,60],["09:00","cloud",-1,30],["10:00","part",0,10],["11:00","sun",1,0]]})
+          ]},
+          {name:T("Nutrition","Питание"),modules:[
+            M("checklist",T("After the workout","После тренировки"),"daniel",{items:T([["Protein shake within 30 minutes",false],["Banana and a handful of nuts",false],["Water · 0.5 l",true],["Dinner with carbs and greens",false]],[["Протеиновый коктейль в течение 30 минут",false],["Банан и горсть орехов",false],["Вода · 0,5 л",true],["Ужин с углеводами и зеленью",false]])})
+          ]},
+          {name:T("Trainer","Тренер"),modules:[
+            M("chat",T("Daniel Kim","Даниэль Ким"),"messages",{msgs:T([["Daniel","How did the squats feel on Wednesday?"],["me","Heavy at the end, but the form held."],["Daniel","Good. Drop to 3 sets if your knees complain."],["Daniel","See you Friday at 7?"]],[["Даниэль","Как прошли приседания в среду?"],["me","К концу тяжело, но техника держалась."],["Даниэль","Хорошо. Если колени будут ныть — делай 3 подхода."],["Даниэль","Увидимся в пятницу в 7?"]]),newAt:2,replies:T(["Friday works.","I’ll bring the new plan."],["Пятница подходит.","Принесу новый план."])})
           ]}
         ],
         auto:{delay:9000,flow:1,from:"health",make:()=>M("suggest",T("Heart rate is high","Пульс высокий"),"health",{note:T("172 bpm for 3 minutes. Take a 90-second break before the next set?","172 удара в минуту уже 3 минуты. Сделать паузу 90 секунд перед следующим подходом?"),items:T(["Squats","172 bpm"],["Присед","172 уд/мин"]),actions:T(["Start a 90 s timer","Keep going","Play something calmer"],["Таймер на 90 секунд","Продолжить","Включить что-то спокойнее"])})}
       }),
       report:()=>({id:"report",title:T("Write the Q4 report","Написать отчёт за Q4"),
-        collabs:[{id:"docs",name:T("Docs","Документы"),kind:"service",access:T("Draft flow only","Только поток «Черновик»")},{id:"sheets",name:T("Sheets","Таблицы"),kind:"service",access:T("Numbers only","Только цифры")},{id:"leo",name:T("Leo Park","Лео Пак"),kind:"person",access:T("Comments on Review · may add modules","Комментирует обзор · может добавлять модули")}],
+        collabs:[{id:"docs",name:T("Docs","Документы"),kind:"service",access:T("Draft flow only","Только поток «Черновик»")},{id:"sheets",name:T("Sheets","Таблицы"),kind:"service",access:T("Numbers only","Только цифры")},{id:"leo",name:T("Leo Park","Лео Пак"),kind:"person",access:T("Comments on Review · may add modules","Комментирует обзор · может добавлять модули")},PERSON("maya","Maya Chen","Майя Чен","Edits the draft","Правит черновик"),PERSON("sofia","Sofia Reyes","Софья Рейес","Finance · sees numbers only","Финансы · видит только цифры"),PERSON("daniel","Daniel Kim","Даниэль Ким","Data · sees sources only","Данные · видит только источники"),PERSON("nora","Nora Lind","Нора Линд","Board liaison · reads the final version","Связь с советом · читает финальную версию")],
         rules:[{text:T("Use numbers from Sheets only","Брать цифры только из таблиц"),on:true},{text:T("Ask before sharing outside the team","Спрашивать перед отправкой вне команды"),on:true},{text:T("Let Leo add review notes","Лео может добавлять заметки"),on:true,auto:true}],
         flows:[
           {name:T("Draft","Черновик"),modules:[
             M("doc",T("Q4 report","Отчёт за Q4"),"docs",{title:T("Q4: Quiet growth","Q4: тихий рост"),paras:T(["Revenue grew 18% quarter over quarter, driven by renewals rather than new accounts.","Section two needs a clearer story — the regional table hides the trend. A single chart should carry it."],["Выручка выросла на 18% за квартал — за счёт продлений, а не новых клиентов.","Второму разделу нужна понятная история: таблица по регионам прячет тренд. Её должен заменить один график."])}),
-            M("chart",T("Revenue by quarter","Выручка по кварталам"),"sheets",{bars:[["Q1",42],["Q2",55],["Q3",61],["Q4",72]],caption:T("+18% quarter over quarter","+18% к прошлому кварталу")})
+            M("chart",T("Revenue by quarter","Выручка по кварталам"),"sheets",{bars:[["Q1",42,"€4.2M"],["Q2",55,"€5.5M"],["Q3",61,"€6.1M"],["Q4",72,"€7.2M"]],caption:T("+18% quarter over quarter","+18% к прошлому кварталу")})
           ]},
           {name:T("Sources","Источники"),modules:[
             M("list",T("Sources","Источники"),"docs",{title:T("3 sources","3 источника"),rows:[{from:"Revenue Q1–Q4.xlsx",subj:T("Sheets · updated today","Таблицы · обновлено сегодня"),time:"2 MB",text:T("Regional revenue and renewals by month.","Выручка и продления по месяцам."),read:true},{from:"Board notes.pdf",subj:T("Docs · 2 Oct","Документы · 2 окт"),time:"340 KB",text:T("Highlights from the last board meeting.","Главное с прошлого совета директоров."),read:true},{from:T("Screenshot — blue chart.png","Скриншот — синий график.png"),subj:T("Image · 9 Oct","Изображение · 9 окт"),time:"1.1 MB",text:T("The chart Leo shared in Messages.","График, который Лео прислал в сообщениях."),read:true}]})
           ]},
           {name:T("Review","Обзор"),modules:[
-            M("chat",T("Leo’s comments","Комментарии Лео"),"leo",{msgs:T([["Leo","Opening line is great."],["Leo","Swap the table in section two for the chart?"]],[["Лео","Первая фраза отличная."],["Лео","Заменим таблицу во втором разделе на график?"]]),replies:T(["Great, go for it.","Looks right to me."],["Отлично, давай.","По-моему, всё верно."])})
+            M("chat",T("Leo’s comments","Комментарии Лео"),"leo",{msgs:T([["Leo","Opening line is great."],["Leo","Swap the table in section two for the chart?"]],[["Лео","Первая фраза отличная."],["Лео","Заменим таблицу во втором разделе на график?"]]),replies:T(["Great, go for it.","Looks right to me."],["Отлично, давай.","По-моему, всё верно."])}),
+            M("invite",T("Board review","Просмотр советом"),"calendar",{title:T("Board review","Просмотр советом"),when:T("Fri 21 Nov · 15:00 – 15:45","пт, 21 ноября · 15:00 – 15:45"),who:T("Nora, Leo and Sofia","Нора, Лео и Софья"),where:T("Boardroom","Переговорная совета")})
+          ]},
+          {name:T("Timeline","Сроки"),modules:[
+            M("checklist",T("Report timeline","Сроки отчёта"),"nora",{items:T([["Numbers frozen · Sofia",true],["First draft · Leo’s comments",true],["Chart for section two",false],["Board review · Fri 21 Nov",false],["Send to the team",false]],[["Цифры зафиксированы · Софья",true],["Первый черновик · комментарии Лео",true],["График для второго раздела",false],["Просмотр советом · пт, 21 ноября",false],["Отправка команде",false]])})
+          ]},
+          {name:T("Numbers","Цифры"),modules:[
+            M("chat",T("Sofia Reyes","Софья Рейес"),"messages",{msgs:T([["Sofia","Q4 renewals are final: €1.42M."],["me","Great — I’ll use that in section two."],["Sofia","Q3 was restated by €12k, mind the footnote."]],[["Софья","Продления за Q4 финальные: €1,42 млн."],["me","Отлично — подставлю во второй раздел."],["Софья","Q3 пересчитали на €12 тыс., не забудь сноску."]]),newAt:2,replies:T(["Footnote added.","Thanks, noted."],["Сноску добавил.","Спасибо, учёл."])})
           ]}
         ],
         auto:{delay:7000,flow:2,from:"leo",make:()=>M("suggest",T("Leo replied","Лео ответил"),"leo",{note:T("Leo: “Chart looks right. Can you add last year as a ghost line?”","Лео: «График верный. Добавишь прошлый год пунктиром?»"),items:T(["Revenue chart"],["График выручки"]),actions:T(["Add last year to the chart","Reply to Leo","Mark as resolved"],["Добавить прошлый год на график","Ответить Лео","Отметить как решённое"])})}
       })
     };
-    const BLUEPRINT_CHIPS=()=>[["inbox","mail",T("Review Inbox","Разобрать входящие")],["trip","plane",T("Plan a trip to Lisbon","Спланировать поездку в Лиссабон")],["flat","home",T("Find an apartment in Berlin","Найти квартиру в Берлине")],["gym","music",T("Get ready for the gym","Собраться в спортзал")],["wake","alarm",T("Wake me at 7:30 unless it snows","Разбуди меня в 7:30, если не будет снега")],["find","search",T("Find black sneakers","Найди чёрные кроссовки")]];
+    const BLUEPRINT_CHIPS=()=>[["inbox","mail",T("Review Inbox","Разобрать входящие")],["trip","plane",T("Plan a trip to Lisbon","Спланировать поездку в Лиссабон")],["flat","home",T("Find an apartment in Berlin","Найти квартиру в Берлине")],["gym","music",T("Get ready for the gym","Собраться в спортзал")],["wake","alarm",T("Wake me at 7:30 unless it snows","Разбуди меня в 7:30, если не будет снега")],["find","search",T("Find black Nike sneakers","Найди чёрные кроссовки Nike")]];
 
     const VERB={reply:"reply",answer:"reply","ответь":"reply","ответить":"reply",forward:"forward","перешли":"forward","переслать":"forward",archive:"archive",delete:"archive","архивируй":"archive","удали":"archive",summarize:"summarize",summarise:"summarize","перескажи":"summarize","суммируй":"summarize","кратко":"summarize",share:"share","поделись":"share","отправь":"send","отправить":"send",send:"send","поделиться":"share","показать":"show","принять":"accept","забронировать":"book","следить":"track","экспортировать":"export","перенести":"schedule","убери":"archive","убрать":"archive",book:"book","забронируй":"book","запишись":"book","записаться":"book",compare:"compare","сравни":"compare","сравнить":"compare",remind:"remind","напомни":"remind","напомнить":"remind",schedule:"schedule","запланируй":"schedule",draft:"write",write:"write","напиши":"write",translate:"translate","переведи":"translate",find:"find",search:"find","найди":"find","найти":"find",play:"play","включи":"play","включить":"play",wake:"wake","разбуди":"wake",plan:"plan","спланируй":"plan",swap:"swap","поменяй":"swap","поменять":"swap",keep:"keep","оставь":"keep","оставить":"keep",mark:"mark","отметь":"mark","отметить":"mark",call:"call","позвони":"call",open:"open","открой":"open",track:"track","следи":"track",export:"export","экспортируй":"export",add:"add","добавь":"add","добавить":"add",accept:"accept","прими":"accept",decline:"decline","отклони":"decline",show:"show","покажи":"show",start:"start","запусти":"start","таймер":"start",get:"get"};
     const VLABEL={reply:["Reply","Ответить"],forward:["Forward","Переслать"],archive:["Archive","Убрать"],summarize:["Summarize","Кратко"],share:["Share","Поделиться"],send:["Send","Отправить"],book:["Book","Забронировать"],compare:["Compare","Сравнить"],remind:["Remind","Напомнить"],schedule:["Schedule","Запланировать"],write:["Write","Написать"],translate:["Translate","Перевести"],find:["Find","Найти"],play:["Play","Включить"],wake:["Wake","Разбудить"],plan:["Plan","Спланировать"],swap:["Swap","Поменять"],keep:["Keep","Оставить"],mark:["Mark","Отметить"],call:["Call","Позвонить"],open:["Open","Открыть"],track:["Track","Следить"],export:["Export","Экспорт"],add:["Add","Добавить"],accept:["Accept","Принять"],decline:["Decline","Отклонить"],show:["Show","Показать"],start:["Start","Запустить"],get:["Get","Получить"]};
@@ -737,7 +953,7 @@
       if(/report|q4|отч[её]т/.test(t))return BP.report();
       const p=parse(intent),m=M("result",cap(p.noun),"intent");
       defineModule(m,intent,[]);
-      return{id:"custom",intent,title:cap(intent.trim()),collabs:[],rules:[{text:T("Generate the smallest Space that fits","Собирать минимальное пространство"),on:true}],flows:[{name:T("Intent","Намерение"),modules:[m]}]};
+      return{id:"custom",intent,title:cap(intent.trim()),collabs:[PERSON("maya","Maya Chen","Майя Чен","Can view and comment","Может смотреть и комментировать"),PERSON("leo","Leo Park","Лео Пак","Can view and comment","Может смотреть и комментировать")],rules:[{text:T("Generate the smallest Space that fits","Собирать минимальное пространство"),on:true}],flows:[{name:T("Intent","Намерение"),modules:[m]}]};
     }
 
     const CONTACTS=()=>[[T("Maya Chen","Майя Чен"),"maya@mail.com"],[T("Leo Park","Лео Пак"),"leo@mail.com"],[T("Sofia Reyes","Софья Рейес"),"sofia@mail.com"],[T("Daniel Kim","Даниэль Ким"),"daniel@mail.com"]];
@@ -754,6 +970,7 @@
       A(!has(/remind|напомн/i),{label:T("Remind me tonight","Напомнить вечером"),text:()=>T("remind me tonight","напомни вечером")});
       A(true,{k:"Tab",label:T("New module","Новый модуль"),fn:()=>addAdjacent()});
       A(true,{k:"O",label:T("Space overview","Обзор пространства"),fn:()=>toggleOverview(true)});
+      (window.Live?.reworkItems(m)||[]).forEach(it=>out.push({sec:"base",...it}));
       A(true,{label:T("Archive","Убрать"),text:()=>T("archive","убери")});
       return out;
     }
@@ -768,6 +985,8 @@
     const SERVICE={weather:["Weather","Погода"],maps:["Maps","Карты"],calendar:["Calendar","Календарь"],messages:["Messages","Сообщения"],mail:["Mail","Почта"],clock:["Clock","Часы"],music:["Music","Музыка"],shop:["Shopping","Покупки"]};
     const collabName=id=>id==="intent"?T("Intent","Намерение"):(S?.collabs.find(c=>c.id===id)?.name||(SERVICE[id]?T(...SERVICE[id]):cap(id)));
     const heading=m=>`${m.item} · ${collabName(m.source)}`;
+    /* top bar: people only, each with a name tooltip on hover */
+    function renderCollabStack(){$("#collabStack").innerHTML=S.collabs.filter(c=>c.kind==="person"&&!c.off).map(c=>`<span class="cs" data-name="${esc(c.name)}">${avatar(c.name,c.kind)}</span>`).join("")}
 
     function textOf(m){
       const d=m.data;
@@ -781,23 +1000,23 @@
     function bodyHTML(m){
       const d=m.data;
       switch(m.kind){
-        case"list":return `<h2 class="m-title">${esc(d.title||m.item)}</h2><div class="rows">${d.rows.map((r,i)=>`<div class="row${r.read?" read":""}" data-row="${i}">${avatar(r.from)}<b>${esc(r.from)}</b><time>${esc(r.time)}</time><span>${esc(r.subj)} — ${esc(r.text)}</span></div>`).join("")}</div>`;
+        case"list":{const hide=rulesOf("unread").length>0,vis=d.rows.map((r,i)=>[r,i]).filter(([r])=>!(hide&&r.read)),n=d.rows.length-vis.length;return `<h2 class="m-title">${esc(d.title||m.item)}</h2><div class="rows">${vis.map(([r,i])=>`<div class="row${r.read?" read":""}" data-row="${i}">${avatar(r.from)}<b>${esc(r.from)}</b><time>${esc(r.time)}</time><span>${esc(r.subj)} — ${esc(r.text)}</span></div>`).join("")}</div>${n?`<p class="rule-note">${T(`${n} read hidden by a rule`,`Скрыто правилом: прочитанных — ${n}`)}</p>`:""}`}
         case"message":return `<div class="sender"><span class="who-line">${avatar(m.item,"md")}${esc(m.item)}</span><time>${esc(d.time||"")}</time></div><h2 class="m-title">${esc(d.subj)}</h2><div class="msg">${d.body.map(p=>`<p>${esc(p)}</p>`).join("")}</div>`;
-        case"compose":return `<h2 class="m-title">${esc(m.item)}</h2><div class="field">${T("To","Кому")} <b class="who-line">${avatar(d.to,"xs")}${esc(d.to)}</b></div><div class="text" contenteditable="${d.sent?"false":"true"}" spellcheck="false">${esc(d.text)}</div>${d.sent?`<div class="done-note"><i>${ic("tick")}</i>${esc(d.sent)}</div>`:""}`;
+        case"compose":return `<h2 class="m-title">${esc(m.item)}</h2><div class="field">${T("To","Кому")} <b class="who-line">${avatar(d.to,"xs")}${esc(d.to)}</b></div><div class="text" contenteditable="${d.sent?"false":"true"}" spellcheck="false">${esc(d.text)}</div>${d.sent?"":`<div class="txt-cnt">${cntText(d.text)}</div>`}${d.sent?`<div class="done-note"><i>${ic("tick")}</i>${esc(d.sent)}</div>`:""}`;
         case"chat":{let out="";d.msgs.forEach(([w,t],i)=>{if(i===d.newAt)out+=`<div class="divider">${T("New messages","Новые сообщения")}</div>`;if(i===0||d.msgs[i-1][0]!==w)out+=`<div class="who${w==="me"?" me":""}">${w==="me"?T("You","Вы"):avatar(w,"xs")+esc(w)}</div>`;out+=`<div class="bubble${w==="me"?" me":""}">${esc(t)}</div>`});if(d.typing)out+=`<div class="bubble typing"><i></i><i></i><i></i></div>`;return `<h2 class="m-title">${esc(m.item)}</h2><div class="bubbles">${out}</div><form class="inline-form chat-form"><input placeholder="${T("Reply…","Ответить…")}" autocomplete="off"><button class="act primary">${T("Send","Отправить")}</button></form>`}
         case"invite":return `<h2 class="m-title">${esc(d.title)}</h2><div class="card"><dl><dt>${T("When","Когда")}</dt><dd>${esc(d.when)}</dd><dt>${T("Who","Кто")}</dt><dd>${esc(d.who)}</dd><dt>${T("Where","Где")}</dt><dd>${esc(d.where)}</dd></dl></div>${d.rsvp?`<div class="done-note"><i>${ic("tick")}</i>${esc(d.rsvp)} · ${T("organiser notified","организатор уведомлён")}</div>`:""}${d.note?`<p class="note">${esc(d.note)}</p>`:""}`;
-        case"calendar":{const[r0,r1]=d.range,H=34,rows=[];for(let h=r0;h<r1;h++)rows.push(`<div class="cal-row"><span>${pad(h)}:00</span></div>`);const pos=h=>((h-r0)*H+10);return `<h2 class="m-title">${esc(d.title)}</h2>${d.ask?`<p class="note" style="margin:-6px 0 14px;font-size:13px;color:var(--ink)">${esc(d.ask)}</p>`:""}<div class="cal">${rows.join("")}${d.events.map((e,i)=>`<div class="cal-ev${e.prop?" prop":""}${e.ok?" ok":""}" data-ev="${i}" style="top:${pos(e.s)}px;height:${(e.e-e.s)*H-3}px"><span>${esc(e.t)}</span><small>${esc(e.w||"")}</small></div>`).join("")}${d.now>=r0&&d.now<=r1?`<div class="cal-now" style="top:${pos(d.now)}px"></div>`:""}</div>`}
-        case"options":return `<h2 class="m-title">${esc(m.item)}</h2><div class="opts">${d.opts.map((o,i)=>`<button class="opt${d.sel===i?" sel":""}" data-opt="${i}"><b>${esc(o.t)}</b><strong>${esc(o.p)}</strong><small>${esc(o.s)}</small></button>`).join("")}</div>${d.booked?`<div class="done-note"><i>${ic("tick")}</i>${esc(d.booked)}</div>`:d.track?`<div class="done-note"><i>${ic("locate")}</i>${esc(d.track)}</div>`:""}`;
-        case"listings":return d.groups.map((g,gi)=>`<div class="group">${avatar(g.by,"service")}${T(`From ${g.by} for “${m.item}”`,`${g.by} по запросу «${m.item}»`)}</div><div class="listings">${g.items.map((it,ii)=>`<div class="lst${d.sel===`${gi}-${ii}`?" sel":""}" data-lst="${gi}-${ii}" role="button" tabindex="0"><div class="lst-txt"><small>${esc(it.t)}</small><b>${esc(it.addr)}</b><span>${esc(it.price)}</span></div>${photoSVG(it.seed,it.type)}<button class="fav${it.fav?" on":""}" data-fav="${gi}-${ii}" title="${T("Save","Сохранить")}">${ic("heart")}</button>${it.by?avatar(it.by,"by"):""}</div>`).join("")}</div>`).join("");
+        case"calendar":{const[r0,r1]=d.range,H=34,rows=[];for(let h=r0;h<r1;h++)rows.push(`<div class="cal-row"><span>${pad(h)}:00</span></div>`);const pos=h=>((h-r0)*H+10);return `<h2 class="m-title">${esc(d.title)}</h2>${d.ask?`<p class="note" style="margin:-6px 0 14px;font-size:13px;color:var(--ink)">${esc(d.ask)}</p>`:""}<div class="cal">${rows.join("")}${d.events.map((e,i)=>`<div class="cal-ev${e.prop?" prop":""}${e.ok?" ok":""}" data-ev="${i}"${e.prop&&!e.ok?` title="${T("Drag to move","Перетащите, чтобы сдвинуть")}"`:""} style="top:${pos(e.s)}px;height:${(e.e-e.s)*H-3}px"><span>${esc(e.t)}</span><small>${esc(e.w||"")}</small></div>`).join("")}${d.now>=r0&&d.now<=r1?`<div class="cal-now" style="top:${pos(d.now)}px"></div>`:""}</div>`}
+        case"options":return `<h2 class="m-title">${esc(m.item)}</h2><div class="opts">${d.opts.map((o,i)=>{const over=overBudget(o.p),soft=notDirect(o.s);return `<button class="opt${d.sel===i?" sel":""}${over?" over":soft?" soft":""}" data-opt="${i}"><b>${esc(o.t)}</b><strong>${esc(o.p)}</strong><small>${esc(o.s)}${over?`<em class="flag warn">${T("over","выше")} ${fmtEur(budgetCap())}</em>`:""}</small></button>`}).join("")}</div>${d.booked?`<div class="done-note"><i>${ic("tick")}</i>${esc(d.booked)}</div>`:d.track?`<div class="done-note"><i>${ic("locate")}</i>${esc(d.track)}</div>`:""}`;
+        case"listings":return d.groups.map((g,gi)=>`<div class="group">${avatar(g.by,"service")}${T(`From ${g.by} for “${m.item}”`,`${g.by} по запросу «${m.item}»`)}</div><div class="listings">${g.items.map((it,ii)=>`<div class="lst${d.sel===`${gi}-${ii}`?" sel":""}${overBudget(it.price)?" over":""}" data-lst="${gi}-${ii}" role="button" tabindex="0"><div class="lst-txt"><small>${esc(it.t)}</small><b>${esc(it.addr)}</b><span>${esc(it.price)}${overBudget(it.price)?`<em class="flag warn">${T("over","выше")} ${fmtEur(budgetCap())}</em>`:""}</span></div>${photoSVG(it.seed,it.type)}<button class="fav${it.fav?" on":""}" data-fav="${gi}-${ii}" title="${T("Save","Сохранить")}">${ic("heart")}</button>${it.by?avatar(it.by,"by"):""}</div>`).join("")}</div>`).join("");
         case"map":return mapSVG(m)+`<div class="map-info">${mapInfo(d)}</div>`;
         case"player":{const tr=d.tracks[d.track],dur=secs(tr[2]);return `<div class="player${d.playing?" playing":""}">${coverHTML(d.seed+d.track,tr[0])}<div><div class="pl-title">${esc(tr[0])}</div><div class="pl-artist">${esc(tr[1])} · ${esc(d.title)}</div><div class="pl-bar"><div class="pl-fill" style="width:${d.t/dur*100}%"></div></div><div class="pl-times"><span class="pl-cur">${fmtS(d.t)}</span><span>${tr[2]}</span></div><div class="pl-ctl"><button data-do="prev" title="${T("Previous","Назад")}">${ic("prev")}</button><button class="big" data-do="playpause" title="${d.playing?T("Pause","Пауза"):T("Play","Играть")}">${ic(d.playing?"pause":"play")}</button><button data-do="next" title="${T("Next","Вперёд")}">${ic("next")}</button></div></div></div><div class="tracks${d.playing?" playing":""}">${d.tracks.map((t,i)=>`<button class="tr${i===d.track?" cur":""}" data-track="${i}"><span>${i===d.track?`<span class="eq"><i></i><i></i><i></i></span>`:i+1}</span><span>${esc(t[0])} <small>· ${esc(t[1])}</small></span><small>${t[2]}</small></button>`).join("")}</div>`}
         case"alarm":return `<h2 class="m-title" style="margin-bottom:10px"><small>${d.on?T("Alarm set for","Будильник на"):T("Alarm off","Будильник выключен")}</small></h2><div class="alarm-time${d.on?"":" off"}"><button data-do="aminus" title="−15">${ic("minus")}</button><b>${pad(d.h)}:${pad(d.mi)}</b><button data-do="aplus" title="+15">${ic("plus")}</button></div>${d.conds.length?`<div class="cond-card"><header>${T("Conditions","Условия")}</header>${d.conds.map((c,i)=>`<div class="cond-row"><span>${esc(c.t)}</span><button data-cond="${i}" title="${T("Remove","Убрать")}">${ic("x")}</button><small>${wx("snow").replace('<svg','<svg width="14" height="14"')}${esc(c.sub)}</small></div>`).join("")}</div>`:`<p class="note">${T("No conditions — rings every time.","Без условий — звонит всегда.")}</p>`}${d.all?`<div class="alarms">${d.alarms.map(([t,on],i)=>`<label>${t}<input type="checkbox" class="switch" data-alarm="${i}"${on?" checked":""}></label>`).join("")}</div>`:""}`;
         case"weather":return `<div class="wx-now">${wx(d.icon)}<div><b>${d.temp}°</b><span>${esc(d.cond)}</span></div></div><div class="wx-hours">${d.hours.map(([h,i,t,p])=>`<div>${esc(h)}${wx(i)}<b>${t}°</b><small>${p?p+"%":"&nbsp;"}</small></div>`).join("")}</div>${d.remind?`<div class="done-note"><i>${ic("tick")}</i>${esc(d.remind)}</div>`:""}`;
         case"checklist":return `<h2 class="m-title">${esc(m.item)}</h2><div class="checks">${d.items.map(([t,c],i)=>`<label><input type="checkbox" data-check="${i}"${c?" checked":""}>${esc(t)}</label>`).join("")}</div><form class="inline-form add-form"><input placeholder="${T("Add an item…","Добавить пункт…")}" autocomplete="off"><button class="act">${T("Add","Добавить")}</button></form>`;
         case"doc":return `<div class="doc"><h3 contenteditable="true" spellcheck="false">${esc(d.title)}</h3>${d.paras.map(p=>`<p contenteditable="true" spellcheck="false">${esc(p)}</p>`).join("")}</div>`;
-        case"chart":return `<h2 class="m-title">${esc(m.item)}</h2><div class="bars">${d.bars.map(([q,v],i)=>`<div><i style="height:${v}%;animation-delay:${i*70}ms">${d.ghost?`<s style="height:${[78,84,88,82][i]}%"></s>`:""}</i>${esc(q)}</div>`).join("")}</div><p class="note">${esc(d.caption||"")}${d.ghost?T(" · dashed: last year"," · пунктир: прошлый год"):""}</p>`;
-        case"results":return d.groups.map((g,gi)=>`<div class="group">${avatar(g.store,"service")}${T(`Items from ${g.store} for “${d.query}”`,`${g.store} по запросу «${d.query}»`)}</div><div class="listings">${g.items.map((it,ii)=>`<div class="lst" data-prod="${gi}-${ii}" role="button" tabindex="0"><div class="lst-txt"><small>${esc(it.brand)}</small><b>${esc(it.name)}</b><span>${esc(it.price)}</span></div><div style="display:grid;place-items:center;padding:8px">${productSVG(it.seed,d.shoe,it.color)}</div></div>`).join("")}</div>`).join("");
-        case"product":return `<div class="product"><small style="color:var(--quiet)">${esc(d.brand)}</small><h2 class="m-title" style="margin:2px 0 6px">${esc(d.name)}</h2><span>${esc(d.price)}</span><div class="art">${productSVG(d.seed,d.shoe,d.color)}</div>${d.inBag?`<div class="done-note"><i>${ic("tick")}</i>${T("In your bag","В корзине")}${d.size?` · ${T("size","размер")} ${d.size}`:""}</div>`:""}</div>`;
+        case"chart":return `<h2 class="m-title">${esc(m.item)}</h2><div class="bars">${d.bars.map(([q,v,disp],i)=>{const g=[78,84,88,82][i%4],pct=Math.round((100/g-1)*100);return `<div><i style="height:${v}%;animation-delay:${i*70}ms">${d.ghost?`<s style="height:${g}%"></s>`:""}<u class="tip"><b>${esc(q)}</b>${esc(disp||v)}${d.ghost?`<em>${T(`+${pct}% vs last year`,`+${pct}% к прошлому году`)}</em>`:""}</u></i>${esc(q)}</div>`}).join("")}</div><p class="note">${esc(d.caption||"")}${d.ghost?T(" · dashed: last year"," · пунктир: прошлый год"):""}</p>`;
+        case"results":return d.groups.map((g,gi)=>`<div class="group">${avatar(g.store,"service")}${T(`Items from ${g.store} for “${d.query}”`,`${g.store} по запросу «${d.query}»`)}</div><div class="listings">${g.items.map((it,ii)=>`<div class="lst${overBudget(it.price)?" over":""}" data-prod="${gi}-${ii}" role="button" tabindex="0"><div class="lst-txt"><small>${esc(it.brand)}${it.nike?` · ${esc(nkCW(it.nike,0))}`:""}</small><b>${esc(it.name)}</b><span>${esc(it.price)}${overBudget(it.price)?`<em class="flag warn">${T("over","выше")} ${fmtEur(budgetCap())}</em>`:""}</span></div>${d.shoe?`<div class="lst-img">${productHTML(it.seed,true,it.color,it.nike)}</div>`:`<div style="display:grid;place-items:center;padding:8px">${productSVG(it.seed,false,it.color)}</div>`}</div>`).join("")}</div>`).join("");
+        case"product":return `<div class="product"><small class="pbrand" style="color:var(--quiet)">${esc(d.brand)}${d.nike?` · ${esc(nkCW(d.nike,d.gi||0))}`:""}</small><h2 class="m-title" style="margin:2px 0 6px">${esc(d.name)}</h2>${d.nike?`<div class="pinfo"><b>${esc(d.price)}</b><i></i><span><span class="star">★</span> ${NIKE[d.nike].r}</span><i></i><span>${T("Delivery tomorrow","Доставка завтра")}</span></div>${galleryHTML(d)}`:`<span>${esc(d.price)}</span><div class="art">${productHTML(d.seed,d.shoe,d.color)}</div>${d.shoe?`<p class="credit">${esc(photoCredit(productImg(d.seed,d.color)))}</p>`:""}`}${d.shoe?sizesHTML(d):""}${d.inBag?`<div class="done-note"><i>${ic("tick")}</i>${T("In your bag","В корзине")}${d.size?` · ${T("size","размер")} ${d.size}`:""}</div>`:""}</div>`;
         case"suggest":return `<h2 class="m-title">${esc(m.item)}</h2>${d.note?`<p class="note" style="margin:-6px 0 4px;font-size:13px">${esc(d.note)}</p>`:""}<div class="label">${T("Items","Предметы")}</div><div class="chips">${d.items.map(t=>`<span class="chip">${esc(t)}</span>`).join("")}</div><div class="label">${T("Predicted actions","Предсказанные действия")}</div><div class="chips">${d.actions.map(t=>`<button class="chip" data-act="${esc(t)}">${esc(t)}</button>`).join("")}</div>`;
         case"remind":return `<h2 class="m-title">${esc(m.item)}</h2>${m.modifier?`<div class="cond-card" style="margin-bottom:6px"><header>${T("Triggers","Срабатывает")}</header><div class="cond-row"><span>${esc(cap(m.modifier))}</span></div></div>`:""}<div class="label">${T("Or at a time","Или в определённое время")}</div><div class="chips">${[T("In 1 hour","Через час"),T("Tonight · 20:00","Вечером · 20:00"),T("Tomorrow · 09:00","Завтра · 09:00"),T("When I open this Space","Когда открою это пространство")].map(t=>`<button class="chip${d.sel===t?" sel":""}" data-when="${esc(t)}">${t}</button>`).join("")}</div>${d.sel||m.modifier?`<div class="done-note"><i>${ic("tick")}</i>${T("Reminder set","Напоминание создано")} · ${esc(d.sel||m.modifier)}</div>`:""}`;
         case"summary":return `<h2 class="m-title">${esc(m.item)}</h2><ul class="points">${d.points.map((p,i)=>`<li style="animation-delay:${i*90}ms">${esc(p)}</li>`).join("")}</ul>`;
@@ -823,14 +1042,14 @@
         case"doc":return A(T("Summarize","Кратко"),"sum")+A(T("Share with Leo","Отправить Лео"),"shareLeo");
         case"chart":return A(d.ghost?T("Hide last year","Скрыть прошлый год"):T("Add last year","Добавить прошлый год"),"ghost",d.ghost?"on":"")+A(T("Export","Экспорт"),"export");
         case"results":return A(T("Add all to flow","Всё в поток"),"addAll")+A(T("Find some more","Найти ещё"),"moreRes")+A(T("Edit collaborators","Участники"),"collabs");
-        case"product":return A(`${T("Size","Размер")} ${d.size||"—"}`,"size")+A(d.inBag?T("In bag ✓","В корзине ✓"):T("Add to bag","В корзину"),"bag",d.inBag?"on":"primary")+A(T("Details","Подробнее"),"pdetails");
+        case"product":return A(d.inBag?T("In bag ✓","В корзине ✓"):d.shoe&&!d.size?T("Pick a size","Выберите размер"):d.shoe?`${T("Add to bag","В корзину")} · ${d.size}`:T("Add to bag","В корзину"),"bag",d.inBag?"on":d.shoe&&!d.size?"":"primary")+A(T("Details","Подробнее"),"pdetails");
         case"suggest":return A(T("Dismiss","Скрыть"),"delete");
         default:return A(T("Done","Готово"),"delete")+A(T("Edit","Изменить"),"edit2");
       }
     }
     function moduleHTML(m,fi,mi){
       return `<article class="module k-${m.kind}" data-id="${m.id}" data-f="${fi}" data-m="${mi}">
-        <header class="m-head">${ic(KIND_IC[m.kind]||"spark")}<input class="line-in" placeholder="${esc(heading(m))}" autocomplete="off" spellcheck="false">${m.modifier?`<span class="cond"><span>${esc(m.modifier)}</span><button data-do="uncond" title="${T("Remove condition","Убрать условие")}">${ic("x")}</button></span>`:""}<span class="wave"><i></i><i></i><i></i><i></i></span><button class="mic" data-do="mic" title="${T("Speak","Сказать")}">${ic("mic")}</button></header>
+        <header class="m-head">${ic(KIND_IC[m.kind]||"spark")}<input class="line-in" placeholder="${esc(heading(m))}" autocomplete="off" spellcheck="false">${m.modifier?`<span class="cond"><span>${esc(m.modifier)}</span><button data-do="uncond" title="${T("Remove condition","Убрать условие")}">${ic("x")}</button></span>`:""}<span class="wave"><i></i><i></i><i></i><i></i></span>${window.Live?.canRework(m)?`<button class="mic regen" data-do="regen" title="${T("Regenerate this module","Перегенерировать модуль")}">↻</button>`:""}<button class="mic" data-do="mic" title="${T("Speak","Сказать")}">${ic("mic")}</button></header>
         <div class="parse"></div>
         <div class="m-body">${bodyHTML(m)}</div>
         <footer class="m-foot"><div class="acts">${actsOf(m)}</div><button class="more" data-do="more">⌘ ${T("More actions","Ещё действия")}</button></footer>
@@ -842,13 +1061,32 @@
     const activeModule=()=>S?.flows[S.f]?.modules[S.m[S.f]];
     const allModules=()=>S?S.flows.flatMap(f=>f.modules):[];
 
+    function cntText(s){s=s||"";const w=(s.trim().match(/\S+/g)||[]).length;return T(`${w} words · ${s.length} chars`,`${w} сл. · ${s.length} симв.`)}
+    /* click a chart bar: pin its tooltip and open a short breakdown next to the chart (the model writes it in live mode) */
+    function drillBar(m,i,bar){
+      const d=m.data,row=bar.parentElement,was=bar.classList.contains("pin");
+      [...row.children].forEach(x=>x.classList.remove("pin"));
+      if(was)return;
+      bar.classList.add("pin");
+      const[q,v,disp]=d.bars[i];d.drill=d.drill||{};
+      const ex=d.drill[i]&&findModule(d.drill[i]);if(ex){focusModule(ex.fi,ex.mi);return}
+      const val=disp||v,sum=d.bars.reduce((a,b)=>a+b[1],0),mx=Math.max(...d.bars.map(b=>b[1])),mn=Math.min(...d.bars.map(b=>b[1]));
+      const rank=v===mx?T("the highest bar","самый высокий столбец"):v===mn?T("the lowest bar","самый низкий столбец"):"";
+      const pts=[`${q}: ${val}${rank?` — ${rank}`:""}`],nb=d.bars[i>0?i-1:i+1];
+      if(nb){const nv=nb[2]||nb[1];pts.push(disp&&nb[2]?(i>0?T(`Previous (${nb[0]}): ${nv}`,`Раньше («${nb[0]}»): ${nv}`):T(`Next (${nb[0]}): ${nv}`,`Дальше («${nb[0]}»): ${nv}`)):(()=>{const p=Math.round((v/nb[1]-1)*100);return i>0?T(`${p>=0?"+":""}${p}% vs ${nb[0]}`,`${p>=0?"+":""}${p}% к «${nb[0]}»`):T(`${p>=0?"+":""}${p}% vs ${nb[0]} (next)`,`${p>=0?"+":""}${p}% к «${nb[0]}» (дальше)`)})())}
+      pts.push(disp&&d.caption?d.caption:T(`${Math.round(v/sum*100)}% of the bars shown`,`${Math.round(v/sum*100)}% от суммы столбцов`));
+      const mod=M("summary",T(`${q} · breakdown`,`${q} · разбор`),m.source,{points:pts});
+      d.drill[i]=mod.id;insertAfter(m,mod);
+      if(window.Live?.enabled())Live.drill(m,i,mod);
+    }
     function renderSpace(){
       const ae=document.activeElement,keep=ae?.matches?.(".line-in")?{id:ae.closest(".module").dataset.id,val:ae.value,pos:ae.selectionStart}:null;
       $("#flows").innerHTML=S.flows.map((fl,fi)=>`<div class="flow" data-f="${fi}"><div class="flow-label"><b>${esc(fl.name)}</b><span class="count"></span></div><div class="track">${fl.modules.map((m,mi)=>moduleHTML(m,fi,mi)).join("")}</div></div>`).join("");
       $("#spaceTitle span").textContent=S.title;
-      $("#collabStack").innerHTML=S.collabs.map(c=>avatar(c.name,c.kind).replace('class="avatar',`title="${esc(c.name)} — ${esc(c.access)}" class="avatar`)).join("");
+      renderCollabStack();
       $("#navdots").innerHTML=S.flows.map((fl,i)=>`<button data-f="${i}" title="${esc(fl.name)}"></button>`).join("");
       layout();
+      allModules().filter(x=>x.kind==="map").forEach(m=>{syncTiles(m);warmRoutes(m)});
       const inp=keep&&$(`.module[data-id="${keep.id}"] .line-in`);
       if(inp){inp.value=keep.val;inp.focus({preventScroll:true});inp.setSelectionRange(keep.pos,keep.pos);updateParse(inp)}
     }
@@ -887,6 +1125,7 @@
       card.querySelector(".m-head").replaceWith(fresh.querySelector(".m-head"));
       body.innerHTML=fresh.querySelector(".m-body").innerHTML;body.scrollTop=scroll;
       card.querySelector(".m-foot").replaceWith(fresh.querySelector(".m-foot"));
+      if(m.kind==="map")syncTiles(m);
       if(animate&&!reduce.matches)body.animate([{opacity:0,transform:"translateY(10px)",filter:"blur(4px)"},{opacity:1,transform:"none",filter:"blur(0)"}],{duration:520,easing:EASE});
     }
     function arrive(m,from="right"){
@@ -897,12 +1136,26 @@
       const loc=findModule(ref.id);if(!loc)return;
       S.flows[loc.fi].modules.splice(loc.mi+1,0,m);
       if(focus){S.f=loc.fi;S.m[loc.fi]=loc.mi+1}
-      renderSpace();arrive(m);return m;
+      const rc=cardOf(ref),track=rc&&rc.closest(".track");
+      if(track){
+        /* insert in place: re-rendering the whole Space would reload every card (images, map tiles, animations) */
+        rc.insertAdjacentHTML("afterend",moduleHTML(m,loc.fi,loc.mi+1));
+        track.querySelectorAll(".module").forEach((c,i)=>c.dataset.m=i);
+        layout();
+        if(m.kind==="map"){syncTiles(m);warmRoutes(m)}
+      }else renderSpace();
+      arrive(m);return m;
     }
 
     function makeResults(query,more){
       const r=rnd(hash(query)+(more||0)),color=/black|чёрн|черн/i.test(query)?"black":/white|бел/i.test(query)?"white":/red|красн/i.test(query)?"red":"";
-      const brands=["Nord Atelier","Kvadrat","Hōjō","Lumen","Arcade Studio","Vela"],shoe=/sneak|shoe|кросс|кед|обув/i.test(query),models=shoe?["Runner","Court","Trail","Sock","Low","Pulse"]:["Oslo","Linea","Arc","Mono","Halden","Tova"];
+      const shoe=/sneak|shoe|кросс|кед|обув/i.test(query);
+      if(shoe&&(color==="black"||color===""||/nike|найк/i.test(query))){
+        const pick=(a,b)=>NIKE_ORDER.slice(a,b),at=k=>NIKE_ORDER[((k%7)+7)%7],item=id=>({brand:"Nike",name:NIKE[id].model,price:`€${NIKE[id].price}`,seed:Math.floor(r()*1e6),color:"black",nike:id});
+        if(!more)return[{store:"Nike",items:pick(0,3).map(item)},{store:"Zalando",items:pick(3,5).map(item)}];
+        const st=5+(more-2)*2;return[{store:T("Market Hall","Маркет Холл"),items:[at(st),at(st+1)].map(item)}];
+      }
+      const brands=["Nord Atelier","Kvadrat","Hōjō","Lumen","Arcade Studio","Vela"],models=shoe?["Runner","Court","Trail","Sock","Low","Pulse"]:["Oslo","Linea","Arc","Mono","Halden","Tova"];
       const stores=more?[T("Market Hall","Маркет Холл")]:["Atelier Nord","Kvadrat Store"];
       return stores.map(store=>({store,items:Array.from({length:more?2:2},()=>{const b=brands[Math.floor(r()*brands.length)];return{brand:b,name:`${cap(query.replace(/^(me\s+)/i,""))} ${models[Math.floor(r()*models.length)]}`.slice(0,40),price:`€${Math.floor(90+r()*600)}`,seed:Math.floor(r()*1e6),color}})}));
     }
@@ -936,7 +1189,7 @@
       return m;
     }
     function runSteps(m){
-      if(m.kind!=="result")return;
+      if(m.kind!=="result"||m.data.hold)return;
       const tick=()=>{if(!cardOf(m)||m.data.done>=m.data.steps.length)return;m.data.done++;refresh(m,false);setTimeout(tick,650)};
       setTimeout(tick,650);
     }
@@ -954,7 +1207,9 @@
         ["weather",/umbrella|зонт/,"umbrella"],["map",/caf|кофейн|nearby|рядом/,"nearby"],["chart",/export|экспорт/,"export"],
         ["player",/share|подел/,"share"],["checklist",/^(share|отправить|поделиться)/,"share"],["options",/^(share|отправить)/,"share"],["weather",/^(share|отправить)/,"share"]
       ];
-      const q=QUICK.find(([k,re])=>k===m.kind&&re.test(low));
+      /* live mode: longer, free-form instructions go to the model instead of the scripted shortcuts */
+      const free=window.Live?.enabled()&&text.split(/\s+/).length>4;
+      const q=free?null:QUICK.find(([k,re])=>k===m.kind&&re.test(low));
       if(q){typeof q[2]==="function"?q[2]():DO[q[2]](m,null,card);return}
       if(p.verb==="archive")return archive(m);
       if(/availability|занятост/.test(low)){const cal=allModules().find(x=>x.kind==="calendar");if(cal){const l=findModule(cal.id);focusModule(l.fi,l.mi);return}}
@@ -969,7 +1224,8 @@
       const loc=findModule(m.id),parent=m.kind==="suggest"&&loc?.mi>0?S.flows[loc.fi].modules[loc.mi-1]:m;
       if(/^(New module|Новый модуль)$/.test(m.item))m.item=parent.item;
       if(loc&&/^(Flow|Поток) \d+$/.test(S.flows[loc.fi].name)){S.flows[loc.fi].name=cap(p.noun);const lb=$$("#flows .flow")[loc.fi]?.querySelector(".flow-label b");if(lb)lb.textContent=S.flows[loc.fi].name}
-      defineModule(m,text,textOf(parent));refresh(m);runSteps(m);
+      const ctx=textOf(parent),legacy=()=>{defineModule(m,text,ctx);refresh(m);runSteps(m)};
+      window.Live?.enabled()&&Live.wants(text,m)?Live.transform(m,text,ctx,legacy):legacy();
       logMoment(`${vlabel(p.verb)} · ${m.item}`,S.title);
     }
     function addAdjacent(over={}){
@@ -1023,15 +1279,22 @@
       undoEvent:m=>{const p=m.data.events.find(e=>e.prop);p.ok=false;refresh(m,false)},
       edit:m=>{const p=m.data.events.find(e=>e.prop);const len=p.e-p.s;p.s=p.s+.5>=m.data.range[1]-len?m.data.range[0]:p.s+.5;p.e=p.s+len;m.data.ask=T(`Create the event at ${fmtH(p.s)}?`,`Создать событие в ${fmtH(p.s)}?`);refresh(m,false)},
       full:m=>{m.data.full=!m.data.full;m.data.range=m.data.full?[8,20]:(m.data._r||[9,15]);if(m.data.full)m.data._r=m.data._r||[9,15];refresh(m,false)},
-      book:m=>{const o=m.data.opts[m.data.sel];m.data.booked=T(`Booked ${o.t} · ${o.p} · confirmation sent to Mail`,`Забронировано: ${o.t} · ${o.p} · подтверждение в почте`);refresh(m,false);showToast(T(`Booked ${o.t}`,`Забронировано: ${o.t}`));logMoment(`${T("Booked","Бронь")} ${o.t}`,S.title)},
+      book:(m,el,card,force)=>{const o=m.data.opts[m.data.sel];
+        if(!force&&overBudget(o.p)){showToast(T(`${o.p} is over your ${fmtEur(budgetCap())} limit`,`${o.p} выше вашего лимита ${fmtEur(budgetCap())}`),T("Book anyway","Всё равно"),()=>DO.book(m,el,card,true));return}
+        m.data.booked=T(`Booked ${o.t} · ${o.p} · confirmation sent to Mail`,`Забронировано: ${o.t} · ${o.p} · подтверждение в почте`);refresh(m,false);showToast(T(`Booked ${o.t}`,`Забронировано: ${o.t}`));logMoment(`${T("Booked","Бронь")} ${o.t}`,S.title)},
       track:m=>{m.data.track=m.data.track?null:T("Tracking prices · I’ll book under €150","Слежу за ценой · забронирую до €150");refresh(m,false)},
+      regen:m=>window.Live?.rework(m,"again"),
       share:m=>openPalette("share"),
       addSaved:m=>{const saved=m.data.groups.flatMap(g=>g.items).filter(i=>i.fav);if(!saved.length){showToast(T("Tap ♡ to save listings first","Сначала отметьте варианты ♡"));return}insertAfter(m,M("checklist",T("Shortlist","Избранное"),"intent",{items:saved.map(i=>[`${i.addr} · ${i.price}`,false])}))},
       more2:m=>{const g=m.data.groups[0],n=g.items.length,r=rnd(n*97);for(let k=0;k<2;k++)g.items.push({t:T(`${2+k} rooms · ${["courtyard","top floor"][k]}`,`${2+k} комнаты · ${["двор","последний этаж"][k]}`),addr:["Wiener Str. "+(10+n+k),"Rua da Rosa "+(20+n+k)][k],price:T(`€${1700+Math.floor(r()*500)} / month`,`€${1700+Math.floor(r()*500)} / мес`),seed:n*13+k*7,type:k?"interior":"facade"});refresh(m,false);const c=cardOf(m);c.querySelector(".m-body").scrollTo({top:9999,behavior:"smooth"})},
-      showmap:m=>{const mp=allModules().find(x=>x.kind==="map");if(!mp){showToast(T("No map in this Space","В пространстве нет карты"));return}const it=m.data?.sel&&m.data.groups?m.data.groups[m.data.sel.split("-")[0]].items[m.data.sel.split("-")[1]]:null;if(it&&it.pin!=null)mp.data.sel=it.pin;const l=findModule(mp.id);focusModule(l.fi,l.mi);mapUpdate(mp);mapFocus(mp,mp.data.sel);setTimeout(()=>cardOf(mp)?.classList.add("flash"),300)},
-      route:m=>{const d=m.data;if(d.pins[d.sel]?.kind==="you"){d.sel=d.pins.findIndex(p=>p.kind!=="you")}d.route=!d.route;mapUpdate(m);if(d.route){const you=d.pins.find(p=>p.kind==="you"),sel=d.pins[d.sel],v=d.view;v.k=1;v.x=MAPW/2-(you.x+sel.x)/2;v.y=MAPH/2-(you.y+sel.y)/2;camApply(m,true)}},
+      showmap:m=>{const mp=allModules().find(x=>x.kind==="map");if(!mp){if(window.Live?.enabled()){Live.makeMap(m);return}showToast(T("No map in this Space","В пространстве нет карты"));return}const it=m.data?.sel&&m.data.groups?m.data.groups[m.data.sel.split("-")[0]].items[m.data.sel.split("-")[1]]:null;if(it&&it.pin!=null)mp.data.sel=it.pin;const l=findModule(mp.id);focusModule(l.fi,l.mi);mapUpdate(mp);mapFocus(mp,mp.data.sel);setTimeout(()=>cardOf(mp)?.classList.add("flash"),300)},
+      route:m=>{const d=m.data;if(d.pins[d.sel]?.kind==="you"){d.sel=d.pins.findIndex(p=>p.kind!=="you")}d.route=!d.route;mapUpdate(m);if(d.route){const you=d.pins.find(p=>p.kind==="you"),sel=d.pins[d.sel],v=d.view;v.k=clamp(Math.min(430/(Math.abs(sel.x-you.x)+110),250/(Math.abs(sel.y-you.y)+90)),1,2.2);v.x=MAPW/2-(you.x+sel.x)/2*v.k;v.y=MAPH/2-(you.y+sel.y)/2*v.k;camApply(m,true)}},
       details:m=>{const p=m.data.pins[m.data.sel];insertAfter(m,M("summary",p.name,m.source,{points:[p.sub,T("Open today 08:00 – 22:00","Открыто сегодня 08:00 – 22:00"),T("4.8 ★ · 312 reviews","4,8 ★ · 312 отзывов")]}))},
-      nearby:m=>{const r=rnd(m.data.pins.length*31),names=T(["Pastelaria Nata","Miradouro","Corner Books"],["Pastelaria Nata","Miradouro","Corner Books"]);const n=names[m.data.pins.length%3],base=m.data.pins[m.data.sel]||m.data.pins[0];m.data.pins.push({x:clamp(base.x+(r()-.5)*160,40,600),y:clamp(base.y+(r()-.5)*110,30,260),name:n,sub:T("Nearby · 6 min walk","Рядом · 6 мин пешком")});m.data.sel=m.data.pins.length-1;refresh(m,false);requestAnimationFrame(()=>mapFocus(m,m.data.sel))},
+      nearby:m=>{const d=m.data,g=GEO[d.city]||GEO.lisbon,base=d.pins[d.sel]||d.pins[0],pool=g.poi.filter(p=>!d.pins.some(q=>q.name===p.name)).map(p=>({...p,...LL(d.city,p.lat,p.lng)})).sort((a,b)=>hav(a,base)-hav(b,base));
+        if(!pool.length){showToast(T("Nothing else nearby","Больше ничего рядом нет"));return}
+        const p=pool[0],min=Math.max(1,Math.round(hav(p,base)/(g.mode==="foot"?75:250)));
+        d.pins.push({name:p.name,lat:p.lat,lng:p.lng,x:p.x,y:p.y,sub:T(`${p.kind[0]} · ${min} min ${g.mode==="foot"?"walk":"by bike"}`,`${p.kind[1]} · ${min} мин ${g.mode==="foot"?"пешком":"на велосипеде"}`)});
+        d.sel=d.pins.length-1;refresh(m,false);requestAnimationFrame(()=>mapFocus(m,d.sel))},
       zin:m=>zoomMap(m,1.25),zout:m=>zoomMap(m,.8),
       locate:m=>mapFocus(m,m.data.pins.findIndex(p=>p.kind==="you"),1.6),
       playpause:m=>{m.data.playing=!m.data.playing;refresh(m,false)},
@@ -1050,19 +1313,25 @@
       shareLeo:()=>{const n=addAdjacent({item:T("Share with Leo","Отправить Лео")});runLine(n,T("share with Leo","поделись с Лео"))},
       ghost:m=>{m.data.ghost=!m.data.ghost;refresh(m,false)},
       export:m=>showToast(T(`Exported “${m.item}.png”`,`Экспортировано «${m.item}.png»`)),
-      addAll:m=>{const items=m.data.groups.flatMap(g=>g.items).slice(0,3);let ref=m;items.forEach(it=>{const p=M("product",it.name,m.source,{...it,shoe:m.data.shoe,sizes:[38,39,40,41,42,43,44]});const loc=findModule(ref.id);S.flows[loc.fi].modules.splice(loc.mi+1,0,p);ref=p});renderSpace();go(0,1);showToast(T(`Added ${items.length} items to the flow`,`В поток добавлено: ${items.length}`))},
+      addAll:m=>{const items=m.data.groups.flatMap(g=>g.items).slice(0,3);let ref=m;items.forEach(it=>{const p=M("product",it.name,m.source,{...it,shoe:m.data.shoe,sizes:SIZES_EU});const loc=findModule(ref.id);S.flows[loc.fi].modules.splice(loc.mi+1,0,p);ref=p});renderSpace();go(0,1);showToast(T(`Added ${items.length} items to the flow`,`В поток добавлено: ${items.length}`))},
       moreRes:m=>{m.data.groups.push(...makeResults(m.data.query,m.data.groups.length));refresh(m,false);cardOf(m).querySelector(".m-body").scrollTo({top:9999,behavior:"smooth"})},
       collabs:()=>toggleOverview(true),
-      size:m=>{const s=m.data.sizes||[38,39,40,41,42,43,44];m.data.size=s[(s.indexOf(m.data.size)+1)%s.length];refresh(m,false)},
-      bag:m=>{if(!m.data.size){m.data.size=41}m.data.inBag=!m.data.inBag;refresh(m,false);showToast(m.data.inBag?T("Added to bag","Добавлено в корзину"):T("Removed from bag","Убрано из корзины"))},
-      pdetails:m=>insertAfter(m,M("summary",`${m.data.brand} · ${m.data.name}`,m.source,{points:T(["Upper: recycled knit, water-repellent.","Sole: natural rubber, 32 mm.","Free returns within 30 days."],["Верх: переработанный трикотаж, водоотталкивающий.","Подошва: натуральный каучук, 32 мм.","Бесплатный возврат 30 дней."])})),
+      size:(m,b,card)=>{const d=m.data,v=+b.dataset.do.split(":")[1];if(!v||b.classList.contains("off"))return;d.size=d.size===v?null:v;
+        if(d.inBag){refresh(m,false);return}
+        const c=card||cardOf(m);c.querySelectorAll(".sizes button").forEach(x=>x.classList.toggle("on",+x.dataset.do.split(":")[1]===d.size));
+        const h=c.querySelector(".sz-head span");if(h)h.textContent=d.size||T("Pick one","Выберите");const nt=c.querySelector(".sz-note");if(nt)nt.innerHTML=sizeNote(d);
+        const a=c.querySelector(".acts");if(a)a.innerHTML=actsOf(m);
+        if(d.size&&!reduce.matches)b.animate([{transform:"scale(.9)"},{transform:"scale(1)"}],{duration:420,easing:SPRING})},
+      gal:(m,b)=>galGo(m,b.dataset.do.split(":")[1]),
+      bag:m=>{const d=m.data;if(d.shoe&&!d.size&&!d.inBag){const sz=cardOf(m)?.querySelector(".sizes");if(sz&&!reduce.matches)sz.animate([{transform:"translateX(0)"},{transform:"translateX(-7px)"},{transform:"translateX(6px)"},{transform:"translateX(-4px)"},{transform:"translateX(0)"}],{duration:380,easing:"ease-out"});showToast(T("Pick a size first","Сначала выберите размер"));return}m.data.inBag=!m.data.inBag;refresh(m,false);showToast(m.data.inBag?T("Added to bag","Добавлено в корзину"):T("Removed from bag","Убрано из корзины"))},
+      pdetails:m=>insertAfter(m,M("summary",`${m.data.brand} · ${m.data.name}`,m.source,{points:m.data.nike?[...T(...NIKE[m.data.nike].spec),T("Free returns within 30 days.","Бесплатный возврат 30 дней.")]:T(["Upper: recycled knit, water-repellent.","Sole: natural rubber, 32 mm.","Free returns within 30 days."],["Верх: переработанный трикотаж, водоотталкивающий.","Подошва: натуральный каучук, 32 мм.","Бесплатный возврат 30 дней."])})),
       edit2:(m,el,card)=>card.querySelector(".line-in").focus()
     };
     function sendCompose(m,card,useCond){
       const text=card.querySelector(".text")?.innerText;if(text)m.data.text=text;
       m.data.sent=useCond&&m.modifier?T(`Scheduled · sends ${m.modifier}`,`Запланировано · отправится ${m.modifier}`):T(`Sent to ${m.data.to} · ${timeStr(new Date())}`,`Отправлено: ${m.data.to} · ${timeStr(new Date())}`);
       refresh(m,false);showToast(m.data.sent);logMoment(m.item,S.title);
-      if(S.rules.find(r=>/archive|убирать модуль/i.test(r.text))?.on&&!(useCond&&m.modifier))setTimeout(()=>{if(findModule(m.id))archive(m)},1600);
+      if(rulesOf("archive").length&&!(useCond&&m.modifier))setTimeout(()=>{if(findModule(m.id))archive(m)},1600);
     }
 
     setInterval(()=>{
@@ -1084,15 +1353,29 @@
       clearTimeout(autoTimer);
       S=bp;S.f=keep?clamp(keep.f,0,S.flows.length-1):0;S.m=S.flows.map((f,i)=>keep?clamp(keep.m[i]??0,0,f.modules.length-1):0);
       setView("space");renderSpace();if(!keep)logMoment(S.title,S.title,true);
-      if(!reduce.matches&&!keep){
+      /* a built Space opens on its overview (the whole picture first); a module is entered from there */
+      const overviewFirst=!keep&&allModules().length>1;
+      if(!reduce.matches&&!keep&&!overviewFirst){
         $$("#flows .module").forEach(c=>{const fi=+c.dataset.f,mi=+c.dataset.m;c.animate([{opacity:0,translate:`${60+mi*40}px ${fi*30+40}px`,scale:".9"},{opacity:1,translate:"0 0",scale:"1"}],{duration:900,delay:120+fi*110+mi*90,easing:SPRING,fill:"backwards"})});
         $$(".flow-label").forEach((l,i)=>l.animate([{opacity:0,translate:"-12px 0"},{opacity:1,translate:"0 0"}],{duration:600,delay:300+i*110,easing:EASE,fill:"backwards"}));
       }
       allModules().forEach(runSteps);
-      if(S.auto&&!keep)autoTimer=setTimeout(()=>collaboratorAdds(S.id),S.auto.delay);
+      if(overviewFirst){
+        toggleOverview(true,true);
+        flowsFade?.cancel();flowsFade=$("#flows").animate([{opacity:0},{opacity:0}],{duration:1,fill:"forwards"});
+        if(!reduce.matches){
+          $("#overview").animate([{opacity:0},{opacity:1}],{duration:420,easing:"ease-out"});
+          staggerIn($$("#ovFlows .mini"),18,40);
+          $$("#overview .ov-title,#overview .rules,#overview .ov-head,#overview .new-flow").forEach((n,i)=>n.animate([{opacity:0,transform:"translateY(10px)"},{opacity:1,transform:"none"}],{duration:520,delay:120+i*35,easing:EASE,fill:"backwards"}));
+        }
+      }
+      if(S.auto&&!keep){S.autoArmed=true;autoTimer=setTimeout(()=>collaboratorAdds(S.id),S.auto.delay)}
     }
     function collaboratorAdds(id){
-      if(!S||S.id!==id||!S.rules.find(r=>r.auto)?.on)return;
+      if(!S||S.id!==id)return;
+      S.autoArmed=false;
+      if(!autoAllowed())return;
+      S.autoDone=true;
       const a=S.auto,m=a.make(),fl=S.flows[a.flow];fl.modules.push(m);
       if(overviewOpen)renderOverview();
       $$("#flows .flow")[a.flow].querySelector(".track").insertAdjacentHTML("beforeend",moduleHTML(m,a.flow,fl.modules.length-1));
@@ -1102,6 +1385,7 @@
     function goHome(){
       if(S&&!reduce.matches){
         clearTimeout(autoTimer);
+        if(overviewOpen)$("#overview").animate([{opacity:1},{opacity:0}],{duration:260,easing:"ease-out",fill:"forwards"});
         $$("#flows .module").forEach((c,i)=>c.animate([{opacity:1},{opacity:0,translate:"0 30px",scale:".94"}],{duration:380,delay:i*20,easing:EASE,fill:"forwards"}));
         setTimeout(()=>setView("home"),280);
       }else setView("home");
@@ -1154,10 +1438,54 @@
       addAdjacent({item:`“${t}”`,note:T("A module generated from your selection. Nothing else in the parent module changed.","Модуль из выделенного фрагмента. Родительский модуль не изменился."),items:[`“${t}”`],actions:T(["Find more about this","Remind me about this","Share this with Maya","Translate to Russian"],["Найти больше об этом","Напомнить об этом","Отправить Майе","Перевести на английский"])});
     });
 
+    /* ── Rules & collaborators are live ──────────────────────────────────────────
+       A rule's text is parsed into a constraint the modules obey (budget cap, direct flights only, unread only,
+       archive after reply, collaborator may add modules). Anything else is kept as a plain note.
+       A collaborator can be revoked (no more modules from it) or removed. */
+    function ruleInfo(r){
+      if(r._p&&r._t===r.text)return r._p;
+      const t=r.text.toLowerCase(),m=t.match(/\d[\d\s\u00a0,.]*\d|\d/),num=m?+m[0].replace(/[\s\u00a0,]/g,""):null;
+      let p={kind:"note"};
+      if(r.auto)p={kind:"auto"};
+      else if(/unread|непрочитан/.test(t))p={kind:"unread"};
+      else if(/direct|прям/.test(t))p={kind:"direct"};
+      else if(/archive|убирать модуль/.test(t))p={kind:"archive"};
+      else if(num&&!/minute|минут|hour|час/.test(t)&&/[€$₽£]|eur|usd|rub|евро|руб|долл|under|up to|cheaper|at most|не дороже|дешевле/.test(t))p={kind:"budget",max:num};
+      r._p=p;r._t=r.text;return p;
+    }
+    const rulesOf=k=>S?S.rules.filter(r=>r.on&&ruleInfo(r).kind===k):[];
+    const priceNum=s=>{const m=String(s).replace(/[\s\u00a0]/g,"").match(/\d[\d,.]*/);return m?parseFloat(m[0].replace(/,(?=\d{3})/g,"")):null};
+    const budgetCap=()=>{const b=rulesOf("budget");return b.length?Math.min(...b.map(r=>ruleInfo(r).max)):null};
+    const overBudget=p=>{const cap=budgetCap(),n=priceNum(p);return cap!=null&&n!=null&&n>cap};
+    const notDirect=s=>rulesOf("direct").length>0&&!/direct|прям/i.test(s);
+    const fmtEur=n=>"€"+n.toLocaleString(LANG==="ru"?"ru-RU":"en-US");
+    function ruleEffect(r){
+      const p=ruleInfo(r);
+      return{unread:T("hides read items","скрывает прочитанное"),direct:T("flags non-direct flights","помечает рейсы с пересадкой"),archive:T("archives after you reply","убирает модуль после ответа"),
+        budget:T(`flags anything over ${fmtEur(p.max||0)}`,`помечает всё дороже ${fmtEur(p.max||0)}`),auto:T("a collaborator may add modules","участник может добавлять модули"),note:T("note · no automatic effect","заметка · без автоматического действия")}[p.kind];
+    }
+    const ruleRow=(r,i)=>`<div class="rule${r.on?" on":""}" data-rule="${i}"><i></i><span><b class="rt" title="${T("Click to edit","Нажмите, чтобы изменить")}">${esc(r.text)}</b><small>${ruleEffect(r)}</small></span><button class="rule-x" data-rule-del="${i}" title="${T("Delete rule","Удалить правило")}">×</button></div>`;
+    const secHead=(title,attr,tip,first)=>`<div class="sec-head${first?" first":""}"><h3>${title}</h3><button class="sec-add" ${attr} title="${tip}">${ic("plus")}</button></div>`;
+    const collabRow=c=>`<div class="collab${c.off?" off":""}" data-collab="${c.id}" title="${c.off?T("Access revoked — click to restore","Доступ отозван — нажмите, чтобы вернуть"):T("Click to revoke access","Нажмите, чтобы отозвать доступ")}">${avatar(c.name,c.kind)}<span>${esc(c.name)}<small>${c.off?T("Access revoked","Доступ отозван"):esc(c.access)}</small></span><button class="rule-x" data-collab-del="${c.id}" title="${T("Remove","Убрать")}">×</button></div>`;
+    function renderRules(){
+      const box=$("#rules"),top=box.scrollTop;
+      box.innerHTML=`${secHead(T("Flows","Потоки"),'data-newflow="1"',T("New flow","Новый поток"),1)}${S.flows.map((f,i)=>`<div class="flowlink" data-flow="${i}">${ic(KIND_IC[f.modules[0].kind]||"spark")}<b>${esc(f.name)}</b><small>${f.modules.length}</small></div>`).join("")}${secHead(T("Rules","Правила"),'data-modal="rule"',T("New rule","Новое правило"))}${S.rules.map(ruleRow).join("")}${secHead(T("Collaborators","Участники"),'data-modal="collab"',T("Invite","Пригласить"))}${S.collabs.filter(c=>c.kind==="person").map(collabRow).join("")}`;
+      box.scrollTop=top;
+    }
+    /* re-render every module whose content a rule can change, then the places that mirror rules / collaborators */
+    function applyRules(){
+      allModules().forEach(m=>{if(["list","options","listings","results"].includes(m.kind))refresh(m,false)});
+      renderCollabStack();
+      $$("#ovFlows .mini").forEach(c=>c.classList.toggle("revoked",!!S.collabs.find(x=>x.id===c.dataset.src)?.off));
+      rearmAuto();
+    }
+    /* the one scripted "collaborator adds a module" event fires only while its rule is on and its collaborator has access */
+    function autoAllowed(){return !!S&&!!S.auto&&!!S.rules.find(r=>r.auto)?.on&&!S.collabs.find(c=>c.id===S.auto.from)?.off}
+    function rearmAuto(){if(!S||!S.auto||S.autoDone||S.autoArmed||!autoAllowed())return;S.autoArmed=true;const id=S.id;autoTimer=setTimeout(()=>collaboratorAdds(id),1800)}
     function renderOverview(){
       $("#ovTitle").textContent=`↩ ${S.title}: ${T("Overview","Обзор")}`;
-      $("#rules").innerHTML=`<h3>${T("Flows","Потоки")}</h3><p>${T("Jump to a flow or start a new one.","Перейдите к потоку или начните новый.")}</p>${S.flows.map((f,i)=>`<div class="flowlink" data-flow="${i}">${ic(KIND_IC[f.modules[0].kind]||"spark")}<b>${esc(f.name)}</b><small>${f.modules.length}</small></div>`).join("")}<div class="flowlink new" data-newflow="1">${ic("plus")}<span>${T("New flow","Новый поток")}</span></div><h3 style="margin-top:18px">${T("Rules","Правила")}</h3><p>${T("How this Space was generated, and what it may do on its own.","Как собрано пространство и что оно может делать само.")}</p>${S.rules.map((r,i)=>`<div class="rule${r.on?" on":""}" data-rule="${i}"><i></i><span>${esc(r.text)}</span></div>`).join("")}${S.collabs.length?`<h3 style="margin-top:18px">${T("Collaborators","Участники")}</h3><p>${T("Sandboxed: each sees only the modules it touches.","Песочница: каждый видит только свои модули.")}</p>${S.collabs.map(c=>`<div class="collab" data-collab="${c.id}">${avatar(c.name,c.kind)}<span>${esc(c.name)}<small>${esc(c.access)}</small></span></div>`).join("")}`:""}`;
-      $("#ovFlows").innerHTML=S.flows.map((fl,fi)=>`<section class="ov-flow" data-f="${fi}"><div class="ov-head"><b>${esc(fl.name)}</b><span>${count(fl.modules.length,["module","modules"],["модуль","модуля","модулей"])}</span></div><div class="ov-list">${fl.modules.map((m,mi)=>`<article class="mini${mi===0?" parent":""}" data-id="${m.id}" data-src="${m.source}"><div class="mini-head">${ic(KIND_IC[m.kind]||"spark")}<span class="who-line">${avatar(collabName(m.source),"xs")}${esc(collabName(m.source))}</span></div><b>${esc(m.item)}</b><p>${esc(textOf(m).join(" "))}</p>${mi===0?`<span class="tag">${T("Parent","Родитель")}</span>`:""}</article>`).join("")}</div></section>`).join("")+`<button class="new-flow" data-newflow="1">${ic("plus")}${T("New flow","Новый поток")}</button>`;
+      renderRules();
+      $("#ovFlows").innerHTML=S.flows.map((fl,fi)=>`<section class="ov-flow" data-f="${fi}"><div class="ov-head"><b>${esc(fl.name)}</b><span>${count(fl.modules.length,["module","modules"],["модуль","модуля","модулей"])}</span></div><div class="ov-list">${fl.modules.map((m,mi)=>`<article class="mini${mi===0?" parent":""}${S.collabs.find(x=>x.id===m.source)?.off?" revoked":""}" data-id="${m.id}" data-src="${m.source}"><div class="mini-head">${ic(KIND_IC[m.kind]||"spark")}<span class="who-line">${avatar(collabName(m.source),"xs")}${esc(collabName(m.source))}</span></div><b>${esc(m.item)}</b><p>${esc(textOf(m).join(" "))}</p>${mi===0?`<span class="tag">${T("Parent","Родитель")}</span>`:""}</article>`).join("")}</div></section>`).join("")+`<button class="new-flow" data-newflow="1">${ic("plus")}${T("New flow","Новый поток")}</button>`;
       $$("#ovFlows .mini").forEach(c=>c.addEventListener("pointerdown",pressMini));
       if(!ovSel)ovSel={f:S.f,m:S.m[S.f]};markOvSel(false);
     }
@@ -1176,37 +1504,72 @@
       S.flows.push({name:T(`Flow ${S.flows.length+1}`,`Поток ${S.flows.length+1}`),modules:[m]});S.m.push(0);S.f=S.flows.length-1;
       renderSpace();toggleOverview(false);setTimeout(()=>{arrive(m,"down");focusLine()},500);
     }
-    let ovRun=0,morphGhost=null;
+    let ovRun=0,morphGhosts=[];
     /* One card, two sizes: the mini and the full module are the same object, so it grows / shrinks in place
        (frame animates size + radius, the compact and full faces cross-fade inside it) instead of one replacing the other. */
     function morphCard(mini,card,toMini,dur,fadeAt=0){
       const a=mini.getBoundingClientRect(),b=card.getBoundingClientRect(),W=card.offsetWidth,H=card.offsetHeight;
-      if(!a.width||!b.width||a.bottom<0||a.top>innerHeight)return null;
+      if(!a.width||!b.width||a.bottom<0||a.top>innerHeight||b.right<0||b.left>innerWidth||b.bottom<0||b.top>innerHeight)return null;
       const from=toMini?b:a,to=toMini?a:b,rad=toMini?[20,14]:[14,20];
+      /* neighbours and other flows sit scaled / dimmed / blurred in the space; the frame carries that look so it never pops */
+      const k=b.width/W,flow=card.closest(".flow"),idle=!card.classList.contains("active"),far=flow&&!flow.classList.contains("current");
+      const dimO=(parseFloat(getComputedStyle(card).opacity)||1)*(flow?parseFloat(getComputedStyle(flow).opacity)||1:1);
+      const dimF=idle||far?`${idle?"saturate(.5)":"saturate(1)"} blur(${far?1.6:0}px)`:"";
+      const calm="saturate(1) blur(0px)";
+      /* Shared elements: title, body text and icon exist in both faces. They are lifted out of the cross-fade and
+         travel on their own (position, size, font-size, line-height, colour), so type grows / shrinks instead of dissolving. */
+      const norm=t=>t.replace(/\s+/g," ").trim(),pairs=[];
+      const mt=mini.querySelector("b"),ct=card.querySelector(".m-title");
+      if(mt&&ct&&norm(mt.textContent)===norm(ct.textContent))pairs.push({m:mt,c:ct,text:1});
+      const mp=mini.querySelector("p");
+      if(mp){const t=norm(mp.textContent),cp=[...card.querySelectorAll(".m-body .text,.m-body p")].find(n=>norm(n.textContent)===t);if(cp)pairs.push({m:mp,c:cp,text:1})}
+      const mi=mini.querySelector(".mini-head .ic"),ci=card.querySelector(".m-head .ic");
+      if(mi&&ci)pairs.push({m:mi,c:ci});
+      const box=(el,o,z)=>{const r=el.getBoundingClientRect(),s=getComputedStyle(el),p=n=>(parseFloat(s[n])||0)*z,l=p("borderLeftWidth")+p("paddingLeft"),t=p("borderTopWidth")+p("paddingTop");
+        return{left:r.left-o.left+l,top:r.top-o.top+t,width:r.width-l-p("borderRightWidth")-p("paddingRight"),height:r.height-t-p("borderBottomWidth")-p("paddingBottom")}};
+      const look=(el,z)=>{const s=getComputedStyle(el),ls=parseFloat(s.letterSpacing),px=v=>(parseFloat(v)*z)+"px";return{fontSize:px(s.fontSize),lineHeight:px(s.lineHeight),letterSpacing:(isNaN(ls)?0:ls*z)+"px",fontWeight:s.fontWeight,color:s.color,opacity:s.opacity}};
+      pairs.forEach((p,i)=>{p.A=box(p.m,a,1);p.B=box(p.c,b,k);p.la=look(p.m,1);p.lb=look(p.c,k);p.m.setAttribute("data-sh",i);p.c.setAttribute("data-sh",i)});
       const g=document.createElement("div"),mc=mini.cloneNode(true),cc=card.cloneNode(true);
+      pairs.forEach(p=>{p.m.removeAttribute("data-sh");p.c.removeAttribute("data-sh")});
+      pairs.forEach((p,i)=>{mc.querySelector(`[data-sh="${i}"]`).style.opacity="0";cc.querySelector(`[data-sh="${i}"]`).style.opacity="0"});
+      mc.querySelectorAll("[data-sh]").forEach(n=>n.removeAttribute("data-sh"));cc.querySelectorAll("[data-sh]").forEach(n=>n.removeAttribute("data-sh"));
       g.className="morph";
       Object.assign(g.style,{position:"fixed",zIndex:60,overflow:"hidden",pointerEvents:"none",background:"var(--paper)",boxShadow:"0 0 0 1px var(--rim),0 30px 70px -28px rgba(0,0,0,.35)",willChange:"left,top,width,height"});
       mc.classList.remove("kbsel","lifted","settling","dim");mc.removeAttribute("data-id");
       cc.removeAttribute("data-id");cc.classList.add("active");cc.querySelector(".plus")?.remove();cc.querySelectorAll("[id]").forEach(n=>n.removeAttribute("id"));
       const base={position:"absolute",left:0,top:0,margin:0,transition:"none",transform:"none",filter:"none",boxShadow:"none",background:"transparent",boxSizing:"border-box"};
       Object.assign(mc.style,base,{width:a.width+"px",height:a.height+"px",minHeight:0});
-      Object.assign(cc.style,base,{width:W+"px",height:H+"px",opacity:1});
+      Object.assign(cc.style,base,{width:W+"px",height:H+"px",opacity:1,transform:k===1?"none":`scale(${k})`,transformOrigin:"0 0"});
       g.append(cc,mc);os.appendChild(g);
       const geo=r=>({left:r.left+"px",top:r.top+"px",width:r.width+"px",height:r.height+"px"});
       const opt={duration:dur,easing:EASE,fill:"forwards"};
+      pairs.forEach(p=>{
+        const f=toMini?p.B:p.A,t=toMini?p.A:p.B,lf=toMini?p.lb:p.la,lt=toMini?p.la:p.lb;
+        const n=p.text?document.createElement("div"):p.c.cloneNode(true);
+        if(p.text)n.textContent=norm(p.c.textContent);else n.removeAttribute("id");
+        Object.assign(n.style,{position:"absolute",margin:0,padding:0,overflow:p.m.tagName==="P"?"hidden":"visible",pointerEvents:"none",flex:"none",transition:"none",whiteSpace:"normal"});
+        const kf=(r,l)=>p.text?{...geo(r),fontSize:l.fontSize,lineHeight:l.lineHeight,letterSpacing:l.letterSpacing,fontWeight:l.fontWeight,color:l.color}:{...geo(r),color:l.color,opacity:l.opacity};
+        n.animate([kf(f,lf),kf(t,lt)],opt);
+        g.appendChild(n);
+      });
       g.animate([{...geo(from),borderRadius:rad[0]+"px"},{...geo(to),borderRadius:rad[1]+"px"}],opt);
+      if(dimO<1||dimF){const dim={opacity:dimO,filter:dimF||calm},clear={opacity:1,filter:calm};g.animate(toMini?[dim,clear]:[clear,dim],opt)}
       const lin={duration:dur,easing:"linear",fill:"forwards"};
       if(toMini){
-        cc.animate([{opacity:1},{opacity:1,offset:.4},{opacity:0,offset:.88},{opacity:0}],lin);
-        mc.animate([{opacity:0},{opacity:0,offset:.6},{opacity:1}],lin);
+        /* the frame shrinks fast (ease-out), so the unscaled full face has to leave early and the mini face arrive late */
+        cc.animate([{opacity:1},{opacity:0,offset:.09},{opacity:0}],lin);
+        mc.animate([{opacity:0},{opacity:0,offset:.45},{opacity:1,offset:.85},{opacity:1}],lin);
       }else{
-        mc.animate([{opacity:1},{opacity:1,offset:.1},{opacity:0,offset:.5},{opacity:0}],lin);
-        cc.animate([{opacity:0},{opacity:0,offset:.12},{opacity:1,offset:.6},{opacity:1}],lin);
+        mc.animate([{opacity:1},{opacity:0,offset:.1},{opacity:0}],lin);
+        cc.animate([{opacity:0},{opacity:0,offset:.3},{opacity:1,offset:.65},{opacity:1}],lin);
       }
-      if(fadeAt)g.animate([{opacity:1},{opacity:0}],{duration:300,delay:fadeAt,fill:"forwards"});
+      if(fadeAt)g.animate([{opacity:dimO},{opacity:0}],{duration:300,delay:fadeAt,fill:"forwards"});
       mini.style.opacity="0";
+      /* while the frame stands in for the card, the real card must not show through it (it would double the look) */
+      if(toMini)g._hide=card.animate([{opacity:0},{opacity:0}],{duration:1,fill:"forwards"});
       return g;
     }
+    const dropGhost=g=>{g._hide?.cancel();g.remove()};
     function toggleOverview(force,instant){
       if(!S)return;
       const el=$("#overview"),isOpen=el.classList.contains("open")&&!el.classList.contains("closing");
@@ -1219,29 +1582,29 @@
       if(instant||reduce.matches){el.classList.toggle("open",open);el.classList.remove("closing");return}
       if(!open){const sp=$("#space");sp.classList.add("notrans");layout();sp.offsetWidth;requestAnimationFrame(()=>sp.classList.remove("notrans"))}
       const minis=$$("#ovFlows .mini"),chrome=$$("#overview .ov-title,#overview .rules,#overview .ov-head,#overview .new-flow");
-      const home=minis.map(c=>{
-        const r=c.getBoundingClientRect(),mr=cardOf(findModuleById(c.dataset.id))?.getBoundingClientRect();
-        if(!mr)return "translateY(24px) scale(.96)";
-        return `translate(${mr.left-r.left}px,${mr.top-r.top}px) scale(${mr.width/r.width})`;
-      });
       const active=activeModule()?.id,order=minis.map((c,i)=>i).sort((a,b)=>(minis[b].dataset.id===active)-(minis[a].dataset.id===active));
-      morphGhost?.remove();morphGhost=null;minis.forEach(c=>c.style.opacity="");
-      const aMini=minis.find(c=>c.dataset.id===active),aCard=cardOf(activeModule());
+      morphGhosts.forEach(dropGhost);morphGhosts=[];minis.forEach(c=>c.style.opacity="");
+      /* every card that is on screen morphs with its mini (the active one first, then neighbours / other flows);
+         the rest — far off-screen — just ease in or out in place instead of flying across the canvas */
+      const morphs=new Map();
+      const morphAll=(toMini,dur,fadeAt)=>order.forEach(i=>{const c=minis[i],card=cardOf(findModuleById(c.dataset.id));const gh=card?morphCard(c,card,toMini,dur,fadeAt):null;if(gh){morphs.set(c,gh);morphGhosts.push(gh)}});
       if(open){
-        el.animate([{opacity:0},{opacity:1}],{duration:360,easing:"ease-out"});
+        el.animate([{opacity:0},{opacity:1}],{duration:340,delay:120,easing:"ease-out",fill:"backwards"});
         flowsFade=flows.animate([{opacity:1},{opacity:0}],{duration:300,easing:"ease-out",fill:"forwards"});
-        const gh=aMini&&aCard?morphCard(aMini,aCard,true,720):null;
-        if(gh){morphGhost=gh;setTimeout(()=>{if(run!==ovRun)return;gh.remove();if(morphGhost===gh)morphGhost=null;aMini.style.opacity=""},740)}
-        order.filter(i=>!(gh&&minis[i]===aMini)).forEach((i,k)=>minis[i].animate([{transformOrigin:"0 0",transform:home[i],opacity:0},{opacity:1,offset:.28},{transformOrigin:"0 0",transform:"none",opacity:1}],{duration:680,delay:k*18,easing:EASE,fill:"backwards"}));
+        morphAll(true,720);
+        const mine=[...morphGhosts];
+        if(mine.length)setTimeout(()=>{if(run!==ovRun)return;mine.forEach(dropGhost);morphGhosts=morphGhosts.filter(g=>!mine.includes(g));morphs.forEach((g,c)=>c.style.opacity="")},740);
+        order.filter(i=>!morphs.has(minis[i])).forEach((i,k)=>minis[i].animate([{opacity:0,transform:"translateY(14px) scale(.97)"},{opacity:1,transform:"none"}],{duration:560,delay:120+k*22,easing:EASE,fill:"backwards"}));
         chrome.forEach((n,i)=>n.animate([{opacity:0,transform:"translateY(10px)"},{opacity:1,transform:"none"}],{duration:520,delay:120+i*35,easing:EASE,fill:"backwards"}));
       }else{
         el.classList.add("closing");
         const dur=560,total=dur+minis.length*14;
-        const gh=aMini&&aCard?morphCard(aMini,aCard,false,640,total-320):null;
-        if(gh){morphGhost=gh;setTimeout(()=>{if(morphGhost===gh){gh.remove();morphGhost=null}},total+60)}
-        order.filter(i=>!(gh&&minis[i]===aMini)).forEach((i,k)=>minis[i].animate([{transformOrigin:"0 0",transform:"none",opacity:1},{opacity:1,offset:.55},{transformOrigin:"0 0",transform:home[i],opacity:0}],{duration:dur,delay:k*14,easing:"cubic-bezier(.65,0,.25,1)",fill:"forwards"}));
-        /* menu, title and flow labels stay put while the cards travel; they leave together with the overlay below */
-        el.animate([{opacity:1},{opacity:0}],{duration:300,delay:total-300,easing:"ease-in",fill:"forwards"});
+        morphAll(false,640,total-320);
+        const mine=[...morphGhosts];
+        if(mine.length)setTimeout(()=>{mine.forEach(dropGhost);morphGhosts=morphGhosts.filter(g=>!mine.includes(g))},total+60);
+        order.filter(i=>!morphs.has(minis[i])).forEach((i,k)=>minis[i].animate([{opacity:1,transform:"none"},{opacity:0,transform:"scale(.97)"}],{duration:320,delay:k*14,easing:"ease-in",fill:"forwards"}));
+        /* the overview chrome (menu, title, labels, other minis) clears out at once so the travelling cards never overlap it */
+        el.animate([{opacity:1},{opacity:0}],{duration:220,easing:"ease-out",fill:"forwards"});
         flowsFade=flows.animate([{opacity:0},{opacity:1}],{duration:300,delay:total-320,easing:"ease-out",fill:"backwards"});
         setTimeout(()=>{if(run!==ovRun)return;el.classList.remove("open","closing");el.getAnimations({subtree:true}).forEach(a=>a.cancel())},total+60);
       }
@@ -1322,7 +1685,7 @@
         home:[["↵",T("Create Space","Собрать пространство"),()=>$("#homeLine").requestSubmit()],["↑",T("Timeline","Хронология"),()=>setView("timeline")]],
         timeline:[["↓",T("Home","Домой"),()=>setView("home")],["⌕",T("Describe to search","Опишите, чтобы найти"),()=>$("#tlSearch").focus()]],
         space:[["← →",T("Modules","Модули"),null],["↑ ↓",T("Flows","Потоки"),null],["Tab",T("New module","Новый модуль"),()=>addAdjacent()],["⌘",T("Actions","Действия"),()=>paletteOpen?closePalette():openPalette()],["O",T("Overview · pinch","Обзор · щипок"),()=>toggleOverview()],["Esc",T("Home","Домой"),()=>goHome()]],
-        overview:[["← → ↑ ↓",T("Select","Выбрать"),null],["↵",T("Open","Открыть"),()=>openOvSel()],["N",T("New flow","Новый поток"),()=>newFlow()],["Esc",T("Close","Закрыть"),()=>toggleOverview(false)]]
+        overview:[["← → ↑ ↓",T("Select","Выбрать"),null],["↵",T("Open","Открыть"),()=>openOvSel()],["N",T("New flow","Новый поток"),()=>newFlow()],["H",T("Home","Домой"),()=>goHome()],["Esc",T("Close","Закрыть"),()=>toggleOverview(false)]]
       }[overviewOpen?"overview":view];
       $("#hints").innerHTML=H.map(([k,l],i)=>`<button data-h="${i}"><span class="kbd" ${k==="⌘"?'id="metaKbd"':""}>${k}</span><span class="lbl">${l}</span></button>`).join("");
       $$("#hints button").forEach((b,i)=>b.onclick=()=>H[i][2]?.());
@@ -1351,17 +1714,20 @@
       if(l===LANG)return;LANG=l;
       const u=new URL(location.href);if(l==="en")u.searchParams.set("lang","en");else u.searchParams.delete("lang");history.replaceState(null,"",u);
       applyLang();renderWx();
-      if(S){const keep={f:S.f,m:S.m.slice()};const was=view;toggleOverview(false,true);const bp=S.id==="custom"?blueprintFor(S.intent):BP[S.id]();if(was==="space")openSpace(bp,keep);else S=bp}
+      if(S){const keep={f:S.f,m:S.m.slice()};const was=view;toggleOverview(false,true);const bp=S.id==="live"?S:S.id==="custom"?blueprintFor(S.intent):BP[S.id]();if(was==="space")openSpace(bp,keep);else S=bp}
     }
 
-    $("#homeLine").addEventListener("submit",e=>{e.preventDefault();const v=$("#intentInput").value.trim();if(!v){$("#intentInput").focus();return}$("#intentInput").value="";$("#homeParse").classList.remove("show");openSpace(blueprintFor(v))});
+    $("#homeLine").addEventListener("submit",e=>{e.preventDefault();const v=$("#intentInput").value.trim();if(!v){$("#intentInput").focus();return}
+      /* live model for free-form intents; the prepared chips ("Plan a trip to Lisbon"…) keep their scripted, richer Spaces */
+      if(window.Live?.enabled()&&!BLUEPRINT_CHIPS().some(c=>c[2].toLowerCase()===v.toLowerCase()))return Live.openFromIntent(v);
+      $("#intentInput").value="";$("#homeParse").classList.remove("show");openSpace(blueprintFor(v))});
     $("#intentInput").addEventListener("input",e=>{const html=parseTokens(e.target.value);$("#homeParse").innerHTML=html;$("#homeParse").classList.toggle("show",!!html)});
     $("#homeMic").onclick=()=>{const inp=$("#intentInput"),ph=T("Plan a trip to Lisbon","Спланировать поездку в Лиссабон");inp.value="";inp.placeholder=T("Listening…","Слушаю…");let i=0;setTimeout(()=>{const t=setInterval(()=>{inp.value=ph.slice(0,++i);inp.dispatchEvent(new Event("input"));if(i>=ph.length){clearInterval(t);inp.placeholder=T("What do you intend to do?","Что вы хотите сделать?");setTimeout(()=>$("#homeLine").requestSubmit(),450)}},30)},900)};
     $("#blueprints").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const id=b.dataset.bp;openSpace(BP[id]?BP[id]():blueprintFor(b.dataset.intent))});
     $("#timelineHint").onclick=()=>setView("timeline");
     $("#tlSearch").addEventListener("input",e=>searchTimeline(e.target.value));
     $("#tlList").addEventListener("click",e=>{const b=e.target.closest(".tl-item");if(!b)return;const it=tlData[b.dataset.g].items[b.dataset.i];openSpace(it.bp?BP[it.bp]():blueprintFor(it.intent))});
-    $("#nightBtn").onclick=()=>{document.body.classList.toggle("night");$("#umThemeVal").textContent=document.body.classList.contains("night")?T("Night","Ночь"):T("Day","День")};
+    $("#nightBtn").onclick=()=>{document.body.classList.toggle("night");allModules().filter(x=>x.kind==="map").forEach(syncTiles);$("#umThemeVal").textContent=document.body.classList.contains("night")?T("Night","Ночь"):T("Day","День")};
     const meWrap=$("#meWrap"),setMenu=o=>{meWrap.classList.toggle("open",o);$("#meBtn").setAttribute("aria-expanded",o)};
     $("#meBtn").onclick=e=>{e.stopPropagation();setMenu(!meWrap.classList.contains("open"))};
     document.addEventListener("click",e=>{if(!e.target.closest("#userMenu"))setMenu(false)});
@@ -1372,11 +1738,52 @@
     $("#palette").addEventListener("mousedown",e=>e.preventDefault());
     $("#palette").addEventListener("click",e=>{const b=e.target.closest(".pi");if(b)runPalette(+b.dataset.pi)});
     $("#rules").addEventListener("click",e=>{
-      const r=e.target.closest(".rule");if(r){const rule=S.rules[r.dataset.rule];rule.on=!rule.on;r.classList.toggle("on",rule.on);showToast(`${rule.on?T("Enabled","Включено"):T("Disabled","Выключено")}: ${rule.text}`);return}
+      const rd=e.target.closest("[data-rule-del]");if(rd){const i=+rd.dataset.ruleDel,[rule]=S.rules.splice(i,1);renderRules();applyRules();showToast(`${T("Deleted","Удалено")}: ${rule.text}`,T("Undo","Вернуть"),()=>{S.rules.splice(i,0,rule);renderRules();applyRules()});return}
+      const cd=e.target.closest("[data-collab-del]");if(cd){const i=S.collabs.findIndex(c=>c.id===cd.dataset.collabDel),[c]=S.collabs.splice(i,1);renderRules();applyRules();showToast(`${T("Removed","Убрано")}: ${c.name}`,T("Undo","Вернуть"),()=>{S.collabs.splice(i,0,c);renderRules();applyRules()});return}
+      const rt=e.target.closest(".rt");if(rt){if(rt.isContentEditable)return;const row=rt.closest(".rule"),rule=S.rules[row.dataset.rule];rt.contentEditable="true";rt.dataset.was=rule.text;rt.focus();getSelection().selectAllChildren(rt);return}
+      const r=e.target.closest(".rule");if(r){const rule=S.rules[r.dataset.rule];rule.on=!rule.on;r.classList.toggle("on",rule.on);applyRules();showToast(`${rule.on?T("Enabled","Включено"):T("Disabled","Выключено")}: ${rule.text} — ${ruleEffect(rule)}`);return}
+      const cb=e.target.closest(".collab");if(cb){const c=S.collabs.find(x=>x.id===cb.dataset.collab);c.off=!c.off;renderRules();applyRules();showToast(c.off?T(`${c.name}: access revoked`,`${c.name}: доступ отозван`):T(`${c.name}: access restored`,`${c.name}: доступ возвращён`));return}
       const f=e.target.closest("[data-flow]");if(f){S.f=+f.dataset.flow;layout();toggleOverview(false);return}
       if(e.target.closest("[data-newflow]"))newFlow();
     });
     $("#ovFlows").addEventListener("click",e=>{if(e.target.closest("[data-newflow]"))newFlow()});
+    /* inline rule editing: Enter saves, Esc cancels, an empty text deletes the rule */
+    const commitRule=rt=>{const row=rt.closest(".rule"),i=+row.dataset.rule,rule=S.rules[i],txt=rt.textContent.replace(/\s+/g," ").trim();
+      rt.contentEditable="false";if(!txt||txt===rule.text){renderRules();return}
+      rule.text=txt;renderRules();applyRules();showToast(`${txt} — ${ruleEffect(rule)}`)};
+    $("#rules").addEventListener("keydown",e=>{const rt=e.target.closest?.(".rt");if(!rt||!rt.isContentEditable)return;
+      if(e.key==="Enter"){e.preventDefault();rt.blur()}
+      if(e.key==="Escape"){e.preventDefault();e.stopPropagation();rt.textContent=rt.dataset.was;rt.blur()}});
+    $("#rules").addEventListener("focusout",e=>{const rt=e.target.closest?.(".rt");if(rt&&rt.isContentEditable)commitRule(rt)});
+    /* "+" next to Rules / Collaborators opens a small modal instead of an inline field */
+    function closeModal(){const w=$(".modal-wrap");if(!w)return;w.classList.remove("show");setTimeout(()=>w.remove(),260)}
+    function openModal(kind){
+      $(".modal-wrap")?.remove();
+      const isRule=kind==="rule",ex=[T("Under €150","Не дороже €150"),T("Direct flights only","Только прямые рейсы"),T("Show unread items only","Показывать только непрочитанное")];
+      const access=[T("Sees only its own modules","Видит только свои модули"),T("May add modules","Может добавлять модули")];
+      const w=document.createElement("div");w.className="modal-wrap";
+      w.innerHTML=`<div class="modal-back"></div><form class="modal" autocomplete="off"><h3>${isRule?T("New rule","Новое правило"):T("Invite a collaborator","Пригласить участника")}</h3>
+        <input class="modal-in" placeholder="${isRule?T("Describe it — e.g. under €150","Опишите — например, не дороже €150"):T("Name","Имя")}" spellcheck="false">
+        ${isRule?`<div class="modal-hint"></div><div class="modal-ex">${ex.map(t=>`<button type="button" data-ex="${esc(t)}">${esc(t)}</button>`).join("")}</div>`
+                :`<div class="seg">${access.map((t,i)=>`<button type="button" data-acc="${i}" class="${i?"":"on"}">${esc(t)}</button>`).join("")}</div>`}
+        <div class="modal-acts"><button type="button" data-cancel>${T("Cancel","Отмена")}</button><button class="primary" disabled>${isRule?T("Add rule","Добавить правило"):T("Invite","Пригласить")}</button></div></form>`;
+      document.body.appendChild(w);w.offsetWidth;w.classList.add("show");
+      const f=w.querySelector("form"),inp=w.querySelector(".modal-in"),go=f.querySelector(".primary"),hint=w.querySelector(".modal-hint");let acc=0;
+      const val=()=>inp.value.replace(/\s+/g," ").trim();
+      const sync=()=>{go.disabled=!val();if(hint){const v=val();hint.classList.toggle("ok",!!v&&ruleInfo({text:v}).kind!=="note");hint.textContent=v?ruleEffect({text:v}):T("A budget, direct flights, unread only… or a plain note.","Бюджет, прямые рейсы, только непрочитанное… или просто заметка.")}};
+      inp.addEventListener("input",sync);sync();setTimeout(()=>inp.focus(),30);
+      w.addEventListener("click",e=>{
+        if(e.target.matches(".modal-back,[data-cancel]"))return closeModal();
+        const x=e.target.closest("[data-ex]");if(x){inp.value=x.dataset.ex;sync();inp.focus()}
+        const a=e.target.closest("[data-acc]");if(a){acc=+a.dataset.acc;w.querySelectorAll("[data-acc]").forEach(b=>b.classList.toggle("on",b===a))}
+      });
+      w.addEventListener("keydown",e=>{if(e.key==="Escape"){e.preventDefault();e.stopPropagation();closeModal()}},true);
+      f.addEventListener("submit",e=>{e.preventDefault();const v=val();if(!v)return;
+        if(isRule){const rule={text:cap(v),on:true};S.rules.push(rule);renderRules();applyRules();showToast(`${T("Rule added","Правило добавлено")} — ${ruleEffect(rule)}`)}
+        else{const c={id:"p"+Date.now().toString(36),name:cap(v),kind:"person",access:access[acc]};S.collabs.push(c);renderRules();applyRules();showToast(T(`${c.name} invited`,`${c.name} приглашён(а)`))}
+        closeModal()});
+    }
+    $("#rules").addEventListener("click",e=>{const b=e.target.closest("[data-modal]");if(b)openModal(b.dataset.modal)});
     $("#rules").addEventListener("mouseover",e=>{const c=e.target.closest(".collab");$$("#ovFlows .mini").forEach(m=>m.classList.toggle("dim",!!c&&m.dataset.src!==c.dataset.collab))});
     $("#rules").addEventListener("mouseleave",()=>$$("#ovFlows .mini").forEach(m=>m.classList.remove("dim")));
 
@@ -1402,6 +1809,32 @@
       if(pin&&e.type==="pointerup"){const i=+pin.dataset.pin;if(m.data.pins[i].kind==="you"){mapFocus(m,i);return}m.data.sel=i;mapUpdate(m);const p=m.data.pins[i],v=m.data.view,px=v.x+p.x*v.k,py=v.y+p.y*v.k;if(px<60||px>MAPW-60||py<40||py>MAPH-40)mapFocus(m,i)}
     };
     flowsEl.addEventListener("pointerup",endMapDrag);flowsEl.addEventListener("pointercancel",endMapDrag);
+    /* drag the proposed calendar event up and down the day (quarter-hour snap) */
+    let calDrag=null,calMovedAt=0;
+    flowsEl.addEventListener("pointerdown",e=>{
+      const ev=e.target.closest(".module.active .cal-ev.prop:not(.ok)");if(!ev||e.button!==0)return;
+      const m=findModule(ev.closest(".module").dataset.id)?.m;if(!m)return;
+      const evt=m.data.events[+ev.dataset.ev],scale=ev.getBoundingClientRect().height/ev.offsetHeight||1;
+      calDrag={m,ev,evt,id:e.pointerId,y0:e.clientY,s0:evt.s,len:evt.e-evt.s,scale,moved:false,w:ev.querySelector("small")};
+      ev.setPointerCapture(e.pointerId);
+    });
+    flowsEl.addEventListener("pointermove",e=>{
+      if(!calDrag||e.pointerId!==calDrag.id)return;
+      const c=calDrag,dy=e.clientY-c.y0;
+      if(!c.moved&&Math.abs(dy)<4)return;
+      if(!c.moved){c.moved=true;c.ev.classList.add("dragging")}
+      const[r0,r1]=c.m.data.range,s=clamp(Math.round((c.s0+dy/(34*c.scale))*4)/4,r0,r1-c.len);
+      c.evt.s=s;c.evt.e=s+c.len;c.ev.style.top=((s-r0)*34+10)+"px";
+      if(c.w)c.w.textContent=`${fmtH(s)}–${fmtH(s+c.len)}`;
+    });
+    const endCalDrag=e=>{
+      if(!calDrag||e.pointerId!==calDrag.id)return;const c=calDrag;calDrag=null;
+      if(!c.moved)return;
+      calMovedAt=performance.now();c.ev.classList.remove("dragging");
+      c.m.data.ask=T(`Create the event at ${fmtH(c.evt.s)}?`,`Создать событие в ${fmtH(c.evt.s)}?`);
+      refresh(c.m,false);
+    };
+    flowsEl.addEventListener("pointerup",endCalDrag);flowsEl.addEventListener("pointercancel",endCalDrag);
     flowsEl.addEventListener("dblclick",e=>{const mapEl=e.target.closest(".module.active .map");if(!mapEl||e.target.closest(".map-ctl"))return;const m=findModule(mapEl.closest(".module").dataset.id).m,u=mapUnits(mapEl,e.clientX,e.clientY);zoomMap(m,1.6,u.x,u.y)});
     flowsEl.addEventListener("wheel",e=>{const mapEl=e.target.closest(".module.active .map");if(!mapEl)return;e.preventDefault();e.stopPropagation();const m=findModule(mapEl.closest(".module").dataset.id).m;
       const mouseWheel=e.deltaMode!==0||(e.deltaX===0&&Math.abs(e.deltaY)>=50&&Number.isInteger(e.deltaY));
@@ -1417,12 +1850,13 @@
       const row=e.target.closest("[data-row]");if(row)return openRow(m,+row.dataset.row);
       const opt=e.target.closest("[data-opt]");if(opt){m.data.sel=+opt.dataset.opt;m.data.booked=null;refresh(m,false);return}
       const lst=e.target.closest("[data-lst]");if(lst){m.data.sel=m.data.sel===lst.dataset.lst?null:lst.dataset.lst;refresh(m,false);return}
-      const prod=e.target.closest("[data-prod]");if(prod){const[g,i]=prod.dataset.prod.split("-");const it=m.data.groups[g].items[i];insertAfter(m,M("product",it.name,m.source,{...it,shoe:m.data.shoe,sizes:[38,39,40,41,42,43,44]}));return}
+      const prod=e.target.closest("[data-prod]");if(prod){const[g,i]=prod.dataset.prod.split("-");const it=m.data.groups[g].items[i];insertAfter(m,M("product",it.name,m.source,{...it,shoe:m.data.shoe,sizes:SIZES_EU}));return}
       const tr=e.target.closest("[data-track]");if(tr){m.data.track=+tr.dataset.track;m.data.t=0;m.data.playing=true;refresh(m,false);return}
       const cond=e.target.closest("[data-cond]");if(cond){m.data.conds.splice(+cond.dataset.cond,1);refresh(m,false);showToast(T("Condition removed","Условие убрано"));return}
       const act=e.target.closest("[data-act]");if(act)return runLine(m,act.dataset.act);
       const when=e.target.closest("[data-when]");if(when){m.data.sel=when.dataset.when;refresh(m,false);showToast(`${T("Reminder set","Напоминание создано")} · ${m.data.sel}`);return}
-      const ev=e.target.closest("[data-ev]");if(ev){const evt=m.data.events[+ev.dataset.ev];showToast(`${evt.t} · ${fmtH(evt.s)}–${fmtH(evt.e)}`);return}
+      const bar=e.target.closest(".bars>div");if(bar)return drillBar(m,[...bar.parentElement.children].indexOf(bar),bar);
+      const ev=e.target.closest("[data-ev]");if(ev){if(performance.now()-calMovedAt<300)return;const evt=m.data.events[+ev.dataset.ev];showToast(`${evt.t} · ${fmtH(evt.s)}–${fmtH(evt.e)}`);return}
     });
     flowsEl.addEventListener("change",e=>{
       const card=e.target.closest(".module");if(!card)return;const m=findModule(card.dataset.id)?.m;if(!m)return;
@@ -1435,7 +1869,9 @@
       if(e.target.matches(".chat-form")){
         m.data.msgs.push(["me",v]);input.value="";m.data.typing=false;refresh(m,false);scrollBody(m);
         setTimeout(()=>{m.data.typing=true;refresh(m,false);scrollBody(m)},500);
-        setTimeout(()=>{m.data.typing=false;const pool=m.data.replies||[T("👍","👍")];m.data.msgs.push([m.data.msgs.find(x=>x[0]!=="me")?.[0]||m.item,pool[(m.data.ri=(m.data.ri||0)+1)%pool.length]]);refresh(m,false);scrollBody(m);const f=cardOf(m)?.querySelector(".chat-form input");f?.focus()},1700);
+        /* live mode: the person actually answers (model); otherwise a canned reply from the pool after the same delay */
+        const t0=Date.now(),lr=window.Live?.enabled()?Live.chatReply(m):Promise.resolve(null);
+        lr.then(txt=>setTimeout(()=>{m.data.typing=false;const pool=m.data.replies||[T("👍","👍")];m.data.msgs.push([m.data.msgs.find(x=>x[0]!=="me")?.[0]||m.item,txt||pool[(m.data.ri=(m.data.ri||0)+1)%pool.length]]);refresh(m,false);scrollBody(m);const f=cardOf(m)?.querySelector(".chat-form input");f?.focus()},Math.max(0,1700-(Date.now()-t0))));
         return;
       }
       if(e.target.matches(".add-form")){m.data.items.push([v,false]);input.value="";refresh(m,false);scrollBody(m);cardOf(m)?.querySelector(".add-form input")?.focus();return}
@@ -1448,7 +1884,9 @@
       if(paletteOpen&&palItems.length&&(palMode||!v||palItems[palIndex].label.toLowerCase().startsWith(v.toLowerCase())))return runPalette();
       closePalette();if(!v)return;e.target.value="";updateParse(e.target);e.target.blur();runLine(m,v);
     });
-    flowsEl.addEventListener("input",e=>{if(!e.target.matches(".line-in"))return;updateParse(e.target);if(paletteOpen)renderPalette()});
+    flowsEl.addEventListener("input",e=>{
+      if(e.target.matches(".k-compose .text")){const c=e.target.closest(".module").querySelector(".txt-cnt");if(c)c.textContent=cntText(e.target.innerText);return}
+      if(!e.target.matches(".line-in"))return;updateParse(e.target);if(paletteOpen)renderPalette()});
     flowsEl.addEventListener("focusout",e=>{if(e.target.matches(".text,[contenteditable]")){const m=findModule(e.target.closest(".module").dataset.id)?.m;if(!m)return;if(m.kind==="compose")m.data.text=e.target.innerText;if(m.kind==="doc"){const d=e.target.closest(".doc");m.data.title=d.querySelector("h3").innerText;m.data.paras=[...d.querySelectorAll("p")].map(p=>p.innerText)}}});
 
     let metaDown=0,metaAlone=false,metaWasOpen=false;
@@ -1463,6 +1901,7 @@
       if(view==="timeline"){if(e.key==="ArrowDown"&&!$("#tlSearch").value){e.preventDefault();setView("home")}return}
       if(view!=="space")return;
       if(!inField&&(e.key==="o"||e.key==="O"||e.key==="щ"||e.key==="Щ")){toggleOverview();return}
+      if(!inField&&!e.metaKey&&!e.ctrlKey&&/^[hHрР]$/.test(e.key)){e.preventDefault();goHome();return}
       if(overviewOpen){
         if(inField||drag)return;
         const mv={ArrowRight:[0,1],ArrowLeft:[0,-1],ArrowDown:[1,0],ArrowUp:[-1,0]}[e.key];
@@ -1510,7 +1949,13 @@
     },{passive:false});
     const swipe={x:0,y:0,done:false,inner:false,idle:0,t:0,last:0};
     let touch=null;
-    $("#space").addEventListener("touchstart",e=>{if(e.touches.length!==1||e.target.closest(".map"))return touch=null;const t=e.touches[0];touch={x:t.clientX,y:t.clientY,body:e.target.closest(".module.active .m-body")}},{passive:true});
+    /* gallery: drag / swipe left-right to flip photos */
+    {let g=null;
+      $("#space").addEventListener("pointerdown",e=>{const el=e.target.closest(".gal-main");if(!el||e.target.closest(".gal-nav,.gal-th"))return;g={el,x:e.clientX,y:e.clientY,id:e.pointerId}});
+      addEventListener("pointerup",e=>{if(!g||e.pointerId!==g.id)return;const dx=e.clientX-g.x,dy=e.clientY-g.y,card=g.el.closest(".module");g=null;
+        if(Math.abs(dx)>28&&Math.abs(dx)>Math.abs(dy)*1.2&&card){const m=findModule(card.dataset.id)?.m||allModules().find(x=>x.id===card.dataset.id);if(m)galGo(m,dx<0?"next":"prev",dx<0?1:-1)}});
+      addEventListener("pointercancel",()=>{g=null})}
+    $("#space").addEventListener("touchstart",e=>{if(e.touches.length!==1||e.target.closest(".map,.gal-main"))return touch=null;const t=e.touches[0];touch={x:t.clientX,y:t.clientY,body:e.target.closest(".module.active .m-body")}},{passive:true});
     $("#space").addEventListener("touchend",e=>{
       if(!touch||overviewOpen)return;const t=e.changedTouches[0],dx=t.clientX-touch.x,dy=t.clientY-touch.y,b=touch.body;touch=null;
       if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.2)return go(0,dx<0?1:-1);
@@ -1635,5 +2080,6 @@
     else if(params.get("view")==="timeline")setView("timeline");
     else{setTimeout(()=>$("#intentInput").focus(),200);staggerIn($$(".home-time,.home-date,.home-line,.blueprints,.timeline-hint"),18,70)}
   </script>
+  <script src="/demos/intent-os/live.js"></script>
 </body>
 </html>
