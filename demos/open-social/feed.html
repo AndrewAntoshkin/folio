@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Open Social — лента и публикация</title>
+<link rel="stylesheet" href="kit.css">
+<style>
+  .ph-feed { left: 170px; top: 44px; }
+  .ph-post { left: 655px; top: 44px; }
+  .view { position: absolute; left: 0; right: 0; bottom: 0; overflow: hidden; }
+  .inner { transition: transform .9s var(--ease); }
+
+  .h-top { padding: 4px 16px 12px; display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--line); }
+  .h-top h2 { margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -.02em; }
+  .h-top small { display: block; margin-top: 2px; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .h-top .btn-blue { margin-top: 2px; display: flex; align-items: center; gap: 4px; }
+  .h-top .btn-blue svg { width: 0; height: 16px; transition: width .3s var(--ease); }
+  .h-top .btn-blue.on svg { width: 16px; }
+
+  .pill { position: absolute; z-index: 6; left: 50%; top: 152px; display: flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 20px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 600; box-shadow: 0 10px 24px -8px rgba(30, 120, 180, .6); transform: translate(-50%, -24px) scale(.9); opacity: 0; pointer-events: none; transition: transform .5s var(--spring), opacity .3s; }
+  .pill.show { transform: translate(-50%, 0); opacity: 1; pointer-events: auto; }
+  .pill svg { width: 14px; height: 14px; transform: rotate(90deg); }
+
+  .post { padding: 14px 16px; border-bottom: 1px solid var(--line); }
+  .rp { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; font-size: 12px; font-weight: 600; color: #6f747c; }
+  .rp svg { width: 14px; height: 14px; }
+  .ph { display: flex; gap: 10px; align-items: center; }
+  .ph .ava { width: 40px; height: 40px; }
+  .ph .nm { display: flex; gap: 4px; align-items: center; font-size: 15px; font-weight: 600; }
+  .ph .mt { margin-top: 1px; font-size: 11.5px; color: var(--muted); }
+  .ph .mt .tag { margin-left: 3px; }
+  .ph .kb { margin-left: auto; width: 22px; height: 22px; color: #9aa0a8; align-self: flex-start; }
+  .post p { margin: 10px 0; font-size: 14px; line-height: 19px; }
+  .post .pic { width: 100%; height: 84px; object-fit: cover; border-radius: 10px; margin-bottom: 10px; }
+  .post.new { overflow: hidden; height: 0; padding-top: 0; padding-bottom: 0; transition: height .6s var(--ease), padding .6s var(--ease), background 2s; background: #eaf6fd; }
+  .post.new.opened { padding-top: 14px; padding-bottom: 14px; }
+  .post.new.open { background: #fff; }
+
+  .tickers { display: flex; gap: 6px; margin: 12px -16px 12px 0; overflow: hidden; }
+  .tk { flex: none; display: flex; gap: 6px; align-items: baseline; padding: 7px 10px; border-radius: 8px; background: var(--card); font-size: 12.5px; font-weight: 700; font-variant-numeric: tabular-nums; transition: background .4s; }
+  .tk em { font-style: normal; font-weight: 500; font-size: 11.5px; color: var(--green); transition: color .3s; }
+  .tk.dn em { color: var(--red); }
+  .tk.fu { background: #def5e8; }
+  .tk.fd { background: #fde5e5; }
+  .big-pic { width: 100%; height: 160px; object-fit: cover; border-radius: 10px; }
+
+  .cm { display: flex; gap: 10px; padding: 12px 16px; border-top: 1px solid var(--line); }
+  .cm .ava { width: 34px; height: 34px; }
+  .cm .bd { flex: 1; min-width: 0; }
+  .cm .top { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; }
+  .cm .top a { font-weight: 500; font-size: 12px; color: var(--accent); }
+  .cm small { display: block; font-size: 11px; color: var(--muted); }
+  .cm p { margin: 4px 0 0; font-size: 13.5px; line-height: 18px; }
+  .cm.new { animation: cmIn .6s var(--ease); background: #eaf6fd; transition: background 2s; }
+  .cm.new.settled { background: #fff; }
+  @keyframes cmIn { from { opacity: 0; transform: translateY(12px); } }
+
+  .composer { position: absolute; z-index: 8; left: 0; right: 0; bottom: 0; height: 84px; padding: 10px 12px 0; display: flex; gap: 8px; align-items: flex-start; background: #fff; border-top: 1px solid var(--line); }
+  .composer .q { flex: none; width: 34px; height: 34px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 17px; font-weight: 700; display: grid; place-items: center; transition: transform .3s var(--spring); }
+  .composer .q:active { transform: scale(.9); }
+  .composer label { flex: 1; height: 34px; display: flex; align-items: center; padding: 0 6px 0 12px; border-radius: 17px; background: var(--card); }
+  .composer input { flex: 1; min-width: 0; border: 0; outline: 0; background: none; font: inherit; font-size: 14px; color: var(--ink); }
+  .composer input::placeholder { color: #a2a7ae; }
+  .composer .send { width: 26px; height: 26px; color: #a2a7ae; transition: color .2s, transform .3s var(--spring); }
+  .composer .send.ready { color: var(--accent); }
+  .composer .send svg { width: 20px; height: 20px; margin: 3px; }
+
+  .sheet { position: absolute; z-index: 7; left: 10px; right: 10px; bottom: 92px; padding: 6px; border-radius: 16px; background: #fff; box-shadow: 0 -4px 30px -6px rgba(0, 0, 0, .22); transform: translateY(16px); opacity: 0; pointer-events: none; transition: transform .45s var(--spring), opacity .25s; }
+  .sheet.show { transform: none; opacity: 1; pointer-events: auto; }
+  .sheet button { width: 100%; display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-align: left; font-size: 14px; }
+  .sheet button:hover, .sheet button.hl { background: var(--card); }
+  .sheet img { width: 30px; height: 30px; border-radius: 8px; }
+  .sheet b { font-weight: 700; width: 52px; }
+  .sheet span { flex: 1; color: var(--muted); }
+  .sheet em { font-style: normal; font-size: 12px; font-weight: 600; color: var(--green); }
+
+  .label { position: absolute; top: 868px; transform: translateX(-50%); color: #fff; font-size: 15px; font-weight: 600; letter-spacing: .01em; opacity: .9; }
+</style>
+</head>
+<body>
+<div class="stage" style="--w:1200;--h:900">
+  <svg class="waves" viewBox="0 0 1200 900" preserveAspectRatio="none"><path class="w1" d="M-80 200C80 20 260 460 420 260S700 0 860 240 1080 520 1300 200"/><path class="w2" d="M-80 800C120 600 280 900 480 720S780 540 960 740 1180 900 1300 660"/></svg>
+
+  <div class="phone ph-feed"><div class="screen">
+    <div class="nav"><span class="back" data-icon="back"></span>Хэштег</div>
+    <div class="h-top">
+      <div><h2>#USD</h2><small><span id="cnt">100</span> публикаций</small></div>
+      <button class="btn-blue" id="sub"><span data-icon="check"></span><span class="t">Подписаться</span></button>
+    </div>
+    <button class="pill" id="pill"><span data-icon="back"></span>Новая публикация</button>
+    <div class="view" style="top:166px"><div class="inner" id="feed">
+      <article class="post new" id="fresh">
+        <div class="ph"><img class="ava" src="/img/open-social/ui/av-falling.png" alt=""><div><div class="nm">FallingLeaf</div><div class="mt">Сейчас •<span class="tag">#USD</span><span class="tag">$USDRUB</span></div></div><span class="kb" data-icon="more"></span></div>
+        <p>Курс <span class="tag">#USD</span> снова у 92 ₽. Фиксирую часть валютной позиции, остальное держу до конца квартала.</p>
+        <div class="react"><button data-like><span data-icon="like"></span><span>0</span></button><button data-like><span data-icon="dislike"></span><span>0</span></button><span class="sp"></span><button><span data-icon="comment"></span><span>0</span></button></div>
+      </article>
+      <article class="post">
+        <div class="rp"><span data-icon="repost"></span>Don Wonton сделал(а) репост</div>
+        <div class="ph"><img class="ava" src="/img/open-social/ui/av-viktor.png" alt=""><div><div class="nm">Виктор Ш. <span class="vf"></span></div><div class="mt">12:35 •<span class="tag">#Биткоин</span><span class="tag">#Crypto</span><span class="tag">+2</span></div></div><span class="kb" data-icon="more"></span></div>
+        <p>В 2021 году <span class="tag">#Биткоин</span> достиг рекордных высот, превысив отметку в $66,000 в октябре. Рост был обусловлен оптимизмом по поводу более широкого принятия криптовалюты.</p>
+        <img class="pic" src="/img/open-social/ui/post-btc.jpg" alt="">
+        <div class="react"><button data-like id="like1"><span data-icon="like"></span><span>123</span></button><button data-like><span data-icon="dislike"></span><span>123</span></button><span class="sp"></span><button><span data-icon="comment"></span><span>123</span></button></div>
+      </article>
+      <article class="post">
+        <div class="ph"><img class="ava" src="/img/open-social/ui/av-antonio.png" alt=""><div><div class="nm">Antonio.123</div><div class="mt">12:35 •<span class="tag">$AAPL</span></div></div><span class="kb" data-icon="more"></span></div>
+        <p>Акции Apple Inc. (<span class="tag">$AAPL</span>) недавно достигли нового исторического максимума, превысив отметку в $190 за акцию.</p>
+        <img class="pic" src="/img/open-social/ui/post-apple.jpg" alt="">
+        <div class="react"><button data-like><span data-icon="like"></span><span>123</span></button><button data-like><span data-icon="repost"></span><span>123</span></button><span class="sp"></span><button><span data-icon="comment"></span><span>123</span></button></div>
+      </article>
+      <article class="post">
+        <div class="ph"><img class="ava" src="/img/open-social/ui/av-gnarly.png" alt=""><div><div class="nm">GnarlyBite</div><div class="mt">12:35 •<span class="tag">$GAZP</span></div></div><span class="kb" data-icon="more"></span></div>
+        <p>Слабый рубль на руку экспортёрам. Держу <span class="tag">$GAZP</span> и слежу за <span class="tag">#USD</span> до конца месяца.</p>
+        <div class="react"><button data-like><span data-icon="like"></span><span>64</span></button><button data-like><span data-icon="dislike"></span><span>3</span></button><span class="sp"></span><button><span data-icon="comment"></span><span>12</span></button></div>
+      </article>
+    </div></div>
+  </div></div>
+
+  <div class="phone ph-post"><div class="screen">
+    <div class="nav"><span class="back" data-icon="back"></span>Публикация<span class="act" data-icon="share"></span></div>
+    <div class="view" style="top:90px;bottom:84px"><div class="inner" id="post">
+      <div class="post" style="border:0;padding-bottom:6px">
+        <div class="ph"><img class="ava" src="/img/open-social/ui/av-curly.png" alt=""><div><div class="nm">CurlyMash <span class="vf"></span></div><div class="mt">12:35 •<span class="tag">$GAZP</span><span class="tag">#Газпром</span><span class="tag">+2</span></div></div><span class="kb" data-icon="more"></span></div>
+        <div class="tickers" id="tickers"></div>
+        <img class="big-pic" src="/img/open-social/ui/post-nyse.jpg" alt="">
+        <p>В 2021 году акции ПАО «Газпром» (<span class="tag">$GAZP</span>) продемонстрировали значительный рост, что было обусловлено рекордными финансовыми показателями компании. Газпром сообщил о чистой прибыли в размере 2,09 триллиона рублей ($29 миллиардов) за год, что стало самым высоким показателем в истории компании.</p>
+        <div class="react"><button data-like id="like2"><span data-icon="like"></span><span>123</span></button><button data-like><span data-icon="repost"></span><span>123</span></button><span class="sp"></span><button><span data-icon="comment"></span><span id="ccount">123</span></button></div>
+      </div>
+      <div id="comments">
+        <div class="cm"><img class="ava" src="/img/open-social/ui/av-falling.png" alt=""><div class="bd"><div class="top">FallingLeaf<a>Ответить</a></div><small>Сегодня 12:35</small><p>Инвесторы также с оптимизмом смотрят на дивиденды за этот год.</p></div></div>
+        <div class="cm"><img class="ava" src="/img/open-social/ui/av-antonio.png" alt=""><div class="bd"><div class="top">Antonio.123<a>Ответить</a></div><small>Сегодня 12:41</small><p>Главное, чтобы экспорт не просел. Смотрю на <span class="tag">$GAZP</span> с осторожностью.</p></div></div>
+      </div>
+    </div></div>
+    <div class="sheet" id="sheet">
+      <button data-tk="GAZP"><img src="/img/open-social/ui/lg-gazprom.png" alt=""><b>GAZP</b><span>Газпром</span><em>+2,14%</em></button>
+      <button data-tk="SBER"><img src="/img/open-social/ui/tk-sber.png" alt=""><b>SBER</b><span>Сбербанк</span><em>+0,86%</em></button>
+      <button data-tk="MTSS"><img src="/img/open-social/ui/tk-mega.png" alt=""><b>MFON</b><span>МегаФон</span><em>+0,31%</em></button>
+    </div>
+    <div class="composer">
+      <button class="q" id="dollar">$</button>
+      <button class="q" id="at">@</button>
+      <label><input id="msg" placeholder="Сообщение…" autocomplete="off"><button class="send" id="send" data-icon="send"></button></label>
+    </div>
+  </div></div>
+
+  <span class="label" style="left:357px">Лента по хэштегу</span>
+  <span class="label" style="left:842px">Публикация и обсуждение</span>
+</div>
+<script src="kit.js"></script>
+<script>
+(() => {
+  const { $, $$, wait, tap, bump } = Kit;
+  $$('.vf').forEach((v) => { v.outerHTML = Kit.verified; });
+
+  const feed = Kit.scroller($('#feed').parentElement, $('#feed'));
+  const post = Kit.scroller($('#post').parentElement, $('#post'));
+
+  $$('[data-like]').forEach((b) => b.addEventListener('click', () => {
+    const n = b.lastElementChild;
+    const on = b.classList.toggle('on');
+    n.textContent = +n.textContent + (on ? 1 : -1);
+  }));
+
+  const sub = $('#sub');
+  sub.addEventListener('click', () => {
+    const on = sub.classList.toggle('on');
+    sub.querySelector('.t').textContent = on ? 'Вы подписаны' : 'Подписаться';
+  });
+
+  const pill = $('#pill');
+  const fresh = $('#fresh');
+  const cnt = $('#cnt');
+  pill.addEventListener('click', () => {
+    pill.classList.remove('show');
+    feed.to(0);
+    fresh.style.height = `${fresh.scrollHeight + 28}px`;
+    fresh.classList.add('opened');
+    setTimeout(() => fresh.classList.add('open'), 50);
+    cnt.textContent = '101';
+    bump(cnt);
+  });
+
+  const TK = [['GAZP', 2.14], ['SBER', 0.86], ['BTC', -1.12], ['AAPL', 0.43], ['YNDX', 1.27]];
+  const tkBox = $('#tickers');
+  tkBox.innerHTML = TK.map(([t, v]) => `<span class="tk${v < 0 ? ' dn' : ''}">${t}<em></em></span>`).join('');
+  const chips = $$('.tk', tkBox);
+  const pct = (v) => `${v >= 0 ? '+' : '−'}${Math.abs(v).toFixed(2).replace('.', ',')}%`;
+  chips.forEach((c, i) => { c.lastElementChild.textContent = pct(TK[i][1]); });
+  setInterval(() => {
+    if (document.hidden) return;
+    const i = Math.floor(Math.random() * TK.length);
+    const d = (Math.random() - 0.45) * 0.18;
+    TK[i][1] += d;
+    const c = chips[i];
+    c.classList.toggle('dn', TK[i][1] < 0);
+    c.lastElementChild.textContent = pct(TK[i][1]);
+    c.classList.add(d >= 0 ? 'fu' : 'fd');
+    setTimeout(() => c.classList.remove('fu', 'fd'), 500);
+  }, 900);
+
+  const sheet = $('#sheet');
+  const msg = $('#msg');
+  const send = $('#send');
+  const comments = $('#comments');
+  msg.addEventListener('input', () => send.classList.toggle('ready', !!msg.value.trim()));
+  $('#dollar').addEventListener('click', () => sheet.classList.toggle('show'));
+  $('#at').addEventListener('click', () => { msg.value += '@CurlyMash '; msg.dispatchEvent(new Event('input')); msg.focus(); });
+  $$('[data-tk]', sheet).forEach((b) => b.addEventListener('click', () => {
+    msg.value += `$${b.querySelector('b').textContent} `;
+    msg.dispatchEvent(new Event('input'));
+    sheet.classList.remove('show');
+  }));
+  const esc = (s) => s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  function postComment() {
+    const t = msg.value.trim();
+    if (!t) return;
+    const html = esc(t).replace(/([$#@][\wА-Яа-яЁё]+)/g, '<span class="tag">$1</span>');
+    comments.insertAdjacentHTML('beforeend', `<div class="cm new"><img class="ava" src="/img/open-social/ui/av-me.png" alt=""><div class="bd"><div class="top">LittleFurryWarrior75<a>Ответить</a></div><small>Сейчас</small><p>${html}</p></div></div>`);
+    const el = comments.lastElementChild;
+    setTimeout(() => el.classList.add('settled'), 600);
+    msg.value = '';
+    send.classList.remove('ready');
+    const cc = $('#ccount');
+    cc.textContent = +cc.textContent + 1;
+    requestAnimationFrame(() => post.to(post.max()));
+  }
+  send.addEventListener('click', postComment);
+  msg.addEventListener('keydown', (e) => { if (e.key === 'Enter') postComment(); });
+
+  function reset() {
+    sub.classList.remove('on');
+    sub.querySelector('.t').textContent = 'Подписаться';
+    pill.classList.remove('show');
+    fresh.classList.remove('open', 'opened');
+    fresh.style.height = '';
+    fresh.style.padding = '';
+    cnt.textContent = '100';
+    $$('[data-like].on').forEach((b) => b.click());
+    $$('.cm.new').forEach((c) => c.remove());
+    $('#ccount').textContent = '123';
+    sheet.classList.remove('show');
+    msg.value = '';
+    send.classList.remove('ready');
+    feed.to(0);
+    post.to(0);
+    if (Kit.reduced) {
+      fresh.style.height = 'auto';
+      fresh.classList.add('opened', 'open');
+      cnt.textContent = '101';
+    }
+  }
+
+  async function script() {
+    await wait(900);
+    await tap(sub);
+    await wait(700);
+    await tap($('#like1'));
+    await wait(900);
+    pill.classList.add('show');
+    await wait(900);
+    await tap(pill);
+    await wait(1300);
+    await Kit.swipe($('#feed').parentElement, 0, -200, () => feed.to(320));
+    await wait(600);
+    await Kit.swipe($('#post').parentElement, 0, -200, () => post.to(post.max()));
+    await wait(500);
+    await tap($('#like2'));
+    await wait(500);
+    await tap($('#dollar'));
+    await wait(700);
+    const g = $('[data-tk="GAZP"]');
+    g.classList.add('hl');
+    await tap(g);
+    g.classList.remove('hl');
+    await Kit.moveTo(...Kit.pt(msg, 0.8));
+    await Kit.type(msg, 'держу с 2019, дивиденды радуют');
+    await wait(400);
+    await tap(send);
+    Kit.hide();
+    await wait(3200);
+    feed.to(0);
+    post.to(0);
+    await wait(1400);
+  }
+
+  Kit.loop(reset, script);
+})();
+</script>
+</body>
+</html>

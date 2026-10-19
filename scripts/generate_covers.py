@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import shutil
+import sys
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
@@ -32,6 +33,23 @@ COVERS = {
             {"pos": 0.42, "w": 0.16, "angle": 68, "c": "#6a6cd9", "a": 0.45},
             {"pos": 0.64, "w": 0.15, "angle": 74, "c": "#b5d4ff", "a": 0.52},
             {"pos": 0.82, "w": 0.14, "angle": 70, "c": "#8378e3", "a": 0.48},
+        ],
+    },
+    # Open brand sky blue: cyan, cloud white, and a soft mint highlight
+    "open-social": {
+        "seed": 151,
+        "base": ["#2fa8e6", "#5cc2f2", "#3db4ec", "#8fd8f7"],
+        "blobs": [
+            {"x": 0.20, "y": 0.34, "rx": 0.50, "ry": 0.62, "rot": -20, "c": "#1f96dc", "a": 0.74},
+            {"x": 0.56, "y": 0.24, "rx": 0.40, "ry": 0.70, "rot": 16, "c": "#d6f1ff", "a": 0.70},
+            {"x": 0.80, "y": 0.60, "rx": 0.46, "ry": 0.64, "rot": 24, "c": "#7fd3f5", "a": 0.76},
+            {"x": 0.36, "y": 0.76, "rx": 0.50, "ry": 0.46, "rot": -14, "c": "#bdf0e2", "a": 0.62},
+            {"x": 0.50, "y": 0.48, "rx": 0.38, "ry": 0.48, "rot": 10, "c": "#3aa9e8", "a": 0.55},
+        ],
+        "folds": [
+            {"pos": 0.22, "w": 0.14, "angle": 70, "c": "#e2f5ff", "a": 0.50},
+            {"pos": 0.46, "w": 0.16, "angle": 66, "c": "#1e8fd6", "a": 0.44},
+            {"pos": 0.70, "w": 0.15, "angle": 72, "c": "#c8f2ff", "a": 0.52},
         ],
     },
     # 2. "OpenAI | INSEAD" reference: warm iridescent lavender-violet, peach-gold, and soft lilac folds
@@ -379,6 +397,7 @@ window.renderCover = function(cfg) {
 
 
 def main() -> None:
+    only = set(sys.argv[1:])
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     ROOT_DIR.mkdir(parents=True, exist_ok=True)
     tmp_html = Path("/tmp/openai_cover_gen.html")
@@ -389,6 +408,8 @@ def main() -> None:
         page = browser.new_page(viewport={"width": 1600, "height": 900, "device_scale_factor": 1})
         page.goto(f"file://{tmp_html}")
         for slug, cfg in COVERS.items():
+            if only and slug not in only:
+                continue
             page.evaluate("cfg => window.renderCover(cfg)", cfg)
             dest = OUT_DIR / f"{slug}.jpg"
             page.screenshot(path=str(dest), type="jpeg", quality=92)

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Pulse UI — Design × Code × Documentation</title>
+  <style>
+    *{box-sizing:border-box}
+    html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0d0d0d}
+    .viewport{position:relative;width:100%;height:100%;overflow:hidden}
+    .stage{position:absolute;width:2743px;height:1600px;left:50%;top:50%;transform:translate(-50%,-50%) scale(var(--scale,1))}
+    .flow{position:absolute;left:354px;top:660px;display:flex;align-items:center;gap:50px}
+    .slot{width:536.17px;display:flex;justify-content:center}
+    .logo{display:block;width:280px;height:280px;opacity:0;transform:translateY(40px) scale(.95)}
+    .cross{width:113.14px;height:113.14px;display:grid;place-items:center}
+    .cross img{width:80px;height:80px;opacity:0;transform:rotate(-45deg) scale(.6)}
+
+    .note{position:absolute;transform:translate(-50%,-50%) rotate(var(--r))}
+    .note span{display:block;font:700 96px/188px "Bradley Hand","Segoe Script",cursive;letter-spacing:-.48px;white-space:nowrap;color:var(--c);clip-path:inset(-20% 100% -20% 0)}
+    .design{left:397.37px;top:434.53px;--r:-5.89deg;--c:#cadb26}
+    .code{left:1641.61px;top:1155.74px;--r:20.75deg;--c:#fa8e4c}
+    .docs{left:2164.15px;top:354.95px;--r:4.72deg;--c:#60b0f6}
+
+    .arr{position:absolute;transform:translate(-50%,-50%) var(--t)}
+    .arr img{display:block;width:100%;height:100%;opacity:0}
+    .a-d1{left:553.2px;top:541.7px;width:103.11px;height:117.6px;--t:rotate(2.37deg)}
+    .a-d2{left:573px;top:586.5px;width:56.89px;height:34.65px;--t:rotate(2.37deg)}
+    .a-c1{left:1466.8px;top:1115.4px;width:186.47px;height:191.38px;--t:scaleX(-1)}
+    .a-c2{left:1386.3px;top:1049.9px;width:72.42px;height:65.73px;--t:scaleX(-1)}
+    .a-n1{left:2137.3px;top:452.3px;width:55.19px;height:40.42px;--t:rotate(150deg)}
+    .a-n2{left:2127.6px;top:490.2px;width:64.79px;height:38.67px;--t:rotate(150deg)}
+    .a-n3{left:2111.3px;top:528.6px;width:58.11px;height:53.07px;--t:rotate(150deg)}
+    .a-n4{left:2107.2px;top:578.1px;width:64.47px;height:51.84px;--t:rotate(150deg)}
+
+    .play .logo{animation:rise .8s cubic-bezier(.23,1,.32,1) forwards}
+    .play .slot:nth-child(3) .logo{animation-delay:.2s}
+    .play .slot:nth-child(5) .logo{animation-delay:.4s}
+    .play .cross img{animation:pop .6s cubic-bezier(.23,1,.32,1) .5s forwards}
+
+    .play .note span{animation:write var(--dur) cubic-bezier(.45,.1,.55,.95) var(--at) forwards}
+    .design{--at:1.1s;--dur:.8s}.code{--at:1.9s;--dur:.65s}.docs{--at:2.55s;--dur:1.3s}
+
+    .play .arr img{animation:var(--draw) var(--dur,.45s) cubic-bezier(.4,0,.2,1) var(--at) forwards}
+    .a-d1{--draw:down;--at:4s;--dur:.55s}.a-d2{--draw:fade;--at:4.45s;--dur:.25s}
+    .a-c1{--draw:left;--at:4.3s;--dur:.7s}.a-c2{--draw:fade;--at:4.9s;--dur:.25s}
+    .a-n1{--draw:fade;--at:4.6s;--dur:.2s}.a-n2{--draw:fade;--at:4.75s;--dur:.2s}
+    .a-n3{--draw:fade;--at:4.9s;--dur:.2s}.a-n4{--draw:fade;--at:5.05s;--dur:.2s}
+
+    @keyframes rise{to{opacity:1;transform:none}}
+    @keyframes pop{to{opacity:1;transform:rotate(-45deg) scale(1)}}
+    @keyframes write{to{clip-path:inset(-20% -2% -20% 0)}}
+    @keyframes down{from{opacity:1;clip-path:inset(0 0 100% 0)}to{opacity:1;clip-path:inset(0 0 0 0)}}
+    @keyframes left{from{opacity:1;clip-path:inset(0 100% 0 0)}to{opacity:1;clip-path:inset(0 0 0 0)}}
+    @keyframes fade{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:none}}
+
+    @media (prefers-reduced-motion:reduce){
+      .logo,.cross img,.arr img{animation:none!important;opacity:1;transform:none}
+      .cross img{transform:rotate(-45deg)}
+      .note span{animation:none!important;clip-path:none}
+    }
+  </style>
+</head>
+<body>
+  <main class="viewport" aria-label="Design, Code and Documentation">
+    <div class="stage">
+      <div class="flow">
+        <div class="slot"><img class="logo" src="/img/pulse-ui/scene/figma.svg" alt="Figma"></div>
+        <div class="cross"><img src="/img/pulse-ui/scene/cross.svg" alt=""></div>
+        <div class="slot"><img class="logo" src="/img/pulse-ui/scene/storybook.svg" alt="Storybook"></div>
+        <div class="cross"><img src="/img/pulse-ui/scene/cross.svg" alt=""></div>
+        <div class="slot"><img class="logo" src="/img/pulse-ui/scene/notion.svg" alt="Notion"></div>
+      </div>
+
+      <div class="note design"><span>Design</span></div>
+      <div class="note code"><span>Code</span></div>
+      <div class="note docs"><span>Documentation</span></div>
+
+      <div class="arr a-d1"><img src="/img/pulse-ui/scene/arrow-118c5.svg" alt=""></div>
+      <div class="arr a-d2"><img src="/img/pulse-ui/scene/arrow-919fc.svg" alt=""></div>
+      <div class="arr a-c1"><img src="/img/pulse-ui/scene/arrow-17508.svg" alt=""></div>
+      <div class="arr a-c2"><img src="/img/pulse-ui/scene/arrow-a7f52.svg" alt=""></div>
+      <div class="arr a-n1"><img src="/img/pulse-ui/scene/arrow-82e75.svg" alt=""></div>
+      <div class="arr a-n2"><img src="/img/pulse-ui/scene/arrow-f6534.svg" alt=""></div>
+      <div class="arr a-n3"><img src="/img/pulse-ui/scene/arrow-97450.svg" alt=""></div>
+      <div class="arr a-n4"><img src="/img/pulse-ui/scene/arrow-6e128.svg" alt=""></div>
+    </div>
+  </main>
+  <script>
+    const stage = document.querySelector('.stage');
+    const fit = () => stage.style.setProperty('--scale', Math.min(innerWidth / 2743, innerHeight / 1600));
+    addEventListener('resize', fit);
+    fit();
+    new IntersectionObserver((entries, io) => {
+      if (entries.some(e => e.isIntersecting)) {
+        document.body.classList.add('play');
+        io.disconnect();
+      }
+    }, { threshold: .4 }).observe(stage);
+  </script>
+</body>
+</html>

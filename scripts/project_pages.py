@@ -31,6 +31,26 @@ PROJECTS = [
         "body": {"ru": "", "en": ""},
     },
     {
+        "slug": "open-social",
+        "icon": "ui",
+        "name": "Open Social",
+        "kicker": ("Социальная сеть", "Social Network"),
+        "badge": ("Открытие Брокер · iOS", "Otkritie Broker · iOS"),
+        "desc": (
+            "Социальная сеть для инвесторов внутри приложения «Открытие Брокер»: лента идей по тикерам и хэштегам, профиль с доходностью автора, онбординг и обучающие сторис.",
+            "A social network for investors inside the Otkritie Broker app: a feed of ideas by ticker and hashtag, author profiles with real returns, onboarding, and learning stories.",
+        ),
+        "meta": (
+            "Кейс социальной сети для частных инвесторов в мобильном приложении «Открытие Брокер»: профиль, лента, публикации, онбординг и сторис.",
+            "Case study of a social network for retail investors in the Otkritie Broker mobile app: profiles, feed, posts, onboarding, and stories.",
+        ),
+        "lead": ("", ""),
+        "github": "",
+        "github_label": ("", ""),
+        "legacy": "",
+        "body": {"ru": "", "en": ""},
+    },
+    {
         "slug": "intent-os",
         "icon": "os",
         "name": "Intent OS",

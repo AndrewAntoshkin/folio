@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Open Social — профиль инвестора</title>
+<link rel="stylesheet" href="kit.css">
+<style>
+  .phone { left: 412px; top: 44px; }
+  .p-body { position: absolute; left: 0; right: 0; top: 46px; bottom: 82px; overflow: hidden; }
+  .p-in { padding: 0 16px 24px; transition: transform 1s var(--ease); }
+  .p-head { height: 52px; display: flex; align-items: center; justify-content: space-between; }
+  .p-head h1 { margin: 0; font-size: 25px; font-weight: 700; letter-spacing: -.02em; }
+  .p-head .ics { display: flex; gap: 16px; }
+  .p-head .ics span { width: 23px; height: 23px; display: block; }
+  .who { display: flex; gap: 12px; align-items: center; margin-top: 8px; }
+  .who .ava { width: 64px; height: 64px; }
+  .who .nm { display: flex; align-items: center; gap: 4px; font-size: 17px; font-weight: 500; }
+  .who .nm img { width: 26px; height: 17px; }
+  .who .sub { margin-top: 2px; font-size: 15px; }
+  .bio { margin: 14px 0 0; font-size: 14.5px; line-height: 20px; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; }
+  .stat { padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; }
+  .stat small { display: block; font-size: 11.5px; color: var(--muted); }
+  .stat b { display: block; margin-top: 4px; font-size: 16px; font-weight: 500; font-variant-numeric: tabular-nums; }
+  .stat b.bump { color: var(--accent); }
+  h3 { margin: 22px 0 10px; font-size: 16px; font-weight: 700; display: flex; justify-content: space-between; align-items: baseline; }
+  h3 a { font-size: 13px; font-weight: 500; color: var(--accent); }
+  .acard { position: relative; padding: 12px 14px; border-radius: 12px; background: var(--card); }
+  .acard small { display: block; font-size: 12px; color: var(--muted); }
+  .acard b { display: block; margin-top: 4px; font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+  .acard .ic { position: absolute; right: 12px; top: 12px; width: 22px; height: 22px; color: var(--accent); }
+  .acard.big { padding: 16px 14px; }
+  .acard.big .ic { top: 50%; margin-top: -21px; width: 42px; height: 42px; padding: 9px; border-radius: 10px; background: var(--accent); color: #fff; }
+  .agrid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+  .chips { display: flex; gap: 8px; overflow: hidden; margin: 0 -16px; padding: 0 16px; }
+  .chips-in { display: flex; gap: 8px; padding-right: 8px; animation: chips 14s linear infinite; }
+  .chip { display: flex; align-items: center; gap: 8px; flex: none; padding: 6px 12px 6px 6px; border-radius: 10px; background: var(--card); font-size: 13px; font-weight: 600; }
+  .chip img { width: 28px; height: 28px; border-radius: 8px; }
+  @keyframes chips { to { transform: translateX(-50%); } }
+  .post { padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .post .hd { display: flex; gap: 10px; align-items: center; }
+  .post .hd .ava { width: 36px; height: 36px; }
+  .post .hd b { display: flex; gap: 4px; align-items: center; font-size: 14px; font-weight: 600; }
+  .post .hd small { font-size: 11.5px; }
+  .post p { margin: 8px 0 10px; font-size: 13.5px; line-height: 18px; }
+  .tabs { position: absolute; left: 0; right: 0; bottom: 0; height: 82px; padding: 8px 10px 0; display: flex; justify-content: space-around; border-top: 1px solid var(--line); background: rgba(255, 255, 255, .96); z-index: 5; }
+  .tab { display: flex; flex-direction: column; align-items: center; gap: 3px; width: 56px; font-size: 10px; color: #a3a8af; }
+  .tab svg { width: 24px; height: 24px; }
+  .tab.on { color: var(--accent); }
+  .toast { position: absolute; z-index: 20; left: 10px; right: 10px; top: 48px; display: flex; gap: 10px; align-items: center; padding: 10px 12px; border-radius: 16px; background: rgba(250, 250, 252, .92); backdrop-filter: blur(16px); box-shadow: 0 12px 30px -10px rgba(0, 0, 0, .3); font-size: 13px; line-height: 17px; transform: translateY(-140px); transition: transform .6s var(--spring); }
+  .toast.show { transform: none; }
+  .toast .ava { width: 36px; height: 36px; }
+  .toast b { font-weight: 600; }
+  [data-in] { transition: opacity .5s var(--ease), transform .6s var(--ease); }
+  .pre [data-in] { opacity: 0; transform: translateY(14px); }
+  .p-in.out { opacity: 0; transition: opacity .4s; }
+  .c1 { left: 112px; top: 420px; }
+  .c2 { right: 112px; top: 360px; }
+  .c3 { right: 112px; top: 560px; }
+  .c1::after, .c2::after, .c3::after { content: ""; position: absolute; top: 24px; width: 14px; height: 14px; background: #fff; transform: rotate(45deg); }
+  .c1::after { right: -6px; }
+  .c2::after, .c3::after { left: -6px; }
+</style>
+</head>
+<body>
+<div class="stage" style="--w:1200;--h:900">
+  <svg class="waves" viewBox="0 0 1200 900" preserveAspectRatio="none"><path class="w1" d="M-80 260C80 60 220 520 380 300S640 40 820 280 1080 560 1300 240"/><path class="w2" d="M-80 760C120 560 260 900 460 700S760 520 940 720 1180 900 1300 640"/></svg>
+
+  <div class="phone"><div class="screen">
+    <div class="toast"><img class="ava" src="/img/open-social/ui/av-curly.png" alt=""><span><b>CurlyMash</b> подписалась на вас<br><span class="muted">Сейчас</span></span></div>
+    <div class="p-body"><div class="p-in">
+      <div class="p-head" data-in><h1>Мой профиль</h1><div class="ics"><span data-icon="share"></span><span data-icon="gear"></span></div></div>
+      <div class="who" data-in>
+        <img class="ava" src="/img/open-social/ui/av-me.png" alt="">
+        <div><div class="nm">LittleFurryWarrior75 <img src="/img/open-social/ui/badge.png" alt=""></div><div class="sub muted">Иван Иванов</div></div>
+      </div>
+      <p class="bio" data-in>Инвестор с опытом в стратегическом управлении капиталом и диверсификации портфеля.</p>
+      <div class="stats" data-in>
+        <div class="stat"><small>Подписчики</small><b id="followers">935</b></div>
+        <div class="stat"><small>Подписки</small><b id="following">12</b></div>
+        <div class="stat"><small>Посты</small><b id="posts">16</b></div>
+      </div>
+      <h3 data-in>Аналитика</h3>
+      <div class="acard big" data-in id="portfolio"><small>Портфель</small><b>от <span id="pf">3 000 000</span> ₽</b><span class="ic" data-icon="case"></span></div>
+      <div class="agrid" data-in>
+        <div class="acard"><small>Доходность</small><b>+<span id="yield">15</span>%</b><span class="ic" data-icon="trend"></span></div>
+        <div class="acard"><small>Сделки</small><b id="deals">46</b><span class="ic" data-icon="history"></span></div>
+      </div>
+      <h3 data-in id="follow-h">Слежу за <a>Смотреть все</a></h3>
+      <div class="chips" data-in><div class="chips-in">
+        <span class="chip"><img src="/img/open-social/ui/tk-sber.png" alt="">SBER</span><span class="chip"><img src="/img/open-social/ui/tk-gaz.png" alt="">GAZ</span><span class="chip"><img src="/img/open-social/ui/tk-mega.png" alt="">MEGA</span><span class="chip"><img src="/img/open-social/ui/lg-vtb.png" alt="">VTBR</span><span class="chip"><img src="/img/open-social/ui/lg-pik.png" alt="">PIKK</span>
+        <span class="chip"><img src="/img/open-social/ui/tk-sber.png" alt="">SBER</span><span class="chip"><img src="/img/open-social/ui/tk-gaz.png" alt="">GAZ</span><span class="chip"><img src="/img/open-social/ui/tk-mega.png" alt="">MEGA</span><span class="chip"><img src="/img/open-social/ui/lg-vtb.png" alt="">VTBR</span><span class="chip"><img src="/img/open-social/ui/lg-pik.png" alt="">PIKK</span>
+      </div></div>
+      <h3 data-in>Публикации</h3>
+      <div class="post" data-in>
+        <div class="hd"><img class="ava" src="/img/open-social/ui/av-me.png" alt=""><div><b>LittleFurryWarrior75 <img src="/img/open-social/ui/badge.png" alt="" style="width:22px;height:14px"></b><small class="muted">Вчера · <span class="tag">$SBER</span></small></div></div>
+        <p>Докупил <span class="tag">$SBER</span> перед отчётностью. Держу в портфеле с 2019 года, дивиденды реинвестирую.</p>
+        <div class="react"><button data-like><span data-icon="like"></span><span>48</span></button><button><span data-icon="dislike"></span><span>2</span></button><span class="sp"></span><button><span data-icon="comment"></span><span>9</span></button></div>
+      </div>
+    </div></div>
+    <nav class="tabs"><span class="tab" data-icon="tabBack">Назад</span><span class="tab" data-icon="tabFeed">Лента</span><span class="tab" data-icon="tabNew">Создать</span><span class="tab" data-icon="tabSearch">Поиск</span><span class="tab on" data-icon="tabMe">Профиль</span></nav>
+  </div></div>
+
+  <div class="callout c1"><b>Цифры из брокерского счёта</b>Портфель, доходность и число сделок подтягиваются из реальной торговли автора.</div>
+  <div class="callout c2"><b>Диапазон вместо суммы</b>Читатель видит масштаб автора, автор не раскрывает свои деньги.</div>
+  <div class="callout c3"><b>Подписка на бумаги</b>В ленту попадают посты по тикерам, за которыми следит инвестор.</div>
+</div>
+<script src="kit.js"></script>
+<script>
+(() => {
+  const { $, $$, wait, count, bump, tap } = Kit;
+  const inner = $('.p-in');
+  const els = $$('[data-in]');
+  const callouts = $$('.callout');
+  const toast = $('.toast');
+  const fol = $('#followers');
+
+  function anchor(callout, target, side) {
+    const scale = Kit.scale();
+    const stageRect = $('.stage').getBoundingClientRect();
+    const targetRect = target.getBoundingClientRect();
+    const left = (targetRect.left - stageRect.left) / scale;
+    const right = (targetRect.right - stageRect.left) / scale;
+    const middle = (targetRect.top + targetRect.height / 2 - stageRect.top) / scale;
+    callout.style.right = 'auto';
+    callout.style.left = `${side === 'left' ? left - callout.offsetWidth - 26 : right + 26}px`;
+    callout.style.top = `${middle - 24}px`;
+  }
+
+  $$('[data-like]').forEach((b) => b.addEventListener('click', () => {
+    const n = b.lastElementChild;
+    const on = b.classList.toggle('on');
+    n.textContent = +n.textContent + (on ? 1 : -1);
+  }));
+
+  let y = 0;
+  const maxY = () => Math.max(0, inner.scrollHeight - inner.parentElement.clientHeight);
+  const scrollTo = (v) => { y = Math.max(0, Math.min(maxY(), v)); inner.style.transform = `translateY(${-y}px)`; };
+  let drag = null;
+  let firstRun = true;
+  inner.parentElement.addEventListener('pointerdown', (e) => { drag = { y0: e.clientY, s: y }; inner.style.transition = 'none'; });
+  addEventListener('pointermove', (e) => { if (drag) scrollTo(drag.s - (e.clientY - drag.y0) / Kit.scale()); });
+  addEventListener('pointerup', () => { drag = null; inner.style.transition = ''; });
+
+  function reset() {
+    inner.classList.remove('out');
+    callouts.forEach((c) => c.classList.remove('show'));
+    toast.classList.remove('show');
+    scrollTo(0);
+    fol.textContent = '935';
+    $('#following').textContent = '12';
+    $('#posts').textContent = '16';
+    $('#pf').textContent = '3 000 000';
+    $('#yield').textContent = '15';
+    $('#deals').textContent = '46';
+    if (firstRun && !Kit.reduced) document.body.classList.add('pre');
+  }
+
+  async function script() {
+    await wait(500);
+    document.body.classList.remove('pre');
+    firstRun = false;
+    els.forEach((el, i) => { el.style.transitionDelay = `${i * 60}ms`; });
+    await wait(200);
+    count(fol, 912, 935, 500);
+    count($('#following'), 10, 12, 500);
+    count($('#posts'), 14, 16, 500);
+    await wait(250);
+    count($('#pf'), 2800000, 3000000, 650);
+    count($('#yield'), 12, 15, 650);
+    count($('#deals'), 42, 46, 650);
+    await wait(650);
+    els.forEach((el) => { el.style.transitionDelay = ''; });
+    anchor(callouts[0], $('.agrid'), 'left');
+    callouts[0].classList.add('show');
+    await wait(1800);
+    anchor(callouts[1], $('#portfolio'), 'right');
+    callouts[1].classList.add('show');
+    await wait(2200);
+    toast.classList.add('show');
+    await wait(500);
+    fol.textContent = '936';
+    bump(fol);
+    await wait(2000);
+    toast.classList.remove('show');
+    await wait(600);
+    callouts[0].classList.remove('show');
+    callouts[1].classList.remove('show');
+    await Kit.swipe($('#portfolio'), 0, -240, () => scrollTo(300));
+    Kit.hide();
+    await wait(600);
+    anchor(callouts[2], $('.chips'), 'right');
+    callouts[2].classList.add('show');
+    await wait(1600);
+    await tap($('[data-like]'));
+    Kit.hide();
+    await wait(2600);
+    callouts[2].classList.remove('show');
+    scrollTo(0);
+    await wait(1600);
+    $('[data-like]').classList.remove('on');
+    $('[data-like]').lastElementChild.textContent = '48';
+  }
+
+  Kit.loop(reset, script);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<section id="about"><h2>Product and context</h2>
+<p><strong>Open</strong> is a social network for retail investors built into the Otkritie Broker mobile app. An investor posts an idea about a security, discusses market news in the comments, and follows authors, tickers, and hashtags. All of it happens inside the broker, next to their account and portfolio, not in a third-party channel.</p>
+<p>The main difference from a regular social network is that every author has a verified trading history. The profile shows the portfolio they manage, their returns, and how many trades they have made. That gives readers a reason to trust an opinion, and gives authors a reason to keep their profile going.</p>
+<dl class="fact-list">
+<div class="fact-row"><dt>Role</dt><dd>Senior Product Designer</dd></div>
+<div class="fact-row"><dt>Company</dt><dd>Otkritie Broker</dd></div>
+<div class="fact-row"><dt>My scope</dt><dd>User flows · Profile and feed · Posts and comments · Onboarding · Learning stories</dd></div>
+<div class="fact-row"><dt>Platform</dt><dd>Mobile app (iOS)</dd></div>
+<div class="fact-row"><dt>Period</dt><dd>2020 — 2021</dd></div>
+</dl>
+<figure class="case-fig">
+  <iframe class="case-demo" src="/demos/open-social/profile.html" title="The My profile screen in Open: author name, bio, followers, and a portfolio analytics block" loading="lazy" style="--ar:4/3"></iframe>
+  <figcaption>An investor profile: besides followers and posts, it has an analytics block with portfolio size, returns, and number of trades.</figcaption>
+</figure>
+</section>
+
+<section id="screens"><h2>Profile, feed, and post</h2>
+<p>The product rests on three screens: the author profile, a feed for a hashtag or ticker, and a single post with its discussion.</p>
+<figure class="case-fig">
+  <iframe class="case-demo" src="/demos/open-social/feed.html" title="Three screens: an investor profile, the #USD hashtag feed, and a post about Gazprom shares with comments" loading="lazy" style="--ar:4/3"></iframe>
+  <figcaption>Left to right: a profile with analytics and followed securities, the #USD hashtag feed with reposts, and a post with tickers and comments.</figcaption>
+</figure>
+<ul class="feature-list">
+<li><strong>Analytics on the profile, not just followers</strong><span>Portfolio, returns, and trade count come from the brokerage account. Portfolio size is shown as a range ("from 3,000,000 ₽"), not an exact amount: readers see the author's scale, and authors do not expose their money.</span></li>
+<li><strong>Follow securities, not only people</strong><span>The Following block collects the tickers an investor cares about (SBER, GAZ, MEGA). A hashtag like #USD can be followed too, so every post on the topic lands in one feed.</span></li>
+<li><strong>Tickers inside the text</strong><span>A security is mentioned with a dollar sign: <code>$AAPL</code>, <code>$GAZ</code>. The mention becomes a link, and cards for the mentioned securities with their price change appear under the post header. One post can be tagged with several tickers.</span></li>
+<li><strong>Familiar social mechanics</strong><span>Likes and dislikes, reposts marked "reposted", and replies in comments. The comment field has quick <code>$</code> and <code>@</code> buttons to mention a security or a person without hunting on the keyboard.</span></li>
+</ul>
+</section>
+
+<section id="onboarding"><h2>Onboarding and the first post</h2>
+<p>An empty feed is the biggest risk for a new social network. So onboarding immediately collects what the feed is built from, and leads the person to their first post.</p>
+<figure class="case-fig">
+  <iframe class="case-demo" src="/demos/open-social/onboarding.html" title="Five onboarding screens: welcome, picking securities of interest, choosing a profile photo, the finished profile, and composing a new post" loading="lazy" style="--ar:4/3"></iframe>
+  <img src="/img/open-social/onboarding.jpg" alt="Five onboarding screens: welcome, picking securities of interest, choosing a profile photo, the finished profile, and composing a new post" loading="lazy">
+  <figcaption>Welcome, picking securities of interest, profile photo, the finished profile, and the new post screen.</figcaption>
+</figure>
+<ul class="feature-list">
+<li><strong>Picking securities as bubbles</strong><span>Issuers appear as circles with logos: Gazprom, Sberbank, VTB, PIK Group, and others. It takes a couple of taps, and the feed is full of posts about those securities from the first visit. The step can be skipped.</span></li>
+<li><strong>An avatar without effort</strong><span>Pick one of the ready-made avatars or upload a photo. A profile without a picture looks empty and gets read less.</span></li>
+<li><strong>Post composer</strong><span>A post can hold text, hashtags, a link with a preview, and a photo. Above the keyboard there are buttons for a ticker, a mention, an image, and a hashtag.</span></li>
+</ul>
+</section>
+
+<section id="stories"><h2>Learning stories for newcomers</h2>
+<p>Right after opening a brokerage account, a person gets a series of short stories. They explain where to start and lead to the first action in the app.</p>
+<figure class="case-fig">
+  <iframe class="case-demo" src="/demos/open-social/stories.html" title="A series of stories after opening an account: congratulations, a first trade with an exchange-traded fund, blue chips, federal loan bonds, and topping up the account" loading="lazy" style="--ar:4/3"></iframe>
+  <figcaption>Congratulations on the new account, a first trade with an exchange-traded fund, diversifying with blue chips, federal loan bonds, and ways to top up the account.</figcaption>
+</figure>
+<p>Each story has one idea and one button: "Learn more" or "Top up". The suggested start is simple: an exchange-traded fund, blue chips, government bonds, a top-up from 5,000 rubles. Like, dislike, and bookmark at the bottom show which topics newcomers understand and which ones need rewriting.</p>
+</section>
+
+<section id="identity"><h2>Returns as part of the profile</h2>
+<p>For promo materials and covers, I built a visual language around one idea: investors in the network are recognized by their avatar and their returns. Top authors stand out in color and size, the rest blend into the background.</p>
+<figure class="case-fig">
+  <iframe class="case-demo" src="/demos/open-social/crowd.html" title="Promo visual: a grid of investor avatars with returns, three highlighted authors at +46%, +75%, and +29%" loading="lazy" style="--ar:12/7"></iframe>
+  <figcaption>A promo visual for the social network: investor avatars and their returns.</figcaption>
+</figure>
+</section>

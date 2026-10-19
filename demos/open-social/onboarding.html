@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Open Social — онбординг</title>
+<link rel="stylesheet" href="kit.css">
+<style>
+  .phone { left: 200px; top: 44px; }
+  .track { position: absolute; inset: 0; display: flex; transition: transform .7s var(--ease); }
+  .scr { position: relative; flex: none; width: 100%; height: 100%; }
+  .top { position: absolute; left: 0; right: 0; top: 46px; height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; font-size: 14px; color: var(--muted); }
+  .top .back { width: 24px; height: 24px; color: #222; }
+  .bar { position: absolute; left: 0; right: 0; top: 92px; height: 3px; background: #eef0f3; }
+  .bar i { display: block; height: 100%; background: var(--accent); transition: width .7s var(--ease); }
+  .tt { position: absolute; left: 16px; right: 16px; top: 112px; }
+  .tt h2 { margin: 0; font-size: 24px; line-height: 28px; font-weight: 700; letter-spacing: -.02em; }
+  .tt p { margin: 8px 0 0; font-size: 14px; line-height: 19px; color: var(--muted); }
+  .cta { position: absolute; left: 16px; right: 16px; bottom: 34px; height: 50px; border-radius: 12px; background: var(--accent); color: #fff; font-size: 16px; font-weight: 600; transition: opacity .3s, transform .3s var(--spring); }
+  .cta:disabled { opacity: .45; cursor: default; }
+  .cta:active:not(:disabled) { transform: scale(.97); }
+
+  .field { position: absolute; left: 0; top: 220px; width: 355px; height: 440px; }
+  .bub { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 1px #e7eaee inset, 0 6px 16px -10px rgba(20, 60, 100, .35); font-size: 11.5px; font-weight: 500; text-align: center; line-height: 13px; transition: box-shadow .3s, transform .45s var(--spring); animation: bob var(--d) ease-in-out infinite alternate; }
+  .bub img { width: 38%; height: auto; max-width: 52px; border-radius: 10px; }
+  .bub.on { box-shadow: 0 0 0 2.5px var(--accent) inset, 0 10px 22px -10px rgba(30, 140, 210, .6); transform: scale(1.08); }
+  .bub .ok { position: absolute; right: 10%; top: 8%; width: 22px; height: 22px; padding: 3px; border-radius: 50%; background: var(--accent); color: #fff; transform: scale(0); transition: transform .4s var(--spring); }
+  .bub.on .ok { transform: scale(1); }
+  .bub .ok svg { stroke-width: 2.6; }
+  @keyframes bob { from { translate: 0 -4px; } to { translate: 0 4px; } }
+
+  .car { position: absolute; left: 0; right: 0; top: 270px; height: 130px; overflow: hidden; }
+  .car-in { position: absolute; left: 50%; top: 0; height: 100%; display: flex; align-items: center; gap: 14px; transition: transform .6s var(--ease); }
+  .car img { width: 72px; height: 72px; border-radius: 32%; object-fit: cover; opacity: .55; transition: width .5s var(--ease), height .5s var(--ease), opacity .4s, box-shadow .4s; cursor: pointer; }
+  .car img.on { width: 112px; height: 112px; opacity: 1; box-shadow: 0 0 0 3px #fff, 0 0 0 6px var(--accent); }
+  .dots { position: absolute; left: 0; right: 0; top: 420px; display: flex; justify-content: center; gap: 8px; }
+  .dots i { width: 7px; height: 7px; border-radius: 50%; background: #d8dce1; transition: background .3s, transform .3s; }
+  .dots i.on { background: var(--accent); transform: scale(1.2); }
+  .up { position: absolute; left: 0; right: 0; top: 456px; text-align: center; font-size: 15px; font-weight: 500; color: var(--accent); }
+
+  .me { position: absolute; left: 16px; right: 16px; top: 100px; }
+  .me h2 { margin: 0 0 14px; font-size: 25px; font-weight: 700; letter-spacing: -.02em; }
+  .me .who { display: flex; gap: 12px; align-items: center; }
+  .me .who img { width: 64px; height: 64px; border-radius: 32%; object-fit: cover; }
+  .me .nm { font-size: 17px; font-weight: 500; }
+  .me .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 16px; }
+  .me .stat { padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; font-size: 11.5px; color: var(--muted); }
+  .me .stat b { display: block; margin-top: 4px; font-size: 16px; font-weight: 500; color: var(--ink); }
+  .me h3 { margin: 22px 0 10px; font-size: 16px; font-weight: 700; }
+  .fchips { display: flex; flex-wrap: wrap; gap: 8px; min-height: 40px; }
+  .fchip { display: flex; align-items: center; gap: 8px; padding: 6px 12px 6px 6px; border-radius: 10px; background: var(--card); font-size: 13px; font-weight: 600; animation: chipIn .6s var(--spring) both; }
+  .fchip img { width: 28px; height: 28px; border-radius: 8px; }
+  @keyframes chipIn { from { opacity: 0; transform: translateY(10px) scale(.85); } }
+  .empty { margin-top: 6px; padding: 18px; border-radius: 12px; background: var(--card); text-align: center; font-size: 13.5px; color: var(--muted); }
+  .empty button { margin-top: 10px; height: 34px; padding: 0 14px; border-radius: 9px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 600; }
+
+  .steps { position: absolute; left: 680px; top: 230px; width: 380px; display: flex; flex-direction: column; gap: 12px; }
+  .step { display: flex; gap: 16px; padding: 18px 20px; border-radius: 18px; background: rgba(255, 255, 255, .16); color: #fff; text-align: left; transition: background .4s, color .4s, transform .5s var(--spring), box-shadow .4s; }
+  .step span { flex: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: rgba(255, 255, 255, .25); font-size: 14px; font-weight: 700; transition: background .4s, color .4s; }
+  .step b { display: block; font-size: 17px; font-weight: 600; }
+  .step small { display: block; margin-top: 4px; font-size: 14px; line-height: 19px; opacity: .85; }
+  .step.on { background: #fff; color: var(--ink); transform: translateX(-8px); box-shadow: 0 20px 40px -20px rgba(8, 40, 70, .5); }
+  .step.on span { background: var(--accent); color: #fff; }
+  .step.on small { color: var(--muted); opacity: 1; }
+</style>
+</head>
+<body>
+<div class="stage" style="--w:1200;--h:900">
+  <svg class="waves" viewBox="0 0 1200 900" preserveAspectRatio="none"><path class="w1" d="M-80 300C80 80 240 560 420 320S700 60 880 300 1100 620 1300 280"/><path class="w2" d="M-80 820C120 620 300 900 500 740S800 560 980 760 1180 900 1300 700"/></svg>
+
+  <div class="phone"><div class="screen"><div class="track" id="track">
+    <section class="scr">
+      <div class="top"><span class="back" data-icon="back"></span><button data-go="1">Пропустить</button></div>
+      <div class="bar"><i style="width:33%"></i></div>
+      <div class="tt"><h2>Какие бумаги вам интересны?</h2><p>Выберите бумаги, которые хотите видеть в своей ленте</p></div>
+      <div class="field" id="field"></div>
+      <button class="cta" id="next1" disabled>Продолжить</button>
+    </section>
+    <section class="scr">
+      <div class="top"><button class="back" data-icon="back" data-go="0"></button><span></span></div>
+      <div class="bar"><i style="width:66%"></i></div>
+      <div class="tt"><h2>Добавьте фото профиля</h2><p>Вы можете выбрать один из предложенных аватаров или загрузить своё фото</p></div>
+      <div class="car" id="car"><div class="car-in" id="carIn"></div></div>
+      <div class="dots" id="dots"></div>
+      <div class="up">Загрузить фото +</div>
+      <button class="cta" id="next2">Продолжить</button>
+    </section>
+    <section class="scr">
+      <div class="me">
+        <h2>Мой профиль</h2>
+        <div class="who"><img id="meAva" src="/img/open-social/ui/av-me.png" alt=""><div><div class="nm">LittleFurryWarrior75</div><div class="muted" style="font-size:15px">Иван Иванов</div></div></div>
+        <div class="stats"><div class="stat">Подписчики<b>0</b></div><div class="stat">Подписки<b>0</b></div><div class="stat">Посты<b>0</b></div></div>
+        <h3>Слежу за</h3>
+        <div class="fchips" id="fchips"></div>
+        <h3>Публикации</h3>
+        <div class="empty">Пока нет публикаций<br><button>Создать первую</button></div>
+      </div>
+    </section>
+  </div></div></div>
+
+  <div class="steps" id="steps">
+    <button class="step" data-go="0"><span>1</span><div><b>Интересные бумаги</b><small>Пара касаний, и лента не пустая с первого входа.</small></div></button>
+    <button class="step" data-go="1"><span>2</span><div><b>Фото профиля</b><small>Готовые аватары, если своего фото под рукой нет.</small></div></button>
+    <button class="step" data-go="2"><span>3</span><div><b>Готовый профиль</b><small>Выбранные бумаги сразу попадают в «Слежу за».</small></div></button>
+  </div>
+</div>
+<script src="kit.js"></script>
+<script>
+(() => {
+  const { $, $$, wait, tap } = Kit;
+  const U = '/img/open-social/ui/';
+  const B = [
+    ['citi', 'СитиБанк', 'CITI', 62, 80, 52], ['bspb', 'БСПБ', 'BSPB', 175, 52, 42], ['gazprom', 'Газпром', 'GAZP', 290, 88, 58],
+    ['morskoy', 'Морской банк', 'MRSB', 168, 158, 48], ['delo', 'Делобанк', 'DELO', 52, 200, 40], ['otp', 'ОТП', 'OTPB', 262, 210, 40],
+    ['pik', 'Группа ПИК', 'PIKK', 145, 285, 62], ['sber', 'Сбербанк', 'SBER', 300, 300, 50], ['vtb', 'ВТБ', 'VTBR', 45, 350, 48],
+    ['kapital', 'Капитал', 'KPTL', 250, 390, 42], ['inbank', 'Инбанк', 'INBK', 140, 400, 40],
+  ];
+  const field = $('#field');
+  field.innerHTML = B.map(([k, n, , x, y, r], i) => `<button class="bub" data-k="${k}" style="left:${x - r}px;top:${y - r}px;width:${r * 2}px;height:${r * 2}px;--d:${2.4 + (i % 4) * 0.5}s;animation-delay:-${i * 0.37}s"><img src="${U}lg-${k}.png" alt="">${n}<span class="ok">${Kit.icon.check}</span></button>`).join('');
+  const bubs = $$('.bub', field);
+  const next1 = $('#next1');
+  const picked = [];
+  function sync() {
+    next1.disabled = !picked.length;
+    next1.textContent = picked.length ? `Продолжить · ${picked.length}` : 'Продолжить';
+  }
+  bubs.forEach((b) => b.addEventListener('click', () => {
+    const k = b.dataset.k;
+    const i = picked.indexOf(k);
+    i < 0 ? picked.push(k) : picked.splice(i, 1);
+    b.classList.toggle('on', i < 0);
+    sync();
+  }));
+
+  const AV = ['av-falling', 'av-antonio', 'av-me', 'av-curly', 'av-gnarly', 'av-viktor'];
+  const carIn = $('#carIn');
+  carIn.innerHTML = AV.map((a) => `<img src="${U}${a}.png" alt="">`).join('');
+  $('#dots').innerHTML = AV.map(() => '<i></i>').join('');
+  const avs = $$('img', carIn);
+  const dots = $$('#dots i');
+  let av = 2;
+  function setAv(i) {
+    av = Math.max(0, Math.min(AV.length - 1, i));
+    avs.forEach((im, j) => im.classList.toggle('on', j === av));
+    dots.forEach((d, j) => d.classList.toggle('on', j === av));
+    const off = av * (72 + 14) + 56;
+    carIn.style.transform = `translateX(${-off}px)`;
+    $('#meAva').src = `${U}${AV[av]}.png`;
+  }
+  avs.forEach((im, j) => im.addEventListener('click', () => setAv(j)));
+  let sx = null;
+  $('#car').addEventListener('pointerdown', (e) => { sx = e.clientX; });
+  addEventListener('pointerup', (e) => {
+    if (sx === null) return;
+    const d = (e.clientX - sx) / Kit.scale();
+    if (Math.abs(d) > 30) setAv(av + (d < 0 ? 1 : -1));
+    sx = null;
+  });
+
+  const track = $('#track');
+  const steps = $$('.step');
+  const fchips = $('#fchips');
+  let cur = 0;
+  function go(i) {
+    cur = i;
+    track.style.transform = `translateX(${-i * 100}%)`;
+    steps.forEach((s, j) => s.classList.toggle('on', j === i));
+    if (i === 2) {
+      const list = picked.length ? picked : ['gazprom', 'sber'];
+      fchips.innerHTML = list.map((k, j) => {
+        const b = B.find((x) => x[0] === k);
+        return `<span class="fchip" style="animation-delay:${0.45 + j * 0.12}s"><img src="${U}lg-${k}.png" alt="">${b[2]}</span>`;
+      }).join('');
+    }
+  }
+  $$('[data-go]').forEach((el) => el.addEventListener('click', () => go(+el.dataset.go)));
+  next1.addEventListener('click', () => go(1));
+  $('#next2').addEventListener('click', () => go(2));
+
+  function reset() {
+    picked.length = 0;
+    bubs.forEach((b) => b.classList.remove('on'));
+    sync();
+    setAv(2);
+    go(0);
+  }
+
+  async function script() {
+    await wait(1000);
+    for (const k of ['gazprom', 'sber', 'pik']) {
+      await tap($(`.bub[data-k="${k}"]`));
+      await wait(350);
+    }
+    await wait(500);
+    await tap(next1);
+    Kit.hide();
+    await wait(1200);
+    await Kit.swipe($('#car'), -90, 0, () => setAv(3));
+    await wait(700);
+    await Kit.swipe($('#car'), -90, 0, () => setAv(4));
+    await wait(700);
+    await Kit.swipe($('#car'), 90, 0, () => setAv(3));
+    await wait(600);
+    await tap($('#next2'));
+    Kit.hide();
+    await wait(4200);
+  }
+
+  Kit.loop(reset, script);
+})();
+</script>
+</body>
+</html>

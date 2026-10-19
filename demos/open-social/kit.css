@@ -1,0 +1,88 @@
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; overflow: hidden; }
+body {
+  background: #3fb2ea;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", system-ui, sans-serif;
+  color: #16181b;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+button { font: inherit; color: inherit; border: 0; background: none; padding: 0; cursor: pointer; }
+img { display: block; }
+
+:root {
+  --blue: #3fb2ea;
+  --accent: #36a9e6;
+  --ink: #16181b;
+  --muted: #8b9098;
+  --card: #f2f4f7;
+  --line: #e8eaee;
+  --green: #1fb46b;
+  --red: #ec4b4b;
+  --spring: cubic-bezier(.34, 1.56, .64, 1);
+  --ease: cubic-bezier(.22, 1, .36, 1);
+}
+
+.stage { position: absolute; left: 0; top: 0; width: calc(var(--w) * 1px); height: calc(var(--h) * 1px); transform-origin: 0 0; overflow: hidden; }
+
+.waves { position: absolute; inset: 0; pointer-events: none; }
+.waves path { fill: none; stroke: rgba(255, 255, 255, .13); stroke-width: 120; stroke-linecap: round; }
+.waves .w1 { animation: drift 18s ease-in-out infinite alternate; }
+.waves .w2 { animation: drift 24s ease-in-out infinite alternate-reverse; }
+@keyframes drift { from { transform: translateX(-40px); } to { transform: translateX(40px); } }
+
+/* Phone */
+.phone { position: absolute; width: 375px; height: 812px; padding: 10px; border-radius: 58px; background: #101113; box-shadow: 0 1px 0 1px #2b2d31 inset, 0 40px 80px -30px rgba(8, 40, 70, .55), 0 18px 40px -20px rgba(8, 40, 70, .4); }
+.screen { position: relative; width: 100%; height: 100%; border-radius: 48px; overflow: hidden; background: #fff; isolation: isolate; }
+.dark .screen { background: #1b1c1f; color: #fff; }
+.status { position: absolute; z-index: 30; left: 0; right: 0; top: 0; height: 46px; display: flex; align-items: center; justify-content: space-between; padding: 6px 30px 0 34px; font-size: 15px; font-weight: 600; letter-spacing: -.01em; pointer-events: none; }
+.status svg { display: block; }
+.status .ic { display: flex; gap: 6px; align-items: center; }
+.home-ind { position: absolute; z-index: 30; left: 50%; bottom: 8px; width: 128px; height: 5px; margin-left: -64px; border-radius: 3px; background: #111; pointer-events: none; }
+.dark .home-ind { background: #fff; }
+
+.nav { position: relative; height: 44px; margin-top: 46px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; }
+.nav .back, .nav .act { position: absolute; top: 10px; width: 24px; height: 24px; color: #222; }
+.nav .back { left: 16px; }
+.nav .act { right: 16px; }
+
+.scroll { position: absolute; left: 0; right: 0; bottom: 0; overflow: hidden; }
+.scroll-in { will-change: transform; transition: transform .9s var(--ease); }
+
+/* Shared atoms */
+.ava { border-radius: 32%; object-fit: cover; flex: none; }
+.row { display: flex; align-items: center; }
+.muted { color: var(--muted); }
+.tag { color: var(--accent); }
+.btn-blue { height: 36px; padding: 0 16px; border-radius: 10px; background: var(--accent); color: #fff; font-size: 14px; font-weight: 600; transition: background .25s, color .25s, box-shadow .25s, transform .3s var(--spring); }
+.btn-blue:active { transform: scale(.95); }
+.btn-blue.on { background: #e8f5fd; color: var(--accent); }
+.verified { width: 16px; height: 16px; flex: none; }
+
+.react { display: flex; align-items: center; gap: 14px; color: #6f747c; font-size: 12px; font-variant-numeric: tabular-nums; }
+.react button { display: flex; align-items: center; gap: 4px; }
+.react svg { width: 17px; height: 17px; transition: transform .35s var(--spring), color .2s; }
+.react .on { color: var(--accent); }
+.react .on svg { animation: pop .45s var(--spring); }
+.react .sp { flex: 1; }
+@keyframes pop { 0% { transform: scale(1); } 40% { transform: scale(1.45) rotate(-12deg); } 100% { transform: scale(1); } }
+
+.bump { animation: bump .5s var(--spring); }
+@keyframes bump { 0% { transform: translateY(0); } 35% { transform: translateY(-4px) scale(1.12); } 100% { transform: none; } }
+
+/* Finger cursor */
+.finger { position: absolute; z-index: 100; left: 0; top: 0; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; background: rgba(255, 255, 255, .55); border: 2px solid rgba(255, 255, 255, .95); box-shadow: 0 6px 18px rgba(0, 30, 60, .3); backdrop-filter: blur(2px); pointer-events: none; opacity: 0; transition: opacity .35s, transform .2s var(--ease); }
+.finger.show { opacity: 1; }
+.finger.press { transform: scale(.78); }
+.ripple { position: absolute; z-index: 99; width: 20px; height: 20px; margin: -10px 0 0 -10px; border-radius: 50%; background: rgba(63, 178, 234, .35); pointer-events: none; animation: ripple .6s var(--ease) forwards; }
+@keyframes ripple { to { transform: scale(4); opacity: 0; } }
+
+/* Callouts around phones */
+.callout { position: absolute; max-width: 250px; padding: 14px 16px; border-radius: 16px; background: #fff; color: var(--ink); font-size: 14px; line-height: 19px; box-shadow: 0 20px 40px -18px rgba(8, 40, 70, .45); opacity: 0; transform: translateY(10px) scale(.96); transition: opacity .5s var(--ease), transform .6s var(--spring); }
+.callout b { display: block; margin-bottom: 3px; font-size: 15px; }
+.callout.show { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}

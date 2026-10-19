@@ -1,0 +1,11 @@
+{
+  "date": "2026-10-19",
+  "title": "Designers Have a New User. And It Is Not a Human",
+  "h1": "Designers Have a&nbsp;New User. And It Is Not a&nbsp;Human",
+  "cover": {
+    "src": "assets/agent-experience.jpg",
+    "alt": "A designer, a human user, and an AI agent connected through a shared flow of data, rules, and tools"
+  },
+  "tldr": "For the last twenty years, we mostly designed for a person in front of a screen. Now products have another participant: an AI agent that reads data, calls tools, and runs multi-step workflows across systems. Human interfaces are not going away, but a second object of design is emerging alongside them: the environment, contracts, boundaries, and rules in which an agent operates.",
+  "tags": "<div class=\"article-meta\">\n                <span class=\"tag\">AX</span>\n                <span class=\"tag\">agents</span>\n                <span class=\"tag\">design systems</span>\n            </div>"
+}

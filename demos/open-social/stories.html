@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Open Social — сторис</title>
+<link rel="stylesheet" href="kit.css">
+<style>
+  .phone { left: 230px; top: 44px; }
+  .screen { background: #1f2124; color: #fff; user-select: none; }
+  .status { color: #fff; }
+  .home-ind { background: #fff; }
+  .bars { position: absolute; z-index: 20; left: 12px; right: 12px; top: 52px; display: flex; gap: 4px; }
+  .bars i { flex: 1; height: 3px; border-radius: 2px; background: rgba(255, 255, 255, .25); overflow: hidden; }
+  .bars b { display: block; width: 0; height: 100%; background: #fff; }
+  .art { position: absolute; left: 0; top: 66px; width: 355px; height: 374px; -webkit-mask: linear-gradient(#000 70%, transparent); mask: linear-gradient(#000 70%, transparent); }
+  .art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.07); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+  .art img.on { opacity: 1; transform: scale(1); transition: opacity .6s var(--ease), transform 5.5s cubic-bezier(.2, .6, .3, 1); }
+  .tap { position: absolute; z-index: 10; left: 0; right: 0; top: 46px; bottom: 70px; cursor: pointer; }
+  .txt { position: absolute; z-index: 12; left: 16px; right: 16px; bottom: 100px; pointer-events: none; }
+  .txt.has-btn { bottom: 160px; }
+  .txt h2 { margin: 0 0 10px; font-size: 22px; line-height: 26px; font-weight: 700; letter-spacing: -.01em; }
+  .txt p { margin: 0; font-size: 13.5px; line-height: 18px; color: #b6bac1; }
+  .txt p b { color: #fff; font-weight: 600; }
+  .txt > * { animation: up .6s var(--ease) both; }
+  .txt p { animation-delay: .08s; }
+  @keyframes up { from { opacity: 0; transform: translateY(14px); } }
+  .cta { position: absolute; z-index: 12; left: 16px; right: 16px; bottom: 92px; height: 44px; border-radius: 10px; background: #fff; color: var(--ink); font-size: 14px; font-weight: 600; transition: opacity .3s, transform .3s var(--spring); }
+  .cta.hide { opacity: 0; pointer-events: none; }
+  .cta:active { transform: scale(.97); }
+  .acts { position: absolute; z-index: 12; left: 0; right: 0; bottom: 26px; height: 50px; display: flex; align-items: center; gap: 18px; padding: 0 16px; border-top: 1px solid rgba(255, 255, 255, .1); color: #fff; }
+  .acts .sp { flex: 1; }
+  .acts button { width: 26px; height: 26px; transition: color .2s; }
+  .acts button svg { transition: transform .35s var(--spring); }
+  .acts button.on { color: var(--accent); }
+  .acts button.on svg { animation: pop .45s var(--spring); }
+  .acts button[data-r="star"].on { color: #ffc531; }
+  .acts button[data-r="star"].on svg path { fill: currentColor; }
+  .paused { position: absolute; z-index: 25; left: 50%; top: 250px; padding: 8px 14px; margin-left: -46px; border-radius: 20px; background: rgba(0, 0, 0, .55); font-size: 13px; font-weight: 500; opacity: 0; transition: opacity .25s; pointer-events: none; }
+  .paused.show { opacity: 1; }
+  .sent { position: absolute; z-index: 26; left: 16px; right: 16px; top: 96px; padding: 12px 14px; border-radius: 12px; background: #fff; color: var(--ink); font-size: 13px; line-height: 17px; box-shadow: 0 12px 30px -12px rgba(0, 0, 0, .6); opacity: 0; transform: translateY(-10px); transition: opacity .3s, transform .4s var(--spring); pointer-events: none; }
+  .sent.show { opacity: 1; transform: none; }
+
+  .side { position: absolute; left: 670px; top: 196px; width: 360px; color: #fff; }
+  .side h3 { margin: 0 0 6px; font-size: 26px; line-height: 30px; font-weight: 700; letter-spacing: -.02em; }
+  .side .hint { margin: 0 0 22px; font-size: 14.5px; line-height: 20px; opacity: .85; }
+  .list { display: flex; flex-direction: column; gap: 8px; }
+  .item { position: relative; display: flex; align-items: center; min-height: 58px; padding: 14px 18px; border-radius: 14px; background: rgba(255, 255, 255, .14); color: #fff; text-align: left; font-size: 15px; font-weight: 500; overflow: hidden; transition: background .35s, color .35s, transform .45s var(--spring); }
+  .item .fill { position: absolute; left: 0; bottom: 0; height: 3px; width: 0; background: var(--accent); }
+  .item.on { background: #fff; color: var(--ink); transform: translateX(-8px); }
+  .item.seen { color: rgba(255, 255, 255, .75); }
+</style>
+</head>
+<body>
+<div class="stage" style="--w:1200;--h:900">
+  <svg class="waves" viewBox="0 0 1200 900" preserveAspectRatio="none"><path class="w1" d="M-80 340C100 120 260 600 440 360S720 80 900 320 1120 640 1300 300"/><path class="w2" d="M-80 800C120 600 280 900 480 720S780 540 960 740 1180 900 1300 680"/></svg>
+
+  <div class="phone"><div class="screen" id="scr">
+    <div class="bars" id="bars"></div>
+    <div class="art" id="art"></div>
+    <div class="tap" id="tap"></div>
+    <div class="paused" id="paused">❚❚ Пауза</div>
+    <div class="txt" id="txt"></div>
+    <div class="sent" id="sent"></div>
+    <button class="cta" id="cta"></button>
+    <div class="acts">
+      <button data-r="like" data-icon="like"></button>
+      <button data-r="dislike" data-icon="dislike"></button>
+      <span class="sp"></span>
+      <button data-r="star" data-icon="star"></button>
+    </div>
+  </div></div>
+
+  <div class="side">
+    <h3>Сторис для новичка</h3>
+    <p class="hint">Тап по краю — листать, удержание — пауза. Реакции подсказывают, какие темы продолжать.</p>
+    <div class="list" id="list"></div>
+  </div>
+</div>
+<script src="kit.js"></script>
+<script>
+(() => {
+  const { $, $$, wait, tap } = Kit;
+  const S = [
+    { t: 'Поздравляем с открытием брокерского счёта!', p: 'Мы расскажем про инструменты для начинающего инвестора', s: 'Добро пожаловать' },
+    { t: 'Куда вложить?', p: 'Совершите свою первую сделку, начните с <b>БПИФ Всепогодный</b>. Надёжный инструмент, не требующий специального знания рынка', b: 'Узнать подробнее', s: 'Куда вложить', m: 'Карточка фонда с доходностью и составом' },
+    { t: 'Не забывайте диверсифицировать', p: 'Обратите внимание на <b>Голубые фишки</b>. Это акции крупнейших и наиболее стабильных компаний Сбербанк, Microsoft, Intel, Nike…', b: 'Узнать подробнее', s: 'Диверсификация', m: 'Подборка голубых фишек в каталоге' },
+    { t: 'Как насчёт облигаций?', p: 'Облигации приносят стабильный доход. Купи и держи. <b>Облигации федерального займа (ОФЗ)</b> — отличный инструмент, чтобы начать', b: 'Узнать подробнее', s: 'Облигации', m: 'Список ОФЗ с купонами и сроками' },
+    { t: 'Удобный способ пополнения счёта', p: 'Начните с любой суммы. Например, <b>5000 рублей</b>. Перечисленные инструменты позволят разобраться в принципах правильного инвестирования', b: 'Пополнить счёт', s: 'Пополнение', m: 'Выбор способа: реквизиты или карта' },
+  ];
+  const U = '/img/open-social/ui/';
+  const DUR = 6500;
+  $('#bars').innerHTML = S.map(() => '<i><b></b></i>').join('');
+  $('#art').innerHTML = S.map((_, i) => `<img src="${U}story-${i + 1}.jpg" alt="">`).join('');
+  $('#list').innerHTML = S.map((s, i) => `<button class="item" data-i="${i}">${s.s}<span class="fill"></span></button>`).join('');
+  const bars = $$('#bars b');
+  const arts = $$('#art img');
+  const items = $$('.item');
+  const fills = $$('.item .fill');
+  const txt = $('#txt');
+  const cta = $('#cta');
+  const sent = $('#sent');
+  const acts = $$('.acts button');
+  const react = S.map(() => ({}));
+
+  let idx = -1;
+  let t = 0;
+  let held = false;
+  let sentT = 0;
+  function go(i) {
+    i = (i + S.length) % S.length;
+    if (i === 0 && idx === S.length - 1) react.forEach((r) => { for (const k in r) delete r[k]; });
+    idx = i;
+    t = 0;
+    const s = S[i];
+    arts.forEach((a, j) => a.classList.toggle('on', j === i));
+    items.forEach((it, j) => { it.classList.toggle('on', j === i); it.classList.toggle('seen', j < i); });
+    txt.className = `txt${s.b ? ' has-btn' : ''}`;
+    txt.innerHTML = `<h2>${s.t}</h2><p>${s.p}</p>`;
+    cta.textContent = s.b || '';
+    cta.classList.toggle('hide', !s.b);
+    acts.forEach((b) => b.classList.toggle('on', !!react[i][b.dataset.r]));
+    sent.classList.remove('show');
+    paint();
+  }
+  function paint() {
+    bars.forEach((b, j) => { b.style.width = `${j < idx ? 100 : j === idx ? t * 100 : 0}%`; });
+    fills.forEach((f, j) => { f.style.width = `${j === idx ? t * 100 : 0}%`; });
+  }
+
+  let prev = performance.now();
+  let onScreen = true;
+  new IntersectionObserver((e) => { onScreen = e[0].isIntersecting; }, { threshold: 0.2 }).observe($('.stage'));
+  (function frame(now) {
+    const dt = now - prev;
+    prev = now;
+    if (!held && onScreen && !document.hidden && !Kit.reduced) {
+      t += dt / DUR;
+      if (t >= 1) go(idx + 1); else paint();
+    }
+    requestAnimationFrame(frame);
+  })(prev);
+
+  function hold(on) {
+    held = on;
+    $('#paused').classList.toggle('show', on);
+  }
+  let down = null;
+  $('#tap').addEventListener('pointerdown', (e) => {
+    down = { x: e.clientX, at: performance.now() };
+    const timer = setTimeout(() => down && hold(true), 220);
+    down.timer = timer;
+  });
+  addEventListener('pointerup', (e) => {
+    if (!down) return;
+    clearTimeout(down.timer);
+    const quick = performance.now() - down.at < 220;
+    const r = $('#tap').getBoundingClientRect();
+    hold(false);
+    if (quick) go(idx + ((e.clientX - r.left) / r.width < 0.33 ? -1 : 1));
+    down = null;
+  });
+
+  acts.forEach((b) => b.addEventListener('click', () => {
+    const k = b.dataset.r;
+    const r = react[idx];
+    r[k] = !r[k];
+    if (r[k] && k === 'like') r.dislike = false;
+    if (r[k] && k === 'dislike') r.like = false;
+    acts.forEach((x) => x.classList.toggle('on', !!r[x.dataset.r]));
+  }));
+  cta.addEventListener('click', () => {
+    const s = S[idx];
+    if (!s.m) return;
+    sent.textContent = `→ ${s.m}`;
+    sent.classList.add('show');
+    clearTimeout(sentT);
+    sentT = setTimeout(() => sent.classList.remove('show'), 1600);
+  });
+  items.forEach((it) => it.addEventListener('click', () => go(+it.dataset.i)));
+
+  go(0);
+  if (Kit.reduced) { t = 1; paint(); }
+
+  const until = async (fn) => { while (!fn()) await wait(150); };
+  const btn = (r) => $(`.acts [data-r="${r}"]`);
+  async function script() {
+    await until(() => idx === 0 && t < 0.5);
+    await wait(1600);
+    await tap($('#tap'), () => go(idx + 1), 0.85, 0.5);
+    await wait(900);
+    await tap(btn('like'));
+    await wait(400);
+    const [x, y] = Kit.pt($('#tap'), 0.5, 0.45);
+    await Kit.moveTo(x, y);
+    hold(true);
+    await wait(1500);
+    hold(false);
+    await wait(300);
+    if (idx === 1) await tap(cta);
+    Kit.hide();
+    await until(() => idx === 3 && t > 0.3);
+    await tap(btn('star'));
+    Kit.hide();
+    await until(() => idx === 4 && t > 0.4);
+    await tap(btn('like'));
+    Kit.hide();
+    await until(() => idx === 0);
+  }
+
+  Kit.loop(() => {}, script);
+})();
+</script>
+</body>
+</html>

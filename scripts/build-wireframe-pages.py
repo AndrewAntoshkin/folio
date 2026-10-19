@@ -13,7 +13,7 @@ from project_pages import PROJECTS, href as project_href, list_blocks, project_n
 
 ROOT = Path(__file__).resolve().parents[1]
 ARTICLES_DIR = ROOT / "content" / "articles"
-ARTICLE_ORDER = ["apres-prompt", "ai-changes-processes", "halo-working-memory", "cursor-figma", "design-md", "dev-for-designers"]
+ARTICLE_ORDER = ["agent-experience", "apres-prompt", "ai-changes-processes", "halo-working-memory", "cursor-figma", "design-md", "dev-for-designers"]
 
 _RU_SHORT = "янв фев мар апр май июн июл авг сен окт ноя дек".split()
 _RU_GEN = "января февраля марта апреля мая июня июля августа сентября октября ноября декабря".split()

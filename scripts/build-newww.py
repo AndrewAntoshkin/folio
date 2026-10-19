@@ -17,7 +17,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from project_docs import load_doc  # noqa: E402
 from project_pages import PROJECTS  # noqa: E402
 
-ORDER = ["apres-prompt", "ai-changes-processes", "halo-working-memory", "cursor-figma", "design-md", "dev-for-designers"]
+ORDER = ["agent-experience", "apres-prompt", "ai-changes-processes", "halo-working-memory", "cursor-figma", "design-md", "dev-for-designers"]
 TG = "https://t.me/andrewaitken"
 
 HEAD = """<!DOCTYPE html>
@@ -32,7 +32,7 @@ HEAD = """<!DOCTYPE html>
   <meta property="og:type" content="website">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
   <script>document.documentElement.classList.remove('nojs');try{{if(sessionStorage.getItem('dock-seen'))document.documentElement.classList.add('dock-seen');else sessionStorage.setItem('dock-seen','1')}}catch(e){{}}</script>
-  <link rel="stylesheet" href="/style.css?v=38">
+  <link rel="stylesheet" href="/style.css?v=42">
 </head>
 <body>
 """
@@ -202,7 +202,7 @@ def shell(lang: str, title: str, active: str, stem: str, inner: str, cta: bool =
 
 # ── Shared blocks ───────────────────────────────────────────────────────────
 
-FEATURED = ["pulse-ui", "intent-os", "ds-eval"]
+FEATURED = ["pulse-ui", "open-social", "intent-os", "ds-eval"]
 WORKFLOW = ["agent-ui", "figma-to-design-md", "ds-lint", "ds-coverage"]
 UTILITIES = ["ds-context", "ui-repair", "prompt-regress", "ds-health"]
 
@@ -632,7 +632,7 @@ def home(lang: str) -> str:
 
     vgrid = "".join(f'<div data-r style="--d:{n * 0.07}s">{vcard(v)}</div>' for n, v in enumerate(voices))
     faqs = collab_faqs(lang)
-    top_projects = projects_by(["pulse-ui", "intent-os", "ds-eval"])
+    top_projects = projects_by(FEATURED)
     return f'''
 <svg width="0" height="0" aria-hidden="true" style="position:absolute"><filter id="hero-key" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="linear" slope="1.15" intercept="-0.064"/><feFuncG type="linear" slope="1.15" intercept="-0.064"/><feFuncB type="linear" slope="1.15" intercept="-0.064"/></feComponentTransfer></filter></svg>
 <main><div class="col">
@@ -708,7 +708,7 @@ def projects_page(lang: str) -> str:
 def writing_page(lang: str) -> str:
     ru = lang == "ru"
     sub = "Эссе и практические разборы о дизайн-системах, процессах и работе с AI-агентами." if ru else "Essays and field notes on design systems, engineering workflows, and AI coding agents."
-    core = ["apres-prompt", "ai-changes-processes", "halo-working-memory"]
+    core = ["agent-experience", "apres-prompt", "ai-changes-processes", "halo-working-memory"]
     guides = ["cursor-figma", "design-md", "dev-for-designers"]
     return (
         f'<main><div class="col">{page_head("Статьи" if ru else "Writing", sub)}'

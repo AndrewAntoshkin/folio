@@ -717,9 +717,12 @@ main { display: block; padding: 240px 16px 160px; }
 .prose pre { margin: 24px 0 0; padding: 20px 24px; overflow: auto; border-radius: 16px; background: var(--card-2); border: 1px solid var(--line); }
 .prose pre code { background: none; padding: 0; font-size: 14px; line-height: 22px; color: rgba(255, 255, 255, 0.82); }
 .prose dl { margin: 24px 0 0; }
-.prose .fact-row { display: flex; justify-content: space-between; gap: 24px; padding: 16px 0; border-top: 1px solid var(--line); }
-.prose dt { color: #fff; font-size: 20px; }
-.prose dd { margin: 0; text-align: right; }
+.prose .fact-row { display: grid; grid-template-columns: 132px minmax(0, 1fr); align-items: baseline; gap: 20px; padding: 4px 0; }
+.prose .fact-row dt,
+.prose .fact-row dd { font-size: 16px; line-height: 24px; }
+.prose .fact-row dt { white-space: nowrap; }
+.prose dt { color: #fff; }
+.prose dd { margin: 0; text-align: left; }
 .art-actions { display: flex; gap: 12px; }
 
 .page-head { display: flex; flex-direction: column; gap: 24px; }
@@ -937,6 +940,7 @@ main.approach { padding-top: 176px; }
   .proof-k, .proof-n, .proof-d { grid-column: 1; }
   .proof .arrow-btn { grid-column: 2; grid-row: 1 / span 3; align-self: center; }
   .prose p, .prose li { font-size: 18px; line-height: 28px; }
+  .prose .fact-row { grid-template-columns: 112px minmax(0, 1fr); gap: 16px; }
   .dock {
     top: auto;
     bottom: calc(12px + env(safe-area-inset-bottom));
@@ -982,7 +986,7 @@ main.approach { padding-top: 176px; }
 .prose tbody tr { transition: background .25s; }
 .prose tbody tr:hover { background: rgba(255, 255, 255, 0.03); }
 .prose .feature-list { margin: 24px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; }
-.prose .feature-list li { margin: 0; display: flex; flex-direction: column; gap: 4px; padding: 20px 24px; border-radius: 16px; background: var(--card-2); border: 1px solid var(--line); font-size: 15px; line-height: 22px; }
+.prose .feature-list li { margin: 0; display: flex; flex-direction: column; gap: 4px; padding: 20px 24px; border-radius: 16px; background: var(--card-2); font-size: 15px; line-height: 22px; }
 .prose .feature-list strong { font-size: 18px; line-height: 24px; color: #fff; font-weight: 500; }
 .prose .feature-list span { color: var(--muted); }
 .prose .tag { vertical-align: middle; font-size: 12px; height: 26px; padding: 0 10px; }
@@ -1000,6 +1004,8 @@ main.approach { padding-top: 176px; }
 .prose .bench > p { font-size: 15px; line-height: 22px; }
 .prose figure.case-fig { margin: 28px 0 0; }
 .prose figure.case-fig img { display: block; width: 100%; height: auto; border-radius: 16px; border: 1px solid var(--line); }
+.prose figure.case-fig iframe.case-demo { display: block; width: 100%; aspect-ratio: var(--ar, 4/3); border: 0; border-radius: 16px; background: #5bb3e8; }
+.prose figure.case-fig iframe.case-demo + img { margin-top: 12px; }
 .prose figure.case-fig figcaption { margin-top: 10px; font-size: 14px; line-height: 20px; color: var(--muted); }
 .skill-index { display: inline-block; width: 2.25em; margin-right: 12px; color: var(--muted); font-size: 12px; font-weight: 500; letter-spacing: 0.06em; vertical-align: 0.15em; }
 .skill-open { border: 0; font: inherit; cursor: pointer; }
