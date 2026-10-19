@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ds-coverage — Андрей Антошкин</title>
-  <meta name="description" content="ds-coverage считает по импортам, какая доля каталога дизайн-системы задействована в коде, какие экспорты не используются и где рядом появились локальные компоненты с теми же именами.">
+  <meta name="description" content="Система может быть большой, а экраны рядом всё равно собраны из своих кнопок и окон. ds-coverage смотрит импорты и показывает, что из системы реально используется, что не используется и где рядом написали свою копию.">
   <meta property="og:title" content="ds-coverage — Андрей Антошкин">
-  <meta property="og:description" content="ds-coverage считает по импортам, какая доля каталога дизайн-системы задействована в коде, какие экспорты не используются и где рядом появились локальные компоненты с теми же именами.">
+  <meta property="og:description" content="Система может быть большой, а экраны рядом всё равно собраны из своих кнопок и окон. ds-coverage смотрит импорты и показывает, что из системы реально используется, что не используется и где рядом написали свою копию.">
   <meta property="og:type" content="website">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
   <script>document.documentElement.classList.remove('nojs');try{if(sessionStorage.getItem('dock-seen'))document.documentElement.classList.add('dock-seen');else sessionStorage.setItem('dock-seen','1')}catch(e){}</script>
@@ -22,7 +22,7 @@
     <h1 data-split>ds-coverage</h1>
     <div class="tags" data-r style="--d:.25s"><span class="tag">Сканер</span><span class="tag">open source</span></div>
   </header>
-  <div class="art-intro" data-r style="--d:.3s"><p>ds-coverage считает по импортам, какая доля каталога дизайн-системы задействована в коде, какие экспорты не используются и где рядом появились локальные компоненты с теми же именами.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="https://github.com/AndrewAntoshkin/ds-coverage" target="_blank" rel="noopener">Репозиторий на&nbsp;GitHub</a></div></div>
+  <div class="art-intro" data-r style="--d:.3s"><p>Система может быть большой, а экраны рядом всё равно собраны из своих кнопок и окон. ds-coverage смотрит импорты и показывает, что из системы реально используется, что не используется и где рядом написали свою копию.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="https://github.com/AndrewAntoshkin/ds-coverage" target="_blank" rel="noopener">Репозиторий на&nbsp;GitHub</a></div></div>
   <div class="prose"><div class="pcover "><div class="bg" style="background-image:url(/img/gen/ds-coverage.jpg)"></div><span class="plogo">ds-coverage</span></div><section id="why"><h2>Зачем</h2>
 <p>В репозитории может лежать дизайн-система на сорок компонентов, а продуктовые экраны рядом всё равно собирают из своих <code>Button</code> и <code>Modal</code>. На ревью это всплывает поздно.</p>
 <p>ds-coverage проходит по импортам и показывает три вещи: какие компоненты системы реально используются, какие лежат мёртвым грузом и где в продукте написали локальный дубль с тем же именем.</p></section>

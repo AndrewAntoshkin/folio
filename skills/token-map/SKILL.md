@@ -3,7 +3,7 @@ name: token-map
 description: Use when code has hardcoded colors, spacing, font sizes, or radii that should use design tokens.
 ---
 
-# Token map
+# Replace hardcoded values
 
 Replace raw UI values with the project's existing tokens.
 

@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ds-health — Andrew Antoshkin</title>
-  <meta name="description" content="Paste a URL to run a computed-style inventory in Chromium: how many distinct colors, type sizes, spacings, and radii the live page actually renders.">
+  <meta name="description" content="The tool opens a page from its link in a browser and counts how many different colors, type sizes, spacings, and corner radii it uses.">
   <meta property="og:title" content="ds-health — Andrew Antoshkin">
-  <meta property="og:description" content="Paste a URL to run a computed-style inventory in Chromium: how many distinct colors, type sizes, spacings, and radii the live page actually renders.">
+  <meta property="og:description" content="The tool opens a page from its link in a browser and counts how many different colors, type sizes, spacings, and corner radii it uses.">
   <meta property="og:type" content="website">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
   <script>document.documentElement.classList.remove('nojs');try{if(sessionStorage.getItem('dock-seen'))document.documentElement.classList.add('dock-seen');else sessionStorage.setItem('dock-seen','1')}catch(e){}</script>
@@ -22,7 +22,7 @@
     <h1 data-split>ds-health</h1>
     <div class="tags" data-r style="--d:.25s"><span class="tag">Web tool</span><span class="tag">open source</span></div>
   </header>
-  <div class="art-intro" data-r style="--d:.3s"><p>Paste a URL to run a computed-style inventory in Chromium: how many distinct colors, type sizes, spacings, and radii the live page actually renders.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="https://github.com/AndrewAntoshkin/ds-health" target="_blank" rel="noopener">Repository on GitHub</a></div></div>
+  <div class="art-intro" data-r style="--d:.3s"><p>The tool opens a page from its link in a browser and counts how many different colors, type sizes, spacings, and corner radii it uses.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="https://github.com/AndrewAntoshkin/ds-health" target="_blank" rel="noopener">Repository on GitHub</a></div></div>
   <div class="prose"><div class="pcover "><div class="bg" style="background-image:url(/img/gen/ds-health.jpg)"></div><span class="plogo">ds-health</span></div><section id="measures"><h2>What It Measures</h2>
 <ul class="feature-list"><li><strong>Colors</strong><span>How many text and background colors exist, plus whether CSS custom properties are present.</span></li><li><strong>Typography</strong><span>Font families, sizes, and weights in visible text. Fewer means a tighter type scale.</span></li><li><strong>Spacing</strong><span>How many distinct padding and gap values appear across sampled elements.</span></li><li><strong>Radius</strong><span>Distinct non-zero border-radius values across containers and controls.</span></li></ul>
 <p>Scope: this is a heuristic audit of rendered <code>getComputedStyle()</code> values on a live URL. Fewer unique values indicate a tighter visual scale on that page, not a full audit of source-code token architecture.</p></section>

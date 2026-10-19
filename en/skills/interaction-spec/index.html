@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Interaction spec — Andrew Antoshkin</title>
+  <title>Describe an action — Andrew Antoshkin</title>
   <meta name="description" content="Writes down what happens on click, on error, and on cancel.">
-  <meta property="og:title" content="Interaction spec — Andrew Antoshkin">
+  <meta property="og:title" content="Describe an action — Andrew Antoshkin">
   <meta property="og:description" content="Writes down what happens on click, on error, and on cancel.">
   <meta property="og:type" content="website">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
@@ -19,7 +19,7 @@
 <main><div class="col"><article class="art skill-page">
   <header class="art-top">
     <nav class="crumbs" data-r aria-label="breadcrumb"><a href="/en/projects">Projects</a><span>›</span><a href="/en/projects#skills">Skills</a><span>›</span><span>interaction-spec</span></nav>
-    <h1 data-split>Interaction spec</h1>
+    <h1 data-split>Describe an action</h1>
     <div class="tags" data-r style="--d:.25s"><span class="tag">Agent skill</span><span class="tag">SKILL.md</span></div>
   </header>
   <div class="art-intro" data-r style="--d:.3s"><p>Writes down what happens on click, on error, and on cancel.</p></div>
@@ -29,7 +29,7 @@
 name: interaction-spec
 description: Use before building an action that saves data, calls a server, or can be undone.
 ---</code></pre>
-    <div class="skill-doc"><h1>Interaction spec</h1><p>Write the behavior before the code.</p><h2>Steps</h2><ol><li>Write one line each for: trigger, pending state, success, error, cancel, undo.</li><li>Say where focus goes after the action.</li><li>For destructive actions, name the point of no return.</li><li>Turn the spec into two tests: one keyboard path and one error path.</li><li>Build it.</li></ol><h2>Example</h2><ul><li>Trigger: click &quot;Save&quot;</li><li>Pending: button disabled, label &quot;Saving...&quot;</li><li>Error: message under the form, button enabled, input values kept</li><li>Cancel: closes the form, nothing saved</li></ul><h2>Done when</h2><ul><li>No state is left to guesswork</li><li>Both tests pass</li></ul></div>
+    <div class="skill-doc"><h1>Describe an action</h1><p>Write the behavior before the code.</p><h2>Steps</h2><ol><li>Write one line each for: trigger, pending state, success, error, cancel, undo.</li><li>Say where focus goes after the action.</li><li>For destructive actions, name the point of no return.</li><li>Turn the spec into two tests: one keyboard path and one error path.</li><li>Build it.</li></ol><h2>Example</h2><ul><li>Trigger: click &quot;Save&quot;</li><li>Pending: button disabled, label &quot;Saving...&quot;</li><li>Error: message under the form, button enabled, input values kept</li><li>Cancel: closes the form, nothing saved</li></ul><h2>Done when</h2><ul><li>No state is left to guesswork</li><li>Both tests pass</li></ul></div>
   </section>
 </article></div></main>
 <textarea id="skill-raw" hidden>---
@@ -37,7 +37,7 @@ name: interaction-spec
 description: Use before building an action that saves data, calls a server, or can be undone.
 ---
 
-# Interaction spec
+# Describe an action
 
 Write the behavior before the code.
 
@@ -66,7 +66,7 @@ name: interaction-spec
 description: Use before building an action that saves data, calls a server, or can be undone.
 ---
 
-# Interaction spec
+# Describe an action
 
 Write the behavior before the code.
 

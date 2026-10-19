@@ -3,7 +3,7 @@ name: interaction-spec
 description: Use before building an action that saves data, calls a server, or can be undone.
 ---
 
-# Interaction spec
+# Describe an action
 
 Write the behavior before the code.
 

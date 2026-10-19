@@ -118,7 +118,7 @@ def _context(ru: bool, lang: str) -> dict:
     manifest.json"""
     stdout = _context_stdout(mod, packs)
     if ru:
-        lead = "Модель плохо следует дизайн-системе ещё и потому, что ей отдают плохой контекст: простыню доков, половину Storybook и ни одного антипаттерна. ds-context собирает из локальных файлов короткий пакет и показывает, сколько токенов стоит каждая стратегия упаковки."
+        lead = "Агенту часто отдают либо ничего, либо весь Storybook. ds-context собирает из файлов системы короткий пакет — токены, компоненты и правила — и показывает, сколько токенов занимает каждый вариант. Модель при сборке не вызывается."
         groups = [
             ("Основное", [("Зачем", "#why"), ("Вход", "#inputs"), ("Запуск", "#run")]),
             ("Пакет", [("Выход", "#output"), ("Стратегии", "#strategies"), ("Манифест", "#manifest")]),
@@ -165,7 +165,7 @@ def _context(ru: bool, lang: str) -> dict:
                 "<p>Инструмент не открывает Storybook и не ходит в Figma. Он не выбирает кусок пакета под один экран: стратегии глобальные. Оценка токенов годится, чтобы сравнить пакеты между собой, и не годится как счёт из API.</p>"),
         ])
     else:
-        lead = "A model misses the design system when the context is wrong: nothing, or the entire Storybook. ds-context turns a local folder into a short pack and shows what each packing strategy costs in tokens."
+        lead = "An agent is often given either nothing or the entire Storybook. ds-context packs a design system's files into a short bundle — tokens, components, and rules — and shows how many tokens each version takes. Building the bundle does not call a model."
         groups = [
             ("Basics", [("Why", "#why"), ("Strategies", "#strategies"), ("Run", "#run")]),
             ("Pack", [("Input", "#inputs"), ("Output", "#output"), ("Manifest", "#manifest")]),
@@ -256,7 +256,7 @@ def _repair(ru: bool, lang: str) -> dict:
     after_score = round(100 * sum(after_checks.values()) / len(after_checks))
     scan = f"{len(found)} issues\n" + "\n".join(f"  {item}" for item in found)
     if ru:
-        lead = f"Линтер говорит, что в коде сырой button и цвет #8B5CF6. ui-repair применяет правила системы и оставляет патч. На фикстуре локальная рубрика из 10 проверок вырастает с {before_score} до {after_score}. Это не вызов модели и не прогон ds-eval."
+        lead = f"В коде часто остаются обычная кнопка, цвет вроде #8B5CF6 и самодельное окно вместо компонентов системы. ui-repair заменяет их по правилам и показывает, какие проверки раньше не проходили. На примере из десяти проверок счёт идёт с {before_score} до {after_score}. Модель для этого не нужна."
         groups = [
             ("Основное", [("Зачем", "#why"), ("Правила", "#rules"), ("Запуск", "#run")]),
             ("Фикстура", [("До", "#before"), ("После", "#after"), ("Проверки", "#score")]),
@@ -299,7 +299,7 @@ def _repair(ru: bool, lang: str) -> dict:
                 f"{before_score} → {after_score} легко читать и легко переоценить.</p>"),
         ])
     else:
-        lead = f"A linter says the file has a raw button and #8B5CF6. ui-repair applies system rules and writes a patch. On the fixture a 10-check rubric moves from {before_score} to {after_score}. That is not a model call and not a ds-eval run."
+        lead = f"Files often keep a plain button, a color like #8B5CF6, and a homemade dialog instead of the design-system components. ui-repair replaces them by rule and shows which checks used to fail. On the test file, the score across ten checks goes from {before_score} to {after_score} out of 100. No model is involved."
         groups = [
             ("Basics", [("Why", "#why"), ("Rules", "#rules"), ("Run", "#run")]),
             ("Fixture", [("Before", "#before"), ("After", "#after"), ("Checks", "#score")]),
@@ -382,7 +382,7 @@ def _regress(ru: bool, lang: str) -> dict:
         f"tokens  {tokens_before} → {tokens_after}"
     )
     if ru:
-        lead = f"Промпт v13 может починить селект и сломать подтверждение удаления. prompt-regress сравнивает два записанных прогона одного набора: какие кейсы выросли, какие упали, и что сказано в заметке проверки. Опубликованный дифф — {len(before)} фикстурных кейсов, не живой вызов модели."
+        lead = f"Новая версия промпта редко оказывается лучше сразу во всём. Она может починить выпадающий список и сломать окно, где человек подтверждает удаление. prompt-regress сравнивает два прогона одних и тех же экранов и показывает, что стало лучше, что сломалось и почему. На странице — сравнение {len(before)} заранее записанных примеров, без запуска модели."
         groups = [
             ("Основное", [("Зачем", "#why"), ("Промпты", "#prompts"), ("Запуск", "#run")]),
             ("Отчёт", [("Дифф", "#diff"), ("Все кейсы", "#cases"), ("Запись", "#record")]),
@@ -391,8 +391,8 @@ def _regress(ru: bool, lang: str) -> dict:
         ]
         body = "".join([
             _section("why", "Зачем",
-                "<p>Новая версия системного промпта редко бывает целиком лучше. Она поднимает одни UI-задачи и роняет другие: модель начинает брать Select и одновременно забывает danger-вариант у удаления. Смотреть на средний балл здесь вредно.</p>",
-                f"<p>prompt-regress версионирует промпт и показывает дифф по кейсам. Данные для диффа — записанный прогон, того же рода, что фикстуры в {eval_}.</p>"),
+                "<p>Новая версия системного промпта редко оказывается лучше сразу во всём. Одним экранам она помогает, другим вредит: модель начинает использовать компонент Select и при этом забывает опасный стиль у кнопки удаления. По среднему баллу этого не видно.</p>",
+                f"<p>prompt-regress сравнивает версии промпта и показывает разницу по каждому примеру. Берёт заранее записанный прогон, как {eval_}.</p>"),
             _section("prompts", "Промпты",
                 "<p><code>prompts/v12.md</code> просит скорость и разрешает нативный контрол, если компонент системы неясен.</p>",
                 _pre(_text("prompt-regress/prompts/v12.md")),
@@ -412,7 +412,7 @@ def _regress(ru: bool, lang: str) -> dict:
                 _pre(summary),
                 "<p>Колонка токенов — сумма из записанного прогона, не счёт из API.</p>"),
             _section("cases", "Все кейсы",
-                "<p>Заметки скопированы из <code>runs/v13.json</code>. Восемь кейсов не сдвинулись достаточно, чтобы попасть в дифф. Средний балл это спрятал бы.</p>",
+                "<p>Заметки скопированы из <code>runs/v13.json</code>. Восемь кейсов не сдвинулись достаточно, чтобы попасть в дифф. Средний балл спрятал бы это.</p>",
                 "<table><thead><tr><th>Кейс</th><th>Pass</th><th>DS</th><th>Итог</th><th>Заметка</th></tr></thead><tbody>"
                 + "".join(rows) + "</tbody></table>"),
             _section("record", "Запись",
@@ -424,7 +424,7 @@ def _regress(ru: bool, lang: str) -> dict:
                 f"<p>Команда не запускает модель и не рендерит UI. Заметки и баллы лежат в JSON, который записан заранее. Пока нет скриншотов, объяснение — одна строка на кейс. {counts['improved']} / {counts['regressed']} / {counts['unchanged']} относится к этим {len(before)} фикстурам, не к набору из ста задач.</p>"),
         ])
     else:
-        lead = f"Prompt v13 can fix the select and break the delete confirm. prompt-regress compares two recorded runs of one suite: which cases rose, which fell, and what the grader note says. The published diff is {len(before)} fixture cases, not a live model call."
+        lead = f"A new prompt is rarely better at everything. It can fix a dropdown and break the screen where someone confirms a delete. prompt-regress compares two runs of the same screens and shows what got better, what broke, and why. This page compares {len(before)} examples recorded in advance. The model is not run to produce them."
         groups = [
             ("Basics", [("Why", "#why"), ("Prompts", "#prompts"), ("Run", "#run")]),
             ("Report", [("Diff", "#diff"), ("Every case", "#cases"), ("Record", "#record")]),
@@ -433,8 +433,8 @@ def _regress(ru: bool, lang: str) -> dict:
         ]
         body = "".join([
             _section("why", "Why",
-                "<p>A new system prompt is rarely better everywhere. It lifts some UI tasks and drops others: the model starts using Select and forgets the danger variant on delete. An average score hides that.</p>",
-                f"<p>prompt-regress versions the prompt and shows a per-case diff. The diff reads a recorded run, the same kind of fixture {eval_} already publishes.</p>"),
+                "<p>A new system prompt is rarely better at everything. It helps some screens and hurts others: the model starts using the Select component and forgets the destructive style on the delete button. An average score hides that.</p>",
+                f"<p>prompt-regress compares prompt versions and shows the difference for each example. It reads a run recorded in advance, the same kind of record {eval_} publishes.</p>"),
             _section("prompts", "Prompts",
                 "<p><code>prompts/v12.md</code> asks for speed and allows a native control when a system component is unclear.</p>",
                 _pre(_text("prompt-regress/prompts/v12.md")),

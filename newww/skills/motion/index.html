@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Анимация — Андрей Антошкин</title>
-  <meta name="description" content="Добавляет анимацию только там, где она помогает, и уважает reduced motion.">
-  <meta property="og:title" content="Анимация — Андрей Антошкин">
-  <meta property="og:description" content="Добавляет анимацию только там, где она помогает, и уважает reduced motion.">
+  <title>Добавить анимацию — Андрей Антошкин</title>
+  <meta name="description" content="Добавляет анимацию только там, где она помогает, и учитывает настройку «уменьшить движение».">
+  <meta property="og:title" content="Добавить анимацию — Андрей Антошкин">
+  <meta property="og:description" content="Добавляет анимацию только там, где она помогает, и учитывает настройку «уменьшить движение».">
   <meta property="og:type" content="website">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
   <script>document.documentElement.classList.remove('nojs');try{if(sessionStorage.getItem('dock-seen'))document.documentElement.classList.add('dock-seen');else sessionStorage.setItem('dock-seen','1')}catch(e){}</script>
@@ -19,17 +19,17 @@
 <main><div class="col"><article class="art skill-page">
   <header class="art-top">
     <nav class="crumbs" data-r aria-label="breadcrumb"><a href="/projects">Проекты</a><span>›</span><a href="/projects#skills">Скиллы</a><span>›</span><span>motion</span></nav>
-    <h1 data-split>Анимация</h1>
+    <h1 data-split>Добавить анимацию</h1>
     <div class="tags" data-r style="--d:.25s"><span class="tag">Скилл для агента</span><span class="tag">SKILL.md</span></div>
   </header>
-  <div class="art-intro" data-r style="--d:.3s"><p>Добавляет анимацию только там, где она помогает, и уважает reduced motion.</p></div>
+  <div class="art-intro" data-r style="--d:.3s"><p>Добавляет анимацию только там, где она помогает, и учитывает настройку «уменьшить движение».</p></div>
   <section class="skill-card" data-r>
     <div class="skill-card-bar"><span>SKILL.md</span><div><button type="button" class="cmd-copy" data-copy-target="skill-raw">Копировать</button><button type="button" class="cmd-copy skill-open">Исходник</button><a class="cmd-copy" href="/skills/motion/SKILL.md" download="motion-SKILL.md">Сохранить .md</a></div></div>
     <pre class="skill-fm"><code>---
 name: motion
 description: Use when adding or reviewing animation and transitions in a UI.
 ---</code></pre>
-    <div class="skill-doc"><h1>Motion</h1><p>Animate only when it explains a change.</p><h2>Steps</h2><ol><li>Skip it if the action happens all the time or comes from a keyboard shortcut.</li><li>Say what the motion explains: where something came from, what changed, or that an action worked.</li><li>Use CSS transitions first. Animate only <code>transform</code> and <code>opacity</code>.</li><li>Keep it under 300 ms with an ease-out curve: <code>cubic-bezier(0.23, 1, 0.32, 1)</code>.</li><li>Never scale from <code>0</code>. Start at <code>0.95</code>.</li><li>Add the fallback:</li></ol><pre><code>@media (prefers-reduced-motion: reduce) {
+    <div class="skill-doc"><h1>Add animation</h1><p>Animate only when it explains a change.</p><h2>Steps</h2><ol><li>Skip it if the action happens all the time or comes from a keyboard shortcut.</li><li>Say what the motion explains: where something came from, what changed, or that an action worked.</li><li>Use CSS transitions first. Animate only <code>transform</code> and <code>opacity</code>.</li><li>Keep it under 300 ms with an ease-out curve: <code>cubic-bezier(0.23, 1, 0.32, 1)</code>.</li><li>Never scale from <code>0</code>. Start at <code>0.95</code>.</li><li>Add the fallback:</li></ol><pre><code>@media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; }
 }
 </code></pre><h2>Done when</h2><ul><li>Fast repeated clicks do not break it</li><li>It works with reduced motion on</li></ul></div>
@@ -40,7 +40,7 @@ name: motion
 description: Use when adding or reviewing animation and transitions in a UI.
 ---
 
-# Motion
+# Add animation
 
 Animate only when it explains a change.
 
@@ -69,7 +69,7 @@ name: motion
 description: Use when adding or reviewing animation and transitions in a UI.
 ---
 
-# Motion
+# Add animation
 
 Animate only when it explains a change.
 

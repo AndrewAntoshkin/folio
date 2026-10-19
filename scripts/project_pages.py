@@ -14,16 +14,16 @@ PROJECTS = [
         "kicker": ("Дизайн-система", "Design System"),
         "badge": ("Сбер · 65+ сервисов", "Sber · 65+ services"),
         "desc": (
-            "Дизайн-система HR-платформы «Пульс» в Сбере (65+ сервисов): семантические токены, контрибьют продуктовых команд, Design Gate и рост Adoption до 60% при CSI 81%.",
-            "Design system for Sber's Pulse HR platform (65+ services): semantic tokens, product-team contribution, Design Gate, 60% Adoption, and 81% CSI.",
+            "Дизайн-система HR-платформы «Пульс» в Сбере, больше 65 сервисов. Общие токены, вклад продуктовых команд и проверка качества Design Gate. Adoption 60%, CSI 81%.",
+            "Design system for Sber's Pulse HR platform, across more than 65 services. Shared tokens, contributions from product teams, and a Design Gate quality check. 60% adoption, 81% CSI.",
         ),
         "meta": (
             "Кейс дизайн-системы Pulse UI для HR-платформы «Пульс» (65+ сервисов): токены, процессы, контрибьют и метрики.",
             "Case study of the Pulse UI design system for Sber's Pulse HR platform (65+ services): tokens, processes, contribution, and metrics.",
         ),
         "lead": (
-            "Дизайн-система HR-платформы «Пульс» в Сбере (65+ сервисов): семантические токены, процесс контрибьюта, Design Gate и метрики за 1,5 года.",
-            "Design system for Sber's Pulse HR platform (65+ services): semantic tokens, contribution model, Design Gate, and 1.5-year metrics.",
+            "Дизайн-система HR-платформы «Пульс» в Сбере. На ней больше 65 сервисов. За полтора года разрозненные экраны собрали в одну систему токенов. Продуктовые команды добавляют в неё компоненты, а качество проверяет Design Gate. Результаты: CSI 81%, adoption 60%, доля самодельных компонентов снижена до 15%. Больше 50 команд перешли на новые цветовые токены за четыре месяца.",
+            "The design system for Sber's Pulse HR platform, used across more than 65 services. Over a year and a half, scattered custom screens became one token system. Product teams contribute components, and Design Gate checks quality. Results: 81% CSI, 60% adoption, custom components down to 15%. More than 50 teams moved to the new color tokens in four months.",
         ),
         "github": "https://pulse-hcm.ru/",
         "github_label": ("Платформа «Пульс»", "Pulse HCM platform"),
@@ -37,14 +37,17 @@ PROJECTS = [
         "kicker": ("Операционная система", "Operating System"),
         "badge": ("Интерактивный прототип", "Live Prototype"),
         "desc": (
-            "Отзывчивая ОС без приложений и папок: пространство собирается из намерения, модули — из предмета, действия и условия.",
-            "A responsive OS with no apps or folders: Spaces assemble from intent, modules from an item, an action, and a condition.",
+            "Операционная система без приложений и папок: рабочее пространство собирается из того, что человек хочет сделать.",
+            "An operating system with no apps or folders. The workspace is assembled from what you are trying to do.",
         ),
         "meta": (
-            "Интерактивный прототип отзывчивой операционной системы, которая собирает интерфейс из намерения пользователя.",
-            "Interactive prototype of a responsive operating system that assembles its interface from the user’s intent.",
+            "Интерактивный прототип операционной системы без приложений и папок: рабочее пространство собирается из того, что человек хочет сделать.",
+            "Interactive prototype of an operating system with no apps or folders. The workspace is assembled from what you are trying to do.",
         ),
-        "lead": ("", ""),
+        "lead": (
+            "Прототип операционной системы без приложений и папок. Человек формулирует, что хочет сделать, а система собирает под это рабочее пространство. Модуль в нём — это предмет, действие и условие.",
+            "A prototype of an operating system with no apps and no folders. You say what you want to do, and the system assembles a workspace for it. A module is an item, an action, and a condition.",
+        ),
         "github": ("/demos/intent-os/", "/demos/intent-os/?lang=en"),
         "github_label": ("Открыть интерактивный прототип", "Open live prototype"),
         "legacy": "",
@@ -75,7 +78,7 @@ PROJECTS = [
         "kicker": ("Бенчмарк", "Benchmark"),
         "desc": (
             "Одни и те же UI-задачи, разные ответы модели. Видно, берёт ли агент компоненты уже существующей дизайн-системы или рисует свои контролы.",
-            "Runs the same UI tasks through model outputs and measures whether a coding agent follows a design system it did not invent.",
+            "Gives a coding agent the same UI tasks and checks whether it uses the existing design system or draws its own controls.",
         ),
         "meta": (
             "Harness, который измеряет, следует ли AI-агент существующей дизайн-системе.",
@@ -157,8 +160,8 @@ ds-eval compare RUN_FIXTURE RUN_NAIVE</code></pre>
         "name": "ds-context",
         "kicker": ("Контекст", "Context"),
         "desc": (
-            "Собирает дизайн-систему в короткий пакет для агента и считает объём в токенах.",
-            "Packs a design system into a short context for the agent and estimates its size in tokens.",
+            "Собирает из файлов дизайн-системы короткий пакет для агента и считает, сколько в нём токенов.",
+            "Packs a design system's files into a short bundle for an agent and counts the tokens.",
         ),
         "meta": (
             "Компилятор контекста дизайн-системы для coding-агента.",
@@ -175,8 +178,8 @@ ds-eval compare RUN_FIXTURE RUN_NAIVE</code></pre>
         "name": "ui-repair",
         "kicker": ("Починка", "Repair"),
         "desc": (
-            "Меняет сырые контролы и цвета на компоненты системы.",
-            "Replaces raw controls and hardcoded colors with system components.",
+            "Заменяет обычные кнопки, самодельные окна и цвета из кода компонентами системы.",
+            "Replaces plain buttons, homemade dialogs, and hardcoded colors with system components.",
         ),
         "meta": (
             "Правила починки интерфейса под дизайн-систему.",
@@ -193,8 +196,8 @@ ds-eval compare RUN_FIXTURE RUN_NAIVE</code></pre>
         "name": "prompt-regress",
         "kicker": ("Регрессия", "Regression"),
         "desc": (
-            "Дифф двух прогонов после смены промпта: какие кейсы выросли, а какие сломались.",
-            "A diff of two runs after a prompt change: which cases improved and which ones broke.",
+            "Сравнивает два прогона после смены промпта: какие экраны стали лучше, а какие сломались.",
+            "Compares two runs after a prompt change: which screens got better and which ones broke.",
         ),
         "meta": (
             "Дифф записанных прогонов между версиями промпта.",
@@ -211,16 +214,16 @@ ds-eval compare RUN_FIXTURE RUN_NAIVE</code></pre>
         "name": "figma-to-design-md",
         "kicker": ("CLI", "CLI"),
         "desc": (
-            "Вытаскивает переменные и компоненты из Figma в markdown для агента.",
-            "Extracts Figma variables and components into a markdown spec for agents.",
+            "Забирает из Figma переменные и компоненты и записывает их в markdown для агента.",
+            "Reads variables and components from Figma and writes them into markdown an agent can use.",
         ),
         "meta": (
             "CLI: Figma-файл становится markdown-спекой для AI-агентов.",
             "A CLI that turns a Figma file into a markdown spec for AI agents.",
         ),
         "lead": (
-            "Агенту нужна спецификация рядом с&nbsp;кодом, а&nbsp;не&nbsp;ссылка на&nbsp;файл, который он&nbsp;не&nbsp;откроет. CLI читает Figma и&nbsp;кладёт токены, компоненты и&nbsp;пробелы системы в&nbsp;markdown.",
-            "An agent needs a spec next to the code, not a link to a file it cannot open. The CLI reads Figma and writes tokens, components, and system gaps into markdown.",
+            "Агенту нужна спецификация рядом с кодом, а не ссылка на макет, который он не откроет. Инструмент читает файл Figma и записывает в markdown переменные, компоненты и то, что в файле есть, а в описании ещё нет.",
+            "An agent needs a spec next to the code, not a link to a file it cannot open. The tool reads a Figma file and writes variables, components, and anything present in the file but not yet described into markdown.",
         ),
         "github": "https://github.com/AndrewAntoshkin/figma-to-design-md",
         "github_label": ("Репозиторий на&nbsp;GitHub", "Repository on GitHub"),
@@ -250,16 +253,16 @@ ds-eval compare RUN_FIXTURE RUN_NAIVE</code></pre>
         "name": "ds-lint",
         "kicker": ("Сканер", "Scanner"),
         "desc": (
-            "Находит в коде сырые цвета, отступы и шрифты и подсказывает токен.",
-            "Finds hardcoded colors, spacing, and fonts and suggests a token instead.",
+            "Находит в коде цвета, отступы и шрифты, прописанные вручную, и подсказывает токен.",
+            "Finds colors, spacing, and fonts written by hand and suggests a token instead.",
         ),
         "meta": (
             "Сканер захардкоженных цветов, отступов и шрифтов.",
             "A scanner for hardcoded colors, spacing, and fonts.",
         ),
         "lead": (
-            "Токены бесполезны, если рядом с&nbsp;ними в&nbsp;коде остаётся <code>#FF4D4F</code> и&nbsp;<code>16px</code>. ds&#8209;lint находит такие значения и, если рядом есть файл токенов, предлагает имя из&nbsp;системы.",
-            "Tokens do nothing if the code next to them still says <code>#FF4D4F</code> and <code>16px</code>. ds&#8209;lint finds those values and, when a token file is nearby, suggests the system name.",
+            "Даже когда в проекте есть токены, в код всё равно попадают случайные цвета, отступы и размеры шрифта. ds-lint находит их и, если рядом лежит файл токенов, подсказывает, чем заменить.",
+            "Even when a project has tokens, one-off colors, spacing, and font sizes still land in the code. ds-lint finds them and, when a token file is nearby, suggests what to use instead.",
         ),
         "github": "https://github.com/AndrewAntoshkin/ds-lint",
         "github_label": ("Репозиторий на&nbsp;GitHub", "Repository on GitHub"),
@@ -293,16 +296,16 @@ ds-lint src/ --tokens tokens.css --strict</code></pre>
         "name": "ds-coverage",
         "kicker": ("Сканер", "Scanner"),
         "desc": (
-            "Считает по импортам, какие компоненты системы задействованы в коде, а где появились локальные дубли.",
-            "Scans imports to see which design-system exports are used and where local components duplicate system names.",
+            "По импортам показывает, какие компоненты системы используются в коде и где появились свои копии.",
+            "Reads imports to show which system components the code uses and where local copies appeared.",
         ),
         "meta": (
             "Отчёт об импортах компонентов дизайн-системы в коде.",
             "An import-level report on design-system component usage.",
         ),
         "lead": (
-            "Библиотека может быть большой, а&nbsp;продукт&nbsp;— написанным мимо неё. ds&#8209;coverage считает импорты: какие компоненты берутся из&nbsp;системы, какие не&nbsp;используются и&nbsp;что собрано рядом своим кодом.",
-            "A library can be large while the product is built beside it. ds&#8209;coverage counts imports: which components come from the system, which are unused, and what was rebuilt next to them.",
+            "Система может быть большой, а экраны рядом всё равно собраны из своих кнопок и окон. ds-coverage смотрит импорты и показывает, что из системы реально используется, что не используется и где рядом написали свою копию.",
+            "A design system can be large while the screens beside it are still built from local buttons and dialogs. ds-coverage reads imports and shows what is actually used, what is not used, and where a local copy sits next to the system.",
         ),
         "github": "https://github.com/AndrewAntoshkin/ds-coverage",
         "github_label": ("Репозиторий на&nbsp;GitHub", "Repository on GitHub"),
@@ -340,18 +343,18 @@ ds-coverage src/ --ds @acme/ui --inventory components.json --min 70</code></pre>
         "slug": "ds-health",
         "icon": "ds",
         "name": "ds-health",
-        "kicker": ("Веб-тул", "Web tool"),
+        "kicker": ("Веб-утилита", "Web tool"),
         "desc": (
-            "Первичный аудит вычисленных стилей живой страницы по URL: разброс цветов, шрифтов, отступов и радиусов.",
-            "Computed-style inventory of a live URL: how many distinct colors, type sizes, spacings, and radii the page renders.",
+            "Открывает страницу по ссылке и считает, сколько на ней разных цветов, шрифтов, отступов и скруглений.",
+            "Opens a live page and counts how many different colors, type sizes, spacings, and corner radii it uses.",
         ),
         "meta": (
             "Аудит вычисленных стилей живой страницы в браузере.",
             "A computed-style inventory of a live web page.",
         ),
         "lead": (
-            "Дизайн&#8209;система в&nbsp;Figma и&nbsp;система на&nbsp;проде часто расходятся. ds&#8209;health открывает страницу в&nbsp;настоящем браузере и&nbsp;считает, насколько вёрстка держится на&nbsp;небольшом наборе значений.",
-            "The system in Figma and the system in production often drift apart. ds&#8209;health opens a page in a real browser and measures whether the UI stays on a small set of values.",
+            "Инструмент открывает страницу по ссылке в браузере и считает, сколько на ней разных цветов, размеров шрифта, отступов и скруглений.",
+            "The tool opens a page from its link in a browser and counts how many different colors, type sizes, spacings, and corner radii it uses.",
         ),
         "github": "https://github.com/AndrewAntoshkin/ds-health",
         "github_label": ("Репозиторий на&nbsp;GitHub", "Repository on GitHub"),

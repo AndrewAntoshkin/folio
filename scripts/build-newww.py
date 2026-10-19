@@ -207,15 +207,15 @@ WORKFLOW = ["agent-ui", "figma-to-design-md", "ds-lint", "ds-coverage"]
 UTILITIES = ["ds-context", "ui-repair", "prompt-regress", "ds-health"]
 
 SKILLS = [
-    ("token-map", "Token map", "Карта токенов",
+    ("token-map", "Replace hardcoded values", "Убрать хардкод",
      "Replaces hardcoded colors, spacing, and radii with design tokens.",
-     "Заменяет жёстко заданные цвета, отступы и радиусы на токены.",
+     "Заменяет цвета, отступы и радиусы, прописанные в коде, на токены.",
      """---
 name: token-map
 description: Use when code has hardcoded colors, spacing, font sizes, or radii that should use design tokens.
 ---
 
-# Token map
+# Replace hardcoded values
 
 Replace raw UI values with the project's existing tokens.
 
@@ -234,7 +234,7 @@ npx @andrewaitken/ds-lint src/ --tokens tokens.css
 - No new tokens were added
 - Values without a match are listed with a reason
 """),
-    ("design-md", "DESIGN.md", "DESIGN.md",
+    ("design-md", "Write DESIGN.md", "Написать DESIGN.md",
      "Builds a short DESIGN.md that agents can follow.",
      "Собирает короткий DESIGN.md, по которому работает агент.",
      """---
@@ -242,9 +242,9 @@ name: design-md
 description: Use when a project needs a DESIGN.md so coding agents follow the design system.
 ---
 
-# DESIGN.md
+# Write DESIGN.md
 
-Write a short file that tells agents how the UI should look.
+Write a short file that tells a coding agent which colors, type, spacing, and components to use.
 
 ## Steps
 1. If the system lives in Figma, extract it:
@@ -258,25 +258,26 @@ npx figma-to-design-md extract --file <key> --token <token>
 
 ## Done when
 - Each rule points to a token or file
-- An agent can build a new screen from this file alone
+- No section is empty or copied from another project
 """),
-    ("component-adoption", "Component adoption", "Покрытие системы",
+    ("component-adoption", "Find duplicate components", "Найти дубли компонентов",
      "Finds local copies of design-system components and swaps them back.",
-     "Находит локальные копии компонентов системы и возвращает их к системным.",
+     "Находит свои копии компонентов системы и заменяет их компонентами из системы.",
      """---
 name: component-adoption
 description: Use when a codebase may contain local copies of design-system components such as its own Button or Modal.
 ---
 
-# Component adoption
+# Find duplicate components
 
-Find where the product bypasses the design system.
+Find places where the code uses its own Button, Modal, or Input instead of the design system's.
 
 ## Steps
 1. Measure usage:
 ```bash
 npx @andrewaitken/ds-coverage src/ --ds @acme/ui
 ```
+   Replace `@acme/ui` with the package name of your design system.
 2. List local components that share a name with a system export.
 3. For each one, compare props. If the system component covers it, replace it.
 4. If it does not, report the missing prop. Do not patch the system component.
@@ -286,7 +287,7 @@ npx @andrewaitken/ds-coverage src/ --ds @acme/ui
 - Coverage went up, or each remaining duplicate has a reason
 - No behavior changed on the touched screens
 """),
-    ("ui-review", "UI review", "Ревью интерфейса",
+    ("ui-review", "Review a screen", "Проверить экран",
      "Checks a screen at 390 and 1280 px, with keyboard and real data.",
      "Проверяет экран на 390 и 1280 px, с клавиатурой и реальными данными.",
      """---
@@ -294,7 +295,7 @@ name: ui-review
 description: Use before shipping a screen or flow to check layout, states, and keyboard access.
 ---
 
-# UI review
+# Review a screen
 
 Review one screen the way a user would use it.
 
@@ -315,7 +316,7 @@ Review one screen the way a user would use it.
 - No `blocking` items remain
 - Both widths were checked after the fixes
 """),
-    ("component-docs", "Component docs", "Документация компонента",
+    ("component-docs", "Document a component", "Описать компонент",
      "Documents a component from its real code and usage.",
      "Описывает компонент по реальному коду и местам использования.",
      """---
@@ -323,7 +324,7 @@ name: component-docs
 description: Use when a shared component needs documentation or a new variant.
 ---
 
-# Component docs
+# Document a component
 
 Document what the component does today, not what it should do.
 
@@ -338,7 +339,7 @@ Document what the component does today, not what it should do.
 - Every prop and variant in the doc exists in the code
 - No invented props
 """),
-    ("ds-migrate", "DS migrate", "Миграция на систему",
+    ("ds-migrate", "Move a screen to the design system", "Перевести экран на дизайн-систему",
      "Moves one screen to design-system components without changing behavior.",
      "Переводит один экран на компоненты системы, не меняя поведение.",
      """---
@@ -346,7 +347,7 @@ name: ds-migrate
 description: Use when a screen with custom or raw controls should move to design-system components.
 ---
 
-# DS migrate
+# Move a screen to the design system
 
 Migrate one screen at a time.
 
@@ -365,7 +366,7 @@ npx @andrewaitken/ds-lint src/<screen> --tokens tokens.css
 - No raw controls or hardcoded values are left
 - Missing system features are reported separately
 """),
-    ("ui-states", "UI states", "Состояния UI",
+    ("ui-states", "Check every state", "Проверить все состояния",
      "Renders every state of a component before you call it done.",
      "Показывает все состояния компонента, прежде чем считать его готовым.",
      """---
@@ -373,7 +374,7 @@ name: ui-states
 description: Use when a component looks finished but only the happy path has been tested.
 ---
 
-# UI states
+# Check every state
 
 Make every state visible.
 
@@ -388,15 +389,15 @@ Make every state visible.
 - Every state renders without overflow or layout jumps
 - Error and loading states tell the user what to do next
 """),
-    ("motion", "Motion", "Анимация",
+    ("motion", "Add animation", "Добавить анимацию",
      "Adds motion only where it helps, and respects reduced motion.",
-     "Добавляет анимацию только там, где она помогает, и уважает reduced motion.",
+     "Добавляет анимацию только там, где она помогает, и учитывает настройку «уменьшить движение».",
      """---
 name: motion
 description: Use when adding or reviewing animation and transitions in a UI.
 ---
 
-# Motion
+# Add animation
 
 Animate only when it explains a change.
 
@@ -417,7 +418,7 @@ Animate only when it explains a change.
 - Fast repeated clicks do not break it
 - It works with reduced motion on
 """),
-    ("a11y-pass", "A11y pass", "Доступность",
+    ("a11y-pass", "Check accessibility", "Проверить доступность",
      "Checks contrast, focus, names, and readable type in the running UI.",
      "Проверяет контраст, фокус, имена и читаемость текста в работающем UI.",
      """---
@@ -425,7 +426,7 @@ name: a11y-pass
 description: Use when a screen needs a quick accessibility and typography check.
 ---
 
-# A11y pass
+# Check accessibility
 
 Check the running page, not only the code.
 
@@ -441,7 +442,7 @@ Check the running page, not only the code.
 - Each issue has the element, the measured value, and a fix
 - The page works with keyboard only
 """),
-    ("interaction-spec", "Interaction spec", "Спека взаимодействия",
+    ("interaction-spec", "Describe an action", "Описать поведение действия",
      "Writes down what happens on click, on error, and on cancel.",
      "Фиксирует, что происходит при клике, ошибке и отмене.",
      """---
@@ -449,7 +450,7 @@ name: interaction-spec
 description: Use before building an action that saves data, calls a server, or can be undone.
 ---
 
-# Interaction spec
+# Describe an action
 
 Write the behavior before the code.
 
@@ -662,13 +663,13 @@ def projects_page(lang: str) -> str:
         title, sub = "Проекты", "Кейсы, инструменты, утилиты и скиллы: всё, что я проектирую и собираю на стыке дизайна, кода и AI."
         h_case, h_work, h_util, h_skills = "Кейсы", "Инструменты", "Утилиты", "Скиллы"
         note = "Компоненты с правилами для Cursor и три CLI-пакета в npm: спека из Figma, проверка токенов и покрытие импортов."
-        util_note = "Три воспроизводимых прототипа на локальных фикстурах (упаковка контекста, патч по правилам, дифф промптов) и браузерная утилита первичного аудита живого URL."
+        util_note = "Локальные утилиты: собрать контекст для агента, починить код по правилам системы и сравнить прогоны после смены промпта. И проверка живой страницы по ссылке."
         skills_note = ""
     else:
         title, sub = "Projects", "Case studies, tools, utilities, and skills: what I design and build where design, code, and AI meet."
         h_case, h_work, h_util, h_skills = "Cases", "Tools", "Utilities", "Skills"
         note = "Components with Cursor rules and three npm CLIs: Figma-to-markdown specs, token linting, and import coverage."
-        util_note = "Three reproducible prototypes on local fixtures (context packing, rule-based repair, prompt diffing) plus a browser utility for auditing computed styles on a live URL."
+        util_note = "Local utilities: pack context for an agent, repair code against system rules, and compare runs after a prompt change. Plus a check of a live page from its URL."
         skills_note = ""
     tabs = [
         ("cases", h_case, len(FEATURED), "", project_cards(lang, projects_by(FEATURED))),

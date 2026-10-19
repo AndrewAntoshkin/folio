@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Карта токенов — Андрей Антошкин</title>
-  <meta name="description" content="Заменяет жёстко заданные цвета, отступы и радиусы на токены.">
-  <meta property="og:title" content="Карта токенов — Андрей Антошкин">
-  <meta property="og:description" content="Заменяет жёстко заданные цвета, отступы и радиусы на токены.">
+  <title>Убрать хардкод — Андрей Антошкин</title>
+  <meta name="description" content="Заменяет цвета, отступы и радиусы, прописанные в коде, на токены.">
+  <meta property="og:title" content="Убрать хардкод — Андрей Антошкин">
+  <meta property="og:description" content="Заменяет цвета, отступы и радиусы, прописанные в коде, на токены.">
   <meta property="og:type" content="website">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
   <script>document.documentElement.classList.remove('nojs');try{if(sessionStorage.getItem('dock-seen'))document.documentElement.classList.add('dock-seen');else sessionStorage.setItem('dock-seen','1')}catch(e){}</script>
@@ -19,17 +19,17 @@
 <main><div class="col"><article class="art skill-page">
   <header class="art-top">
     <nav class="crumbs" data-r aria-label="breadcrumb"><a href="/projects">Проекты</a><span>›</span><a href="/projects#skills">Скиллы</a><span>›</span><span>token-map</span></nav>
-    <h1 data-split>Карта токенов</h1>
+    <h1 data-split>Убрать хардкод</h1>
     <div class="tags" data-r style="--d:.25s"><span class="tag">Скилл для агента</span><span class="tag">SKILL.md</span></div>
   </header>
-  <div class="art-intro" data-r style="--d:.3s"><p>Заменяет жёстко заданные цвета, отступы и радиусы на токены.</p></div>
+  <div class="art-intro" data-r style="--d:.3s"><p>Заменяет цвета, отступы и радиусы, прописанные в коде, на токены.</p></div>
   <section class="skill-card" data-r>
     <div class="skill-card-bar"><span>SKILL.md</span><div><button type="button" class="cmd-copy" data-copy-target="skill-raw">Копировать</button><button type="button" class="cmd-copy skill-open">Исходник</button><a class="cmd-copy" href="/skills/token-map/SKILL.md" download="token-map-SKILL.md">Сохранить .md</a></div></div>
     <pre class="skill-fm"><code>---
 name: token-map
 description: Use when code has hardcoded colors, spacing, font sizes, or radii that should use design tokens.
 ---</code></pre>
-    <div class="skill-doc"><h1>Token map</h1><p>Replace raw UI values with the project&#x27;s existing tokens.</p><h2>Steps</h2><ol><li>Find the token file (<code>tokens.css</code>, <code>tokens.json</code>, or <code>DESIGN.md</code>). If there is none, stop and say so.</li><li>Scan the files you changed:</li></ol><pre><code>npx @andrewaitken/ds-lint src/ --tokens tokens.css
+    <div class="skill-doc"><h1>Replace hardcoded values</h1><p>Replace raw UI values with the project&#x27;s existing tokens.</p><h2>Steps</h2><ol><li>Find the token file (<code>tokens.css</code>, <code>tokens.json</code>, or <code>DESIGN.md</code>). If there is none, stop and say so.</li><li>Scan the files you changed:</li></ol><pre><code>npx @andrewaitken/ds-lint src/ --tokens tokens.css
 </code></pre><ol start="3"><li>For each finding, pick the token by meaning first (e.g. &quot;primary action&quot;), then by value.</li><li>Replace only clear matches. Never invent a token.</li><li>Run the scan again until the changed files are clean.</li></ol><h2>Done when</h2><ul><li><code>ds-lint</code> reports no fixable findings in the changed files</li><li>No new tokens were added</li><li>Values without a match are listed with a reason</li></ul></div>
   </section>
 </article></div></main>
@@ -38,7 +38,7 @@ name: token-map
 description: Use when code has hardcoded colors, spacing, font sizes, or radii that should use design tokens.
 ---
 
-# Token map
+# Replace hardcoded values
 
 Replace raw UI values with the project&#x27;s existing tokens.
 
@@ -65,7 +65,7 @@ name: token-map
 description: Use when code has hardcoded colors, spacing, font sizes, or radii that should use design tokens.
 ---
 
-# Token map
+# Replace hardcoded values
 
 Replace raw UI values with the project&#x27;s existing tokens.
 

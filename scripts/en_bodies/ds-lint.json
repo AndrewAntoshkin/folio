@@ -1,0 +1,3 @@
+{
+  "lead": "Even when a project has tokens, one-off colors, spacing, and font sizes still land in the code. ds-lint finds them and, when a token file is nearby, suggests what to use instead."
+}

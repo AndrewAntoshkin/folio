@@ -3,7 +3,7 @@ name: ui-states
 description: Use when a component looks finished but only the happy path has been tested.
 ---
 
-# UI states
+# Check every state
 
 Make every state visible.
 

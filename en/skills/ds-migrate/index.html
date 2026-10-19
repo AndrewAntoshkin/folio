@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DS migrate — Andrew Antoshkin</title>
+  <title>Move a screen to the design system — Andrew Antoshkin</title>
   <meta name="description" content="Moves one screen to design-system components without changing behavior.">
-  <meta property="og:title" content="DS migrate — Andrew Antoshkin">
+  <meta property="og:title" content="Move a screen to the design system — Andrew Antoshkin">
   <meta property="og:description" content="Moves one screen to design-system components without changing behavior.">
   <meta property="og:type" content="website">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
@@ -19,7 +19,7 @@
 <main><div class="col"><article class="art skill-page">
   <header class="art-top">
     <nav class="crumbs" data-r aria-label="breadcrumb"><a href="/en/projects">Projects</a><span>›</span><a href="/en/projects#skills">Skills</a><span>›</span><span>ds-migrate</span></nav>
-    <h1 data-split>DS migrate</h1>
+    <h1 data-split>Move a screen to the design system</h1>
     <div class="tags" data-r style="--d:.25s"><span class="tag">Agent skill</span><span class="tag">SKILL.md</span></div>
   </header>
   <div class="art-intro" data-r style="--d:.3s"><p>Moves one screen to design-system components without changing behavior.</p></div>
@@ -29,7 +29,7 @@
 name: ds-migrate
 description: Use when a screen with custom or raw controls should move to design-system components.
 ---</code></pre>
-    <div class="skill-doc"><h1>DS migrate</h1><p>Migrate one screen at a time.</p><h2>Steps</h2><ol><li>List the controls on the screen: buttons, inputs, selects, modals.</li><li>Match each one to a system component. List gaps. Do not invent props.</li><li>Replace the controls one by one.</li><li>After each replacement, check the states, events, and keyboard behavior.</li><li>Run the token scan:</li></ol><pre><code>npx @andrewaitken/ds-lint src/&lt;screen&gt; --tokens tokens.css
+    <div class="skill-doc"><h1>Move a screen to the design system</h1><p>Migrate one screen at a time.</p><h2>Steps</h2><ol><li>List the controls on the screen: buttons, inputs, selects, modals.</li><li>Match each one to a system component. List gaps. Do not invent props.</li><li>Replace the controls one by one.</li><li>After each replacement, check the states, events, and keyboard behavior.</li><li>Run the token scan:</li></ol><pre><code>npx @andrewaitken/ds-lint src/&lt;screen&gt; --tokens tokens.css
 </code></pre><h2>Done when</h2><ul><li>The screen behaves exactly as before</li><li>No raw controls or hardcoded values are left</li><li>Missing system features are reported separately</li></ul></div>
   </section>
 </article></div></main>
@@ -38,7 +38,7 @@ name: ds-migrate
 description: Use when a screen with custom or raw controls should move to design-system components.
 ---
 
-# DS migrate
+# Move a screen to the design system
 
 Migrate one screen at a time.
 
@@ -65,7 +65,7 @@ name: ds-migrate
 description: Use when a screen with custom or raw controls should move to design-system components.
 ---
 
-# DS migrate
+# Move a screen to the design system
 
 Migrate one screen at a time.
 

@@ -3,9 +3,9 @@ name: design-md
 description: Use when a project needs a DESIGN.md so coding agents follow the design system.
 ---
 
-# DESIGN.md
+# Write DESIGN.md
 
-Write a short file that tells agents how the UI should look.
+Write a short file that tells a coding agent which colors, type, spacing, and components to use.
 
 ## Steps
 1. If the system lives in Figma, extract it:
@@ -19,4 +19,4 @@ npx figma-to-design-md extract --file <key> --token <token>
 
 ## Done when
 - Each rule points to a token or file
-- An agent can build a new screen from this file alone
+- No section is empty or copied from another project

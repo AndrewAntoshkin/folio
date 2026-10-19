@@ -3,7 +3,7 @@ name: motion
 description: Use when adding or reviewing animation and transitions in a UI.
 ---
 
-# Motion
+# Add animation
 
 Animate only when it explains a change.
 

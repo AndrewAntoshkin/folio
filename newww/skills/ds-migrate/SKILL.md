@@ -3,7 +3,7 @@ name: ds-migrate
 description: Use when a screen with custom or raw controls should move to design-system components.
 ---
 
-# DS migrate
+# Move a screen to the design system
 
 Migrate one screen at a time.
 

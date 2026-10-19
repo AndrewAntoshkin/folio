@@ -3,7 +3,7 @@ name: ui-review
 description: Use before shipping a screen or flow to check layout, states, and keyboard access.
 ---
 
-# UI review
+# Review a screen
 
 Review one screen the way a user would use it.
 

@@ -1,0 +1,3 @@
+{
+  "lead": "An agent needs a spec next to the code, not a link to a file it cannot open. The tool reads a Figma file and writes variables, components, and anything present in the file but not yet described into markdown."
+}

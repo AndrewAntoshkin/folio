@@ -3,7 +3,7 @@ name: component-docs
 description: Use when a shared component needs documentation or a new variant.
 ---
 
-# Component docs
+# Document a component
 
 Document what the component does today, not what it should do.
 

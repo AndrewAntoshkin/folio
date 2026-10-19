@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Покрытие системы — Андрей Антошкин</title>
-  <meta name="description" content="Находит локальные копии компонентов системы и возвращает их к системным.">
-  <meta property="og:title" content="Покрытие системы — Андрей Антошкин">
-  <meta property="og:description" content="Находит локальные копии компонентов системы и возвращает их к системным.">
+  <title>Найти дубли компонентов — Андрей Антошкин</title>
+  <meta name="description" content="Находит свои копии компонентов системы и заменяет их компонентами из системы.">
+  <meta property="og:title" content="Найти дубли компонентов — Андрей Антошкин">
+  <meta property="og:description" content="Находит свои копии компонентов системы и заменяет их компонентами из системы.">
   <meta property="og:type" content="website">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
   <script>document.documentElement.classList.remove('nojs');try{if(sessionStorage.getItem('dock-seen'))document.documentElement.classList.add('dock-seen');else sessionStorage.setItem('dock-seen','1')}catch(e){}</script>
@@ -19,18 +19,18 @@
 <main><div class="col"><article class="art skill-page">
   <header class="art-top">
     <nav class="crumbs" data-r aria-label="breadcrumb"><a href="/projects">Проекты</a><span>›</span><a href="/projects#skills">Скиллы</a><span>›</span><span>component-adoption</span></nav>
-    <h1 data-split>Покрытие системы</h1>
+    <h1 data-split>Найти дубли компонентов</h1>
     <div class="tags" data-r style="--d:.25s"><span class="tag">Скилл для агента</span><span class="tag">SKILL.md</span></div>
   </header>
-  <div class="art-intro" data-r style="--d:.3s"><p>Находит локальные копии компонентов системы и возвращает их к системным.</p></div>
+  <div class="art-intro" data-r style="--d:.3s"><p>Находит свои копии компонентов системы и заменяет их компонентами из системы.</p></div>
   <section class="skill-card" data-r>
     <div class="skill-card-bar"><span>SKILL.md</span><div><button type="button" class="cmd-copy" data-copy-target="skill-raw">Копировать</button><button type="button" class="cmd-copy skill-open">Исходник</button><a class="cmd-copy" href="/skills/component-adoption/SKILL.md" download="component-adoption-SKILL.md">Сохранить .md</a></div></div>
     <pre class="skill-fm"><code>---
 name: component-adoption
 description: Use when a codebase may contain local copies of design-system components such as its own Button or Modal.
 ---</code></pre>
-    <div class="skill-doc"><h1>Component adoption</h1><p>Find where the product bypasses the design system.</p><h2>Steps</h2><ol><li>Measure usage:</li></ol><pre><code>npx @andrewaitken/ds-coverage src/ --ds @acme/ui
-</code></pre><ol start="2"><li>List local components that share a name with a system export.</li><li>For each one, compare props. If the system component covers it, replace it.</li><li>If it does not, report the missing prop. Do not patch the system component.</li><li>Run the scan again and compare the numbers.</li></ol><h2>Done when</h2><ul><li>Coverage went up, or each remaining duplicate has a reason</li><li>No behavior changed on the touched screens</li></ul></div>
+    <div class="skill-doc"><h1>Find duplicate components</h1><p>Find places where the code uses its own Button, Modal, or Input instead of the design system&#x27;s.</p><h2>Steps</h2><ol><li>Measure usage:</li></ol><pre><code>npx @andrewaitken/ds-coverage src/ --ds @acme/ui
+</code></pre><p>Replace <code>@acme/ui</code> with the package name of your design system.</p><ol start="2"><li>List local components that share a name with a system export.</li><li>For each one, compare props. If the system component covers it, replace it.</li><li>If it does not, report the missing prop. Do not patch the system component.</li><li>Run the scan again and compare the numbers.</li></ol><h2>Done when</h2><ul><li>Coverage went up, or each remaining duplicate has a reason</li><li>No behavior changed on the touched screens</li></ul></div>
   </section>
 </article></div></main>
 <textarea id="skill-raw" hidden>---
@@ -38,15 +38,16 @@ name: component-adoption
 description: Use when a codebase may contain local copies of design-system components such as its own Button or Modal.
 ---
 
-# Component adoption
+# Find duplicate components
 
-Find where the product bypasses the design system.
+Find places where the code uses its own Button, Modal, or Input instead of the design system&#x27;s.
 
 ## Steps
 1. Measure usage:
 ```bash
 npx @andrewaitken/ds-coverage src/ --ds @acme/ui
 ```
+   Replace `@acme/ui` with the package name of your design system.
 2. List local components that share a name with a system export.
 3. For each one, compare props. If the system component covers it, replace it.
 4. If it does not, report the missing prop. Do not patch the system component.
@@ -64,15 +65,16 @@ name: component-adoption
 description: Use when a codebase may contain local copies of design-system components such as its own Button or Modal.
 ---
 
-# Component adoption
+# Find duplicate components
 
-Find where the product bypasses the design system.
+Find places where the code uses its own Button, Modal, or Input instead of the design system&#x27;s.
 
 ## Steps
 1. Measure usage:
 ```bash
 npx @andrewaitken/ds-coverage src/ --ds @acme/ui
 ```
+   Replace `@acme/ui` with the package name of your design system.
 2. List local components that share a name with a system export.
 3. For each one, compare props. If the system component covers it, replace it.
 4. If it does not, report the missing prop. Do not patch the system component.

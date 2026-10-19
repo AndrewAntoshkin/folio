@@ -3,7 +3,7 @@ name: a11y-pass
 description: Use when a screen needs a quick accessibility and typography check.
 ---
 
-# A11y pass
+# Check accessibility
 
 Check the running page, not only the code.
 

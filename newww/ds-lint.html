@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ds-lint — Андрей Антошкин</title>
-  <meta name="description" content="Сканирует код и находит цвета, отступы, размеры шрифта и радиусы, прописанные вручную. Такие значения должны быть токенами.">
+  <meta name="description" content="Даже когда в проекте есть токены, в код всё равно попадают случайные цвета, отступы и размеры шрифта. ds-lint находит их и, если рядом лежит файл токенов, подсказывает, чем заменить.">
   <meta property="og:title" content="ds-lint — Андрей Антошкин">
-  <meta property="og:description" content="Сканирует код и находит цвета, отступы, размеры шрифта и радиусы, прописанные вручную. Такие значения должны быть токенами.">
+  <meta property="og:description" content="Даже когда в проекте есть токены, в код всё равно попадают случайные цвета, отступы и размеры шрифта. ds-lint находит их и, если рядом лежит файл токенов, подсказывает, чем заменить.">
   <meta property="og:type" content="website">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
   <script>document.documentElement.classList.remove('nojs');try{if(sessionStorage.getItem('dock-seen'))document.documentElement.classList.add('dock-seen');else sessionStorage.setItem('dock-seen','1')}catch(e){}</script>
@@ -22,7 +22,7 @@
     <h1 data-split>ds-lint</h1>
     <div class="tags" data-r style="--d:.25s"><span class="tag">Сканер</span><span class="tag">open source</span></div>
   </header>
-  <div class="art-intro" data-r style="--d:.3s"><p>Сканирует код и находит цвета, отступы, размеры шрифта и радиусы, прописанные вручную. Такие значения должны быть токенами.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="https://github.com/AndrewAntoshkin/ds-lint" target="_blank" rel="noopener">Репозиторий на&nbsp;GitHub</a></div></div>
+  <div class="art-intro" data-r style="--d:.3s"><p>Даже когда в проекте есть токены, в код всё равно попадают случайные цвета, отступы и размеры шрифта. ds-lint находит их и, если рядом лежит файл токенов, подсказывает, чем заменить.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="https://github.com/AndrewAntoshkin/ds-lint" target="_blank" rel="noopener">Репозиторий на&nbsp;GitHub</a></div></div>
   <div class="prose"><div class="pcover "><div class="bg" style="background-image:url(/img/gen/ds-lint.jpg)"></div><span class="plogo">ds-lint</span></div><section id="problem"><h2>Зачем</h2>
 <p>Даже когда в проекте есть <code>tokens.css</code>, в компоненты всё равно пролезают случайные <code>#3b82f6</code> и <code>padding: 13px</code> — особенно после быстрой правки или генерации кода агентом. Если передать ds-lint файл токенов, он не просто укажет строку, а сразу подскажет подходящую переменную.</p></section>
 <section id="install"><h2>Установка</h2>

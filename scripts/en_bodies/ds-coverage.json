@@ -1,0 +1,3 @@
+{
+  "lead": "A design system can be large while the screens beside it are still built from local buttons and dialogs. ds-coverage reads imports and shows what is actually used, what is not used, and where a local copy sits next to the system."
+}
