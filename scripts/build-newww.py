@@ -167,9 +167,9 @@ def cta_and_footer(lang: str, cta: bool = True) -> str:
         <div class="bot"><p>{text}</p></div>
       </div>
       <form class="cta-form" data-subject="{fields[4]}">
-        <input name="name" required placeholder="{fields[0]}" autocomplete="name">
-        <input name="email" type="email" required placeholder="{fields[1]}" autocomplete="email">
-        <textarea name="question" required placeholder="{fields[2]}"></textarea>
+        <input name="name" required placeholder="{fields[0]}" aria-label="{fields[0]}" autocomplete="name">
+        <input name="email" type="email" required placeholder="{fields[1]}" aria-label="{fields[1]}" autocomplete="email">
+        <textarea name="question" required placeholder="{fields[2]}" aria-label="{fields[2]}"></textarea>
         <button type="submit">{fields[3]}</button>
       </form>
     </div>
@@ -585,7 +585,7 @@ def home(lang: str) -> str:
     ru = lang == "ru"
     if ru:
         h1a, h1b = "Андрей Антошкин,", "Design Engineer."
-        sub = "Product design, engineering и AI. Превращаю идеи в работающие продукты, создаю инструменты и соединяю дизайн с кодом."
+        sub = "Дизайн-системы, интерфейсы для агентов и инструменты проверки. Собираю продукты и правила, по которым разработчики и coding-агенты пишут чистый UI."
         b1, b2 = "Смотреть проекты", "Написать"
         s_proj, s_how, s_art, s_exp, s_faq, s_all = "Проекты", "Практика", "Статьи", "Опыт", "Частые вопросы", "Все"
         steps = [
@@ -602,7 +602,7 @@ def home(lang: str) -> str:
         ]
     else:
         h1a, h1b = "Andrew Antoshkin,", "Design Engineer."
-        sub = "Product design, engineering, and AI. I turn ideas into working products, build tools, and connect design with code."
+        sub = "Design systems, agentic UI, and verification tools. I build interfaces and the guardrails that help engineers and coding agents ship them cleanly."
         b1, b2 = "See projects", "Say hello"
         s_proj, s_how, s_art, s_exp, s_faq, s_all = "Projects", "Practice", "Writing", "Experience", "Most asked questions", "See all"
         steps = [
@@ -823,9 +823,9 @@ def collab_page(lang: str) -> str:
         <h2>{card_t}</h2>
         <p class="contact-lead">{card_p}</p>
         <div class="contact-fields">
-          <input name="name" required placeholder="{fields[0]}" autocomplete="name">
-          <input name="email" type="email" required placeholder="{fields[1]}" autocomplete="email">
-          <textarea name="question" required placeholder="{fields[2]}"></textarea>
+          <input name="name" required placeholder="{fields[0]}" aria-label="{fields[0]}" autocomplete="name">
+          <input name="email" type="email" required placeholder="{fields[1]}" aria-label="{fields[1]}" autocomplete="email">
+          <textarea name="question" required placeholder="{fields[2]}" aria-label="{fields[2]}"></textarea>
         </div>
         <button type="submit">{fields[3]}</button>
       </form>

@@ -67,6 +67,16 @@
 <li><strong>Instant feedback:</strong> intent is parsed live, key presses register in the hints, and collaborators add modules without a reload or losing your typing focus;</li>
 <li><strong>Day and night:</strong> at night, modules glow with a soft backlight.</li>
 </ul>
+</section>
+
+<section id="limits"><h2>Where the pattern breaks and what I learned</h2>
+<p>Intent OS is a working interface prototype on mock data, not a shipping operating system. Testing the flows across multi-step scenarios exposed four places where pure intent-driven UI runs into hard limits:</p>
+<ul class="feature-list">
+<li><strong>Cold start and blank-input anxiety</strong><span>Stating a specific goal (“book the morning flight”) is fast; stating an exploratory one (“figure out September travel”) stalls at the prompt. Without spatial anchors or recent artefacts on screen, an empty command line asks the user to do the system’s framing work up front.</span></li>
+<li><strong>Long chains lose spatial memory</strong><span>Up to 4–5 modules in a horizontal flow feel lighter than switching windows. Beyond ~8 modules across parallel flows, the fog that protects focus starts hiding state: people open the Overview (<code>O</code>) just to check whether an earlier card is still active or waiting on a condition.</span></li>
+<li><strong>Natural language is clumsy for fine-grained edits</strong><span>Parsing “remind me when the flight is booked” into <code>item + action + condition</code> works well on the first pass. Tweaking one threshold later (“make it two hours earlier, but only on weekdays”) is slower in prose than clicking a direct control—generated modules still need deterministic inspector affordances.</span></li>
+<li><strong>Proactive collaborators need a staging boundary</strong><span>When sandboxed services (<code>Weather</code>, <code>Calendar</code>) insert or reorder modules automatically, even helpful changes feel intrusive if they shift the active chain mid-thought. Autonomous updates have to land as a diff or a staged suggestion before they mutate the workspace.</span></li>
+</ul>
 <p><a class="btn mint" href="/demos/intent-os/?lang=en">Open the live Intent OS prototype →</a></p>
 </section>
 </div>
@@ -79,9 +89,9 @@
         <div class="bot"><p>Write to me. We’ll figure out where to start together.</p></div>
       </div>
       <form class="cta-form" data-subject="Collaboration">
-        <input name="name" required placeholder="Name" autocomplete="name">
-        <input name="email" type="email" required placeholder="Email" autocomplete="email">
-        <textarea name="question" required placeholder="A few words about the task"></textarea>
+        <input name="name" required placeholder="Name" aria-label="Name" autocomplete="name">
+        <input name="email" type="email" required placeholder="Email" aria-label="Email" autocomplete="email">
+        <textarea name="question" required placeholder="A few words about the task" aria-label="A few words about the task"></textarea>
         <button type="submit">Write</button>
       </form>
     </div>

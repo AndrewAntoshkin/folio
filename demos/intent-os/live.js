@@ -284,10 +284,9 @@ ${STYLE}`;
   }, true);
 
   function refreshBadge() {
-    let b = $("#liveBadge");
-    if (!enabled()) { if (b) b.remove(); return }
-    if (!b) { b = document.createElement("div"); b.id = "liveBadge"; b.className = "live-badge"; const anchor = $("#blueprints"); anchor ? anchor.insertAdjacentElement("afterend", b) : ($("#home") || document.body).appendChild(b) }
-    b.innerHTML = `<i></i>${T("Live", "Живой режим")} · ${esc(modelName().split("/").pop())}`;
+    /* the "Live · model" badge is intentionally not shown on the home screen anymore */
+    const b = $("#liveBadge");
+    if (b) b.remove();
   }
 
   /* ───────── Space generation (streamed: modules appear as the model writes them) ───────── */

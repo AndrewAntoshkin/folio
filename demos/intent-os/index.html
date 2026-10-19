@@ -105,8 +105,8 @@
     .um-row em{font-style:normal;color:var(--quiet);font-size:11.5px}
     .um-sep{height:1px;margin:4px 6px;background:var(--line)}
 
-    .home{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding-bottom:34px;transition:opacity .6s var(--ease),transform .8s var(--ease),filter .6s var(--ease)}
-    .os:not(.view-home) .home{opacity:0;transform:scale(1.05);filter:blur(8px);pointer-events:none}
+    .home{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding-bottom:34px;transition:opacity .6s var(--ease),transform .8s var(--ease),visibility 0s}
+    .os:not(.view-home) .home{opacity:0;transform:scale(1.05);visibility:hidden;pointer-events:none;transition:opacity .6s var(--ease),transform .8s var(--ease),visibility 0s .6s}
     .os.view-timeline .home{transform:translateY(-18%)}
     .home-time{font-size:72px;line-height:1;font-weight:300;letter-spacing:-.045em;color:rgba(47,47,47,.6);font-variant-numeric:tabular-nums}
     .home-date{margin-top:-6px;font-size:13px;color:var(--quiet)}
@@ -182,17 +182,17 @@
     .timeline-hint span{animation:bob 2.4s var(--ease) infinite}.timeline-hint .ic{width:16px;height:16px}.timeline-hint:hover{color:var(--ink)}
     @keyframes bob{50%{transform:translateY(-4px)}}
 
-    .space{position:absolute;inset:52px 0 56px;overflow:hidden;opacity:0;pointer-events:none;transition:opacity .45s var(--ease)}
-    .view-space .space{opacity:1;pointer-events:auto}
+    .space{position:absolute;inset:52px 0 56px;overflow:hidden;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .45s var(--ease),visibility 0s .45s}
+    .view-space .space{opacity:1;visibility:visible;pointer-events:auto;transition:opacity .45s var(--ease),visibility 0s}
     .space.notrans,.space.notrans *{transition:none!important}
-    .flows{position:absolute;inset:0 0 auto;transition:transform .7s var(--ease)}
-    .flow{position:absolute;left:0;right:0;height:var(--mh);transition:opacity .7s var(--ease),filter .7s var(--ease)}
-    .flow:not(.current){opacity:.36;filter:blur(1.6px);cursor:pointer}
+    .flows{position:absolute;inset:0 0 auto;transition:transform .7s var(--ease);will-change:transform}
+    .flow{position:absolute;left:0;right:0;height:var(--mh);transition:opacity .7s var(--ease)}
+    .flow:not(.current){opacity:.36;cursor:pointer}
     .flow-label{position:absolute;left:var(--lx);top:-30px;display:flex;gap:10px;align-items:baseline;font-size:11px;color:var(--quiet)}
     .flow-label b{color:var(--ink);font-weight:500;font-size:12px}
     .track{position:absolute;top:0;left:0;display:flex;gap:var(--gap);transition:transform .7s var(--ease)}
-    .module{position:relative;flex:none;width:var(--mw);height:var(--mh);display:flex;flex-direction:column;border-radius:20px;background:var(--paper);border:1px solid var(--rim);box-shadow:0 1px 2px rgba(0,0,0,.04),0 24px 60px -26px rgba(0,0,0,.22);transition:opacity .7s var(--ease),transform .8s var(--ease),box-shadow .7s var(--ease),filter .7s var(--ease)}
-    .module:not(.active){opacity:.5;transform:scale(.93);filter:saturate(.5);cursor:pointer}
+    .module{position:relative;flex:none;width:var(--mw);height:var(--mh);display:flex;flex-direction:column;border-radius:20px;background:var(--paper);border:1px solid var(--rim);box-shadow:0 1px 2px rgba(0,0,0,.04),0 24px 60px -26px rgba(0,0,0,.22);transition:opacity .7s var(--ease),transform .8s var(--ease),box-shadow .7s var(--ease)}
+    .module:not(.active){opacity:.5;transform:scale(.93);cursor:pointer}
     .module:not(.active)>*{pointer-events:none}
     .module.active{box-shadow:0 1px 2px rgba(0,0,0,.05),0 40px 90px -30px rgba(0,0,0,.3)}
     .module.flash{animation:flash 1.6s var(--ease)}
@@ -503,9 +503,9 @@
     .mini .tag{position:absolute;right:12px;bottom:10px;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
     .slot{flex:none;border:1.5px dashed rgba(47,47,47,.16);border-radius:14px;background:rgba(47,47,47,.04)}
 
-    .timeline{position:absolute;inset:52px 0 56px;z-index:20;overflow:auto;padding:10px 24px 60px;opacity:0;transform:translateY(60px);pointer-events:none;transition:opacity .5s var(--ease),transform .8s var(--ease);scrollbar-width:none}
+    .timeline{position:absolute;inset:52px 0 56px;z-index:20;overflow:auto;padding:10px 24px 60px;opacity:0;transform:translateY(60px);visibility:hidden;pointer-events:none;transition:opacity .5s var(--ease),transform .8s var(--ease),visibility 0s .5s;scrollbar-width:none}
     .timeline::-webkit-scrollbar{display:none}
-    .view-timeline .timeline{opacity:1;transform:none;pointer-events:auto}
+    .view-timeline .timeline{opacity:1;transform:none;visibility:visible;pointer-events:auto;transition:opacity .5s var(--ease),transform .8s var(--ease),visibility 0s}
     .tl-inner{max-width:680px;margin:0 auto}
     .tl-title{margin:0 0 6px;font-size:32px;font-weight:300;letter-spacing:-.035em;color:rgba(47,47,47,.45)}
     .tl-sub{margin:0 0 22px;font-size:12px;color:var(--quiet)}
@@ -526,8 +526,12 @@
     .hints button:hover{background:rgba(255,255,255,.45);color:var(--ink);transform:translateY(-1px)}
     .hints button:active{transform:scale(.95);transition-duration:.08s}
     .hints button.on{background:rgba(255,255,255,.55);color:var(--ink)}
-    .toast{position:absolute;right:28px;bottom:70px;z-index:80;display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;background:rgba(40,40,40,.9);color:#fff;font-size:12px;opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .3s,transform .45s var(--spring)}
-    .toast.show{opacity:1;transform:none;pointer-events:auto}.toast button{border:0;border-radius:999px;background:rgba(255,255,255,.16);padding:4px 10px;color:#fff;font-size:11px}
+    /* notifications stack in the top-right corner, newest on top (below the weather / account popovers) */
+    .toasts{position:absolute;top:58px;right:28px;z-index:39;display:flex;flex-direction:column;align-items:flex-end;gap:8px;max-width:min(380px,calc(100% - 32px));pointer-events:none}
+    .toast{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;background:rgba(40,40,40,.9);color:#fff;font-size:12px;pointer-events:auto;animation:toastIn .45s var(--spring) both;transition:opacity .25s var(--ease),transform .3s var(--ease)}
+    .toast.out{opacity:0;transform:translateX(14px) scale(.96);pointer-events:none}
+    .toast button{flex:none;border:0;border-radius:999px;background:rgba(255,255,255,.16);padding:4px 10px;color:#fff;font-size:11px}
+    @keyframes toastIn{from{opacity:0;transform:translateY(-8px) scale(.96)}}
 
     body.night{--fog:#171717;--ink:#ececec;--quiet:#afafaf;--faint:#6b6b6b;--line:rgba(255,255,255,.07);--paper:#212121;--head:#212121;--chip:rgba(255,255,255,.07);--rim:rgba(255,255,255,.05);--accent:#86a8ff;--accent-soft:rgba(134,168,255,.18);--m-street:#2f2f2f;--m-block:#262626;--water:#1a2630;--park:#1e2923}
     body.night .mist{opacity:0}body.night .grain{opacity:.02}
@@ -556,6 +560,62 @@
     .toast,body.night .toast{background:rgba(18,18,22,.62);border:1px solid rgba(255,255,255,.1);border-right-width:0;border-bottom-width:0;box-shadow:0 8px 24px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(40px) saturate(1.6);backdrop-filter:blur(40px) saturate(1.6)}
 body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:#2f2f2f;stroke:#ddd}body.night .map-ctl{background:rgba(47,47,47,.95)}body.night .map-ctl button{color:#ddd}body.night .eta{background:rgba(47,47,47,.95);color:#ececec}
 
+    /* night: light-theme "white wash" hovers/fills must become subtle light-on-dark tints, never bright greys */
+    body.night .rule:hover,body.night .collab:hover,body.night .flowlink:hover{background:rgba(255,255,255,.07);color:var(--ink)}
+    body.night .rule .rt[contenteditable="true"]{background:rgba(255,255,255,.1)}
+    body.night .modal-ex button:hover{background:rgba(255,255,255,.12)}
+    body.night .sizes button:hover:not(.off):not(.on){background:rgba(255,255,255,.12)}
+    body.night .new-flow{border-color:rgba(255,255,255,.18)}body.night .new-flow:hover{background:rgba(255,255,255,.07)}
+    body.night .rule-x:hover{background:rgba(255,255,255,.12)}
+    body.night .wx-hours div{background:rgba(255,255,255,.05)}
+    body.night .flag.warn{background:rgba(255,125,145,.16);color:#ff9aa8}
+    body.night .bars .tip{color:var(--fog)}body.night .bars .tip b,body.night .bars .tip em{color:rgba(23,23,23,.65)}
+    body.night .palette.contacts .pi.on{color:#14161c}body.night .palette.contacts .pi.on small{color:rgba(20,22,28,.7)}body.night .palette.contacts .pi.on .ic{color:#14161c}
+    body.night .module:not(.active){opacity:.62}
+
+    body.night .pl-bar{background:rgba(255,255,255,.14)}
+    /* quick intents: each opens a single-module Space over the home screen, not an app */
+    .home-apps{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:2px}
+    .home-app{display:inline-flex;align-items:center;gap:8px;max-width:280px;height:34px;padding:0 14px 0 12px;border:1px solid var(--glass-edge);border-right-width:0;border-bottom-width:0;border-radius:999px;background:var(--glass);color:var(--quiet);font-size:12.5px;white-space:nowrap;-webkit-backdrop-filter:blur(20px) saturate(1.6);backdrop-filter:blur(20px) saturate(1.6);transition:color .2s,transform .4s var(--spring),box-shadow .3s}
+    .home-app>.ic{flex:none;width:14px;height:14px;opacity:.7}
+    .home-app>span{overflow:hidden;text-overflow:ellipsis}
+    .home-app em{flex:none;font-style:normal;color:var(--faint);font-variant-numeric:tabular-nums}
+    .home-app em.n{min-width:18px;height:18px;padding:0 6px;border-radius:999px;background:var(--accent);color:#fff;font-size:10.5px;line-height:18px;text-align:center}body.night .home-app em.n{color:#14161c}
+    .home-app:hover{color:var(--ink);transform:translateY(-2px)}.home-app:active{transform:scale(.96);transition-duration:.08s}
+    .home-app:focus-visible{outline:1.5px solid var(--quiet);outline-offset:2px}
+    /* notification centre: opened from the account menu, slides in from the right over a blurred backdrop */
+    .me-btn{position:relative}
+    .me-btn.unread:after{content:"";position:absolute;top:-1px;right:-1px;width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--fog)}
+    #notifCount{display:none;min-width:18px;height:18px;padding:0 6px;border-radius:999px;background:var(--accent);color:#fff;font-size:10.5px;line-height:18px;text-align:center;font-variant-numeric:tabular-nums}
+    #notifCount.on{display:block}body.night #notifCount{color:#14161c}
+    .notif{position:absolute;top:0;right:0;bottom:0;z-index:38;display:flex;flex-direction:column;width:min(460px,100%);color:var(--ink);font-size:12.5px;opacity:0;pointer-events:none;transition:opacity .3s var(--ease)}
+    .notif.open{opacity:1;pointer-events:auto}
+    .notif-veil{position:absolute;inset:0;background:linear-gradient(to left,rgba(232,232,232,.5),rgba(232,232,232,0));-webkit-backdrop-filter:blur(28px) saturate(1.2);backdrop-filter:blur(28px) saturate(1.2);-webkit-mask-image:linear-gradient(to left,#000 50%,transparent);mask-image:linear-gradient(to left,#000 50%,transparent)}
+    body.night .notif-veil{background:linear-gradient(to left,rgba(12,12,12,.55),rgba(12,12,12,0))}
+    .notif-head{position:relative;display:flex;align-items:center;justify-content:space-between;padding:62px 18px 12px 30px}
+    .notif-head b{font-size:15px;font-weight:600;letter-spacing:-.01em}
+    .notif-head button{border:0;border-radius:999px;background:var(--glass);padding:5px 12px;color:var(--quiet);font-size:11.5px;-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);transition:color .2s,opacity .2s}
+    .notif-head button:hover{color:var(--ink)}.notif-head button:disabled{opacity:0;pointer-events:none}
+    .notif-list{position:relative;flex:1;min-height:0;overflow-y:auto;scrollbar-width:none;display:flex;flex-direction:column;gap:10px;padding:4px 14px 18px 30px}
+    .notif-list::-webkit-scrollbar{display:none}
+    .notif-item{position:relative;flex:none;display:grid;grid-template-columns:36px 1fr;gap:2px 12px;padding:12px 14px;border-radius:20px;line-height:1.4;background:rgba(255,255,255,.62);border:1px solid var(--glass-edge);box-shadow:0 10px 28px -14px rgba(0,0,0,.28);-webkit-backdrop-filter:blur(30px) saturate(1.6);backdrop-filter:blur(30px) saturate(1.6)}
+    body.night .notif-item{background:rgba(52,52,56,.62);border-color:rgba(255,255,255,.1)}
+    .notif-item.in{animation:notifIn .55s var(--spring) both;animation-delay:calc(var(--i,0)*60ms)}
+    @keyframes notifIn{from{opacity:0;transform:translateX(36px) scale(.96)}}
+    .notif.closing .notif-item{animation:notifOut .42s cubic-bezier(.4,0,.8,.6) both;animation-delay:calc(var(--i,0)*90ms)}
+    @keyframes notifOut{to{opacity:0;transform:translateX(44px) scale(.95)}}
+    .notif-veil{transition:opacity .4s var(--ease)}.notif-head{transition:opacity .25s var(--ease)}
+    .notif.closing .notif-head{opacity:0}.notif.closing .notif-veil{opacity:0;transition-delay:.2s}
+    .notif-item .avatar{grid-row:1/3;margin:0;width:36px;height:36px;border:0}.notif-item .avatar.svc .ic{width:19px;height:19px}
+    .notif-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+    .notif-top b{font-size:13px;font-weight:600}.notif-top time{flex:none;color:var(--faint);font-size:11px;font-variant-numeric:tabular-nums}
+    .notif-item p{grid-column:2;margin:0;color:var(--quiet);font-size:12.5px}
+    .notif-x{position:absolute;top:-7px;left:-7px;width:20px;height:20px;padding:0;display:grid;place-items:center;border:1px solid var(--glass-edge);border-radius:50%;background:var(--paper);color:var(--quiet);font-size:12px;line-height:1;opacity:0;transform:scale(.8);transition:opacity .15s,transform .25s var(--spring)}
+    .notif-item:hover .notif-x{opacity:1;transform:none}.notif-x:hover{color:var(--ink)}
+    .notif.empty .notif-head{display:none}
+    @media(max-width:520px){.notif-head{padding-left:16px}.notif-list{padding-left:14px}}
+    body.notif-open .toasts{display:none}
+
     @media(max-width:760px){.statusbar{padding:0 16px}.clock{display:none}.hints{gap:0}.hints button span.lbl{display:none}.ov-layout{grid-template-columns:1fr}.rules,.rules-slot{display:none}.home-time{font-size:56px}.player{grid-template-columns:110px 1fr}.lst{grid-template-columns:1fr 110px}}
     @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
   </style>
@@ -576,6 +636,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
           <div class="umenu" id="userMenu" role="menu">
             <div class="um-head"><span class="me-btn">A</span><div><b>Andrew</b><span id="umSub"></span></div></div>
             <div class="um-row"><span id="umLang"></span><div class="lang" id="langSwitch"><button data-lang="ru">RU</button><button data-lang="en">EN</button></div></div>
+            <button class="um-row" id="notifBtn" role="menuitem"><span id="umNotif"></span><em id="notifCount"></em></button>
             <button class="um-row" id="nightBtn" role="menuitem"><span id="umTheme"></span><em id="umThemeVal"></em></button>
             <div class="um-sep"></div>
             <a class="um-row" id="backLink" href="/intent-os" role="menuitem"></a>
@@ -590,6 +651,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       <form class="home-line" id="homeLine"><textarea id="intentInput" rows="1" autocomplete="off" spellcheck="false"></textarea><button class="mic" type="button" id="homeMic"></button><button class="send" type="submit" id="homeSend"></button></form>
       <div class="home-parse" id="homeParse"></div>
       <div class="blueprints" id="blueprints"></div>
+      <div class="home-apps" id="homeApps"></div>
       <button class="timeline-hint" id="timelineHint"></button>
     </section>
 
@@ -619,7 +681,8 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     <div class="palette" id="palette"></div>
     <button class="sel-bubble" id="selBubble"></button>
     <footer class="hints" id="hints"></footer>
-    <div class="toast" id="toast"></div>
+    <div class="toasts" id="toasts" aria-live="polite"></div>
+    <aside class="notif" id="notifPanel" role="dialog" aria-labelledby="notifTitle"><div class="notif-veil"></div><div class="notif-head"><b id="notifTitle"></b><button id="notifClear"></button></div><div class="notif-list" id="notifList"></div></aside>
   </div>
 
   <script>
@@ -871,6 +934,27 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         ],
         auto:{delay:8000,flow:2,from:"calendar",make:()=>M("invite",T("1:1 with Leo","1:1 с Лео"),"calendar",{title:T("1:1 with Leo — moved","1:1 с Лео — перенесено"),when:T("Today · 17:30 – 18:00","Сегодня · 17:30 – 18:00"),who:T("Leo Park","Лео Пак"),where:T("Call","Созвон"),note:T("Calendar moved this to avoid overlapping with the critique.","Календарь перенёс встречу, чтобы она не пересекалась с критикой.")})}
       }),
+      calendar:()=>({id:"calendar",title:T("My day","Мой день"),
+        collabs:[{id:"calendar",name:T("Calendar","Календарь"),kind:"service",access:T("Availability and invites · may add modules","Занятость и приглашения · может добавлять модули")},PERSON("maya","Maya Chen","Майя Чен","Sees my availability","Видит мою занятость"),PERSON("leo","Leo Park","Лео Пак","Sees my availability","Видит мою занятость")],
+        rules:[{text:T("Warn me about overlapping meetings","Предупреждать о пересекающихся встречах"),on:true},{text:T("Keep mornings free until 11:00","Беречь утро до 11:00"),on:false}],
+        flows:[
+          {name:T("Schedule","Расписание"),modules:[
+            M("calendar",T("Today","Сегодня"),"calendar",{title:T("Today · 3 events","Сегодня · 3 события"),range:[9,18],now:new Date().getHours()+new Date().getMinutes()/60,events:[{s:11,e:12,t:T("Coffee with Maya","Кофе с Майей"),w:"Fábrica Coffee"},{s:13,e:14.5,t:T("Meeting with Leo","Встреча с Лео"),w:T("Studio","Студия")},{s:16,e:16.75,t:T("Design critique","Дизайн-критика"),w:T("Studio, room 2","Студия, переговорка 2")}]}),
+            M("calendar",T("Tomorrow","Завтра"),"calendar",{title:T("Tomorrow · 2 events","Завтра · 2 события"),range:[9,18],now:-1,events:[{s:10,e:11,t:T("Sprint planning","Планирование спринта"),w:T("Studio, big room","Студия, большая комната")},{s:15,e:16,t:T("Q4 report review","Разбор отчёта за Q4"),w:T("Call","Созвон")}]})
+          ]},
+          {name:T("Invites","Приглашения"),modules:[
+            M("invite",T("Design critique","Дизайн-критика"),"calendar",{title:T("Design critique","Дизайн-критика"),when:T("Today · 16:00 – 16:45","Сегодня · 16:00 – 16:45"),who:T("Maya, Leo and 3 others","Майя, Лео и ещё 3"),where:T("Studio, room 2","Студия, переговорка 2")}),
+            M("invite",T("Sprint planning","Планирование спринта"),"calendar",{title:T("Sprint planning","Планирование спринта"),when:T("Tomorrow · 10:00 – 11:00","Завтра · 10:00 – 11:00"),who:T("Daniel, Leo and 4 others","Даниэль, Лео и ещё 4"),where:T("Studio, big room","Студия, большая комната")})
+          ]}
+        ]}),
+      music:()=>({id:"music",title:T("Background music","Фоновая музыка"),
+        collabs:[{id:"music",name:T("Music","Музыка"),kind:"service",access:T("Playlists and playback","Плейлисты и воспроизведение")}],
+        rules:[{text:T("Pause music when a call starts","Ставить на паузу, когда начинается звонок"),on:true}],
+        flows:[{name:T("Playlists","Плейлисты"),modules:[
+          M("player",T("Motivational mix","Мотивация"),"music",{seed:7,title:T("Motivational mix","Мотивация"),artist:T("Playlist · 6 tracks","Плейлист · 6 треков"),track:0,t:0,playing:true,tracks:[["Neon Pulse","Kaya","3:24"],["Run It Back","Mira","2:58"],["Afterglow","The Lanterns","3:41"],["Higher Ground","Odo","3:12"],["Glass Hearts","Vela","2:47"],["Cool Down","Sora","4:05"]]}),
+          M("player",T("Deep focus","Фокус"),"music",{seed:19,title:T("Deep focus","Фокус"),artist:T("Playlist · 4 tracks","Плейлист · 4 трека"),track:0,t:0,playing:false,tracks:[["Paper Light","Oru","5:12"],["Slow Tide","Hana","4:36"],["Quiet Room","Sora","6:02"],["Low Sun","Odo","4:48"]]}),
+          M("player",T("Evening wind-down","Вечер"),"music",{seed:31,title:T("Evening wind-down","Вечер"),artist:T("Playlist · 4 tracks","Плейлист · 4 трека"),track:0,t:0,playing:false,tracks:[["Blue Hour","Mira","3:58"],["Soft Static","Vela","4:21"],["Last Train","The Lanterns","3:44"],["Moon Pool","Kaya","5:03"]]})
+        ]}]}),
       trip:()=>({id:"trip",title:T("Plan a trip to Lisbon","Спланировать поездку в Лиссабон"),
         collabs:[{id:"airline",name:T("Airline","Авиакомпания"),kind:"service",access:T("Sees the Flights flow only","Видит только поток «Рейсы»")},{id:"stays",name:T("Stays","Жильё"),kind:"service",access:T("Sees the Stay flow only","Видит только поток «Жильё»")},{id:"maps",name:T("Maps","Карты"),kind:"service",access:T("Places in this Space","Места из этого пространства")},{id:"weather",name:T("Weather","Погода"),kind:"service",access:T("Itinerary · may add modules","Маршрут · может добавлять модули")},{id:"maya",name:T("Maya Chen","Майя Чен"),kind:"person",access:T("Can edit the itinerary","Может править маршрут")},PERSON("sofia","Sofia Reyes","Софья Рейес","Travelling with us · sees flights and stays","Летит с нами · видит рейсы и жильё"),PERSON("daniel","Daniel Kim","Даниэль Ким","Meets us on Saturday · sees the itinerary","Встречает в субботу · видит маршрут")],
         rules:[{text:T("Keep the total under €900","Уложиться в €900"),on:true},{text:T("Prefer direct flights","Предпочитать прямые рейсы"),on:true},{text:T("Let Weather suggest changes","Погода может предлагать изменения"),on:true,auto:true}],
@@ -1114,6 +1198,8 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       if(/apartment|flat|rent|квартир|переезд|аренд/.test(t))return BP.flat();
       if(/trip|travel|lisbon|flight|vacation|поездк|отпуск|путешеств|лиссабон/.test(t))return BP.trip();
       if(/gym|workout|спортзал|трениров/.test(t))return BP.gym();
+      if(/calendar|schedule|agenda|календар|расписан|мои встреч/.test(t))return BP.calendar();
+      if(/music|playlist|\bplay\b|songs?\b|музык|плейлист|включи|песн/.test(t))return BP.music();
       if(/report|q4|отч[её]т/.test(t))return BP.report();
       const p=parse(intent),m=M("result",cap(p.noun),"intent");
       defineModule(m,intent,[]);
@@ -1527,13 +1613,12 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       allModules().forEach(runSteps);
       if(overviewFirst){
         toggleOverview(true,true);
-        flowsFade?.cancel();flowsFade=null;$("#flows").style.opacity="0";
         if(!reduce.matches){
-          $("#overview").animate([{opacity:0},{opacity:1}],{duration:420,easing:"ease-out"});
+          fade($("#overview"),"1",420,0,"0");
           staggerIn($$("#ovFlows .mini"),18,40);
           $$("#overview .ov-title,#overview .rules,#overview .ov-head,#overview .new-flow").forEach((n,i)=>n.animate([{opacity:0,transform:"translateY(10px)"},{opacity:1,transform:"none"}],{duration:520,delay:120+i*35,easing:EASE,fill:"backwards"}));
         }
-      }else{flowsFade?.cancel();flowsFade=null;$("#flows").style.opacity=""}
+      }else fade($("#flows"),"1");
       if(S.auto&&!keep){S.autoArmed=true;autoTimer=setTimeout(()=>collaboratorAdds(S.id),S.auto.delay)}
     }
     function collaboratorAdds(id){
@@ -1558,7 +1643,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       const tok=++navTok;
       if(S&&!reduce.matches){
         clearTimeout(autoTimer);
-        if(overviewOpen)$("#overview").animate([{opacity:1},{opacity:0}],{duration:260,easing:"ease-out",fill:"forwards"});
+        if(overviewOpen)fade($("#overview"),"0",260);
         $$("#flows .module").forEach((c,i)=>c.animate([{opacity:1},{opacity:0,translate:"0 30px",scale:".94"}],{duration:380,delay:i*20,easing:EASE,fill:"forwards"}));
         /* a Space opened inside those 280 ms must not be pulled back home by this timer */
         setTimeout(()=>{if(tok===navTok)setView("home")},280);
@@ -1679,6 +1764,13 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       renderSpace();toggleOverview(false);setTimeout(()=>{arrive(m,"down");focusLine()},500);
     }
     let ovRun=0,morphGhosts=[];
+    /* #overview and #flows fade through an inline !important transition, never WAAPI:
+       Chrome can keep a cancelled opacity animation applied to a layer and leave it invisible for good */
+    function fade(el,to,dur=0,delay=0,from=null){
+      if(from!=null){el.style.transition="none";el.style.setProperty("opacity",from,"important");el.offsetWidth}
+      el.style.transition=dur?`opacity ${dur}ms ease-out ${delay}ms`:"none";
+      el.style.setProperty("opacity",to,"important");
+    }
     /* One card, two sizes: the mini and the full module are the same object, so it grows / shrinks in place
        (frame animates size + radius, the compact and full faces cross-fade inside it) instead of one replacing the other. */
     function morphCard(mini,card,toMini,dur,fadeAt=0,simple=false){
@@ -1688,8 +1780,6 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       /* neighbours and other flows sit scaled / dimmed / blurred in the space; the frame carries that look so it never pops */
       const k=b.width/W,flow=card.closest(".flow"),idle=!card.classList.contains("active"),far=flow&&!flow.classList.contains("current");
       const dimO=(parseFloat(getComputedStyle(card).opacity)||1)*(flow?parseFloat(getComputedStyle(flow).opacity)||1:1);
-      const dimF=idle||far?`${idle?"saturate(.5)":"saturate(1)"} blur(${far?1.6:0}px)`:"";
-      const calm="saturate(1) blur(0px)";
       /* Shared elements: title, body text and icon exist in both faces. They are lifted out of the cross-fade and
          travel on their own (position, size, font-size, line-height, colour), so type grows / shrinks instead of dissolving. */
       const norm=t=>t.replace(/\s+/g," ").trim(),pairs=[];
@@ -1740,10 +1830,10 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       if(fadeAt)g.animate([{opacity:dimO},{opacity:0}],{duration:300,delay:fadeAt,fill:"forwards"});
       mini.style.opacity="0";
       /* while the frame stands in for the card, the real card must not show through it (it would double the look) */
-      if(toMini)g._hide=card.animate([{opacity:0},{opacity:0}],{duration:1,fill:"forwards"});
+      g._card=card;card.style.setProperty("opacity","0","important");
       return g;
     }
-    const dropGhost=g=>{g._hide?.cancel();g.remove()};
+    const dropGhost=g=>{g._card?.style.removeProperty("opacity");g.remove()};
     function toggleOverview(force,instant){
       if(!S)return;
       const el=$("#overview"),flows=$("#flows");
@@ -1751,14 +1841,12 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       if(open===overviewOpen&&!instant)return;
       const run=++ovRun;overviewOpen=open;if(open)ovSel=null;$("#ovFlows").classList.remove("kb");closePalette();renderHints();
       el.getAnimations({subtree:true}).forEach(a=>a.cancel());
-      flows.getAnimations().forEach(a=>a.cancel());
-      flowsFade?.cancel();flowsFade=null;
       morphGhosts.forEach(dropGhost);morphGhosts=[];
-      el.style.opacity="";
+      const shown=el.classList.contains("open");
       if(open){el.classList.remove("closing");renderOverview();el.classList.add("open")}
       if(instant||reduce.matches){
         el.classList.toggle("open",open);el.classList.remove("closing");
-        flows.style.opacity=open?"0":"";
+        fade(el,"1");fade(flows,open?"0":"1");
         $$("#ovFlows .mini").forEach(c=>c.style.opacity="");
         return;
       }
@@ -1774,29 +1862,26 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         if(!card)return;const near=n===0||(loc&&findModule(mod.id).fi===loc.fi&&Math.abs(findModule(mod.id).mi-loc.mi)===1);if(!near)return;
         const gh=morphCard(c,card,toMini,dur,fadeAt,n!==0);if(gh){morphs.set(c,gh);morphGhosts.push(gh)}});
       if(open){
-        flows.style.opacity="0";
-        el.animate([{opacity:0},{opacity:1}],{duration:340,delay:120,easing:"ease-out",fill:"backwards"});
-        flowsFade=flows.animate([{opacity:1},{opacity:0}],{duration:300,easing:"ease-out"});
+        fade(el,"1",340,shown?0:120,shown?null:"0");
+        fade(flows,"0",300);
         morphAll(true,720);
         const mine=[...morphGhosts];
         setTimeout(()=>{if(run!==ovRun)return;mine.forEach(dropGhost);morphGhosts=morphGhosts.filter(g=>!mine.includes(g));minis.forEach(c=>c.style.opacity="");el.getAnimations({subtree:true}).forEach(a=>a.cancel())},740);
         order.filter(i=>!morphs.has(minis[i])).forEach((i,k)=>minis[i].animate([{opacity:0,transform:"translateY(14px) scale(.97)"},{opacity:1,transform:"none"}],{duration:560,delay:120+k*22,easing:EASE,fill:"backwards"}));
         chrome.forEach((n,i)=>n.animate([{opacity:0,transform:"translateY(10px)"},{opacity:1,transform:"none"}],{duration:520,delay:120+i*35,easing:EASE,fill:"backwards"}));
       }else{
-        flows.style.opacity="";
         el.classList.add("closing");
         const dur=560,total=dur+minis.length*14;
-        morphAll(false,640,total-320);
+        morphAll(false,640,0);
         const mine=[...morphGhosts];
-        setTimeout(()=>{if(run!==ovRun)return;mine.forEach(dropGhost);morphGhosts=morphGhosts.filter(g=>!mine.includes(g))},total+60);
+        setTimeout(()=>{if(run!==ovRun)return;mine.forEach(dropGhost);morphGhosts=morphGhosts.filter(g=>!mine.includes(g))},650);
         order.filter(i=>!morphs.has(minis[i])).forEach((i,k)=>minis[i].animate([{opacity:1,transform:"none"},{opacity:0,transform:"scale(.97)"}],{duration:320,delay:k*14,easing:"ease-in",fill:"forwards"}));
         /* the overview chrome (menu, title, labels, other minis) clears out at once so the travelling cards never overlap it */
-        el.animate([{opacity:1},{opacity:0}],{duration:220,easing:"ease-out",fill:"forwards"});
-        flowsFade=flows.animate([{opacity:0},{opacity:1}],{duration:300,delay:total-320,easing:"ease-out",fill:"backwards"});
-        setTimeout(()=>{if(run!==ovRun)return;flowsFade?.cancel();flowsFade=null;flows.style.opacity="";el.classList.remove("open","closing");el.getAnimations({subtree:true}).forEach(a=>a.cancel())},total+60);
+        fade(el,"0",220);
+        fade(flows,"1",300,total-320);
+        setTimeout(()=>{if(run!==ovRun)return;el.classList.remove("open","closing");fade(el,"1");el.getAnimations({subtree:true}).forEach(a=>a.cancel())},total+60);
       }
     }
-    let flowsFade=null;
     function findModuleById(id){return allModules().find(m=>m.id===id)}
 
     let drag=null;
@@ -1883,18 +1968,69 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       $("#hints").innerHTML=H.map(([k,l],i)=>`<button data-h="${i}"><span class="kbd" ${k==="⌘"?'id="metaKbd"':""}>${k}</span><span class="lbl">${l}</span></button>`).join("");
       $$("#hints button").forEach((b,i)=>b.onclick=()=>H[i][2]?.());
     }
-    let toastTimer;
-    function showToast(text,action,fn){const t=$("#toast");t.innerHTML=`<span>${esc(text)}</span>${action?`<button>${action}</button>`:""}`;if(action)t.querySelector("button").onclick=()=>{fn();t.classList.remove("show")};t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),action?5200:2000)}
+    function dropToast(t,now){if(t._gone)return;t._gone=true;clearTimeout(t._timer);if(now||reduce.matches){t.remove();return}t.classList.add("out");setTimeout(()=>t.remove(),280)}
+    /* every toast is also kept in the notification centre (account menu → Notifications) */
+    /* three sample notifications so the centre is never empty on first open (text is [EN, RU] and resolved at render time) */
+    const NOTIFS=[
+      {id:1,ts:Date.now()-4*60e3,text:["Maya Chen: Kastanienallee 7 is still available — want me to book a viewing on Saturday at 11:00?","Майя Чен: Kastanienallee 7 ещё свободна — хочешь, договорюсь о просмотре в субботу в 11:00?"]},
+      {id:2,ts:Date.now()-18*60e3,text:["Calendar: Design critique moved to 16:30. No conflicts with your other meetings.","Календарь: «Дизайн-критика» сдвинута на 16:30. Конфликтов с другими встречами нет."]},
+      {id:3,ts:Date.now()-47*60e3,text:["Weather: Light snow tomorrow morning, 50% at −2°. Your 07:30 alarm will cancel itself if it snows at 07:15.","Погода: Завтра утром небольшой снег, 50% при −2°. Будильник на 07:30 отменится сам, если в 07:15 пойдёт снег."]}
+    ];let notifUnread=NOTIFS.length,notifSeq=NOTIFS.length;
+    const notifText=n=>Array.isArray(n.text)?T(...n.text):String(n.text);
+    let notifCloseT;
+    const notifOpen=()=>{const p=$("#notifPanel");return p.classList.contains("open")&&!p.classList.contains("closing")};
+    function notifTime(ts){const s=(Date.now()-ts)/1000;if(s<45)return T("just now","только что");if(s<3600){const m=Math.max(1,Math.round(s/60));return T(`${m} min ago`,`${m} мин назад`)}const d=new Date(ts);return pad(d.getHours())+":"+pad(d.getMinutes())}
+    /* "Source: message" → card title + body; known people / services get their own avatar, everything else is Intent */
+    function notifParts(text){const m=String(text).match(/^([^:]{1,32}):\s+([\s\S]+)$/);return m?[m[1],m[2]]:[T("Intent","Намерение"),String(text)]}
+    function notifCard(n,i,anim){const[t,b]=notifParts(notifText(n)),k=t.toLowerCase().trim(),who=(PHOTO[k]||SVC_TILE[k])?t:"Intent";
+      return `<div class="notif-item${anim?" in":""}" data-n="${n.id}" style="--i:${i}"><button class="notif-x" data-nx="${n.id}" aria-label="${T("Dismiss","Убрать")}">×</button>${avatar(who,"md")}<div class="notif-top"><b>${esc(t)}</b><time>${notifTime(n.ts)}</time></div><p>${esc(b)}</p></div>`}
+    function renderNotifs(anim){
+      $("#notifTitle").textContent=T("Notifications","Уведомления");$("#notifClear").textContent=T("Clear all","Очистить");$("#notifClear").disabled=!NOTIFS.length;
+      $("#notifList").innerHTML=NOTIFS.length?NOTIFS.map((n,i)=>notifCard(n,i,anim)).join(""):"";
+      $("#notifPanel").classList.toggle("empty",!NOTIFS.length);
+      const c=$("#notifCount");c.textContent=notifUnread;c.classList.toggle("on",notifUnread>0);$("#meBtn").classList.toggle("unread",notifUnread>0);
+    }
+    function logNotif(text){NOTIFS.unshift({id:++notifSeq,text,ts:Date.now()});NOTIFS.length=Math.min(NOTIFS.length,50);if(!notifOpen())notifUnread++;renderNotifs(false)}
+    /* opening: cards slide in one after another; closing: they leave one after another, then the veil fades */
+    function showNotifs(o){
+      const p=$("#notifPanel");clearTimeout(notifCloseT);
+      if(o){p.classList.remove("closing");p.classList.add("open");document.body.classList.add("notif-open");notifUnread=0;renderNotifs(true);$("#notifList").scrollTop=0;return}
+      if(!notifOpen())return;
+      document.body.classList.remove("notif-open");
+      const n=p.querySelectorAll(".notif-item").length;
+      if(reduce.matches||!n){p.classList.remove("open");return}
+      p.classList.add("closing");
+      notifCloseT=setTimeout(()=>p.classList.remove("open","closing"),(n-1)*90+480);
+    }
+    /* ───────── quick intents: each chip builds its Space, a chain of modules ───────── */
+    const QI={mail:{ic:"mail",bp:()=>BP.inbox(),t:()=>T("Review inbox","Разобрать входящие")},calendar:{ic:"cal",bp:()=>BP.calendar(),t:()=>T("My day","Мой день")},music:{ic:"music",bp:()=>BP.music(),t:()=>T("Background music","Фоновая музыка")}};
+    function renderHomeApps(){
+      const h=new Date().getHours()+new Date().getMinutes()/60,n=BP.inbox().flows[0].modules[0].data.rows.length,nx=BP.calendar().flows[0].modules[0].data.events.find(e=>e.e>h);
+      const meta={mail:n?`<em class="n">${n}</em>`:"",calendar:nx?`<em>${nx.s<=h?T("now","сейчас"):fmtH(nx.s)}</em>`:"",music:""};
+      $("#homeApps").innerHTML=Object.entries(QI).map(([k,q])=>`<button class="home-app" data-app="${k}">${ic(q.ic)}<span>${q.t()}</span>${meta[k]}</button>`).join("");
+    }
+    function showToast(text,action,fn){
+      logNotif(text);
+      const box=$("#toasts");
+      [...box.children].forEach(n=>{if(n.dataset.t===text)dropToast(n,true)});
+      const t=document.createElement("div");t.className="toast";t.dataset.t=text;
+      t.innerHTML=`<span>${esc(text)}</span>${action?`<button>${action}</button>`:""}`;
+      if(action)t.querySelector("button").onclick=()=>{fn();dropToast(t)};
+      box.prepend(t);
+      while(box.children.length>4)dropToast(box.lastElementChild,true);
+      t._timer=setTimeout(()=>dropToast(t),action?5200:2600);
+    }
 
     function applyLang(){
       document.documentElement.lang=LANG;
       $$("#langSwitch button").forEach(b=>b.classList.toggle("on",b.dataset.lang===LANG));
       $("#backLink").textContent=T("Back to case","Вернуться к кейсу");$("#backLink").href=LANG==="en"?"/en/intent-os":"/intent-os";
-      $("#umSub").textContent=T("Personal","Личный аккаунт");$("#umLang").textContent=T("Language","Язык");$("#umTheme").textContent=T("Theme","Тема");
+      $("#umSub").textContent=T("Personal","Личный аккаунт");$("#umLang").textContent=T("Language","Язык");$("#umTheme").textContent=T("Theme","Тема");$("#umNotif").textContent=T("Notifications","Уведомления");renderNotifs(false);
       $("#umThemeVal").textContent=document.body.classList.contains("night")?T("Night","Ночь"):T("Day","День");
       $("#intentInput").placeholder=T("What do you intend to do?","Что вы хотите сделать?");
       $("#homeMic").innerHTML=ic("mic");$("#homeSend").innerHTML=ic("arrowUp");$("#homeSend").setAttribute("aria-label",T("Create Space","Собрать пространство"));$("#tlIcon").innerHTML=ic("search");
       renderSignals();
+      renderHomeApps();
       $("#timelineHint").innerHTML=`<span>${ic("up")}</span>${T("Timeline","Хронология")}`;
       $("#tlTitle").textContent=T("Timeline","Хронология");$("#tlSub").textContent=T("Every Space and module, in the order you lived it.","Все пространства и модули — в том порядке, в каком вы их проживали.");
       $("#tlSearch").placeholder=T("Describe what you’re looking for — “the blue chart Leo sent”","Опишите, что ищете — «синий график, который прислал Лео»");
@@ -1944,6 +2080,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       openSignal(idx,false);
     });
     $("#blueprints").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){const card=e.target.closest(".sig");if(card){e.preventDefault();openSignal(+card.dataset.sig,false)}}});
+    $("#homeApps").addEventListener("click",e=>{const b=e.target.closest("[data-app]");if(b)openSpace(QI[b.dataset.app].bp())});
     $("#timelineHint").onclick=()=>setView("timeline");
     $("#tlSearch").addEventListener("input",e=>searchTimeline(e.target.value));
     $("#tlList").addEventListener("click",e=>{const b=e.target.closest(".tl-item");if(!b)return;const it=tlData[b.dataset.g].items[b.dataset.i];openSpace(it.bp?BP[it.bp]():blueprintFor(it.intent))});
@@ -1952,6 +2089,12 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     $("#meBtn").onclick=e=>{e.stopPropagation();setMenu(!meWrap.classList.contains("open"))};
     document.addEventListener("click",e=>{if(!e.target.closest("#userMenu"))setMenu(false)});
     addEventListener("keydown",e=>{if(e.key==="Escape"&&meWrap.classList.contains("open")){e.stopImmediatePropagation();setMenu(false)}},true);
+    $("#notifBtn").onclick=()=>{setMenu(false);showNotifs(!notifOpen())};
+    $("#notifClear").onclick=()=>{NOTIFS.length=0;notifUnread=0;renderNotifs(false)};
+    $("#notifList").addEventListener("click",e=>{const x=e.target.closest("[data-nx]");if(!x)return;const i=NOTIFS.findIndex(n=>n.id===+x.dataset.nx);if(i>=0)NOTIFS.splice(i,1);renderNotifs(false)});
+    /* a click anywhere hides the notifications (capture phase, so handlers that stop propagation — like the avatar — can't swallow it); only the panel's own controls and the menu row are exempt */
+    document.addEventListener("click",e=>{if(notifOpen()&&!e.target.closest(".notif-x,#notifClear,#notifBtn"))showNotifs(false)},true);
+    addEventListener("keydown",e=>{if(e.key==="Escape"&&notifOpen()){e.stopImmediatePropagation();showNotifs(false)}},true);
     $("#langSwitch").onclick=e=>{const b=e.target.closest("button");if(b)setLang(b.dataset.lang)};
     $("#ovClose").onclick=()=>toggleOverview(false);
     $("#navdots").addEventListener("click",e=>{const b=e.target.closest("button");if(b){S.f=+b.dataset.f;layout()}});
@@ -2298,7 +2441,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     const qs=params.get("space");
     if(qs&&BP[qs])openSpace(BP[qs]());
     else if(params.get("view")==="timeline")setView("timeline");
-    else{setTimeout(()=>$("#intentInput").focus(),200);staggerIn($$(".home-time,.home-date,.home-line,.blueprints,.timeline-hint"),18,70)}
+    else{setTimeout(()=>$("#intentInput").focus(),200);staggerIn($$(".home-time,.home-date,.home-line,.blueprints,.home-apps,.timeline-hint"),18,70)}
   </script>
   <script src="/demos/intent-os/live.js"></script>
 </body>
