@@ -200,20 +200,20 @@ p { margin: 0; }
 }
 .flip-a {
   transform: translateY(0);
-  transition: transform 0.26s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+  transition: transform 0.28s cubic-bezier(0.55, 0.085, 0.68, 0.53);
 }
 .flip-b {
-  transform: translateY(155%) rotate(7deg);
-  transition: transform 0.45s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transform: translateY(120%);
+  transition: transform 0.42s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 .btn:hover .flip-a, .cta-form button:hover .flip-a, .float:hover .flip-a, .lang:hover .flip-a,
 .btn:focus-visible .flip-a, .cta-form button:focus-visible .flip-a, .float:focus-visible .flip-a, .lang:focus-visible .flip-a {
-  transform: translateY(-155%);
+  transform: translateY(-120%);
 }
 .btn:hover .flip-b, .cta-form button:hover .flip-b, .float:hover .flip-b, .lang:hover .flip-b,
 .btn:focus-visible .flip-b, .cta-form button:focus-visible .flip-b, .float:focus-visible .flip-b, .lang:focus-visible .flip-b {
-  transform: translateY(0) rotate(0deg);
-  transition-delay: 0.05s;
+  transform: translateY(0);
+  transition-delay: 0.04s;
 }
 .arrow-swap {
   position: relative;
@@ -709,8 +709,8 @@ main { display: block; padding: 240px 16px 160px; }
 .prose p { margin-top: 16px; }
 .prose strong { color: #fff; font-weight: 500; }
 .prose em { font-style: italic; color: rgba(255, 255, 255, 0.8); }
-.prose a { color: #fff; text-decoration: underline; text-decoration-color: rgba(255, 255, 255, 0.3); text-underline-offset: 4px; transition: text-decoration-color 0.25s; }
-.prose a:hover { text-decoration-color: var(--mint); }
+.prose a:not(.btn) { color: #fff; text-decoration: underline; text-decoration-color: rgba(255, 255, 255, 0.3); text-underline-offset: 4px; transition: text-decoration-color 0.25s; }
+.prose a:not(.btn):hover { text-decoration-color: var(--mint); }
 .prose ul, .prose ol { margin: 16px 0 0; padding-left: 24px; }
 .prose li { margin-top: 8px; }
 .prose code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.82em; color: #fff; background: var(--glass); padding: 2px 6px; border-radius: 6px; letter-spacing: 0; }
