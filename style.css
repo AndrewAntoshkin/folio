@@ -1024,7 +1024,7 @@ main.approach { padding-top: 176px; }
 .prose figure.case-fig figcaption { margin-top: 10px; font-size: 14px; line-height: 20px; color: var(--muted); }
 /* text column is 64px narrower than media; more air between text and media */
 @media (min-width: 810px) {
-  .prose :is(h2, h3, p, ul, ol, dl, pre):not(figure *) { margin-inline: 32px; }
+  .prose :is(h2, h3, p, ul, ol, dl, pre):not(figure *), .prose .feature-list, .prose figure.bench { margin-inline: 32px; }
   .prose table:not(figure *) { width: calc(100% - 64px); margin-inline: 32px; }
 }
 .prose figure + :is(p, h3, ul, ol, dl, pre, table) { margin-top: 40px; }
