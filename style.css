@@ -1017,17 +1017,23 @@ main.approach { padding-top: 176px; }
 .prose .bench-scores p:first-child b { color: var(--mint); }
 .prose .bench table { box-shadow: none; }
 .prose .bench > p { font-size: 15px; line-height: 22px; }
-.prose figure.case-fig { margin: 48px 0 0; }
+.prose figure.case-fig { margin: 96px 0 0; }
+.prose figure.case-fig + figure.case-fig { margin-top: 48px; }
 .prose figure.case-fig img { display: block; width: 100%; height: auto; border-radius: 16px; border: 1px solid var(--line); }
 .prose figure.case-fig iframe.case-demo { display: block; width: 100%; aspect-ratio: var(--ar, 4/3); border: 0; border-radius: 16px; background: #5bb3e8; }
 .prose figure.case-fig iframe.case-demo + img { margin-top: 12px; }
 .prose figure.case-fig figcaption { margin-top: 10px; font-size: 14px; line-height: 20px; color: var(--muted); }
-/* text column is 64px narrower than media; more air between text and media */
+/* text column is 660px wide, centered; 96px between text and media */
 @media (min-width: 810px) {
-  .prose :is(h2, h3, p, ul, ol, dl, pre):not(figure *), .prose .feature-list, .prose figure.bench { margin-inline: 32px; }
-  .prose table:not(figure *) { width: calc(100% - 64px); margin-inline: 32px; }
+  .prose :is(h2, h3, p, ul, ol, dl, pre):not(figure *), .prose .feature-list, .prose figure.bench { max-width: 660px; margin-inline: auto; }
+  .prose table:not(figure *) { width: min(100%, 660px); margin-inline: auto; }
 }
-.prose figure + :is(p, h3, ul, ol, dl, pre, table) { margin-top: 40px; }
+.prose figure.case-fig + :is(p, h2, h3, ul, ol, dl, pre, table) { margin-top: 96px; }
+@media (max-width: 809px) {
+  .prose figure.case-fig { margin-top: 48px; }
+  .prose figure.case-fig + figure.case-fig { margin-top: 32px; }
+  .prose figure.case-fig + :is(p, h2, h3, ul, ol, dl, pre, table) { margin-top: 48px; }
+}
 .skill-index { display: inline-block; width: 2.25em; margin-right: 12px; color: var(--muted); font-size: 12px; font-weight: 500; letter-spacing: 0.06em; vertical-align: 0.15em; }
 .skill-open { border: 0; font: inherit; cursor: pointer; }
 .skill-modal { width: min(820px, calc(100% - 32px)); max-height: min(760px, calc(100% - 32px)); padding: 0; color: #fff; background: #111; border: 1px solid var(--line); border-radius: 20px; box-shadow: 0 32px 120px rgba(0, 0, 0, .65); }
