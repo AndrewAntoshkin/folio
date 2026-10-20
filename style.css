@@ -995,25 +995,23 @@ main.approach { padding-top: 176px; }
 .prose li strong + span { color: rgba(255, 255, 255, 0.55); }
 .prose pre { white-space: pre; tab-size: 2; }
 .prose pre code { white-space: pre; display: block; min-width: max-content; }
-.prose table { width: 100%; margin-top: 24px; border-collapse: separate; border-spacing: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: var(--card-2); font-size: 15px; line-height: 22px; }
-.prose th { padding: 14px 20px; text-align: left; font-size: 12px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); background: rgba(255, 255, 255, 0.03); border-bottom: 1px solid var(--line); white-space: nowrap; }
-.prose td { padding: 14px 20px; vertical-align: top; color: rgba(255, 255, 255, 0.75); letter-spacing: 0; border-bottom: 1px solid var(--line); }
+.prose table { width: 100%; margin-top: 32px; border-collapse: collapse; border-spacing: 0; font-size: 16px; line-height: 24px; }
+.prose th { padding: 0 24px 12px 0; text-align: left; font-size: 12px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--line); white-space: nowrap; }
+.prose td { padding: 16px 24px 16px 0; vertical-align: top; color: rgba(255, 255, 255, 0.75); letter-spacing: 0; border-bottom: 1px solid var(--line); }
 .prose tr:last-child td { border-bottom: 0; }
 .prose td code { font-size: 12.5px; white-space: nowrap; }
-.prose tbody tr { transition: background .25s; }
-.prose tbody tr:hover { background: rgba(255, 255, 255, 0.03); }
-.prose .feature-list { margin: 24px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; }
-.prose .feature-list li { margin: 0; display: flex; flex-direction: column; gap: 4px; padding: 20px 24px; border-radius: 16px; background: var(--card-2); font-size: 15px; line-height: 22px; }
-.prose .feature-list strong { font-size: 18px; line-height: 24px; color: #fff; font-weight: 500; }
-.prose .feature-list span { color: var(--muted); }
+.prose .feature-list { margin: 32px 0 0; padding: 0; list-style: none; display: grid; gap: 32px; }
+.prose .feature-list li { margin: 0; display: block; padding: 0; }
+.prose .feature-list strong { display: block; font-size: 24px; line-height: 28.8px; color: #fff; font-weight: 500; }
+.prose .feature-list span { display: block; margin-top: 8px; font-size: 20px; line-height: 30px; color: rgba(255, 255, 255, 0.55); }
 .prose .tag { vertical-align: middle; font-size: 12px; height: 26px; padding: 0 10px; }
-.prose figure.bench { margin: 24px 0 0; padding: 24px; border-radius: 16px; background: var(--card-2); border: 1px solid var(--line); }
+.prose figure.bench { margin: 32px 0 0; padding: 0; }
 .prose .bench figcaption { display: flex; flex-direction: column; gap: 4px; margin-bottom: 20px; }
 .prose .bench figcaption span, .prose .bench figcaption em { font-style: normal; font-size: 13px; line-height: 18px; color: var(--muted); }
 .prose .bench figcaption strong { font-size: 18px; font-weight: 500; }
-.prose .bench-scores { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.prose .bench-scores { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
 .prose .bench-scores.cols-3 { grid-template-columns: repeat(3, 1fr); }
-.prose .bench-scores p { margin: 0; padding: 16px 20px; border-radius: 12px; background: #000; border: 1px solid var(--line); }
+.prose .bench-scores p { margin: 0; padding: 16px 0 0; border-top: 1px solid var(--line); }
 .prose .bench-scores span { display: block; margin-bottom: 6px; font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
 .prose .bench-scores b { font-family: var(--serif); font-weight: 400; font-size: 44px; line-height: 1; letter-spacing: var(--track-h); color: #fff; }
 .prose .bench-scores p:first-child b { color: var(--mint); }
