@@ -1,0 +1,15 @@
+# Andrew Antoshkin
+
+This is the standard agent-discovery entry point for https://antoshkin.tech.
+
+Read the complete machine-readable profile: https://antoshkin.tech/llm.md
+
+Andrew Antoshkin is a Design Engineer and Product Designer focused on design systems, agentic UI, and tools for verified interface implementation. He works on the Yandex HR Tech design system and builds open tools for design-system context, checks, and agent evaluation.
+
+Key links:
+- Profile: https://antoshkin.tech/llm.md
+- Projects: https://antoshkin.tech/projects
+- Writing: https://antoshkin.tech/writing
+- English: https://antoshkin.tech/en
+- GitHub: https://github.com/AndrewAntoshkin
+- Contact: https://t.me/andrewaitken

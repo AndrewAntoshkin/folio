@@ -1,0 +1,11 @@
+{
+  "date": "2026-10-20",
+  "title": "Why Your Website Needs llms.txt",
+  "h1": "Why Your Website Needs llms.txt",
+  "cover": {
+    "src": "assets/site-for-agents.jpg",
+    "alt": "A website passes llms.txt to an AI agent that forms an answer"
+  },
+  "tldr": "When an AI agent is asked about you or your product, it does not read visual hierarchy or infer which facts matter most. llms.txt and a linked profile give it a concise, verifiable entry point. They do not replace a website, SEO, or documentation; they make existing information easier for a machine to use.",
+  "tags": "<div class=\"article-meta\">\n                <span class=\"tag\">agents</span>\n                <span class=\"tag\">llms.txt</span>\n                <span class=\"tag\">documentation</span>\n            </div>"
+}

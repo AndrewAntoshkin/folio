@@ -93,11 +93,8 @@ Write the behavior before the code.
 <script>(function(){var d=document.getElementById("skill-source");document.querySelector(".skill-open").addEventListener("click",function(){d.showModal()});document.querySelector("[data-skill-close]").addEventListener("click",function(){d.close()});d.addEventListener("click",function(e){if(e.target===d)d.close()});document.querySelectorAll("[data-copy-target]").forEach(function(b){b.addEventListener("click",function(){var el=document.getElementById(b.dataset.copyTarget);var txt=el.value!==undefined?el.value:el.textContent;navigator.clipboard.writeText(txt).then(function(){var o=b.textContent;b.textContent="Скопировано";setTimeout(function(){b.textContent=o},1400)})})})})();</script>
   <footer class="foot">
     <div class="foot-in">
-      <p class="foot-mark">antoshkin.tech</p>
-      <div class="foot-copy">
-        <p class="foot-lead">Хотите обсудить проект?<br>Расскажите о задаче и о том, чем я могу помочь.</p>
-        <a class="foot-mail" href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
-      </div>
+      <p class="foot-mark">© 2026 <a href="/">antoshkin.tech</a></p>
+      <p class="foot-agent"><span>For agents</span><a class="foot-llm" href="/llm.md" target="_blank" rel="noopener" aria-label="Machine-readable profile">llm.md</a></p>
     </div>
   </footer>
   <script src="/motion.js?v=4"></script>

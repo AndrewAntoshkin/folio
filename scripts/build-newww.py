@@ -17,7 +17,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from project_docs import load_doc  # noqa: E402
 from project_pages import PROJECTS  # noqa: E402
 
-ORDER = ["agent-experience", "apres-prompt", "ai-changes-processes", "halo-working-memory", "cursor-figma", "design-md", "dev-for-designers"]
+ORDER = ["site-for-agents", "agent-experience", "apres-prompt", "ai-changes-processes", "halo-working-memory", "cursor-figma", "design-md", "dev-for-designers"]
 TG = "https://t.me/andrewaitken"
 
 HEAD = """<!DOCTYPE html>
@@ -177,11 +177,8 @@ def cta_and_footer(lang: str, cta: bool = True) -> str:
     return cta_html + f'''
   <footer class="foot">
     <div class="foot-in">
-      <p class="foot-mark">antoshkin.tech</p>
-      <div class="foot-copy">
-        <p class="foot-lead">{lead}</p>
-        <a class="foot-mail" href="mailto:andrew.antoshkin@gmail.com">andrew.antoshkin@gmail.com</a>
-      </div>
+      <p class="foot-mark">© 2026 <a href="/">antoshkin.tech</a></p>
+      <p class="foot-agent"><span>For agents</span><a class="foot-llm" href="/llm.md" target="_blank" rel="noopener" aria-label="Machine-readable profile">llm.md</a></p>
     </div>
   </footer>
   <script src="/motion.js?v=4"></script>
@@ -543,13 +540,14 @@ def article_cards(lang: str, stems: list[str]) -> str:
         c = a.get("cover")
         if c:
             img = f'<img src="/{c["src"]}" alt="{c.get("alt", "")}">'
+        elif a.get("placeholder"):
+            img = '<div class="article-placeholder" aria-label="Cover image coming soon"><span>llms.txt</span></div>'
         else:
             img = cover(s, re.sub(r"&nbsp;|&#8209;", " ", a["title"]).split(":")[0].split(" — ")[0][:28])
-        tags = a["tag_list"][0] if a["tag_list"] else ""
         out.append(
             f'<a class="prod" href="{name_for(s, lang)}" data-r style="--d:{n * 0.08}s">'
             f'<div class="prod-img" style="--glow:{glows[n % 2]}">{img}</div>'
-            f'<div class="prod-row"><div><h3>{a["h1"]}</h3><p>{tags}</p></div></div></a>'
+            f'<div class="prod-row"><div><h3>{a["h1"]}</h3></div></div></a>'
         )
     return f'<div class="cards2">{"".join(out)}</div>'
 
@@ -708,7 +706,7 @@ def projects_page(lang: str) -> str:
 def writing_page(lang: str) -> str:
     ru = lang == "ru"
     sub = "Эссе и практические разборы о дизайн-системах, процессах и работе с AI-агентами." if ru else "Essays and field notes on design systems, engineering workflows, and AI coding agents."
-    core = ["agent-experience", "apres-prompt", "ai-changes-processes", "halo-working-memory"]
+    core = ["site-for-agents", "agent-experience", "apres-prompt", "ai-changes-processes", "halo-working-memory"]
     guides = ["cursor-figma", "design-md", "dev-for-designers"]
     return (
         f'<main><div class="col">{page_head("Статьи" if ru else "Writing", sub)}'
@@ -863,6 +861,8 @@ def article_page(stem: str, lang: str) -> str:
     c = a.get("cover")
     if c:
         img = f'<img src="/{c["src"]}" alt="{c.get("alt", "")}">'
+    elif a.get("placeholder"):
+        img = '<div class="article-placeholder article-placeholder-wide" aria-label="Cover image coming soon"><span>llms.txt</span></div>'
     else:
         img = cover(stem, re.sub(r"&nbsp;|&#8209;", " ", a["title"]).split(":")[0].split(" — ")[0][:34])
     tag_html = "".join(f'<span class="tag">{t}</span>' for t in a["tag_list"])
