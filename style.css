@@ -1000,12 +1000,12 @@ main.approach { padding-top: 176px; }
 .prose td { padding: 16px 24px 16px 0; vertical-align: top; color: rgba(255, 255, 255, 0.75); letter-spacing: 0; border-bottom: 1px solid var(--line); }
 .prose tr:last-child td { border-bottom: 0; }
 .prose td code { font-size: 12.5px; white-space: nowrap; }
-.prose .feature-list { margin: 32px 0 0; padding: 0; list-style: none; display: grid; gap: 32px; }
+.prose .feature-list { margin: 40px 0 0; padding: 0; list-style: none; display: grid; gap: 32px; }
 .prose .feature-list li { margin: 0; display: block; padding: 0; }
 .prose .feature-list strong { display: block; font-size: 19px; line-height: 26px; color: #fff; font-weight: 500; }
 .prose .feature-list span { display: block; margin-top: 6px; font-size: 17px; line-height: 27px; color: rgba(255, 255, 255, 0.55); }
 .prose .tag { vertical-align: middle; font-size: 12px; height: 26px; padding: 0 10px; }
-.prose figure.bench { margin: 32px 0 0; padding: 0; }
+.prose figure.bench { margin: 48px 0 0; padding: 0; }
 .prose .bench figcaption { display: flex; flex-direction: column; gap: 4px; margin-bottom: 20px; }
 .prose .bench figcaption span, .prose .bench figcaption em { font-style: normal; font-size: 13px; line-height: 18px; color: var(--muted); }
 .prose .bench figcaption strong { font-size: 18px; font-weight: 500; }
@@ -1017,11 +1017,17 @@ main.approach { padding-top: 176px; }
 .prose .bench-scores p:first-child b { color: var(--mint); }
 .prose .bench table { box-shadow: none; }
 .prose .bench > p { font-size: 15px; line-height: 22px; }
-.prose figure.case-fig { margin: 28px 0 0; }
+.prose figure.case-fig { margin: 48px 0 0; }
 .prose figure.case-fig img { display: block; width: 100%; height: auto; border-radius: 16px; border: 1px solid var(--line); }
 .prose figure.case-fig iframe.case-demo { display: block; width: 100%; aspect-ratio: var(--ar, 4/3); border: 0; border-radius: 16px; background: #5bb3e8; }
 .prose figure.case-fig iframe.case-demo + img { margin-top: 12px; }
 .prose figure.case-fig figcaption { margin-top: 10px; font-size: 14px; line-height: 20px; color: var(--muted); }
+/* text column is 64px narrower than media; more air between text and media */
+@media (min-width: 810px) {
+  .prose :is(h2, h3, p, ul, ol, dl, pre):not(figure *) { margin-inline: 32px; }
+  .prose table:not(figure *) { width: calc(100% - 64px); margin-inline: 32px; }
+}
+.prose figure + :is(p, h3, ul, ol, dl, pre, table) { margin-top: 40px; }
 .skill-index { display: inline-block; width: 2.25em; margin-right: 12px; color: var(--muted); font-size: 12px; font-weight: 500; letter-spacing: 0.06em; vertical-align: 0.15em; }
 .skill-open { border: 0; font: inherit; cursor: pointer; }
 .skill-modal { width: min(820px, calc(100% - 32px)); max-height: min(760px, calc(100% - 32px)); padding: 0; color: #fff; background: #111; border: 1px solid var(--line); border-radius: 20px; box-shadow: 0 32px 120px rgba(0, 0, 0, .65); }
