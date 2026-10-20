@@ -709,17 +709,17 @@ main { display: block; padding: 240px 16px 160px; }
 .art h1 { font-size: 64px; line-height: 0.95; }
 .art h1.long { font-size: 52px; line-height: 1.02; }
 .art-intro { display: flex; flex-direction: column; gap: 16px; }
-.art-intro p { font-size: 28px; line-height: 36.4px; letter-spacing: var(--track-l); }
+.art-intro p { font-size: 22px; line-height: 31px; letter-spacing: var(--track-l); }
 .art-meta { display: flex; align-items: center; gap: 12px; font-size: 14px; line-height: 21px; color: var(--muted); }
 .art-meta i { width: 1px; height: 12px; background: rgba(255, 255, 255, 0.2); }
 .prose img { width: 100%; height: auto; border-radius: 16px; }
 .prose .pcover { margin: 0; }
-.prose h2 { margin-top: 64px; font-size: 32px; line-height: 35.2px; }
-.prose h2:first-child, .prose > :first-child + h2 { margin-top: 64px; }
-.prose h3 { margin-top: 40px; font-size: 24px; line-height: 28.8px; }
+.prose h2 { margin-top: 56px; font-size: 26px; line-height: 31px; }
+.prose h2:first-child, .prose > :first-child + h2 { margin-top: 56px; }
+.prose h3 { margin-top: 32px; font-size: 19px; line-height: 26px; }
 .prose p, .prose li, .prose dd {
-  font-size: 20px;
-  line-height: 30px;
+  font-size: 17px;
+  line-height: 27px;
   letter-spacing: var(--track-l);
   color: rgba(255, 255, 255, 0.55);
 }
@@ -736,7 +736,7 @@ main { display: block; padding: 240px 16px 160px; }
 .prose dl { margin: 24px 0 0; }
 .prose .fact-row { display: grid; grid-template-columns: 132px minmax(0, 1fr); align-items: baseline; gap: 20px; padding: 4px 0; }
 .prose .fact-row dt,
-.prose .fact-row dd { font-size: 16px; line-height: 24px; }
+.prose .fact-row dd { font-size: 15px; line-height: 22px; }
 .prose .fact-row dt { white-space: nowrap; }
 .prose dt { color: #fff; }
 .prose dd { margin: 0; text-align: left; }
@@ -948,7 +948,7 @@ main.approach { padding-top: 176px; }
   .cards2, .cta-grid, .voices, .handoff, .foot-in, .workflow { grid-template-columns: 1fr; }
   .contact-grid { flex-direction: column; }
   .contact-side, .contact-form-shell { width: 100%; max-width: none; flex-basis: auto; }
-  .art-intro p { font-size: 22px; line-height: 30px; }
+  .art-intro p { font-size: 19px; line-height: 27px; }
   .approach-top .stance { font-size: 20px; line-height: 28px; }
   .facts { grid-template-columns: 1fr 1fr; }
   .layer { grid-template-columns: auto 1fr; gap: 8px 16px; }
@@ -956,7 +956,7 @@ main.approach { padding-top: 176px; }
   .proof { grid-template-columns: 1fr 48px; gap: 4px 12px; }
   .proof-k, .proof-n, .proof-d { grid-column: 1; }
   .proof .arrow-btn { grid-column: 2; grid-row: 1 / span 3; align-self: center; }
-  .prose p, .prose li { font-size: 18px; line-height: 28px; }
+  .prose p, .prose li { font-size: 16px; line-height: 25px; }
   .prose .fact-row { grid-template-columns: 112px minmax(0, 1fr); gap: 16px; }
   .dock {
     top: auto;
@@ -995,15 +995,15 @@ main.approach { padding-top: 176px; }
 .prose li strong + span { color: rgba(255, 255, 255, 0.55); }
 .prose pre { white-space: pre; tab-size: 2; }
 .prose pre code { white-space: pre; display: block; min-width: max-content; }
-.prose table { width: 100%; margin-top: 32px; border-collapse: collapse; border-spacing: 0; font-size: 16px; line-height: 24px; }
+.prose table { width: 100%; margin-top: 32px; border-collapse: collapse; border-spacing: 0; font-size: 15px; line-height: 22px; }
 .prose th { padding: 0 24px 12px 0; text-align: left; font-size: 12px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--line); white-space: nowrap; }
 .prose td { padding: 16px 24px 16px 0; vertical-align: top; color: rgba(255, 255, 255, 0.75); letter-spacing: 0; border-bottom: 1px solid var(--line); }
 .prose tr:last-child td { border-bottom: 0; }
 .prose td code { font-size: 12.5px; white-space: nowrap; }
 .prose .feature-list { margin: 32px 0 0; padding: 0; list-style: none; display: grid; gap: 32px; }
 .prose .feature-list li { margin: 0; display: block; padding: 0; }
-.prose .feature-list strong { display: block; font-size: 24px; line-height: 28.8px; color: #fff; font-weight: 500; }
-.prose .feature-list span { display: block; margin-top: 8px; font-size: 20px; line-height: 30px; color: rgba(255, 255, 255, 0.55); }
+.prose .feature-list strong { display: block; font-size: 19px; line-height: 26px; color: #fff; font-weight: 500; }
+.prose .feature-list span { display: block; margin-top: 6px; font-size: 17px; line-height: 27px; color: rgba(255, 255, 255, 0.55); }
 .prose .tag { vertical-align: middle; font-size: 12px; height: 26px; padding: 0 10px; }
 .prose figure.bench { margin: 32px 0 0; padding: 0; }
 .prose .bench figcaption { display: flex; flex-direction: column; gap: 4px; margin-bottom: 20px; }
