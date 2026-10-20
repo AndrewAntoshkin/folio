@@ -12,6 +12,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "newww"
 ARTICLES = ROOT / "content" / "articles"
+SITE_URL = "https://antoshkin.tech"
+OG_IMAGE = f"{SITE_URL}/img/gen/hero.jpg"
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from project_docs import load_doc  # noqa: E402
@@ -30,6 +32,13 @@ HEAD = """<!DOCTYPE html>
   <meta property="og:title" content="{title}">
   <meta property="og:description" content="{desc}">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="{canonical}">
+  <meta property="og:image" content="{og_image}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{title}">
+  <meta name="twitter:description" content="{desc}">
+  <meta name="twitter:image" content="{og_image}">
+  <link rel="canonical" href="{canonical}">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
   <script>document.documentElement.classList.remove('nojs');try{{if(sessionStorage.getItem('dock-seen'))document.documentElement.classList.add('dock-seen');else sessionStorage.setItem('dock-seen','1')}}catch(e){{}}</script>
   <link rel="stylesheet" href="/style.css?v=44">
@@ -61,6 +70,11 @@ def name_for(stem: str, lang: str) -> str:
     if lang == "ru":
         return "/" if stem == "home" else f"/{stem}"
     return "/en" if stem == "home" else f"/en/{stem}"
+
+
+def canonical_for(stem: str, lang: str) -> str:
+    path = name_for(stem, lang)
+    return f"{SITE_URL}{'/' if path == '/' else path}"
 
 
 def legacy_file_for(stem: str, lang: str) -> str:
@@ -194,7 +208,13 @@ def shell(lang: str, title: str, active: str, stem: str, inner: str, cta: bool =
     )
     clean_desc = html.escape(plain(desc or default_desc), quote=True)
     clean_title = html.escape(plain(title), quote=True)
-    return HEAD.format(lang=lang, title=clean_title, desc=clean_desc) + chrome(lang, active, stem) + inner + cta_and_footer(lang, cta)
+    return HEAD.format(
+        lang=lang,
+        title=clean_title,
+        desc=clean_desc,
+        canonical=canonical_for(stem, lang),
+        og_image=OG_IMAGE,
+    ) + chrome(lang, active, stem) + inner + cta_and_footer(lang, cta)
 
 
 # ── Shared blocks ───────────────────────────────────────────────────────────
