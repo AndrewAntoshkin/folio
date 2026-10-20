@@ -1022,7 +1022,7 @@ main.approach { padding-top: 176px; }
 .prose figure.case-fig img { display: block; width: 100%; height: auto; border-radius: 16px; border: 1px solid var(--line); }
 .prose figure.case-fig iframe.case-demo { display: block; width: 100%; aspect-ratio: var(--ar, 4/3); border: 0; border-radius: 16px; background: #5bb3e8; }
 .prose figure.case-fig iframe.case-demo + img { margin-top: 12px; }
-.prose figure.case-fig figcaption { margin-top: 10px; font-size: 14px; line-height: 20px; color: var(--muted); }
+.prose figure.case-fig figcaption { max-width: 660px; margin: 12px auto 0; text-align: center; font-size: 14px; line-height: 20px; color: var(--muted); }
 /* text column is 660px wide, centered; 96px between text and media */
 @media (min-width: 810px) {
   .prose :is(h2, h3, p, ul, ol, dl, pre):not(figure *), .prose .feature-list, .prose figure.bench { max-width: 660px; margin-inline: auto; }
