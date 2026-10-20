@@ -295,6 +295,21 @@
     button.chip:hover{background:#fff;transform:translateY(-2px)}button.chip:active{transform:scale(.95);transition-duration:.08s}
     span.chip{background:var(--chip);border-color:transparent}
     .chip.sel{background:var(--ink);color:var(--fog);border-color:var(--ink)}
+    .ai-explain{margin-top:16px;border-top:1px solid var(--line);padding-top:12px}
+    .ai-explain summary{display:flex;align-items:center;gap:7px;cursor:pointer;list-style:none;color:var(--quiet);font-size:11.5px}
+    .ai-explain summary::-webkit-details-marker{display:none}
+    .ai-explain summary:before{content:"";width:6px;height:6px;border:1px solid currentColor;border-radius:50%;transition:background .2s}
+    .ai-explain[open] summary{color:var(--ink)}.ai-explain[open] summary:before{background:var(--accent);border-color:var(--accent)}
+    .ai-explain dl{display:grid;grid-template-columns:80px 1fr;gap:7px 10px;margin:12px 0 0;font-size:11.5px;line-height:1.4}
+    .ai-explain dt{color:var(--quiet)}.ai-explain dd{margin:0}
+    .ai-explain .confidence{display:inline-flex;align-items:center;gap:5px}.ai-explain .confidence i{width:6px;height:6px;border-radius:50%;background:#d58a38}.ai-explain .confidence.high i{background:#3fb27f}
+    .approval{border-radius:20px;background:rgba(63,116,240,.08);border:1px solid rgba(63,116,240,.22);overflow:hidden}
+    .approval-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 15px;border-bottom:1px solid rgba(63,116,240,.16)}
+    .approval-head b{font-size:13px;font-weight:500}.approval-head span{color:var(--quiet);font-size:11px}
+    .approval-list{margin:0;padding:0 15px;list-style:none}.approval-list li{display:flex;align-items:flex-start;gap:9px;padding:11px 0;border-bottom:1px solid rgba(47,47,47,.08);font-size:12px;line-height:1.38}
+    .approval-list li:last-child{border:0}.approval-list i{display:grid;place-items:center;flex:none;width:16px;height:16px;margin-top:1px;border-radius:50%;background:rgba(63,116,240,.16);color:var(--accent)}.approval-list i svg{width:10px;height:10px}
+    .delegation{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.delegation div{padding:10px 11px;border-radius:12px;background:rgba(255,255,255,.5);font-size:11px}.delegation b{display:block;margin-bottom:3px;font-size:11.5px;font-weight:500}.delegation span{color:var(--quiet);line-height:1.35}
+    .receipt{padding:15px;border-radius:16px;background:rgba(63,178,127,.10);border:1px solid rgba(63,178,127,.22)}.receipt-head{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500}.receipt-head i{display:grid;place-items:center;width:19px;height:19px;border-radius:50%;background:#3fb27f;color:#fff}.receipt-head svg{width:12px;height:12px}.receipt p{margin:9px 0 0;color:var(--quiet);font-size:12px;line-height:1.45}
     .steps .step{display:grid;grid-template-columns:22px 1fr;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);font-size:13px;color:var(--faint);transition:color .4s}
     .step i{width:15px;height:15px;margin-top:2px;border:1.5px solid currentColor;border-radius:50%;transition:background .3s,border-color .3s}
     .step.run{color:var(--ink)}.step.run i{border-top-color:transparent;animation:spin .8s linear infinite}
@@ -443,6 +458,9 @@
     .ov-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px;font-size:32px;font-weight:300;letter-spacing:-.035em;color:rgba(47,47,47,.45)}
     .ov-title button{border:0;background:none;color:var(--quiet);font-size:12px}
     .ov-layout{display:grid;grid-template-columns:260px 1fr;gap:32px;align-items:start}
+    .delegation-map{margin:0 0 22px;padding:14px 16px;border:1px solid rgba(255,255,255,.65);border-radius:18px;background:rgba(247,247,247,.38)}
+    .delegation-map header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px}.delegation-map h3{margin:0;font-size:12px;font-weight:500}.delegation-map header span{font-size:10.5px;color:var(--faint)}
+    .delegation-map ul{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0;padding:0;list-style:none}.delegation-map li{padding:10px 11px;border-radius:11px;background:rgba(255,255,255,.45);font-size:11px;line-height:1.35}.delegation-map b{display:block;font-size:11.5px;font-weight:500}.delegation-map small{display:block;margin-top:3px;color:var(--quiet);font-size:10.5px}
     .rules{position:absolute;top:94px;left:max(clamp(24px,5vw,72px),calc((100% - 1320px)/2));width:260px;z-index:2;max-height:calc(100% - 94px - 72px);overflow-y:auto;scrollbar-width:none;padding:16px;border:1px solid rgba(255,255,255,.6);border-radius:20px;background:rgba(247,247,247,.3);font-size:12px;color:var(--quiet)}
     .rules h3{margin:4px 0 8px;color:var(--ink);font-size:12px;font-weight:500}.rules h3+p{margin:0 0 12px;font-size:11px;line-height:1.5}
     .rule,.collab,.flowlink{display:grid;grid-template-columns:18px 1fr;align-items:start;gap:10px;padding:8px;border-radius:8px;cursor:pointer;transition:background .2s,opacity .2s}
@@ -763,7 +781,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         <h1 class="ov-title"><span id="ovTitle"></span><button id="ovClose"></button></h1>
         <div class="ov-layout">
           <div class="rules-slot"></div>
-          <div class="ov-flows" id="ovFlows"></div>
+          <div><div id="delegationMap"></div><div class="ov-flows" id="ovFlows"></div></div>
         </div>
       </div>
       <aside class="rules" id="rules"></aside>
@@ -805,7 +823,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
 
     const IC={chevL:'<path d="M10 3 5 8l5 5"/>',chevR:'<path d="m6 3 5 5-5 5"/>',mail:'<rect x="2" y="3.5" width="12" height="9" rx="1.5"/><path d="M2.5 4.5 8 9l5.5-4.5"/>',chat:'<path d="M3 3.5h10v7H7l-3 2.5v-2.5H3z"/>',cal:'<rect x="2.5" y="3.5" width="11" height="10" rx="1.5"/><path d="M2.5 6.5h11M5.5 2v3M10.5 2v3"/>',pin:'<path d="M8 14s4.5-4.2 4.5-7.5a4.5 4.5 0 0 0-9 0C3.5 9.8 8 14 8 14z"/><circle cx="8" cy="6.5" r="1.6"/>',music:'<path d="M6 12V4l7-1.5v8"/><circle cx="4.5" cy="12" r="1.5"/><circle cx="11.5" cy="10.5" r="1.5"/>',home:'<path d="M2.5 7.5 8 3l5.5 4.5V13h-11z"/><path d="M6.5 13V9.5h3V13"/>',search:'<circle cx="7" cy="7" r="4"/><path d="m10 10 3.5 3.5"/>',bell:'<path d="M4 11V7a4 4 0 0 1 8 0v4l1 1.5H3z"/><path d="M6.5 14h3"/>',doc:'<path d="M4 2.5h5.5L12 5v8.5H4z"/><path d="M6 8h4M6 10.5h4"/>',chart:'<path d="M3 13.5h10M4.5 11V8M8 11V5M11.5 11V7"/>',plane:'<path d="M2 9.5 14 4l-3.5 9-2.5-3.5z"/>',check:'<rect x="2.5" y="2.5" width="11" height="11" rx="2"/><path d="m5.5 8 2 2 3.5-4"/>',sun:'<circle cx="8" cy="8" r="3"/><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1 1M11.6 11.6l1 1M3.4 12.6l1-1M11.6 4.4l1-1"/>',spark:'<path d="M8 2.5v3M8 10.5v3M2.5 8h3M10.5 8h3M4.2 4.2l1.6 1.6M10.2 10.2l1.6 1.6M4.2 11.8l1.6-1.6M10.2 5.8l1.6-1.6"/>',bag:'<path d="M3.5 5.5h9l-.8 8h-7.4z"/><path d="M6 5.5V4.5a2 2 0 0 1 4 0v1"/>',mic:'<rect x="6" y="2" width="4" height="7.5" rx="2"/><path d="M3.8 7.5a4.2 4.2 0 0 0 8.4 0M8 11.7V14"/>',alarm:'<circle cx="8" cy="8.5" r="5"/><path d="M8 6v2.8l1.8 1.2M2.5 3.5l2-1.5M13.5 3.5l-2-1.5"/>',plus:'<path d="M8 3v10M3 8h10"/>',minus:'<path d="M3 8h10"/>',x:'<path d="m4.5 4.5 7 7M11.5 4.5l-7 7"/>',locate:'<circle cx="8" cy="8" r="4.2"/><circle cx="8" cy="8" r="1.3" fill="currentColor"/><path d="M8 1.8v2M8 12.2v2M1.8 8h2M12.2 8h2"/>',play:'<path d="M5.5 3.5v9l7-4.5z" fill="currentColor"/>',pause:'<path d="M5.5 3.8v8.4M10.5 3.8v8.4" stroke-width="2.2"/>',prev:'<path d="M4 4v8" stroke-width="1.8"/><path d="M12.5 4v8L6 8z" fill="currentColor"/>',next:'<path d="M12 4v8" stroke-width="1.8"/><path d="M3.5 4v8L10 8z" fill="currentColor"/>',heart:'<path d="M8 13S2.5 9.8 2.5 6a2.8 2.8 0 0 1 5.5-1.2A2.8 2.8 0 0 1 13.5 6C13.5 9.8 8 13 8 13z"/>',up:'<path d="m4 10 4-4 4 4"/>',arrowUp:'<path d="M8 13V3.5M3.8 7.6 8 3.4l4.2 4.2"/>',tick:'<path d="m4 8.3 2.6 2.6L12 5.5"/>',sparkle:'<path d="M8 1.5c.55 3.4 2.1 4.95 5.5 5.5-3.4.55-4.95 2.1-5.5 5.5C7.45 9.1 5.9 7.55 2.5 7 5.9 6.45 7.45 4.9 8 1.5z" fill="currentColor" stroke="none"/>'};
     const ic=n=>`<svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">${IC[n]||IC.spark}</svg>`;
-    const KIND_IC={list:"mail",message:"mail",compose:"mail",chat:"chat",invite:"cal",calendar:"cal",options:"plane",listings:"home",map:"pin",player:"music",alarm:"alarm",weather:"sun",checklist:"check",doc:"doc",chart:"chart",results:"search",product:"bag",remind:"bell"};
+    const KIND_IC={list:"mail",message:"mail",compose:"mail",chat:"chat",invite:"cal",calendar:"cal",options:"plane",listings:"home",map:"pin",player:"music",alarm:"alarm",weather:"sun",checklist:"check",doc:"doc",chart:"chart",results:"search",product:"bag",remind:"bell",plan:"check",receipt:"check"};
     const IC_HUE={mail:212,cal:4,chat:142,plane:200,home:22,pin:160,sun:38,music:330,heart:350,alarm:228,doc:218,chart:128,bag:280,check:252,search:196,bell:16,spark:226};
     const tile=(n,cls="")=>{const h=IC_HUE[n]??226;return `<span class="kt ${cls}" style="background:linear-gradient(145deg,hsl(${h} 72% 64%),hsl(${(h+18)%360} 62% 47%))">${ic(n)}</span>`};
     const PHOTO={"maya chen":"maya","майя чен":"maya","leo park":"leo","лео пак":"leo","sofia reyes":"sofia","софья рейес":"sofia","daniel kim":"daniel","даниэль ким":"daniel","frau weber":"weber",sofia:"sofia","софья":"sofia",daniel:"daniel","даниэль":"daniel",maya:"maya","майя":"maya",leo:"leo","лео":"leo"};
@@ -1350,6 +1368,31 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     const fmtH=h=>`${pad(Math.floor(h))}:${pad(Math.round((h%1)*60))}`;
     const secs=s=>{const[a,b]=s.split(":").map(Number);return a*60+b};
     const fmtS=s=>`${Math.floor(s/60)}:${pad(Math.floor(s%60))}`;
+    function suggestTrace(m){
+      const by={
+        weather:{why:T("Weather is allowed to propose itinerary changes in this Space.","Погоде разрешено предлагать изменения маршрута в этом пространстве."),sources:T("Friday forecast · itinerary","Прогноз на пятницу · маршрут"),confidence:T("High · 80% rain probability","Высокая · вероятность дождя 80%")},
+        calendar:{why:T("Calendar can suggest changes around events you created.","Календарь может предлагать изменения вокруг созданных вами событий."),sources:T("Your calendar · availability","Ваш календарь · доступность"),confidence:T("High","Высокая")},
+        messages:{why:T("Messages can surface a reply, but never send it for you.","Сообщения могут предложить ответ, но никогда не отправят его за вас."),sources:T("Conversation · your reply style","Переписка · ваш стиль ответа"),confidence:T("Medium","Средняя")}
+      }[m.source]||{};
+      return {...{why:T("This was suggested from the current Space and your active rules.","Это предложение основано на текущем пространстве и активных правилах."),sources:T("Space context · your rules","Контекст пространства · ваши правила"),confidence:T("Medium","Средняя")},...by,...m.data.trace};
+    }
+    function swapFriday(){
+      const it=allModules().find(x=>x.kind==="checklist");if(!it||!it.data.items[2])return null;
+      const a=it.data.items,f=a[1][0],s=a[2][0];
+      a[1][0]=s.replace(/^(Sat|Сб)/,T("Fri","Пт"));a[2][0]=f.replace(/^(Fri|Пт)/,T("Sat","Сб"));
+      refresh(it,false);return{module:it,before:[f,s]};
+    }
+    function openApprovalPlan(source,action){
+      const swap=/swap friday|поменять пятницу|поменяй пятницу/i.test(action);
+      const itinerary=allModules().find(x=>x.kind==="checklist");
+      const plan=M("plan",T("Plan ready for your approval","План готов к подтверждению"),"intent",{
+        action,sourceId:source.id,swap,
+        steps:swap?T(["Move the indoor museum to Saturday","Move the outdoor walk to Friday","Notify Maya of the new itinerary"],["Перенести музей в помещение на субботу","Перенести прогулку на пятницу","Уведомить Майю о новом маршруте"]):T(["Apply the selected change","Update this Space","Notify collaborators if needed"],["Применить выбранное изменение","Обновить это пространство","Уведомить участников при необходимости"]),
+        impact:swap?T("Itinerary changes only. No booking, payment, or message is sent without another confirmation.","Меняется только маршрут. Брони, оплаты и сообщений без отдельного подтверждения не будет."):T("This change affects this Space only. You can undo it afterwards.","Это изменение затронет только это пространство. Его можно будет отменить."),
+        before:swap&&itinerary?{id:itinerary.id,items:itinerary.data.items.map(x=>[...x])}:null
+      });
+      insertAfter(source,plan);showToast(T("Review the plan before it runs","Проверьте план перед запуском"));
+    }
 
     function bodyHTML(m){
       const d=m.data;
@@ -1371,7 +1414,9 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         case"chart":return `<h2 class="m-title">${esc(m.item)}</h2><div class="bars">${d.bars.map(([q,v,disp],i)=>{const g=[78,84,88,82][i%4],pct=Math.round((100/g-1)*100);return `<div><i style="height:${v}%;animation-delay:${i*70}ms">${d.ghost?`<s style="height:${g}%"></s>`:""}<u class="tip"><b>${esc(q)}</b>${esc(disp||v)}${d.ghost?`<em>${T(`+${pct}% vs last year`,`+${pct}% к прошлому году`)}</em>`:""}</u></i>${esc(q)}</div>`}).join("")}</div><p class="note">${esc(d.caption||"")}${d.ghost?T(" · dashed: last year"," · пунктир: прошлый год"):""}</p>`;
         case"results":return d.groups.map((g,gi)=>`<div class="group">${avatar(g.store,"service")}${T(`Items from ${g.store} for “${d.query}”`,`${g.store} по запросу «${d.query}»`)}</div><div class="listings">${g.items.map((it,ii)=>`<div class="lst${overBudget(it.price)?" over":""}" data-prod="${gi}-${ii}" role="button" tabindex="0"><div class="lst-txt"><small>${esc(it.brand)}${it.nike?` · ${esc(nkCW(it.nike,0))}`:""}</small><b>${esc(it.name)}</b><span>${esc(it.price)}${overBudget(it.price)?`<em class="flag warn">${T("over","выше")} ${fmtEur(budgetCap())}</em>`:""}</span></div>${d.shoe?`<div class="lst-img">${productHTML(it.seed,true,it.color,it.nike)}</div>`:`<div style="display:grid;place-items:center;padding:8px">${productSVG(it.seed,false,it.color)}</div>`}</div>`).join("")}</div>`).join("");
         case"product":return `<div class="product"><small class="pbrand" style="color:var(--quiet)">${esc(d.brand)}${d.nike?` · ${esc(nkCW(d.nike,d.gi||0))}`:""}</small><h2 class="m-title" style="margin:2px 0 6px">${esc(d.name)}</h2>${d.nike?`<div class="pinfo"><b>${esc(d.price)}</b><i></i><span><span class="star">★</span> ${NIKE[d.nike].r}</span><i></i><span>${T("Delivery tomorrow","Доставка завтра")}</span></div>${galleryHTML(d)}`:`<span>${esc(d.price)}</span><div class="art">${productHTML(d.seed,d.shoe,d.color)}</div>${d.shoe?`<p class="credit">${esc(photoCredit(productImg(d.seed,d.color)))}</p>`:""}`}${d.shoe?sizesHTML(d):""}${d.inBag?`<div class="done-note"><i>${ic("tick")}</i>${T("In your bag","В корзине")}${d.size?` · ${T("size","размер")} ${d.size}`:""}</div>`:""}</div>`;
-        case"suggest":return `<h2 class="m-title">${esc(m.item)}</h2>${d.note?`<p class="note" style="margin:-6px 0 4px;font-size:13px">${esc(d.note)}</p>`:""}<div class="label">${T("Items","Предметы")}</div><div class="chips">${d.items.map(t=>`<span class="chip">${esc(t)}</span>`).join("")}</div><div class="label">${T("Predicted actions","Предсказанные действия")}</div><div class="chips">${d.actions.map(t=>`<button class="chip" data-act="${esc(t)}">${esc(t)}</button>`).join("")}</div>`;
+        case"suggest":{const x=suggestTrace(m);return `<h2 class="m-title">${esc(m.item)}</h2>${d.note?`<p class="note" style="margin:-6px 0 4px;font-size:13px">${esc(d.note)}</p>`:""}<div class="label">${T("Items","Предметы")}</div><div class="chips">${d.items.map(t=>`<span class="chip">${esc(t)}</span>`).join("")}</div><div class="label">${T("Predicted actions","Предсказанные действия")}</div><div class="chips">${d.actions.map(t=>`<button class="chip" data-act="${esc(t)}">${esc(t)}</button>`).join("")}</div><details class="ai-explain"><summary>${T("Why this suggestion","Почему это предложено")}</summary><dl><dt>${T("Reason","Причина")}</dt><dd>${esc(x.why)}</dd><dt>${T("Sources","Источники")}</dt><dd>${esc(x.sources)}</dd><dt>${T("Confidence","Уверенность")}</dt><dd><span class="confidence ${/high|высок/i.test(x.confidence)?"high":""}"><i></i>${esc(x.confidence)}</span></dd><dt>${T("Control","Контроль")}</dt><dd>${T("Nothing changes until you confirm a plan.","Ничего не изменится, пока вы не подтвердите план.")}</dd></dl></details>`}
+        case"plan":return `<div class="approval"><div class="approval-head"><b>${esc(m.item)}</b><span>${T("You are in control","Вы подтверждаете")}</span></div><ol class="approval-list">${d.steps.map(s=>`<li><i>${ic("tick")}</i><span>${esc(s)}</span></li>`).join("")}</ol></div><p class="note" style="font-size:12px;margin:11px 2px 0">${esc(d.impact)}</p><div class="delegation"><div><b>${T("Agent","Агент")}</b><span>${T("Can propose this plan","Может предложить этот план")}</span></div><div><b>${T("You","Вы")}</b><span>${T("Confirm before it runs","Подтверждаете запуск")}</span></div></div>`;
+        case"receipt":return `<div class="receipt"><div class="receipt-head"><i>${ic("tick")}</i><span>${esc(m.item)}</span></div><p>${esc(d.text)} · ${T("approved by you just now","подтверждено вами только что")}</p></div>`;
         case"remind":return `<h2 class="m-title">${esc(m.item)}</h2>${m.modifier?`<div class="cond-card" style="margin-bottom:6px"><header>${T("Triggers","Срабатывает")}</header><div class="cond-row"><span>${esc(cap(m.modifier))}</span></div></div>`:""}<div class="label">${T("Or at a time","Или в определённое время")}</div><div class="chips">${[T("In 1 hour","Через час"),T("Tonight · 20:00","Вечером · 20:00"),T("Tomorrow · 09:00","Завтра · 09:00"),T("When I open this Space","Когда открою это пространство")].map(t=>`<button class="chip${d.sel===t?" sel":""}" data-when="${esc(t)}">${t}</button>`).join("")}</div>${d.sel||m.modifier?`<div class="done-note"><i>${ic("tick")}</i>${T("Reminder set","Напоминание создано")} · ${esc(d.sel||m.modifier)}</div>`:""}`;
         case"summary":return `<h2 class="m-title">${esc(m.item)}</h2><ul class="points">${d.points.map((p,i)=>`<li style="animation-delay:${i*90}ms">${esc(p)}</li>`).join("")}</ul>`;
         default:return `<h2 class="m-title">${esc(m.item)}</h2><div class="steps">${(d.steps||[]).map((s,i)=>`<div class="step${i<(d.done||0)?" done":i===(d.done||0)?" run":""}"><i></i>${esc(s)}</div>`).join("")}</div>${(d.done||0)>=(d.steps||[]).length?`<div class="done-note"><i>${ic("tick")}</i>${m.modifier?T(`Armed · runs ${m.modifier}`,`Готово · выполнится ${m.modifier}`):T("Done","Готово")}</div>`:""}`;
@@ -1398,6 +1443,8 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         case"results":return A(T("Add all to flow","Всё в поток"),"addAll")+A(T("Find some more","Найти ещё"),"moreRes")+A(T("Edit collaborators","Участники"),"collabs");
         case"product":return A(d.inBag?T("In bag ✓","В корзине ✓"):d.shoe&&!d.size?T("Pick a size","Выберите размер"):d.shoe?`${T("Add to bag","В корзину")} · ${d.size}`:T("Add to bag","В корзину"),"bag",d.inBag?"on":d.shoe&&!d.size?"":"primary")+A(T("Details","Подробнее"),"pdetails");
         case"suggest":return A(T("Dismiss","Скрыть"),"delete");
+        case"plan":return A(T("Approve and apply","Подтвердить и применить"),"approvePlan","primary")+A(T("Edit plan","Изменить план"),"editPlan")+A(T("Cancel","Отменить"),"delete","flat");
+        case"receipt":return d.undone?A(T("Undo restored","Отмена выполнена"),"undoPlan","on"):A(T("Undo","Отменить"),"undoPlan")+A(T("Keep change","Оставить"),"delete","flat");
         default:return A(T("Done","Готово"),"delete")+A(T("Edit","Изменить"),"edit2");
       }
     }
@@ -1550,6 +1597,9 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     function runLine(m,text){
       text=text.trim();if(!text)return;
       const p=parse(text),low=text.toLowerCase(),card=cardOf(m);
+      if(m.kind==="suggest"&&/swap friday|поменять пятницу|поменяй пятницу|book|забронировать|create event|создать событие/i.test(low)){
+        openApprovalPlan(m,text);return;
+      }
       const QUICK=[
         ["list",/everything read|всё прочитанное/,"archiveRead"],["list",/mark all|прочитать вс/,"readall"],
         ["compose",/^(send|отправ)/,"sendnow"],["compose",/shorter|короче/,()=>{m.data.text=m.data.text.split(/(?<=[.!?])\s/)[0];refresh(m)}],
@@ -1569,7 +1619,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       if(/availability|занятост/.test(low)){const cal=allModules().find(x=>x.kind==="calendar");if(cal){const l=findModule(cal.id);focusModule(l.fi,l.mi);return}}
       if(/show (them )?on the map|на карте/.test(low))return DO.showmap(m);
       if(/directions|маршрут/.test(low)){const mp=allModules().find(x=>x.kind==="map");if(mp){mp.data.route=false;const l=findModule(mp.id);focusModule(l.fi,l.mi);DO.route(mp);return}}
-      if(/swap friday|поменять пятницу|поменяй пятницу/.test(low)){const it=allModules().find(x=>x.kind==="checklist");if(it){const a=it.data.items;const f=a[1][0],s=a[2][0];a[1][0]=s.replace(/^(Sat|Сб)/,T("Fri","Пт"));a[2][0]=f.replace(/^(Fri|Пт)/,T("Sat","Сб"));refresh(it,false)}m.kind="summary";m.item=T("Plan updated","План обновлён");m.data={points:T(["Friday: workshop with Leo’s team (indoors).","Saturday: Gulbenkian museum — forecast is clear.","Maya was notified."],["Пятница: воркшоп с командой Лео (в помещении).","Суббота: музей Гюльбенкяна — прогноз ясный.","Майя получила уведомление."])};refresh(m);return}
+      if(/swap friday|поменять пятницу|поменяй пятницу/.test(low)){swapFriday();m.kind="summary";m.item=T("Plan updated","План обновлён");m.data={points:T(["Friday: workshop with Leo’s team (indoors).","Saturday: Gulbenkian museum — forecast is clear.","Maya was notified."],["Пятница: воркшоп с командой Лео (в помещении).","Суббота: музей Гюльбенкяна — прогноз ясный.","Майя получила уведомление."])};refresh(m);return}
       if(/resolved|keep the plan|keep going|решённое|оставить как есть|продолжить/.test(low)){m.kind="summary";m.item=T("Resolved","Решено");m.data={points:[T("Marked as resolved. Collaborators were notified.","Отмечено как решённое. Участники уведомлены.")]};refresh(m);return}
       if(/ghost line|last year|прошлый год/.test(low)){const ch=allModules().find(x=>x.kind==="chart");if(ch){ch.data.ghost=true;refresh(ch,false)}}
       if(/90 ?s|90 сек|timer|таймер/.test(low)){m.kind="result";m.item=T("Break · 90 s","Пауза · 90 с");m.data={steps:[T("Timer started","Таймер запущен"),T("Music volume lowered","Музыка тише"),T("Next set: squats 4 × 8","Следующий подход: присед 4 × 8")],done:0};refresh(m);runSteps(m);return}
@@ -1614,6 +1664,19 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         const head=card.querySelector(".m-head"),inp=head.querySelector(".line-in"),phrase=predict(m)[0];
         head.classList.add("listening");inp.value="";inp.placeholder=T("Listening…","Слушаю…");inp.focus();
         setTimeout(()=>{let i=0;const t=setInterval(()=>{inp.value=phrase.slice(0,++i);updateParse(inp);if(i>=phrase.length){clearInterval(t);head.classList.remove("listening");setTimeout(()=>{runLine(m,phrase);inp.value="";updateParse(inp)},420)}},28)},1100);
+      },
+      approvePlan:m=>{
+        let changed=T("The approved change was applied to this Space.","Подтверждённое изменение применено в этом пространстве.");
+        if(m.data.swap){swapFriday();changed=T("Friday and Saturday were updated. Maya can now see the revised itinerary.","Пятница и суббота обновлены. Майя видит изменённый маршрут.")}
+        m.kind="receipt";m.item=T("Plan applied","План применён");m.data={...m.data,text:changed};
+        refresh(m);showToast(T("Plan applied · Undo is available","План применён · отмена доступна"));logMoment(T("Approved a plan","Подтверждён план"),S.title);
+      },
+      editPlan:m=>{m.data.steps=[...m.data.steps].reverse();refresh(m,false);showToast(T("Plan reordered — review it again","План перестроен — проверьте ещё раз"))},
+      undoPlan:m=>{
+        if(m.data.undone)return;
+        const before=m.data.before,original=before&&allModules().find(x=>x.id===before.id);
+        if(original){original.data.items=before.items.map(x=>[...x]);refresh(original,false)}
+        m.data.undone=true;m.data.text=T("The previous itinerary has been restored.","Предыдущий маршрут восстановлен.");refresh(m);showToast(T("Change undone","Изменение отменено"));logMoment(T("Undid a plan","Отменён план"),S.title);
       },
       uncond:m=>{m.modifier="";refresh(m,false);showToast(T("Condition removed","Условие убрано"))},
       readall:m=>{m.data.rows.forEach(r=>r.read=true);m.data.title=T("All caught up","Всё прочитано");refresh(m,false)},
@@ -1903,6 +1966,9 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     function renderOverview(){
       $("#ovTitle").textContent=`↩ ${S.title}: ${T("Overview","Обзор")}`;
       renderRules();
+      const people=S.collabs.filter(c=>c.kind==="person"&&!c.off).map(c=>c.name).join(", ")||T("No collaborators","Нет участников");
+      const services=S.collabs.filter(c=>c.kind!=="person"&&!c.off).map(c=>c.name||collabName(c.id)).slice(0,3).join(", ")||T("Connected services","Подключённые сервисы");
+      $("#delegationMap").innerHTML=`<section class="delegation-map"><header><h3>${T("Delegation map","Карта ответственности")}</h3><span>${T("Clear boundaries for this Space","Ясные границы этого пространства")}</span></header><ul><li><b>${T("You","Вы")}</b><small>${T("Confirm bookings, money, and external messages.","Подтверждаете брони, деньги и внешние сообщения.")}</small></li><li><b>${esc(services)}</b><small>${T("Can read context and make suggestions.","Могут читать контекст и предлагать действия.")}</small></li><li><b>${esc(people)}</b><small>${T("Can collaborate within the permissions below.","Могут участвовать в рамках правил ниже.")}</small></li></ul></section>`;
       $("#ovFlows").innerHTML=S.flows.map((fl,fi)=>`<section class="ov-flow" data-f="${fi}"><div class="ov-head"><b>${esc(fl.name)}</b><span>${count(fl.modules.length,["module","modules"],["модуль","модуля","модулей"])}</span></div><div class="ov-list">${fl.modules.map((m,mi)=>{const src=S.collabs.find(x=>x.id===m.source),who=collabName(m.source),isPerson=src?.kind==="person"||PHOTO[who.toLowerCase()];return `<article class="mini${mi===0?" parent":""}${src?.off?" revoked":""}" data-id="${m.id}" data-src="${m.source}"><div class="mini-head">${tile(KIND_IC[m.kind]||"spark")}<span class="who-line">${isPerson?avatar(who,"xs"):""}${esc(who)}</span></div><b>${esc(m.item)}</b>${miniBody(m)}</article>`}).join("")}</div></section>`).join("")+`<button class="new-flow" data-newflow="1">${ic("plus")}${T("New flow","Новый поток")}</button>`;
       $$("#ovFlows .mini").forEach(c=>c.addEventListener("pointerdown",pressMini));
       if(!ovSel)ovSel={f:S.f,m:S.m[S.f]};markOvSel(false);
