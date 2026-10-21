@@ -158,7 +158,6 @@
     .sig:hover,.sig:focus-visible{background:rgba(255,255,255,.76)}
     .sig:active{transform:scale(.98);background:rgba(255,255,255,.86);transition-duration:.08s}
     .sig:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-    .sig.match{background:rgba(255,255,255,.76);box-shadow:inset 0 0 0 1.5px var(--accent),var(--glass-shadow)}
     .sig.dim{opacity:.4}
     .sig-top{display:flex;align-items:center;justify-content:space-between;gap:12px;height:18px;margin-bottom:8px;color:var(--sig-2);font-size:13px;line-height:18px}
     .sig-sp{display:flex;align-items:center;gap:8px;min-width:0}
@@ -173,7 +172,7 @@
     .sig-d{margin:4px 0 0;color:var(--sig-2);font-size:13px;line-height:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .sig-in.swap{animation:sig-swap .24s var(--ease)}
     @keyframes sig-swap{from{opacity:0;transform:translateY(4px)}}
-    body.night .sig:hover,body.night .sig:focus-visible,body.night .sig.match{background:rgba(66,66,70,.72)}
+    body.night .sig:hover,body.night .sig:focus-visible{background:rgba(66,66,70,.72)}
     body.night .sig:active{background:rgba(74,74,78,.8)}
     body.night .sig-sp .ic{color:var(--sc-n)}
     @container screen (max-width:640px){
@@ -1139,7 +1138,6 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .ff-touch .act{min-height:44px;padding:0 18px;font-size:14px}
     .ff-touch .m-head{height:60px}.ff-touch .m-head .mic{width:44px;height:44px}
     .ff-touch .wx-btn{height:40px}.ff-touch .me-btn{width:40px;height:40px}
-    .ff-touch .plus{width:56px;height:56px;margin-top:-28px;right:calc(var(--gap) / -2 - 28px)}
     .ff-touch .timeline-hint,.ff-touch .coach,.ff-touch .os.view-home .hints{display:none}
     .ff-touch .hints{height:56px;padding:6px;gap:4px;bottom:16px}
     .ff-touch .hints button{height:44px;padding:0 16px;gap:8px;font-size:14px}
@@ -1158,6 +1156,17 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .ff-tablet .home-parse,.ff-phone .home-parse{position:fixed;left:0;right:0;margin:0 auto}
     .ff-tablet .home-parse{bottom:104px}
     .ff-tablet .space,.ff-tablet .timeline{bottom:88px}
+    .ff-touch .plus{display:none}
+    .ff-tablet .module:not(.active){opacity:.6}
+    .ff-tablet .flow:not(.current){opacity:.72}
+    .flow:not(.current) .flow-label{cursor:pointer}
+    .ff-tablet .module.active~.module{transform-origin:0 50%}
+    .ff-tablet .module:has(~.module.active){transform-origin:100% 50%}
+    .navdots.pager{left:50%;right:auto;flex-direction:row;gap:0;transform:translateX(-50%)}
+    .navdots.pager button{box-sizing:content-box;width:6px;height:6px;padding:9px 4px;background-clip:content-box;transition:width .4s var(--spring),background-color .3s}
+    .navdots.pager button.on{width:20px;height:6px}
+    .navdots.pager button:hover:not(.on){background-color:var(--quiet)}
+    .navdots.pager button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;border-radius:8px}
 
     .sb-time{display:none;font-size:15px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
     .ff-phone .sb-time{display:block}
@@ -1174,7 +1183,6 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .ff-phone .space{inset:96px 0 100px}
     .ff-phone .timeline{inset:52px 0 100px}
     .ff-phone .navdots{right:6px}
-    .ff-phone .plus{display:none}
     .ff-phone .hints{bottom:28px}
     .ff-phone .hints button{width:64px;padding:0;justify-content:center}
     .ff-phone .hints button .lbl{display:none}
@@ -1379,7 +1387,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     const count=(n,en,ru)=>LANG==="ru"?`${n} ${plural(n,...ru)}`:`${n} ${n===1?en[0]:en[1]}`;
     const hash=s=>[...String(s)].reduce((h,c)=>(h*31+c.charCodeAt(0))|0,7);
     const rnd=seed=>{let s=Math.abs(seed)||1;return()=>(s=(s*16807)%2147483647)/2147483647};
-    const timeStr=d=>d.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"});
+    const MSK="Europe/Moscow",timeStr=d=>d.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit",timeZone:MSK}),nowH=(d=new Date())=>{const[h,m]=timeStr(d).split(":");return +h+m/60};
     let uid=0;
     const M=(kind,item,source,data={},modifier="")=>({id:"m"+(++uid),kind,item,source,data,modifier});
 
@@ -1627,7 +1635,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         rules:[{text:T("Warn me about overlapping meetings","Предупреждать о пересекающихся встречах"),on:true},{text:T("Keep mornings free until 11:00","Беречь утро до 11:00"),on:false}],
         flows:[
           {name:T("Schedule","Расписание"),modules:[
-            M("calendar",T("Today","Сегодня"),"calendar",{title:T("Today · 3 events","Сегодня · 3 события"),range:[9,18],now:new Date().getHours()+new Date().getMinutes()/60,events:[{s:11,e:12,t:T("Coffee with Maya","Кофе с Майей"),w:"Fábrica Coffee"},{s:13,e:14.5,t:T("Meeting with Leo","Встреча с Лео"),w:T("Studio","Студия")},{s:16,e:16.75,t:T("Design critique","Дизайн-критика"),w:T("Studio, room 2","Студия, переговорка 2")}]}),
+            M("calendar",T("Today","Сегодня"),"calendar",{title:T("Today · 3 events","Сегодня · 3 события"),range:[9,18],now:nowH(),events:[{s:11,e:12,t:T("Coffee with Maya","Кофе с Майей"),w:"Fábrica Coffee"},{s:13,e:14.5,t:T("Meeting with Leo","Встреча с Лео"),w:T("Studio","Студия")},{s:16,e:16.75,t:T("Design critique","Дизайн-критика"),w:T("Studio, room 2","Студия, переговорка 2")}]}),
             M("calendar",T("Tomorrow","Завтра"),"calendar",{title:T("Tomorrow · 2 events","Завтра · 2 события"),range:[9,18],now:-1,events:[{s:10,e:11,t:T("Sprint planning","Планирование спринта"),w:T("Studio, big room","Студия, большая комната")},{s:15,e:16,t:T("Q4 report review","Разбор отчёта за Q4"),w:T("Call","Созвон")}]})
           ]},
           {name:T("Invites","Приглашения"),modules:[
@@ -1855,7 +1863,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       paintSig(el,g,idx,true);
     }
     function matchSignals(q){
-      const words=q.toLowerCase().trim().split(/\s+/).filter(w=>w.length>1);
+      const words=q.toLowerCase().trim().split(/\s+/).filter(w=>w.length>2);
       const cards=HOME_SIGNALS(),els=$$("#blueprints .sig");
       if(!words.length){els.forEach(e=>e.classList.remove("match","dim"));return}
       /* if typing about Q4/report/Leo, flip card 4 to its Q4 Report state automatically */
@@ -2122,7 +2130,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       $("#flows").innerHTML=S.flows.map((fl,fi)=>`<div class="flow" data-f="${fi}"><div class="flow-label"><b>${esc(fl.name)}</b><span class="count"></span></div><div class="track">${fl.modules.map((m,mi)=>moduleHTML(m,fi,mi)).join("")}</div></div>`).join("");
       $("#spaceTitle span").textContent=S.title;
       renderCollabStack();
-      $("#navdots").innerHTML=S.flows.map((fl,i)=>`<button data-f="${i}" title="${esc(fl.name)}"></button>`).join("");
+      $("#navdots").dataset.k="";
       layout();
       allModules().filter(x=>x.kind==="map").forEach(m=>{syncTiles(m);warmRoutes(m)});
       const inp=keep&&$(`.module[data-id="${keep.id}"] .line-in`);
@@ -2131,18 +2139,29 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     function layout(){
       if(!S)return;
       if(FF.dev==="car")renderCar();
-      const sp=$("#space"),w=sp.clientWidth,h=sp.clientHeight,phone=FF.dev==="phone";
-      const mw=phone?w-32:Math.min(440,w-96),mh=phone?h-40:Math.min(580,Math.round(h*.8)),gap=phone?16:80,fh=mh+70;
+      const sp=$("#space"),w=sp.clientWidth,h=sp.clientHeight,phone=FF.dev==="phone",tab=FF.dev==="tablet";
+      let mw,mh,gap,y0;
+      if(phone){mw=w-32;mh=h-40;gap=16;y0=32}
+      else if(tab){mw=Math.min(600,w-160);gap=(w-mw)/2-TAB_PEEK;y0=36;mh=Math.min(580,h-y0-80)}
+      else{mw=Math.min(440,w-96);mh=Math.min(580,Math.round(h*.8));gap=80;y0=(h-mh)/2}
+      const fh=mh+(tab?86:70);
       sp.style.setProperty("--mw",mw+"px");sp.style.setProperty("--mh",mh+"px");sp.style.setProperty("--gap",gap+"px");sp.style.setProperty("--lx",(w/2-mw/2+6)+"px");
-      $("#flows").style.transform=`translateY(${(phone?32:(h-mh)/2)-S.f*fh}px)`;
+      $("#flows").style.transform=`translateY(${y0-S.f*fh}px)`;
       $$("#flows .flow").forEach((el,fi)=>{
         el.style.top=fi*fh+"px";el.classList.toggle("current",fi===S.f);
         el.querySelector(".track").style.transform=`translateX(${w/2-mw/2-S.m[fi]*(mw+gap)}px)`;
         el.querySelector(".count").textContent=`${S.m[fi]+1} / ${S.flows[fi].modules.length}`;
         el.querySelectorAll(".module").forEach((c,mi)=>c.classList.toggle("active",fi===S.f&&mi===S.m[fi]));
       });
-      $$("#navdots button").forEach((b,i)=>b.classList.toggle("on",i===S.f));
+      renderNavdots(tab,y0+mh);
       if(paletteOpen)setTimeout(positionPalette,0);
+    }
+    const TAB_PEEK=32;
+    function renderNavdots(pager,below){
+      const nd=$("#navdots"),mods=S.flows[S.f].modules,key=pager?`m${S.f}:${mods.length}`:`f${S.flows.length}`;
+      if(nd.dataset.k!==key){nd.dataset.k=key;nd.innerHTML=pager?mods.map((m,i)=>`<button data-m="${i}" title="${esc(m.item||"")}"></button>`).join(""):S.flows.map((fl,i)=>`<button data-f="${i}" title="${esc(fl.name)}"></button>`).join("")}
+      nd.classList.toggle("pager",pager);nd.style.top=pager?`${below+14}px`:"";
+      $$("#navdots button").forEach((b,i)=>b.classList.toggle("on",pager?i===S.m[S.f]:i===S.f));
     }
     function go(df,dm){
       if(!S)return;
@@ -2911,7 +2930,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     const notifText=n=>Array.isArray(n.text)?T(...n.text):String(n.text);
     let notifCloseT;
     const notifOpen=()=>{const p=$("#notifPanel");return p.classList.contains("open")&&!p.classList.contains("closing")};
-    function notifTime(ts){const s=(Date.now()-ts)/1000;if(s<45)return T("just now","только что");if(s<3600){const m=Math.max(1,Math.round(s/60));return T(`${m} min ago`,`${m} мин назад`)}const d=new Date(ts);return pad(d.getHours())+":"+pad(d.getMinutes())}
+    function notifTime(ts){const s=(Date.now()-ts)/1000;if(s<45)return T("just now","только что");if(s<3600){const m=Math.max(1,Math.round(s/60));return T(`${m} min ago`,`${m} мин назад`)}return timeStr(new Date(ts))}
     /* "Source: message" → card title + body; known people / services get their own avatar, everything else is Intent */
     function notifParts(text){const m=String(text).match(/^([^:]{1,32}):\s+([\s\S]+)$/);return m?[m[1],m[2]]:[T("Update","Обновление"),String(text)]}
     const notifSpace=n=>Array.isArray(n.space)?T(...n.space):(n.space||T("System","Система"));
@@ -2943,7 +2962,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     /* ───────── quick intents: each chip builds its Space, a chain of modules ───────── */
     const QI={mail:{ic:"mail",bp:()=>BP.inbox(),t:()=>T("Review inbox","Разобрать входящие")},calendar:{ic:"cal",bp:()=>BP.calendar(),t:()=>T("My day","Мой день")},music:{ic:"music",bp:()=>BP.music(),t:()=>T("Background music","Фоновая музыка")}};
     function renderHomeApps(){
-      const h=new Date().getHours()+new Date().getMinutes()/60,n=BP.inbox().flows[0].modules[0].data.rows.length,nx=BP.calendar().flows[0].modules[0].data.events.find(e=>e.e>h);
+      const h=nowH(),n=BP.inbox().flows[0].modules[0].data.rows.length,nx=BP.calendar().flows[0].modules[0].data.events.find(e=>e.e>h);
       const meta={mail:n?`<em class="n">${n}</em>`:"",calendar:nx?`<em>${nx.s<=h?T("now","сейчас"):fmtH(nx.s)}</em>`:"",music:""};
       $("#homeApps").innerHTML=Object.entries(QI).map(([k,q])=>`<button class="home-app" data-app="${k}">${ic(q.ic)}<span>${q.t()}</span>${meta[k]}</button>`).join("");
     }
@@ -3051,7 +3070,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     addEventListener("keydown",e=>{if(e.key==="Escape"&&winOpen())return;if(e.key==="Escape"&&notifOpen()){e.stopImmediatePropagation();showNotifs(false)}},true);
     $("#collabStack").addEventListener("click",e=>{const cs=e.target.closest(".cs");if(!cs||!S)return;returnFocus=cs;openSettings({section:"permissions",scope:"space",focus:whoId(cs.dataset.name)})});
     $("#ovClose").onclick=()=>toggleOverview(false);
-    $("#navdots").addEventListener("click",e=>{const b=e.target.closest("button");if(b){S.f=+b.dataset.f;layout()}});
+    $("#navdots").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.m!=null)go(0,+b.dataset.m-S.m[S.f]);else{S.f=+b.dataset.f;layout()}});
     $("#palette").addEventListener("mousedown",e=>e.preventDefault());
     $("#palette").addEventListener("click",e=>{const b=e.target.closest(".pi");if(b)runPalette(+b.dataset.pi)});
     $("#rules").addEventListener("click",e=>{
@@ -3159,6 +3178,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       if(e.ctrlKey||mouseWheel){const u=mapUnits(mapEl,e.clientX,e.clientY);zoomMap(m,Math.exp(-e.deltaY*(e.ctrlKey?.012:.0025)),u.x,u.y,!e.ctrlKey);return}
       const v=m.data.view,u=mapUnits(mapEl,0,0);v.x-=e.deltaX/u.s;v.y-=e.deltaY/u.s;camApply(m,false)},{passive:false});
     flowsEl.addEventListener("click",e=>{
+      const lab=e.target.closest(".flow:not(.current) .flow-label");if(lab){go(+lab.parentElement.dataset.f-S.f,0);return}
       const card=e.target.closest(".module");if(!card)return;
       const fi=+card.dataset.f,mi=+card.dataset.m,m=S.flows[fi].modules[mi];
       if(!card.classList.contains("active")){focusModule(fi,mi);return}
@@ -3317,9 +3337,8 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     },{passive:true});
     addEventListener("resize",()=>{ffPlace();renderFFSwitch();layout()});
 
-    const MSK="Europe/Moscow";
     const mskParts=(d=new Date())=>Object.fromEntries(new Intl.DateTimeFormat("en-GB",{timeZone:MSK,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(d).map(p=>[p.type,p.value]));
-    const mskTime=d=>d.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit",timeZone:MSK});
+    const mskTime=timeStr;
 
     let WXD=null;
     const omKind=c=>c===0?"clear":c<=2?"partly":c===3?"cloudy":c<=48?"fog":c<=57?"drizzle":c<=67?"rain":c<=77?"snow":c<=82?"rain":c<=86?"snow":"storm";
@@ -3447,7 +3466,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     },true);
     loadWeather();setInterval(loadWeather,15*60e3);
 
-    function tickClock(){const d=new Date(),t=timeStr(d),big=mskTime(d);$("#clock").innerHTML=`${big}<span class="tz">MSK</span>`;$("#homeTime").textContent=t;$("#homeDate").textContent=d.toLocaleDateString(LANG==="ru"?"ru-RU":"en-GB",{weekday:"long",day:"numeric",month:"long"});const lk=$("#lockTime");if(lk)lk.textContent=big;$("#sbTime").textContent=t;const ct=$("#carTime");if(ct)ct.textContent=t;const id=$("#idleTime");if(id)id.textContent=big}
+    function tickClock(){const d=new Date(),t=timeStr(d),big=t;$("#clock").textContent=t;$("#homeTime").textContent=t;$("#homeDate").textContent=d.toLocaleDateString(LANG==="ru"?"ru-RU":"en-GB",{weekday:"long",day:"numeric",month:"long",timeZone:MSK});const lk=$("#lockTime");if(lk)lk.textContent=big;$("#sbTime").textContent=t;const ct=$("#carTime");if(ct)ct.textContent=t;const id=$("#idleTime");if(id)id.textContent=big}
     setInterval(tickClock,15000);
     const COACH_KEY="intent-os-hints-seen";
     function coachOpen(){return !!$(".coach")}
