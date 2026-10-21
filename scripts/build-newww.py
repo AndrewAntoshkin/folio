@@ -13,7 +13,8 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "newww"
 ARTICLES = ROOT / "content" / "articles"
 SITE_URL = "https://antoshkin.tech"
-OG_IMAGE = f"{SITE_URL}/img/gen/hero.jpg"
+OG_DEFAULT = ("img/gen/hero.jpg", 1600, 900)
+OG_CARD_SIZE = (1200, 627)
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from project_docs import load_doc  # noqa: E402
@@ -34,6 +35,8 @@ HEAD = """<!DOCTYPE html>
   <meta property="og:type" content="website">
   <meta property="og:url" content="{canonical}">
   <meta property="og:image" content="{og_image}">
+  <meta property="og:image:width" content="{og_w}">
+  <meta property="og:image:height" content="{og_h}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{title}">
   <meta name="twitter:description" content="{desc}">
@@ -41,7 +44,7 @@ HEAD = """<!DOCTYPE html>
   <link rel="canonical" href="{canonical}">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
   <script>document.documentElement.classList.remove('nojs');try{{if(sessionStorage.getItem('dock-seen'))document.documentElement.classList.add('dock-seen');else sessionStorage.setItem('dock-seen','1')}}catch(e){{}}</script>
-  <link rel="stylesheet" href="/style.css?v=44">
+  <link rel="stylesheet" href="/style.css?v=50">
 </head>
 <body>
 """
@@ -200,6 +203,16 @@ def cta_and_footer(lang: str, cta: bool = True) -> str:
 '''
 
 
+def og_for(stem: str) -> tuple[str, int, int]:
+    """Home and project pages get their own card from og/ (built by scripts/build_og.py)."""
+    if stem == "home" or any(p["slug"] == stem for p in PROJECTS):
+        path = ROOT / "og" / f"{stem}.jpg"
+        if not path.exists():
+            raise SystemExit(f"Missing {path.relative_to(ROOT)}; run scripts/build_og.py")
+        return (f"og/{stem}.jpg", *OG_CARD_SIZE)
+    return OG_DEFAULT
+
+
 def shell(lang: str, title: str, active: str, stem: str, inner: str, cta: bool = True, desc: str = "") -> str:
     default_desc = (
         "Ведущий дизайнер дизайн-системы в Яндексе (HR Tech). Проектирую продукты, дизайн-системы и инструменты для работы с AI-агентами."
@@ -208,12 +221,15 @@ def shell(lang: str, title: str, active: str, stem: str, inner: str, cta: bool =
     )
     clean_desc = html.escape(plain(desc or default_desc), quote=True)
     clean_title = html.escape(plain(title), quote=True)
+    og_path, og_w, og_h = og_for(stem)
     return HEAD.format(
         lang=lang,
         title=clean_title,
         desc=clean_desc,
         canonical=canonical_for(stem, lang),
-        og_image=OG_IMAGE,
+        og_image=f"{SITE_URL}/{og_path}",
+        og_w=og_w,
+        og_h=og_h,
     ) + chrome(lang, active, stem) + inner + cta_and_footer(lang, cta)
 
 
