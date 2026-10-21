@@ -25,6 +25,7 @@
     html:not(.ff-desktop) .ff-shell{display:block}
     html:not(.ff-desktop) .ff-screen{border-radius:var(--ffr)}
     html.ff-morph .ff-shell{visibility:hidden}
+    html.ff-morph .ff-screen{transition-duration:.4s}
     .ff-island,.ff-bar{display:none;position:absolute;left:50%;z-index:120;pointer-events:none;transform:translateX(-50%)}
     .ff-phone .ff-island{display:block;top:11px;width:112px;height:32px;border-radius:999px;background:#000}
     .ff-phone .ff-bar{display:block;bottom:8px;width:134px;height:5px;border-radius:999px;background:var(--ink);opacity:.82}
@@ -1336,29 +1337,32 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .car-held .ic{width:18px;height:18px}
     .car-held:hover{background:rgba(244,173,92,.24)}.car-held:active{transform:scale(.96)}.car-held:focus-visible{outline:2px solid #fff;outline-offset:2px}
     .car-held[hidden]{display:none}
+    .car-held{animation:carPop .42s cubic-bezier(.2,.8,.2,1) both}
+    @keyframes carPop{0%{opacity:0;scale:.6;translate:12px 0}60%{opacity:1;scale:1.06}100%{scale:1;translate:0 0}}
 
-    .car-rail{position:absolute;z-index:3;left:16px;top:56px;bottom:16px;display:flex;flex-direction:column;align-items:center;gap:8px;width:80px;padding:8px}
-    .car-rb{position:relative;display:grid;place-items:center;flex:none;width:64px;height:64px;border:0;border-radius:20px;background:none;color:var(--t2);transition:background-color .12s,color .12s,transform .12s cubic-bezier(.2,.8,.2,1)}
-    .car-rb .ic{width:28px;height:28px}
+    .car-rail{position:absolute;z-index:3;left:16px;top:64px;bottom:16px;display:flex;flex-direction:column;align-items:center;gap:8px;width:96px;padding:12px 8px;border-radius:28px;background:rgba(18,21,27,.5);box-shadow:inset 0 1px 0 rgba(255,255,255,.05),inset 0 0 0 1px var(--edge);-webkit-backdrop-filter:blur(24px) saturate(1.3);backdrop-filter:blur(24px) saturate(1.3)}
+    .car-rb{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;flex:none;width:80px;height:80px;border:0;border-radius:20px;font-size:13px;font-weight:500;line-height:16px;background:none;color:var(--t2);transition:background-color .12s,color .12s,transform .12s cubic-bezier(.2,.8,.2,1)}
+    .car-rb .ic{width:32px;height:32px}
     .car-rb:hover{background:rgba(255,255,255,.06);color:#fff}
     .car-rb:active{transform:scale(.94);background:rgba(255,255,255,.1)}
     .car-rb:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
     .car-rb.on{background:rgba(255,255,255,.1);color:#fff}
-    .car-rb.on::before{content:"";position:absolute;left:-8px;top:20px;bottom:20px;width:3px;border-radius:2px;background:var(--amber)}
-    .car-rb em{position:absolute;top:8px;right:8px;min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--amber);color:#1b1208;font-size:13px;font-style:normal;line-height:20px;text-align:center}
+    .car-rb.on::before{content:"";position:absolute;left:-8px;top:24px;bottom:24px;width:3px;border-radius:2px;background:var(--amber)}
+    .car-rb em{position:absolute;top:6px;right:12px;min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--amber);color:#1b1208;font-size:13px;font-style:normal;line-height:20px;text-align:center}
     .car-rgap{flex:1}
-    .car-orb{position:relative;display:grid;place-items:center;flex:none;width:64px;height:64px;border:0;border-radius:50%;background:radial-gradient(circle at 34% 28%,#fff3e0 0,var(--amber) 48%,#c2562e 100%);color:#2a1406;box-shadow:0 0 0 0 rgba(244,173,92,.5),0 12px 32px -8px rgba(244,140,70,.8);animation:carBreathe 3.2s ease-in-out infinite;transition:transform .12s cubic-bezier(.2,.8,.2,1),filter .12s}
-    .car-orb .ic{width:28px;height:28px;stroke-width:1.8}
+    .car-orb{position:relative;display:grid;place-items:center;flex:none;width:72px;height:72px;border:0;border-radius:50%;background:radial-gradient(circle at 34% 28%,#fff3e0 0,var(--amber) 48%,#c2562e 100%);color:#2a1406;box-shadow:0 0 0 0 rgba(244,173,92,.5),0 12px 32px -8px rgba(244,140,70,.8);animation:carBreathe 3.2s ease-in-out infinite;transition:transform .12s cubic-bezier(.2,.8,.2,1),filter .12s}
+    .car-orb .ic{width:32px;height:32px;stroke-width:1.8}
     .car-orb:hover{filter:brightness(1.08)}.car-orb:active{transform:scale(.92)}.car-orb:focus-visible{outline:2px solid #fff;outline-offset:3px}
     @keyframes carBreathe{50%{scale:1.05;box-shadow:0 0 0 12px rgba(244,173,92,0),0 12px 40px -4px rgba(244,140,70,.95)}}
 
-    .car-hero{position:absolute;z-index:1;left:112px;top:56px;bottom:16px;right:432px;overflow:hidden;border-radius:28px;background:#0a0d12;box-shadow:0 30px 60px -30px rgba(0,0,0,.8)}
+    .car-hero{position:absolute;z-index:1;inset:0;overflow:hidden;background:#0a0d12}
     .car-map{position:absolute;inset:0}
     .car-map svg{display:block;width:100%;height:100%}
-    .car-puck-halo{transform-box:fill-box;transform-origin:center;animation:carHalo 2.4s ease-out infinite}
+    .car-lbl text{font-size:15px;font-weight:500;letter-spacing:.04em;fill:rgba(220,228,240,.46);stroke:#0d1118;stroke-width:5px;paint-order:stroke;stroke-linejoin:round}
+        .car-puck-halo{transform-box:fill-box;transform-origin:center;animation:carHalo 2.4s ease-out infinite}
     @keyframes carHalo{0%{opacity:.55;scale:.7}100%{opacity:0;scale:1.7}}
-    .car-hero::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;box-shadow:inset 0 0 0 1px var(--edge);background:linear-gradient(180deg,rgba(7,9,13,.55),rgba(7,9,13,0) 30%,rgba(7,9,13,0) 75%,rgba(7,9,13,.5))}
-    .car-mv{position:absolute;z-index:2;left:16px;top:16px;width:360px;transform-origin:50% 0}
+    .car-hero::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(7,9,13,.86),rgba(7,9,13,0) 128px),linear-gradient(0deg,rgba(7,9,13,.55),rgba(7,9,13,0) 160px),linear-gradient(90deg,rgba(7,9,13,.7),rgba(7,9,13,0) 150px),linear-gradient(270deg,rgba(7,9,13,.72),rgba(7,9,13,.3) 430px,rgba(7,9,13,0) 560px),radial-gradient(55% 70% at 100% 112%,rgba(244,146,66,.3),rgba(244,146,66,0) 70%),radial-gradient(40% 50% at 0 0,rgba(90,120,190,.16),rgba(90,120,190,0) 70%)}
+    .car-mv{position:absolute;z-index:2;left:128px;top:64px;width:360px;transform-origin:50% 0}
     .car-mv-in{display:grid;grid-template-columns:64px minmax(0,1fr);column-gap:20px;align-items:center;padding:20px 24px 16px 20px;border-radius:24px;background:rgba(18,21,27,.72);box-shadow:inset 0 1px 0 rgba(255,255,255,.06),inset 0 0 0 1px var(--edge),0 20px 40px -20px rgba(0,0,0,.9);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px)}
     .car-mv-a{display:grid;place-items:center;width:64px;height:64px;color:#fff}
     .car-mv-a svg{width:60px;height:60px}
@@ -1370,7 +1374,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .car-mv-n svg{flex:none;width:20px;height:20px}
     .car-mv-n span{min-width:0;overflow:hidden;text-overflow:ellipsis}
 
-    .car-side{position:absolute;z-index:3;top:56px;right:16px;bottom:16px;width:400px;display:flex;flex-direction:column;gap:16px}
+    .car-side{position:absolute;z-index:3;top:64px;right:16px;bottom:16px;width:400px;display:flex;flex-direction:column;gap:16px}
     .car-eta{flex:none;height:148px;padding:18px 24px}
     .car-eta-h{display:flex;align-items:center;gap:8px;height:24px;color:var(--t2);font-size:18px;line-height:24px;white-space:nowrap}
     .car-eta-h .ic{flex:none;width:18px;height:18px;color:var(--amber)}
@@ -1403,7 +1407,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .car-mb.pp:hover{box-shadow:inset 0 0 0 1.5px #fff}
 
     .car-col{position:relative;flex:1;min-height:0}
-    .car-card{position:absolute;inset:0;display:flex;flex-direction:column;gap:8px;padding:20px;overflow:hidden}
+    .car-card{position:absolute;inset:0;display:flex;flex-direction:column;gap:6px;padding:16px 20px;overflow:hidden}
     .car-card.out{pointer-events:none}
     .car-k{display:flex;align-items:center;gap:10px;height:28px;flex:none;color:var(--t2);font-size:18px;line-height:24px;white-space:nowrap}
     .car-k .kt{flex:none;width:28px;height:28px;border-radius:8px}.car-k .kt .ic{width:16px;height:16px}
@@ -1413,13 +1417,14 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .car-v .ic{display:inline-block;width:24px;height:24px;margin-right:8px;vertical-align:-3px;color:#8fe3b0;stroke-width:2}
     .car-l{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;color:var(--t2)}
     .car-cd{display:flex;align-items:baseline;gap:10px}
-    .car-cd b small{margin-left:4px;font-size:22px;font-weight:300;letter-spacing:0}
-    .car-cd b{font-size:48px;font-weight:300;line-height:52px;letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:var(--amber)}
+    .car-cd b small{margin-left:4px;font-size:20px;font-weight:300;letter-spacing:0}
+    .car-cd b{font-size:40px;font-weight:300;line-height:44px;letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:var(--amber)}
     .car-cd span{color:var(--t2)}
-    .car-why{display:flex;align-items:center;gap:8px;flex:none;margin:0;color:var(--t3);font-size:16px;line-height:22px;white-space:nowrap}
-    .car-why .ic{flex:none;width:16px;height:16px;color:var(--amber)}
-    .car-why span{min-width:0;overflow:hidden;text-overflow:ellipsis}
-    .car-a{display:flex;flex:none;gap:8px;margin-top:4px}
+    .car-why{display:flex;align-items:flex-start;gap:8px;flex:none;margin:0;color:var(--t3);font-size:15px;line-height:20px}
+    .car-why .ic{flex:none;width:16px;height:16px;margin-top:2px;color:var(--amber)}
+    .car-why span{min-width:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .car-body:has(.car-cd) .car-v{-webkit-line-clamp:1}
+    .car-a{display:flex;flex:none;gap:8px}
     .car-a .car-b{flex:1 1 auto;min-width:0}
     .car-card.hand{box-shadow:inset 0 1px 0 rgba(255,255,255,.06),inset 0 0 0 1.5px var(--amber),0 30px 60px -30px rgba(0,0,0,.8)}
     .car-card.hand .car-k,.car-card.alert .car-k{color:var(--amber)}
@@ -1436,7 +1441,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .car-b.primary:hover{filter:brightness(1.06)}
     .car-b.primary:active{filter:brightness(.92)}
 
-    .car-say{position:absolute;z-index:5;left:16px;right:16px;bottom:16px;display:flex;align-items:center;gap:16px;min-height:72px;padding:8px 8px 8px 20px;border-radius:24px;background:rgba(26,30,38,.92);box-shadow:inset 0 0 0 1px var(--edge),0 24px 48px -16px rgba(0,0,0,.9);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);opacity:0;transform:translateY(8px);transition:opacity .18s cubic-bezier(.4,0,1,1),transform .18s cubic-bezier(.4,0,1,1);pointer-events:none}
+    .car-say{position:absolute;z-index:5;left:128px;right:432px;bottom:16px;display:flex;align-items:center;gap:16px;min-height:72px;padding:8px 8px 8px 20px;border-radius:24px;background:rgba(26,30,38,.92);box-shadow:inset 0 0 0 1px var(--edge),0 24px 48px -16px rgba(0,0,0,.9);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);opacity:0;transform:translateY(8px);transition:opacity .18s cubic-bezier(.4,0,1,1),transform .18s cubic-bezier(.4,0,1,1);pointer-events:none}
     .car-say.on{opacity:1;transform:none;pointer-events:auto;transition-duration:.32s;transition-timing-function:cubic-bezier(.2,.8,.2,1)}
     .car-say.urgent{background:rgba(92,32,28,.94)}
     .car-say>.ic{flex:none;width:28px;height:28px;color:var(--amber)}
@@ -3621,6 +3626,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     }
     async function loadWeather(){
       try{const c=JSON.parse(sessionStorage.getItem("wx")||"null");if(c&&Date.now()-c.at<15*60e3){WXD=c.d;WXD.at=c.at;return renderWx()}}catch{}
+      if(!WXD){WXD=wxMock();WXD.at=Date.now();renderWx()}
       const om="https://api.open-meteo.com/v1/forecast?latitude=55.7558&longitude=37.6173&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,relative_humidity_2m,is_day,pressure_msl&hourly=temperature_2m,precipitation_probability,weather_code,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset,uv_index_max&timezone=Europe%2FMoscow&forecast_days=7&wind_speed_unit=ms";
       let d=null;
       try{d=fromOM(await getJSON(om,5000))}catch{try{d=fromWttr(await getJSON("https://wttr.in/Moscow?format=j1",9000))}catch{}}
@@ -4064,7 +4070,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     }
     function suggestDev(){if(!S||HANDOFF||view!=="space")return null;const d={trip:"car",music:"car",gym:"phone",flat:"tablet"}[S.id];return d&&d!==FF.dev?d:null}
     /* one spring for the frame and every shared element: ~450 ms, a hair of overshoot */
-    const FF_DUR=450,FF_EASE=(()=>{const z=.76,w=18.8,wd=w*Math.sqrt(1-z*z),n=40,pts=[];for(let i=0;i<=n;i++){const t=i/n*FF_DUR/1000;pts.push(i===n?1:+(1-Math.exp(-z*w*t)*(Math.cos(wd*t)+z*w/wd*Math.sin(wd*t))).toFixed(4))}return `linear(${pts.join(",")})`})();
+    const FF_DUR=450,FF_EASE=(()=>{const z=.85,w=11,wd=w*Math.sqrt(1-z*z),n=40,pts=[];for(let i=0;i<=n;i++){const t=i/n*FF_DUR/1000;pts.push(i===n?1:+(1-Math.exp(-z*w*t)*(Math.cos(wd*t)+z*w/wd*Math.sin(wd*t))).toFixed(4))}return `linear(${pts.join(",")})`})();
     document.documentElement.style.setProperty("--ff-ease",FF_EASE);
     function ffGeo(id){
       const d=devOf(id),vw=innerWidth,vh=innerHeight,band=vw<=760?52:0;
@@ -4117,10 +4123,12 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       if(was==="car"){const c=$("#car");ghost=c.cloneNode(true);ghost.removeAttribute("id");ghost.classList.add("car-ghost");ghost.querySelectorAll("[id]").forEach(n=>n.removeAttribute("id"));
         Object.assign(ghost.style,{width:from.w+"px",height:from.h+"px",borderRadius:from.r+"px",transform:`translate(${from.x}px,${from.y}px) scale(${from.s})`});document.body.append(ghost)}
       opts.before?.();applyDevice(id);opts.after?.();
-      const R1=rect(FF),bg1=id==="car"?"#07090d":getComputedStyle(SCREEN).backgroundColor,os=$("#os");
+      const R1=rect(FF),bg1=id==="car"?"#07090d":getComputedStyle(SCREEN).getPropertyValue("--fog").trim()||"#dcdcdc",os=$("#os");
       const done=()=>{if(tok!==ffTok)return;html.classList.remove("ff-morph","ff-os-out");ghost?.remove();$$(".ff-morph-shell").forEach(n=>n.remove());ffAnims=[]};
       const push=a=>{ffAnims.push(a);return a};
-      if(ghost)push(ghost.animate([{opacity:1},{opacity:0}],{duration:calm?200:300,easing:"cubic-bezier(.4,0,1,1)",fill:"forwards"}));
+      if(ghost){push(ghost.animate([{opacity:1},{opacity:0}],{duration:calm?200:380,easing:"cubic-bezier(.4,0,.6,1)",fill:"forwards"}));
+        if(!calm){const k=Math.min(FF.w*FF.s/from.w,FF.h*FF.s/from.h),tx=FF.x+(FF.w*FF.s-from.w*k)/2,ty=FF.y+(FF.h*FF.s-from.h*k)/2;
+          push(ghost.animate([{transform:`translate(${from.x}px,${from.y}px) scale(${from.s})`},{transform:`translate(${tx}px,${ty}px) scale(${k})`}],{duration:FF_DUR,easing:FF_EASE,fill:"forwards"}))}}
       if(id==="car"){carEnter();
         if(was!=="car"){html.classList.add("ff-os-out");const a=push(os.animate([{opacity:1},{opacity:0}],{duration:calm?160:220,easing:"cubic-bezier(.4,0,1,1)",fill:"forwards"}));
           const off=()=>{html.classList.remove("ff-os-out");a.cancel()};a.finished.then(off,off)}}
@@ -4340,13 +4348,13 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
 
     /* ── car: deliberately reduced. The map is the hero, then the trip, what's playing and ONE card the OS picks; the mic is the way in.
        Only driving kinds get a glance view; a module you hand off or ask for by voice is the exception. Spaces only by voice. ── */
-    const CAR={held:[],last:-1e4,card:null,cardT:0,evalT:0,tick:0,pin:null,pinT:0,landed:null,landedT:0,over:false,sayT:0,sayFn:null,demoT:0,demoDone:false,raf:0,mv:-1,ask:null,v:null,w:null,media:""};
+    const CAR={rot0:0,rainSnooze:0,held:[],last:-1e4,card:null,cardT:0,evalT:0,tick:0,pin:null,pinT:0,landed:null,landedT:0,over:false,sayT:0,sayFn:null,demoT:0,demoDone:false,raf:0,mv:-1,ask:null,v:null,w:null,media:""};
     const ROUTE=[[0,0],[0,-420],[560,-420],[560,-980],[1060,-980],[1060,-1500],[1640,-1500],[1640,-2120]];
     const ROAD=[["Myasnitskaya St","Мясницкая улица"],["Chistoprudny Blvd","Чистопрудный бульвар"],["Pokrovka St","улица Покровка"],["Lyalin Ln","Лялин переулок"],["Zemlyanoy Val","улица Земляной Вал"],["Kazakova St","улица Казакова"],["Studio","Студия"]];
     const RSEG=ROUTE.slice(1).map((b,i)=>{const a=ROUTE[i],dx=b[0]-a[0],dy=b[1]-a[1];return{a,dx,dy,len:Math.hypot(dx,dy),hd:Math.atan2(dx,-dy)*180/Math.PI}});
     const RCUM=RSEG.reduce((acc,g)=>{acc.push(acc.at(-1)+g.len);return acc},[0]),RLEN=RCUM.at(-1);
     const NAV={speed:14,t0:performance.now(),off:0,km0:12.4,stop:null,dest:["Studio","Студия"],hd:0,k:.86};
-    const CMW=736,CMH=648,AX=368,AY=440;
+    const CMW=1280,CMH=720,AX=492,AY=500;
     function navAt(s){let k=0;while(k<RSEG.length-1&&s>=RCUM[k+1])k++;const g=RSEG[k],t=(s-RCUM[k])/g.len;return{k,x:g.a[0]+g.dx*t,y:g.a[1]+g.dy*t,hd:g.hd,left:RCUM[k+1]-s}}
     function turnOf(k){const a=RSEG[k],b=RSEG[k+1];if(!b)return "arrive";const c=a.dx*b.dy-a.dy*b.dx;return c>0?"right":c<0?"left":"straight"}
     const TURN={right:'<path d="M8 21v-9a3 3 0 0 1 3-3h8M15 5l4 4-4 4"/>',left:'<path d="M16 21v-9a3 3 0 0 0-3-3H5M9 5 5 9l4 4"/>',straight:'<path d="M12 21V4M7 9l5-5 5 5"/>',arrive:'<path d="M12 21s-6-5.6-6-10a6 6 0 0 1 12 0c0 4.4-6 10-6 10z"/><circle cx="12" cy="11" r="2"/>'};
@@ -4360,35 +4368,45 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       const min=Math.max(1,Math.round(km/.52))+(NAV.stop?4:0),s=driven%RLEN;
       return{s,p:navAt(s),km,min,arr:timeStr(new Date(Date.now()+min*60e3))};
     }
+    const XS=[[-560,["Sretensky Blvd","Сретенский бульвар"]],[0,ROAD[0]],[560,ROAD[2]],[1060,ROAD[4]],[1640,["Gorokhovsky Ln","Гороховский переулок"]],[2200,["Baumanskaya St","Бауманская улица"]]];
+    const YS=[[400,["Lubyansky Dr","Лубянский проезд"]],[0,["Milyutinsky Ln","Милютинский переулок"]],[-420,ROAD[1]],[-980,ROAD[3]],[-1500,ROAD[5]],[-2120,["Staraya Basmannaya","Старая Басманная"]],[-2640,["Novaya Basmannaya","Новая Басманная"]]];
+    const METRO=[[0,0,["Chistye Prudy","Чистые пруды"]],[560,-980,["Kurskaya","Курская"]],[1640,-2120,["Baumanskaya","Бауманская"]],[-560,-1500,["Krasnye Vorota","Красные ворота"]]];
     function carMapSVG(){
       const r=(()=>{let x=7;return()=>(x=(x*16807)%2147483647)/2147483647})();
-      let blocks="",bld="";
-      for(let x=-1260;x<2800;x+=140)for(let y=-2940;y<700;y+=140){if(r()<.07)continue;const w=r()<.2?266:126,h=r()<.15?266:126;blocks+=`M${x+7} ${y+7}h${w}v${h}h${-w}z`;
+      let blocks="",bA="",bB="",park="";
+      for(let x=-1960;x<3500;x+=140)for(let y=-3500;y<1300;y+=140){if(r()<.06)continue;const w=r()<.2?266:126,h=r()<.15?266:126;blocks+=`M${x+7} ${y+7}h${w}v${h}h${-w}z`;
+        if(r()<.07){park+=`M${x+11} ${y+11}h${w-8}v${h-8}h${8-w}z`;continue}
         const cols=r()<.5?2:3,rows=r()<.5?2:3,bw=(w-12-(cols-1)*6)/cols,bh=(h-12-(rows-1)*6)/rows;
-        for(let i=0;i<cols;i++)for(let j=0;j<rows;j++){if(r()<.18)continue;const ww=bw*(.7+r()*.3),hh=bh*(.7+r()*.3);bld+=`M${(x+13+i*(bw+6)).toFixed(0)} ${(y+13+j*(bh+6)).toFixed(0)}h${ww.toFixed(0)}v${hh.toFixed(0)}h${(-ww).toFixed(0)}z`}}
-      const xs=[-560,0,560,1060,1640,2200],ys=[400,0,-420,-980,-1500,-2120,-2640];
-      const major=xs.map(x=>`M${x} -3000V800`).join("")+ys.map(y=>`M-1300 ${y}H2900`).join("");
+        for(let i=0;i<cols;i++)for(let j=0;j<rows;j++){if(r()<.16)continue;const ww=bw*(.7+r()*.3),hh=bh*(.7+r()*.3),d=`M${(x+13+i*(bw+6)).toFixed(0)} ${(y+13+j*(bh+6)).toFixed(0)}h${ww.toFixed(0)}v${hh.toFixed(0)}h${(-ww).toFixed(0)}z`;if(r()<.35)bB+=d;else bA+=d}}
+      const major=XS.map(([x])=>`M${x} -3600V1400`).join("")+YS.map(([y])=>`M-2000 ${y}H3600`).join("");
       const route="M"+ROUTE.map(p=>p.join(" ")).join("L");
       const end=ROUTE.at(-1),stop=navAt(RCUM[3]+240);
-      return `<svg viewBox="0 0 ${CMW} ${CMH}" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="${CMW}" height="${CMH}" fill="#151a22"/><g class="car-world">`+
-        `<path d="${blocks}" fill="#0c0f14"/><path d="${bld}" fill="#141921" stroke="rgba(255,255,255,.035)" stroke-width="1.5"/>`+
-        `<path d="M-1300 -1180C-500 -1040 120 -1720 860 -1560S2000 -1960 2900 -1720" fill="none" stroke="#0c1624" stroke-width="96"/>`+
-        `<path d="M147 -833h266v266h-266zM1207 -2073h266v386h-266z" fill="#0d1914"/>`+
-        `<path d="${major}" stroke="#1c222c" stroke-width="20" fill="none"/>`+
-        `<path d="M-900 520L2700 -2700" stroke="#1a2029" stroke-width="26" fill="none"/>`+
-        `<path class="car-rt0" d="${route}" fill="none" stroke="rgba(160,170,190,.32)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>`+
-        `<path class="car-rt" d="${route}" fill="none" stroke="rgba(20,10,4,.7)" stroke-width="24" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="${RLEN} ${RLEN}"/>`+
+      const lbl=(x,y,rot,t)=>`<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="central"${rot?` transform="rotate(${rot} ${x} ${y})"`:""}>${esc(t)}</text>`;
+      let labels="";
+      XS.forEach(([x,n])=>{for(let k=0;k<YS.length-1;k++){if((k+XS.length)%2)continue;labels+=lbl(x,(YS[k][0]+YS[k+1][0])/2,90,T(...n))}});
+      YS.forEach(([y,n],q)=>{for(let k=0;k<XS.length-1;k++){if((k+q)%2)continue;labels+=lbl((XS[k][0]+XS[k+1][0])/2,y,0,T(...n))}});
+      const metro=METRO.map(([x,y,n])=>`<g transform="translate(${x+34} ${y+34})"><g class="car-up"><circle r="13" fill="#d6453d" stroke="#0d1118" stroke-width="3"/><text y="1" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="14" font-weight="600">${LANG==="ru"?"М":"M"}</text><text x="22" y="1" dominant-baseline="central" font-size="14" font-weight="500" fill="rgba(236,226,220,.62)" stroke="#0d1118" stroke-width="5" paint-order="stroke">${esc(T(...n))}</text></g></g>`).join("");
+      return `<svg viewBox="0 0 ${CMW} ${CMH}" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="${CMW}" height="${CMH}" fill="#141922"/><g class="car-world">`+
+        `<path d="${blocks}" fill="#0a0d12"/><path d="${park}" fill="#0f1f1a"/><path d="${bA}" fill="#161b24" stroke="rgba(255,255,255,.035)" stroke-width="1.5"/><path d="${bB}" fill="#1c222d" stroke="rgba(255,255,255,.045)" stroke-width="1.5"/>`+
+        `<path d="M-2000 -1180C-500 -1040 120 -1720 860 -1560S2000 -1960 3600 -1720" fill="none" stroke="#112137" stroke-width="112"/><path d="M-2000 -1180C-500 -1040 120 -1720 860 -1560S2000 -1960 3600 -1720" fill="none" stroke="#0c1828" stroke-width="96"/>`+
+        `<path d="${major}" stroke="#252c39" stroke-width="22" fill="none"/><path d="${major}" stroke="rgba(255,255,255,.05)" stroke-width="1.5" fill="none" stroke-dasharray="14 18"/>`+
+        `<path d="M-1600 1100L3200 -3200" stroke="#212836" stroke-width="30" fill="none"/>`+
+        `<g class="car-lbl">${labels}</g>`+
+        `<path class="car-rt0" d="${route}" fill="none" stroke="rgba(150,162,186,.34)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>`+
+        `<path class="car-rt" d="${route}" fill="none" stroke="rgba(244,173,92,.12)" stroke-width="48" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="${RLEN} ${RLEN}"/>`+
+        `<path class="car-rt" d="${route}" fill="none" stroke="rgba(20,10,4,.75)" stroke-width="24" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="${RLEN} ${RLEN}"/>`+
         `<path class="car-rt" d="${route}" fill="none" stroke="#f4ad5c" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="${RLEN} ${RLEN}"/>`+
+        metro+
         `<g class="car-stop" transform="translate(${stop.x} ${stop.y})" opacity="0"><circle r="20" fill="#fff"/><circle r="8" fill="#f4ad5c"/></g>`+
-        `<g transform="translate(${end[0]} ${end[1]})"><circle r="30" fill="rgba(244,173,92,.2)"/><circle r="18" fill="#f4ad5c"/><circle r="7" fill="#1b1208"/></g>`+
+        `<g transform="translate(${end[0]} ${end[1]})"><circle r="34" fill="rgba(244,173,92,.18)"/><circle r="18" fill="#f4ad5c"/><circle r="7" fill="#1b1208"/></g>`+
         `</g><g transform="translate(${AX} ${AY})"><circle class="car-puck-halo" r="30" fill="rgba(244,173,92,.45)"/><circle r="22" fill="#fff" stroke="rgba(0,0,0,.35)" stroke-width="2"/><path d="M0-11 9 9 0 4-9 9z" fill="#1b1208"/></g></svg>`;
     }
     function discSVG(pl){
-      const d=pl.data,hue=[14,30,352,206][(d.seed||0)%4],text=`${d.tracks[d.track][0]} · ${d.tracks[d.track][1]} · `.repeat(2).toUpperCase(),n=text.length;
-      return `<svg viewBox="0 0 152 152" aria-hidden="true"><circle cx="76" cy="76" r="76" fill="hsl(${hue} 70% 18%)"/><circle cx="76" cy="76" r="70" fill="hsl(${hue} 82% 42%)"/><circle cx="62" cy="58" r="48" fill="hsl(${(hue+24)%360} 92% 60%)" opacity=".55"/><circle cx="96" cy="100" r="40" fill="hsl(${(hue+340)%360} 80% 30%)" opacity=".6"/>`+
+      const d=pl.data,hue=[30,20,38,12][(d.seed||0)%4],text=`${d.tracks[d.track][0]} · ${d.tracks[d.track][1]} · `.repeat(2).toUpperCase(),n=text.length;
+      return `<svg viewBox="0 0 152 152" aria-hidden="true"><defs><radialGradient id="cdg${d.track}" cx=".32" cy=".26" r=".9"><stop offset="0" stop-color="hsl(${hue+10} 96% 70%)"/><stop offset=".45" stop-color="hsl(${hue} 86% 50%)"/><stop offset="1" stop-color="hsl(${hue-14} 78% 22%)"/></radialGradient></defs><circle cx="76" cy="76" r="76" fill="hsl(${hue} 60% 10%)"/><circle cx="76" cy="76" r="70" fill="url(#cdg${d.track})"/><path d="M76 6a70 70 0 0 1 60 34L76 76z" fill="rgba(255,240,220,.16)"/><circle cx="104" cy="104" r="34" fill="hsl(${hue-18} 70% 18%)" opacity=".45"/>`+
         [60,52,44].map(r=>`<circle cx="76" cy="76" r="${r}" fill="none" stroke="rgba(0,0,0,.16)" stroke-width="1"/>`).join("")+
         `<g fill="#ffe2bd" font-size="9" font-weight="500" letter-spacing=".5">${[...text].map((c,i)=>`<text x="76" y="15" text-anchor="middle" transform="rotate(${(i/n*360).toFixed(1)} 76 76)">${esc(c)}</text>`).join("")}</g>`+
-        `<circle cx="76" cy="76" r="24" fill="#f4ad5c"/><circle cx="76" cy="76" r="22" fill="hsl(${hue} 60% 14%)"/><circle cx="76" cy="76" r="5" fill="#07090d"/></svg>`;
+        `<circle cx="76" cy="76" r="24" fill="#ffe2bd"/><circle cx="76" cy="76" r="22" fill="hsl(${hue} 55% 12%)"/><circle cx="76" cy="76" r="5" fill="#07090d"/></svg>`;
     }
     function playerPool(){const out=[];spaceOf("music");new Set([...(S?[S]:[]),...OPEN.values(),...SYSSP.values()]).forEach(sp=>sp.flows.forEach(f=>f.modules.forEach(m=>{if(m.kind==="player")out.push(m)})));return out}
     function carPlayer(){const pool=playerPool();return pool.find(m=>m.data.playing)||pool.find(m=>m.id===CAR.media)||pool[0]}
@@ -4420,6 +4438,21 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       const rn=ruleName(sp);
       return cardFrom(m,sp,{key:"rule:"+m.id,ic:"sun",k:`${spShort(sp)} · ${T("Weather","Погода")}`,why:rn?T("Why: your weather rule","Почему: ваше правило погоды"):T("Why: a rule fired","Почему: сработало правило"),cls:"alert",now});
     }
+    const RAIN_WHY=()=>T("Why: 80% rain on Friday, your weather rule","Почему: в пятницу дождь 80%, ваше правило погоды");
+    function rainCard(){
+      const sp=spaceOf("trip"),live=liveMods().find(x=>x.sp.id==="trip"&&x.m.kind==="suggest"&&x.m.source!=="intent"&&!x.m.data.kept);
+      if(live)return ruleCard(live.m,live.sp);
+      if(tripSwapped||sp?.autoDone)return null;
+      if(performance.now()<CAR.rainSnooze)return null;
+      return{key:"rain",ic:"sun",k:`${T("Lisbon","Лиссабон")} · ${T("Weather","Погода")}`,v:T("Rain on Friday","Дождь в пятницу"),l:T("80% in the afternoon · move the museum to Saturday","80% днём · музей лучше перенести на субботу"),why:RAIN_WHY(),cls:"alert",
+        acts:[GA(T("Swap days","Поменять дни"),"tick",()=>carOpenSpace("trip"),"primary"),GA(T("Later","Позже"),"",()=>{CAR.rainSnooze=performance.now()+90000;carEval(true)})]};
+    }
+    function arriveCard(n,c){
+      const late=c&&c.secs>0&&n.min*60>c.secs,lc=t=>t[0].toLowerCase()+t.slice(1);
+      return{key:"arrive",ic:"pin",k:`${T(...NAV.dest)} · ${T("Arrival","Прибытие")}`,v:T(`Arriving at ${n.arr}`,`Приедете в ${n.arr}`),l:T(`${kmFmt(n.km)} km · ${n.min} min${NAV.stop?` · via ${NAV.stop}`:" · no traffic"}`,`${kmFmt(n.km)} км · ${n.min} мин${NAV.stop?` · через ${NAV.stop}`:" · без пробок"}`),
+        why:late?T(`Why: ${lc(c.ev.t)} at ${fmtH(c.ev.s)}, you arrive at ${n.arr}`,`Почему: ${lc(c.ev.t)} в ${fmtH(c.ev.s)}, а вы приедете в ${n.arr}`):T("Why: the fastest route, no traffic","Почему: самый быстрый маршрут, пробок нет"),
+        acts:[GA(T("Share ETA","Сообщить"),"chat",()=>askDevice(T(`Send Leo: arriving at ${n.arr}?`,`Отправить Лео: «Буду в ${n.arr}»?`),()=>{carSay(T(`Sent to Leo: arriving at ${n.arr}`,`Отправлено Лео: буду в ${n.arr}`),{icon:"chat"});profNote("done",{svc:"messages",intent:"send",min:1})},"send"),"primary"),!NAV.stop&&GA(T("Coffee","Кофе"),"pin",()=>{NAV.stop=T("Coffeemania","«Кофемания»");carSay(T("Coffeemania on the way, plus 6 minutes","«Кофемания» по пути, плюс 6 минут"),{icon:"pin"});renderCar()})]};
+    }
     function carCands(){
       const out=[],t=performance.now();
       const hm=HANDOFF?.dev==="car"&&findAny(HANDOFF.mid);
@@ -4434,15 +4467,15 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         if(CAR.pin==="calls"){const c=callOf();if(c)out.push(callCard(c,T("Why: you opened calls","Почему: вы открыли звонки"),true))}
         if(CAR.pin==="msgs"){const c=lm.find(x=>x.m.kind==="chat");if(c)out.push(msgCard(c.m,c.sp,T("Why: you opened messages","Почему: вы открыли сообщения"),true))}
       }else CAR.pin=null;
-      const c=callOf();
-      if(c&&c.secs<=25*60)out.push(callCard(c,c.secs>0?T("Why: starts soon · My day","Почему: скоро начнётся · Мой день"):T("Why: happening now","Почему: идёт сейчас")));
-      lm.filter(x=>x.m.kind==="chat"&&chatUnread(x.m.data)).forEach(x=>out.push(msgCard(x.m,x.sp,T("Why: new message · I can read it aloud","Почему: новое сообщение · могу прочитать вслух"))));
-      if(S&&view==="space")lm.filter(x=>x.sp===S&&x.m.kind==="suggest"&&x.m.source!=="intent"&&!x.m.data.kept).forEach(x=>out.push(ruleCard(x.m,x.sp)));
-      if(c)out.push(callCard(c,T("Why: next on My day","Почему: дальше в «Моём дне»")));
-      const cal=spaceOf("calendar")?.flows[0]?.modules[0];
-      if(cal&&nextEvent(cal.data))out.push(cardFrom(cal,spaceOf("calendar"),{key:"cal",why:T("Why: next on My day","Почему: дальше в «Моём дне»"),cls:""}));
-      const n=navStats();
-      out.push({key:"clear",ic:"pin",k:T(...NAV.dest),v:T("Clear road ahead","Дорога свободна"),l:T(`No traffic · arriving ${n.arr}`,`Без пробок · прибытие в ${n.arr}`),why:T("Why: nothing else needs you","Почему: больше ничего не требует внимания"),acts:[]});
+      const c=callOf(),n=navStats();
+      if(c&&c.secs<=5*60)out.push(callCard(c,c.secs>0?T(`Why: the call starts in ${Math.max(1,Math.round(c.secs/60))} min`,`Почему: созвон через ${Math.max(1,Math.round(c.secs/60))} мин`):T("Why: happening now","Почему: идёт сейчас"),true));
+      const amb=[];
+      if(c){const m=Math.round(c.secs/60),late=n.min>m;amb.push(callCard(c,late?T(`Why: call in ${m} min, you arrive at ${n.arr}, so join from the car`,`Почему: созвон через ${m} мин, вы приедете к ${n.arr}, подключитесь из машины`):T(`Why: call in ${m} min, you’ll be there by ${n.arr}`,`Почему: созвон через ${m} мин, вы будете на месте к ${n.arr}`)))}
+      const rain=rainCard();if(rain)amb.push(rain);
+      amb.push(arriveCard(n,c));
+      lm.filter(x=>x.m.kind==="chat"&&chatUnread(x.m.data)).forEach(x=>amb.push(msgCard(x.m,x.sp,T("Why: new message · I can read it aloud","Почему: новое сообщение · могу прочитать вслух"))));
+      const k=Math.floor((t-CAR.rot0)/15000)%amb.length;
+      out.push(...amb.slice(k),...amb.slice(0,k));
       return out;
     }
     function planWhy(sp){const p=planOf(sp);return p?T(`Plan ${p.k} of ${p.n}${p.next?` · next: ${p.next}`:""}`,`План ${p.k} из ${p.n}${p.next?` · дальше: ${p.next}`:""}`):""}
@@ -4477,7 +4510,8 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         `<section class="car-hero"><div class="car-map">${carMapSVG()}</div><div class="car-mv"><div class="car-mv-in"><span class="car-mv-a"></span><div class="car-mv-d"></div><div class="car-mv-s"></div><div class="car-mv-n"></div></div></div><div class="car-say" role="status"></div></section>`+
         `<aside class="car-side"><section class="car-tile car-eta"></section><section class="car-tile car-media"></section><div class="car-col"></div></aside>`+
         `<div class="car-voice" role="dialog" aria-modal="true"></div><div class="car-ask" role="dialog" aria-modal="true"></div>`;
-      CAR.w={world:el.querySelector(".car-world"),ahead:[...el.querySelectorAll(".car-rt")],stop:el.querySelector(".car-stop"),mv:el.querySelector(".car-mv"),mvIn:el.querySelector(".car-mv-in"),
+      CAR.lang=LANG;
+      CAR.w={up:[...el.querySelectorAll(".car-up")],world:el.querySelector(".car-world"),ahead:[...el.querySelectorAll(".car-rt")],stop:el.querySelector(".car-stop"),mv:el.querySelector(".car-mv"),mvIn:el.querySelector(".car-mv-in"),
         strip:el.querySelector(".car-strip"),rail:el.querySelector(".car-rail"),eta:el.querySelector(".car-eta"),media:el.querySelector(".car-media"),col:el.querySelector(".car-col"),say:el.querySelector(".car-say"),voice:el.querySelector(".car-voice"),ask:el.querySelector(".car-ask")};
       CAR.mv=-1;CAR.card=null;
     }
@@ -4488,10 +4522,10 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     }
     function carRailHTML(){
       const un=liveMods().filter(x=>x.m.kind==="chat").reduce((a,x)=>a+chatUnread(x.m.data),0);
-      const b=(k,i,l,on,badge="")=>`<button type="button" class="car-rb${on?" on":""}" data-cx="${k}" aria-label="${esc(l)}" title="${esc(l)}"${on?' aria-pressed="true"':""}>${ic(i)}${badge}</button>`;
-      return b("nav","locate",CAR.over?T("Back to my position","К моему положению"):T("Route overview","Обзор маршрута"),!CAR.pin)+
-        b("calls","phone",T("Calls","Звонки"),CAR.pin==="calls")+
-        b("msgs","chat",T("Messages","Сообщения"),CAR.pin==="msgs",un?`<em>${un}</em>`:"")+
+      const b=(k,i,l,sh,on,badge="")=>`<button type="button" class="car-rb${on?" on":""}" data-cx="${k}" aria-label="${esc(l)}" title="${esc(l)}"${on?' aria-pressed="true"':""}>${ic(i)}<span>${esc(sh)}</span>${badge}</button>`;
+      return b("nav","locate",CAR.over?T("Back to my position","К моему положению"):T("Route overview","Обзор маршрута"),CAR.over?T("Me","Я"):T("Route","Маршрут"),!CAR.pin)+
+        b("calls","phone",T("Calls","Звонки"),T("Calls","Звонки"),CAR.pin==="calls")+
+        b("msgs","chat",T("Messages","Сообщения"),T("Chats","Чаты"),CAR.pin==="msgs",un?`<em>${un}</em>`:"")+
         `<span class="car-rgap"></span><button type="button" class="car-orb" data-cx="mic" aria-label="${esc(T("Speak","Сказать"))}" title="${esc(T("Speak","Сказать"))}">${ic("mic")}</button>`;
     }
     function carEtaHTML(n){
@@ -4539,6 +4573,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       if(reduce.matches){NAV.hd=p.hd;NAV.k=kT}
       else{NAV.k+=(kT-NAV.k)*Math.min(1,dt*4);NAV.hd+=(((p.hd-NAV.hd+540)%360)-180)*Math.min(1,dt*3)}
       w.world.setAttribute("transform",`translate(${AX} ${AY}) rotate(${(-NAV.hd).toFixed(2)}) scale(${NAV.k.toFixed(3)}) translate(${(-p.x).toFixed(1)} ${(-p.y).toFixed(1)})`);
+      const up=`rotate(${NAV.hd.toFixed(1)}) scale(${(1/Math.max(.6,NAV.k)).toFixed(3)})`;w.up.forEach(e=>e.setAttribute("transform",up));
       const off=(-n.s).toFixed(1);w.ahead.forEach(e=>e.setAttribute("stroke-dashoffset",off));
       if(now-CAR.tick>250){CAR.tick=now;carMoveText(n);w.stop.setAttribute("opacity",NAV.stop?"1":"0");
         const eta=carEtaHTML(n);if(w.eta._h!==eta){w.eta._h=eta;morphHTML(w.eta,eta)}
@@ -4554,7 +4589,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     function renderCar(){
       const el=$("#car");if(!el)return;
       if(FF.dev!=="car")return;
-      if(!el.dataset.on)carMount(el);
+      if(!el.dataset.on||CAR.lang!==LANG)carMount(el);
       morphHTML(CAR.w.strip,carStripHTML());morphHTML(CAR.w.rail,carRailHTML());
       carEval();carFrame(performance.now(),0);carLoop();
     }
@@ -4565,7 +4600,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       el.animate([{opacity:0},{opacity:1}],{duration:calm?200:400,easing:"ease-out"});
       if(calm)return;
       el.querySelector(".car-map").animate([{opacity:0,transform:"scale(1.04)"},{opacity:1,transform:"none"}],{duration:520,delay:120,easing:ease,fill:"backwards"});
-      [CAR.w.strip,CAR.w.rail,CAR.w.mv,CAR.w.eta,CAR.w.media,CAR.w.col].forEach((n,i)=>n.animate([{opacity:0,transform:"translateY(10px)"},{opacity:1,transform:"none"}],{duration:320,delay:180+i*40,easing:ease,fill:"backwards"}));
+      [CAR.w.strip,CAR.w.rail,CAR.w.mv,CAR.w.eta,CAR.w.media,CAR.w.col].forEach((n,i)=>n.animate([{opacity:0,transform:"translateY(10px)"},{opacity:1,transform:"none"}],{duration:320,delay:140+i*40,easing:ease,fill:"backwards"}));
     }
     function carSay(text,o={}){
       const el=CAR.w?.say;if(!el)return;
@@ -4586,7 +4621,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       clearTimeout(CAR.demoT);if(CAR.demoDone)return;
       CAR.demoT=setTimeout(()=>{if(FF.dev!=="car")return;CAR.demoDone=true;showToast(T("Sofia Reyes: Sent the receipt to accounting.","Софья Рейес: Отправила чек в бухгалтерию."),null,null,{hold:true,space:T("Review Inbox","Разобрать входящие")})},8000);
     }
-    function carIn(){CAR.card=null;CAR.mv=-1;CAR.pin=null;CAR.over=false;carArm()}
+    function carIn(){CAR.rot0=performance.now();CAR.card=null;CAR.mv=-1;CAR.pin=null;CAR.over=false;carArm()}
     function carOut(){
       carStop();clearTimeout(CAR.demoT);carVoiceClose();
       const q=CAR.ask;if(q){CAR.ask=null;CAR.w?.ask.classList.remove("on");openSheet(q)}
@@ -4981,13 +5016,14 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       if(FF.dev==="phone"&&document.documentElement.classList.contains("ph-sheet")&&!winOpen()&&!overviewOpen&&!paletteOpen){setSheet(false);return true}
       return false;
     }
-    function wake(){document.body.classList.remove("idle");$("#idle")?.classList.remove("on");armIdle()}
+    function wake(){document.body.classList.remove("idling");$("#idle")?.classList.remove("on");armIdle()}
     function armIdle(){
       clearTimeout(idleT);
       idleT=setTimeout(()=>{
-        if(voiceFlag||document.body.classList.contains("locked")||$("#sheet")?.classList.contains("on")||switcherOn()){armIdle();return}
+        if(FF.dev==="car"||voiceFlag||document.body.classList.contains("locked")||$("#sheet")?.classList.contains("on")||switcherOn()){armIdle();return}
         const hint=$("#idleHint");if(hint)hint.textContent="Intent OS";
-        $("#idle")?.classList.add("on");document.body.classList.add("idle");
+        $("#idleTime").textContent=timeStr(new Date());
+        $("#idle")?.classList.add("on");document.body.classList.add("idling");
       },16000);
     }
     function poke(){if($("#idle")?.classList.contains("on"))wake();else armIdle()}
@@ -5332,6 +5368,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     });
     addEventListener("pointercancel",e=>{if(!modDrag||e.pointerId!==modDrag.pid)return;modDrag=null;hotDev=null;document.body.classList.remove("mod-drag");$("#dragGhost").hidden=true;renderFFSwitch()});
     addEventListener("pointerdown",poke,{passive:true});
+    let pokeMv=0;addEventListener("pointermove",()=>{const t=performance.now();if(t-pokeMv>500){pokeMv=t;poke()}},{passive:true});
     addEventListener("keydown",poke);
     $("#idle")?.addEventListener("pointerdown",e=>{e.stopPropagation();wake()});
     armIdle();
