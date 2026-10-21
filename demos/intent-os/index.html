@@ -1406,8 +1406,9 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .car-mb.pp:hover{box-shadow:inset 0 0 0 1.5px #fff}
 
     .car-col{position:relative;flex:1;min-height:0}
-    .car-card{position:absolute;inset:0;display:flex;flex-direction:column;gap:6px;padding:16px 20px;overflow:hidden}
-    .car-card.out{pointer-events:none}
+    .car-card{position:absolute;inset:0;overflow:hidden;transition:box-shadow .32s cubic-bezier(.2,.8,.2,1)}
+    .car-cc{position:absolute;inset:0;display:flex;flex-direction:column;gap:6px;padding:16px 20px}
+    .car-cc.out{pointer-events:none}
     .car-k{display:flex;align-items:center;gap:10px;height:28px;flex:none;color:var(--t2);font-size:18px;line-height:24px;white-space:nowrap}
     .car-k .kt{flex:none;width:28px;height:28px;border-radius:8px}.car-k .kt .ic{width:16px;height:16px}
     .car-k span{min-width:0;overflow:hidden;text-overflow:ellipsis}
@@ -4072,7 +4073,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     }
     function suggestDev(){if(!S||HANDOFF||view!=="space")return null;const d={trip:"car",music:"car",gym:"phone",flat:"tablet"}[S.id];return d&&d!==FF.dev?d:null}
     /* one spring for the frame and every shared element: ~450 ms, a hair of overshoot */
-    const FF_DUR=450,FF_OUT=120,ffP=ms=>{if(ms>=FF_DUR)return 1;const z=.85,w=11,wd=w*Math.sqrt(1-z*z),t=ms/1000;return 1-Math.exp(-z*w*t)*(Math.cos(wd*t)+z*w/wd*Math.sin(wd*t))};
+    const FF_DUR=450,FF_OUT=120,FF_IN=90,ffP=ms=>{if(ms>=FF_DUR)return 1;const z=.85,w=11,wd=w*Math.sqrt(1-z*z),t=ms/1000;return 1-Math.exp(-z*w*t)*(Math.cos(wd*t)+z*w/wd*Math.sin(wd*t))};
     const FF_EASE=`linear(${Array.from({length:41},(_,i)=>+ffP(i/40*FF_DUR).toFixed(4)).join(",")})`;
     document.documentElement.style.setProperty("--ff-ease",FF_EASE);
     function ffGeo(id){
@@ -4141,8 +4142,8 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       return{color:getComputedStyle(document.body).getPropertyValue("--fog").trim()||"#dcdcdc",img:night?"none":getComputedStyle(m).backgroundImage,tf:night?"none":getComputedStyle(m).transform};
     }
     /* switching devices, one sequence in every direction:
-       0–120 ms the old screen (a frozen copy) fades and scales slightly out; under it an empty shell springs from the old frame to the new one (450 ms)
-       and cross-fades the real old background into the new one (400 ms); from 120 ms the new screen fades in and its parts stagger in 40 ms apart */
+       0–120 ms the old screen (a frozen copy) fades and scales slightly out, below .15 opacity by 90 ms; under it an empty shell springs from the old frame to the new one (450 ms)
+       and cross-fades the real old background into the new one (400 ms); from 90 ms the new screen fades in (map or background and status bar first) and its parts stagger in 40 ms apart */
     let ffTok=0,ffAnims=[];
     function setDevice(id,opts={}){
       if(!devOf(id))return;
@@ -4181,15 +4182,15 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         const x=L(A.x,Z.x,p),y=L(A.y,Z.y,p),w=L(A.w,Z.w,p),h=L(A.h,Z.h,p),rr=L(A.r,Z.r,p),c=v=>Math.max(0,v/k).toFixed(2);
         kf.push({offset:i/6,transform:`translate(${hx}px,${hy}px) scale(${k})`,clipPath:`inset(${c(y-hy)}px ${c(hx+from.w*k-(x+w))}px ${c(hy+from.h*k-(y+h))}px ${c(x-hx)}px round ${c(rr)}px)`})}
       push(ghost.animate(kf,{duration:FF_OUT,easing:"linear",fill:"forwards"}));
-      push(ghost.animate([{opacity:1},{opacity:0}],{duration:FF_OUT,easing:"cubic-bezier(.4,0,1,1)",fill:"forwards"}));
+      push(ghost.animate([{opacity:1},{opacity:.12,offset:FF_IN/FF_OUT},{opacity:0}],{duration:FF_OUT,fill:"forwards"}));
       const s=FF.s,i0=r=>({t:Math.max(0,(r.y+r.b-FF.y)/s),l:Math.max(0,(r.x+r.b-FF.x)/s),r:Math.max(0,(FF.x+FF.w*s-(r.x+r.w-r.b))/s),b:Math.max(0,(FF.y+FF.h*s-(r.y+r.h-r.b))/s)});
       const k=i0(R0),rad=Math.max(0,R0.r-R0.b)/s;
       push(SCREEN.animate([{clipPath:`inset(${k.t}px ${k.r}px ${k.b}px ${k.l}px round ${rad}px)`},{clipPath:`inset(0px 0px 0px 0px round ${FF.r}px)`}],timing)).finished.then(done,()=>{});
-      live.forEach(({n,o})=>push(n.animate([{opacity:0},{opacity:o}],{duration:220,delay:FF_OUT,easing:"cubic-bezier(.2,.8,.2,1)",fill:"backwards"})));
+      live.forEach(({n,o})=>push(n.animate([{opacity:0},{opacity:o}],{duration:220,delay:FF_IN,easing:"cubic-bezier(.2,.8,.2,1)",fill:"backwards"})));
       if(id==="car")carEnter().forEach(push);
       else{
         const cards=$$(".os.view-home .home-time,.os.view-home .home-line,.os.view-home .hs,.os.view-home .sig,.os.view-space .module.active,.os.view-space .cp,.os.view-space .space-title").filter(n=>n.offsetParent).slice(0,9);
-        cards.forEach((n,i)=>push(n.animate([{opacity:0,translate:"0 8px"},{opacity:1,translate:"0 0"}],{duration:300,delay:FF_OUT+i*40,easing:"cubic-bezier(.2,.8,.2,1)",fill:"backwards"})));
+        cards.forEach((n,i)=>push(n.animate([{opacity:0,translate:"0 8px"},{opacity:1,translate:"0 0"}],{duration:300,delay:FF_IN+40+i*40,easing:"cubic-bezier(.2,.8,.2,1)",fill:"backwards"})));
       }
     }
     /* drop the morph styling without letting the screen's own background transitions replay */
@@ -4542,16 +4543,21 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       let pick=top;
       if(cur&&top.key!==cur.key&&!top.now&&!force&&t-CAR.cardT<10000)pick=cur;
       if(!CAR.card||pick.key!==CAR.card.key){CAR.cardT=t;carSwap(col,pick)}
-      else{const el=col.querySelector(".car-card:not(.out)");if(el){morphHTML(el,carCardHTML(pick));el.className=`car-tile car-card${pick.cls?" "+pick.cls:""}`}}
+      else{const el=col.querySelector(".car-cc:not(.out)");if(el){morphHTML(el,carCardHTML(pick));el.parentElement.className=`car-tile car-card${pick.cls?" "+pick.cls:""}`}}
       CAR.card=pick;
     }
+    /* the card's glass stays put; only its content swaps: the old content slides out left (180 ms), then the new slides in (320 ms) */
     function carSwap(col,c){
-      const old=col.querySelector(".car-card:not(.out)"),calm=reduce.matches||!old;
-      const el=document.createElement("article");el.className=`car-tile car-card${c.cls?" "+c.cls:""}`;el.setAttribute("aria-live","polite");el.innerHTML=carCardHTML(c);
-      if(old){old.classList.add("out");old.removeAttribute("aria-live");
-        old.animate(reduce.matches?[{opacity:1},{opacity:0}]:[{opacity:1,transform:"none"},{opacity:0,transform:"translateX(-24px) scale(.98)"}],{duration:180,easing:"cubic-bezier(.4,0,1,1)",fill:"forwards"}).onfinish=()=>old.remove()}
-      col.append(el);
-      if(!calm||old)el.animate(reduce.matches?[{opacity:0},{opacity:1}]:[{opacity:0,transform:"translateX(32px)"},{opacity:1,transform:"none"}],{duration:320,delay:old?160:0,easing:"cubic-bezier(.2,.8,.2,1)",fill:"backwards"});
+      let box=col.querySelector(".car-card");
+      if(!box){box=document.createElement("article");box.setAttribute("aria-live","polite");col.append(box)}
+      box.className=`car-tile car-card${c.cls?" "+c.cls:""}`;
+      box.querySelectorAll(".car-cc.out").forEach(n=>n.remove());
+      const old=box.querySelector(".car-cc"),calm=reduce.matches;
+      const el=document.createElement("div");el.className="car-cc";el.innerHTML=carCardHTML(c);
+      if(old){const o=+getComputedStyle(old).opacity;old.getAnimations().forEach(a=>a.cancel());old.classList.add("out");
+        old.animate(calm?[{opacity:o},{opacity:0}]:[{opacity:o,transform:"none"},{opacity:0,transform:"translateX(-24px)"}],{duration:180,easing:"cubic-bezier(.4,0,1,1)",fill:"forwards"}).onfinish=()=>old.remove()}
+      box.append(el);
+      if(old)el.animate(calm?[{opacity:0},{opacity:1}]:[{opacity:0,transform:"translateX(32px)"},{opacity:1,transform:"none"}],{duration:320,delay:180,easing:"cubic-bezier(.2,.8,.2,1)",fill:"backwards"});
     }
     function carMount(el){
       el.dataset.on="1";
@@ -4648,12 +4654,12 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       morphHTML(CAR.w.strip,carStripHTML());morphHTML(CAR.w.rail,carRailHTML());carHeld();
       carEval();carFrame(performance.now(),0);carLoop();
     }
-    /* entering: the map fades in under the tiles, the tiles follow 40 ms apart, all after the old screen is gone */
+    /* entering: the map and the status strip come first, as the old screen drops below .15, the tiles follow 40 ms apart */
     function carEnter(){
       const el=$("#car");if(!el||!CAR.w||reduce.matches)return[];
       const ease="cubic-bezier(.2,.8,.2,1)";
-      return[el.querySelector(".car-map").animate([{opacity:0,transform:"scale(1.03)"},{opacity:1,transform:"none"}],{duration:330,delay:FF_OUT,easing:ease,fill:"backwards"}),
-        ...[CAR.w.strip,CAR.w.rail,CAR.w.mv,CAR.w.eta,CAR.w.media,CAR.w.col].map((n,i)=>n.animate([{opacity:0,transform:"translateY(8px)"},{opacity:1,transform:"none"}],{duration:280,delay:FF_OUT+40+i*40,easing:ease,fill:"backwards"}))];
+      return[el.querySelector(".car-map").animate([{opacity:0,transform:"scale(1.03)"},{opacity:1,transform:"none"}],{duration:330,delay:FF_IN,easing:ease,fill:"backwards"}),
+        ...[CAR.w.strip,CAR.w.rail,CAR.w.mv,CAR.w.eta,CAR.w.media,CAR.w.col].map((n,i)=>n.animate([{opacity:0,transform:"translateY(8px)"},{opacity:1,transform:"none"}],{duration:280,delay:FF_IN+i*40,easing:ease,fill:"backwards"}))];
     }
     function carSay(text,o={}){
       const el=CAR.w?.say;if(!el)return;
