@@ -25,7 +25,9 @@
     html:not(.ff-desktop) .ff-shell{display:block}
     html:not(.ff-desktop) .ff-screen{border-radius:var(--ffr)}
     html.ff-morph .ff-shell{visibility:hidden}
-    html.ff-morph .ff-screen{transition-duration:.4s}
+    html.ff-morph .ff-screen{background:transparent!important;transition:none!important}
+    html.ff-morph .mist{opacity:0!important;transition:none!important}
+    html.ff-morph .car,html.ff-morph .car-hero{background:transparent!important}
     .ff-island,.ff-bar{display:none;position:absolute;left:50%;z-index:120;pointer-events:none;transform:translateX(-50%)}
     .ff-phone .ff-island{display:block;top:11px;width:112px;height:32px;border-radius:999px;background:#000}
     .ff-phone .ff-bar{display:block;bottom:8px;width:134px;height:5px;border-radius:999px;background:var(--ink);opacity:.82}
@@ -1318,10 +1320,8 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       background:radial-gradient(70% 80% at 92% 108%,rgba(244,150,70,.34),rgba(244,150,70,0) 62%),radial-gradient(60% 70% at 4% -10%,rgba(86,112,170,.22),rgba(86,112,170,0) 60%),#07090d}
     .ff-car .car{display:block}
     .ff-car .os{visibility:hidden;pointer-events:none}
-    html.ff-os-out.ff-car .os{visibility:visible}
-    html.ff-car:not(.ff-os-out) .os *{visibility:hidden!important}
+    html.ff-car .os *{visibility:hidden!important}
     .ff-car .handoff{display:none}
-    .car.car-ghost{display:block;position:fixed;left:0;top:0;right:auto;bottom:auto;z-index:150;pointer-events:none;transform-origin:0 0}
     .car button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
     .car .ic{stroke-width:1.5}
     .car-tile{position:relative;border-radius:28px;background:var(--tile);box-shadow:inset 0 1px 0 rgba(255,255,255,.06),inset 0 0 0 1px var(--edge),0 30px 60px -30px rgba(0,0,0,.8);-webkit-backdrop-filter:blur(28px) saturate(1.3);backdrop-filter:blur(28px) saturate(1.3)}
@@ -1337,11 +1337,10 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .car-held .ic{width:18px;height:18px}
     .car-held:hover{background:rgba(244,173,92,.24)}.car-held:active{transform:scale(.96)}.car-held:focus-visible{outline:2px solid #fff;outline-offset:2px}
     .car-held[hidden]{display:none}
-    .car-held{animation:carPop .42s cubic-bezier(.2,.8,.2,1) both}
-    @keyframes carPop{0%{opacity:0;scale:.6;translate:12px 0}60%{opacity:1;scale:1.06}100%{scale:1;translate:0 0}}
+    
 
-    .car-rail{position:absolute;z-index:3;left:16px;top:64px;bottom:16px;display:flex;flex-direction:column;align-items:center;gap:8px;width:96px;padding:12px 8px;border-radius:28px;background:rgba(18,21,27,.5);box-shadow:inset 0 1px 0 rgba(255,255,255,.05),inset 0 0 0 1px var(--edge);-webkit-backdrop-filter:blur(24px) saturate(1.3);backdrop-filter:blur(24px) saturate(1.3)}
-    .car-rb{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;flex:none;width:80px;height:80px;border:0;border-radius:20px;font-size:13px;font-weight:500;line-height:16px;background:none;color:var(--t2);transition:background-color .12s,color .12s,transform .12s cubic-bezier(.2,.8,.2,1)}
+    .car-rail{position:absolute;z-index:3;left:16px;top:64px;bottom:16px;display:flex;flex-direction:column;align-items:center;gap:8px;width:104px;padding:12px 8px;border-radius:28px;background:rgba(18,21,27,.5);box-shadow:inset 0 1px 0 rgba(255,255,255,.05),inset 0 0 0 1px var(--edge);-webkit-backdrop-filter:blur(24px) saturate(1.3);backdrop-filter:blur(24px) saturate(1.3)}
+    .car-rb{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;flex:none;width:88px;height:80px;border:0;border-radius:20px;font-size:13px;font-weight:500;line-height:16px;background:none;color:var(--t2);transition:background-color .12s,color .12s,transform .12s cubic-bezier(.2,.8,.2,1)}
     .car-rb .ic{width:32px;height:32px}
     .car-rb:hover{background:rgba(255,255,255,.06);color:#fff}
     .car-rb:active{transform:scale(.94);background:rgba(255,255,255,.1)}
@@ -1358,7 +1357,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .car-hero{position:absolute;z-index:1;inset:0;overflow:hidden;background:#0a0d12}
     .car-map{position:absolute;inset:0}
     .car-map svg{display:block;width:100%;height:100%}
-    .car-lbl text{font-size:15px;font-weight:500;letter-spacing:.04em;fill:rgba(220,228,240,.46);stroke:#0d1118;stroke-width:5px;paint-order:stroke;stroke-linejoin:round}
+    .car-lbl text{font-size:16px;font-weight:500;letter-spacing:.03em;fill:rgba(226,232,242,.66);stroke:#0b0e14;stroke-width:5px;paint-order:stroke;stroke-linejoin:round}
         .car-puck-halo{transform-box:fill-box;transform-origin:center;animation:carHalo 2.4s ease-out infinite}
     @keyframes carHalo{0%{opacity:.55;scale:.7}100%{opacity:0;scale:1.7}}
     .car-hero::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(7,9,13,.86),rgba(7,9,13,0) 128px),linear-gradient(0deg,rgba(7,9,13,.55),rgba(7,9,13,0) 160px),linear-gradient(90deg,rgba(7,9,13,.7),rgba(7,9,13,0) 150px),linear-gradient(270deg,rgba(7,9,13,.72),rgba(7,9,13,.3) 430px,rgba(7,9,13,0) 560px),radial-gradient(55% 70% at 100% 112%,rgba(244,146,66,.3),rgba(244,146,66,0) 70%),radial-gradient(40% 50% at 0 0,rgba(90,120,190,.16),rgba(90,120,190,0) 70%)}
@@ -1375,7 +1374,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .car-mv-n span{min-width:0;overflow:hidden;text-overflow:ellipsis}
 
     .car-side{position:absolute;z-index:3;top:64px;right:16px;bottom:16px;width:400px;display:flex;flex-direction:column;gap:16px}
-    .car-eta{flex:none;height:148px;padding:18px 24px}
+    .car-eta{flex:none;height:140px;padding:14px 24px}
     .car-eta-h{display:flex;align-items:center;gap:8px;height:24px;color:var(--t2);font-size:18px;line-height:24px;white-space:nowrap}
     .car-eta-h .ic{flex:none;width:18px;height:18px;color:var(--amber)}
     .car-eta-h span{min-width:0;overflow:hidden;text-overflow:ellipsis}
@@ -1424,7 +1423,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .car-why .ic{flex:none;width:16px;height:16px;margin-top:2px;color:var(--amber)}
     .car-why span{min-width:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
     .car-body:has(.car-cd) .car-v{-webkit-line-clamp:1}
-    .car-a{display:flex;flex:none;gap:8px}
+    .car-a{display:flex;flex:none;gap:8px;margin-top:8px}
     .car-a .car-b{flex:1 1 auto;min-width:0}
     .car-card.hand{box-shadow:inset 0 1px 0 rgba(255,255,255,.06),inset 0 0 0 1.5px var(--amber),0 30px 60px -30px rgba(0,0,0,.8)}
     .car-card.hand .car-k,.car-card.alert .car-k{color:var(--amber)}
@@ -1502,7 +1501,10 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     }
 
     /* the device frame morphs as an empty shell; the screen is clipped to it, so nothing is stretched or remounted */
-    .ff-morph-shell{position:absolute;left:0;top:0;pointer-events:none}
+    .ff-morph-shell{position:absolute;left:0;top:0;overflow:hidden;pointer-events:none}
+    .ffm-bg{position:absolute;inset:0}.ffm-bg b{position:absolute;inset:-8%}
+    .ffm-page{position:fixed;inset:0;pointer-events:none}
+    .ff-ghost{position:fixed;left:0;top:0;z-index:150;pointer-events:none;transform-origin:0 0;contain:strict}
 
     ::view-transition-group(*){animation-duration:.42s;animation-timing-function:var(--ff-ease,cubic-bezier(.2,.8,.2,1))}
     ::view-transition-old(*),::view-transition-new(*){animation-duration:.24s;animation-timing-function:ease-out}
@@ -3728,7 +3730,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     function coachOpen(){return !!$(".coach")}
     function dismissCoach(persist){if(persist!==false)try{localStorage.setItem(COACH_KEY,"1")}catch{} $(".coach")?.remove()}
     function showCoach(){
-      if(view!=="home"||coachOpen())return;
+      if(view!=="home"||FF.dev!=="desktop"||coachOpen())return;
       try{if(localStorage.getItem(COACH_KEY))return}catch{}
       const el=document.createElement("div");el.className="coach";el.setAttribute("role","dialog");
       el.innerHTML=`<b>${esc(T("A few keys","Несколько клавиш"))}</b><p>${esc(T("Spaces run from the keyboard. Skip this whenever you like.","Пространством можно управлять с клавиатуры. Подсказку можно пропустить."))}</p><div class="row"><span><kbd>Tab</kbd> ${esc(T("or","или"))} <kbd>+</kbd> ${esc(T("new module","новый модуль"))}</span><span><kbd>O</kbd> ${esc(T("overview","обзор"))}</span><span><kbd>${esc(MOD)}</kbd> ${esc(T("actions","действия"))}</span><span>${esc(T("Select text → a module","Выделите текст → модуль"))}</span></div><div class="acts"><button type="button">${esc(T("Got it","Понятно"))}</button></div>`;
@@ -4070,7 +4072,8 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     }
     function suggestDev(){if(!S||HANDOFF||view!=="space")return null;const d={trip:"car",music:"car",gym:"phone",flat:"tablet"}[S.id];return d&&d!==FF.dev?d:null}
     /* one spring for the frame and every shared element: ~450 ms, a hair of overshoot */
-    const FF_DUR=450,FF_EASE=(()=>{const z=.85,w=11,wd=w*Math.sqrt(1-z*z),n=40,pts=[];for(let i=0;i<=n;i++){const t=i/n*FF_DUR/1000;pts.push(i===n?1:+(1-Math.exp(-z*w*t)*(Math.cos(wd*t)+z*w/wd*Math.sin(wd*t))).toFixed(4))}return `linear(${pts.join(",")})`})();
+    const FF_DUR=450,FF_OUT=120,ffP=ms=>{if(ms>=FF_DUR)return 1;const z=.85,w=11,wd=w*Math.sqrt(1-z*z),t=ms/1000;return 1-Math.exp(-z*w*t)*(Math.cos(wd*t)+z*w/wd*Math.sin(wd*t))};
+    const FF_EASE=`linear(${Array.from({length:41},(_,i)=>+ffP(i/40*FF_DUR).toFixed(4)).join(",")})`;
     document.documentElement.style.setProperty("--ff-ease",FF_EASE);
     function ffGeo(id){
       const d=devOf(id),vw=innerWidth,vh=innerHeight,band=vw<=760?52:0;
@@ -4108,46 +4111,92 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       if(out)dock.append(hl,hp);else $("#homeApps").before(hl,hp);
       if(had)$("#intentInput").focus({preventScroll:true});
     }
-    /* switching devices: measure the old and new frames, spring an empty shell between them (450 ms) and clip the live screen to it.
-       Nothing is snapshotted or stretched, and the car stays mounted; leaving it, a still copy fades over the shell. */
+    /* the outgoing screen, frozen: a deep copy rendered in a shadow root under the old device and theme classes, so it keeps its exact look after the live page has switched */
+    let GH_CSS=null;
+    function ghostCSS(){
+      if(GH_CSS)return GH_CSS;
+      const css=[...document.querySelectorAll("style")].map(n=>n.textContent).join("\n").replace(/:root\b/g,".gh-html").replace(/(^|[\s,>+~{}(])(html|body)(?=[\s.,:#\[{>+~)])/g,(m,a,b)=>`${a}.gh-${b}`);
+      GH_CSS=new CSSStyleSheet();
+      GH_CSS.replaceSync(css+"\n.gh-html,.gh-body{position:absolute;inset:0;margin:0;background:none!important;overflow:hidden}.gh-html *,.gh-html *::before,.gh-html *::after{animation:none!important;transition:none!important}.gh-html .wz-line,.gh-html .map .route,.gh-html .map .route-c{stroke-dashoffset:0!important}.gh-html .wz-area{opacity:1!important}");
+      return GH_CSS;
+    }
+    function ffGhost(g){
+      const host=document.createElement("div");host.className="ff-ghost";
+      const root=host.attachShadow({mode:"open"});root.adoptedStyleSheets=[ghostCSS()];
+      const H=document.createElement("div"),B=document.createElement("div"),sc=SCREEN.cloneNode(true);
+      H.className="gh-html "+[...document.documentElement.classList].filter(c=>c!=="ff-morph").join(" ");H.style.cssText=document.documentElement.style.cssText;
+      H.style.setProperty("--ffr",g.r+"px");H.style.setProperty("--ffb",g.b+"px");
+      B.className="gh-body "+document.body.className;B.style.cssText=document.body.style.cssText;
+      B.append(sc);H.append(B);root.append(H);
+      Object.assign(host.style,{width:g.w+"px",height:g.h+"px",transform:`translate(${g.x}px,${g.y}px) scale(${g.s})`});
+      document.documentElement.append(host);
+      const a=SCREEN.querySelectorAll("*"),b=sc.querySelectorAll("*");
+      for(let i=0;i<a.length;i++){const n=a[i];if(n.scrollTop||n.scrollLeft){b[i].scrollTop=n.scrollTop;b[i].scrollLeft=n.scrollLeft}if(n.tagName==="INPUT"||n.tagName==="TEXTAREA")b[i].value=n.value}
+      return host;
+    }
+    /* what the screen is painted with, as real layers: the car's dark glass, or the fog with its mist (light) */
+    function ffBg(){
+      if(FF.dev==="car")return{color:"#0a0d12",img:"none"};
+      const night=document.body.classList.contains("night"),m=$(".mist");
+      return{color:getComputedStyle(document.body).getPropertyValue("--fog").trim()||"#dcdcdc",img:night?"none":getComputedStyle(m).backgroundImage,tf:night?"none":getComputedStyle(m).transform};
+    }
+    /* switching devices, one sequence in every direction:
+       0–120 ms the old screen (a frozen copy) fades and scales slightly out; under it an empty shell springs from the old frame to the new one (450 ms)
+       and cross-fades the real old background into the new one (400 ms); from 120 ms the new screen fades in and its parts stagger in 40 ms apart */
     let ffTok=0,ffAnims=[];
     function setDevice(id,opts={}){
       if(!devOf(id))return;
       if(id===FF.dev){opts.after?.();return}
       if(HANDOFF&&!opts.keepHand){HANDOFF=null;$("#handoff")?.classList.remove("on")}
+      $(".coach")?.remove();
       const html=document.documentElement,calm=reduce.matches,tok=++ffTok,from={...FF},was=FF.dev;
-      ffAnims.forEach(a=>a.cancel());ffAnims=[];$$(".ff-morph-shell,.car-ghost").forEach(n=>n.remove());
+      ffAnims.forEach(a=>a.cancel());ffAnims=[];$$(".ff-morph-shell,.ff-ghost,.ffm-page").forEach(n=>n.remove());ffSettle();
       const rect=g=>({x:g.x-g.b*g.s,y:g.y-g.b*g.s,w:(g.w+2*g.b)*g.s,h:(g.h+2*g.b)*g.s,r:(g.r+g.b)*g.s,b:g.b*g.s});
-      const R0=rect(from),bg0=was==="car"?"#07090d":getComputedStyle(SCREEN).backgroundColor;
-      let ghost=null;
-      if(was==="car"){const c=$("#car");ghost=c.cloneNode(true);ghost.removeAttribute("id");ghost.classList.add("car-ghost");ghost.querySelectorAll("[id]").forEach(n=>n.removeAttribute("id"));
-        Object.assign(ghost.style,{width:from.w+"px",height:from.h+"px",borderRadius:from.r+"px",transform:`translate(${from.x}px,${from.y}px) scale(${from.s})`});document.body.append(ghost)}
+      const R0=rect(from),bg0=ffBg(),page0=getComputedStyle(document.body).backgroundImage,ghost=ffGhost(from);
       opts.before?.();applyDevice(id);opts.after?.();
-      const R1=rect(FF),bg1=id==="car"?"#07090d":getComputedStyle(SCREEN).getPropertyValue("--fog").trim()||"#dcdcdc",os=$("#os");
-      const done=()=>{if(tok!==ffTok)return;html.classList.remove("ff-morph","ff-os-out");ghost?.remove();$$(".ff-morph-shell").forEach(n=>n.remove());ffAnims=[]};
+      const R1=rect(FF),bg1=ffBg(),page1=getComputedStyle(document.body).backgroundImage;
       const push=a=>{ffAnims.push(a);return a};
-      if(ghost){push(ghost.animate([{opacity:1},{opacity:0}],{duration:calm?200:380,easing:"cubic-bezier(.4,0,.6,1)",fill:"forwards"}));
-        if(!calm){const k=Math.min(FF.w*FF.s/from.w,FF.h*FF.s/from.h),tx=FF.x+(FF.w*FF.s-from.w*k)/2,ty=FF.y+(FF.h*FF.s-from.h*k)/2;
-          push(ghost.animate([{transform:`translate(${from.x}px,${from.y}px) scale(${from.s})`},{transform:`translate(${tx}px,${ty}px) scale(${k})`}],{duration:FF_DUR,easing:FF_EASE,fill:"forwards"}))}}
-      if(id==="car"){carEnter();
-        if(was!=="car"){html.classList.add("ff-os-out");const a=push(os.animate([{opacity:1},{opacity:0}],{duration:calm?160:220,easing:"cubic-bezier(.4,0,1,1)",fill:"forwards"}));
-          const off=()=>{html.classList.remove("ff-os-out");a.cancel()};a.finished.then(off,off)}}
-      else push(os.animate([{opacity:calm?0:.2},{opacity:1}],{duration:calm?200:320,delay:calm?0:60,easing:"ease-out",fill:"backwards"}));
-      if(calm){setTimeout(done,320);return}
+      const done=()=>{if(tok!==ffTok)return;ffSettle();$$(".ff-morph-shell,.ff-ghost,.ffm-page").forEach(n=>n.remove());ffAnims=[]};
+      const live=[...SCREEN.children].map(n=>{const c=getComputedStyle(n);return{n,o:+c.opacity,on:!n.matches(".mist,.grain")&&c.display!=="none"&&c.visibility!=="hidden"}}).filter(x=>x.on&&x.o>0);
+      if(calm){
+        push(ghost.animate([{opacity:1},{opacity:0}],{duration:200,easing:"ease-out",fill:"forwards"}));
+        live.forEach(({n,o})=>push(n.animate([{opacity:0},{opacity:o}],{duration:200,easing:"ease-out",fill:"backwards"})));
+        setTimeout(done,240);return;
+      }
       html.classList.add("ff-morph");
-      const shell=document.createElement("div");shell.className="ff-morph-shell";$("#ffDevice").before(shell);
+      if(page0!==page1){const pg=document.createElement("div");pg.className="ffm-page";pg.style.backgroundImage=page0;$("#ffDevice").before(pg);
+        push(pg.animate([{opacity:1},{opacity:0}],{duration:400,easing:"cubic-bezier(.5,0,.2,1)",fill:"forwards"}))}
+      const shell=document.createElement("div");shell.className="ff-morph-shell";
+      const layer=b=>{const l=document.createElement("i");l.className="ffm-bg";l.style.backgroundColor=b.color;
+        if(b.img!=="none"){const m=document.createElement("b");m.style.backgroundImage=b.img;if(b.tf&&b.tf!=="none")m.style.transform=b.tf;l.append(m)}return l};
+      const l1=layer(bg1),l0=layer(bg0);shell.append(l1,l0);$("#ffDevice").before(shell);
       const ring=r=>r.b?`0 0 0 ${r.b}px #0c0c0e,0 0 0 ${r.b+1}px rgba(255,255,255,.08),0 40px 100px -30px rgba(0,0,0,.5)`:"0 0 0 0px #0c0c0e,0 0 0 0px rgba(255,255,255,0),0 40px 100px -30px rgba(0,0,0,0)";
       const box=r=>({transform:`translate(${r.x+r.b}px,${r.y+r.b}px)`,width:(r.w-2*r.b)+"px",height:(r.h-2*r.b)+"px",borderRadius:Math.max(0,r.r-r.b)+"px",boxShadow:ring(r)});
       const timing={duration:FF_DUR,easing:FF_EASE,fill:"both"};
       push(shell.animate([box(R0),box(R1)],timing));
-      push(shell.animate([{backgroundColor:bg0},{backgroundColor:bg1}],{duration:400,easing:"ease-out",fill:"both"}));
+      push(l0.animate([{opacity:1},{opacity:0}],{duration:400,easing:"cubic-bezier(.5,0,.2,1)",fill:"forwards"}));
+      /* the frozen copy shrinks 2.5% about its centre and stays clipped to the moving frame, sampled from the same spring */
+      const I=r=>({x:r.x+r.b,y:r.y+r.b,w:r.w-2*r.b,h:r.h-2*r.b,r:Math.max(0,r.r-r.b)}),A=I(R0),Z=I(R1),L=(a,b,p)=>a+(b-a)*p,kf=[];
+      for(let i=0;i<=6;i++){const t=i*FF_OUT/6,p=ffP(t),sc=1-.025*(i/6),k=from.s*sc,hx=from.x+from.w*from.s*(1-sc)/2,hy=from.y+from.h*from.s*(1-sc)/2;
+        const x=L(A.x,Z.x,p),y=L(A.y,Z.y,p),w=L(A.w,Z.w,p),h=L(A.h,Z.h,p),rr=L(A.r,Z.r,p),c=v=>Math.max(0,v/k).toFixed(2);
+        kf.push({offset:i/6,transform:`translate(${hx}px,${hy}px) scale(${k})`,clipPath:`inset(${c(y-hy)}px ${c(hx+from.w*k-(x+w))}px ${c(hy+from.h*k-(y+h))}px ${c(x-hx)}px round ${c(rr)}px)`})}
+      push(ghost.animate(kf,{duration:FF_OUT,easing:"linear",fill:"forwards"}));
+      push(ghost.animate([{opacity:1},{opacity:0}],{duration:FF_OUT,easing:"cubic-bezier(.4,0,1,1)",fill:"forwards"}));
       const s=FF.s,i0=r=>({t:Math.max(0,(r.y+r.b-FF.y)/s),l:Math.max(0,(r.x+r.b-FF.x)/s),r:Math.max(0,(FF.x+FF.w*s-(r.x+r.w-r.b))/s),b:Math.max(0,(FF.y+FF.h*s-(r.y+r.h-r.b))/s)});
       const k=i0(R0),rad=Math.max(0,R0.r-R0.b)/s;
       push(SCREEN.animate([{clipPath:`inset(${k.t}px ${k.r}px ${k.b}px ${k.l}px round ${rad}px)`},{clipPath:`inset(0px 0px 0px 0px round ${FF.r}px)`}],timing)).finished.then(done,()=>{});
-      if(id!=="car"){
+      live.forEach(({n,o})=>push(n.animate([{opacity:0},{opacity:o}],{duration:220,delay:FF_OUT,easing:"cubic-bezier(.2,.8,.2,1)",fill:"backwards"})));
+      if(id==="car")carEnter().forEach(push);
+      else{
         const cards=$$(".os.view-home .home-time,.os.view-home .home-line,.os.view-home .hs,.os.view-home .sig,.os.view-space .module.active,.os.view-space .cp,.os.view-space .space-title").filter(n=>n.offsetParent).slice(0,9);
-        cards.forEach((n,i)=>push(n.animate([{opacity:0,translate:"0 10px"},{opacity:1,translate:"0 0"}],{duration:320,delay:140+i*40,easing:"cubic-bezier(.2,.8,.2,1)",fill:"backwards"})));
+        cards.forEach((n,i)=>push(n.animate([{opacity:0,translate:"0 8px"},{opacity:1,translate:"0 0"}],{duration:300,delay:FF_OUT+i*40,easing:"cubic-bezier(.2,.8,.2,1)",fill:"backwards"})));
       }
+    }
+    /* drop the morph styling without letting the screen's own background transitions replay */
+    function ffSettle(){
+      const html=document.documentElement;if(!html.classList.contains("ff-morph"))return;
+      const ns=[SCREEN,$(".mist")].filter(Boolean);ns.forEach(n=>n.style.transition="none");
+      html.classList.remove("ff-morph");ns.forEach(n=>getComputedStyle(n).opacity);ns.forEach(n=>n.style.transition="");
     }
     const ffCompact=()=>innerWidth<=520||(FF.dev==="desktop"&&innerWidth<1180);
     function ffThumb(){const box=$("#ffSwitch"),b=box?.querySelector(".ffs-b.on"),t=box?.querySelector(".ffs-thumb");if(!b||!t)return;t.style.width=b.offsetWidth+"px";t.style.transform=`translateX(${b.offsetLeft}px)`}
@@ -4385,7 +4434,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       let labels="";
       XS.forEach(([x,n])=>{for(let k=0;k<YS.length-1;k++){if((k+XS.length)%2)continue;labels+=lbl(x,(YS[k][0]+YS[k+1][0])/2,90,T(...n))}});
       YS.forEach(([y,n],q)=>{for(let k=0;k<XS.length-1;k++){if((k+q)%2)continue;labels+=lbl((XS[k][0]+XS[k+1][0])/2,y,0,T(...n))}});
-      const metro=METRO.map(([x,y,n])=>`<g transform="translate(${x+34} ${y+34})"><g class="car-up"><circle r="13" fill="#d6453d" stroke="#0d1118" stroke-width="3"/><text y="1" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="14" font-weight="600">${LANG==="ru"?"М":"M"}</text><text x="22" y="1" dominant-baseline="central" font-size="14" font-weight="500" fill="rgba(236,226,220,.62)" stroke="#0d1118" stroke-width="5" paint-order="stroke">${esc(T(...n))}</text></g></g>`).join("");
+      const metro=METRO.map(([x,y,n])=>`<g transform="translate(${x+34} ${y+34})"><g class="car-up"><circle r="13" fill="#d6453d" stroke="#0d1118" stroke-width="3"/><text y="1" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="14" font-weight="600">${LANG==="ru"?"М":"M"}</text><text x="22" y="1" dominant-baseline="central" font-size="15" font-weight="500" fill="rgba(240,232,226,.8)" stroke="#0d1118" stroke-width="5" paint-order="stroke">${esc(T(...n))}</text></g></g>`).join("");
       return `<svg viewBox="0 0 ${CMW} ${CMH}" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="${CMW}" height="${CMH}" fill="#141922"/><g class="car-world">`+
         `<path d="${blocks}" fill="#0a0d12"/><path d="${park}" fill="#0f1f1a"/><path d="${bA}" fill="#161b24" stroke="rgba(255,255,255,.035)" stroke-width="1.5"/><path d="${bB}" fill="#1c222d" stroke="rgba(255,255,255,.045)" stroke-width="1.5"/>`+
         `<path d="M-2000 -1180C-500 -1040 120 -1720 860 -1560S2000 -1960 3600 -1720" fill="none" stroke="#112137" stroke-width="112"/><path d="M-2000 -1180C-500 -1040 120 -1720 860 -1560S2000 -1960 3600 -1720" fill="none" stroke="#0c1828" stroke-width="96"/>`+
@@ -4500,9 +4549,9 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       const old=col.querySelector(".car-card:not(.out)"),calm=reduce.matches||!old;
       const el=document.createElement("article");el.className=`car-tile car-card${c.cls?" "+c.cls:""}`;el.setAttribute("aria-live","polite");el.innerHTML=carCardHTML(c);
       if(old){old.classList.add("out");old.removeAttribute("aria-live");
-        old.animate(reduce.matches?[{opacity:1},{opacity:0}]:[{opacity:1,transform:"none"},{opacity:0,transform:"translateX(24px) scale(.98)"}],{duration:180,easing:"cubic-bezier(.4,0,1,1)",fill:"forwards"}).onfinish=()=>old.remove()}
+        old.animate(reduce.matches?[{opacity:1},{opacity:0}]:[{opacity:1,transform:"none"},{opacity:0,transform:"translateX(-24px) scale(.98)"}],{duration:180,easing:"cubic-bezier(.4,0,1,1)",fill:"forwards"}).onfinish=()=>old.remove()}
       col.append(el);
-      if(!calm||old)el.animate(reduce.matches?[{opacity:0},{opacity:1}]:[{opacity:0,transform:"translateX(32px)"},{opacity:1,transform:"none"}],{duration:320,delay:old?90:0,easing:"cubic-bezier(.2,.8,.2,1)",fill:"backwards"});
+      if(!calm||old)el.animate(reduce.matches?[{opacity:0},{opacity:1}]:[{opacity:0,transform:"translateX(32px)"},{opacity:1,transform:"none"}],{duration:320,delay:old?160:0,easing:"cubic-bezier(.2,.8,.2,1)",fill:"backwards"});
     }
     function carMount(el){
       el.dataset.on="1";
@@ -4519,6 +4568,12 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       const sp=S&&view==="space"?S:null,p=sp&&planOf(sp),n=CAR.held.length;
       return `<span class="car-time" id="carTime">${esc(timeStr(new Date()))}</span><span class="car-wx">${$("#wxIco").innerHTML}<span>${esc($("#wxTemp").textContent)}</span></span><i class="car-dot"></i><span class="car-sp">${esc(sp?spShort(sp):T("Driving","В пути"))}</span>${p?`<span class="car-plan">${esc(T(`Plan ${p.k} of ${p.n}`,`План ${p.k} из ${p.n}`))}</span>`:""}<span class="car-gap"></span>`+
         `<button type="button" class="car-held" data-cx="held"${n?"":" hidden"}>${ic("bell")}<span>${esc(T(`${n} held`,`Ждут: ${n}`))}</span></button>`;
+    }
+    /* the held counter pops in when it appears and bumps when it grows */
+    function carHeld(){
+      const n=CAR.held.length,was=CAR.heldN??n,pill=CAR.w?.strip.querySelector(".car-held");CAR.heldN=n;
+      if(!pill||n<=was||reduce.matches)return;
+      pill.animate(was?[{scale:1},{scale:1.12},{scale:1}]:[{opacity:0,scale:.6,translate:"12px 0"},{opacity:1,scale:1.06,offset:.6},{opacity:1,scale:1,translate:"0 0"}],{duration:was?360:420,easing:"cubic-bezier(.2,.8,.2,1)"});
     }
     function carRailHTML(){
       const un=liveMods().filter(x=>x.m.kind==="chat").reduce((a,x)=>a+chatUnread(x.m.data),0);
@@ -4590,17 +4645,15 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       const el=$("#car");if(!el)return;
       if(FF.dev!=="car")return;
       if(!el.dataset.on||CAR.lang!==LANG)carMount(el);
-      morphHTML(CAR.w.strip,carStripHTML());morphHTML(CAR.w.rail,carRailHTML());
+      morphHTML(CAR.w.strip,carStripHTML());morphHTML(CAR.w.rail,carRailHTML());carHeld();
       carEval();carFrame(performance.now(),0);carLoop();
     }
-    /* entering: the screen darkens over 400 ms, the map fades in, the tiles follow 40 ms apart */
+    /* entering: the map fades in under the tiles, the tiles follow 40 ms apart, all after the old screen is gone */
     function carEnter(){
-      const el=$("#car");if(!el||!CAR.w)return;
-      const calm=reduce.matches,ease="cubic-bezier(.2,.8,.2,1)";
-      el.animate([{opacity:0},{opacity:1}],{duration:calm?200:400,easing:"ease-out"});
-      if(calm)return;
-      el.querySelector(".car-map").animate([{opacity:0,transform:"scale(1.04)"},{opacity:1,transform:"none"}],{duration:520,delay:120,easing:ease,fill:"backwards"});
-      [CAR.w.strip,CAR.w.rail,CAR.w.mv,CAR.w.eta,CAR.w.media,CAR.w.col].forEach((n,i)=>n.animate([{opacity:0,transform:"translateY(10px)"},{opacity:1,transform:"none"}],{duration:320,delay:140+i*40,easing:ease,fill:"backwards"}));
+      const el=$("#car");if(!el||!CAR.w||reduce.matches)return[];
+      const ease="cubic-bezier(.2,.8,.2,1)";
+      return[el.querySelector(".car-map").animate([{opacity:0,transform:"scale(1.03)"},{opacity:1,transform:"none"}],{duration:330,delay:FF_OUT,easing:ease,fill:"backwards"}),
+        ...[CAR.w.strip,CAR.w.rail,CAR.w.mv,CAR.w.eta,CAR.w.media,CAR.w.col].map((n,i)=>n.animate([{opacity:0,transform:"translateY(8px)"},{opacity:1,transform:"none"}],{duration:280,delay:FF_OUT+40+i*40,easing:ease,fill:"backwards"}))];
     }
     function carSay(text,o={}){
       const el=CAR.w?.say;if(!el)return;
