@@ -767,91 +767,161 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     @keyframes asmShim{from{background-position:100% 0}to{background-position:-150% 0}}
 
     /* system windows sit above the desktop and every Space; modules stay in the stream */
-    .cs{cursor:pointer}
+    .cs{cursor:pointer;padding:0;border:0;border-radius:50%;background:none}
+    .cs:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
     .perm-open{display:flex;align-items:center;gap:8px;width:100%;margin:2px 0 10px;padding:8px;border:0;border-radius:10px;background:var(--accent-soft);color:var(--ink);text-align:left}
     .perm-open span{min-width:0}.perm-open b{display:block;font-weight:500;font-size:12px}.perm-open small{display:block;margin-top:2px;color:var(--quiet);font-size:10.5px;line-height:1.35}
     .perm-open .ic{margin-left:auto;flex:none;color:var(--accent)}
     .perm-open:hover{filter:brightness(.97)}
-    .sys{position:fixed;inset:0;z-index:72;pointer-events:none}
+    body.night .perm-open:hover{filter:brightness(1.08)}
+    /* system windows — see DESIGN.md: one 760×560 frame, 200 sidebar, rows are label | control */
+    .sys{position:fixed;inset:0;z-index:72;pointer-events:none;
+      --s1:rgba(0,0,0,.86);--s2:rgba(0,0,0,.56);--s3:rgba(0,0,0,.5);--s-line:rgba(0,0,0,.06);--s-fill:rgba(0,0,0,.04);--s-fill2:rgba(0,0,0,.08);
+      --s-win:rgba(246,246,245,.9);--s-group:rgba(255,255,255,.72);--s-pop:rgba(252,252,252,.98);--s-knob:#fff;--s-track:rgba(0,0,0,.06);
+      --s-ease:cubic-bezier(.2,.8,.2,1);--s-in:cubic-bezier(.4,0,1,1);--quiet:var(--s2)}
+    body.night .sys{--s1:rgba(255,255,255,.92);--s2:rgba(255,255,255,.6);--s3:rgba(255,255,255,.52);--s-line:rgba(255,255,255,.08);--s-fill:rgba(255,255,255,.05);--s-fill2:rgba(255,255,255,.1);
+      --s-win:rgba(32,32,34,.9);--s-group:rgba(255,255,255,.05);--s-pop:#2c2c2e;--s-knob:#636366;--s-track:rgba(255,255,255,.08)}
     .sys.on{pointer-events:auto}
-    .sys-veil{position:absolute;inset:0;background:rgba(47,47,47,.22);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
-    body.night .sys-veil{background:rgba(0,0,0,.46)}
-    .sys-win{position:absolute;left:50%;top:50%;display:flex;width:min(760px,calc(100vw - 40px));height:min(620px,calc(100vh - 64px));border-radius:16px;background:var(--paper);border:1px solid var(--rim);box-shadow:0 1px 2px rgba(0,0,0,.05),0 40px 90px -28px rgba(0,0,0,.38);color:var(--ink);overflow:hidden;transform:translate(-50%,-50%);animation:sysIn .2s var(--ease) both}
-    .sys-win.back,.sys-win.settled{animation:none}
-    .sys-win.small{width:min(420px,calc(100vw - 40px));height:min(520px,calc(100vh - 80px))}
-    @keyframes sysIn{from{opacity:0;transform:translate(-50%,calc(-50% + 8px))}to{opacity:1;transform:translate(-50%,-50%)}}
-    .sys-side{width:196px;flex:none;display:flex;flex-direction:column;gap:2px;padding:16.5px 10px 16px;background:linear-gradient(90deg,rgba(47,47,47,.03),rgba(47,47,47,0))}
-    body.night .sys-side{background:linear-gradient(90deg,rgba(255,255,255,.04),rgba(255,255,255,0))}
-    .sys-nav{display:flex;align-items:center;gap:8px;width:100%;height:36px;padding:0 12px;border:0;border-radius:12px;background:none;color:var(--ink);font-size:15px;font-weight:400;text-align:left}
-    .sys-nav .ic{width:15px;height:15px;color:var(--quiet)}
-    .sys-nav.on,.sys-nav.on .ic{font-weight:400;color:var(--ink)}
-    .sys-nav.on{background:rgba(47,47,47,.06)}
-    body.night .sys-nav.on{background:rgba(255,255,255,.08);color:#fff}body.night .sys-nav.on .ic{color:#fff}
-    .sys-nav:hover:not(.on),.sys-nav:focus-visible:not(.on){background:rgba(47,47,47,.04)}
-    .sys-nav:focus-visible{outline:1.5px solid var(--quiet);outline-offset:-2px}
-    body.night .sys-nav:hover:not(.on){background:rgba(255,255,255,.04)}
-    .sys-main{flex:1;min-width:0;display:flex;flex-direction:column;background:transparent}
-    .sys-head{display:flex;align-items:center;justify-content:space-between;gap:12px;height:64px;padding:0 14px 0 22px;flex:none}
-    .sys-head h2{margin:0;padding:0;font-size:23px;font-weight:600;letter-spacing:-.022em;line-height:28px}
-    .sys-x{position:relative;flex:none;width:28px;height:28px;display:grid;place-items:center;border:0;border-radius:8px;background:transparent;color:var(--quiet)}
-    .sys-x:hover,.sys-x:focus-visible{background:var(--chip);color:var(--ink)}
-    .sys-x:focus-visible{outline:1.5px solid var(--quiet);outline-offset:2px}
-    .sys-body{flex:1;min-height:0;overflow:auto;padding:2px 22px 22px;scrollbar-width:thin;scrollbar-gutter:stable}
-    .sys-sec{margin:18px 16px 8px;color:var(--quiet);font-size:12.5px;font-weight:400;line-height:16px}
-    .sys-sec:first-child{margin-top:4px}
-    .sys-card{border-radius:12px;background:rgba(47,47,47,.04)}
-    body.night .sys-card{background:rgba(255,255,255,.05)}
-    .sys-account{display:flex;align-items:center;gap:12px;min-height:64px;padding:12px 16px}
+    .sys-veil{position:absolute;inset:0;background:rgba(40,40,40,.18);opacity:0;-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0);transition:opacity .18s var(--s-in),-webkit-backdrop-filter .18s var(--s-in),backdrop-filter .18s var(--s-in)}
+    .sys.on .sys-veil{opacity:1;-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);transition-duration:.24s;transition-timing-function:var(--s-ease)}
+    body.night .sys-veil{background:rgba(0,0,0,.42)}
+    .sys-win{position:absolute;left:50%;top:50%;display:grid;grid-template-columns:200px minmax(0,1fr);grid-template-rows:76px minmax(0,1fr);grid-template-areas:"side head" "side body";width:min(760px,calc(100vw - 48px));height:min(560px,calc(100dvh - 48px));border-radius:20px;background:var(--s-win);border:1px solid var(--s-line);box-shadow:0 1px 2px rgba(0,0,0,.04),0 24px 64px -20px rgba(0,0,0,.26),0 64px 120px -48px rgba(0,0,0,.2);color:var(--s1);overflow:hidden;outline:0;opacity:0;transform:translate(-50%,-50%) scale(.96);transition:opacity .28s var(--s-ease),transform .28s var(--s-ease)}
+    .sys-win.in{opacity:1;transform:translate(-50%,-50%)}
+    .sys-win.in.back{opacity:0;transform:translate(-50%,-50%) scale(.98);pointer-events:none}
+    .sys-win.out{opacity:0;transform:translate(-50%,-50%) scale(.98);transition-duration:.18s;transition-timing-function:var(--s-in);pointer-events:none}
+    .sys-win.solo{grid-template-columns:minmax(0,1fr);grid-template-areas:"head" "body"}
+    .sys-win.solo .sys-head{padding-left:28px}
+    .sys-side{grid-area:side;position:relative;display:flex;flex-direction:column;gap:2px;padding:20px 12px;min-height:0}
+    .sys-pill{position:absolute;left:12px;right:12px;top:20px;height:36px;border-radius:10px;background:var(--s-fill2);transform:translateY(calc(var(--k) * 38px));transition:transform .2s var(--s-ease);pointer-events:none}
+    .sys-nav{position:relative;display:flex;align-items:center;gap:10px;flex:none;height:36px;padding:0 12px;border:0;border-radius:10px;background:transparent;color:var(--s1);font-size:15px;line-height:20px;text-align:left;white-space:nowrap;transition:background-color .12s,transform .12s var(--s-ease)}
+    .sys-nav .ic{width:16px;height:16px;color:var(--s2);transition:color .12s}
+    .sys-nav.on .ic{color:var(--s1)}
+    .sys-nav:hover:not(.on){background:var(--s-fill)}
+    .sys-nav:active{transform:scale(.98)}
+    .sys-nav:active:not(.on){background:var(--s-fill2)}
+    .sys-head{grid-area:head;display:flex;align-items:center;gap:8px;min-width:0;padding:0 20px 0 28px}
+    .sys-head h2{flex:1;min-width:0;margin:0;font-size:26px;font-weight:600;line-height:32px;letter-spacing:-.022em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .sys-x{flex:none;width:32px;height:32px;display:grid;place-items:center;padding:0;border:0;border-radius:50%;background:transparent;color:var(--s2);transition:background-color .12s,color .12s,transform .12s var(--s-ease)}
+    .sys-x .ic{width:16px;height:16px}
+    .sys-x:hover{background:var(--s-fill);color:var(--s1)}
+    .sys-x:active{background:var(--s-fill2);transform:scale(.94)}
+    .sys-back{margin-left:-10px}
+    .sys-body{grid-area:body;min-width:0;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:8px 28px 28px;scrollbar-width:none;-webkit-mask-image:linear-gradient(transparent,#000 8px,#000 calc(100% - 24px),transparent);mask-image:linear-gradient(transparent,#000 8px,#000 calc(100% - 24px),transparent)}
+    .sys-body::-webkit-scrollbar{display:none}
+    .sys-win .entering{animation:sysEnter .12s var(--s-ease) both}
+    .sys-win .leaving{animation:sysLeave .12s var(--s-in) both;pointer-events:none}
+    @keyframes sysEnter{from{opacity:0;transform:translateY(4px)}}
+    @keyframes sysLeave{to{opacity:0;transform:translateY(-4px)}}
+    .sys-sec{display:flex;align-items:center;gap:8px;min-height:16px;margin:24px 16px 8px;color:var(--s3);font-size:13px;font-weight:600;line-height:16px}
+    .sys-sec:first-child{margin-top:0}
+    .sys-sec .avatar{width:16px;height:16px;margin:0;border:0;font-size:7px}
+    .sys-sec .avatar.svc .ic{width:10px;height:10px}
+    .sys-note{margin:0 16px 16px;color:var(--s2);font-size:13px;line-height:18px}
+    .sys-group{position:relative;border-radius:14px;background:var(--s-group);border:1px solid var(--s-line)}
+    .sys-group.focus{animation:sysRing 1.8s var(--s-ease) both}
+    @keyframes sysRing{0%,55%{box-shadow:0 0 0 2px var(--accent)}100%{box-shadow:0 0 0 2px transparent}}
+    .sys-row{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;column-gap:16px;min-height:52px;padding:8px 16px}
+    .sys-row + .sys-row::before{content:"";position:absolute;left:16px;right:0;top:0;height:1px;background:var(--s-line)}
+    .sys-group > .sys-row:first-child{border-radius:13px 13px 0 0}
+    .sys-group > .sys-row:last-child{border-radius:0 0 13px 13px}
+    .sys-group > .sys-row:only-child{border-radius:13px}
+    .sys-row.pin{animation:sysPin 2s var(--s-ease) both}
+    @keyframes sysPin{0%,50%{background:var(--accent-soft)}100%{background:transparent}}
+    button.sys-row{width:100%;border:0;background:transparent;color:inherit;font:inherit;text-align:left;transition:background-color .12s}
+    button.sys-row:hover{background:var(--s-fill)}
+    button.sys-row:active{background:var(--s-fill2)}
+    .sys-label{min-width:0;color:var(--s1);font-size:15px;line-height:20px;overflow-wrap:anywhere}
+    .sys-label small{display:block;margin-top:2px;color:var(--s2);font-size:13px;line-height:18px}
+    .sys-label.ico{display:flex;align-items:center;gap:10px}
+    .sys-label.ico > .ic{width:18px;height:18px;color:var(--s2)}
+    .sys-value{display:flex;align-items:center;gap:6px;min-width:0;color:var(--s2);font-size:15px;line-height:20px;white-space:nowrap}
+    .sys-value .ic{width:14px;height:14px}
+    .sys-value.on{color:var(--accent)}
+    .sys-value.on .ic{width:18px;height:18px}
+    .sys-value.live{color:var(--accent)}
+    .sys-value.live::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+    .sys-row.account{min-height:68px}
+    .sys-row.account .sys-label{gap:12px}
     .sys-ava{width:40px;height:40px;flex:none;border-radius:50%;overflow:hidden}
     .sys-ava .me-photo{width:40px;height:40px;font-size:16px}
-    .sys-account b{display:block;font-size:15px;font-weight:400;line-height:20px}.sys-account span{display:block;margin-top:1px;color:var(--quiet);font-size:13px;line-height:17px}
-    .sys-card.sys-rows{padding:0}
-    .sys-row{position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px 16px;min-height:52px;padding:0 16px}
-    .sys-row + .sys-row::before{content:"";position:absolute;left:16px;right:16px;top:0;height:1px;background:var(--line)}
-    .sys-row > b,.sys-row .meta{flex:1 1 auto;min-width:0;font-size:15px;font-weight:400;line-height:20px}
-    .sys-row .meta b{display:block;font-size:15px;font-weight:400;line-height:20px}.sys-row .meta span{display:block;margin-top:2px;color:var(--quiet);font-size:13px;line-height:17px}
-    .sys-drop{display:flex;align-items:center;gap:6px;min-height:28px;padding:0 6px 0 8px;border:0;border-radius:8px;background:transparent;color:var(--quiet);font-size:15px;font-weight:400}
-    .sys-drop:hover,.sys-ctl.open .sys-drop{background:rgba(47,47,47,.06);color:var(--ink)}
-    body.night .sys-drop:hover,body.night .sys-ctl.open .sys-drop{background:rgba(255,255,255,.08)}
-    .sys-drop .ic{width:12px;height:12px;color:var(--faint)}
-    .sys-ctl{position:relative;flex:none}
-    .sys-menu{position:absolute;top:calc(100% + 4px);right:0;min-width:168px;padding:4px;border-radius:12px;background:var(--paper);border:1px solid var(--line);box-shadow:0 16px 40px -18px rgba(0,0,0,.4);z-index:6;display:flex;flex-direction:column;opacity:0;transform:translateY(-4px);pointer-events:none;transition:opacity .15s var(--ease),transform .15s var(--ease)}
-    body.night .sys-menu{background:#2a2a2a;border-color:rgba(255,255,255,.08)}
-    .sys-ctl.open .sys-menu{opacity:1;transform:none;pointer-events:auto}
-    .sys-menu button{display:flex;align-items:center;gap:8px;width:100%;padding:7px 10px;border:0;border-radius:8px;background:none;color:var(--ink);font-size:13px;text-align:left}
-    .sys-menu button.on,.sys-menu button:hover{background:var(--chip)}
-    .sys-dot{width:12px;height:12px;flex:none;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.18)}
-    .sys-switch{position:relative;width:36px;height:22px;flex:none;padding:0;border:0;border-radius:999px;background:rgba(47,47,47,.16)}
-    .sys-switch i{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.18);transition:transform .2s var(--ease)}
-    .sys-switch.on{background:var(--accent)}.sys-switch.on i{transform:translateX(14px)}
+    .sys-seg{position:relative;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;height:32px;padding:2px;border-radius:9px;background:var(--s-track)}
+    .sys-thumb{position:absolute;top:2px;bottom:2px;left:2px;width:calc((100% - 4px) / var(--n));border-radius:7px;background:var(--s-knob);box-shadow:0 1px 2px rgba(0,0,0,.1),0 0 0 .5px rgba(0,0,0,.04);transform:translateX(calc(var(--i) * 100%));transition:transform .16s var(--s-ease);pointer-events:none}
+    .sys-seg button{position:relative;min-width:84px;padding:0 10px;border:0;border-radius:7px;background:transparent;color:var(--s2);font-size:13px;line-height:28px;white-space:nowrap;transition:color .16s,background-color .12s,transform .12s var(--s-ease)}
+    .sys-seg button.on{color:var(--s1)}
+    .sys-seg button:hover:not(.on){color:var(--s1);background:var(--s-fill)}
+    .sys-seg button:active{transform:scale(.96)}
+    .sys-switch{position:relative;width:40px;height:24px;flex:none;padding:0;border:0;border-radius:999px;background:rgba(0,0,0,.14);transition:background-color .16s}
     body.night .sys-switch{background:rgba(255,255,255,.16)}
-    .sys-textbtn{border:0;border-radius:8px;background:rgba(47,47,47,.06);color:var(--ink);padding:6px 10px;font-size:12.5px}
-    .sys-textbtn:hover{background:rgba(47,47,47,.1)}
-    body.night .sys-textbtn{background:rgba(255,255,255,.08)}body.night .sys-textbtn:hover{background:rgba(255,255,255,.14)}
-    .sys-seg{display:flex;flex:none;padding:3px;border-radius:999px;background:rgba(47,47,47,.06)}
-    body.night .sys-seg{background:rgba(255,255,255,.08)}
-    .sys-seg button{border:0;border-radius:999px;background:transparent;color:var(--quiet);padding:4px 8px;font-size:12px;white-space:nowrap}
-    .sys-seg button.on{background:var(--paper);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
-    body.night .sys-seg button.on{background:#3a3a3c;color:#fff}
-    .sys-note{margin:2px 2px 12px;color:var(--quiet);font-size:12.5px;line-height:1.45}
-    .sys-group{margin-top:10px}
-    .sys-group.focus{box-shadow:inset 0 0 0 1.5px var(--accent)}
-    .sys-group h3{display:flex;align-items:center;gap:8px;margin:0;padding:0 16px;height:40px;color:var(--quiet);font-size:13px;font-weight:400}
-    .sys-group h3 .avatar{width:18px;height:18px;margin:0;font-size:8px}
-    .sys-group h3 + .sys-row::before{left:16px;right:16px}
-    .sys-search{width:100%;margin:0 0 8px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:rgba(47,47,47,.04);outline:0;font:inherit;font-size:14px}
-    body.night .sys-search{background:rgba(255,255,255,.05)}
-    .sys-search:focus{box-shadow:0 0 0 3px var(--accent-soft)}
-    .sys-lang{display:flex;align-items:center;justify-content:space-between;width:100%;padding:9px 8px;border:0;border-radius:8px;background:none;color:inherit;font:inherit;font-size:14px;text-align:left}
-    .sys-lang small{color:var(--faint);font-size:12px}
-    .sys-lang.on{color:var(--accent)}
-    .sys-lang:hover{background:var(--chip)}
-    .sys-empty{padding:18px 4px;color:var(--quiet);font-size:13px}
-    .sys-field{width:min(240px,42vw);padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:transparent;outline:0;font:inherit;font-size:15px;font-weight:400;color:var(--quiet);text-align:right}
-    body.night .sys-field{background:rgba(255,255,255,.04)}
-    .sys-field:focus{box-shadow:0 0 0 3px var(--accent-soft)}
-    body.night .perm-open:hover{filter:brightness(1.08)}
-    .sys-row.pin{box-shadow:inset 0 0 0 1.5px var(--accent)}
+    .sys-switch i{position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:999px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .16s var(--s-ease),width .16s var(--s-ease)}
+    .sys-switch.on,body.night .sys-switch.on{background:var(--accent)}
+    .sys-switch.on i{transform:translateX(16px)}
+    .sys-switch:hover:not(.on){background:rgba(0,0,0,.2)}
+    body.night .sys-switch:hover:not(.on){background:rgba(255,255,255,.22)}
+    .sys-switch.on:hover{filter:brightness(1.06)}
+    .sys-switch:active i{width:24px}
+    .sys-switch.on:active i{transform:translateX(12px)}
+    .sys-ctl{position:relative;margin-right:-8px}
+    .sys-drop{display:flex;align-items:center;gap:6px;height:32px;padding:0 8px 0 10px;border:0;border-radius:8px;background:transparent;color:var(--s2);font-size:15px;white-space:nowrap;transition:background-color .12s,color .12s,transform .12s var(--s-ease)}
+    .sys-drop .ic{width:14px;height:14px}
+    .sys-drop:hover,.sys-ctl.open .sys-drop{background:var(--s-fill);color:var(--s1)}
+    .sys-drop:active{background:var(--s-fill2);transform:scale(.98)}
+    .sys-menu{position:absolute;top:calc(100% + 6px);right:0;z-index:6;display:flex;flex-direction:column;min-width:200px;padding:4px;border-radius:12px;background:var(--s-pop);border:1px solid var(--s-line);box-shadow:0 16px 40px -16px rgba(0,0,0,.32);opacity:0;visibility:hidden;transform:scale(.98) translateY(-4px);transform-origin:top right;pointer-events:none;transition:opacity .14s var(--s-ease),transform .14s var(--s-ease),visibility 0s .14s}
+    .sys-ctl.open .sys-menu{opacity:1;visibility:visible;transform:none;pointer-events:auto;transition-delay:0s}
+    .sys-menu button{display:flex;align-items:center;justify-content:space-between;gap:16px;height:32px;padding:0 8px 0 10px;border:0;border-radius:8px;background:transparent;color:var(--s1);font-size:15px;text-align:left;white-space:nowrap;transition:background-color .1s}
+    .sys-menu button .ic{width:16px;height:16px;color:var(--accent);visibility:hidden}
+    .sys-menu button.on .ic{visibility:visible}
+    .sys-menu button:hover{background:var(--s-fill)}
+    .sys-menu button:active{background:var(--s-fill2)}
+    .sys-dots{display:flex;gap:2px;margin-right:-5px}
+    .sys-dot{display:grid;place-items:center;width:28px;height:28px;padding:0;border:0;border-radius:50%;background:transparent}
+    .sys-dot i{width:18px;height:18px;border-radius:50%;background:var(--d);box-shadow:inset 0 0 0 1px rgba(0,0,0,.1);transition:transform .16s var(--s-ease),box-shadow .16s var(--s-ease)}
+    body.night .sys-dot i{background:var(--n)}
+    .sys-dot:hover i{transform:scale(1.1)}
+    .sys-dot:active i{transform:scale(.9)}
+    .sys-dot.on i{box-shadow:0 0 0 2px var(--s-knob),0 0 0 4px var(--d)}
+    body.night .sys-dot.on i{box-shadow:0 0 0 2px #2c2c2e,0 0 0 4px var(--n)}
+    .sys-field{width:min(220px,46vw);height:32px;margin-right:-8px;padding:0 8px;border:0;border-radius:8px;background:transparent;outline:0;color:var(--s2);font:inherit;font-size:15px;text-align:right;text-overflow:ellipsis;cursor:text;transition:background-color .12s,color .12s}
+    .sys-field:hover{background:var(--s-fill)}
+    .sys-field:focus{background:var(--s-fill);color:var(--s1)}
+    .sys-btn{height:32px;padding:0 14px;border:0;border-radius:8px;background:var(--s-fill2);color:var(--s1);font-size:13px;white-space:nowrap;transition:background-color .12s,transform .12s var(--s-ease)}
+    .sys-btn:hover{background:rgba(0,0,0,.12)}
+    body.night .sys-btn:hover{background:rgba(255,255,255,.14)}
+    .sys-btn:active{transform:scale(.98);background:rgba(0,0,0,.16)}
+    body.night .sys-btn:active{background:rgba(255,255,255,.18)}
+    .sys-search{display:block;width:100%;height:36px;margin:0 0 24px;padding:0 12px;border:1px solid transparent;border-radius:10px;background:var(--s-fill);outline:0;color:var(--s1);font:inherit;font-size:15px;transition:background-color .12s,border-color .12s}
+    .sys-search::placeholder{color:var(--s2)}
+    .sys-search:hover{background:var(--s-fill2)}
+    .sys-empty{margin:0 16px;color:var(--s2);font-size:13px}
+    .sys :is(button,input):focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+    .sys :is(button.sys-row,.sys-seg button,.sys-menu button,.sys-field,.sys-search):focus-visible{outline-offset:-2px}
+    .sys-search:focus{border-color:var(--accent)}
+    @media(max-width:720px){
+      .sys-win{grid-template-columns:minmax(0,1fr);grid-template-rows:64px auto minmax(0,1fr);grid-template-areas:"head" "side" "body";width:calc(100vw - 16px);height:calc(100dvh - 16px)}
+      .sys-win.solo{grid-template-rows:64px minmax(0,1fr)}
+      .sys-head,.sys-win.solo .sys-head{padding:0 12px 0 20px}
+      .sys-head h2{font-size:22px;line-height:28px}
+      .sys-side{flex-direction:row;gap:4px;padding:0 16px 8px;overflow-x:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 16px,#000 calc(100% - 24px),transparent);mask-image:linear-gradient(90deg,transparent,#000 16px,#000 calc(100% - 24px),transparent)}
+      .sys-side::-webkit-scrollbar{display:none}
+      .sys-pill{display:none}
+      .sys-nav{height:32px;padding:0 12px;border-radius:999px;font-size:14px}
+      .sys-nav .ic{display:none}
+      .sys-nav.on{background:var(--s-fill2)}
+      .sys-body{padding:8px 16px 24px}
+    }
+    @media(max-width:520px){
+      .sys-row.stack{grid-template-columns:minmax(0,1fr);row-gap:10px;padding:12px 16px}
+      .sys-row.stack .sys-seg button{min-width:0}
+      .sys-field{width:min(180px,44vw)}
+    }
+    @media(prefers-reduced-motion:reduce){
+      .sys-veil,.sys.on .sys-veil{-webkit-backdrop-filter:blur(24px)!important;backdrop-filter:blur(24px)!important;transition:opacity .2s linear!important}
+      .sys-win,.sys-win.in,.sys-win.out{transform:translate(-50%,-50%)!important;transition:opacity .2s linear!important}
+      .sys-win .entering{animation:sysFade .12s linear both!important}
+      .sys-win .leaving{animation:sysFade .12s linear reverse both!important}
+      .sys-pill,.sys-thumb,.sys-switch i,.sys-dot i{transition:none!important}
+      .sys-row.pin,.sys-group.focus{animation:none!important}
+    }
+    @keyframes sysFade{from{opacity:0}}
 
     /* system layer: devices, control center, voice, sheets, switcher — always above a space */
     .mic-live{width:8px;height:8px;border-radius:50%;background:#e23b3b;box-shadow:0 0 0 4px rgba(226,59,59,.18);display:none}
@@ -1001,58 +1071,57 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .lvl{margin-left:6px;font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--faint);font-weight:500}
     .lvl.urgent{color:var(--accent)}
 
-    /* profile: identity, stats, activity, services — no usage or billing */
-    .sys-win.profile{width:min(880px,calc(100vw - 32px));height:min(740px,calc(100vh - 40px))}
-    .prof-id{display:flex;align-items:center;gap:14px;margin-top:2px}
+    /* profile: identity, stats, activity, services — no usage or billing; same frame as settings */
+    .prof-id{display:flex;align-items:center;gap:16px;margin:0 0 24px}
     .prof-ava{width:56px;height:56px;flex:none;border-radius:50%;overflow:hidden}
     .prof-ava .me-photo{width:56px;height:56px;font-size:22px}
-    .prof-id b{display:block;font-size:18px;font-weight:500;letter-spacing:-.02em}
-    .prof-id em,.prof-id small{display:block;font-style:normal;color:var(--quiet);font-size:13px}
-    .prof-id small{margin-top:1px;font-size:12px}
-    .prof-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));margin:18px 0 4px}
-    .prof-stats div{min-width:0;padding:0 12px;border-left:1px solid var(--line)}
+    .prof-id b{display:block;font-size:18px;font-weight:600;line-height:24px;letter-spacing:-.015em}
+    .prof-id span{display:block;margin-top:2px;color:var(--s2);font-size:13px;line-height:18px}
+    .prof-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));row-gap:16px}
+    .prof-stats div{min-width:0;padding:0 16px;border-left:1px solid var(--s-line)}
     .prof-stats div:first-child{padding-left:0;border-left:0}
-    .prof-stats b{display:block;font-size:22px;font-weight:500;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
-    .prof-stats span{display:block;margin-top:2px;color:var(--quiet);font-size:12px;line-height:1.3}
-    .prof-card{margin-top:16px;padding:14px 14px 12px;border-radius:12px;background:rgba(47,47,47,.04)}
-    body.night .prof-card{background:rgba(255,255,255,.05)}
-    .prof-card-h{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
-    .prof-card-h b{display:block;font-size:14px;font-weight:500}
-    .prof-card-h span,.prof-card-h .sub{display:block;margin-top:2px;color:var(--quiet);font-size:12px;line-height:1.35}
-    .prof-card-h .sys-textbtn{color:var(--quiet)}
-    .hm-scroll{overflow-x:auto;padding-bottom:2px;scrollbar-gutter:stable}
-    .hm-months,.hm-grid{display:grid;grid-auto-flow:column;grid-auto-columns:11px;gap:3px}
-    .hm-months{height:14px;margin-bottom:4px}
-    .hm-months span{font-size:10px;color:var(--quiet);white-space:nowrap}
-    .hm-grid{grid-template-rows:repeat(7,11px)}
-    .hm-grid.weeks{grid-template-rows:18px}
-    .hm i{display:block;width:11px;height:11px;border-radius:2px;background:rgba(47,47,47,.07)}
-    .hm-grid.weeks i{height:18px}
+    .prof-stats b{display:block;font-size:22px;font-weight:600;line-height:28px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .prof-stats span{display:block;margin-top:2px;color:var(--s2);font-size:13px;line-height:18px}
+    .prof-h{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:32px;margin:24px 0 8px}
+    .prof-h .sys-sec{margin:0 0 0 16px}
+    .prof-h .sys-drop{margin-right:-8px}
+    .prof-pad{padding:16px}
+    .hm-scroll{overflow-x:auto;scrollbar-width:none}
+    .hm-scroll::-webkit-scrollbar{display:none}
+    .hm{min-width:max-content}
+    .hm-months,.hm-grid{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(10px,1fr);gap:2px}
+    .hm-months{height:16px;margin-bottom:6px}
+    .hm-months span{width:0;color:var(--s2);font-size:11px;line-height:16px;white-space:nowrap}
+    .hm-grid{grid-template-rows:repeat(7,auto)}
+    .hm i{display:block;aspect-ratio:1;border-radius:2px;background:rgba(0,0,0,.06);transition:background-color .16s}
+    .hm-grid.weeks{grid-template-rows:auto}
+    .hm-grid.weeks i{aspect-ratio:auto;height:28px}
     body.night .hm i{background:rgba(255,255,255,.07)}
-    .hm-legend{display:flex;align-items:center;gap:4px;margin-top:10px;color:var(--faint);font-size:11px}
-    .hm-legend i{width:11px;height:11px;border-radius:2px}
-    .prof-spaces{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
-    .prof-spaces button{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:999px;background:transparent;color:var(--quiet);padding:3px 8px;font-size:12px}
-    .prof-spaces button.on{background:var(--paper);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.06)}
-    body.night .prof-spaces button.on{background:rgba(255,255,255,.08);box-shadow:none;color:#fff}
+    .prof-spaces{display:flex;flex-wrap:wrap;gap:2px;margin:16px 0 0 -8px}
+    .prof-spaces button{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 8px;border:0;border-radius:999px;background:transparent;color:var(--s2);font-size:13px;transition:background-color .12s,color .12s,transform .12s var(--s-ease)}
+    .prof-spaces button:hover{background:var(--s-fill);color:var(--s1)}
+    .prof-spaces button:active{transform:scale(.98);background:var(--s-fill2)}
+    .prof-spaces button.on{background:var(--s-fill2);color:var(--s1)}
     .prof-swatch{width:8px;height:8px;border-radius:2px;flex:none}
-    .prof-row{display:grid;grid-template-columns:22px minmax(90px,1fr) minmax(64px,140px) 32px;align-items:center;gap:10px;padding:6px 0}
-    .prof-row .ic{width:16px;height:16px;color:var(--quiet)}
-    .prof-row .avatar{width:22px;height:22px;margin:0;font-size:8px}
-    .prof-row em{font-style:normal;font-size:13px}
-    .prof-bar{height:4px;border-radius:99px;background:rgba(47,47,47,.1);overflow:hidden}
-    body.night .prof-bar{background:rgba(255,255,255,.1)}
+    .prof-row{display:grid;grid-template-columns:18px minmax(90px,1fr) minmax(64px,160px) 36px;align-items:center;gap:10px;min-height:36px}
+    .prof-row .ic{width:18px;height:18px;color:var(--s2)}
+    .prof-row .avatar{width:18px;height:18px;margin:0;border:0;font-size:7px}
+    .prof-row em{min-width:0;overflow:hidden;color:var(--s1);font-style:normal;font-size:15px;line-height:20px;white-space:nowrap;text-overflow:ellipsis}
+    .prof-bar{height:4px;border-radius:99px;background:var(--s-fill2);overflow:hidden}
     .prof-bar i{display:block;height:100%;border-radius:99px;background:var(--accent)}
-    .prof-row b{font-weight:500;font-variant-numeric:tabular-nums;text-align:right;font-size:13px}
-    .prof-empty{padding:8px 2px 6px}
-    .prof-empty p{margin:0 0 8px;color:var(--quiet);font-size:13px}
-    .prof-kv{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:9px 0;border-top:1px solid var(--line);font-size:13.5px}
-    .prof-card .prof-kv:first-of-type{border-top:0}
-    .prof-kv span{color:var(--quiet)}
-    .prof-kv b{font-weight:500;text-align:right;min-width:0;overflow-wrap:anywhere}
+    .prof-row b{color:var(--s2);font-size:15px;font-weight:400;font-variant-numeric:tabular-nums;text-align:right}
+    .prof-empty{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:16px}
+    .prof-empty p{margin:0;color:var(--s2);font-size:13px;line-height:18px}
+    @media(max-width:520px){
+      .prof-stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .prof-stats div:nth-child(4){padding-left:0;border-left:0}
+      .prof-row{grid-template-columns:18px minmax(0,1fr) 64px 32px}
+      .prof-empty{grid-template-columns:minmax(0,1fr)}
+      .prof-h .sys-seg button{min-width:0}
+    }
     @media(prefers-reduced-motion:reduce){
-      .sys-win,.cc,.umenu,.sys-menu,.sheet,.sheet-card,.voice,.voice-orb,.handoff,.sw-card{animation:none;transition:none}
-      .cc,.umenu,.sys-menu,.sheet-card,.handoff{transform:none}
+      .cc,.umenu,.sheet,.sheet-card,.voice,.voice-orb,.handoff,.sw-card{animation:none;transition:none}
+      .cc,.umenu,.sheet-card,.handoff{transform:none}
     }
   </style>
 </head>
@@ -1175,7 +1244,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     let uid=0;
     const M=(kind,item,source,data={},modifier="")=>({id:"m"+(++uid),kind,item,source,data,modifier});
 
-    const IC={chevL:'<path d="M10 3 5 8l5 5"/>',chevR:'<path d="m6 3 5 5-5 5"/>',chevD:'<path d="m4.5 6.5 3.5 3.5 3.5-3.5"/>',speaker:'<path d="M3.2 6.2h2.2L9 3.6v8.8L5.4 9.8H3.2z"/><path d="M11 6.4a2.6 2.6 0 0 1 0 3.2"/>',car:'<path d="M3 10.2 4.2 7h7.6L13 10.2"/><path d="M2.6 10.2h10.8v2.2H2.6z"/><circle cx="5" cy="12.4" r=".7" fill="currentColor"/><circle cx="11" cy="12.4" r=".7" fill="currentColor"/>',laptop:'<rect x="2.5" y="3.2" width="11" height="7.2" rx="1.2"/><path d="M1.8 12.2h12.4"/>',wifi:'<path d="M3 7.2a7 7 0 0 1 10 0"/><path d="M5.2 9.3a4 4 0 0 1 5.6 0"/><circle cx="8" cy="11.5" r=".8" fill="currentColor"/>',vol:'<path d="M3.2 6.4h2L8.2 4v8L5.2 9.6h-2z"/><path d="M10.2 6.6a2.4 2.4 0 0 1 0 2.8"/>',bulb:'<path d="M8 2.2a3.4 3.4 0 0 1 2 6.1V10.4H6V8.3A3.4 3.4 0 0 1 8 2.2z"/><path d="M6.4 12h3.2M7 13.4h2"/>',moon:'<path d="M10.2 2.6A5 5 0 1 0 13.2 10 3.8 3.8 0 0 1 10.2 2.6z"/>',lock:'<rect x="3.5" y="7" width="9" height="6.5" rx="1.4"/><path d="M5.5 7V5.2a2.5 2.5 0 0 1 5 0V7"/>',user:'<circle cx="8" cy="5.2" r="2.2"/><path d="M3.6 13.2c.6-2.2 2.3-3.3 4.4-3.3s3.8 1.1 4.4 3.3"/>',devices:'<rect x="2" y="3" width="8" height="6" rx="1.2"/><rect x="6" y="7" width="8" height="6" rx="1.2"/>',gear:'<path fill="currentColor" stroke="none" fill-rule="evenodd" d="M7.05 1.35h1.9l.25 1.35c.4.15.75.35 1.1.6l1.25-.55 1.35 1.35-.55 1.25c.25.35.45.7.6 1.1l1.35.25v1.9l-1.35.25c-.15.4-.35.75-.6 1.1l.55 1.25-1.35 1.35-1.25-.55c-.35.25-.7.45-1.1.6l-.25 1.35h-1.9l-.25-1.35a4.2 4.2 0 0 1-1.1-.6l-1.25.55-1.35-1.35.55-1.25a4.2 4.2 0 0 1-.6-1.1l-1.35-.25v-1.9l1.35-.25c.15-.4.35-.75.6-1.1l-.55-1.25 1.35-1.35 1.25.55c.35-.25.7-.45 1.1-.6l.25-1.35zM8 6.15a1.85 1.85 0 1 0 0 3.7 1.85 1.85 0 0 0 0-3.7z"/>',monitor:'<rect x="2" y="2.6" width="12" height="8" rx="1.4"/><path d="M6 13.4h4M8 10.6v2.8"/>',shield:'<path d="M8 1.7 13.2 3.6v4c0 2.8-1.9 4.6-5.2 6-3.3-1.4-5.2-3.2-5.2-6V3.6z"/>',ext:'<path d="M6.2 3.2H3.2v9.6h9.6V9.8"/><path d="M8.2 3.2h4.6V7.8"/><path d="M12.5 3.5 7.2 8.8"/>',mail:'<rect x="2" y="3.5" width="12" height="9" rx="1.5"/><path d="M2.5 4.5 8 9l5.5-4.5"/>',chat:'<path d="M3 3.5h10v7H7l-3 2.5v-2.5H3z"/>',cal:'<rect x="2.5" y="3.5" width="11" height="10" rx="1.5"/><path d="M2.5 6.5h11M5.5 2v3M10.5 2v3"/>',pin:'<path d="M8 14s4.5-4.2 4.5-7.5a4.5 4.5 0 0 0-9 0C3.5 9.8 8 14 8 14z"/><circle cx="8" cy="6.5" r="1.6"/>',music:'<path d="M6 12V4l7-1.5v8"/><circle cx="4.5" cy="12" r="1.5"/><circle cx="11.5" cy="10.5" r="1.5"/>',home:'<path d="M2.5 7.5 8 3l5.5 4.5V13h-11z"/><path d="M6.5 13V9.5h3V13"/>',search:'<circle cx="7" cy="7" r="4"/><path d="m10 10 3.5 3.5"/>',bell:'<path d="M4 11V7a4 4 0 0 1 8 0v4l1 1.5H3z"/><path d="M6.5 14h3"/>',doc:'<path d="M4 2.5h5.5L12 5v8.5H4z"/><path d="M6 8h4M6 10.5h4"/>',chart:'<path d="M3 13.5h10M4.5 11V8M8 11V5M11.5 11V7"/>',plane:'<path d="M2 9.5 14 4l-3.5 9-2.5-3.5z"/>',check:'<rect x="2.5" y="2.5" width="11" height="11" rx="2"/><path d="m5.5 8 2 2 3.5-4"/>',sun:'<circle cx="8" cy="8" r="3"/><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1 1M11.6 11.6l1 1M3.4 12.6l1-1M11.6 4.4l1-1"/>',spark:'<path d="M8 2.5v3M8 10.5v3M2.5 8h3M10.5 8h3M4.2 4.2l1.6 1.6M10.2 10.2l1.6 1.6M4.2 11.8l1.6-1.6M10.2 5.8l1.6-1.6"/>',bag:'<path d="M3.5 5.5h9l-.8 8h-7.4z"/><path d="M6 5.5V4.5a2 2 0 0 1 4 0v1"/>',mic:'<rect x="6" y="2" width="4" height="7.5" rx="2"/><path d="M3.8 7.5a4.2 4.2 0 0 0 8.4 0M8 11.7V14"/>',alarm:'<circle cx="8" cy="8.5" r="5"/><path d="M8 6v2.8l1.8 1.2M2.5 3.5l2-1.5M13.5 3.5l-2-1.5"/>',plus:'<path d="M8 3v10M3 8h10"/>',minus:'<path d="M3 8h10"/>',x:'<path d="m4.5 4.5 7 7M11.5 4.5l-7 7"/>',locate:'<circle cx="8" cy="8" r="4.2"/><circle cx="8" cy="8" r="1.3" fill="currentColor"/><path d="M8 1.8v2M8 12.2v2M1.8 8h2M12.2 8h2"/>',play:'<path d="M5.5 3.5v9l7-4.5z" fill="currentColor"/>',pause:'<path d="M5.5 3.8v8.4M10.5 3.8v8.4" stroke-width="2.2"/>',prev:'<path d="M4 4v8" stroke-width="1.8"/><path d="M12.5 4v8L6 8z" fill="currentColor"/>',next:'<path d="M12 4v8" stroke-width="1.8"/><path d="M3.5 4v8L10 8z" fill="currentColor"/>',heart:'<path d="M8 13S2.5 9.8 2.5 6a2.8 2.8 0 0 1 5.5-1.2A2.8 2.8 0 0 1 13.5 6C13.5 9.8 8 13 8 13z"/>',up:'<path d="m4 10 4-4 4 4"/>',arrowUp:'<path d="M8 13V3.5M3.8 7.6 8 3.4l4.2 4.2"/>',tick:'<path d="m4 8.3 2.6 2.6L12 5.5"/>',sparkle:'<path d="M8 1.5c.55 3.4 2.1 4.95 5.5 5.5-3.4.55-4.95 2.1-5.5 5.5C7.45 9.1 5.9 7.55 2.5 7 5.9 6.45 7.45 4.9 8 1.5z" fill="currentColor" stroke="none"/>'};
+    const IC={sliders:'<path d="M2.5 5h6.5M12.5 5h1M2.5 11h1M7 11h6.5"/><circle cx="10.75" cy="5" r="1.75"/><circle cx="5.25" cy="11" r="1.75"/>',chevL:'<path d="M10 3 5 8l5 5"/>',chevR:'<path d="m6 3 5 5-5 5"/>',chevD:'<path d="m4.5 6.5 3.5 3.5 3.5-3.5"/>',speaker:'<path d="M3.2 6.2h2.2L9 3.6v8.8L5.4 9.8H3.2z"/><path d="M11 6.4a2.6 2.6 0 0 1 0 3.2"/>',car:'<path d="M3 10.2 4.2 7h7.6L13 10.2"/><path d="M2.6 10.2h10.8v2.2H2.6z"/><circle cx="5" cy="12.4" r=".7" fill="currentColor"/><circle cx="11" cy="12.4" r=".7" fill="currentColor"/>',laptop:'<rect x="2.5" y="3.2" width="11" height="7.2" rx="1.2"/><path d="M1.8 12.2h12.4"/>',wifi:'<path d="M3 7.2a7 7 0 0 1 10 0"/><path d="M5.2 9.3a4 4 0 0 1 5.6 0"/><circle cx="8" cy="11.5" r=".8" fill="currentColor"/>',vol:'<path d="M3.2 6.4h2L8.2 4v8L5.2 9.6h-2z"/><path d="M10.2 6.6a2.4 2.4 0 0 1 0 2.8"/>',bulb:'<path d="M8 2.2a3.4 3.4 0 0 1 2 6.1V10.4H6V8.3A3.4 3.4 0 0 1 8 2.2z"/><path d="M6.4 12h3.2M7 13.4h2"/>',moon:'<path d="M10.2 2.6A5 5 0 1 0 13.2 10 3.8 3.8 0 0 1 10.2 2.6z"/>',lock:'<rect x="3.5" y="7" width="9" height="6.5" rx="1.4"/><path d="M5.5 7V5.2a2.5 2.5 0 0 1 5 0V7"/>',user:'<circle cx="8" cy="5.2" r="2.2"/><path d="M3.6 13.2c.6-2.2 2.3-3.3 4.4-3.3s3.8 1.1 4.4 3.3"/>',devices:'<rect x="2" y="3" width="8" height="6" rx="1.2"/><rect x="6" y="7" width="8" height="6" rx="1.2"/>',gear:'<path fill="currentColor" stroke="none" fill-rule="evenodd" d="M7.05 1.35h1.9l.25 1.35c.4.15.75.35 1.1.6l1.25-.55 1.35 1.35-.55 1.25c.25.35.45.7.6 1.1l1.35.25v1.9l-1.35.25c-.15.4-.35.75-.6 1.1l.55 1.25-1.35 1.35-1.25-.55c-.35.25-.7.45-1.1.6l-.25 1.35h-1.9l-.25-1.35a4.2 4.2 0 0 1-1.1-.6l-1.25.55-1.35-1.35.55-1.25a4.2 4.2 0 0 1-.6-1.1l-1.35-.25v-1.9l1.35-.25c.15-.4.35-.75.6-1.1l-.55-1.25 1.35-1.35 1.25.55c.35-.25.7-.45 1.1-.6l.25-1.35zM8 6.15a1.85 1.85 0 1 0 0 3.7 1.85 1.85 0 0 0 0-3.7z"/>',monitor:'<rect x="2" y="2.6" width="12" height="8" rx="1.4"/><path d="M6 13.4h4M8 10.6v2.8"/>',shield:'<path d="M8 1.7 13.2 3.6v4c0 2.8-1.9 4.6-5.2 6-3.3-1.4-5.2-3.2-5.2-6V3.6z"/>',ext:'<path d="M6.2 3.2H3.2v9.6h9.6V9.8"/><path d="M8.2 3.2h4.6V7.8"/><path d="M12.5 3.5 7.2 8.8"/>',mail:'<rect x="2" y="3.5" width="12" height="9" rx="1.5"/><path d="M2.5 4.5 8 9l5.5-4.5"/>',chat:'<path d="M3 3.5h10v7H7l-3 2.5v-2.5H3z"/>',cal:'<rect x="2.5" y="3.5" width="11" height="10" rx="1.5"/><path d="M2.5 6.5h11M5.5 2v3M10.5 2v3"/>',pin:'<path d="M8 14s4.5-4.2 4.5-7.5a4.5 4.5 0 0 0-9 0C3.5 9.8 8 14 8 14z"/><circle cx="8" cy="6.5" r="1.6"/>',music:'<path d="M6 12V4l7-1.5v8"/><circle cx="4.5" cy="12" r="1.5"/><circle cx="11.5" cy="10.5" r="1.5"/>',home:'<path d="M2.5 7.5 8 3l5.5 4.5V13h-11z"/><path d="M6.5 13V9.5h3V13"/>',search:'<circle cx="7" cy="7" r="4"/><path d="m10 10 3.5 3.5"/>',bell:'<path d="M4 11V7a4 4 0 0 1 8 0v4l1 1.5H3z"/><path d="M6.5 14h3"/>',doc:'<path d="M4 2.5h5.5L12 5v8.5H4z"/><path d="M6 8h4M6 10.5h4"/>',chart:'<path d="M3 13.5h10M4.5 11V8M8 11V5M11.5 11V7"/>',plane:'<path d="M2 9.5 14 4l-3.5 9-2.5-3.5z"/>',check:'<rect x="2.5" y="2.5" width="11" height="11" rx="2"/><path d="m5.5 8 2 2 3.5-4"/>',sun:'<circle cx="8" cy="8" r="3"/><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1 1M11.6 11.6l1 1M3.4 12.6l1-1M11.6 4.4l1-1"/>',spark:'<path d="M8 2.5v3M8 10.5v3M2.5 8h3M10.5 8h3M4.2 4.2l1.6 1.6M10.2 10.2l1.6 1.6M4.2 11.8l1.6-1.6M10.2 5.8l1.6-1.6"/>',bag:'<path d="M3.5 5.5h9l-.8 8h-7.4z"/><path d="M6 5.5V4.5a2 2 0 0 1 4 0v1"/>',mic:'<rect x="6" y="2" width="4" height="7.5" rx="2"/><path d="M3.8 7.5a4.2 4.2 0 0 0 8.4 0M8 11.7V14"/>',alarm:'<circle cx="8" cy="8.5" r="5"/><path d="M8 6v2.8l1.8 1.2M2.5 3.5l2-1.5M13.5 3.5l-2-1.5"/>',plus:'<path d="M8 3v10M3 8h10"/>',minus:'<path d="M3 8h10"/>',x:'<path d="m4.5 4.5 7 7M11.5 4.5l-7 7"/>',locate:'<circle cx="8" cy="8" r="4.2"/><circle cx="8" cy="8" r="1.3" fill="currentColor"/><path d="M8 1.8v2M8 12.2v2M1.8 8h2M12.2 8h2"/>',play:'<path d="M5.5 3.5v9l7-4.5z" fill="currentColor"/>',pause:'<path d="M5.5 3.8v8.4M10.5 3.8v8.4" stroke-width="2.2"/>',prev:'<path d="M4 4v8" stroke-width="1.8"/><path d="M12.5 4v8L6 8z" fill="currentColor"/>',next:'<path d="M12 4v8" stroke-width="1.8"/><path d="M3.5 4v8L10 8z" fill="currentColor"/>',heart:'<path d="M8 13S2.5 9.8 2.5 6a2.8 2.8 0 0 1 5.5-1.2A2.8 2.8 0 0 1 13.5 6C13.5 9.8 8 13 8 13z"/>',up:'<path d="m4 10 4-4 4 4"/>',arrowUp:'<path d="M8 13V3.5M3.8 7.6 8 3.4l4.2 4.2"/>',tick:'<path d="m4 8.3 2.6 2.6L12 5.5"/>',sparkle:'<path d="M8 1.5c.55 3.4 2.1 4.95 5.5 5.5-3.4.55-4.95 2.1-5.5 5.5C7.45 9.1 5.9 7.55 2.5 7 5.9 6.45 7.45 4.9 8 1.5z" fill="currentColor" stroke="none"/>'};
     const ic=n=>`<svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">${IC[n]||IC.spark}</svg>`;
     const KIND_IC={list:"mail",message:"mail",compose:"mail",chat:"chat",invite:"cal",calendar:"cal",options:"plane",listings:"home",map:"pin",player:"music",alarm:"alarm",weather:"sun",checklist:"check",doc:"doc",chart:"chart",results:"search",product:"bag",remind:"bell",plan:"check",receipt:"check"};
     const IC_HUE={mail:212,cal:4,chat:142,plane:200,home:22,pin:160,sun:38,music:330,heart:350,alarm:228,doc:218,chart:128,bag:280,check:252,search:196,bell:16,spark:226};
@@ -1752,7 +1821,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     const collabName=id=>id==="intent"?T("You","Вы"):(S?.collabs.find(c=>c.id===id)?.name||(SERVICE[id]?T(...SERVICE[id]):cap(id)));
     const heading=m=>`${m.item} · ${collabName(m.source)}`;
     /* top bar: people only, each with a name tooltip on hover */
-    function renderCollabStack(){$("#collabStack").innerHTML=S.collabs.filter(c=>c.kind==="person"&&!c.off).map(c=>`<span class="cs" data-name="${esc(c.name)}">${avatar(c.name,c.kind)}</span>`).join("");renderDevices()}
+    function renderCollabStack(){$("#collabStack").innerHTML=S.collabs.filter(c=>c.kind==="person"&&!c.off).map(c=>`<button type="button" class="cs" data-name="${esc(c.name)}" aria-label="${esc(T(`${c.name} · permissions`,`${c.name} · разрешения`))}">${avatar(c.name,c.kind)}</button>`).join("");renderDevices()}
 
     function textOf(m){
       const d=m.data;
@@ -3219,10 +3288,21 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     $("#wxBtn").onclick=e=>{e.stopPropagation();setWx(!wxWrap.classList.contains("open"))};
     document.addEventListener("click",e=>{if(!e.target.closest("#cc,#wxBtn"))setWx(false)});
     addEventListener("keydown",e=>{
+      if(e.key==="Tab"&&winOpen()){
+        const el=winEl(WINS.at(-1));if(!el)return;
+        const f=[...el.querySelectorAll("button,input")].filter(n=>!n.closest(".leaving")&&!(n.closest(".sys-menu")&&!n.closest(".sys-ctl.open"))&&n.offsetParent!==null);if(!f.length)return;
+        const a=f[0],z=f.at(-1),cur=document.activeElement;
+        if(!el.contains(cur)||cur===el){e.preventDefault();(e.shiftKey?z:a).focus()}
+        else if(e.shiftKey&&cur===a){e.preventDefault();z.focus()}
+        else if(!e.shiftKey&&cur===z){e.preventDefault();a.focus()}
+        return;
+      }
       if(e.key!=="Escape")return;
       if(layerEsc()){e.preventDefault();e.stopImmediatePropagation();return}
       if(!winOpen())return;
-      const open=document.querySelector("#sys .sys-ctl.open");e.preventDefault();e.stopImmediatePropagation();if(open){open.classList.remove("open");return}closeTopWin()
+      e.preventDefault();e.stopImmediatePropagation();
+      const open=document.querySelector("#sys .sys-ctl.open");if(open){open.classList.remove("open");open.querySelector(".sys-drop")?.focus();return}
+      if(!closeSub())closeTopWin();
     },true);
     loadWeather();setInterval(loadWeather,15*60e3);
 
@@ -3267,11 +3347,6 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     function clonePerm(p){return {...p}}
     function permOf(space,who,act){const k=who+"."+act;return (space?.perm&&space.perm[k])||GLOBAL_PERM[k]||"ask"}
     function setPerm(scope,key,val){if(scope==="space"){if(!S)return;if(!S.perm)S.perm=clonePerm(GLOBAL_PERM);S.perm[key]=val}else GLOBAL_PERM[key]=val}
-    function permPhrase(who,act){
-      const name={weather:T("Weather","Погода"),calendar:T("Calendar","Календарь"),maya:T("Maya","Майя")}[who];
-      const verb={shift:T("shift the days","сдвинуть дни"),move:T("move a meeting","перенести встречу"),send:T("send a message","отправить сообщение"),add:T("add a module","добавить модуль")}[act];
-      return T(`When ${name} wants to ${verb}`,`Когда ${name} хочет ${verb}`);
-    }
     function whoId(name){const n=String(name||"").toLowerCase();if(/maya|майя/.test(n))return"maya";if(/weather|погод/.test(n))return"weather";if(/calendar|календар/.test(n))return"calendar";return null}
     function autoKind(bp){const from=bp?.auto?.from;if(from==="weather")return{who:"weather",act:"shift"};if(from==="calendar")return{who:"calendar",act:"move"};if(from==="maya")return{who:"maya",act:"add"};return null}
     function denyText(spec){
@@ -3350,149 +3425,197 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       {id:"tr",native:"Türkçe",en:"Turkish",ru:"Турецкий",off:1},
       {id:"zh",native:"中文",en:"Chinese",ru:"Китайский",off:1}
     ];
-    let WINS=[],winSeq=0;
+    let WINS=[],winSeq=0,winFrom=null;
     function winOpen(){return WINS.length>0}
-    function settingsSections(){return[["general",T("General","Общие"),"gear"],["permissions",T("Permissions","Разрешения"),"shield"],["computer",T("Computer","Компьютер"),"monitor"],["devices",T("Devices","Устройства"),"devices"]]}
+    function settingsSections(){return[["general",T("General","Общие"),"sliders"],["permissions",T("Permissions","Разрешения"),"shield"],["computer",T("Computer","Компьютер"),"monitor"],["devices",T("Devices","Устройства"),"devices"]]}
+    function closingId(kind){const el=document.querySelector(`#sys .sys-win.out[data-kind="${kind}"]`);return el?+el.dataset.win:++winSeq}
+    function raiseWin(w){const i=WINS.indexOf(w);if(i>=0&&i<WINS.length-1)WINS.push(WINS.splice(i,1)[0])}
     function openSettings(opts={}){
       closePalette();setMenu(false);setWx(false);
       if(!returnFocus)returnFocus=$("#meBtn");
       let w=WINS.find(x=>x.kind==="settings");
-      if(!w){w={kind:"settings",id:++winSeq};WINS.push(w)}
-      else{const i=WINS.indexOf(w);WINS.push(WINS.splice(i,1)[0])}
-      w.section=opts.section||"general";w.scope=(opts.scope==="space"&&S)?"space":"global";w.focus=opts.focus||null;w.row=opts.row||null;
+      if(!w){w={kind:"settings",id:closingId("settings")};WINS.push(w)}else raiseWin(w);
+      w.section=opts.section||"general";w.sub=opts.sub||null;w.q="";w.scope=(opts.scope==="space"&&S)?"space":"global";w.focus=opts.focus||null;w.row=opts.row||null;
       renderWindows();
-      requestAnimationFrame(()=>{
-        const row=w.row&&document.querySelector(`[data-perm-row="${CSS.escape(w.row)}"]`);
-        (row||$("#sys .sys-group.focus"))?.scrollIntoView({block:"nearest"});
-        if(w.row&&w.section==="computer")document.querySelector(`[data-toggle="pol-${w.row}"]`)?.closest(".sys-row")?.classList.add("pin");
-      });
+      if(w.focus||w.row)requestAnimationFrame(()=>winBody(w)?.querySelector(".sys-row.pin,.sys-group.focus")?.scrollIntoView({block:"nearest"}));
     }
     function openLang(){
-      if(!WINS.some(w=>w.kind==="lang"))WINS.push({kind:"lang",id:++winSeq,q:""});
-      else{const i=WINS.findIndex(w=>w.kind==="lang");WINS.push(WINS.splice(i,1)[0])}
-      renderWindows();setTimeout(()=>$("#sysSearch")?.focus(),40);
+      const w=WINS.find(x=>x.kind==="settings");if(!w)return openSettings({section:"general",sub:"lang"});
+      w.sub="lang";w.q="";renderWindows();
+      if(matchMedia("(hover:hover)").matches)setTimeout(()=>winBody(w)?.querySelector(".sys-search")?.focus({preventScroll:true}),140);
     }
+    function closeSub(){const w=WINS.at(-1);if(w?.kind!=="settings"||!w.sub)return false;w.sub=null;w.q="";renderWindows();return true}
     function closeTopWin(){if(WINS.length)WINS.pop();renderWindows()}
     function closeWin(id){const i=WINS.findIndex(w=>w.id===id);if(i>=0)WINS.splice(i,1);renderWindows()}
     function pickLang(id){
       const row=LANG_LIST.find(l=>l.id===id);
       if(!row||row.off){showToast(T("This prototype is in Russian and English.","В прототипе есть русский и английский."));return}
-      const i=WINS.findIndex(w=>w.kind==="lang");if(i>=0)WINS.splice(i,1);
+      const w=WINS.find(x=>x.kind==="settings");if(w){w.sub=null;w.q=""}
       if(id===LANG)renderWindows();else setLang(id);
     }
-    function segHTML(name,value,opts){return `<div class="sys-seg" data-seg="${name}">${opts.map(([v,l])=>`<button type="button" data-v="${v}" class="${value===v?"on":""}">${esc(l)}</button>`).join("")}</div>`}
-    function menuHTML(seg,value,opts){return `<div class="sys-menu" data-seg="${seg}">${opts.map(([v,l])=>`<button type="button" data-v="${v}" class="${value===v?"on":""}">${esc(l)}</button>`).join("")}</div>`}
-    function dropRow(label,seg,value,opts){const cur=opts.find(([v])=>v===value);return `<div class="sys-row"><b>${esc(label)}</b><div class="sys-ctl"><button type="button" class="sys-drop" data-drop="${seg}">${esc(cur?cur[1]:value)}${ic("chevD")}</button>${menuHTML(seg,value,opts)}</div></div>`}
-    function permBody(scope,focus,rowKey){
-      const src=scope==="space"&&S?.perm?S.perm:GLOBAL_PERM;
-      const note=scope==="space"&&S?T(`This space · ${S.title}. Overrides the defaults for new spaces.`,`Это пространство · ${S.title}. Перекрывает значения для новых пространств.`):T("Defaults for new spaces. Spaces already open keep their own.","Для новых пространств. Уже открытые сохраняют свои.");
+    function segHTML(name,value,opts){const i=Math.max(0,opts.findIndex(([v])=>v===value));return `<div class="sys-seg" data-seg="${name}" role="radiogroup" style="--n:${opts.length};--i:${i}"><i class="sys-thumb"></i>${opts.map(([v,l])=>`<button type="button" role="radio" aria-checked="${value===v}" data-v="${v}" class="${value===v?"on":""}">${esc(l)}</button>`).join("")}</div>`}
+    function menuHTML(seg,value,opts){return `<div class="sys-menu" data-seg="${seg}" role="menu">${opts.map(([v,l])=>`<button type="button" role="menuitemradio" aria-checked="${value===v}" data-v="${v}" class="${value===v?"on":""}"><span>${esc(l)}</span>${ic("tick")}</button>`).join("")}</div>`}
+    function dropHTML(seg,value,opts){const cur=opts.find(([v])=>v===value);return `<div class="sys-ctl"><button type="button" class="sys-drop" data-drop="${seg}" aria-haspopup="menu">${esc(cur?cur[1]:value)}${ic("chevD")}</button>${menuHTML(seg,value,opts)}</div>`}
+    const rowHTML=(label,ctl,cls="")=>`<div class="sys-row${cls}"><div class="sys-label">${label}</div>${ctl}</div>`;
+    function permAct(act){return {shift:T("Shift days","Сдвинуть дни"),move:T("Move a meeting","Перенести встречу"),send:T("Send a message","Отправить сообщение"),add:T("Add a module","Добавить модуль")}[act]}
+    function permBody(w){
+      const space=w.scope==="space"&&S,src=space&&S.perm?S.perm:GLOBAL_PERM;
+      const note=space?T(`Only for “${S.title}”.`,`Только для «${S.title}».`):T("Applies to new spaces.","Применяется к новым пространствам.");
+      const opts=[["ask",T("Ask","Спросить")],["allow",T("Allow","Разрешить")],["deny",T("Deny","Запретить")]];
       const groups=[["weather",T("Weather","Погода")],["calendar",T("Calendar","Календарь")],["maya",T("Maya Chen","Майя Чен")]];
-      return `<p class="sys-note">${esc(note)}</p>`+groups.map(([id,label])=>`<section class="sys-card sys-rows sys-group${focus===id?" focus":""}"><h3>${avatar(label,"xs")}${esc(label)}</h3>${PERM_ACTS[id].map(act=>{const v=(src[id+"."+act])||GLOBAL_PERM[id+"."+act]||"ask",key=id+"."+act;return `<div class="sys-row${rowKey===key?" pin":""}" data-perm-row="${key}"><div class="meta"><b>${esc(permPhrase(id,act))}</b></div>${segHTML(key,v,[["ask",T("Ask","Спросить")],["allow",T("Allow","Разрешить")],["deny",T("Deny","Отклонить")]])}</div>`}).join("")}</section>`).join("");
+      return `<p class="sys-note">${esc(note)}</p>`+groups.map(([id,label])=>`<div class="sys-sec">${avatar(label,"xs")}<span>${esc(label)}</span></div><div class="sys-group${w.focus===id?" focus":""}" data-perm-group="${id}">${PERM_ACTS[id].map(act=>{const key=id+"."+act,v=src[key]||GLOBAL_PERM[key]||"ask";return `<div class="sys-row stack${w.row===key?" pin":""}" data-perm-row="${key}"><div class="sys-label">${esc(permAct(act))}</div>${segHTML(key,v,opts)}</div>`}).join("")}</div>`).join("");
     }
     function generalBody(){
-      const night=document.body.classList.contains("night"),cur=LANG==="ru"?"Русский":"English",a=ACCENTS.find(x=>x.id===accentId)||ACCENTS[0];
-      const accentMenu=`<div class="sys-menu">${ACCENTS.map(x=>`<button type="button" data-accent="${x.id}" class="${x.id===accentId?"on":""}"><i class="sys-dot" style="background:${night?x.night:x.day}"></i>${esc(LANG==="ru"?x.ru:x.en)}</button>`).join("")}</div>`;
-      const who=USER==="guest"?{n:T("Guest","Гость"),s:T("Shared spaces only","Только общие пространства")}:{n:"Andrew",s:T("Personal","Личный аккаунт")};
+      const night=document.body.classList.contains("night"),cur=LANG==="ru"?"Русский":"English";
+      const who=USER==="guest"?{n:T("Guest","Гость"),s:T("Shared spaces only","Только общие пространства")}:{n:"Andrew",s:T("Personal account","Личный аккаунт")};
+      const name=x=>LANG==="ru"?x.ru:x.en;
+      const dots=`<div class="sys-dots" role="radiogroup" aria-label="${esc(T("Accent","Акцент"))}">${ACCENTS.map(x=>`<button type="button" class="sys-dot${x.id===accentId?" on":""}" data-accent="${x.id}" role="radio" aria-checked="${x.id===accentId}" aria-label="${esc(name(x))}" title="${esc(name(x))}" style="--d:${x.day};--n:${x.night}"><i></i></button>`).join("")}</div>`;
       return `<div class="sys-sec">${esc(T("Account","Аккаунт"))}</div>
-        <div class="sys-card sys-account"><span class="sys-ava">${mePhoto()}</span><div><b>${esc(who.n)}</b><span>${esc(who.s)}</span></div></div>
+        <div class="sys-group"><button type="button" class="sys-row account" data-open-profile><span class="sys-label ico"><span class="sys-ava">${mePhoto()}</span><span>${esc(who.n)}<small>${esc(who.s)}</small></span></span><span class="sys-value">${ic("chevR")}</span></button></div>
         <div class="sys-sec">${esc(T("Appearance","Оформление"))}</div>
-        <div class="sys-card sys-rows">
-          ${dropRow(T("Theme","Тема"),"theme",night?"night":"day",[["day",T("Day","День")],["night",T("Night","Ночь")]])}
-          <div class="sys-row"><b>${esc(T("Accent","Акцент"))}</b><div class="sys-ctl"><button type="button" class="sys-drop" data-drop="accent"><i class="sys-dot" style="background:${night?a.night:a.day}"></i>${esc(LANG==="ru"?a.ru:a.en)}${ic("chevD")}</button>${accentMenu}</div></div>
-          <div class="sys-row"><b>${esc(T("Language","Язык"))}</b><button type="button" class="sys-drop" data-lang-open>${esc(cur)}${ic("chevD")}</button></div>
+        <div class="sys-group">
+          ${rowHTML(esc(T("Theme","Тема")),segHTML("theme",night?"night":"day",[["day",T("Day","День")],["night",T("Night","Ночь")]]))}
+          ${rowHTML(esc(T("Accent","Акцент")),dots)}
+          <button type="button" class="sys-row" data-lang-open><span class="sys-label">${esc(T("Language","Язык"))}</span><span class="sys-value">${esc(cur)}${ic("chevR")}</span></button>
         </div>`;
     }
-    function computerBody(){
-      const tog=(k,label)=>`<div class="sys-row"><b>${esc(label)}</b><button type="button" class="sys-switch${SYS.policy[k]==="ask"?" on":""}" data-toggle="pol-${k}" role="switch" aria-pressed="${SYS.policy[k]==="ask"}"><i></i></button></div>`;
+    function computerBody(w){
+      const tog=(k,label)=>{const on=SYS.policy[k]==="ask";return `<div class="sys-row${w.row===k?" pin":""}"><div class="sys-label">${esc(label)}</div><button type="button" class="sys-switch${on?" on":""}" data-toggle="pol-${k}" role="switch" aria-checked="${on}" aria-label="${esc(label)}"><i></i></button></div>`};
       return `<div class="sys-sec">${esc(T("Device","Устройство"))}</div>
-        <div class="sys-card sys-rows">
-          <div class="sys-row"><b>${esc(T("Name","Имя"))}</b><input class="sys-field" id="sysDevice" value="${esc(deviceName())}" spellcheck="false" autocomplete="off" aria-label="${esc(T("Device name","Имя устройства"))}"></div>
-          ${dropRow(T("Where actions run","Где выполняются действия"),"where",SYS.where,[["here",T("On this computer","На этом компьютере")],["service",T("Via a service","Через сервис")]])}
+        <div class="sys-group">
+          ${rowHTML(esc(T("Name","Имя")),`<input class="sys-field" id="sysDevice" value="${esc(deviceName())}" spellcheck="false" autocomplete="off" aria-label="${esc(T("Device name","Имя устройства"))}">`)}
+          ${rowHTML(esc(T("Run actions","Выполнять действия")),dropHTML("where",SYS.where,[["here",T("On this computer","На этом компьютере")],["service",T("Via a service","Через сервис")]]))}
         </div>
         <div class="sys-sec">${esc(T("Confirmation","Подтверждение"))}</div>
-        <div class="sys-card sys-rows">
-          ${tog("send",T("Always ask before sending","Всегда спрашивать перед отправкой"))}
-          ${tog("book",T("Always ask before booking","Всегда спрашивать перед бронью"))}
-          ${tog("pay",T("Always ask before paying","Всегда спрашивать перед оплатой"))}
-        </div>
+        <div class="sys-group">${tog("send",T("Ask before sending","Спрашивать перед отправкой"))}${tog("book",T("Ask before booking","Спрашивать перед бронью"))}${tog("pay",T("Ask before paying","Спрашивать перед оплатой"))}</div>
         <div class="sys-sec">${esc(T("Space","Пространство"))}</div>
-        <div class="sys-card sys-rows"><div class="sys-row"><div class="meta"><b>${esc(T("Reset space","Сбросить пространство"))}</b><span>${esc(T("Restore the last moment written to the Timeline.","Вернуть последнюю запись хронологии."))}</span></div><button type="button" class="sys-textbtn" data-reset>${esc(T("Reset","Сбросить"))}</button></div></div>`;
+        <div class="sys-group">${rowHTML(`${esc(T("Reset space","Сбросить пространство"))}<small>${esc(T("Back to the last Timeline moment.","Вернуть последнюю запись хронологии."))}</small>`,`<button type="button" class="sys-btn" data-reset>${esc(T("Reset","Сбросить"))}</button>`)}</div>`;
     }
-    function langItems(q){
-      const s=(q||"").trim().toLowerCase();
-      const list=LANG_LIST.filter(l=>!s||l.native.toLowerCase().includes(s)||l.en.toLowerCase().includes(s)||l.ru.toLowerCase().includes(s));
-      if(!list.length)return `<div class="sys-empty">${esc(T("No languages match.","Нет такого языка."))}</div>`;
-      return list.map(l=>`<button type="button" class="sys-lang${l.id===LANG?" on":""}" data-pick-lang="${l.id}"><span>${esc(l.native)}</span><small>${l.off?esc(T("Not in this prototype","Нет в прототипе")):l.id===LANG?esc(T("Current","Сейчас")):""}</small></button>`).join("");
+    function langBody(w){
+      const s=(w.q||"").trim().toLowerCase(),hit=l=>!s||[l.native,l.en,l.ru].some(t=>t.toLowerCase().includes(s));
+      const row=l=>`<button type="button" class="sys-row" data-pick-lang="${l.id}"${l.id===LANG?` aria-current="true"`:""}><span class="sys-label">${esc(l.native)}</span>${l.id===LANG?`<span class="sys-value on">${ic("tick")}</span>`:`<span class="sys-value">${esc(LANG==="ru"?l.ru:l.en)}</span>`}</button>`;
+      const a=LANG_LIST.filter(l=>!l.off&&hit(l)),b=LANG_LIST.filter(l=>l.off&&hit(l));
+      const search=`<input class="sys-search" id="sysSearch" placeholder="${esc(T("Search","Поиск"))}" value="${esc(w.q||"")}" autocomplete="off" spellcheck="false" aria-label="${esc(T("Search languages","Найти язык"))}">`;
+      if(!a.length&&!b.length)return search+`<p class="sys-empty">${esc(T("No languages match.","Нет такого языка."))}</p>`;
+      return search+(a.length?`<div class="sys-sec">${esc(T("In this prototype","В прототипе"))}</div><div class="sys-group">${a.map(row).join("")}</div>`:"")+(b.length?`<div class="sys-sec">${esc(T("Later","Позже"))}</div><div class="sys-group">${b.map(row).join("")}</div>`:"");
     }
-    function winHTML(w,front){
-      const pane=w.kind==="profile"?"profile":w.kind==="lang"?"lang":(w.section||"general");
-      const head=title=>`<div class="sys-head"><h2>${esc(title)}</h2><button type="button" class="sys-x" data-sys-close="${w.id}" aria-label="${esc(T("Close","Закрыть"))}">${ic("x")}</button></div>`;
-      if(w.kind==="profile"){
-        const title=T("Profile","Профиль");
-        return `<section class="sys-win profile${front?"":" back"}" data-win="${w.id}" data-pane="${pane}" role="dialog" aria-label="${esc(title)}" style="z-index:${front?3:1}"><div class="sys-main">${head(title)}<div class="sys-body">${profileBody(w)}</div></div></section>`;
+    function paneKey(w){return w.kind==="profile"?"profile":(w.section||"general")+(w.sub?"/"+w.sub:"")}
+    function sideHTML(w){const s=settingsSections(),k=Math.max(0,s.findIndex(x=>x[0]===w.section));return `<i class="sys-pill" style="--k:${k}"></i>`+s.map(([id,label,icon])=>`<button type="button" class="sys-nav${w.section===id?" on":""}" data-sec="${id}"${w.section===id?` aria-current="page"`:""}>${ic(icon)}<span>${esc(label)}</span></button>`).join("")}
+    function headHTML(w,title,back){return (back?`<button type="button" class="sys-x sys-back" data-sys-back aria-label="${esc(T("Back","Назад"))}">${ic("chevL")}</button>`:"")+`<h2>${esc(title)}</h2><button type="button" class="sys-x" data-sys-close="${w.id}" aria-label="${esc(T("Close","Закрыть"))}">${ic("x")}</button>`}
+    function winParts(w){
+      if(w.kind==="profile"){const t=T("Profile","Профиль");return {title:t,head:headHTML(w,t),body:profileBody(w)}}
+      const lang=w.sub==="lang";
+      const title=lang?T("Language","Язык"):({general:T("General","Общие"),permissions:T("Permissions","Разрешения"),computer:T("This computer","Этот компьютер"),devices:T("Devices","Устройства")}[w.section]||T("Settings","Настройки"));
+      const body=lang?langBody(w):w.section==="permissions"?permBody(w):w.section==="computer"?computerBody(w):w.section==="devices"?devicesBody():generalBody();
+      return {title,side:sideHTML(w),head:headHTML(w,title,lang),body};
+    }
+    // Patch in place instead of replacing, so thumbs and switches transition and focus, caret and scroll survive.
+    function morphKids(a,b){
+      const ac=[...a.childNodes],bc=[...b.childNodes];
+      bc.forEach((n,i)=>{
+        const o=ac[i];
+        if(!o)a.appendChild(n);
+        else if(o.nodeType!==n.nodeType||o.nodeName!==n.nodeName)o.replaceWith(n);
+        else if(o.nodeType===3){if(o.data!==n.data)o.data=n.data}
+        else if(o.nodeType===1){
+          for(const at of [...o.attributes])if(!n.hasAttribute(at.name))o.removeAttribute(at.name);
+          for(const at of [...n.attributes])if(o.getAttribute(at.name)!==at.value)o.setAttribute(at.name,at.value);
+          morphKids(o,n);
+        }
+      });
+      for(let i=bc.length;i<ac.length;i++)ac[i].remove();
+    }
+    function morphHTML(el,html){const t=document.createElement("template");t.innerHTML=html;morphKids(el,t.content)}
+    function winEl(w){return document.querySelector(`#sys .sys-win[data-win="${w.id}"]:not(.out)`)}
+    function winBody(w){return winEl(w)?.querySelector(".sys-body:not(.leaving)")}
+    function buildWin(w){
+      const p=winParts(w),el=document.createElement("section");
+      el.className="sys-win"+(p.side==null?" solo":"");
+      el.dataset.win=w.id;el.dataset.kind=w.kind;el.dataset.pane=paneKey(w);
+      el.setAttribute("role","dialog");el.setAttribute("aria-modal","true");el.setAttribute("aria-label",p.title);el.tabIndex=-1;
+      el.innerHTML=(p.side!=null?`<nav class="sys-side">${p.side}</nav>`:"")+`<header class="sys-head">${p.head}</header><div class="sys-body">${p.body}</div>`;
+      return el;
+    }
+    function setOrigin(el){
+      const src=winFrom||returnFocus;winFrom=null;
+      const r=src&&document.contains(src)?src.getBoundingClientRect():null;
+      if(!r||!r.width){el.style.transformOrigin="";return}
+      const W=el.offsetWidth,H=el.offsetHeight,x=r.left+r.width/2-(innerWidth-W)/2,y=r.top+r.height/2-(innerHeight-H)/2;
+      el.style.transformOrigin=`${Math.round(clamp(x,-W*.25,W*1.25))}px ${Math.round(clamp(y,-H*.25,H*1.25))}px`;
+    }
+    function crossfade(el,p){
+      const head=el.querySelector(".sys-head:not(.leaving)"),body=el.querySelector(".sys-body:not(.leaving)");
+      const had=head.contains(document.activeElement)||body.contains(document.activeElement);
+      for(const n of [head,body]){n.classList.remove("entering");n.classList.add("leaving");n.inert=true;setTimeout(()=>n.remove(),130)}
+      const nh=document.createElement("header"),nb=document.createElement("div");
+      nh.className="sys-head entering";nh.innerHTML=p.head;nb.className="sys-body entering";nb.innerHTML=p.body;
+      el.append(nh,nb);
+      setTimeout(()=>{nh.classList.remove("entering");nb.classList.remove("entering")},130);
+      if(had)(nh.querySelector("[data-sys-back]")||el.querySelector(".sys-nav.on")||el).focus({preventScroll:true});
+    }
+    function patchWin(el,w){
+      const p=winParts(w),pane=paneKey(w);
+      el.setAttribute("aria-label",p.title);
+      const side=el.querySelector(".sys-side");
+      if(side&&p.side!=null){
+        morphHTML(side,p.side);
+        const on=side.querySelector(".sys-nav.on");
+        if(on&&side.scrollWidth>side.clientWidth&&(on.offsetLeft<side.scrollLeft||on.offsetLeft+on.offsetWidth>side.scrollLeft+side.clientWidth))side.scrollTo({left:on.offsetLeft-16,behavior:reduce.matches?"auto":"smooth"});
       }
-      const small=w.kind==="lang";
-      const title=small?T("Language","Язык"):{general:T("General","Общие"),permissions:T("Permissions","Разрешения"),computer:T("This computer","Этот компьютер"),devices:T("Devices","Устройства")}[w.section]||T("Settings","Настройки");
-      const side=small?"":`<aside class="sys-side">${settingsSections().map(([id,label,icon])=>`<button type="button" class="sys-nav${w.section===id?" on":""}" data-sec="${id}">${ic(icon)}${esc(label)}</button>`).join("")}</aside>`;
-      const body=small?`<input class="sys-search" id="sysSearch" placeholder="${esc(T("Search languages","Найти язык"))}" value="${esc(w.q||"")}" autocomplete="off" spellcheck="false"><div id="sysLangs">${langItems(w.q||"")}</div>`:w.section==="permissions"?permBody(w.scope,w.focus,w.row):w.section==="computer"?computerBody():w.section==="devices"?devicesBody():generalBody();
-      return `<section class="sys-win${small?" small":""}${front?"":" back"}" data-win="${w.id}" data-pane="${pane}" role="dialog" aria-label="${esc(title)}" style="z-index:${front?3:1}">${side}<div class="sys-main">${head(title)}<div class="sys-body">${body}</div></div></section>`;
+      if(el.dataset.pane!==pane){el.dataset.pane=pane;crossfade(el,p);return}
+      morphHTML(el.querySelector(".sys-head:not(.leaving)"),p.head);
+      morphHTML(el.querySelector(".sys-body:not(.leaving)"),p.body);
     }
+    function closeEl(el){el.classList.remove("in");el.classList.add("out");el.inert=true;clearTimeout(el._gone);el._gone=setTimeout(()=>el.remove(),220)}
     function renderWindows(){
       const root=$("#sys");if(!root)return;
-      const ae=document.activeElement,keep=ae&&root.contains(ae)&&ae.id?{id:ae.id,a:ae.selectionStart,b:ae.selectionEnd}:null;
-      if(!WINS.length){root.classList.remove("on");root.innerHTML="";giveBack();return}
-      root.classList.add("on");
-      const prev=new Map();
-      root.querySelectorAll(".sys-win").forEach(el=>{
-        const body=el.querySelector(".sys-body");
-        prev.set(el.dataset.win,{pane:el.dataset.pane,scroll:body?body.scrollTop:0});
-      });
-      if(!root.querySelector("[data-sys-veil]"))root.insertAdjacentHTML("afterbegin",`<div class="sys-veil" data-sys-veil></div>`);
-      root.querySelectorAll(".sys-win").forEach(n=>n.remove());
+      if(!root.querySelector("[data-sys-veil]")){root.insertAdjacentHTML("afterbegin",`<div class="sys-veil" data-sys-veil></div>`);void root.offsetWidth}
+      root.classList.toggle("on",WINS.length>0);
+      root.querySelectorAll(".sys-win:not(.out)").forEach(el=>{if(!WINS.some(w=>w.id===+el.dataset.win))closeEl(el)});
       WINS.forEach((w,i)=>{
-        const hold=document.createElement("div");
-        hold.innerHTML=winHTML(w,i===WINS.length-1);
-        const el=hold.firstElementChild;
-        const was=prev.get(String(w.id));
-        if(was){
-          el.classList.add("settled");
-          const body=el.querySelector(".sys-body");
-          if(body&&was.pane===el.dataset.pane)body.scrollTop=was.scroll;
-        }
-        root.appendChild(el);
+        const front=i===WINS.length-1;
+        let el=root.querySelector(`.sys-win[data-win="${w.id}"]`);
+        if(el&&el.classList.contains("out")){clearTimeout(el._gone);el.classList.remove("out");patchWin(el,w);el.classList.add("in")}
+        else if(el)patchWin(el,w);
+        else{el=buildWin(w);root.appendChild(el);setOrigin(el);void el.offsetWidth;el.classList.add("in")}
+        el.style.zIndex=front?3:1;el.inert=!front;el.classList.toggle("back",!front);
       });
-      if(keep){const el=document.getElementById(keep.id);if(el){el.focus();try{el.setSelectionRange(keep.a,keep.b)}catch{}}}
+      if(!WINS.length){winFrom=null;giveBack();return}
+      const top=winEl(WINS.at(-1));if(top&&!top.contains(document.activeElement))top.focus({preventScroll:true});
     }
     function onSysClick(e){
-      if(e.target.closest("[data-sys-veil]"))return closeTopWin();
-      const winEl=e.target.closest(".sys-win");
-      if(winEl&&+winEl.dataset.win!==WINS.at(-1)?.id&&!e.target.closest("button,input")){const i=WINS.findIndex(w=>w.id===+winEl.dataset.win);if(i>=0){WINS.push(WINS.splice(i,1)[0]);renderWindows()}return}
-      const x=e.target.closest("[data-sys-close]");if(x)return closeWin(+x.dataset.sysClose);
-      const sec=e.target.closest("[data-sec]");if(sec){const w=WINS.find(k=>k.kind==="settings");if(w){w.section=sec.dataset.sec;renderWindows()}return}
-      if(e.target.closest("[data-lang-open]"))return openLang();
-      const accent=e.target.closest("[data-accent]");if(accent){accentId=accent.dataset.accent;applyAccent();renderWindows();return}
-      const pick=e.target.closest("[data-pick-lang]");if(pick)return pickLang(pick.dataset.pickLang);
-      if(e.target.closest("[data-reset]"))return resetSpace();
-      const sw=e.target.closest("[data-toggle]");
+      const t=e.target;
+      if(t.closest("[data-sys-veil]"))return closeTopWin();
+      const x=t.closest("[data-sys-close]");if(x)return closeWin(+x.dataset.sysClose);
+      if(t.closest("[data-sys-back]"))return closeSub();
+      const w=WINS.find(k=>k.kind==="settings");
+      const sec=t.closest("[data-sec]");if(sec){if(w){w.section=sec.dataset.sec;w.sub=null;w.q="";w.focus=w.row=null;renderWindows()}return}
+      if(t.closest("[data-lang-open]"))return openLang();
+      const prof=t.closest("[data-open-profile]");if(prof)return openProfile(prof);
+      const accent=t.closest("[data-accent]");if(accent){accentId=accent.dataset.accent;applyAccent();renderWindows();return}
+      const pick=t.closest("[data-pick-lang]");if(pick)return pickLang(pick.dataset.pickLang);
+      if(t.closest("[data-reset]"))return resetSpace();
+      const dev=t.closest("[data-dev]");
+      if(dev){const d=DEVICES.find(k=>k.id===dev.dataset.dev);if(d)showToast(d.id==="here"?T("You are on this computer","Вы на этом компьютере"):T(`Drag a module onto ${devName(d)} to continue there`,`Перетащите модуль на «${devName(d)}», чтобы продолжить там`));return}
+      const sw=t.closest("[data-toggle]");
       if(sw){const k=sw.dataset.toggle.slice(4);SYS.policy[k]=SYS.policy[k]==="ask"?"allow":"ask";renderWindows();return}
-      const drop=e.target.closest("[data-drop]");
-      if(drop){const ctl=drop.closest(".sys-ctl"),will=ctl&&!ctl.classList.contains("open");$$("#sys .sys-ctl.open").forEach(n=>n.classList.remove("open"));if(will)ctl.classList.add("open");return}
-      if(!e.target.closest(".sys-ctl"))$$("#sys .sys-ctl.open").forEach(n=>n.classList.remove("open"));
-      const pspace=e.target.closest("[data-pspace]");
-      if(pspace){const w=WINS.find(k=>k.kind==="profile");if(w){w.space=pspace.dataset.pspace;renderWindows()}return}
-      if(e.target.closest("[data-prof-devices]")){openSettings({section:"devices"});return}
-      if(e.target.closest("[data-prof-go]")){closeTopWin();const id=USER==="guest"?"calendar":"inbox";if(BP[id])openSpace(BP[id]());return}
-      const btn=e.target.closest(".sys-menu button[data-v], .sys-seg button");if(!btn)return;
-      const key=btn.closest("[data-seg]").dataset.seg,val=btn.dataset.v,w=WINS.find(k=>k.kind==="settings");
+      const drop=t.closest("[data-drop]");
+      if(drop){const ctl=drop.closest(".sys-ctl"),will=ctl&&!ctl.classList.contains("open");$$("#sys .sys-ctl.open").forEach(n=>n.classList.remove("open"));if(will)ctl.classList.add("open");drop.setAttribute("aria-expanded",String(!!will));return}
+      if(!t.closest(".sys-ctl"))$$("#sys .sys-ctl.open").forEach(n=>n.classList.remove("open"));
+      const pspace=t.closest("[data-pspace]");
+      if(pspace){const pw=WINS.find(k=>k.kind==="profile");if(pw){pw.space=pspace.dataset.pspace;renderWindows()}return}
+      if(t.closest("[data-prof-devices]")){winFrom=t.closest("[data-prof-devices]");openSettings({section:"devices"});return}
+      if(t.closest("[data-prof-go]")){closeTopWin();const id=USER==="guest"?"calendar":"inbox";if(BP[id])openSpace(BP[id]());return}
+      const btn=t.closest(".sys-menu button[data-v], .sys-seg button");if(!btn)return;
+      const key=btn.closest("[data-seg]").dataset.seg,val=btn.dataset.v;
       if(key==="heat"){const pw=WINS.find(k=>k.kind==="profile");if(pw){pw.heat=val;renderWindows()}return}
       if(key==="theme")return setNight(val==="night");
       if(key==="where"){SYS.where=val;renderWindows();showToast(whereLabel());return}
-      if(key.startsWith("pol-")){SYS.policy[key.slice(4)]=val;renderWindows();return}
       setPerm(w?.scope||"global",key,val);renderWindows();
     }
     function onSysInput(e){
       if(e.target.id==="sysDevice"){deviceCustom=e.target.value;return}
-      if(e.target.id==="sysSearch"){const w=WINS.find(x=>x.kind==="lang");if(!w)return;w.q=e.target.value;const list=$("#sysLangs");if(list)list.innerHTML=langItems(w.q)}
+      if(e.target.id==="sysSearch"){const w=WINS.find(x=>x.kind==="settings");if(!w)return;w.q=e.target.value;renderWindows()}
     }
     $("#sys").addEventListener("click",onSysClick);
     $("#sys").addEventListener("input",onSysInput);
@@ -3809,10 +3932,10 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     }
     function devicesBody(){
       const sug=suggestDev();
-      return `<p class="sys-note">${esc(T("Drag a module onto a device. A device can only offer the handoff.","Перетащите модуль на устройство. Устройство только предлагает передачу."))}</p>`+DEVICES.map(d=>{
-        const state=HANDOFF?.dev===d.id?T("Continued here","Сейчас здесь"):sug===d.id?T("Offering","Предлагает"):T("Ready","Готово");
-        return `<div class="sys-card sys-rows" style="margin-top:8px"><div class="sys-row"><b>${ic(d.icon)} ${esc(devName(d))}</b><span style="color:var(--quiet);font-size:12px">${esc(state)}</span></div></div>`;
-      }).join("");
+      return `<p class="sys-note">${esc(T("Drag a module onto a device to continue there.","Перетащите модуль на устройство, чтобы продолжить там."))}</p><div class="sys-group">${DEVICES.map(d=>{
+        const live=HANDOFF?HANDOFF.dev===d.id:d.id==="here",state=live?T("Active","Активно"):sug===d.id?T("Suggested","Рекомендуется"):T("Ready","Готово");
+        return `<button type="button" class="sys-row" data-dev="${d.id}"><span class="sys-label ico">${ic(d.icon)}<span>${esc(devName(d))}</span></span><span class="sys-value${live?" live":""}">${esc(state)}</span></button>`;
+      }).join("")}</div>`;
     }
     function openKeys(){
       const rows=[["O",T("Overview, then all spaces","Обзор, затем все пространства")],[MOD+" Tab",T("All spaces","Все пространства")],["?",T("Shortcuts","Сочетания")],["Esc",T("Close the top layer","Закрыть верхний слой")],[T("Drag a module","Перетащите модуль"),T("Hand off to a device","Передать на устройство")],[T("Long-press a tile","Долгое нажатие плитки"),T("Expand the control","Раскрыть пункт")]];
@@ -3973,9 +4096,9 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       return totals;
     }
     function profTime(min){
-      const h=Math.floor(min/60),m=min%60;
-      if(h<=0)return T(`${m} min`,`${m} мин`);
-      return m?T(`${h}h ${String(m).padStart(2,"0")}m`,`${h} ч ${String(m).padStart(2,"0")} мин`):T(`${h}h`,`${h} ч`);
+      if(min<60)return T(`${min} min`,`${min} мин`);
+      const h=Math.round(min/6)/10,n=h%1?h.toFixed(1):String(h);
+      return T(`${n} h`,`${n.replace(".",",")} ч`);
     }
     function profInk(hex,value,max){
       if(!value||!max)return "";
@@ -3991,9 +4114,10 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       const shown=mode==="cumulative"?cumul:filtered;
       const max=Math.max(1,...(mode==="weekly"?weeks.map(w=>w.reduce((a,d)=>a+((filter&&filter!=="all"?(profBag(d)[filter]||0):Object.values(profBag(d)).reduce((x,n)=>x+n,0))),0)):shown));
       const loc=LANG==="ru"?"ru-RU":"en-GB";
+      let lastLabel=-9;
       const months=weeks.map((w,i)=>{
         const first=w[0],prev=i?weeks[i-1][0]:null;
-        if(!prev||first.getMonth()!==prev.getMonth())return `<span>${esc(first.toLocaleDateString(loc,{month:"short"}).replace(".",""))}</span>`;
+        if((!prev||first.getMonth()!==prev.getMonth())&&i-lastLabel>=4&&i<weeks.length-2){lastLabel=i;return `<span>${esc(first.toLocaleDateString(loc,{month:"short"}).replace(".",""))}</span>`}
         return "<span></span>";
       }).join("");
       const colorOf=d=>{
@@ -4064,33 +4188,34 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       const pct=sum&&best?Math.round(best.n/sum*100):0;
       const kind=Object.entries(PROF.kinds).sort((a,b)=>b[1]-a[1])[0];
       const kindLabel=kind?T(...PROF_KINDS[kind[0]]):T("Nothing yet","Пока ничего");
-      const seg=(id,label)=>`<button type="button" data-v="${id}" class="${heat===id?"on":""}">${esc(label)}</button>`;
-      const spaces=`<button type="button" data-pspace="all" class="${filter==="all"?"on":""}">${esc(T("All spaces","Все пространства"))}</button>`+profSpaces().map(s=>`<button type="button" data-pspace="${s.id}" class="${filter===s.id?"on":""}"><i class="prof-swatch" style="background:${s.ink}"></i>${esc(profName(s))}</button>`).join("");
-      const legend=[0.2,0.4,0.65,0.85,1].map(t=>`<i style="background:${profInk("#3f74f0",t,1)}"></i>`).join("");
+      const spaces=`<button type="button" data-pspace="all" class="${filter==="all"?"on":""}">${esc(T("All","Все"))}</button>`+profSpaces().map(s=>`<button type="button" data-pspace="${s.id}" class="${filter===s.id?"on":""}"><i class="prof-swatch" style="background:${s.ink}"></i>${esc(profName(s))}</button>`).join("");
       const top=profTop();
       const maxTop=top.length?top[0].n:1;
-      const topHTML=top.length?top.map(r=>`<div class="prof-row">${r.dev?ic(r.icon):avatar(r.who,"xs")}<em>${esc(r.name)}</em><div class="prof-bar"><i style="width:${Math.max(8,Math.round(r.n/maxTop*100))}%"></i></div><b>${r.n}</b></div>`).join(""):`<div class="prof-empty"><p>${esc(T("No services or devices yet. They show up from the spaces you open.","Пока нет сервисов и устройств. Они появятся из пространств, которые вы откроете."))}</p><button type="button" class="sys-textbtn" data-prof-go>${esc(T("Open a space","Открыть пространство"))}</button></div>`;
+      const topHTML=top.length?top.map(r=>`<div class="prof-row">${r.dev?ic(r.icon):avatar(r.who,"xs")}<em>${esc(r.name)}</em><div class="prof-bar"><i style="width:${Math.max(8,Math.round(r.n/maxTop*100))}%"></i></div><b>${r.n}</b></div>`).join(""):`<div class="prof-empty"><p>${esc(T("Services and devices show up from the spaces you open.","Сервисы и устройства появятся из пространств, которые вы откроете."))}</p><button type="button" class="sys-btn" data-prof-go>${esc(T("Open a space","Открыть пространство"))}</button></div>`;
       const kvs=[
         [T("Most used space","Самое частое пространство"),best?`${profName(best.s)} · ${pct}%`:T("None yet","Пока нет")],
-        [T("Most delegated intent","Чаще всего поручается"),kindLabel],
-        [T("Automations that ran without asking","Сработали без вопроса"),String(autos)],
+        [T("Most delegated","Чаще всего поручается"),kindLabel],
+        [T("Ran without asking","Сработали без вопроса"),String(autos)],
         [T("Handoffs this week","Передачи за неделю"),String(hands)]
       ];
-      return `<div class="prof-id"><span class="prof-ava">${mePhoto()}</span><div><b>${esc(who.n)}</b><em>${esc(who.h)}</em><small>${esc(who.s)}</small></div></div>
+      return `<div class="prof-id"><span class="prof-ava">${mePhoto()}</span><div><b>${esc(who.n)}</b><span>${esc(who.h)} · ${esc(who.s)}</span></div></div>
         <div class="prof-stats">${stats.map(([id,n,l])=>`<div data-stat="${id}"><b>${esc(n)}</b><span>${esc(l)}</span></div>`).join("")}</div>
-        <div class="prof-card"><div class="prof-card-h"><div><b>${esc(T("Activity","Активность"))}</b><span class="sub">${esc(T("Intents by day, colored by space","Намерения по дням, цветом пространства"))}</span></div><div class="sys-seg" data-seg="heat">${seg("daily",T("Daily","Дни"))}${seg("weekly",T("Weekly","Недели"))}${seg("cumulative",T("Cumulative","Накопление"))}</div></div>
-        ${profHeat(heat,filter)}
-        <div class="hm-legend"><span>${esc(T("Less","Меньше"))}</span>${legend}<span>${esc(T("More","Больше"))}</span></div>
-        <div class="prof-spaces">${spaces}</div></div>
-        <div class="prof-card"><div class="prof-card-h"><div><b>${esc(T("Top services & devices","Сервисы и устройства"))}</b><span class="sub">${esc(T("From the services and devices in this demo","Из сервисов и устройств этого демо"))}</span></div><button type="button" class="sys-textbtn" data-prof-devices>${esc(T("Devices","Устройства"))}</button></div>${topHTML}</div>
-        <div class="prof-card">${kvs.map(([k,v])=>`<div class="prof-kv"><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join("")}</div>`;
+        <div class="prof-h"><div class="sys-sec">${esc(T("Activity","Активность"))}</div>${segHTML("heat",heat,[["daily",T("Daily","Дни")],["weekly",T("Weekly","Недели")],["cumulative",T("Total","Всего")]])}</div>
+        <div class="sys-group prof-pad">${profHeat(heat,filter)}
+          <div class="prof-spaces">${spaces}</div></div>
+        <div class="prof-h"><div class="sys-sec">${esc(T("Services & devices","Сервисы и устройства"))}</div><button type="button" class="sys-drop" data-prof-devices>${esc(T("Devices","Устройства"))}${ic("chevR")}</button></div>
+        <div class="sys-group prof-pad">${topHTML}</div>
+        <div class="sys-sec">${esc(T("Highlights","Итоги"))}</div>
+        <div class="sys-group">${kvs.map(([k,v])=>`<div class="sys-row prof-kv"><div class="sys-label">${esc(k)}</div><div class="sys-value">${esc(v)}</div></div>`).join("")}</div>`;
     }
-    function openProfile(){
-      closePalette();setMenu(false);setWx(false);returnFocus=$("#meBtn");
+    function openProfile(from){
+      closePalette();setMenu(false);setWx(false);
+      if(!returnFocus)returnFocus=$("#meBtn");
+      winFrom=from&&from.nodeType?from:null;
       let w=WINS.find(x=>x.kind==="profile");
-      if(!w){w={kind:"profile",id:++winSeq,heat:"daily",space:"all"};WINS.push(w)}
-      else{const i=WINS.indexOf(w);WINS.push(WINS.splice(i,1)[0])}
+      if(!w){w={kind:"profile",id:closingId("profile"),heat:"daily",space:"all"};WINS.push(w)}else raiseWin(w);
       renderWindows();
+      const hm=winBody(w)?.querySelector(".hm-scroll");if(hm)hm.scrollLeft=hm.scrollWidth;
     }
     $("#profileBtn")?.addEventListener("click",()=>openProfile());
 
