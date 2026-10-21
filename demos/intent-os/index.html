@@ -1157,11 +1157,6 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .ff-tablet .home-parse{bottom:104px}
     .ff-tablet .space,.ff-tablet .timeline{bottom:88px}
     .ff-touch .plus{display:none}
-    .ff-tablet .module:not(.active){opacity:.6}
-    .ff-tablet .flow:not(.current){opacity:.72}
-    .flow:not(.current) .flow-label{cursor:pointer}
-    .ff-tablet .module.active~.module{transform-origin:0 50%}
-    .ff-tablet .module:has(~.module.active){transform-origin:100% 50%}
     .navdots.pager{left:50%;right:auto;flex-direction:row;gap:0;transform:translateX(-50%)}
     .navdots.pager button{box-sizing:content-box;width:6px;height:6px;padding:9px 4px;background-clip:content-box;transition:width .4s var(--spring),background-color .3s}
     .navdots.pager button.on{width:20px;height:6px}
@@ -1200,67 +1195,310 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .ff-phone .switcher{padding:64px 16px 24px}
     @media(prefers-reduced-motion:reduce){.ff-phone .sys-win,.ff-phone .sys-win.in,.ff-phone .sys-win.out{transform:none!important}.ff-phone .sheet-card{transform:none}}
 
-    /* car: one dark, high-contrast surface; a primary card on the left, three big actions on the right */
-    .car{display:none}
-    .ff-car .os{visibility:hidden;pointer-events:none}
-    .ff-car .os .toasts{visibility:visible;top:16px;right:20px}
-    .ff-car .handoff{top:8px;gap:12px;padding:6px 6px 6px 20px;background:#1f1f22;border-color:rgba(255,255,255,.08);color:#fff;font-size:17px;font-weight:600}
-    .ff-car .handoff button{height:44px;padding:0 20px;background:#fff;color:#000;font-size:17px;font-weight:600}
-    body.mod-drag,body.mod-drag *{user-select:none;cursor:grabbing!important}
-    .ff-car .car{position:absolute;inset:0;z-index:60;display:grid;grid-template-columns:minmax(0,1fr) 320px;grid-template-rows:40px minmax(0,1fr);gap:12px 16px;padding:12px 20px 20px;background:#000;color:#fff}
-    .car-top{grid-column:1/-1;display:flex;align-items:center;gap:16px;padding:0 8px;font-size:17px;line-height:24px;color:rgba(255,255,255,.72)}
-    .car-time{color:#fff;font-size:22px;font-weight:600;font-variant-numeric:tabular-nums}
-    .car-top .car-wx{display:flex;align-items:center;gap:6px;font-variant-numeric:tabular-nums}.car-top .car-wx svg{width:22px;height:22px}
-    .car-top .car-sp{margin-left:auto;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
-    .car-main{position:relative;display:flex;flex-direction:column;min-width:0;padding:28px 32px;border-radius:28px;background:#151517;overflow:hidden}
-    .car-kind{display:flex;align-items:center;gap:12px;color:rgba(255,255,255,.72);font-size:17px;line-height:24px}
-    .car-kind .kt{width:36px;height:36px;border-radius:11px}.car-kind .kt .ic{width:20px;height:20px}
-    .car-title{display:block;margin-top:auto;font-size:44px;font-weight:600;line-height:52px;letter-spacing:-.025em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .car-sub{display:block;margin-top:4px;color:rgba(255,255,255,.72);font-size:22px;line-height:28px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .car-prog{height:6px;margin-top:24px;border-radius:3px;background:rgba(255,255,255,.16);overflow:hidden}
-    .car-prog i{display:block;height:100%;border-radius:3px;background:#fff;transition:width .5s linear}
-    .car-dots{position:absolute;top:34px;right:32px;display:flex;gap:6px}
-    .car-dots i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.24)}.car-dots i.on{background:#fff}
-    .car-txt{display:flex;flex-direction:column;flex:1;min-width:0}
-    .car-main.route .car-txt{position:relative;z-index:1;max-width:56%}
-    .car-route{position:absolute;top:0;right:0;bottom:0;width:56%;-webkit-mask-image:linear-gradient(90deg,transparent,#000 35%);mask-image:linear-gradient(90deg,transparent,#000 35%)}
-    .car-route svg{display:block;width:100%;height:100%}
-    .car-acts{display:grid;grid-template-rows:1.3fr 1fr 1fr;gap:12px;min-height:0}
-    .car-btn{display:flex;align-items:center;gap:16px;min-height:0;padding:0 24px;border:0;border-radius:24px;background:#1f1f22;color:#fff;font-size:20px;font-weight:600;line-height:24px;text-align:left;transition:background-color .12s,transform .12s cubic-bezier(.2,.8,.2,1)}
-    .car-btn .ic{width:28px;height:28px;flex:none;stroke-width:1.6}
-    .car-btn:hover{background:#2a2a2e}
-    .car-btn:active{transform:scale(.98);background:#333338}
-    .car-btn:focus-visible{outline:3px solid #fff;outline-offset:2px}
-    .car-btn.car-voice{background:var(--accent);color:#0b1020;font-size:22px}
-    .car-btn.car-voice .ic{width:32px;height:32px}
-    .car-btn.car-voice:hover{filter:brightness(1.08)}
-    .car-btn.car-voice:active{filter:brightness(.94)}
+    /* projections of one state: compact cards (phone stack, tablet list, parked car) and glance cards (car) read the same modules */
+    .plan-strip{display:flex;align-items:center;gap:12px;min-width:0;color:var(--quiet);font-size:13px;line-height:18px}
+    .ps-bar{display:flex;flex:none;gap:4px;width:96px}
+    .ps-bar i{position:relative;flex:1;height:4px;border-radius:2px;background:rgba(47,47,47,.1);overflow:hidden}
+    body.night .ps-bar i{background:rgba(255,255,255,.14)}
+    .ps-bar b{position:absolute;inset:0 auto 0 0;border-radius:2px;background:var(--accent);transition:width .48s cubic-bezier(.2,.8,.2,1)}
+    .plan-strip span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .plan-strip em{font-style:normal;color:var(--ink)}
+    .plan-strip.bump .ps-bar{animation:psBump .6s cubic-bezier(.2,.8,.2,1)}
+    @keyframes psBump{30%{transform:scaleY(2)}}
+    .plan-chip{display:none;margin-left:8px}
+    .os.view-space .plan-chip{display:flex}
+    .ff-touch .plan-chip,.ff-car .plan-chip{display:none!important}
 
-    html.ff-vt:not(.ff-car) .os.view-home .home-time{view-transition-name:ff-time}
-    html.ff-vt:not(.ff-car) .os.view-home .home-date{view-transition-name:ff-date}
-    html.ff-vt:not(.ff-car) .os.view-home .home-line{view-transition-name:ff-line}
-    html.ff-vt:not(.ff-car) .os.view-home .home-apps{view-transition-name:ff-apps}
-    html.ff-vt:not(.ff-car) .os.view-home .sig:nth-child(1){view-transition-name:ff-sig1}
-    html.ff-vt:not(.ff-car) .os.view-home .sig:nth-child(2){view-transition-name:ff-sig2}
-    html.ff-vt:not(.ff-car) .os.view-home .sig:nth-child(3){view-transition-name:ff-sig3}
-    html.ff-vt:not(.ff-car) .os.view-home .sig:nth-child(4){view-transition-name:ff-sig4}
-    html.ff-vt:not(.ff-car) .os.view-space .module.active{view-transition-name:ff-mod}
-    html.ff-vt:not(.ff-car) .os.view-space .space-title{view-transition-name:ff-title}
-    html.ff-vt:not(.ff-car) .os.view-space .hints{view-transition-name:ff-dock}
-    html.ff-vt:not(.ff-car) .wx-btn{view-transition-name:ff-wx}
-    html.ff-vt:not(.ff-car) .me-btn{view-transition-name:ff-me}
-    html.ff-vt.ff-car .car-time{view-transition-name:ff-wx}
-    html.ff-vt.ff-car .car-btn.car-voice{view-transition-name:ff-line}
-    html.ff-vt.ff-car .car.in-space .car-main{view-transition-name:ff-mod}
-    html.ff-vt .ff-screen{view-transition-name:ff-screen}
-    html.ff-vt .ffs{view-transition-name:ff-switch}
+    .cp{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"h h" "v a" "l a" "p p";align-items:center;column-gap:16px;min-width:0;padding:16px;border-radius:20px;background:var(--glass);border:1px solid var(--glass-edge);border-right-width:0;border-bottom-width:0;box-shadow:var(--glass-shadow);color:var(--ink);text-align:left;cursor:pointer;-webkit-backdrop-filter:blur(40px) saturate(1.6);backdrop-filter:blur(40px) saturate(1.6);transition:background-color .16s,transform .16s cubic-bezier(.2,.8,.2,1),box-shadow .2s}
+    .cp:hover{background:rgba(255,255,255,.76)}
+    body.night .cp:hover{background:rgba(64,64,66,.72)}
+    .cp:active{transform:scale(.98)}
+    .cp:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+    .cp.on{box-shadow:inset 0 0 0 2px var(--accent),var(--glass-shadow)}
+    .cp.new{animation:cpNew 1.4s cubic-bezier(.2,.8,.2,1)}
+    @keyframes cpNew{0%{opacity:0;transform:translateY(12px)}20%{opacity:1;transform:none;box-shadow:inset 0 0 0 2px #f2b84b,var(--glass-shadow)}}
+    .cp-h{grid-area:h;display:flex;align-items:center;gap:8px;min-width:0;margin-bottom:8px;color:var(--quiet);font-size:13px;line-height:18px}
+    .cp-h .kt{flex:none;width:20px;height:20px;border-radius:6px}.cp-h .kt .ic{width:12px;height:12px}
+    .cp-h span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .cp-h .ok{display:flex;margin-left:auto;color:var(--accent)}.cp-h .ok .ic{width:16px;height:16px}
+    .cp-v{grid-area:v;min-width:0;font-size:17px;font-weight:500;line-height:24px;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .cp-l{grid-area:l;min-width:0;color:var(--quiet);font-size:13px;line-height:18px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .cp-b{grid-area:a;display:inline-flex;align-items:center;gap:8px;height:44px;max-width:160px;padding:0 16px;border:0;border-radius:999px;background:var(--chip);color:var(--ink);font-size:14px;white-space:nowrap;transition:background-color .16s,transform .12s cubic-bezier(.2,.8,.2,1)}
+    .cp-b span{overflow:hidden;text-overflow:ellipsis}
+    .cp-b .ic{flex:none;width:16px;height:16px}
+    .cp-b:hover{background:rgba(47,47,47,.1)}body.night .cp-b:hover{background:rgba(255,255,255,.12)}
+    .cp-b:active{transform:scale(.96)}
+    .cp-b:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+    .cp-b.primary{background:var(--ink);color:var(--paper)}
+    .cp-b.primary:hover{filter:brightness(1.12)}
+    .cp-b.on{background:var(--accent-soft);color:var(--accent)}
+    .cp-p{grid-area:p;height:3px;margin-top:12px;border-radius:2px;background:rgba(47,47,47,.08);overflow:hidden}
+    body.night .cp-p{background:rgba(255,255,255,.12)}
+    .cp-p i{display:block;height:100%;background:var(--accent);transition:width .48s cubic-bezier(.2,.8,.2,1)}
+
+    /* phone + tablet space view: the module stack is the navigator; the full module opens as a sheet (phone) or in the detail pane (tablet) */
+    .stack{display:none;position:absolute;z-index:3;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}
+    .stack::-webkit-scrollbar{display:none}
+    .ff-phone .os.view-space .stack,.ff-tablet .os.view-space .stack{display:block}
+    .st-head{position:sticky;top:0;z-index:2;display:flex;align-items:center;min-height:48px;margin:0 -16px;padding:0 16px;background:linear-gradient(var(--st-bg,rgba(232,232,232,.92)) 70%,transparent);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+    body.night .st-head{--st-bg:rgba(24,24,26,.9)}
+    .st-head .plan-strip{flex:1}
+    .st-head .ps-bar{width:120px}
+    .st-flow{display:flex;align-items:baseline;gap:8px;margin:24px 4px 8px;font-size:13px;line-height:18px;color:var(--quiet)}
+    .st-flow b{color:var(--ink);font-weight:500}
+    .st-flow:first-of-type{margin-top:8px}
+    .st-list{display:flex;flex-direction:column;gap:8px}
+    .ff-phone .stack{inset:96px 0 0;padding:0 16px 124px}
+    .ff-tablet .stack{top:52px;bottom:88px;left:0;width:40%;padding:0 12px 24px 24px}
+    .ff-tablet .stack .st-head{margin:0 -12px 0 -24px;padding:0 12px 0 24px}
+    .ff-tablet .stack .cp-v{font-size:15px;line-height:20px}
+
+    .ff-tablet .space{left:40%;bottom:88px}
+    .ff-tablet .module:not(.active){opacity:0;pointer-events:none}
+    .ff-tablet .flow:not(.current){opacity:0;pointer-events:none}
+    .ff-tablet .navdots{display:none}
+    .flow:not(.current) .flow-label{cursor:pointer}
+
+    .ph-scrim{position:absolute;inset:0;z-index:39;background:rgba(0,0,0,.24);opacity:0;pointer-events:none;transition:opacity .24s cubic-bezier(.2,.8,.2,1)}
+    .ff-phone.ph-sheet .os.view-space .ph-scrim{opacity:1;pointer-events:auto}
+    .sh-grip{display:none}
+    .ff-phone .space{inset:56px 0 0;z-index:40;opacity:1;visibility:visible;border-radius:28px 28px 0 0;background:var(--sheet-bg,rgba(236,236,236,.96));box-shadow:0 -20px 60px -20px rgba(0,0,0,.3);transform:translateY(102%);pointer-events:none;transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+    body.night .ff-phone .space,.ff-phone body.night .space{--sheet-bg:rgba(30,30,32,.97)}
+    .ff-phone.ph-sheet .os.view-space .space{transform:translateY(var(--sh-dy,0px));pointer-events:auto}
+    .ff-phone.ph-drag .space{transition:none}
+    .ff-phone .sh-grip{position:absolute;z-index:5;top:0;left:0;right:0;display:grid;place-items:center;height:28px;touch-action:none;cursor:grab}
+    .ff-phone .sh-grip i{width:36px;height:5px;border-radius:3px;background:rgba(47,47,47,.24)}
+    body.night .ff-phone .sh-grip i{background:rgba(255,255,255,.28)}
+    .ff-phone .flow:not(.current){visibility:hidden}
+    .ff-phone .navdots{display:none}
+    .ff-phone .space .flow-label{top:-26px}
+
+    .home-spaces{display:none;width:min(704px,90cqw);margin-top:8px}
+    .ff-touch .home-spaces{display:block}
+    .hs-label{margin:16px 4px 8px;font-size:13px;line-height:18px;color:var(--quiet)}
+    .hs-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ff-phone .hs-grid{grid-template-columns:1fr;gap:8px}
+    .ff-phone .home-spaces{width:calc(100% - 32px)}
+    .hs{display:flex;flex-direction:column;gap:8px;min-width:0;padding:16px;border-radius:20px;background:var(--glass);border:1px solid var(--glass-edge);border-right-width:0;border-bottom-width:0;box-shadow:var(--glass-shadow);color:var(--ink);text-align:left;-webkit-backdrop-filter:blur(40px) saturate(1.6);backdrop-filter:blur(40px) saturate(1.6);transition:background-color .16s,transform .16s cubic-bezier(.2,.8,.2,1)}
+    .hs:hover{background:rgba(255,255,255,.76)}body.night .hs:hover{background:rgba(64,64,66,.72)}
+    .hs:active{transform:scale(.98)}
+    .hs:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+    .hs-t{display:flex;align-items:center;gap:8px;min-width:0;font-size:15px;line-height:20px}
+    .hs-t .kt{flex:none;width:24px;height:24px;border-radius:7px}.hs-t .kt .ic{width:14px;height:14px}
+    .hs-t span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .hs-l{color:var(--quiet);font-size:13px;line-height:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+    .sw-mods,.sw-plan{display:none}
+    .sw-card .plan-strip{margin-top:auto}
+    .ff-phone .switcher{padding:64px 0 32px}
+    .ff-phone .sw-bar{padding:0 24px}
+    .ff-phone .sw-grid{display:flex;gap:12px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;padding:8px 24px 24px;scrollbar-width:none;flex:1;align-items:stretch}
+    .ff-phone .sw-grid::-webkit-scrollbar{display:none}
+    .ff-phone .sw-card{flex:none;width:78%;max-height:540px;padding:20px;scroll-snap-align:center;gap:8px}
+    .ff-phone .sw-card b{font-size:17px}
+    .ff-phone .sw-mods{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+    .sw-mods div{display:flex;flex-direction:column;padding:12px;border-radius:14px;background:var(--chip);font-size:13px;line-height:18px}
+    .sw-mods div b{font-size:15px!important;font-weight:500;line-height:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .sw-mods div span{color:var(--quiet);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .ff-phone .home-grab{position:absolute;z-index:90;left:50%;bottom:0;width:180px;height:24px;margin-left:-90px;touch-action:none;cursor:ns-resize}
+
+    .ff-phone .cc{position:absolute;top:0;left:0;right:0;width:auto;max-height:calc(100cqh - 96px);padding-top:48px;border-radius:0 0 28px 28px;border:0;transform:translateY(-102%);opacity:1;transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+    .ff-phone .wx-wrap.open .cc{transform:translateY(var(--cc-dy,0px))}
+    .ff-phone .cc::after{content:"";position:sticky;display:block;bottom:8px;width:36px;height:5px;margin:0 auto 8px;border-radius:3px;background:rgba(47,47,47,.24)}
+    .ff-tablet .sys-win[data-kind="settings"],.ff-tablet .sys-win[data-kind="profile"]{width:640px}
+
+    /* car: deliberately reduced, 16:9. The live map is the hero; beside it the trip, what's playing and ONE card the OS picks.
+       Smoked glass over cool dark with a warm glow; amber is the only accent. Spaces are reached by voice only. */
+    .car{--amber:#f4ad5c;--amber-soft:rgba(244,173,92,.16);--tile:rgba(24,28,36,.58);--edge:rgba(255,255,255,.07);--t2:rgba(255,255,255,.64);--t3:rgba(255,255,255,.44);
+      display:none;position:absolute;inset:0;z-index:60;overflow:hidden;color:#fff;font-size:20px;font-weight:500;line-height:26px;-webkit-user-select:none;user-select:none;
+      background:radial-gradient(70% 80% at 92% 108%,rgba(244,150,70,.34),rgba(244,150,70,0) 62%),radial-gradient(60% 70% at 4% -10%,rgba(86,112,170,.22),rgba(86,112,170,0) 60%),#07090d}
+    .ff-car .car{display:block}
+    .ff-car .os{visibility:hidden;pointer-events:none}
+    html.ff-os-out.ff-car .os{visibility:visible}
+    html.ff-car:not(.ff-os-out) .os *{visibility:hidden!important}
+    .ff-car .handoff{display:none}
+    .car.car-ghost{display:block;position:fixed;left:0;top:0;right:auto;bottom:auto;z-index:150;pointer-events:none;transform-origin:0 0}
+    .car button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
+    .car .ic{stroke-width:1.5}
+    .car-tile{position:relative;border-radius:28px;background:var(--tile);box-shadow:inset 0 1px 0 rgba(255,255,255,.06),inset 0 0 0 1px var(--edge),0 30px 60px -30px rgba(0,0,0,.8);-webkit-backdrop-filter:blur(28px) saturate(1.3);backdrop-filter:blur(28px) saturate(1.3)}
+
+    .car-strip{position:absolute;z-index:3;top:0;left:0;right:0;display:flex;align-items:center;gap:16px;height:48px;padding:0 28px;color:var(--t2);font-size:18px;line-height:24px;white-space:nowrap}
+    .car-time{color:#fff;font-size:22px;font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:.01em}
+    .car-wx{display:flex;align-items:center;gap:6px;color:#fff;font-variant-numeric:tabular-nums}.car-wx svg{width:20px;height:20px}
+    .car-dot{flex:none;width:4px;height:4px;border-radius:2px;background:rgba(255,255,255,.28)}
+    .car-sp{min-width:0;overflow:hidden;text-overflow:ellipsis;color:#fff}
+    .car-plan{flex:none;color:var(--amber)}
+    .car-gap{flex:1}
+    .car-held{display:flex;align-items:center;gap:8px;height:36px;padding:0 14px;border:0;border-radius:18px;background:var(--amber-soft);color:var(--amber);font-size:18px!important;transition:background-color .12s,transform .12s cubic-bezier(.2,.8,.2,1)}
+    .car-held .ic{width:18px;height:18px}
+    .car-held:hover{background:rgba(244,173,92,.24)}.car-held:active{transform:scale(.96)}.car-held:focus-visible{outline:2px solid #fff;outline-offset:2px}
+    .car-held[hidden]{display:none}
+
+    .car-rail{position:absolute;z-index:3;left:16px;top:56px;bottom:16px;display:flex;flex-direction:column;align-items:center;gap:8px;width:80px;padding:8px}
+    .car-rb{position:relative;display:grid;place-items:center;flex:none;width:64px;height:64px;border:0;border-radius:20px;background:none;color:var(--t2);transition:background-color .12s,color .12s,transform .12s cubic-bezier(.2,.8,.2,1)}
+    .car-rb .ic{width:28px;height:28px}
+    .car-rb:hover{background:rgba(255,255,255,.06);color:#fff}
+    .car-rb:active{transform:scale(.94);background:rgba(255,255,255,.1)}
+    .car-rb:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+    .car-rb.on{background:rgba(255,255,255,.1);color:#fff}
+    .car-rb.on::before{content:"";position:absolute;left:-8px;top:20px;bottom:20px;width:3px;border-radius:2px;background:var(--amber)}
+    .car-rb em{position:absolute;top:8px;right:8px;min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--amber);color:#1b1208;font-size:13px;font-style:normal;line-height:20px;text-align:center}
+    .car-rgap{flex:1}
+    .car-orb{position:relative;display:grid;place-items:center;flex:none;width:64px;height:64px;border:0;border-radius:50%;background:radial-gradient(circle at 34% 28%,#fff3e0 0,var(--amber) 48%,#c2562e 100%);color:#2a1406;box-shadow:0 0 0 0 rgba(244,173,92,.5),0 12px 32px -8px rgba(244,140,70,.8);animation:carBreathe 3.2s ease-in-out infinite;transition:transform .12s cubic-bezier(.2,.8,.2,1),filter .12s}
+    .car-orb .ic{width:28px;height:28px;stroke-width:1.8}
+    .car-orb:hover{filter:brightness(1.08)}.car-orb:active{transform:scale(.92)}.car-orb:focus-visible{outline:2px solid #fff;outline-offset:3px}
+    @keyframes carBreathe{50%{scale:1.05;box-shadow:0 0 0 12px rgba(244,173,92,0),0 12px 40px -4px rgba(244,140,70,.95)}}
+
+    .car-hero{position:absolute;z-index:1;left:112px;top:56px;bottom:16px;right:432px;overflow:hidden;border-radius:28px;background:#0a0d12;box-shadow:0 30px 60px -30px rgba(0,0,0,.8)}
+    .car-map{position:absolute;inset:0}
+    .car-map svg{display:block;width:100%;height:100%}
+    .car-puck-halo{transform-box:fill-box;transform-origin:center;animation:carHalo 2.4s ease-out infinite}
+    @keyframes carHalo{0%{opacity:.55;scale:.7}100%{opacity:0;scale:1.7}}
+    .car-hero::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;box-shadow:inset 0 0 0 1px var(--edge);background:linear-gradient(180deg,rgba(7,9,13,.55),rgba(7,9,13,0) 30%,rgba(7,9,13,0) 75%,rgba(7,9,13,.5))}
+    .car-mv{position:absolute;z-index:2;left:16px;top:16px;width:360px;transform-origin:50% 0}
+    .car-mv-in{display:grid;grid-template-columns:64px minmax(0,1fr);column-gap:20px;align-items:center;padding:20px 24px 16px 20px;border-radius:24px;background:rgba(18,21,27,.72);box-shadow:inset 0 1px 0 rgba(255,255,255,.06),inset 0 0 0 1px var(--edge),0 20px 40px -20px rgba(0,0,0,.9);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px)}
+    .car-mv-a{display:grid;place-items:center;width:64px;height:64px;color:#fff}
+    .car-mv-a svg{width:60px;height:60px}
+    .car-mv-d{display:flex;align-items:baseline;gap:6px;font-size:64px;font-weight:300;line-height:64px;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+    .car-mv-d small{font-size:24px;font-weight:300;letter-spacing:0;color:var(--t2)}
+    .car-mv-s{grid-column:1/-1;margin-top:12px;min-width:0;font-size:20px;line-height:26px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .car-mv-s em{font-style:normal;color:var(--amber)}
+    .car-mv-n{grid-column:1/-1;display:flex;align-items:center;gap:8px;min-width:0;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.08);color:var(--t3);font-size:18px;line-height:24px;white-space:nowrap}
+    .car-mv-n svg{flex:none;width:20px;height:20px}
+    .car-mv-n span{min-width:0;overflow:hidden;text-overflow:ellipsis}
+
+    .car-side{position:absolute;z-index:3;top:56px;right:16px;bottom:16px;width:400px;display:flex;flex-direction:column;gap:16px}
+    .car-eta{flex:none;height:148px;padding:18px 24px}
+    .car-eta-h{display:flex;align-items:center;gap:8px;height:24px;color:var(--t2);font-size:18px;line-height:24px;white-space:nowrap}
+    .car-eta-h .ic{flex:none;width:18px;height:18px;color:var(--amber)}
+    .car-eta-h span{min-width:0;overflow:hidden;text-overflow:ellipsis}
+    .car-eta-r{display:grid;grid-template-columns:1fr 1fr;margin-top:8px}
+    .car-n{display:flex;flex-direction:column;min-width:0}
+    .car-n+.car-n{padding-left:24px;border-left:1px solid rgba(255,255,255,.08)}
+    .car-n b{display:flex;align-items:baseline;gap:6px;font-size:52px;font-weight:300;line-height:56px;letter-spacing:-.03em;font-variant-numeric:tabular-nums;white-space:nowrap}
+    .car-n b small{font-size:22px;font-weight:300;letter-spacing:0;color:var(--t2)}
+    .car-n span{color:var(--t3);font-size:16px;line-height:22px}
+    .car-n.up b{color:var(--amber)}
+
+    .car-media{flex:none;display:grid;grid-template-columns:140px minmax(0,1fr);column-gap:20px;align-items:center;height:196px;padding:16px 20px}
+    .car-disc{position:relative;width:140px;height:140px;border-radius:50%;box-shadow:0 16px 40px -12px rgba(0,0,0,.9),0 0 48px -12px var(--disc-glow,rgba(244,120,70,.6));animation:carDisc 14s linear infinite;animation-play-state:paused}
+    .car-disc.on{animation-play-state:running}
+    .car-disc svg{position:absolute;inset:0;width:100%;height:100%}
+    @keyframes carDisc{to{rotate:360deg}}
+    .car-mi{display:flex;flex-direction:column;min-width:0}
+    .car-mi-k{color:var(--amber);font-size:16px;line-height:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .car-mi b{margin-top:2px;font-size:24px;font-weight:500;line-height:28px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .car-mi>span{color:var(--t2);font-size:18px;line-height:22px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .car-pr{height:4px;margin-top:10px;border-radius:2px;background:rgba(255,255,255,.14);overflow:hidden}
+    .car-pr i{display:block;height:100%;border-radius:2px;background:linear-gradient(90deg,#fff,var(--amber));transition:width .5s linear}
+    .car-pt{display:flex;justify-content:space-between;margin-top:4px;color:var(--t3);font-size:16px;line-height:20px;font-variant-numeric:tabular-nums}
+    .car-mc{display:flex;align-items:center;gap:12px;margin:2px 0 0 -12px}
+    .car-mb{display:grid;place-items:center;width:48px;height:48px;border:0;border-radius:50%;background:none;color:#fff;transition:background-color .12s,transform .12s cubic-bezier(.2,.8,.2,1)}
+    .car-mb .ic{width:26px;height:26px}
+    .car-mb:hover{background:rgba(255,255,255,.08)}.car-mb:active{transform:scale(.92)}.car-mb:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+    .car-mb.pp{width:56px;height:56px;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.5)}
+    .car-mb.pp:hover{box-shadow:inset 0 0 0 1.5px #fff}
+
+    .car-col{position:relative;flex:1;min-height:0}
+    .car-card{position:absolute;inset:0;display:flex;flex-direction:column;gap:8px;padding:20px;overflow:hidden}
+    .car-card.out{pointer-events:none}
+    .car-k{display:flex;align-items:center;gap:10px;height:28px;flex:none;color:var(--t2);font-size:18px;line-height:24px;white-space:nowrap}
+    .car-k .kt{flex:none;width:28px;height:28px;border-radius:8px}.car-k .kt .ic{width:16px;height:16px}
+    .car-k span{min-width:0;overflow:hidden;text-overflow:ellipsis}
+    .car-body{flex:1;display:flex;flex-direction:column;justify-content:center;gap:4px;min-height:0}
+    .car-v{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:26px;font-weight:500;line-height:32px;letter-spacing:-.01em}
+    .car-v .ic{display:inline-block;width:24px;height:24px;margin-right:8px;vertical-align:-3px;color:#8fe3b0;stroke-width:2}
+    .car-l{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;color:var(--t2)}
+    .car-cd{display:flex;align-items:baseline;gap:10px}
+    .car-cd b small{margin-left:4px;font-size:22px;font-weight:300;letter-spacing:0}
+    .car-cd b{font-size:48px;font-weight:300;line-height:52px;letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:var(--amber)}
+    .car-cd span{color:var(--t2)}
+    .car-why{display:flex;align-items:center;gap:8px;flex:none;margin:0;color:var(--t3);font-size:16px;line-height:22px;white-space:nowrap}
+    .car-why .ic{flex:none;width:16px;height:16px;color:var(--amber)}
+    .car-why span{min-width:0;overflow:hidden;text-overflow:ellipsis}
+    .car-a{display:flex;flex:none;gap:8px;margin-top:4px}
+    .car-a .car-b{flex:1 1 auto;min-width:0}
+    .car-card.hand{box-shadow:inset 0 1px 0 rgba(255,255,255,.06),inset 0 0 0 1.5px var(--amber),0 30px 60px -30px rgba(0,0,0,.8)}
+    .car-card.hand .car-k,.car-card.alert .car-k{color:var(--amber)}
+    .car-card.alert{box-shadow:inset 0 1px 0 rgba(255,255,255,.06),inset 0 0 0 1.5px rgba(244,173,92,.55),0 30px 60px -30px rgba(0,0,0,.8)}
+
+    .car-b{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-width:64px;height:64px;padding:0 20px;border:0;border-radius:20px;background:rgba(255,255,255,.08);color:#fff;font-size:20px!important;font-weight:500;line-height:24px;white-space:nowrap;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);transition:transform .12s cubic-bezier(.2,.8,.2,1),background-color .12s,filter .12s}
+    .car-b .ic{flex:none;width:24px;height:24px}
+    .car-b span{min-width:0;overflow:hidden;text-overflow:ellipsis}
+    .car-b:hover{background:rgba(255,255,255,.14)}
+    .car-b:active{transform:scale(.96);background:rgba(255,255,255,.18)}
+    .car-b:focus-visible{outline:2px solid #fff;outline-offset:2px}
+    .car-b.primary{background:var(--amber);color:#1f1307;box-shadow:0 10px 30px -12px rgba(244,150,70,.8)}
+    .car-b.primary .ic{stroke-width:1.8}
+    .car-b.primary:hover{filter:brightness(1.06)}
+    .car-b.primary:active{filter:brightness(.92)}
+
+    .car-say{position:absolute;z-index:5;left:16px;right:16px;bottom:16px;display:flex;align-items:center;gap:16px;min-height:72px;padding:8px 8px 8px 20px;border-radius:24px;background:rgba(26,30,38,.92);box-shadow:inset 0 0 0 1px var(--edge),0 24px 48px -16px rgba(0,0,0,.9);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);opacity:0;transform:translateY(8px);transition:opacity .18s cubic-bezier(.4,0,1,1),transform .18s cubic-bezier(.4,0,1,1);pointer-events:none}
+    .car-say.on{opacity:1;transform:none;pointer-events:auto;transition-duration:.32s;transition-timing-function:cubic-bezier(.2,.8,.2,1)}
+    .car-say.urgent{background:rgba(92,32,28,.94)}
+    .car-say>.ic{flex:none;width:28px;height:28px;color:var(--amber)}
+    .car-say.urgent>.ic{color:#ffb4a8}
+    .car-say span{flex:1;min-width:0;padding:10px 0}
+    .car-say .car-b{flex:none}
+    .car-say:not(:has(.car-b)){padding-right:24px}
+
+    .car-voice,.car-ask{position:absolute;inset:0;z-index:8;opacity:0;pointer-events:none;background:radial-gradient(60% 70% at 30% 50%,rgba(244,150,70,.16),rgba(244,150,70,0) 70%),rgba(5,7,10,.78);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);transition:opacity .18s cubic-bezier(.4,0,1,1)}
+    .car-voice.on,.car-ask.on{opacity:1;pointer-events:auto;transition:opacity .28s cubic-bezier(.2,.8,.2,1)}
+    .car-voice{display:grid;grid-template-columns:176px minmax(0,1fr);column-gap:56px;align-items:center;align-content:center;padding:64px 96px 48px 160px}
+    .car-vo{position:relative;grid-row:1/6;width:176px;height:176px;border-radius:50%;background:radial-gradient(circle at 34% 28%,#fff3e0 0,var(--amber) 46%,#b8462a 100%);box-shadow:0 0 80px -8px rgba(244,140,70,.8)}
+    .car-vo::before,.car-vo::after{content:"";position:absolute;inset:-16px;border-radius:50%;border:1.5px solid rgba(244,173,92,.5);opacity:0}
+    .car-voice.listening .car-vo{animation:carVoBreathe 1.2s ease-in-out infinite}
+    .car-voice.listening .car-vo::before{animation:carRip 1.6s ease-out infinite}
+    .car-voice.listening .car-vo::after{animation:carRip 1.6s .8s ease-out infinite}
+    .car-voice.thinking .car-vo{background:conic-gradient(from 0deg,#f4ad5c,#fff3e0,#d0603a,#f4ad5c);animation:carSpin 1s linear infinite}
+    @keyframes carVoBreathe{50%{scale:1.06}}
+    @keyframes carRip{0%{opacity:.8;scale:.92}100%{opacity:0;scale:1.4}}
+    @keyframes carSpin{to{rotate:360deg}}
+    .car-vb{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:7px;transition:opacity .2s}
+    .car-vb i{width:6px;height:14px;border-radius:3px;background:#2a1406;opacity:.75}
+    .car-voice.thinking .car-vb{opacity:0}
+    .car-voice.speaking .car-vb i,.car-voice.listening .car-vb i{animation:carBar .9s ease-in-out infinite}
+    .car-voice.listening .car-vb i{animation-duration:1.4s}
+    .car-vb i:nth-child(2){animation-delay:-.18s}.car-vb i:nth-child(3){animation-delay:-.36s}.car-vb i:nth-child(4){animation-delay:-.54s}.car-vb i:nth-child(5){animation-delay:-.72s}
+    @keyframes carBar{50%{height:52px}}
+    .car-vs{color:var(--amber);font-size:18px;line-height:24px;letter-spacing:.02em}
+    .car-vt{min-height:96px;margin:8px 0 0;font-size:44px;font-weight:300;line-height:48px;letter-spacing:-.02em}
+    .car-vt:empty::before{content:attr(data-ph);color:rgba(255,255,255,.36)}
+    .car-vt.typing::after{content:"";display:inline-block;width:3px;height:38px;margin-left:6px;vertical-align:-5px;border-radius:2px;background:var(--amber);animation:carCaret 1s steps(1) infinite}
+    @keyframes carCaret{50%{opacity:0}}
+    .car-va{min-height:32px;margin:12px 0 0;color:#ffd7a8;font-size:24px;line-height:30px}
+    .car-va i{font-style:normal;opacity:0;transition:opacity .2s}
+    .car-va i.on{opacity:1}
+    .car-vc{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px;min-height:56px}
+    .car-chip{height:56px;padding:0 22px;border:0;border-radius:28px;background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);color:#fff;font-size:20px!important;line-height:24px;white-space:nowrap;transition:background-color .12s,transform .12s cubic-bezier(.2,.8,.2,1)}
+    .car-chip:hover{background:rgba(255,255,255,.14)}.car-chip:active{transform:scale(.96)}.car-chip:focus-visible{outline:2px solid #fff;outline-offset:2px}
+    .car-voice .car-x{position:absolute;top:64px;right:32px}
+
+    .car-ask{display:grid;place-items:center}
+    .car-ask-card{width:min(720px,calc(100% - 128px));padding:36px;border-radius:32px;background:rgba(24,28,36,.9);box-shadow:inset 0 1px 0 rgba(255,255,255,.06),inset 0 0 0 1px var(--edge),0 40px 80px -24px rgba(0,0,0,.9);transform:scale(.96);transition:transform .18s cubic-bezier(.4,0,1,1)}
+    .car-ask.on .car-ask-card{transform:none;transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+    .car-ask-say{display:flex;align-items:center;gap:12px;margin-bottom:16px;color:var(--amber);font-size:18px;line-height:24px}
+    .car-wave{display:flex;align-items:center;gap:3px;height:20px}
+    .car-wave i{width:4px;height:100%;border-radius:2px;background:currentColor;animation:carWave 1s ease-in-out infinite}
+    .car-wave i:nth-child(2){animation-delay:-.2s}.car-wave i:nth-child(3){animation-delay:-.4s}.car-wave i:nth-child(4){animation-delay:-.6s}
+    @keyframes carWave{50%{scale:1 .3}}
+    .car-ask h2{margin:0 0 8px;font-size:36px;font-weight:300;line-height:44px;letter-spacing:-.02em}
+    .car-ask p{margin:0 0 28px;color:var(--t2);font-size:20px;line-height:26px}
+    .car-ask-a{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .car-ask-a .car-b{height:88px;border-radius:24px;font-size:30px!important}
+
+    @media(prefers-reduced-motion:reduce){
+      .car-orb,.car-puck-halo,.car-disc,.car-voice .car-vo,.car-vo::before,.car-vo::after,.car-vb i,.car-wave i,.car-vt.typing::after{animation:none!important}
+      .car-b:active,.car-rb:active,.car-orb:active,.car-chip:active,.car-held:active,.car-mb:active{transform:none}
+      .car-say,.car-say.on,.car-ask-card,.car-ask.on .car-ask-card{transform:none}
+    }
+
+    /* the device frame morphs as an empty shell; the screen is clipped to it, so nothing is stretched or remounted */
+    .ff-morph-shell{position:absolute;left:0;top:0;pointer-events:none}
+
     ::view-transition-group(*){animation-duration:.42s;animation-timing-function:var(--ff-ease,cubic-bezier(.2,.8,.2,1))}
     ::view-transition-old(*),::view-transition-new(*){animation-duration:.24s;animation-timing-function:ease-out}
     ::view-transition-old(root),::view-transition-new(root){animation-duration:.42s;animation-timing-function:ease}
-    ::view-transition-old(ff-switch){display:none}
-    ::view-transition-new(ff-switch){animation:none}
-    ::view-transition-group(ff-screen){overflow:clip}
-    ::view-transition-old(ff-screen),::view-transition-new(ff-screen){width:100%;height:100%;object-fit:none;object-position:50% 50%}
     @media(prefers-reduced-motion:reduce){::view-transition-group(*){animation:none!important}::view-transition-old(*),::view-transition-new(*){animation-duration:.2s!important;animation-timing-function:linear!important}}
   </style>
 </head>
@@ -1270,7 +1508,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
   <div class="os view-home" id="os">
     <header class="statusbar">
       <span class="sb-time" id="sbTime"></span>
-      <div class="sb-left"><span class="space-title" id="spaceTitle"><i></i><span></span></span><span class="collabs" id="collabStack"></span></div>
+      <div class="sb-left"><span class="space-title" id="spaceTitle"><i></i><span></span></span><span class="collabs" id="collabStack"></span><span class="plan-chip" id="planChip"></span></div>
       <div class="sb-right">
         <span class="mic-live" id="micLive" title="Microphone"></span>
         <button class="focus-chip" id="sbFocus" type="button" hidden></button>
@@ -1302,12 +1540,15 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       <div class="home-parse" id="homeParse"></div>
       <div class="home-apps" id="homeApps"></div>
       <div class="blueprints" id="blueprints"></div>
+      <div class="home-spaces" id="homeSpaces"></div>
       <button class="timeline-hint" id="timelineHint"></button>
     </section>
 
     <div class="assembly" id="assembly" aria-live="polite"></div>
 
-    <section class="space" id="space"><div class="flows" id="flows"></div><nav class="navdots" id="navdots"></nav></section>
+    <section class="stack" id="stack" aria-label="Modules"></section>
+    <div class="ph-scrim" id="phScrim"></div>
+    <section class="space" id="space"><div class="sh-grip" id="shGrip"><i></i></div><div class="flows" id="flows"></div><nav class="navdots" id="navdots"></nav></section>
 
     <section class="overview" id="overview">
       <div class="ov-shell">
@@ -1345,7 +1586,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
   <div class="keys" id="keys" role="dialog"></div>
   <div class="handoff" id="handoff"></div>
   <section class="car" id="car" aria-label="Car"></section>
-  <div class="ff-island"></div><div class="ff-bar"></div>
+  <div class="ff-island"></div><div class="ff-bar"></div><div class="home-grab" id="homeGrab" hidden></div>
   </div></div>
   <nav class="ffs" id="ffSwitch" role="radiogroup"></nav>
   <div class="drag-ghost" id="dragGhost" hidden></div>
@@ -1635,7 +1876,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         rules:[{text:T("Warn me about overlapping meetings","Предупреждать о пересекающихся встречах"),on:true},{text:T("Keep mornings free until 11:00","Беречь утро до 11:00"),on:false}],
         flows:[
           {name:T("Schedule","Расписание"),modules:[
-            M("calendar",T("Today","Сегодня"),"calendar",{title:T("Today · 3 events","Сегодня · 3 события"),range:[9,18],now:nowH(),events:[{s:11,e:12,t:T("Coffee with Maya","Кофе с Майей"),w:"Fábrica Coffee"},{s:13,e:14.5,t:T("Meeting with Leo","Встреча с Лео"),w:T("Studio","Студия")},{s:16,e:16.75,t:T("Design critique","Дизайн-критика"),w:T("Studio, room 2","Студия, переговорка 2")}]}),
+            M("calendar",T("Today","Сегодня"),"calendar",todayCal()),
             M("calendar",T("Tomorrow","Завтра"),"calendar",{title:T("Tomorrow · 2 events","Завтра · 2 события"),range:[9,18],now:-1,events:[{s:10,e:11,t:T("Sprint planning","Планирование спринта"),w:T("Studio, big room","Студия, большая комната")},{s:15,e:16,t:T("Q4 report review","Разбор отчёта за Q4"),w:T("Call","Созвон")}]})
           ]},
           {name:T("Invites","Приглашения"),modules:[
@@ -1676,7 +1917,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
             M("chat",T("Maya & Sofia","Майя и Софья"),"messages",{msgs:T([["Maya","Booked the window seats?"],["Sofia","Not yet — waiting for the direct flight."],["Maya","TAP at 07:40 works for me."],["Sofia","Same. Let’s book tonight."]],[["Майя","Места у окна забронировали?"],["Софья","Пока нет — ждём прямой рейс."],["Майя","TAP в 07:40 мне подходит."],["Софья","Мне тоже. Бронируем вечером."]]),newAt:2,replies:T(["Booked it!","Sending the receipt."],["Забронировала!","Отправляю чек."])})
           ]}
         ],
-        auto:{delay:7000,flow:2,from:"weather",make:()=>M("suggest",T("Rain on Friday","Дождь в пятницу"),"weather",{note:T("80% chance of rain on Friday afternoon. Move the museum to Saturday and keep Leo’s workshop on Friday — it’s indoors.","В пятницу днём дождь с вероятностью 80%. Перенести музей на субботу, а воркшоп с Лео оставить на пятницу — он в помещении."),items:T(["Friday","Gulbenkian museum"],["Пятница","Музей Гюльбенкяна"]),actions:T(["Swap Friday and Saturday","Keep the plan","Remind me on Thursday"],["Поменять пятницу и субботу","Оставить как есть","Напомни в четверг"])})}
+        auto:{delay:7000,flow:2,from:"weather",make:()=>M("suggest",T("Rain on Friday","Дождь в пятницу"),"weather",{note:T("80% chance of rain on Friday afternoon. Move the museum to Saturday and keep Leo’s workshop on Friday — it’s indoors.","В пятницу днём дождь с вероятностью 80%. Перенести музей на субботу, а воркшоп с Лео оставить на пятницу — он в помещении."),short:T("80% in the afternoon · move the museum to Saturday","80% днём · перенести музей на субботу"),items:T(["Friday","Gulbenkian museum"],["Пятница","Музей Гюльбенкяна"]),actions:T(["Swap Friday and Saturday","Keep the plan","Remind me on Thursday"],["Поменять пятницу и субботу","Оставить как есть","Напомни в четверг"])})}
       }),
       flat:()=>({id:"flat",title:T("Find an apartment in Berlin","Найти квартиру в Берлине"),
         collabs:[{id:"homes",name:T("Homes","Объявления"),kind:"service",access:T("Listings flow only","Только поток «Варианты»")},{id:"maps",name:T("Maps","Карты"),kind:"service",access:T("Places in this Space","Места из этого пространства")},{id:"calendar",name:T("Calendar","Календарь"),kind:"service",access:T("Viewings","Просмотры")},{id:"maya",name:T("Maya Chen","Майя Чен"),kind:"person",access:T("Can shortlist apartments · may add modules","Может отмечать варианты · добавлять модули")},PERSON("weber","Frau Weber","Frau Weber","Landlord · sees viewing requests only","Арендодатель · видит только запросы на просмотр"),PERSON("daniel","Daniel Kim","Даниэль Ким","Knows the neighbourhood · comments only","Знает район · только комментирует"),PERSON("sofia","Sofia Reyes","Софья Рейес","Co-signer · sees budget and documents","Поручитель · видит бюджет и документы")],
@@ -2138,11 +2379,11 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     }
     function layout(){
       if(!S)return;
-      if(FF.dev==="car")renderCar();
+      proj();
       const sp=$("#space"),w=sp.clientWidth,h=sp.clientHeight,phone=FF.dev==="phone",tab=FF.dev==="tablet";
       let mw,mh,gap,y0;
-      if(phone){mw=w-32;mh=h-40;gap=16;y0=32}
-      else if(tab){mw=Math.min(600,w-160);gap=(w-mw)/2-TAB_PEEK;y0=36;mh=Math.min(580,h-y0-80)}
+      if(phone){mw=w-32;y0=40;mh=h-y0-100;gap=16}
+      else if(tab){mw=w-48;gap=w;y0=40;mh=h-y0-24}
       else{mw=Math.min(440,w-96);mh=Math.min(580,Math.round(h*.8));gap=80;y0=(h-mh)/2}
       const fh=mh+(tab?86:70);
       sp.style.setProperty("--mw",mw+"px");sp.style.setProperty("--mh",mh+"px");sp.style.setProperty("--gap",gap+"px");sp.style.setProperty("--lx",(w/2-mw/2+6)+"px");
@@ -2176,6 +2417,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     function focusModule(fi,mi){S.f=fi;S.m[fi]=mi;layout()}
     function focusLine(){setTimeout(()=>cardOf(activeModule())?.querySelector(".line-in")?.focus({preventScroll:true}),40)}
     function refresh(m,animate=true){
+      proj();
       const card=cardOf(m);if(!card)return;
       const ae=document.activeElement,keep=ae?.matches?.(".line-in")&&ae.closest(".module")===card?{val:ae.value,pos:ae.selectionStart,end:ae.selectionEnd}:null;
       const loc=findModule(m.id),tmp=document.createElement("div");tmp.innerHTML=moduleHTML(m,loc.fi,loc.mi);
@@ -2382,7 +2624,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         const o=m.data.opts[m.data.sel];if(!o)return;
         if(force!=="budget"&&overBudget(o.p)){showToast(T(`${o.p} is over your ${fmtEur(budgetCap())} limit`,`${o.p} выше вашего лимита ${fmtEur(budgetCap())}`),T("Book anyway","Всё равно"),()=>DO.book(m,el,card,"budget"));return}
         if(force!=="direct"&&notDirect(o.s)){if(offerFlightChoice(m))return;showToast(T(`${o.t} has a stop, and “prefer direct flights” is on.`,`${o.t} с пересадкой, а правило «прямые рейсы» включено.`),T("Book anyway","Всё равно"),()=>DO.book(m,el,card,"direct"));return}
-        if(!m.data._bookGo&&(SYS.policy.book==="ask"||USER==="guest")){askDevice(T(`Book ${o.t} · ${o.p}?`,`Забронировать ${o.t} · ${o.p}?`),()=>{m.data._bookGo=true;DO.book(m,el,card,force)},"book");return}
+        if(!m.data._bookGo&&(SYS.policy.book==="ask"||USER==="guest"||FF.dev==="car")){askDevice(T(`Book ${o.t} · ${o.p}?`,`Забронировать ${o.t} · ${o.p}?`),()=>{m.data._bookGo=true;DO.book(m,el,card,force)},"book");return}
         m.data._bookGo=false;m.data.choice=null;
         const where=` · ${whereLabel()}`;
         m.data.booked=(force==="direct"&&notDirect(o.s)?T(`Booked ${o.t} · ${o.p} · direct-flight rule overridden`,`Забронировано: ${o.t} · ${o.p} · правило о прямых рейсах снято для этой брони`):T(`Booked ${o.t} · ${o.p} · confirmation sent to Mail`,`Забронировано: ${o.t} · ${o.p} · подтверждение в почте`))+where;
@@ -2430,14 +2672,14 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         const a=c.querySelector(".acts");if(a)a.innerHTML=actsOf(m);
         if(d.size&&!reduce.matches)b.animate([{transform:"scale(.9)"},{transform:"scale(1)"}],{duration:420,easing:SPRING})},
       gal:(m,b)=>galGo(m,b.dataset.do.split(":")[1]),
-      bag:(m,el,card,skip)=>{const d=m.data;if(d.shoe&&!d.size&&!d.inBag){const sz=(card||cardOf(m))?.querySelector(".sizes");if(sz&&!reduce.matches)sz.animate([{transform:"translateX(0)"},{transform:"translateX(-7px)"},{transform:"translateX(6px)"},{transform:"translateX(-4px)"},{transform:"translateX(0)"}],{duration:380,easing:"ease-out"});showToast(T("Pick a size first","Сначала выберите размер"));return}if(!d.inBag&&!skip&&(SYS.policy.pay==="ask"||USER==="guest")){askDevice(T(`Pay ${d.price} for ${d.name}?`,`Оплатить ${d.price} · ${d.name}?`),()=>DO.bag(m,el,card,true),"pay");return}m.data.inBag=!m.data.inBag;refresh(m,false);showToast((m.data.inBag?T("Added to bag","Добавлено в корзину"):T("Removed from bag","Убрано из корзины"))+(m.data.inBag?" · "+whereLabel():""));if(m.data.inBag)profNote("done",{space:S?.id,svc:"shopping",intent:"pay",min:6})},
+      bag:(m,el,card,skip)=>{const d=m.data;if(d.shoe&&!d.size&&!d.inBag){const sz=(card||cardOf(m))?.querySelector(".sizes");if(sz&&!reduce.matches)sz.animate([{transform:"translateX(0)"},{transform:"translateX(-7px)"},{transform:"translateX(6px)"},{transform:"translateX(-4px)"},{transform:"translateX(0)"}],{duration:380,easing:"ease-out"});showToast(T("Pick a size first","Сначала выберите размер"));return}if(!d.inBag&&!skip&&(SYS.policy.pay==="ask"||USER==="guest"||FF.dev==="car")){askDevice(T(`Pay ${d.price} for ${d.name}?`,`Оплатить ${d.price} · ${d.name}?`),()=>DO.bag(m,el,card,true),"pay");return}m.data.inBag=!m.data.inBag;refresh(m,false);showToast((m.data.inBag?T("Added to bag","Добавлено в корзину"):T("Removed from bag","Убрано из корзины"))+(m.data.inBag?" · "+whereLabel():""));if(m.data.inBag)profNote("done",{space:S?.id,svc:"shopping",intent:"pay",min:6})},
       pdetails:m=>insertAfter(m,M("summary",`${m.data.brand} · ${m.data.name}`,m.source,{points:m.data.nike?[...T(...NIKE[m.data.nike].spec),T("Free returns within 30 days.","Бесплатный возврат 30 дней.")]:T(["Upper: recycled knit, water-repellent.","Sole: natural rubber, 32 mm.","Free returns within 30 days."],["Верх: переработанный трикотаж, водоотталкивающий.","Подошва: натуральный каучук, 32 мм.","Бесплатный возврат 30 дней."])})),
       edit2:(m,el,card)=>card.querySelector(".line-in").focus(),
       mic:()=>openVoice({from:"module"})
     };
     function sendCompose(m,card,useCond,skipAsk){
       const text=card?.querySelector?.(".text")?.innerText;if(text)m.data.text=text;
-      if(!skipAsk&&(SYS.policy.send==="ask"||USER==="guest")){askDevice(T(`Send to ${m.data.to}?`,`Отправить: ${m.data.to}?`),()=>sendCompose(m,cardOf(m),useCond,true),"send");return}
+      if(!skipAsk&&(SYS.policy.send==="ask"||USER==="guest"||FF.dev==="car")){askDevice(T(`Send to ${m.data.to}?`,`Отправить: ${m.data.to}?`),()=>sendCompose(m,cardOf(m),useCond,true),"send");return}
       const where=` · ${whereLabel()}`;
       m.data.sent=(useCond&&m.modifier?T(`Scheduled · sends ${m.modifier}`,`Запланировано · отправится ${m.modifier}`):T(`Sent to ${m.data.to} · ${timeStr(new Date())}`,`Отправлено: ${m.data.to} · ${timeStr(new Date())}`))+where;
       refresh(m,false);showToast(m.data.sent);logMoment(m.item,S.title);profNote("done",{space:S?.id,svc:"messages",intent:"send",min:4});
@@ -2445,7 +2687,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     }
 
     setInterval(()=>{
-      allModules().filter(m=>m.kind==="player"&&m.data.playing).forEach(m=>{
+      playerPool().filter(m=>m.data.playing).forEach(m=>{
         const d=m.data,dur=secs(d.tracks[d.track][2]);d.t+=.5;
         if(d.t>=dur){d.t=0;d.track=(d.track+1)%d.tracks.length;refresh(m,false);return}
         const c=cardOf(m);if(c){c.querySelector(".pl-fill").style.width=d.t/dur*100+"%";c.querySelector(".pl-cur").textContent=fmtS(d.t)}
@@ -2456,7 +2698,9 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       view=v;os.classList.remove("view-home","view-space","view-timeline");os.classList.add("view-"+v);
       closePalette();closeSelBubble();renderHints();
       if(v!=="home")$("#intentInput")?.blur();
-      renderFFSwitch();renderFocus();if(FF.dev==="car")renderCar();
+      renderFFSwitch();renderFocus();
+      if(v!=="space")document.documentElement.classList.remove("ph-sheet");else if(FF.dev==="phone")document.documentElement.classList.add("ph-sheet");
+      proj();
       if(v==="home"){toggleOverview(false,true);if(FF.dev!=="car")setTimeout(()=>$("#intentInput").focus(),300)}
       if(v==="timeline"){renderTimeline();staggerIn($$(".tl-item,.tl-day"),18);setTimeout(()=>$("#tlSearch").focus(),400)}
     }
@@ -2903,7 +3147,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         const D={
           home:[],
           timeline:[["home",T("Home","Домой"),()=>setView("home")]],
-          space:[[back?"chevL":"home",back?T("Back","Назад"):T("Home","Домой"),()=>back?go(0,-1):goHome()],["grid",T("Overview","Обзор"),()=>toggleOverview()],["plus",T("Module","Модуль"),()=>addAdjacent()],["sparkle",T("Actions","Действия"),()=>paletteOpen?closePalette():openPalette()]],
+          space:[FF.dev==="phone"&&document.documentElement.classList.contains("ph-sheet")?["chevD",T("Close","Свернуть"),()=>setSheet(false)]:["home",T("Home","Домой"),()=>goHome()],["devices",T("Spaces","Пространства"),()=>openSwitcher()],["grid",T("Overview","Обзор"),()=>toggleOverview()],["plus",T("Module","Модуль"),()=>addAdjacent()],["sparkle",T("Actions","Действия"),()=>paletteOpen?closePalette():openPalette()]],
           overview:[["x",T("Close","Закрыть"),()=>toggleOverview(false)],["plus",T("New flow","Новый поток"),()=>newFlow()]]
         }[overviewOpen?"overview":view];
         $("#hints").innerHTML=D.map(([i,l],k)=>`<button type="button" data-h="${k}" aria-label="${esc(l)}">${ic(i)}<span class="lbl">${esc(l)}</span></button>`).join("");
@@ -2967,6 +3211,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       $("#homeApps").innerHTML=Object.entries(QI).map(([k,q])=>`<button class="home-app" data-app="${k}">${ic(q.ic)}<span>${q.t()}</span>${meta[k]}</button>`).join("");
     }
     function showToast(text,action,fn,meta){
+      if(FF.dev==="car"){carToast(text,action,fn,meta||{});return}
       const level=meta?.level||"active",space=meta?.space||"";
       if(meta?.log!==false)logNotif(text,meta);
       if(level==="quiet")return;
@@ -3003,13 +3248,13 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       if(l===LANG)return;LANG=l;
       const u=new URL(location.href);if(l==="en")u.searchParams.set("lang","en");else u.searchParams.delete("lang");history.replaceState(null,"",u);
       const coachWas=coachOpen();if(coachWas)$(".coach")?.remove();
-      if(S){S.rules?.forEach(r=>{delete r._p;delete r._t});translateDeep(S,new Set())}
+      const seen=new Set();new Set([...(S?[S]:[]),...OPEN.values(),...SYSSP.values()]).forEach(sp=>{sp.rules?.forEach(r=>{delete r._p;delete r._t});translateDeep(sp,seen)});
       TODAY.forEach(it=>{if(typeof it.title==="string")it.title=tr(it.title);if(typeof it.desc==="string")it.desc=tr(it.desc)});
       applyLang();renderWx();
       if(switcherOn())renderSwitcher();
       if(view==="space"){renderSpace();if(overviewOpen)renderOverview()}
       else if(view==="timeline")renderTimeline();
-      renderWindows();
+      renderWindows();proj();
       if(coachWas)showCoach();
     }
 
@@ -3467,7 +3712,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     loadWeather();setInterval(loadWeather,15*60e3);
 
     function tickClock(){const d=new Date(),t=timeStr(d),big=t;$("#clock").textContent=t;$("#homeTime").textContent=t;$("#homeDate").textContent=d.toLocaleDateString(LANG==="ru"?"ru-RU":"en-GB",{weekday:"long",day:"numeric",month:"long",timeZone:MSK});const lk=$("#lockTime");if(lk)lk.textContent=big;$("#sbTime").textContent=t;const ct=$("#carTime");if(ct)ct.textContent=t;const id=$("#idleTime");if(id)id.textContent=big}
-    setInterval(tickClock,15000);
+    (function clockAt(){setTimeout(()=>{tickClock();clockAt()},60000-Date.now()%60000+30)})();
     const COACH_KEY="intent-os-hints-seen";
     function coachOpen(){return !!$(".coach")}
     function dismissCoach(persist){if(persist!==false)try{localStorage.setItem(COACH_KEY,"1")}catch{} $(".coach")?.remove()}
@@ -3536,7 +3781,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       const host=activeModule()||allModules().at(-1);if(!host){apply();return null}
       return insertAfter(host,M("plan",title,source||"intent",{steps,impact,deviceApply:apply,...(extra||{})}));
     }
-    const SYS={where:"here",policy:{send:"allow",book:"allow",pay:"allow"}};
+    const SYS={where:"here",policy:{send:"allow",book:"ask",pay:"allow"}};
     let deviceCustom=null,accentId="blue",spaceSnap=null;
     function deviceName(){return deviceCustom!=null?deviceCustom:T("Andrew’s computer","Компьютер Андрея")}
     function whereLabel(){return SYS.where==="service"?T("Via a service","Через сервис"):T("On this device","На этом устройстве")}
@@ -3789,7 +4034,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       {id:"desktop",en:"Desktop",ru:"Десктоп",icon:"monitor",w:0,h:0,b:0,r:0},
       {id:"tablet",en:"Tablet",ru:"Планшет",icon:"tablet",w:1024,h:768,b:14,r:24},
       {id:"phone",en:"Phone",ru:"Телефон",icon:"phone",w:390,h:844,b:12,r:48},
-      {id:"car",en:"Car",ru:"Авто",icon:"car",w:1200,h:400,b:10,r:22}
+      {id:"car",en:"Car",ru:"Авто",icon:"car",w:1280,h:720,b:10,r:28}
     ];
     const devOf=id=>DEVICES.find(d=>d.id===id);
     const SPACE_CAT=[
@@ -3813,8 +4058,8 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       return {desktop:T("Back on Desktop","Снова на десктопе"),tablet:T("Back on Tablet","Снова на планшете"),phone:T("Back on Phone","Снова на телефоне"),car:T("Back in Car","Снова в Авто")}[dev?.id]||"";
     }
     function suggestDev(){if(!S||HANDOFF||view!=="space")return null;const d={trip:"car",music:"car",gym:"phone",flat:"tablet"}[S.id];return d&&d!==FF.dev?d:null}
-    /* one spring for the frame and every shared element: ~420 ms, a hair of overshoot */
-    const FF_DUR=420,FF_EASE=(()=>{const z=.76,w=18.8,wd=w*Math.sqrt(1-z*z),n=40,pts=[];for(let i=0;i<=n;i++){const t=i/n*FF_DUR/1000;pts.push(i===n?1:+(1-Math.exp(-z*w*t)*(Math.cos(wd*t)+z*w/wd*Math.sin(wd*t))).toFixed(4))}return `linear(${pts.join(",")})`})();
+    /* one spring for the frame and every shared element: ~450 ms, a hair of overshoot */
+    const FF_DUR=450,FF_EASE=(()=>{const z=.76,w=18.8,wd=w*Math.sqrt(1-z*z),n=40,pts=[];for(let i=0;i<=n;i++){const t=i/n*FF_DUR/1000;pts.push(i===n?1:+(1-Math.exp(-z*w*t)*(Math.cos(wd*t)+z*w/wd*Math.sin(wd*t))).toFixed(4))}return `linear(${pts.join(",")})`})();
     document.documentElement.style.setProperty("--ff-ease",FF_EASE);
     function ffGeo(id){
       const d=devOf(id),vw=innerWidth,vh=innerHeight,band=vw<=760?52:0;
@@ -3829,14 +4074,19 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     }
     const ffRing=g=>g.b?`0 0 0 ${g.b}px #0c0c0e,0 0 0 ${g.b+1}px rgba(255,255,255,.08),0 40px 100px -30px rgba(0,0,0,.5)`:"0 0 0 0px #0c0c0e,0 0 0 0px rgba(255,255,255,0),0 40px 100px -30px rgba(0,0,0,0)";
     function applyDevice(id){
-      const html=document.documentElement;
+      const html=document.documentElement,was=FF.dev;
       DEVICES.forEach(d=>html.classList.toggle("ff-"+d.id,d.id===id));
       html.classList.toggle("ff-touch",id==="tablet"||id==="phone");
+      if(id!=="phone")html.classList.remove("ph-sheet","ph-drag");
       FF.dev=id;ffPlace();syncNight();dockHomeLine(id==="phone");
       closePalette();closeSelBubble();setWx(false);setMenu(false);
+      if(was==="car"&&id!=="car")carOut();
+      if(id==="car"&&was!=="car")carIn();
+      if(id==="phone"&&S&&view==="space")html.classList.add("ph-sheet");
+      const g=$("#homeGrab");if(g)g.hidden=id!=="phone";
       renderHints();renderFFSwitch();
       if(S)layout();
-      if(id==="car")renderCar();else $("#car").innerHTML="";
+      renderCar();projNow();
       if(WINS.length)renderWindows();
       const u=new URL(location.href);if(id==="desktop")u.searchParams.delete("device");else u.searchParams.set("device",id);history.replaceState(null,"",u);
     }
@@ -3847,18 +4097,44 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       if(out)dock.append(hl,hp);else $("#homeApps").before(hl,hp);
       if(had)$("#intentInput").focus({preventScroll:true});
     }
-    let ffTok=0;
+    /* switching devices: measure the old and new frames, spring an empty shell between them (450 ms) and clip the live screen to it.
+       Nothing is snapshotted or stretched, and the car stays mounted; leaving it, a still copy fades over the shell. */
+    let ffTok=0,ffAnims=[];
     function setDevice(id,opts={}){
       if(!devOf(id))return;
       if(id===FF.dev){opts.after?.();return}
       if(HANDOFF&&!opts.keepHand){HANDOFF=null;$("#handoff")?.classList.remove("on")}
-      const html=document.documentElement,from={...FF},tok=++ffTok,calm=reduce.matches;
-      const run=()=>{opts.before?.();applyDevice(id);opts.after?.()};
-      if(!document.startViewTransition){run();if(!calm)SCREEN.animate([{opacity:0},{opacity:1}],{duration:200,easing:"ease-out"});return}
-      html.classList.add("ff-vt");if(!calm)html.classList.add("ff-morph");
-      const vt=document.startViewTransition(run);
-      vt.ready.then(()=>{if(!calm)html.animate({borderRadius:[from.r+"px",FF.r+"px"],boxShadow:[ffRing(from),ffRing(FF)]},{duration:FF_DUR,easing:FF_EASE,fill:"both",pseudoElement:"::view-transition-group(ff-screen)"})}).catch(()=>{});
-      vt.finished.finally(()=>{if(tok===ffTok)html.classList.remove("ff-vt","ff-morph")});
+      const html=document.documentElement,calm=reduce.matches,tok=++ffTok,from={...FF},was=FF.dev;
+      ffAnims.forEach(a=>a.cancel());ffAnims=[];$$(".ff-morph-shell,.car-ghost").forEach(n=>n.remove());
+      const rect=g=>({x:g.x-g.b*g.s,y:g.y-g.b*g.s,w:(g.w+2*g.b)*g.s,h:(g.h+2*g.b)*g.s,r:(g.r+g.b)*g.s,b:g.b*g.s});
+      const R0=rect(from),bg0=was==="car"?"#07090d":getComputedStyle(SCREEN).backgroundColor;
+      let ghost=null;
+      if(was==="car"){const c=$("#car");ghost=c.cloneNode(true);ghost.removeAttribute("id");ghost.classList.add("car-ghost");ghost.querySelectorAll("[id]").forEach(n=>n.removeAttribute("id"));
+        Object.assign(ghost.style,{width:from.w+"px",height:from.h+"px",borderRadius:from.r+"px",transform:`translate(${from.x}px,${from.y}px) scale(${from.s})`});document.body.append(ghost)}
+      opts.before?.();applyDevice(id);opts.after?.();
+      const R1=rect(FF),bg1=id==="car"?"#07090d":getComputedStyle(SCREEN).backgroundColor,os=$("#os");
+      const done=()=>{if(tok!==ffTok)return;html.classList.remove("ff-morph","ff-os-out");ghost?.remove();$$(".ff-morph-shell").forEach(n=>n.remove());ffAnims=[]};
+      const push=a=>{ffAnims.push(a);return a};
+      if(ghost)push(ghost.animate([{opacity:1},{opacity:0}],{duration:calm?200:300,easing:"cubic-bezier(.4,0,1,1)",fill:"forwards"}));
+      if(id==="car"){carEnter();
+        if(was!=="car"){html.classList.add("ff-os-out");const a=push(os.animate([{opacity:1},{opacity:0}],{duration:calm?160:220,easing:"cubic-bezier(.4,0,1,1)",fill:"forwards"}));
+          const off=()=>{html.classList.remove("ff-os-out");a.cancel()};a.finished.then(off,off)}}
+      else push(os.animate([{opacity:calm?0:.2},{opacity:1}],{duration:calm?200:320,delay:calm?0:60,easing:"ease-out",fill:"backwards"}));
+      if(calm){setTimeout(done,320);return}
+      html.classList.add("ff-morph");
+      const shell=document.createElement("div");shell.className="ff-morph-shell";$("#ffDevice").before(shell);
+      const ring=r=>r.b?`0 0 0 ${r.b}px #0c0c0e,0 0 0 ${r.b+1}px rgba(255,255,255,.08),0 40px 100px -30px rgba(0,0,0,.5)`:"0 0 0 0px #0c0c0e,0 0 0 0px rgba(255,255,255,0),0 40px 100px -30px rgba(0,0,0,0)";
+      const box=r=>({transform:`translate(${r.x+r.b}px,${r.y+r.b}px)`,width:(r.w-2*r.b)+"px",height:(r.h-2*r.b)+"px",borderRadius:Math.max(0,r.r-r.b)+"px",boxShadow:ring(r)});
+      const timing={duration:FF_DUR,easing:FF_EASE,fill:"both"};
+      push(shell.animate([box(R0),box(R1)],timing));
+      push(shell.animate([{backgroundColor:bg0},{backgroundColor:bg1}],{duration:400,easing:"ease-out",fill:"both"}));
+      const s=FF.s,i0=r=>({t:Math.max(0,(r.y+r.b-FF.y)/s),l:Math.max(0,(r.x+r.b-FF.x)/s),r:Math.max(0,(FF.x+FF.w*s-(r.x+r.w-r.b))/s),b:Math.max(0,(FF.y+FF.h*s-(r.y+r.h-r.b))/s)});
+      const k=i0(R0),rad=Math.max(0,R0.r-R0.b)/s;
+      push(SCREEN.animate([{clipPath:`inset(${k.t}px ${k.r}px ${k.b}px ${k.l}px round ${rad}px)`},{clipPath:`inset(0px 0px 0px 0px round ${FF.r}px)`}],timing)).finished.then(done,()=>{});
+      if(id!=="car"){
+        const cards=$$(".os.view-home .home-time,.os.view-home .home-line,.os.view-home .hs,.os.view-home .sig,.os.view-space .module.active,.os.view-space .cp,.os.view-space .space-title").filter(n=>n.offsetParent).slice(0,9);
+        cards.forEach((n,i)=>push(n.animate([{opacity:0,translate:"0 10px"},{opacity:1,translate:"0 0"}],{duration:320,delay:140+i*40,easing:"cubic-bezier(.2,.8,.2,1)",fill:"backwards"})));
+      }
     }
     const ffCompact=()=>innerWidth<=520||(FF.dev==="desktop"&&innerWidth<1180);
     function ffThumb(){const box=$("#ffSwitch"),b=box?.querySelector(".ffs-b.on"),t=box?.querySelector(".ffs-thumb");if(!b||!t)return;t.style.width=b.offsetWidth+"px";t.style.transform=`translateX(${b.offsetLeft}px)`}
@@ -3894,42 +4170,542 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         after(){showHandoff(contLabel(dev),true)}});
       profNote("handoff",{dev:dev.id,space:S?.id});
     }
-    /* car: the active (or handed-off) module as one big card, three actions, voice first */
-    const ROUTE_SVG=`<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice"><g fill="none" stroke="rgba(255,255,255,.08)" stroke-width="12" stroke-linecap="round"><path d="M-20 64 420 92"/><path d="M-20 172 420 150"/><path d="M-20 262 420 284"/><path d="M84-20 62 320"/><path d="M212-20 232 320"/><path d="M334-20 312 320"/></g><path d="M66 248C122 250 138 160 222 154S300 84 330 72" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round"/><circle cx="66" cy="248" r="10" fill="#fff"/><circle cx="66" cy="248" r="5" fill="var(--accent)"/><circle cx="330" cy="72" r="13" fill="var(--accent)"/><circle cx="330" cy="72" r="5" fill="#000"/></svg>`;
-    let CAR_ACTS=[];
-    function carNext(){if(!S)return;const n=S.flows[S.f].modules.length;if(S.m[S.f]<n-1)go(0,1);else if(S.f<S.flows.length-1)go(1,0);else{S.f=0;S.m[0]=0;layout();renderHints()}}
-    function carModel(){
-      const voice=["mic","voice",T("Speak","Скажите"),()=>openVoice(S&&view==="space"?{}:{from:"home"})];
-      if(!S||view!=="space")return{route:true,icon:"pin",kind:T("Route","Маршрут"),title:T("24 min","24 мин"),sub:T("Studio · 12 km","Студия · 12 км"),
-        acts:[voice,["music","music",T("Music","Музыка"),()=>openSpace(OPEN.get("music")||BP.music())],["cal","day",T("My day","Мой день"),()=>openSpace(OPEN.get("calendar")||BP.calendar())]]};
-      const m=(HANDOFF?.dev==="car"&&findModuleById(HANDOFF.mid))||activeModule(),d=m.data||{};
-      const home=["home","home",T("Home","Домой"),()=>goHome()],next=["next","next",T("Next","Дальше"),carNext];
-      const o={icon:KIND_IC[m.kind]||"spark",kind:S.title,title:m.item,sub:"",acts:[voice,next,home]};
-      const re=()=>{refresh(m,false);renderCar()};
-      if(m.kind==="player"&&d.tracks){const tr=d.tracks[d.track];Object.assign(o,{kind:m.item,title:tr[0],sub:tr[1],prog:d.t/secs(tr[2]),acts:[voice,[d.playing?"pause":"play","pp",d.playing?T("Pause","Пауза"):T("Play","Играть"),()=>{d.playing=!d.playing;re()}],home]})}
-      else if(m.kind==="map"&&d.pins){const p=d.pins[d.sel??0]||d.pins[0];Object.assign(o,{route:true,kind:m.item,title:p.name,sub:p.sub||"",acts:[voice,["pin","go",T("Go","Поехали"),()=>showToast(T(`Route to ${p.name} · 18 min`,`Маршрут до ${p.name} · 18 мин`))],home]})}
-      else if(m.kind==="calendar"&&d.events?.length){const ev=d.events.find(e=>e.e>(d.now??0))||d.events[0];Object.assign(o,{kind:m.item,title:ev.t,sub:`${fmtH(ev.s)} · ${ev.w||""}`,acts:[voice,["pin","go",T("Route","Маршрут"),()=>showToast(T(`Route to ${ev.w||ev.t} · 18 min`,`Маршрут: ${ev.w||ev.t} · 18 мин`))],home]})}
-      else if(m.kind==="alarm"){Object.assign(o,{kind:m.item,title:`${pad(d.h)}:${pad(d.mi)}`,sub:d.on?(d.conds?.[0]?.t||""):T("Off","Выключен"),acts:[voice,["alarm","alarm",d.on?T("Turn off","Выключить"):T("Turn on","Включить"),()=>{d.on=!d.on;re()}],home]})}
-      else if(m.kind==="weather"){Object.assign(o,{kind:m.item,title:`${d.temp}°`,sub:d.cond||""})}
-      else if(m.kind==="checklist"&&d.items){const n=d.items.length,done=d.items.filter(i=>i[1]).length,left=d.items.find(i=>!i[1]);Object.assign(o,{kind:m.item,title:left?left[0]:T("All done","Всё готово"),sub:T(`${done} of ${n} done`,`Готово ${done} из ${n}`),prog:n?done/n:1,acts:[voice,left?["tick","done",T("Done","Готово"),()=>{left[1]=true;re()}]:next,home]})}
-      else if(m.kind==="options"&&d.opts){const op=d.opts[d.sel??0]||d.opts[0];Object.assign(o,{kind:m.item,title:op.t,sub:`${op.s} · ${op.p}`})}
-      return o;
+    /* ── one state, three projections: every module kind answers full (moduleHTML), compact and glance from this registry ── */
+    const SPACE_IC={inbox:"mail",calendar:"cal",music:"music",trip:"plane",flat:"home",gym:"heart",report:"chart"};
+    const SPACE_SHORT={inbox:["Inbox","Входящие"],calendar:["My day","Мой день"],music:["Music","Музыка"],trip:["Lisbon","Лиссабон"],flat:["Berlin","Берлин"],gym:["Gym","Спортзал"],report:["Q4 report","Отчёт Q4"]};
+    const spShort=sp=>sp?(SPACE_SHORT[sp.id]?T(...SPACE_SHORT[sp.id]):sp.title):"";
+    const GA=(l,i,run,cls="")=>({l,i,run,cls});
+    const inCar=()=>FF.dev==="car";
+    const minsText=n=>n>=60?T(`${Math.floor(n/60)} h ${n%60} min`,`${Math.floor(n/60)} ч ${n%60} мин`):T(`${n} min`,`${n} мин`);
+    const isCall=ev=>/\bcall\b|созвон/i.test(`${ev.t} ${ev.w||""}`);
+    const chatUnread=d=>d.newAt!=null&&!d.read?Math.max(0,d.msgs.length-d.newAt):0;
+    const quote=t=>T(`“${t}”`,`«${t}»`);
+    function bestOpt(d){const i=cheapestIndex(d.opts,o=>/direct|прям/i.test(o.s));return i<0?0:i}
+    function nextEvent(d){const evs=(d.events||[]).filter(e=>!e.prop||e.ok);if(!evs.length)return null;if(d.now<0)return evs[0];const h=nowH();return evs.find(e=>e.e>h)||null}
+    const REG={
+      list:(m,d)=>{const un=d.rows.filter(r=>!r.read),f=un[0];return{v:d.title||m.item,l:f?`${f.from}: ${f.subj}`:T("Nothing unread","Всё прочитано"),acts:un.length?[GA(T("Read all","Прочитать всё"),"tick",()=>runDo(m,"readall"))]:[]}},
+      message:(m,d)=>({v:d.subj||m.item,l:`${m.item} · ${(d.body||[]).join(" ")}`,acts:[GA(T("Reply","Ответить"),inCar()?"mic":"chat",()=>inCar()?voiceReply(m):runDo(m,"reply"),"primary")]}),
+      compose:(m,d)=>({v:d.sent?T("Sent","Отправлено"):`${T("To","Кому")}: ${d.to}`,l:d.sent||d.text,done:d.sent?1:0,ok:!!d.sent,acts:d.sent?[]:[GA(T("Send","Отправить"),"arrowR",()=>runDo(m,"sendnow"),"primary")]}),
+      chat:(m,d)=>{const un=chatUnread(d),last=[...d.msgs].reverse().find(x=>x[0]!=="me")||d.msgs.at(-1);
+        return{v:last?last[1]:m.item,l:`${last&&last[0]!=="me"?last[0]:m.item}${un?` · ${count(un,["new","new"],["новое","новых","новых"])}`:""}`,unread:un,
+          acts:inCar()?[GA(T("Reply","Ответить"),"mic",()=>voiceReply(m),"primary"),GA(T("Listen","Прослушать"),"speaker",()=>readAloud(m))]:[GA(T("Reply","Ответить"),"chat",()=>openFull(m,true))]}},
+      invite:(m,d)=>{const call=/call|созвон/i.test(d.where||"");return{v:d.title,l:`${d.when}${d.where?` · ${d.where}`:""}`,done:d.rsvp?1:0,ok:!!d.rsvp,
+        acts:d.rsvp?[]:inCar()&&call?[GA(T("Join","Подключиться"),"mic",()=>joinCall(d.title),"primary")]:[GA(T("Accept","Принять"),"tick",()=>runDo(m,"rsvp:Accepted"),"primary")]}},
+      calendar:(m,d)=>{
+        const p=d.events.find(e=>e.prop);
+        if(p&&!p.ok)return{v:p.t,l:`${fmtH(p.s)}${p.w?` · ${p.w}`:""}`,done:0,acts:[GA(T("Create","Создать"),"plus",()=>runDo(m,"create"),"primary")]};
+        const ev=nextEvent(d);
+        if(!ev)return{v:T("Free","Свободно"),l:d.title,done:p?1:null,ok:!!p,acts:[]};
+        const call=isCall(ev),mins=d.now>=0?Math.round((ev.s-nowH())*60):null;
+        const when=mins==null?fmtH(ev.s):mins>0?`${fmtH(ev.s)} · ${T("in","через")} ${minsText(mins)}`:`${T("Now","Сейчас")} · ${T("until","до")} ${fmtH(ev.e)}`;
+        return{v:ev.t,l:`${when}${ev.w&&!call?` · ${ev.w}`:""}`,ev,mins,done:p?1:null,ok:!!p,
+          acts:ev.joined?[GA(T("Leave","Завершить"),"x",()=>{ev.joined=false;showToast(T("Call ended","Созвон завершён"));proj()})]:call?[GA(T("Join","Подключиться"),"mic",()=>joinCall(ev.t,ev),"primary")]:inCar()&&ev.w?[GA(T("Route","Маршрут"),"pin",()=>routeTo(ev.w))]:[]};
+      },
+      options:(m,d)=>{const i=d.sel??bestOpt(d),o=d.opts[i]||d.opts[0];
+        if(d.booked)return{v:`${o.t} · ${o.p}`,l:T("Booked · confirmation in Mail","Забронировано · подтверждение в почте"),done:1,ok:true,acts:[]};
+        return{v:`${o.t} · ${o.p}`,l:o.s,done:0,acts:[GA(T("Book","Забронировать"),"tick",()=>{d.sel=i;runDo(m,"book")},"primary"),GA(T("Other","Другой"),"next",()=>{d.sel=(i+1)%d.opts.length;d.choice=null;refresh(m,false)})]}},
+      listings:(m,d)=>{const all=d.groups.flatMap((g,gi)=>g.items.map((it,ii)=>({it,k:`${gi}-${ii}`}))),cur=all.find(x=>x.k===d.sel)||all[(d._peek||0)%all.length];
+        if(!cur)return null;
+        return{v:cur.it.addr,l:`${cur.it.price} · ${cur.it.t}`,done:d.sel?1:0,ok:!!d.sel,
+          acts:d.sel?[GA(T("Change","Сменить"),"next",()=>{d.sel=null;d._peek=0;refresh(m,false)})]:[GA(T("Choose","Выбрать"),"tick",()=>{d.sel=cur.k;refresh(m,false);showToast(T(`Chose ${cur.it.addr}`,`Выбрано: ${cur.it.addr}`))},"primary"),GA(T("Other","Другой"),"next",()=>{d._peek=((d._peek||0)+1)%all.length;proj()})]}},
+      map:(m,d)=>{const p=d.pins[d.sel]?.kind!=="you"&&d.pins[d.sel]||d.pins.find(x=>x.kind!=="you");return{v:p?.name||m.item,l:p?.sub||"",acts:p?[GA(inCar()?T("Navigate","Поехали"):T("Directions","Маршрут"),"pin",()=>inCar()?routeTo(p.name):runDo(m,"route"),"primary")]:[]}},
+      player:(m,d)=>{const tr=d.tracks[d.track];return{v:tr[0],l:`${tr[1]} · ${d.title||m.item}`,prog:d.t/secs(tr[2]),
+        acts:[GA(d.playing?T("Pause","Пауза"):T("Play","Играть"),d.playing?"pause":"play",()=>{d.playing=!d.playing;refresh(m,false)},"primary"),GA(T("Next","Дальше"),"next",()=>{d.track=(d.track+1)%d.tracks.length;d.t=0;refresh(m,false)})]}},
+      alarm:(m,d)=>({v:`${pad(d.h)}:${pad(d.mi)}`,l:d.on?(d.conds?.[0]?.t||T("Rings every time","Звонит всегда")):T("Alarm off","Будильник выключен"),acts:[GA(d.on?T("Turn off","Выключить"):T("Turn on","Включить"),"alarm",()=>runDo(m,"toggleAlarm"))]}),
+      weather:(m,d)=>{const wet=(d.hours||[]).find(h=>h[3]>=50);
+        return{v:`${d.temp}°`,l:[wet?`${wet[0]}: ${wet[1]==="snow"?T("snow","снег"):T("rain","дождь")} ${wet[3]}%`:"",String(d.cond||"").split(" · ")[0]].filter(Boolean).join(" · "),
+          acts:[GA(d.remind?T("Reminder set","Напомню"):snowContext(d)?T("Remind","Напомнить"):T("Umbrella","Про зонт"),"bell",()=>runDo(m,"umbrella"),d.remind?"on":"")]}},
+      checklist:(m,d)=>{const n=d.items.length,k=d.items.filter(x=>x[1]).length,left=d.items.find(x=>!x[1]);
+        return{v:left?left[0]:T("All done","Всё готово"),l:T(`${k} of ${n} done`,`Готово ${k} из ${n}`),done:n?k/n:1,ok:!left,acts:left?[GA(T("Done","Готово"),"tick",()=>{left[1]=true;refresh(m,false)},"primary")]:[]}},
+      doc:(m,d)=>({v:d.title||m.item,l:(d.paras||[])[0]||"",acts:inCar()?[GA(T("Listen","Прослушать"),"speaker",()=>readAloud(m))]:[GA(T("Summary","Кратко"),"spark",()=>runDo(m,"sum"))]}),
+      chart:(m,d)=>{const b=d.bars.at(-1);return{v:`${b[0]} · ${b[2]||b[1]}`,l:d.caption||"",acts:[]}},
+      results:(m,d)=>{const it=d.groups[0]?.items[0];return{v:it?`${it.brand} ${it.name}`:m.item,l:it?it.price:"",acts:[GA(T("Add all","Всё в поток"),"plus",()=>runDo(m,"addAll"))]}},
+      product:(m,d)=>({v:d.name,l:`${d.price}${d.size?` · ${d.size}`:""}`,ok:!!d.inBag,acts:d.inBag?[]:[GA(T("Add to bag","В корзину"),"bag",()=>d.shoe&&!d.size?openFull(m):runDo(m,"bag"),"primary")]}),
+      remind:(m,d)=>({v:m.item,l:d.sel||m.modifier||T("Pick a time","Выберите время"),ok:!!(d.sel||m.modifier),acts:d.sel||m.modifier?[]:[GA(T("Tonight","Вечером"),"bell",()=>{d.sel=T("Tonight · 20:00","Вечером · 20:00");refresh(m,false)})]}),
+      suggest:(m,d)=>{
+        if(m._ask)return{v:m.item,l:d.short||d.note||"",alert:true,acts:[GA(T("Swap days","Поменять дни"),"tick",()=>m._ask?.yes(),"primary"),GA(T("Keep","Оставить"),"",()=>m._ask?.no())]};
+        return{v:m.item,l:d.short||d.note||(d.items||[]).join(" · "),alert:m.source!=="intent"&&!d.kept,acts:d.kept?[]:(d.actions||[]).slice(0,2).map((t,i)=>GA(String(t).split(/\s+/)[0],i?"":"tick",()=>suggestRun(m,t),i?"":"primary"))};
+      },
+      plan:(m,d)=>({v:m.item,l:d.running?(d.steps[d.progress]||d.steps.at(-1)):(d.steps||[])[0]||"",alert:!d.running,prog:d.running?d.progress/d.steps.length:null,
+        acts:d.running?[]:[GA(T("Approve","Подтвердить"),"tick",()=>runDo(m,"approvePlan"),"primary"),GA(T("Cancel","Отменить"),"x",()=>runDo(m,"delete"))]}),
+      receipt:(m,d)=>({v:m.item,l:d.text||"",ok:true,acts:d.undone||d.deviceDone?[]:[GA(T("Undo","Отменить"),"x",()=>runDo(m,"undoPlan"))]}),
+      summary:(m,d)=>({v:m.item,l:(d.points||[])[0]||"",ok:true,acts:[]})
+    };
+    function rep(m){
+      const d=m?.data||{};let r=null;
+      try{r=REG[m.kind]?REG[m.kind](m,d):null}catch(e){r=null}
+      if(!r){const st=d.steps||[];r={v:m?.item||"",l:st.length?st[Math.min(d.done||0,st.length-1)]:"",acts:[]}}
+      r.acts=(r.acts||[]).filter(Boolean);return r;
     }
+    /* actions run on the live module; a module from another space opens that space first so the desktop handlers see it */
+    function findAny(id){
+      if(S){const l=findModule(id);if(l)return{m:l.m,sp:S}}
+      for(const sp of new Set([...OPEN.values(),...SYSSP.values()]))for(const f of sp.flows){const m=f.modules.find(x=>x.id===id);if(m)return{m,sp}}
+      return null;
+    }
+    function runDo(m,key){
+      const f=findAny(m.id);if(f&&f.sp!==S)enterSpace(f.sp.id);
+      const fn=DO[key.split(":")[0]];if(fn)fn(m,{dataset:{do:key}},cardOf(m));proj();
+    }
+    function suggestRun(m,t){
+      if(m.source==="weather"&&/swap|поменя/i.test(t))return swapNow(m);
+      const f=findAny(m.id);if(f&&f.sp!==S)enterSpace(f.sp.id);runLine(m,t);proj();
+    }
+    function swapNow(m){
+      const plan={data:{sourceId:m?.id,before:{}}};
+      applyWeatherSwap(plan);if(m)carLand(m);
+      showToast(T("Weather shifted the days","Погода сдвинула дни"),T("Undo","Отменить"),()=>{restoreWeatherSwap(plan.data.before);tripSwapped=false;renderSignals();renderSpace()});
+      proj();
+    }
+
+    /* the plan: one step per flow, measured by that flow's first trackable module */
+    const PLANBUMP=new Map(),PLANK=new Map();
+    function planOf(sp){
+      if(!sp?.flows)return null;
+      const steps=[];
+      sp.flows.forEach(fl=>{for(const m of fl.modules){const r=rep(m);if(r.done!=null){steps.push({name:fl.name,d:clamp(r.done,0,1),m});break}}});
+      if(steps.length<2)return null;
+      const k=steps.filter(s=>s.d>=1).length,nx=steps.find(s=>s.d<1);
+      const prev=PLANK.get(sp.id);PLANK.set(sp.id,k);if(prev!=null&&k>prev)PLANBUMP.set(sp.id,performance.now());
+      return{steps,k,n:steps.length,next:nx?.name||""};
+    }
+    function planHTML(sp){
+      const p=planOf(sp);if(!p)return "";
+      const bump=performance.now()-(PLANBUMP.get(sp.id)||-1e4)<700;
+      return `<div class="plan-strip${bump?" bump":""}"><span class="ps-bar" aria-hidden="true">${p.steps.map(s=>`<i><b style="width:${Math.round(s.d*100)}%"></b></i>`).join("")}</span><span>${esc(T(`Plan ${p.k} of ${p.n}`,`План ${p.k} из ${p.n}`))}${p.next?` · ${esc(T("next","дальше"))}: <em>${esc(p.next)}</em>`:""}</span></div>`;
+    }
+    function compactHTML(m,on){
+      const r=rep(m),a=r.acts[0],bar=r.prog??(r.done>0&&r.done<1?r.done:null);
+      return `<div class="cp${on?" on":""}${r.alert?" alert":""}" role="button" tabindex="0" data-cid="${m.id}" aria-label="${esc(`${m.item}: ${r.v}`)}"><div class="cp-h">${tile(KIND_IC[m.kind]||"spark")}<span>${esc(m.item)}</span>${r.ok?`<i class="ok">${ic("tick")}</i>`:""}</div><div class="cp-v">${esc(r.v)}</div><div class="cp-l">${esc(r.l||"")}</div>${a?`<button type="button" class="cp-b${a.cls?" "+a.cls:""}" data-ca="${m.id}">${a.i?ic(a.i):""}<span>${esc(a.l)}</span></button>`:""}${bar!=null?`<div class="cp-p"><i style="width:${Math.round(clamp(bar,0,1)*100)}%"></i></div>`:""}</div>`;
+    }
+    function headline(sp){
+      const mods=sp.flows.flatMap(f=>f.modules);
+      const m=mods.find(x=>x._ask||(x.kind==="suggest"&&x.source!=="intent"&&!x.data.kept))||mods.find(x=>x.kind==="player"&&x.data.playing)||mods.find(x=>{const r=rep(x);return r.done!=null&&r.done<1})||mods[0];
+      if(!m)return "";const r=rep(m);return `${r.v}${r.l?` · ${r.l}`:""}`;
+    }
+    const SYSSP=new Map();
+    function spaceOf(id){
+      if(S?.id===id)return S;if(OPEN.has(id))return OPEN.get(id);if(SYSSP.has(id))return SYSSP.get(id);
+      if(!BP[id])return null;const sp=BP[id]();SYSSP.set(id,sp);return sp;
+    }
+    function enterSpace(id){
+      const live=OPEN.get(id),sp=live||spaceOf(id);if(!sp)return;
+      if(S===sp&&view==="space"){proj();return}
+      if(live){if(sp.auto&&!sp.autoDone)sp.autoArmed=false;openSpace(sp,{f:sp.f||0,m:sp.m||sp.flows.map(()=>0)});rearmAuto()}
+      else openSpace(sp);
+    }
+    function openFull(m,typing){
+      const loc=m&&findModule(m.id);if(!loc)return;
+      S.f=loc.fi;S.m[loc.fi]=loc.mi;
+      if(FF.dev==="phone")setSheet(true);
+      layout();renderHints();
+      if(typing)setTimeout(()=>cardOf(m)?.querySelector(".chat-form input")?.focus({preventScroll:true}),320);
+    }
+    function setSheet(on){
+      const h=document.documentElement;on=!!on&&FF.dev==="phone"&&!!S&&view==="space";
+      $("#space").style.removeProperty("--sh-dy");h.classList.remove("ph-drag");
+      if(h.classList.contains("ph-sheet")===on)return;
+      h.classList.toggle("ph-sheet",on);if(!on)closePalette();renderHints();if(on)requestAnimationFrame(layout);
+    }
+
+    let projRaf=0;
+    function proj(){if(!projRaf)projRaf=requestAnimationFrame(()=>{projRaf=0;projNow()})}
+    function projNow(){
+      const chip=$("#planChip");if(chip)morphHTML(chip,S&&view==="space"&&FF.dev==="desktop"?planHTML(S):"");
+      renderStack();renderHomeSpaces();renderCar();
+      if(switcherOn())renderSwitcher();
+    }
+    function renderStack(){
+      const el=$("#stack");if(!el)return;
+      if(!S||view!=="space"||(FF.dev!=="phone"&&FF.dev!=="tablet")){if(el.firstChild)el.innerHTML="";return}
+      const am=activeModule(),pl=planHTML(S);
+      morphHTML(el,`<div class="st-head">${pl||`<span class="st-t">${esc(S.title)}</span>`}</div>`+S.flows.map(fl=>`<div class="st-flow"><b>${esc(fl.name)}</b><span>${fl.modules.length}</span></div><div class="st-list">${fl.modules.map(m=>compactHTML(m,m===am)).join("")}</div>`).join(""));
+      if(el.dataset.am!==am?.id){el.dataset.am=am?.id||"";el.querySelector(".cp.on")?.scrollIntoView({block:"nearest",behavior:reduce.matches?"auto":"smooth"})}
+    }
+    function homeSpaceIds(){return SPACE_CAT.filter(s=>USER!=="guest"||s[3]).map(s=>s[0])}
+    function hsHTML(id){
+      const sp=spaceOf(id);if(!sp)return "";
+      return `<button type="button" class="hs" data-hs="${id}"><span class="hs-t">${tile(SPACE_IC[id]||"spark")}<span>${esc(sp.title)}</span></span><span class="hs-l">${esc(headline(sp))}</span>${planHTML(sp)}</button>`;
+    }
+    function renderHomeSpaces(){
+      const el=$("#homeSpaces");if(!el)return;
+      if(FF.dev!=="phone"&&FF.dev!=="tablet"){if(el.firstChild)el.innerHTML="";return}
+      morphHTML(el,`<div class="hs-label">${esc(T("Spaces","Пространства"))}</div><div class="hs-grid">${homeSpaceIds().map(hsHTML).join("")}</div>`);
+    }
+
+    /* ── car: deliberately reduced. The map is the hero, then the trip, what's playing and ONE card the OS picks; the mic is the way in.
+       Only driving kinds get a glance view; a module you hand off or ask for by voice is the exception. Spaces only by voice. ── */
+    const CAR={held:[],last:-1e4,card:null,cardT:0,evalT:0,tick:0,pin:null,pinT:0,landed:null,landedT:0,over:false,sayT:0,sayFn:null,demoT:0,demoDone:false,raf:0,mv:-1,ask:null,v:null,w:null,media:""};
+    const ROUTE=[[0,0],[0,-420],[560,-420],[560,-980],[1060,-980],[1060,-1500],[1640,-1500],[1640,-2120]];
+    const ROAD=[["Myasnitskaya St","Мясницкая улица"],["Chistoprudny Blvd","Чистопрудный бульвар"],["Pokrovka St","улица Покровка"],["Lyalin Ln","Лялин переулок"],["Zemlyanoy Val","улица Земляной Вал"],["Kazakova St","улица Казакова"],["Studio","Студия"]];
+    const RSEG=ROUTE.slice(1).map((b,i)=>{const a=ROUTE[i],dx=b[0]-a[0],dy=b[1]-a[1];return{a,dx,dy,len:Math.hypot(dx,dy),hd:Math.atan2(dx,-dy)*180/Math.PI}});
+    const RCUM=RSEG.reduce((acc,g)=>{acc.push(acc.at(-1)+g.len);return acc},[0]),RLEN=RCUM.at(-1);
+    const NAV={speed:14,t0:performance.now(),off:0,km0:12.4,stop:null,dest:["Studio","Студия"],hd:0,k:.86};
+    const CMW=736,CMH=648,AX=368,AY=440;
+    function navAt(s){let k=0;while(k<RSEG.length-1&&s>=RCUM[k+1])k++;const g=RSEG[k],t=(s-RCUM[k])/g.len;return{k,x:g.a[0]+g.dx*t,y:g.a[1]+g.dy*t,hd:g.hd,left:RCUM[k+1]-s}}
+    function turnOf(k){const a=RSEG[k],b=RSEG[k+1];if(!b)return "arrive";const c=a.dx*b.dy-a.dy*b.dx;return c>0?"right":c<0?"left":"straight"}
+    const TURN={right:'<path d="M8 21v-9a3 3 0 0 1 3-3h8M15 5l4 4-4 4"/>',left:'<path d="M16 21v-9a3 3 0 0 0-3-3H5M9 5 5 9l4 4"/>',straight:'<path d="M12 21V4M7 9l5-5 5 5"/>',arrive:'<path d="M12 21s-6-5.6-6-10a6 6 0 0 1 12 0c0 4.4-6 10-6 10z"/><circle cx="12" cy="11" r="2"/>'};
+    const turnSvg=(t,w=1.4)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${TURN[t]}</svg>`;
+    const turnWord=t=>({right:T("Turn right","Направо"),left:T("Turn left","Налево"),straight:T("Straight on","Прямо"),arrive:T("Arrive","Прибытие")})[t];
+    const kmFmt=n=>n.toFixed(1).replace(".",LANG==="ru"?",":".");
+    function distParts(m){if(m>=1000)return[kmFmt(m/1000),T("km","км")];if(m>=100)return[String(Math.round(m/10)*10),T("m","м")];return[String(Math.max(0,Math.round(m/5)*5)),T("m","м")]}
+    function navStats(){
+      const now=performance.now(),driven=NAV.off+(now-NAV.t0)/1000*NAV.speed,km=NAV.km0+(NAV.stop?1.1:0)-driven/1000;
+      if(km<1.2){NAV.t0=now;NAV.off=0;return navStats()}
+      const min=Math.max(1,Math.round(km/.52))+(NAV.stop?4:0),s=driven%RLEN;
+      return{s,p:navAt(s),km,min,arr:timeStr(new Date(Date.now()+min*60e3))};
+    }
+    function carMapSVG(){
+      const r=(()=>{let x=7;return()=>(x=(x*16807)%2147483647)/2147483647})();
+      let blocks="",bld="";
+      for(let x=-1260;x<2800;x+=140)for(let y=-2940;y<700;y+=140){if(r()<.07)continue;const w=r()<.2?266:126,h=r()<.15?266:126;blocks+=`M${x+7} ${y+7}h${w}v${h}h${-w}z`;
+        const cols=r()<.5?2:3,rows=r()<.5?2:3,bw=(w-12-(cols-1)*6)/cols,bh=(h-12-(rows-1)*6)/rows;
+        for(let i=0;i<cols;i++)for(let j=0;j<rows;j++){if(r()<.18)continue;const ww=bw*(.7+r()*.3),hh=bh*(.7+r()*.3);bld+=`M${(x+13+i*(bw+6)).toFixed(0)} ${(y+13+j*(bh+6)).toFixed(0)}h${ww.toFixed(0)}v${hh.toFixed(0)}h${(-ww).toFixed(0)}z`}}
+      const xs=[-560,0,560,1060,1640,2200],ys=[400,0,-420,-980,-1500,-2120,-2640];
+      const major=xs.map(x=>`M${x} -3000V800`).join("")+ys.map(y=>`M-1300 ${y}H2900`).join("");
+      const route="M"+ROUTE.map(p=>p.join(" ")).join("L");
+      const end=ROUTE.at(-1),stop=navAt(RCUM[3]+240);
+      return `<svg viewBox="0 0 ${CMW} ${CMH}" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="${CMW}" height="${CMH}" fill="#151a22"/><g class="car-world">`+
+        `<path d="${blocks}" fill="#0c0f14"/><path d="${bld}" fill="#141921" stroke="rgba(255,255,255,.035)" stroke-width="1.5"/>`+
+        `<path d="M-1300 -1180C-500 -1040 120 -1720 860 -1560S2000 -1960 2900 -1720" fill="none" stroke="#0c1624" stroke-width="96"/>`+
+        `<path d="M147 -833h266v266h-266zM1207 -2073h266v386h-266z" fill="#0d1914"/>`+
+        `<path d="${major}" stroke="#1c222c" stroke-width="20" fill="none"/>`+
+        `<path d="M-900 520L2700 -2700" stroke="#1a2029" stroke-width="26" fill="none"/>`+
+        `<path class="car-rt0" d="${route}" fill="none" stroke="rgba(160,170,190,.32)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>`+
+        `<path class="car-rt" d="${route}" fill="none" stroke="rgba(20,10,4,.7)" stroke-width="24" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="${RLEN} ${RLEN}"/>`+
+        `<path class="car-rt" d="${route}" fill="none" stroke="#f4ad5c" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="${RLEN} ${RLEN}"/>`+
+        `<g class="car-stop" transform="translate(${stop.x} ${stop.y})" opacity="0"><circle r="20" fill="#fff"/><circle r="8" fill="#f4ad5c"/></g>`+
+        `<g transform="translate(${end[0]} ${end[1]})"><circle r="30" fill="rgba(244,173,92,.2)"/><circle r="18" fill="#f4ad5c"/><circle r="7" fill="#1b1208"/></g>`+
+        `</g><g transform="translate(${AX} ${AY})"><circle class="car-puck-halo" r="30" fill="rgba(244,173,92,.45)"/><circle r="22" fill="#fff" stroke="rgba(0,0,0,.35)" stroke-width="2"/><path d="M0-11 9 9 0 4-9 9z" fill="#1b1208"/></g></svg>`;
+    }
+    function discSVG(pl){
+      const d=pl.data,hue=[14,30,352,206][(d.seed||0)%4],text=`${d.tracks[d.track][0]} · ${d.tracks[d.track][1]} · `.repeat(2).toUpperCase(),n=text.length;
+      return `<svg viewBox="0 0 152 152" aria-hidden="true"><circle cx="76" cy="76" r="76" fill="hsl(${hue} 70% 18%)"/><circle cx="76" cy="76" r="70" fill="hsl(${hue} 82% 42%)"/><circle cx="62" cy="58" r="48" fill="hsl(${(hue+24)%360} 92% 60%)" opacity=".55"/><circle cx="96" cy="100" r="40" fill="hsl(${(hue+340)%360} 80% 30%)" opacity=".6"/>`+
+        [60,52,44].map(r=>`<circle cx="76" cy="76" r="${r}" fill="none" stroke="rgba(0,0,0,.16)" stroke-width="1"/>`).join("")+
+        `<g fill="#ffe2bd" font-size="9" font-weight="500" letter-spacing=".5">${[...text].map((c,i)=>`<text x="76" y="15" text-anchor="middle" transform="rotate(${(i/n*360).toFixed(1)} 76 76)">${esc(c)}</text>`).join("")}</g>`+
+        `<circle cx="76" cy="76" r="24" fill="#f4ad5c"/><circle cx="76" cy="76" r="22" fill="hsl(${hue} 60% 14%)"/><circle cx="76" cy="76" r="5" fill="#07090d"/></svg>`;
+    }
+    function playerPool(){const out=[];spaceOf("music");new Set([...(S?[S]:[]),...OPEN.values(),...SYSSP.values()]).forEach(sp=>sp.flows.forEach(f=>f.modules.forEach(m=>{if(m.kind==="player")out.push(m)})));return out}
+    function carPlayer(){const pool=playerPool();return pool.find(m=>m.data.playing)||pool.find(m=>m.id===CAR.media)||pool[0]}
+    function liveMods(){const out=[];new Set([...(S?[S]:[]),...OPEN.values()]).forEach(sp=>sp.flows.forEach(f=>f.modules.forEach(m=>out.push({m,sp}))));return out}
+    function callOf(){
+      const cal=spaceOf("calendar")?.flows[0]?.modules[0];if(!cal)return null;
+      const h=nowH(),ev=cal.data.events.find(e=>isCall(e)&&e.e>h);if(!ev)return null;
+      return{cal,ev,secs:Math.round((ev.s*3600)-(h*3600+new Date().getSeconds()))};
+    }
+    function ruleName(sp){const r=(sp?.rules||[]).find(x=>x.auto);return r?r.text:""}
+    function carLand(m){CAR.landed=m.id;CAR.landedT=performance.now()}
+
+    function cardFrom(m,sp,o={}){
+      const r=rep(m);
+      return{key:o.key||m.id,m,ic:o.ic||KIND_IC[m.kind]||"spark",k:o.k||`${spShort(sp)} · ${m.item}`,v:o.v??r.v,l:o.l??r.l,ok:r.ok,count:o.count,why:o.why,acts:(o.acts||r.acts).filter(Boolean).slice(0,2),cls:o.cls??(r.alert?"alert":""),now:!!o.now};
+    }
+    function callCard(c,why,now){
+      const{ev,secs:s}=c,live=ev.joined||s<=0;
+      return{key:"call:"+ev.t,m:c.cal,ic:"phone",k:`${T("My day","Мой день")} · ${fmtH(ev.s)} – ${fmtH(ev.e)}`,v:ev.t,l:live?T("Voice only · music paused","Только голос · музыка на паузе"):"",
+        count:live?null:s<3600?[`${Math.floor(s/60)}<small>${esc(T("min","мин"))}</small> ${pad(s%60)}<small>${esc(T("s","с"))}</small>`,T("until it starts","до начала")]:[esc(minsText(Math.round(s/60))),T("until it starts","до начала")],why,
+        acts:ev.joined?[GA(T("Leave","Завершить"),"x",()=>{ev.joined=false;carSay(T("Call ended","Созвон завершён"),{icon:"phone"});proj()})]:[GA(T("Join","Подключиться"),"mic",()=>joinCall(ev.t,ev),"primary"),GA(T("Running late","Опоздаю"),"",()=>lateNote(ev))],now};
+    }
+    function msgCard(m,sp,why,now){
+      const d=m.data,last=[...d.msgs].reverse().find(x=>x[0]!=="me")||d.msgs.at(-1),un=chatUnread(d);
+      return cardFrom(m,sp,{key:"msg:"+m.id,ic:"chat",v:quote(last[1]),l:`${last[0]==="me"?T("You","Вы"):last[0]}${un?` · ${count(un,["new message","new messages"],["новое сообщение","новых сообщения","новых сообщений"])}`:""}`,why,
+        acts:[GA(T("Reply","Ответить"),"mic",()=>voiceReply(m),"primary"),GA(T("Listen","Прослушать"),"speaker",()=>readAloud(m))],cls:"",now});
+    }
+    function ruleCard(m,sp,now){
+      const rn=ruleName(sp);
+      return cardFrom(m,sp,{key:"rule:"+m.id,ic:"sun",k:`${spShort(sp)} · ${T("Weather","Погода")}`,why:rn?T("Why: your weather rule","Почему: ваше правило погоды"):T("Why: a rule fired","Почему: сработало правило"),cls:"alert",now});
+    }
+    function carCands(){
+      const out=[],t=performance.now();
+      const hm=HANDOFF?.dev==="car"&&findAny(HANDOFF.mid);
+      if(hm){const r=rep(hm.m);out.push(cardFrom(hm.m,hm.sp,{key:"hand:"+hm.m.id,k:contLabel(devOf("car")),cls:"hand",why:planWhy(hm.sp)||T(`Why: you sent it from ${devName(devOf(HANDOFF.from))}`,`Почему: вы передали с устройства «${devName(devOf(HANDOFF.from))}»`),acts:[r.acts[0],GA(T("Return","Вернуть"),"chevL",returnHandoff)],now:true}))}
+      const ld=CAR.landed&&findAny(CAR.landed);
+      if(ld){const r=rep(ld.m),age=t-CAR.landedT;
+        if(age<(r.ok?14000:60000))out.push(ld.m._ask||ld.m.kind==="suggest"?ruleCard(ld.m,ld.sp,true):cardFrom(ld.m,ld.sp,{key:"land:"+ld.m.id,why:planWhy(ld.sp)||T("Why: you asked by voice","Почему: вы попросили голосом"),now:true}));
+        else CAR.landed=null}
+      const lm=liveMods();
+      lm.filter(x=>x.m._ask).forEach(x=>out.push(ruleCard(x.m,x.sp,true)));
+      if(CAR.pin&&t-CAR.pinT<30000){
+        if(CAR.pin==="calls"){const c=callOf();if(c)out.push(callCard(c,T("Why: you opened calls","Почему: вы открыли звонки"),true))}
+        if(CAR.pin==="msgs"){const c=lm.find(x=>x.m.kind==="chat");if(c)out.push(msgCard(c.m,c.sp,T("Why: you opened messages","Почему: вы открыли сообщения"),true))}
+      }else CAR.pin=null;
+      const c=callOf();
+      if(c&&c.secs<=25*60)out.push(callCard(c,c.secs>0?T("Why: starts soon · My day","Почему: скоро начнётся · Мой день"):T("Why: happening now","Почему: идёт сейчас")));
+      lm.filter(x=>x.m.kind==="chat"&&chatUnread(x.m.data)).forEach(x=>out.push(msgCard(x.m,x.sp,T("Why: new message · I can read it aloud","Почему: новое сообщение · могу прочитать вслух"))));
+      if(S&&view==="space")lm.filter(x=>x.sp===S&&x.m.kind==="suggest"&&x.m.source!=="intent"&&!x.m.data.kept).forEach(x=>out.push(ruleCard(x.m,x.sp)));
+      if(c)out.push(callCard(c,T("Why: next on My day","Почему: дальше в «Моём дне»")));
+      const cal=spaceOf("calendar")?.flows[0]?.modules[0];
+      if(cal&&nextEvent(cal.data))out.push(cardFrom(cal,spaceOf("calendar"),{key:"cal",why:T("Why: next on My day","Почему: дальше в «Моём дне»"),cls:""}));
+      const n=navStats();
+      out.push({key:"clear",ic:"pin",k:T(...NAV.dest),v:T("Clear road ahead","Дорога свободна"),l:T(`No traffic · arriving ${n.arr}`,`Без пробок · прибытие в ${n.arr}`),why:T("Why: nothing else needs you","Почему: больше ничего не требует внимания"),acts:[]});
+      return out;
+    }
+    function planWhy(sp){const p=planOf(sp);return p?T(`Plan ${p.k} of ${p.n}${p.next?` · next: ${p.next}`:""}`,`План ${p.k} из ${p.n}${p.next?` · дальше: ${p.next}`:""}`):""}
+    function carCardHTML(c){
+      const ok=c.ok&&c.cls!=="alert";
+      return `<div class="car-k">${tile(c.ic)}<span>${esc(c.k)}</span></div><div class="car-body"><div class="car-v">${ok?ic("tick"):""}${esc(c.v)}</div>${c.l?`<div class="car-l">${esc(c.l)}</div>`:""}${c.count?`<div class="car-cd"><b>${c.count[0]}</b><span>${esc(c.count[1])}</span></div>`:""}</div>`+
+        (c.why?`<p class="car-why">${ic("sparkle")}<span>${esc(c.why)}</span></p>`:"")+
+        (c.acts.length?`<div class="car-a">${c.acts.map((a,k)=>`<button type="button" class="car-b${a.cls?" "+a.cls:""}" data-ga="${k}">${a.i?ic(a.i):""}<span>${esc(a.l)}</span></button>`).join("")}</div>`:"");
+    }
+    /* one card at a time: it changes at most every 10 s, unless you asked for something or something urgent happened */
+    function carEval(force){
+      const col=CAR.w?.col;if(!col)return;
+      const list=carCands(),t=performance.now(),top=list[0];
+      const cur=CAR.card&&list.find(c=>c.key===CAR.card.key);
+      let pick=top;
+      if(cur&&top.key!==cur.key&&!top.now&&!force&&t-CAR.cardT<10000)pick=cur;
+      if(!CAR.card||pick.key!==CAR.card.key){CAR.cardT=t;carSwap(col,pick)}
+      else{const el=col.querySelector(".car-card:not(.out)");if(el){morphHTML(el,carCardHTML(pick));el.className=`car-tile car-card${pick.cls?" "+pick.cls:""}`}}
+      CAR.card=pick;
+    }
+    function carSwap(col,c){
+      const old=col.querySelector(".car-card:not(.out)"),calm=reduce.matches||!old;
+      const el=document.createElement("article");el.className=`car-tile car-card${c.cls?" "+c.cls:""}`;el.setAttribute("aria-live","polite");el.innerHTML=carCardHTML(c);
+      if(old){old.classList.add("out");old.removeAttribute("aria-live");
+        old.animate(reduce.matches?[{opacity:1},{opacity:0}]:[{opacity:1,transform:"none"},{opacity:0,transform:"translateX(24px) scale(.98)"}],{duration:180,easing:"cubic-bezier(.4,0,1,1)",fill:"forwards"}).onfinish=()=>old.remove()}
+      col.append(el);
+      if(!calm||old)el.animate(reduce.matches?[{opacity:0},{opacity:1}]:[{opacity:0,transform:"translateX(32px)"},{opacity:1,transform:"none"}],{duration:320,delay:old?90:0,easing:"cubic-bezier(.2,.8,.2,1)",fill:"backwards"});
+    }
+    function carMount(el){
+      el.dataset.on="1";
+      el.innerHTML=`<header class="car-strip"></header><nav class="car-rail"></nav>`+
+        `<section class="car-hero"><div class="car-map">${carMapSVG()}</div><div class="car-mv"><div class="car-mv-in"><span class="car-mv-a"></span><div class="car-mv-d"></div><div class="car-mv-s"></div><div class="car-mv-n"></div></div></div><div class="car-say" role="status"></div></section>`+
+        `<aside class="car-side"><section class="car-tile car-eta"></section><section class="car-tile car-media"></section><div class="car-col"></div></aside>`+
+        `<div class="car-voice" role="dialog" aria-modal="true"></div><div class="car-ask" role="dialog" aria-modal="true"></div>`;
+      CAR.w={world:el.querySelector(".car-world"),ahead:[...el.querySelectorAll(".car-rt")],stop:el.querySelector(".car-stop"),mv:el.querySelector(".car-mv"),mvIn:el.querySelector(".car-mv-in"),
+        strip:el.querySelector(".car-strip"),rail:el.querySelector(".car-rail"),eta:el.querySelector(".car-eta"),media:el.querySelector(".car-media"),col:el.querySelector(".car-col"),say:el.querySelector(".car-say"),voice:el.querySelector(".car-voice"),ask:el.querySelector(".car-ask")};
+      CAR.mv=-1;CAR.card=null;
+    }
+    function carStripHTML(){
+      const sp=S&&view==="space"?S:null,p=sp&&planOf(sp),n=CAR.held.length;
+      return `<span class="car-time" id="carTime">${esc(timeStr(new Date()))}</span><span class="car-wx">${$("#wxIco").innerHTML}<span>${esc($("#wxTemp").textContent)}</span></span><i class="car-dot"></i><span class="car-sp">${esc(sp?spShort(sp):T("Driving","В пути"))}</span>${p?`<span class="car-plan">${esc(T(`Plan ${p.k} of ${p.n}`,`План ${p.k} из ${p.n}`))}</span>`:""}<span class="car-gap"></span>`+
+        `<button type="button" class="car-held" data-cx="held"${n?"":" hidden"}>${ic("bell")}<span>${esc(T(`${n} held`,`Ждут: ${n}`))}</span></button>`;
+    }
+    function carRailHTML(){
+      const un=liveMods().filter(x=>x.m.kind==="chat").reduce((a,x)=>a+chatUnread(x.m.data),0);
+      const b=(k,i,l,on,badge="")=>`<button type="button" class="car-rb${on?" on":""}" data-cx="${k}" aria-label="${esc(l)}" title="${esc(l)}"${on?' aria-pressed="true"':""}>${ic(i)}${badge}</button>`;
+      return b("nav","locate",CAR.over?T("Back to my position","К моему положению"):T("Route overview","Обзор маршрута"),!CAR.pin)+
+        b("calls","phone",T("Calls","Звонки"),CAR.pin==="calls")+
+        b("msgs","chat",T("Messages","Сообщения"),CAR.pin==="msgs",un?`<em>${un}</em>`:"")+
+        `<span class="car-rgap"></span><button type="button" class="car-orb" data-cx="mic" aria-label="${esc(T("Speak","Сказать"))}" title="${esc(T("Speak","Сказать"))}">${ic("mic")}</button>`;
+    }
+    function carEtaHTML(n){
+      const dest=T(...NAV.dest);
+      return `<div class="car-eta-h">${ic("pin")}<span>${esc(dest)} · ${esc(kmFmt(n.km))} ${esc(T("km","км"))}${NAV.stop?` · ${esc(T("via","через"))} ${esc(NAV.stop)}`:` · ${esc(T("no traffic","без пробок"))}`}</span></div><div class="car-eta-r">`+
+        `<div class="car-n"><b>${n.min}<small>${esc(T("min","мин"))}</small></b><span>${esc(T("on the way","в пути"))}</span></div>`+
+        `<div class="car-n up"><b>${esc(n.arr)}</b><span>${esc(T("arrival","прибытие"))}</span></div></div>`;
+    }
+    function carMediaHTML(pl){
+      const d=pl.data,tr=d.tracks[d.track],dur=secs(tr[2]);
+      return `<div class="car-disc${d.playing?" on":""}" data-tr="${d.track}">${discSVG(pl)}</div><div class="car-mi"><span class="car-mi-k">${esc(d.playing?T("Now playing","Сейчас играет"):T("Paused","На паузе"))}</span><b>${esc(tr[0])}</b><span>${esc(tr[1])}</span>`+
+        `<div class="car-pr"><i style="width:${(d.t/dur*100).toFixed(2)}%"></i></div><div class="car-pt"><span>${esc(fmtS(d.t))}</span><span>−${esc(fmtS(Math.max(0,dur-d.t)))}</span></div>`+
+        `<div class="car-mc"><button type="button" class="car-mb" data-cx="prev" aria-label="${esc(T("Previous","Назад"))}">${ic("prev")}</button><button type="button" class="car-mb pp" data-cx="pp" aria-label="${esc(d.playing?T("Pause","Пауза"):T("Play","Играть"))}">${ic(d.playing?"pause":"play")}</button><button type="button" class="car-mb" data-cx="next" aria-label="${esc(T("Next","Дальше"))}">${ic("next")}</button></div></div>`;
+    }
+    function carMedia(){
+      const pl=carPlayer(),box=CAR.w?.media;if(!pl||!box)return;CAR.media=pl.id;
+      const disc=box.querySelector(".car-disc");
+      if(!disc||disc.dataset.tr!==String(pl.data.track)||box.dataset.id!==pl.id){box.dataset.id=pl.id;box.innerHTML=carMediaHTML(pl);return}
+      const d=pl.data,tr=d.tracks[d.track],dur=secs(tr[2]);
+      disc.classList.toggle("on",!!d.playing);
+      box.querySelector(".car-pr i").style.width=(d.t/dur*100).toFixed(2)+"%";
+      const [a,b]=box.querySelectorAll(".car-pt span");a.textContent=fmtS(d.t);b.textContent="−"+fmtS(Math.max(0,dur-d.t));
+      const k=box.querySelector(".car-mi-k"),kt=d.playing?T("Now playing","Сейчас играет"):T("Paused","На паузе");if(k.textContent!==kt)k.textContent=kt;
+      const pp=box.querySelector(".pp");if(pp.dataset.p!==String(!!d.playing)){pp.dataset.p=String(!!d.playing);pp.innerHTML=ic(d.playing?"pause":"play");pp.setAttribute("aria-label",d.playing?T("Pause","Пауза"):T("Play","Играть"))}
+    }
+    function carMoveText(n){
+      const w=CAR.w,k=n.p.k,t=turnOf(k),[num,unit]=distParts(n.p.left),road=T(...ROAD[k+1]),t2=turnOf(k+1);
+      const fill=()=>{
+        w.mvIn.querySelector(".car-mv-a").innerHTML=turnSvg(t);
+        w.mvIn.querySelector(".car-mv-s").innerHTML=`${esc(turnWord(t))} · <em>${esc(road)}</em>`;
+        w.mvIn.querySelector(".car-mv-n").innerHTML=k+2<ROAD.length?`${turnSvg(t2,1.8)}<span>${esc(T("Then","Затем"))} ${esc(turnWord(t2).toLowerCase())} · ${esc(T(...ROAD[k+2]))}</span>`:`${turnSvg("arrive",1.8)}<span>${esc(T("Then you arrive","Затем прибытие"))}</span>`;
+      };
+      const d=w.mvIn.querySelector(".car-mv-d"),dt=`${num}<small>${esc(unit)}</small>`;
+      if(CAR.mv!==k||w.mvIn.dataset.l!==LANG){const first=CAR.mv<0||w.mvIn.dataset.l!==LANG;CAR.mv=k;w.mvIn.dataset.l=LANG;
+        if(first){fill();d.innerHTML=dt}
+        else{const el=w.mv,calm=reduce.matches;
+          el.animate(calm?[{opacity:1},{opacity:0}]:[{transform:"perspective(800px) rotateX(0)",opacity:1},{transform:"perspective(800px) rotateX(-75deg)",opacity:0}],{duration:160,easing:"cubic-bezier(.4,0,1,1)"}).onfinish=()=>{fill();d.innerHTML=dt;
+            el.animate(calm?[{opacity:0},{opacity:1}]:[{transform:"perspective(800px) rotateX(75deg)",opacity:0},{transform:"none",opacity:1}],{duration:280,easing:"cubic-bezier(.2,.8,.2,1)"})}}
+        return}
+      if(d.innerHTML!==dt)d.innerHTML=dt;
+    }
+    function carFrame(now,dt){
+      const w=CAR.w;if(!w)return;
+      const n=navStats(),p=n.p,kT=CAR.over?.34:.86;
+      if(reduce.matches){NAV.hd=p.hd;NAV.k=kT}
+      else{NAV.k+=(kT-NAV.k)*Math.min(1,dt*4);NAV.hd+=(((p.hd-NAV.hd+540)%360)-180)*Math.min(1,dt*3)}
+      w.world.setAttribute("transform",`translate(${AX} ${AY}) rotate(${(-NAV.hd).toFixed(2)}) scale(${NAV.k.toFixed(3)}) translate(${(-p.x).toFixed(1)} ${(-p.y).toFixed(1)})`);
+      const off=(-n.s).toFixed(1);w.ahead.forEach(e=>e.setAttribute("stroke-dashoffset",off));
+      if(now-CAR.tick>250){CAR.tick=now;carMoveText(n);w.stop.setAttribute("opacity",NAV.stop?"1":"0");
+        const eta=carEtaHTML(n);if(w.eta._h!==eta){w.eta._h=eta;morphHTML(w.eta,eta)}
+        carMedia()}
+      if(now-CAR.evalT>1000){CAR.evalT=now;carEval()}
+    }
+    function carLoop(){
+      if(CAR.raf||FF.dev!=="car")return;let last=performance.now();
+      const step=now=>{if(FF.dev!=="car"){CAR.raf=0;return}CAR.raf=requestAnimationFrame(step);const dt=Math.min(.1,(now-last)/1000);last=now;carFrame(now,dt)};
+      CAR.raf=requestAnimationFrame(step);
+    }
+    function carStop(){cancelAnimationFrame(CAR.raf);CAR.raf=0}
     function renderCar(){
-      const el=$("#car");if(!el||FF.dev!=="car")return;
-      const o=carModel(),inSpace=!!(S&&view==="space");CAR_ACTS=o.acts;
-      const fl=inSpace?S.flows[S.f]:null,dots=fl&&fl.modules.length>1?`<div class="car-dots" aria-hidden="true">${fl.modules.map((_,i)=>`<i class="${i===S.m[S.f]?"on":""}"></i>`).join("")}</div>`:"";
-      morphHTML(el,`<div class="car-top"><span class="car-time" id="carTime">${esc(timeStr(new Date()))}</span><span class="car-wx">${$("#wxIco").innerHTML}<span>${esc($("#wxTemp").textContent)}</span></span><span class="car-sp">${esc(inSpace?S.title:"")}</span></div>`+
-        `<div class="car-main${o.route?" route":""}">${o.route?`<div class="car-route" aria-hidden="true">${ROUTE_SVG}</div>`:""}<div class="car-txt"><div class="car-kind">${tile(o.icon)}<span>${esc(o.kind)}</span></div><b class="car-title">${esc(o.title)}</b><span class="car-sub">${esc(o.sub)}</span>${o.prog!=null?`<div class="car-prog"><i style="width:${Math.round(clamp(o.prog,0,1)*100)}%"></i></div>`:""}</div>${dots}</div>`+
-        `<div class="car-acts">${o.acts.map(([i,k,l],n)=>`<button type="button" class="car-btn${n===0?" car-voice":""}" data-car="${n}">${ic(i)}<span>${esc(l)}</span></button>`).join("")}</div>`);
-      el.classList.toggle("in-space",inSpace);
+      const el=$("#car");if(!el)return;
+      if(FF.dev!=="car")return;
+      if(!el.dataset.on)carMount(el);
+      morphHTML(CAR.w.strip,carStripHTML());morphHTML(CAR.w.rail,carRailHTML());
+      carEval();carFrame(performance.now(),0);carLoop();
+    }
+    /* entering: the screen darkens over 400 ms, the map fades in, the tiles follow 40 ms apart */
+    function carEnter(){
+      const el=$("#car");if(!el||!CAR.w)return;
+      const calm=reduce.matches,ease="cubic-bezier(.2,.8,.2,1)";
+      el.animate([{opacity:0},{opacity:1}],{duration:calm?200:400,easing:"ease-out"});
+      if(calm)return;
+      el.querySelector(".car-map").animate([{opacity:0,transform:"scale(1.04)"},{opacity:1,transform:"none"}],{duration:520,delay:120,easing:ease,fill:"backwards"});
+      [CAR.w.strip,CAR.w.rail,CAR.w.mv,CAR.w.eta,CAR.w.media,CAR.w.col].forEach((n,i)=>n.animate([{opacity:0,transform:"translateY(10px)"},{opacity:1,transform:"none"}],{duration:320,delay:180+i*40,easing:ease,fill:"backwards"}));
+    }
+    function carSay(text,o={}){
+      const el=CAR.w?.say;if(!el)return;
+      el.classList.toggle("urgent",!!o.urgent);
+      el.innerHTML=`${ic(o.icon||"speaker")}<span>${esc(text)}</span>${o.action?`<button type="button" class="car-b primary" data-cx="say">${esc(o.action)}</button>`:""}`;
+      CAR.sayFn=o.fn||null;el.classList.add("on");
+      clearTimeout(CAR.sayT);CAR.sayT=setTimeout(()=>{el.classList.remove("on");CAR.sayFn=null},o.ms||(o.action?7000:4200));
+    }
+    /* while driving, notifications you didn't just cause wait; urgent ones speak */
+    function carToast(text,action,fn,meta={}){
+      if(meta.log!==false)logNotif(text,meta);
+      if(meta.level==="quiet")return;
+      const urgent=meta.level==="urgent",mine=performance.now()-CAR.last<3500;
+      if(!urgent&&(meta.hold||!mine)){CAR.held.push({text,ts:Date.now()});renderCar();return}
+      carSay(text,{action,fn,urgent,icon:urgent?"bell":"speaker"});
+    }
+    function carArm(){
+      clearTimeout(CAR.demoT);if(CAR.demoDone)return;
+      CAR.demoT=setTimeout(()=>{if(FF.dev!=="car")return;CAR.demoDone=true;showToast(T("Sofia Reyes: Sent the receipt to accounting.","Софья Рейес: Отправила чек в бухгалтерию."),null,null,{hold:true,space:T("Review Inbox","Разобрать входящие")})},8000);
+    }
+    function carIn(){CAR.card=null;CAR.mv=-1;CAR.pin=null;CAR.over=false;carArm()}
+    function carOut(){
+      carStop();clearTimeout(CAR.demoT);carVoiceClose();
+      const q=CAR.ask;if(q){CAR.ask=null;CAR.w?.ask.classList.remove("on");openSheet(q)}
+      liveMods().forEach(({m})=>{const a=m._ask;if(a){delete m._ask;sheetForCollab(a.spec,m,a.act)}});
+      const n=CAR.held.length;CAR.held=[];
+      if(n)setTimeout(()=>showToast(T(`While you were driving: ${n}`,`Пока вы ехали: ${n}`),T("Show","Показать"),()=>showNotifs(true),{log:false}),500);
+    }
+    /* spoken confirmation: big Yes / No, the question is read aloud */
+    function carConfirm(spec){
+      const box=CAR.w?.ask;if(!box){spec.once?.();return}
+      CAR.ask=spec;
+      box.innerHTML=`<div class="car-ask-card"><div class="car-ask-say"><span class="car-wave" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>${esc(T("Say “yes” or “no”, or tap","Скажите «да» или «нет» либо нажмите"))}</span></div><h2>${esc(spec.title)}</h2><p>${esc(T("Spoken confirmation · Car","Голосовое подтверждение · Авто"))}</p><div class="car-ask-a"><button type="button" class="car-b" data-cq="no">${esc(T("No","Нет"))}</button><button type="button" class="car-b primary" data-cq="yes">${esc(T("Yes","Да"))}</button></div></div>`;
+      box.classList.add("on");setTimeout(()=>box.querySelector('[data-cq="yes"]')?.focus({preventScroll:true}),60);
+    }
+    function carAnswer(yes){
+      const s=CAR.ask;if(!s)return;CAR.ask=null;CAR.w.ask.classList.remove("on");CAR.last=performance.now();
+      if(yes)s.once?.();else if(s.kind==="device")s.deny?.();
+      proj();
+    }
+    /* voice: listening (live transcript) → thinking → speaking, then the result lands as the card */
+    function carVoiceClose(){const v=CAR.v;if(v){v.tm.forEach(clearTimeout);v.iv.forEach(clearInterval);CAR.v=null}CAR.w?.voice.classList.remove("on","listening","thinking","speaking")}
+    function carVoice(pre){
+      const box=CAR.w?.voice;if(!box)return;carVoiceClose();
+      const opts=pre?[pre]:carIntents(),v=CAR.v={tm:[],iv:[],opts,done:false};
+      box.className="car-voice on listening";
+      box.innerHTML=`<div class="car-vo" aria-hidden="true"><span class="car-vb"><i></i><i></i><i></i><i></i><i></i></span></div><div class="car-vs" id="carVs">${esc(T("Listening…","Слушаю…"))}</div><p class="car-vt" id="carVt" data-ph="${esc(T("Say what you need","Скажите, что нужно"))}"></p><p class="car-va" id="carVa"></p>`+
+        `<div class="car-vc">${pre?"":opts.slice(0,3).map((o,i)=>`<button type="button" class="car-chip" data-vi="${i}">${esc(o.say)}</button>`).join("")}</div><button type="button" class="car-b car-x" data-cx="vclose">${ic("x")}<span>${esc(T("Cancel","Отмена"))}</span></button>`;
+      v.tm.push(setTimeout(()=>carHear(0),pre?500:6000));
+    }
+    function carHear(i){
+      const v=CAR.v,box=CAR.w?.voice;if(!v||v.done||!box)return;v.done=true;
+      const o=v.opts[i];if(!o){carVoiceClose();return}
+      box.querySelector(".car-vc").innerHTML="";
+      const tx=box.querySelector("#carVt");tx.classList.add("typing");let k=0;
+      v.iv.push(setInterval(()=>{tx.textContent=o.say.slice(0,++k);if(k<o.say.length)return;clearInterval(v.iv.pop());tx.classList.remove("typing");
+        box.classList.replace("listening","thinking");box.querySelector("#carVs").textContent=T("Thinking…","Думаю…");
+        v.tm.push(setTimeout(()=>{
+          box.classList.replace("thinking","speaking");box.querySelector("#carVs").textContent=T("Speaking","Отвечаю");
+          const an=box.querySelector("#carVa"),words=(o.ans||"").split(" ");an.innerHTML=words.map(w=>`<i>${esc(w)} </i>`).join("");
+          [...an.children].forEach((w,j)=>v.tm.push(setTimeout(()=>w.classList.add("on"),j*110)));
+          v.tm.push(setTimeout(()=>{carVoiceClose();CAR.last=performance.now();o.run?.();proj()},words.length*110+700));
+        },620));
+      },38));
+    }
+    function carOpenSpace(id){
+      enterSpace(id);
+      if(S?.id!==id)return;
+      if(S.auto&&!S.autoDone){clearTimeout(autoTimer);S.autoArmed=false;collaboratorAdds(id)}
+      const mods=allModules(),m=mods.find(x=>x._ask)||mods.find(x=>x.kind==="suggest"&&x.source!=="intent"&&!x.data.kept)||mods.find(x=>x.kind==="chat"&&chatUnread(x.data))||mods.find(x=>x.kind==="player")||mods.find(x=>x.kind==="map");
+      if(m)carLand(m);
+    }
+    function carIntents(){
+      const inS=S&&view==="space",mods=inS?allModules():[],out=[];
+      const ask=mods.find(m=>m._ask);
+      if(ask)out.push({say:T("Yes, swap the days","Да, поменяй дни"),ans:T("Done. The museum moves to Saturday.","Готово. Музей переносится на субботу."),run:()=>ask._ask?.yes()});
+      const opt=mods.find(m=>m.kind==="options"&&!m.data.booked);
+      if(opt){const i=bestOpt(opt.data),o=opt.data.opts[i];out.push({say:T(`Book ${o.t.split(" ")[0]}`,`Забронируй ${o.t.split(" ")[0]}`),ans:T(`${o.t}, ${o.p}, direct. Please confirm.`,`${o.t}, ${o.p}, прямой. Подтвердите.`),run:()=>{opt.data.sel=i;carLand(opt);runDo(opt,"book")}})}
+      if(S?.id!=="trip")out.push({say:T("Open Lisbon","Открой Лиссабон"),ans:T("Opening Lisbon. One thing needs you.","Открываю «Лиссабон». Одно требует внимания."),run:()=>carOpenSpace("trip")});
+      const chat=mods.find(m=>m.kind==="chat"&&chatUnread(m.data));
+      if(chat)out.push(voiceReplySpec(chat));
+      const c=callOf();
+      out.push({say:T("What’s next?","Что у меня дальше?"),ans:c?T(`${c.ev.t} at ${fmtH(c.ev.s)}.`,`${c.ev.t} в ${fmtH(c.ev.s)}.`):T("Nothing else today.","Сегодня больше ничего."),run:()=>{CAR.pin="calls";CAR.pinT=performance.now()}});
+      if(!NAV.stop)out.push({say:T("Add a coffee stop","Добавь остановку: кофе"),ans:T("Coffeemania on the way, plus 6 minutes.","«Кофемания» по пути, плюс 6 минут."),run:()=>{NAV.stop=T("Coffeemania","«Кофемания»");renderCar()}});
+      if(S?.id!=="calendar")out.push({say:T("Open My day","Открой «Мой день»"),ans:T("Opening My day.","Открываю «Мой день»."),run:()=>carOpenSpace("calendar")});
+      return out;
+    }
+    function voiceReplySpec(m){
+      const n=navStats().min,text=T(`On my way, there in ${n} minutes.`,`Еду, буду через ${n} ${count(n,["minute","minutes"],["минуту","минуты","минут"])}.`);
+      return{say:T(`Reply: “${text}”`,`Ответь: «${text}»`),ans:T(`Send to ${m.item}?`,`Отправить в «${m.item}»?`),run:()=>{
+        carLand(m);
+        askDevice(T(`Send to ${m.item}: “${text}”`,`Отправить в «${m.item}»: «${text}»`),()=>{m.data.msgs.push(["me",text]);m.data.read=true;refresh(m,false);showToast(T(`Sent to ${m.item}`,`Отправлено: ${m.item}`));profNote("done",{svc:"messages",intent:"send",min:2})},"send");
+      }};
+    }
+    function voiceReply(m){if(inCar())carVoice(voiceReplySpec(m));else openFull(m,true)}
+    function lateNote(ev){
+      const text=T("Running 5 minutes late, start without me.","Опаздываю на 5 минут, начинайте без меня.");
+      carVoice({say:T("Tell Leo I’m running late","Скажи Лео, что опаздываю"),ans:T(`“${text}” Send?`,`«${text}» Отправить?`),run:()=>askDevice(T(`Send to Leo: “${text}”`,`Отправить Лео: «${text}»`),()=>{showToast(T("Sent to Leo","Отправлено Лео"));profNote("done",{svc:"messages",intent:"send",min:1})},"send")});
+    }
+    function readAloud(m){
+      const d=m.data,lines=m.kind==="chat"?d.msgs.slice(-2).map(([w,t])=>`${w==="me"?T("You","Вы"):w}: ${t}`):[(d.paras||[])[0]||m.item];
+      if(m.kind==="chat"){d.read=true;proj()}
+      lines.forEach((t,i)=>setTimeout(()=>carSay(t,{icon:"speaker",ms:2600}),i*2700));
+    }
+    function joinCall(title,ev){
+      if(ev)ev.joined=true;
+      const paused=playerPool().filter(p=>p.data.playing);paused.forEach(p=>{p.data.playing=false;refresh(p,false)});
+      const t=T(`Joined “${title}” · voice only`,`Подключено: «${title}» · только голос`)+(paused.length?T(" · music paused by your rule"," · музыка на паузе по правилу"):"");
+      if(inCar())carSay(t,{icon:"phone"});else showToast(t);
+      proj();
+    }
+    function routeTo(name){NAV.dest=[name,name];NAV.km0=7.8;NAV.off=0;NAV.t0=performance.now();carSay(T(`Route to ${name} · 15 min`,`Маршрут: ${name} · 15 мин`),{icon:"pin"});renderCar()}
+    function carClick(e){
+      const t=e.target.closest("[data-ga],[data-cx],[data-cq],[data-vi]");if(!t)return;
+      CAR.last=performance.now();
+      if(t.dataset.ga!=null){const c=CAR.card;c?.acts[+t.dataset.ga]?.run();proj();return}
+      if(t.dataset.cq){carAnswer(t.dataset.cq==="yes");return}
+      if(t.dataset.vi!=null){carHear(+t.dataset.vi);return}
+      const x=t.dataset.cx,pl=carPlayer();
+      if(x==="mic")carVoice();
+      else if(x==="vclose")carVoiceClose();
+      else if(x==="nav"){if(CAR.pin){CAR.pin=null;carEval(true)}else CAR.over=!CAR.over;renderCar()}
+      else if(x==="calls"||x==="msgs"){CAR.pin=CAR.pin===x?null:x;CAR.pinT=performance.now();const before=CAR.card?.key;carEval(true);if(CAR.pin&&CAR.card?.key===before&&!CAR.card.key.startsWith(x==="calls"?"call":"msg"))carSay(x==="calls"?T("No calls coming up","Звонков не ожидается"):T("No new messages","Новых сообщений нет"),{icon:x==="calls"?"phone":"chat"});renderCar()}
+      else if(x==="held"){const n=CAR.held.length;carSay(n?T(`${n} waiting · I’ll show them when you leave the car`,`Ждут: ${n} · покажу, когда выйдете из машины`):T("Nothing is waiting","Ничего не ждёт"),{icon:"bell"})}
+      else if(x==="say"){const f=CAR.sayFn;CAR.sayFn=null;CAR.w.say.classList.remove("on");f?.()}
+      else if(pl&&(x==="pp"||x==="next"||x==="prev")){const d=pl.data;if(x==="pp")d.playing=!d.playing;else{d.track=(d.track+(x==="next"?1:d.tracks.length-1))%d.tracks.length;d.t=0}refresh(pl,false);carMedia()}
+    }
+    function carEsc(){
+      if(!inCar())return false;
+      if(CAR.ask){carAnswer(false);return true}
+      if(CAR.v||CAR.w?.voice.classList.contains("on")){carVoiceClose();return true}
+      return false;
+    }
+    /* today's calendar carries a real call 10–25 minutes from now, so every device counts down to the same event */
+    function todayCal(){
+      const h=nowH(),call=Math.min(23.25,Math.ceil((h+10/60)*4)/4);
+      const events=[{s:11,e:12,t:T("Coffee with Maya","Кофе с Майей"),w:"Fábrica Coffee"},{s:13,e:14.5,t:T("Meeting with Leo","Встреча с Лео"),w:T("Studio","Студия")},{s:16,e:16.75,t:T("Design critique","Дизайн-критика"),w:T("Studio, room 2","Студия, переговорка 2")},{s:call,e:call+.5,t:T("Call with Leo","Созвон с Лео"),w:T("Call","Созвон")}].sort((a,b)=>a.s-b.s);
+      return{title:T("Today · 4 events","Сегодня · 4 события"),range:[Math.min(9,Math.floor(call)),Math.max(18,Math.ceil(call+.5))],now:h,events};
     }
     function holdSpace(bp){
       if(!bp?.id)return bp;
-      const prev=OPEN.get(bp.id);
+      const prev=OPEN.get(bp.id)||SYSSP.get(bp.id);
       RECENTS=RECENTS.filter(id=>id!==bp.id);RECENTS.unshift(bp.id);
-      if(prev&&prev!==bp)return prev;
-      OPEN.set(bp.id,bp);return bp;
+      if(prev&&prev!==bp){OPEN.set(bp.id,prev);return prev}
+      OPEN.set(bp.id,bp);SYSSP.set(bp.id,bp);return bp;
     }
     const PORTRAIT="/img/portrait.jpg";
     function mePhoto(){return USER==="guest"?`<span class="me-photo letter">G</span>`:`<span class="me-photo"><img src="${PORTRAIT}" alt=""></span>`}
@@ -4019,6 +4795,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       return T("Show the overview","Покажи обзор");
     }
     function openVoice(opts={}){
+      if(FF.dev==="car"){carVoice();return}
       setMenu(false);setWx(false);
       const phrase=opts.from==="home"?T("Plan a trip to Lisbon","Спланировать поездку в Лиссабон"):voicePhrase();
       const risky=opts.from!=="home"&&/send|отправ|book|брон/i.test(phrase);
@@ -4071,6 +4848,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       renderSpace();if(overviewOpen)renderOverview();
     }
     function openSheet(spec){
+      if(FF.dev==="car"){carConfirm(spec);return}
       setWx(false);setMenu(false);
       if(SHEET&&spec.kind==="device"){sheetQ.unshift(SHEET);SHEET=null}
       else if(SHEET){sheetQ.push(spec);return}
@@ -4100,6 +4878,10 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         }else if((act==="move"||act==="send")&&mod?.data?.deviceApply)DO.approvePlan(mod);
         else showToast(T("Kept","Оставлено"));
       };
+      if(FF.dev==="car"&&mod){
+        mod._ask={spec,act,yes(){delete mod._ask;CAR.last=performance.now();carLand(mod);apply();proj()},no(){delete mod._ask;mod.data.kept=true;CAR.last=performance.now();carSay(T("Kept the plan as it is","План без изменений"),{icon:"tick"});proj()}};
+        carLand(mod);carSay(`${wantTitle(spec.who,spec.act)}. ${T("Say “yes” or tap","Скажите «да» или нажмите")}`,{action:T("Yes","Да"),fn:()=>mod._ask?.yes(),icon:"sun",ms:9000});proj();return;
+      }
       openSheet({kind:"perm",key,who:spec.who,title:wantTitle(spec.who,spec.act),detail:mod?.data?.note||mod?.data?.impact||mod?.item||"",
         once:apply,
         always(){setPerm(S?"space":"global",key,"allow");renderWindows();apply()},
@@ -4125,7 +4907,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         const title=e.live?e.live.title:T(e.cat[1],e.cat[2]);
         const sub=e.live?e.live.flows.map(f=>f.name).slice(0,3).join(" · "):T("Not opened yet","Ещё не открыто");
         const badge=swBadge(e.live);
-        return `<article class="sw-card${S?.id===e.id?" cur":""}${i===swIndex?" sel":""}" data-open="${e.id}"><b>${esc(title)}</b><small>${esc(sub)}</small>${badge?`<span class="sw-badge">${esc(badge)}</span>`:""}<div class="sw-tools">${e.live?`<button type="button" data-pin="${e.id}">${esc(e.live.pinned?T("Pinned","Закреплено"):T("Pin","Закрепить"))}</button><button type="button" data-close="${e.id}">${esc(T("Close","Закрыть"))}</button>`:""}</div></article>`;
+        return `<article class="sw-card${S?.id===e.id?" cur":""}${i===swIndex?" sel":""}" data-open="${e.id}"><b>${esc(title)}</b><small>${esc(sub)}</small>${e.live?`${planHTML(e.live)}<div class="sw-mods">${e.live.flows.flatMap(f=>f.modules).slice(0,3).map(m=>{const r=rep(m);return `<div><b>${esc(r.v)}</b><span>${esc(r.l||m.item)}</span></div>`}).join("")}</div>`:""}${badge?`<span class="sw-badge">${esc(badge)}</span>`:""}<div class="sw-tools">${e.live?`<button type="button" data-pin="${e.id}">${esc(e.live.pinned?T("Pinned","Закреплено"):T("Pin","Закрепить"))}</button><button type="button" data-close="${e.id}">${esc(T("Close","Закрыть"))}</button>`:""}</div></article>`;
       }).join("")}</div>`;
     }
     function openSwitcher(){
@@ -4144,7 +4926,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     }
     function closeSpaceId(id){
       const was=OPEN.get(id);if(!was)return;
-      OPEN.delete(id);RECENTS=RECENTS.filter(x=>x!==id);
+      OPEN.delete(id);SYSSP.delete(id);RECENTS=RECENTS.filter(x=>x!==id);
       if(S?.id===id){clearTimeout(autoTimer);goHome()}
       showToast(T("Space closed","Пространство закрыто"),T("Undo","Отменить"),()=>{OPEN.set(id,was);holdSpace(was);openSpace(was,{f:was.f||0,m:was.m||was.flows.map(()=>0)})});
       if(switcherOn())renderSwitcher();
@@ -4183,6 +4965,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     }
     function closeKeys(){const k=$("#keys");if(!k)return;k.classList.remove("on");k.innerHTML=""}
     function layerEsc(){
+      if(carEsc())return true;
       if($("#keys")?.classList.contains("on")){closeKeys();return true}
       if(voiceFlag){closeVoice();return true}
       if($("#idle")?.classList.contains("on")){wake();return true}
@@ -4190,6 +4973,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       if($("#wxWrap")?.classList.contains("open")&&!winOpen()){setWx(false);return true}
       if($("#sheet")?.classList.contains("on")&&!winOpen()){closeSheet();return true}
       if(switcherOn()&&!winOpen()){closeSwitcher();return true}
+      if(FF.dev==="phone"&&document.documentElement.classList.contains("ph-sheet")&&!winOpen()&&!overviewOpen&&!paletteOpen){setSheet(false);return true}
       return false;
     }
     function wake(){document.body.classList.remove("idle");$("#idle")?.classList.remove("on");armIdle()}
@@ -4500,8 +5284,24 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       if(document.body.classList.contains("locked"))return;
       e.preventDefault();e.stopImmediatePropagation();setDevice(DEVICES[i].id);
     },true);
-    $("#car").addEventListener("click",e=>{const b=e.target.closest("[data-car]");if(b)CAR_ACTS[+b.dataset.car]?.[3]()});
-    setInterval(()=>{if(FF.dev==="car"&&S&&view==="space")renderCar()},1000);
+    addEventListener("pointerdown",e=>{if(e.target.closest?.("#car"))CAR.last=performance.now()},true);
+    $("#car").addEventListener("click",carClick);
+    $("#stack")?.addEventListener("click",e=>{
+      const a=e.target.closest("[data-ca]");if(a){e.stopPropagation();const m=findModuleById(a.dataset.ca);if(m)rep(m).acts[0]?.run();proj();return}
+      const c=e.target.closest("[data-cid]");if(c)openFull(findModuleById(c.dataset.cid));
+    });
+    $("#stack")?.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.matches(".cp")){e.preventDefault();openFull(findModuleById(e.target.dataset.cid))}});
+    $("#homeSpaces")?.addEventListener("click",e=>{const b=e.target.closest("[data-hs]");if(b)enterSpace(b.dataset.hs)});
+    $("#phScrim")?.addEventListener("click",()=>setSheet(false));
+    $("#shGrip")?.addEventListener("pointerdown",e=>{
+      if(e.button!==0)return;
+      const sp=$("#space"),h=document.documentElement,y0=e.clientY;let dy=0;
+      h.classList.add("ph-drag");
+      const mv=ev=>{dy=Math.max(0,(ev.clientY-y0)/FF.s);sp.style.setProperty("--sh-dy",dy+"px")};
+      const up=()=>{removeEventListener("pointermove",mv);removeEventListener("pointerup",up);h.classList.remove("ph-drag");if(dy>120)setSheet(false);else sp.style.removeProperty("--sh-dy")};
+      addEventListener("pointermove",mv);addEventListener("pointerup",up);
+    });
+    $("#homeGrab")?.addEventListener("pointerdown",e=>{const y0=e.clientY,up=ev=>{removeEventListener("pointerup",up);const d=y0-ev.clientY;if(d>24||Math.abs(d)<6)openSwitcher()};addEventListener("pointerup",up)});
     $("#space")?.addEventListener("pointerdown",e=>{
       const tile=e.target.closest(".module .m-head .kt");
       if(!tile||e.button!==0||overviewOpen)return;
