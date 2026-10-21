@@ -94,8 +94,14 @@
     .wz-foot{margin-top:12px;color:var(--faint);font-size:10.5px;text-align:center}
     @keyframes wxdraw{to{stroke-dashoffset:0}}@keyframes wxfade{to{opacity:1}}@keyframes wxgrow{from{transform:scaleX(0)}}@keyframes wxspin{to{transform:rotate(360deg)}}
     .me-wrap{position:relative;display:flex}
-    .me-btn{width:28px;height:28px;padding:0;border:0;border-radius:50%;background:var(--chip);color:var(--ink);font-size:11px;font-weight:500;display:grid;place-items:center;transition:background .2s,transform .35s var(--spring)}
-    .me-btn:hover,.me-wrap.open .me-btn{background:rgba(47,47,47,.12)}.me-btn:active{transform:scale(.93)}
+    .me-btn{width:28px;height:28px;padding:0;border:0;border-radius:50%;background:transparent;color:var(--ink);font-size:12px;font-weight:500;display:grid;place-items:center;transition:transform .35s var(--spring)}
+    .me-btn:hover,.me-wrap.open .me-btn{background:transparent}.me-btn:active{transform:scale(.93)}
+    .me-btn .me-photo{width:28px;height:28px}
+    .me-photo{display:block;width:100%;height:100%;border-radius:50%;overflow:hidden}
+    .me-photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:26% 32%}
+    .me-photo.letter{display:grid;place-items:center;background:rgba(47,47,47,.08);color:var(--ink);font-weight:500;line-height:1}
+    .um-face{width:20px;height:20px;flex:none;display:grid}
+    .um-face .me-photo{width:20px;height:20px;font-size:11px}
     .umenu{position:absolute;top:calc(100% + 8px);right:0;width:268px;padding:6px;border-radius:16px;background:var(--paper);border:1px solid var(--rim);box-shadow:0 1px 2px rgba(0,0,0,.04),0 24px 60px -22px rgba(0,0,0,.3);color:var(--ink);opacity:0;transform:translateY(-4px);transform-origin:top right;pointer-events:none;transition:opacity .2s var(--ease),transform .2s var(--ease)}
     .me-wrap.open .umenu{opacity:1;transform:none;pointer-events:auto}
     .um-row{width:100%;display:flex;align-items:center;gap:10px;min-height:36px;padding:0 8px;border:0;border-radius:10px;background:none;color:var(--ink);font-size:13.5px;text-align:left;text-decoration:none;transition:background .2s}
@@ -570,7 +576,7 @@
     body.night .opt.sel,body.night .opt:hover,body.night button.chip:hover,body.night .tl-item:hover,body.night .tl-item.hit{background:rgba(255,255,255,.09)}
     body.night .overview{background:rgba(15,15,15,.72)}body.night .rules{background:rgba(255,255,255,.03)}body.night .mini{background:#212121}
     body.night .hints button:hover,body.night .hints button.on,body.night .lang button.on{background:rgba(255,255,255,.08)}
-    body.night .me-btn:hover,body.night .me-wrap.open .me-btn{background:rgba(255,255,255,.14)}body.night .umenu{background:#2a2a2a;border-color:rgba(255,255,255,.08);box-shadow:none}
+    body.night .me-btn:hover,body.night .me-wrap.open .me-btn{background:transparent}body.night .umenu{background:#2a2a2a;border-color:rgba(255,255,255,.08);box-shadow:none}
     body.night .kbd{background:rgba(255,255,255,.06)}body.night .kbd.pressed{background:rgba(255,255,255,.18)}
     body.night .plus{background:#2f2f2f;color:#afafaf}
     body.night .cond{background:rgba(255,255,255,.1)}
@@ -768,43 +774,43 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .perm-open:hover{filter:brightness(.97)}
     .sys{position:fixed;inset:0;z-index:72;pointer-events:none}
     .sys.on{pointer-events:auto}
-    .sys-veil{position:absolute;inset:0;background:rgba(220,220,220,.28);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
-    body.night .sys-veil{background:rgba(8,8,8,.42)}
-    .sys-win{position:absolute;left:50%;top:50%;display:flex;width:min(760px,calc(100vw - 40px));height:min(620px,calc(100vh - 64px));border-radius:16px;background:var(--paper);border:1px solid var(--rim);box-shadow:0 1px 2px rgba(0,0,0,.05),0 40px 90px -28px rgba(0,0,0,.38);color:var(--ink);overflow:hidden;-webkit-backdrop-filter:blur(40px) saturate(1.5);backdrop-filter:blur(40px) saturate(1.5);transform:translate(-50%,-50%);animation:sysIn .2s var(--ease) both}
+    .sys-veil{position:absolute;inset:0;background:rgba(47,47,47,.22);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+    body.night .sys-veil{background:rgba(0,0,0,.46)}
+    .sys-win{position:absolute;left:50%;top:50%;display:flex;width:min(760px,calc(100vw - 40px));height:min(620px,calc(100vh - 64px));border-radius:16px;background:var(--paper);border:1px solid var(--rim);box-shadow:0 1px 2px rgba(0,0,0,.05),0 40px 90px -28px rgba(0,0,0,.38);color:var(--ink);overflow:hidden;transform:translate(-50%,-50%);animation:sysIn .2s var(--ease) both}
     .sys-win.back,.sys-win.settled{animation:none}
     .sys-win.small{width:min(420px,calc(100vw - 40px));height:min(520px,calc(100vh - 80px))}
     @keyframes sysIn{from{opacity:0;transform:translate(-50%,calc(-50% + 8px))}to{opacity:1;transform:translate(-50%,-50%)}}
-    .sys-side{width:196px;flex:none;display:flex;flex-direction:column;gap:2px;padding:14px 10px;border-right:1px solid var(--line);background:rgba(47,47,47,.035)}
-    body.night .sys-side{background:rgba(0,0,0,.22)}
-    .sys-nav{display:flex;align-items:center;gap:8px;width:100%;min-height:32px;padding:6px 10px;border:0;border-radius:8px;background:none;color:var(--ink);font-size:13px;text-align:left}
+    .sys-side{width:196px;flex:none;display:flex;flex-direction:column;gap:2px;padding:16.5px 10px 16px;background:linear-gradient(90deg,rgba(47,47,47,.03),rgba(47,47,47,0))}
+    body.night .sys-side{background:linear-gradient(90deg,rgba(255,255,255,.04),rgba(255,255,255,0))}
+    .sys-nav{display:flex;align-items:center;gap:8px;width:100%;height:36px;padding:0 12px;border:0;border-radius:12px;background:none;color:var(--ink);font-size:15px;font-weight:400;text-align:left}
     .sys-nav .ic{width:15px;height:15px;color:var(--quiet)}
-    .sys-nav.on{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.06)}.sys-nav.on .ic{color:var(--ink)}
-    body.night .sys-nav.on{background:rgba(255,255,255,.08);box-shadow:none;color:#fff}body.night .sys-nav.on .ic{color:#fff}
+    .sys-nav.on,.sys-nav.on .ic{font-weight:400;color:var(--ink)}
+    .sys-nav.on{background:rgba(47,47,47,.06)}
+    body.night .sys-nav.on{background:rgba(255,255,255,.08);color:#fff}body.night .sys-nav.on .ic{color:#fff}
     .sys-nav:hover:not(.on),.sys-nav:focus-visible:not(.on){background:rgba(47,47,47,.04)}
     .sys-nav:focus-visible{outline:1.5px solid var(--quiet);outline-offset:-2px}
     body.night .sys-nav:hover:not(.on){background:rgba(255,255,255,.04)}
-    .sys-main{flex:1;min-width:0;display:flex;flex-direction:column}
-    .sys-main h2{margin:0;padding:16px 52px 8px 22px;font-size:20px;font-weight:500;letter-spacing:-.02em}
-    .sys-x{position:absolute;top:12px;right:12px;z-index:4;width:28px;height:28px;display:grid;place-items:center;border:0;border-radius:8px;background:transparent;color:var(--quiet)}
+    .sys-main{flex:1;min-width:0;display:flex;flex-direction:column;background:transparent}
+    .sys-head{display:flex;align-items:center;justify-content:space-between;gap:12px;height:64px;padding:0 14px 0 22px;flex:none}
+    .sys-head h2{margin:0;padding:0;font-size:23px;font-weight:600;letter-spacing:-.022em;line-height:28px}
+    .sys-x{position:relative;flex:none;width:28px;height:28px;display:grid;place-items:center;border:0;border-radius:8px;background:transparent;color:var(--quiet)}
     .sys-x:hover,.sys-x:focus-visible{background:var(--chip);color:var(--ink)}
     .sys-x:focus-visible{outline:1.5px solid var(--quiet);outline-offset:2px}
-    .sys-body{flex:1;min-height:0;overflow:auto;padding:4px 22px 22px;scrollbar-width:thin;scrollbar-gutter:stable}
-    .sys-sec{margin:16px 2px 6px;color:var(--quiet);font-size:12px}
-    .sys-sec:first-child{margin-top:2px}
+    .sys-body{flex:1;min-height:0;overflow:auto;padding:2px 22px 22px;scrollbar-width:thin;scrollbar-gutter:stable}
+    .sys-sec{margin:18px 16px 8px;color:var(--quiet);font-size:12.5px;font-weight:400;line-height:16px}
+    .sys-sec:first-child{margin-top:4px}
     .sys-card{border-radius:12px;background:rgba(47,47,47,.04)}
     body.night .sys-card{background:rgba(255,255,255,.05)}
-    .sys-account{display:flex;align-items:center;gap:12px;padding:12px 14px}
-    .sys-ava{width:36px;height:36px;flex:none;display:grid;place-items:center;border-radius:50%;background:rgba(47,47,47,.08);color:var(--ink);font-size:14px;font-weight:500}
-    body.night .sys-ava{background:rgba(255,255,255,.1)}
-    .sys-account b{display:block;font-size:14px;font-weight:500}.sys-account span{display:block;margin-top:1px;color:var(--quiet);font-size:12px}
-    .sys-card.sys-rows{padding:2px 0}
-    .sys-row{display:flex;align-items:center;justify-content:space-between;gap:12px 16px;padding:9px 14px;border-top:1px solid var(--line)}
-    .sys-row > b,.sys-row .meta{flex:1 1 auto;min-width:0}
-    .sys-row > b{line-height:1.35}
-    .sys-card .sys-row:first-child{border-top:0}
-    .sys-row > b{font-size:13.5px;font-weight:500}
-    .sys-row .meta{flex:1;min-width:0}.sys-row .meta b{display:block;font-size:13.5px;font-weight:500}.sys-row .meta span{display:block;margin-top:2px;color:var(--quiet);font-size:12px;line-height:1.35}
-    .sys-drop{display:flex;align-items:center;gap:6px;min-height:28px;padding:0 6px 0 8px;border:0;border-radius:8px;background:transparent;color:var(--quiet);font-size:13px}
+    .sys-account{display:flex;align-items:center;gap:12px;min-height:64px;padding:12px 16px}
+    .sys-ava{width:40px;height:40px;flex:none;border-radius:50%;overflow:hidden}
+    .sys-ava .me-photo{width:40px;height:40px;font-size:16px}
+    .sys-account b{display:block;font-size:15px;font-weight:400;line-height:20px}.sys-account span{display:block;margin-top:1px;color:var(--quiet);font-size:13px;line-height:17px}
+    .sys-card.sys-rows{padding:0}
+    .sys-row{position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px 16px;min-height:52px;padding:0 16px}
+    .sys-row + .sys-row::before{content:"";position:absolute;left:16px;right:16px;top:0;height:1px;background:var(--line)}
+    .sys-row > b,.sys-row .meta{flex:1 1 auto;min-width:0;font-size:15px;font-weight:400;line-height:20px}
+    .sys-row .meta b{display:block;font-size:15px;font-weight:400;line-height:20px}.sys-row .meta span{display:block;margin-top:2px;color:var(--quiet);font-size:13px;line-height:17px}
+    .sys-drop{display:flex;align-items:center;gap:6px;min-height:28px;padding:0 6px 0 8px;border:0;border-radius:8px;background:transparent;color:var(--quiet);font-size:15px;font-weight:400}
     .sys-drop:hover,.sys-ctl.open .sys-drop{background:rgba(47,47,47,.06);color:var(--ink)}
     body.night .sys-drop:hover,body.night .sys-ctl.open .sys-drop{background:rgba(255,255,255,.08)}
     .sys-drop .ic{width:12px;height:12px;color:var(--faint)}
@@ -830,9 +836,9 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .sys-note{margin:2px 2px 12px;color:var(--quiet);font-size:12.5px;line-height:1.45}
     .sys-group{margin-top:10px}
     .sys-group.focus{box-shadow:inset 0 0 0 1.5px var(--accent)}
-    .sys-group h3{display:flex;align-items:center;gap:8px;margin:0;padding:10px 14px 8px;font-size:13px;font-weight:500}
-    .sys-group h3 .avatar{width:18px;height:18px;font-size:8px}
-    .sys-group h3 + .sys-row{border-top:1px solid var(--line)}
+    .sys-group h3{display:flex;align-items:center;gap:8px;margin:0;padding:0 16px;height:40px;color:var(--quiet);font-size:13px;font-weight:400}
+    .sys-group h3 .avatar{width:18px;height:18px;margin:0;font-size:8px}
+    .sys-group h3 + .sys-row::before{left:16px;right:16px}
     .sys-search{width:100%;margin:0 0 8px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:rgba(47,47,47,.04);outline:0;font:inherit;font-size:14px}
     body.night .sys-search{background:rgba(255,255,255,.05)}
     .sys-search:focus{box-shadow:0 0 0 3px var(--accent-soft)}
@@ -841,7 +847,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .sys-lang.on{color:var(--accent)}
     .sys-lang:hover{background:var(--chip)}
     .sys-empty{padding:18px 4px;color:var(--quiet);font-size:13px}
-    .sys-field{width:min(240px,42vw);padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--paper);outline:0;font:inherit;font-size:13px;text-align:right}
+    .sys-field{width:min(240px,42vw);padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:transparent;outline:0;font:inherit;font-size:15px;font-weight:400;color:var(--quiet);text-align:right}
     body.night .sys-field{background:rgba(255,255,255,.04)}
     .sys-field:focus{box-shadow:0 0 0 3px var(--accent-soft)}
     body.night .perm-open:hover{filter:brightness(1.08)}
@@ -998,8 +1004,8 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     /* profile: identity, stats, activity, services — no usage or billing */
     .sys-win.profile{width:min(880px,calc(100vw - 32px));height:min(740px,calc(100vh - 40px))}
     .prof-id{display:flex;align-items:center;gap:14px;margin-top:2px}
-    .prof-ava{width:56px;height:56px;flex:none;display:grid;place-items:center;border-radius:50%;background:rgba(47,47,47,.08);font-size:22px;font-weight:500}
-    body.night .prof-ava{background:rgba(255,255,255,.1)}
+    .prof-ava{width:56px;height:56px;flex:none;border-radius:50%;overflow:hidden}
+    .prof-ava .me-photo{width:56px;height:56px;font-size:22px}
     .prof-id b{display:block;font-size:18px;font-weight:500;letter-spacing:-.02em}
     .prof-id em,.prof-id small{display:block;font-style:normal;color:var(--quiet);font-size:13px}
     .prof-id small{margin-top:1px;font-size:12px}
@@ -1064,9 +1070,9 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
           <div class="cc" id="cc" role="dialog" aria-label="Control center"><div class="cc-scroll"><div id="ccBody"></div><div class="wx-pop" id="wxPop"></div></div></div>
         </div>
         <div class="me-wrap" id="meWrap">
-          <button class="me-btn" id="meBtn" aria-haspopup="menu" aria-expanded="false">A</button>
+          <button class="me-btn" id="meBtn" aria-haspopup="menu" aria-expanded="false"><span class="me-photo"><img src="/img/portrait.jpg" alt=""></span></button>
           <div class="umenu" id="userMenu" role="menu">
-            <button class="um-row" id="profileBtn" role="menuitem"><svg class="um-ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="5.2" r="2.2"/><path d="M3.6 13.2c.6-2.2 2.3-3.3 4.4-3.3s3.8 1.1 4.4 3.3"/></svg><span id="umProfile"></span><svg class="um-chev" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 3 5 5-5 5"/></svg></button>
+            <button class="um-row" id="profileBtn" role="menuitem"><span class="um-face" id="umFace"><span class="me-photo"><img src="/img/portrait.jpg" alt=""></span></span><span id="umProfile"></span><svg class="um-chev" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 3 5 5-5 5"/></svg></button>
             <button class="um-row" id="notifBtn" role="menuitem"><svg class="um-ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11V7a4 4 0 0 1 8 0v4l1 1.5H3z"/><path d="M6.5 14h3"/></svg><span id="umNotif"></span><em id="notifCount"></em><svg class="um-chev" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 3 5 5-5 5"/></svg></button>
             <button class="um-row" id="settingsBtn" role="menuitem"><svg class="um-ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" stroke="none" fill-rule="evenodd" d="M7.05 1.35h1.9l.25 1.35c.4.15.75.35 1.1.6l1.25-.55 1.35 1.35-.55 1.25c.25.35.45.7.6 1.1l1.35.25v1.9l-1.35.25c-.15.4-.35.75-.6 1.1l.55 1.25-1.35 1.35-1.25-.55c-.35.25-.7.45-1.1.6l-.25 1.35h-1.9l-.25-1.35a4.2 4.2 0 0 1-1.1-.6l-1.25.55-1.35-1.35.55-1.25a4.2 4.2 0 0 1-.6-1.1l-1.35-.25v-1.9l1.35-.25c.15-.4.35-.75.6-1.1l-.55-1.25 1.35-1.35 1.25.55c.35-.25.7-.45 1.1-.6l.25-1.35zM8 6.15a1.85 1.85 0 1 0 0 3.7 1.85 1.85 0 0 0 0-3.7z"/></svg><span id="umSettings"></span><svg class="um-chev" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 3 5 5-5 5"/></svg></button>
             <div class="um-sep"></div>
@@ -3386,9 +3392,9 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     function generalBody(){
       const night=document.body.classList.contains("night"),cur=LANG==="ru"?"Русский":"English",a=ACCENTS.find(x=>x.id===accentId)||ACCENTS[0];
       const accentMenu=`<div class="sys-menu">${ACCENTS.map(x=>`<button type="button" data-accent="${x.id}" class="${x.id===accentId?"on":""}"><i class="sys-dot" style="background:${night?x.night:x.day}"></i>${esc(LANG==="ru"?x.ru:x.en)}</button>`).join("")}</div>`;
-      const who=USER==="guest"?{a:"G",n:T("Guest","Гость"),s:T("Shared spaces only","Только общие пространства")}:{a:"A",n:"Andrew",s:T("Personal","Личный аккаунт")};
+      const who=USER==="guest"?{n:T("Guest","Гость"),s:T("Shared spaces only","Только общие пространства")}:{n:"Andrew",s:T("Personal","Личный аккаунт")};
       return `<div class="sys-sec">${esc(T("Account","Аккаунт"))}</div>
-        <div class="sys-card sys-account"><span class="sys-ava">${who.a}</span><div><b>${esc(who.n)}</b><span>${esc(who.s)}</span></div></div>
+        <div class="sys-card sys-account"><span class="sys-ava">${mePhoto()}</span><div><b>${esc(who.n)}</b><span>${esc(who.s)}</span></div></div>
         <div class="sys-sec">${esc(T("Appearance","Оформление"))}</div>
         <div class="sys-card sys-rows">
           ${dropRow(T("Theme","Тема"),"theme",night?"night":"day",[["day",T("Day","День")],["night",T("Night","Ночь")]])}
@@ -3420,17 +3426,16 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     }
     function winHTML(w,front){
       const pane=w.kind==="profile"?"profile":w.kind==="lang"?"lang":(w.section||"general");
+      const head=title=>`<div class="sys-head"><h2>${esc(title)}</h2><button type="button" class="sys-x" data-sys-close="${w.id}" aria-label="${esc(T("Close","Закрыть"))}">${ic("x")}</button></div>`;
       if(w.kind==="profile"){
         const title=T("Profile","Профиль");
-        const x=`<button type="button" class="sys-x" data-sys-close="${w.id}" aria-label="${esc(T("Close","Закрыть"))}">${ic("x")}</button>`;
-        return `<section class="sys-win profile${front?"":" back"}" data-win="${w.id}" data-pane="${pane}" role="dialog" aria-label="${esc(title)}" style="z-index:${front?3:1}">${x}<div class="sys-main"><h2>${esc(title)}</h2><div class="sys-body">${profileBody(w)}</div></div></section>`;
+        return `<section class="sys-win profile${front?"":" back"}" data-win="${w.id}" data-pane="${pane}" role="dialog" aria-label="${esc(title)}" style="z-index:${front?3:1}"><div class="sys-main">${head(title)}<div class="sys-body">${profileBody(w)}</div></div></section>`;
       }
       const small=w.kind==="lang";
       const title=small?T("Language","Язык"):{general:T("General","Общие"),permissions:T("Permissions","Разрешения"),computer:T("This computer","Этот компьютер"),devices:T("Devices","Устройства")}[w.section]||T("Settings","Настройки");
-      const x=`<button type="button" class="sys-x" data-sys-close="${w.id}" aria-label="${esc(T("Close","Закрыть"))}">${ic("x")}</button>`;
       const side=small?"":`<aside class="sys-side">${settingsSections().map(([id,label,icon])=>`<button type="button" class="sys-nav${w.section===id?" on":""}" data-sec="${id}">${ic(icon)}${esc(label)}</button>`).join("")}</aside>`;
       const body=small?`<input class="sys-search" id="sysSearch" placeholder="${esc(T("Search languages","Найти язык"))}" value="${esc(w.q||"")}" autocomplete="off" spellcheck="false"><div id="sysLangs">${langItems(w.q||"")}</div>`:w.section==="permissions"?permBody(w.scope,w.focus,w.row):w.section==="computer"?computerBody():w.section==="devices"?devicesBody():generalBody();
-      return `<section class="sys-win${small?" small":""}${front?"":" back"}" data-win="${w.id}" data-pane="${pane}" role="dialog" aria-label="${esc(title)}" style="z-index:${front?3:1}">${x}${side}<div class="sys-main"><h2>${esc(title)}</h2><div class="sys-body">${body}</div></div></section>`;
+      return `<section class="sys-win${small?" small":""}${front?"":" back"}" data-win="${w.id}" data-pane="${pane}" role="dialog" aria-label="${esc(title)}" style="z-index:${front?3:1}">${side}<div class="sys-main">${head(title)}<div class="sys-body">${body}</div></div></section>`;
     }
     function renderWindows(){
       const root=$("#sys");if(!root)return;
@@ -3564,7 +3569,9 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       if(prev&&prev!==bp)return prev;
       OPEN.set(bp.id,bp);return bp;
     }
-    function renderUser(){const b=$("#meBtn");if(b)b.textContent=USER==="guest"?"G":"A"}
+    const PORTRAIT="/img/portrait.jpg";
+    function mePhoto(){return USER==="guest"?`<span class="me-photo letter">G</span>`:`<span class="me-photo"><img src="${PORTRAIT}" alt=""></span>`}
+    function renderUser(){const html=mePhoto();const b=$("#meBtn");if(b)b.innerHTML=html;const u=$("#umFace");if(u)u.innerHTML=html}
     function renderFocus(){
       const on=!!FOCUS,label=on?T(`Focus: ${FOCUS.title}`,`Фокус: ${FOCUS.title}`):"";
       ["focusChip","sbFocus"].forEach(id=>{const el=$("#"+id);if(!el)return;el.hidden=!on;el.textContent=label});
@@ -4036,7 +4043,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     function profileBody(w){
       const heat=w.heat||"daily",filter=w.space||"all";
       const guest=USER==="guest";
-      const who=guest?{a:"G",n:T("Guest","Гость"),h:"@guest",s:T("Shared spaces only","Только общие пространства")}:{a:"A",n:"Andrew",h:"@andrew",s:T("Personal","Личный аккаунт")};
+      const who=guest?{n:T("Guest","Гость"),h:"@guest",s:T("Shared spaces only","Только общие пространства")}:{n:"Andrew",h:"@andrew",s:T("Personal","Личный аккаунт")};
       const intents=guest?11+PROF.guest.intents:PROF.intents;
       const saved=guest?70+PROF.guest.saved:PROF.saved;
       const hands=guest?1+PROF.guest.handoffs:PROF.handoffs;
@@ -4069,7 +4076,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         [T("Automations that ran without asking","Сработали без вопроса"),String(autos)],
         [T("Handoffs this week","Передачи за неделю"),String(hands)]
       ];
-      return `<div class="prof-id"><span class="prof-ava">${who.a}</span><div><b>${esc(who.n)}</b><em>${esc(who.h)}</em><small>${esc(who.s)}</small></div></div>
+      return `<div class="prof-id"><span class="prof-ava">${mePhoto()}</span><div><b>${esc(who.n)}</b><em>${esc(who.h)}</em><small>${esc(who.s)}</small></div></div>
         <div class="prof-stats">${stats.map(([id,n,l])=>`<div data-stat="${id}"><b>${esc(n)}</b><span>${esc(l)}</span></div>`).join("")}</div>
         <div class="prof-card"><div class="prof-card-h"><div><b>${esc(T("Activity","Активность"))}</b><span class="sub">${esc(T("Intents by day, colored by space","Намерения по дням, цветом пространства"))}</span></div><div class="sys-seg" data-seg="heat">${seg("daily",T("Daily","Дни"))}${seg("weekly",T("Weekly","Недели"))}${seg("cumulative",T("Cumulative","Накопление"))}</div></div>
         ${profHeat(heat,filter)}
