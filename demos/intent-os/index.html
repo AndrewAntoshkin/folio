@@ -946,6 +946,56 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .notif-snooze{grid-column:2;justify-self:start;margin-top:6px;border:0;border-radius:999px;background:var(--chip);padding:3px 8px;font-size:11px;color:var(--quiet)}
     .lvl{margin-left:6px;font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--faint);font-weight:500}
     .lvl.urgent{color:var(--accent)}
+
+    /* profile: identity, stats, activity, services — no usage or billing */
+    .sys-win.profile{width:min(880px,calc(100vw - 32px));height:min(740px,calc(100vh - 40px))}
+    .prof-id{display:flex;align-items:center;gap:14px;margin-top:2px}
+    .prof-ava{width:56px;height:56px;flex:none;display:grid;place-items:center;border-radius:50%;background:rgba(47,47,47,.08);font-size:22px;font-weight:500}
+    body.night .prof-ava{background:rgba(255,255,255,.1)}
+    .prof-id b{display:block;font-size:18px;font-weight:500;letter-spacing:-.02em}
+    .prof-id em,.prof-id small{display:block;font-style:normal;color:var(--quiet);font-size:13px}
+    .prof-id small{margin-top:1px;font-size:12px}
+    .prof-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));margin:18px 0 4px}
+    .prof-stats div{min-width:0;padding:0 12px;border-left:1px solid var(--line)}
+    .prof-stats div:first-child{padding-left:0;border-left:0}
+    .prof-stats b{display:block;font-size:22px;font-weight:500;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+    .prof-stats span{display:block;margin-top:2px;color:var(--quiet);font-size:12px;line-height:1.3}
+    .prof-card{margin-top:16px;padding:14px 14px 12px;border-radius:12px;background:rgba(47,47,47,.04)}
+    body.night .prof-card{background:rgba(255,255,255,.05)}
+    .prof-card-h{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+    .prof-card-h b{display:block;font-size:14px;font-weight:500}
+    .prof-card-h span,.prof-card-h .sub{display:block;margin-top:2px;color:var(--quiet);font-size:12px;line-height:1.35}
+    .prof-card-h .sys-textbtn{color:var(--quiet)}
+    .hm-scroll{overflow-x:auto;padding-bottom:2px}
+    .hm-months,.hm-grid{display:grid;grid-auto-flow:column;grid-auto-columns:11px;gap:3px}
+    .hm-months{height:14px;margin-bottom:4px}
+    .hm-months span{font-size:10px;color:var(--quiet);white-space:nowrap}
+    .hm-grid{grid-template-rows:repeat(7,11px)}
+    .hm-grid.weeks{grid-template-rows:18px}
+    .hm i{display:block;width:11px;height:11px;border-radius:2px;background:rgba(47,47,47,.07)}
+    .hm-grid.weeks i{height:18px}
+    body.night .hm i{background:rgba(255,255,255,.07)}
+    .hm-legend{display:flex;align-items:center;gap:4px;margin-top:10px;color:var(--faint);font-size:11px}
+    .hm-legend i{width:11px;height:11px;border-radius:2px}
+    .prof-spaces{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+    .prof-spaces button{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:999px;background:transparent;color:var(--quiet);padding:3px 8px;font-size:12px}
+    .prof-spaces button.on{background:var(--paper);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.06)}
+    body.night .prof-spaces button.on{background:rgba(255,255,255,.08);box-shadow:none;color:#fff}
+    .prof-swatch{width:8px;height:8px;border-radius:2px;flex:none}
+    .prof-row{display:grid;grid-template-columns:22px minmax(90px,1fr) minmax(64px,140px) 32px;align-items:center;gap:10px;padding:6px 0}
+    .prof-row .ic{width:16px;height:16px;color:var(--quiet)}
+    .prof-row .avatar{width:22px;height:22px;margin:0;font-size:8px}
+    .prof-row em{font-style:normal;font-size:13px}
+    .prof-bar{height:4px;border-radius:99px;background:rgba(47,47,47,.1);overflow:hidden}
+    body.night .prof-bar{background:rgba(255,255,255,.1)}
+    .prof-bar i{display:block;height:100%;border-radius:99px;background:var(--accent)}
+    .prof-row b{font-weight:500;font-variant-numeric:tabular-nums;text-align:right;font-size:13px}
+    .prof-empty{padding:8px 2px 6px}
+    .prof-empty p{margin:0 0 8px;color:var(--quiet);font-size:13px}
+    .prof-kv{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:9px 0;border-top:1px solid var(--line);font-size:13.5px}
+    .prof-card .prof-kv:first-of-type{border-top:0}
+    .prof-kv span{color:var(--quiet)}
+    .prof-kv b{font-weight:500;text-align:right}
     @media(prefers-reduced-motion:reduce){.sw-grid,.voice-orb{transition:none;animation:none}}
   </style>
 </head>
@@ -965,6 +1015,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         <div class="me-wrap" id="meWrap">
           <button class="me-btn" id="meBtn" aria-haspopup="menu" aria-expanded="false">A</button>
           <div class="umenu" id="userMenu" role="menu">
+            <button class="um-row" id="profileBtn" role="menuitem"><svg class="um-ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="5.2" r="2.2"/><path d="M3.6 13.2c.6-2.2 2.3-3.3 4.4-3.3s3.8 1.1 4.4 3.3"/></svg><span id="umProfile"></span><svg class="um-chev" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 3 5 5-5 5"/></svg></button>
             <button class="um-row" id="notifBtn" role="menuitem"><svg class="um-ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11V7a4 4 0 0 1 8 0v4l1 1.5H3z"/><path d="M6.5 14h3"/></svg><span id="umNotif"></span><em id="notifCount"></em><svg class="um-chev" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 3 5 5-5 5"/></svg></button>
             <button class="um-row" id="settingsBtn" role="menuitem"><svg class="um-ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" stroke="none" fill-rule="evenodd" d="M7.05 1.35h1.9l.25 1.35c.4.15.75.35 1.1.6l1.25-.55 1.35 1.35-.55 1.25c.25.35.45.7.6 1.1l1.35.25v1.9l-1.35.25c-.15.4-.35.75-.6 1.1l.55 1.25-1.35 1.35-1.25-.55c-.35.25-.7.45-1.1.6l-.25 1.35h-1.9l-.25-1.35a4.2 4.2 0 0 1-1.1-.6l-1.25.55-1.35-1.35.55-1.25a4.2 4.2 0 0 1-.6-1.1l-1.35-.25v-1.9l1.35-.25c.15-.4.35-.75.6-1.1l-.55-1.25 1.35-1.35 1.25.55c.35-.25.7-.45 1.1-.6l.25-1.35zM8 6.15a1.85 1.85 0 1 0 0 3.7 1.85 1.85 0 0 0 0-3.7z"/></svg><span id="umSettings"></span><svg class="um-chev" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 3 5 5-5 5"/></svg></button>
             <div class="um-sep"></div>
@@ -1696,6 +1747,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       tripSwapped=true;
       if(S){S.autoDone=true;clearTimeout(autoTimer)}
       renderSignals();
+      profNote("done",{space:S?.id||"trip",svc:"weather",intent:"shift",min:15});
       return it;
     }
     function restoreWeatherSwap(before){
@@ -2056,7 +2108,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         m.data._bookGo=false;m.data.choice=null;
         const where=` · ${whereLabel()}`;
         m.data.booked=(force==="direct"&&notDirect(o.s)?T(`Booked ${o.t} · ${o.p} · direct-flight rule overridden`,`Забронировано: ${o.t} · ${o.p} · правило о прямых рейсах снято для этой брони`):T(`Booked ${o.t} · ${o.p} · confirmation sent to Mail`,`Забронировано: ${o.t} · ${o.p} · подтверждение в почте`))+where;
-        refresh(m,false);showToast(T(`Booked ${o.t}`,`Забронировано: ${o.t}`)+" · "+whereLabel());logMoment(`${T("Booked","Бронь")} ${o.t}`,S.title)},
+        refresh(m,false);showToast(T(`Booked ${o.t}`,`Забронировано: ${o.t}`)+" · "+whereLabel());logMoment(`${T("Booked","Бронь")} ${o.t}`,S.title);profNote("done",{space:S?.id,svc:"airline",intent:"book",min:12})},
       bookDirect:m=>{if(m.data.choice)m.data.sel=m.data.choice.direct;m.data.choice=null;DO.book(m)},
       bookAny:m=>{if(m.data.choice)m.data.sel=m.data.choice.any;m.data.choice=null;DO.book(m,null,null,"direct")},
       track:m=>{m.data.track=m.data.track?null:T("Tracking prices · I’ll book under €150","Слежу за ценой · забронирую до €150");refresh(m,false)},
@@ -2100,7 +2152,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         const a=c.querySelector(".acts");if(a)a.innerHTML=actsOf(m);
         if(d.size&&!reduce.matches)b.animate([{transform:"scale(.9)"},{transform:"scale(1)"}],{duration:420,easing:SPRING})},
       gal:(m,b)=>galGo(m,b.dataset.do.split(":")[1]),
-      bag:(m,el,card,skip)=>{const d=m.data;if(d.shoe&&!d.size&&!d.inBag){const sz=(card||cardOf(m))?.querySelector(".sizes");if(sz&&!reduce.matches)sz.animate([{transform:"translateX(0)"},{transform:"translateX(-7px)"},{transform:"translateX(6px)"},{transform:"translateX(-4px)"},{transform:"translateX(0)"}],{duration:380,easing:"ease-out"});showToast(T("Pick a size first","Сначала выберите размер"));return}if(!d.inBag&&!skip&&(SYS.policy.pay==="ask"||USER==="guest")){askDevice(T(`Pay ${d.price} for ${d.name}?`,`Оплатить ${d.price} · ${d.name}?`),()=>DO.bag(m,el,card,true),"pay");return}m.data.inBag=!m.data.inBag;refresh(m,false);showToast((m.data.inBag?T("Added to bag","Добавлено в корзину"):T("Removed from bag","Убрано из корзины"))+(m.data.inBag?" · "+whereLabel():""))},
+      bag:(m,el,card,skip)=>{const d=m.data;if(d.shoe&&!d.size&&!d.inBag){const sz=(card||cardOf(m))?.querySelector(".sizes");if(sz&&!reduce.matches)sz.animate([{transform:"translateX(0)"},{transform:"translateX(-7px)"},{transform:"translateX(6px)"},{transform:"translateX(-4px)"},{transform:"translateX(0)"}],{duration:380,easing:"ease-out"});showToast(T("Pick a size first","Сначала выберите размер"));return}if(!d.inBag&&!skip&&(SYS.policy.pay==="ask"||USER==="guest")){askDevice(T(`Pay ${d.price} for ${d.name}?`,`Оплатить ${d.price} · ${d.name}?`),()=>DO.bag(m,el,card,true),"pay");return}m.data.inBag=!m.data.inBag;refresh(m,false);showToast((m.data.inBag?T("Added to bag","Добавлено в корзину"):T("Removed from bag","Убрано из корзины"))+(m.data.inBag?" · "+whereLabel():""));if(m.data.inBag)profNote("done",{space:S?.id,svc:"shopping",intent:"pay",min:6})},
       pdetails:m=>insertAfter(m,M("summary",`${m.data.brand} · ${m.data.name}`,m.source,{points:m.data.nike?[...T(...NIKE[m.data.nike].spec),T("Free returns within 30 days.","Бесплатный возврат 30 дней.")]:T(["Upper: recycled knit, water-repellent.","Sole: natural rubber, 32 mm.","Free returns within 30 days."],["Верх: переработанный трикотаж, водоотталкивающий.","Подошва: натуральный каучук, 32 мм.","Бесплатный возврат 30 дней."])})),
       edit2:(m,el,card)=>card.querySelector(".line-in").focus(),
       mic:()=>openVoice({from:"module"})
@@ -2110,7 +2162,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       if(!skipAsk&&(SYS.policy.send==="ask"||USER==="guest")){askDevice(T(`Send to ${m.data.to}?`,`Отправить: ${m.data.to}?`),()=>sendCompose(m,cardOf(m),useCond,true),"send");return}
       const where=` · ${whereLabel()}`;
       m.data.sent=(useCond&&m.modifier?T(`Scheduled · sends ${m.modifier}`,`Запланировано · отправится ${m.modifier}`):T(`Sent to ${m.data.to} · ${timeStr(new Date())}`,`Отправлено: ${m.data.to} · ${timeStr(new Date())}`))+where;
-      refresh(m,false);showToast(m.data.sent);logMoment(m.item,S.title);
+      refresh(m,false);showToast(m.data.sent);logMoment(m.item,S.title);profNote("done",{space:S?.id,svc:"messages",intent:"send",min:4});
       if(rulesOf("archive").length&&!(useCond&&m.modifier))setTimeout(()=>{if(findModule(m.id))archive(m)},1600);
     }
 
@@ -2160,7 +2212,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       closePalette();closeSelBubble();$("#palette").innerHTML="";
       closeSwitcher();setWx(false);closeVoice();closeSheet(true);
       S=bp;if(!S.perm)S.perm=clonePerm(GLOBAL_PERM);S.f=keep?clamp(keep.f,0,S.flows.length-1):0;S.m=S.flows.map((f,i)=>keep?clamp(keep.m[i]??0,0,f.modules.length-1):0);
-      setView("space");renderSpace();if(!keep)logMoment(S.title,S.title,true);rememberSpace();
+      setView("space");renderSpace();if(!keep){logMoment(S.title,S.title,true);profNote("visit",{space:S.id})}rememberSpace();
       if(overviewOpen)toggleOverview(false,true);
       fade($("#flows"),"1");$("#overview").style.opacity="";
       allModules().forEach(runSteps);
@@ -2194,12 +2246,12 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       const spec=autoKind(S),mode=spec?permOf(S,spec.who,spec.act):"ask";
       if(mode==="deny"){S.autoDone=true;showToast(denyText(spec));return}
       S.autoDone=true;
-      if(mode==="allow"&&spec?.act==="shift"){allowShift();return}
+      if(mode==="allow"&&spec?.act==="shift"){profNote("auto",{space:S.id,svc:"weather"});allowShift();return}
       if(mode==="ask"&&spec?.act==="move"){const plan=pushAuto(moveProposal());sheetForCollab(spec,plan,"move");return}
       const m=S.auto.make();
       pushAuto(m);
       const fl=S.flows[S.auto.flow];
-      if(mode==="allow")showToast(allowText(spec),T("Undo","Отменить"),()=>{const loc=findModule(m.id);if(!loc)return;S.flows[loc.fi].modules.splice(loc.mi,1);S.m[loc.fi]=clamp(S.m[loc.fi]||0,0,Math.max(0,S.flows[loc.fi].modules.length-1));renderSpace();if(overviewOpen)renderOverview()});
+      if(mode==="allow"){profNote("auto",{space:S.id,svc:spec?.who||S.auto.from});showToast(allowText(spec),T("Undo","Отменить"),()=>{const loc=findModule(m.id);if(!loc)return;S.flows[loc.fi].modules.splice(loc.mi,1);S.m[loc.fi]=clamp(S.m[loc.fi]||0,0,Math.max(0,S.flows[loc.fi].modules.length-1));renderSpace();if(overviewOpen)renderOverview()})}
       else if(spec)sheetForCollab(spec,m,spec.act);
       else showToast(T(`${collabName(S.auto.from)} added a module to ${fl.name}`,`${collabName(S.auto.from)}: новый модуль в «${fl.name}»`),T("Show","Показать"),()=>{const l=findModule(m.id);if(l)focusModule(l.fi,l.mi);toggleOverview(false);setTimeout(()=>cardOf(m)?.classList.add("flash"),300)});
     }
@@ -2312,6 +2364,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       renderCollabStack();
       $$("#ovFlows .mini").forEach(c=>c.classList.toggle("revoked",!!S.collabs.find(x=>x.id===c.dataset.src)?.off));
       rearmAuto();
+      profRefresh();
     }
     /* the one scripted "collaborator adds a module" event fires only while its rule is on and its collaborator has access */
     function autoAllowed(){return !!S&&!!S.auto&&!!S.rules.find(r=>r.auto)?.on&&!S.collabs.find(c=>c.id===S.auto.from)?.off}
@@ -2642,7 +2695,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     function applyLang(){
       document.documentElement.lang=LANG;
       $("#umCase").textContent=T("Back to case","Вернуться к кейсу");$("#backLink").href=LANG==="en"?"/en/intent-os":"/intent-os";
-      $("#umNotif").textContent=T("Notifications","Уведомления");$("#umSettings").textContent=T("Settings","Настройки");
+      $("#umNotif").textContent=T("Notifications","Уведомления");$("#umSettings").textContent=T("Settings","Настройки");$("#umProfile").textContent=T("Profile","Профиль");
       $("#umLock").textContent=T("Lock","Заблокировать");$("#umUser").textContent=USER==="guest"?T("Switch to Andrew","Сменить на Андрея"):T("Switch user","Сменить пользователя");
       renderNotifs(false);renderUser();renderFocus();
       $("#intentInput").placeholder=T("What do you intend to do?","Что вы хотите сделать?");
@@ -3301,6 +3354,11 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       return list.map(l=>`<button type="button" class="sys-lang${l.id===LANG?" on":""}" data-pick-lang="${l.id}"><span>${esc(l.native)}</span><small>${l.off?esc(T("Not in this prototype","Нет в прототипе")):l.id===LANG?esc(T("Current","Сейчас")):""}</small></button>`).join("");
     }
     function winHTML(w,front){
+      if(w.kind==="profile"){
+        const title=T("Profile","Профиль");
+        const x=`<button type="button" class="sys-x" data-sys-close="${w.id}" aria-label="${esc(T("Close","Закрыть"))}">${ic("x")}</button>`;
+        return `<section class="sys-win profile${front?"":" back"}" data-win="${w.id}" role="dialog" aria-label="${esc(title)}" style="z-index:${front?3:1}">${x}<div class="sys-main"><h2>${esc(title)}</h2><div class="sys-body">${profileBody(w)}</div></div></section>`;
+      }
       const small=w.kind==="lang";
       const title=small?T("Language","Язык"):{general:T("General","Общие"),permissions:T("Permissions","Разрешения"),computer:T("This computer","Этот компьютер"),devices:T("Devices","Устройства")}[w.section]||T("Settings","Настройки");
       const x=`<button type="button" class="sys-x" data-sys-close="${w.id}" aria-label="${esc(T("Close","Закрыть"))}">${ic("x")}</button>`;
@@ -3331,8 +3389,13 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       const drop=e.target.closest("[data-drop]");
       if(drop){const ctl=drop.closest(".sys-ctl"),will=ctl&&!ctl.classList.contains("open");$$("#sys .sys-ctl.open").forEach(n=>n.classList.remove("open"));if(will)ctl.classList.add("open");return}
       if(!e.target.closest(".sys-ctl"))$$("#sys .sys-ctl.open").forEach(n=>n.classList.remove("open"));
+      const pspace=e.target.closest("[data-pspace]");
+      if(pspace){const w=WINS.find(k=>k.kind==="profile");if(w){w.space=pspace.dataset.pspace;renderWindows()}return}
+      if(e.target.closest("[data-prof-devices]")){openSettings({section:"devices"});return}
+      if(e.target.closest("[data-prof-go]")){closeTopWin();const id=USER==="guest"?"calendar":"inbox";if(BP[id])openSpace(BP[id]());return}
       const btn=e.target.closest(".sys-menu button[data-v], .sys-seg button");if(!btn)return;
       const key=btn.closest("[data-seg]").dataset.seg,val=btn.dataset.v,w=WINS.find(k=>k.kind==="settings");
+      if(key==="heat"){const pw=WINS.find(k=>k.kind==="profile");if(pw){pw.heat=val;renderWindows()}return}
       if(key==="theme")return setNight(val==="night");
       if(key==="where"){SYS.where=val;renderWindows();showToast(whereLabel());return}
       if(key.startsWith("pol-")){SYS.policy[key.slice(4)]=val;renderWindows();return}
@@ -3407,6 +3470,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         HANDOFF={dev:dev.id,mid,title:mod.item,space:S?.title||""};
         hotDev=null;renderDevices();if(S)renderSpace();
         showHandoff(contLabel(dev),true);
+        profNote("handoff",{dev:dev.id,space:S?.id});
       },700);
     }
     function holdSpace(bp){
@@ -3683,6 +3747,258 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       },16000);
     }
     function poke(){if($("#idle")?.classList.contains("on"))wake();else armIdle()}
+
+    /* profile ledger: seeded history plus what you do in this session */
+    const PROF_SPACES=[
+      {id:"trip",en:"Travel",ru:"Поездки",color:"#3f74f0",night:"#86a8ff"},
+      {id:"inbox",en:"Inbox",ru:"Входящие",color:"#7f93a6",night:"#a9b9c6"},
+      {id:"flat",en:"Berlin",ru:"Берлин",color:"#0e8f78",night:"#7dcec0"},
+      {id:"calendar",en:"My day",ru:"Мой день",color:"#c47a12",night:"#f0c27a"},
+      {id:"music",en:"Music",ru:"Музыка",color:"#c44569",night:"#f2a0b8"},
+      {id:"gym",en:"Gym",ru:"Спортзал",color:"#5f8f55",night:"#9dcc90"},
+      {id:"report",en:"Report",ru:"Отчёт",color:"#8d6bb5",night:"#c4a6e0"}
+    ];
+    const PROF_SVC=[
+      {id:"weather",en:"Weather",ru:"Погода"},
+      {id:"calendar",en:"Calendar",ru:"Календарь"},
+      {id:"airline",en:"Airline",ru:"Авиакомпания"},
+      {id:"maps",en:"Maps",ru:"Карты"},
+      {id:"mail",en:"Mail",ru:"Почта"},
+      {id:"messages",en:"Messages",ru:"Сообщения"},
+      {id:"stays",en:"Stays",ru:"Жильё"},
+      {id:"music",en:"Music",ru:"Музыка"},
+      {id:"homes",en:"Homes",ru:"Объявления"},
+      {id:"shopping",en:"Shopping",ru:"Покупки"}
+    ];
+    const PROF_KINDS={
+      book:["Book a flight","Забронировать рейс"],
+      send:["Send a message","Отправить сообщение"],
+      shift:["Shift the days","Сдвинуть дни"],
+      pay:["Pay for an order","Оплатить заказ"]
+    };
+    function profDayKey(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+    function profRng(seed){let a=seed>>>0;return ()=>{a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296}}
+    function buildProfSeed(){
+      const totals={trip:168,inbox:66,flat:49,calendar:45,music:33,gym:29,report:20};
+      const today=new Date();today.setHours(0,0,0,0);
+      const map={};
+      const put=(back,id)=>{
+        if(!totals[id])return;
+        const d=new Date(today);d.setDate(d.getDate()-back);
+        const key=profDayKey(d);const cell=map[key]||(map[key]={});
+        cell[id]=(cell[id]||0)+1;totals[id]--;
+      };
+      [["calendar","trip"],["music","inbox"],["calendar","flat"],["music","trip"],["calendar","trip"],["music","gym"],["calendar","report"],["music","trip"],["calendar","inbox"],["music","flat"],["calendar","trip"]].forEach((pair,i)=>pair.forEach(id=>put(i+1,id)));
+      const rnd=profRng(20261021);
+      Object.keys(totals).forEach(id=>{
+        while(totals[id]>0){
+          let back=13+Math.floor(rnd()*350);
+          if(rnd()<0.22)back=13+Math.floor(rnd()*40);
+          put(back,id);
+        }
+      });
+      return map;
+    }
+    const PROF={
+      intents:86,saved:14*60+20,handoffs:4,autos:7,
+      devs:new Set(["station","tv","car"]),
+      svc:{weather:28,calendar:22,airline:14,maps:11,mail:9,messages:6,stays:5,music:4,homes:3},
+      devN:{station:6,tv:3,car:2},
+      kinds:{book:9,send:6,shift:4,pay:2},
+      live:{},guest:{intents:0,saved:0,handoffs:0,autos:0},
+      seed:null
+    };
+    PROF.seed=buildProfSeed();
+    function profSpaces(){const night=document.body.classList.contains("night");const list=USER==="guest"?PROF_SPACES.filter(s=>s.id==="calendar"||s.id==="music"):PROF_SPACES;return list.map(s=>({...s,ink:night&&s.night?s.night:s.color}))}
+    function profName(s){return T(s.en,s.ru)}
+    function profBag(d){
+      const key=profDayKey(d),seed=PROF.seed[key]||{},live=PROF.live[key]||{},out={};
+      profSpaces().forEach(s=>{out[s.id]=(seed[s.id]||0)+(live[s.id]||0)});
+      return out;
+    }
+    function profDom(bag){let best=null,n=0;profSpaces().forEach(s=>{const v=bag[s.id]||0;if(v>n){n=v;best=s}});return best}
+    function profTouch(space){
+      if(!space)return;
+      const key=profDayKey(new Date());
+      const bag=PROF.live[key]||(PROF.live[key]={});
+      bag[space]=(bag[space]||0)+1;
+    }
+    function profNote(type,info){
+      const space=info?.space||S?.id;
+      if(type==="visit"){
+        const key=profDayKey(new Date()),mark=space+"@"+key;
+        if(PROF.live._seen&&PROF.live._seen[mark])return;
+        PROF.live._seen=PROF.live._seen||{};PROF.live._seen[mark]=1;
+        profTouch(space);
+      }else if(type==="done"){
+        PROF.intents++;PROF.saved+=info?.min||8;
+        if(USER==="guest"){PROF.guest.intents++;PROF.guest.saved+=info?.min||8}
+        if(info?.svc)PROF.svc[info.svc]=(PROF.svc[info.svc]||0)+1;
+        if(info?.intent)PROF.kinds[info.intent]=(PROF.kinds[info.intent]||0)+1;
+        profTouch(space);
+      }else if(type==="handoff"&&info?.dev){
+        PROF.handoffs++;PROF.devs.add(info.dev);PROF.devN[info.dev]=(PROF.devN[info.dev]||0)+1;
+        if(USER==="guest")PROF.guest.handoffs++;
+        profTouch(space);
+      }else if(type==="auto"){
+        PROF.autos++;if(USER==="guest")PROF.guest.autos++;
+      }
+      profRefresh();
+    }
+    function profRefresh(){if(WINS.some(w=>w.kind==="profile"))renderWindows()}
+    function profRules(){
+      const ids=USER==="guest"?["calendar","music"]:Object.keys(BP);
+      let n=0;
+      ids.forEach(id=>{
+        const live=OPEN.get(id);
+        const rules=live?live.rules:(BP[id]?BP[id]().rules:[]);
+        n+=(rules||[]).filter(r=>r.on).length;
+      });
+      return n;
+    }
+    function profDays(){
+      const today=new Date();today.setHours(0,0,0,0);
+      const start=new Date(today);const wd=(start.getDay()+6)%7;start.setDate(start.getDate()-wd-7*51);
+      const days=[];
+      for(let d=new Date(start);d<=today;d.setDate(d.getDate()+1))days.push(new Date(d));
+      return days;
+    }
+    function profStreak(){
+      const rulesOn=profRules()>0,today=new Date();today.setHours(0,0,0,0);
+      const has=i=>{const d=new Date(today);d.setDate(d.getDate()-i);return Object.values(profBag(d)).some(n=>n>0)};
+      const todayOn=has(0)&&rulesOn;
+      let cur=0;
+      for(let i=todayOn?0:1;i<160;i++){if(has(i)&&(i>0||rulesOn))cur++;else break}
+      return cur;
+    }
+    function profTotals(){
+      const totals={};
+      profSpaces().forEach(s=>totals[s.id]=0);
+      Object.values(PROF.seed).forEach(cell=>profSpaces().forEach(s=>{totals[s.id]+=cell[s.id]||0}));
+      Object.entries(PROF.live).forEach(([k,cell])=>{if(k==="_seen"||!cell||typeof cell!=="object")return;profSpaces().forEach(s=>{totals[s.id]+=cell[s.id]||0})});
+      return totals;
+    }
+    function profTime(min){
+      const h=Math.floor(min/60),m=min%60;
+      if(h<=0)return T(`${m} min`,`${m} мин`);
+      return m?T(`${h}h ${String(m).padStart(2,"0")}m`,`${h} ч ${String(m).padStart(2,"0")} мин`):T(`${h}h`,`${h} ч`);
+    }
+    function profInk(hex,value,max){
+      if(!value||!max)return "";
+      const pct=Math.round(28+Math.max(0.15,Math.min(1,value/max))*72);
+      return `color-mix(in srgb, ${hex} ${pct}%, transparent)`;
+    }
+    function profHeat(mode,filter){
+      const days=profDays(),weeks=[];
+      for(let i=0;i<days.length;i+=7)weeks.push(days.slice(i,i+7));
+      const bags=days.map(d=>profBag(d));
+      const filtered=bags.map(b=>filter&&filter!=="all"?(b[filter]||0):Object.values(b).reduce((a,n)=>a+n,0));
+      let run=0;const cumul=filtered.map(n=>run+=n);
+      const shown=mode==="cumulative"?cumul:filtered;
+      const max=Math.max(1,...(mode==="weekly"?weeks.map(w=>w.reduce((a,d)=>a+((filter&&filter!=="all"?(profBag(d)[filter]||0):Object.values(profBag(d)).reduce((x,n)=>x+n,0))),0)):shown));
+      const loc=LANG==="ru"?"ru-RU":"en-GB";
+      const months=weeks.map((w,i)=>{
+        const first=w[0],prev=i?weeks[i-1][0]:null;
+        if(!prev||first.getMonth()!==prev.getMonth())return `<span>${esc(first.toLocaleDateString(loc,{month:"short"}).replace(".",""))}</span>`;
+        return "<span></span>";
+      }).join("");
+      const colorOf=d=>{
+        const bag=profBag(d);
+        if(filter&&filter!=="all")return profSpaces().find(s=>s.id===filter);
+        return profDom(bag);
+      };
+      let cells="";
+      if(mode==="weekly"){
+        cells=weeks.map(w=>{
+          let n=0;const mix={};
+          w.forEach(d=>{const b=profBag(d);profSpaces().forEach(s=>{const v=filter&&filter!=="all"?(s.id===filter?b[s.id]||0:0):(b[s.id]||0);n+=v;mix[s.id]=(mix[s.id]||0)+v})});
+          const dom=profSpaces().slice().sort((a,b)=>(mix[b.id]||0)-(mix[a.id]||0))[0];
+          const ink=n&&dom?profInk(dom.ink,n,max):"";
+          const label=w[0].toLocaleDateString(loc,{day:"numeric",month:"short"});
+          const who=n&&dom?profName(dom):"";
+          return `<i class="${n?"":"empty"}" style="${ink?`background:${ink}`:""}" title="${esc(who?`${label} · ${who} · ${n}`:`${label}`)}"></i>`;
+        }).join("");
+      }else{
+        days.forEach((d,i)=>{
+          const n=mode==="cumulative"?cumul[i]:filtered[i];
+          const dom=colorOf(d);
+          const ink=n&&dom?profInk(dom.ink,n,max):"";
+          const label=d.toLocaleDateString(loc,{weekday:"short",day:"numeric",month:"short"});
+          const who=dom&&n?profName(dom):"";
+          cells+=`<i class="${n?"":"empty"}" style="${ink?`background:${ink}`:""}" title="${esc(who?`${label} · ${who} · ${n}`:label)}"></i>`;
+        });
+      }
+      return `<div class="hm-scroll"><div class="hm"><div class="hm-months">${months}</div><div class="hm-grid${mode==="weekly"?" weeks":""}">${cells}</div></div></div>`;
+    }
+    function profTop(){
+      const shared=USER==="guest"?new Set(["calendar","music"]):null;
+      const rows=[];
+      PROF_SVC.forEach(s=>{
+        if(shared&&!shared.has(s.id))return;
+        const n=PROF.svc[s.id]||0;if(n>0)rows.push({id:s.id,name:T(s.en,s.ru),n,who:T(s.en,s.ru),dev:false});
+      });
+      DEVICES.forEach(d=>{
+        const n=PROF.devN[d.id]||0;
+        if(USER==="guest"&&!PROF.devs.has(d.id)&&n<=0)return;
+        if(n>0)rows.push({id:"dev-"+d.id,name:devName(d),n,dev:true,icon:d.icon});
+      });
+      const svcs=rows.filter(r=>!r.dev).sort((a,b)=>b.n-a.n);
+      const devs=rows.filter(r=>r.dev).sort((a,b)=>b.n-a.n);
+      return [...devs.slice(0,3),...svcs.slice(0,4)].sort((a,b)=>b.n-a.n);
+    }
+    function profileBody(w){
+      const heat=w.heat||"daily",filter=w.space||"all";
+      const guest=USER==="guest";
+      const who=guest?{a:"G",n:T("Guest","Гость"),h:"@guest",s:T("Shared spaces only","Только общие пространства")}:{a:"A",n:"Andrew",h:"@andrew",s:T("Personal","Личный аккаунт")};
+      const intents=guest?11+PROF.guest.intents:PROF.intents;
+      const saved=guest?70+PROF.guest.saved:PROF.saved;
+      const hands=guest?1+PROF.guest.handoffs:PROF.handoffs;
+      const autos=guest?2+PROF.guest.autos:PROF.autos;
+      const rules=profRules();
+      const streak=profStreak();
+      const devs=PROF.devs.size;
+      const stats=[
+        ["intents",String(intents),T("Intents","Намерения")],
+        ["saved",profTime(saved),T("Time saved","Сэкономлено")],
+        ["rules",String(rules),T("Active rules","Правила")],
+        ["streak",count(streak,["day","days"],["день","дня","дней"]),T("Rules streak","Серия правил")],
+        ["devices",String(devs),T("Devices","Устройства")]
+      ];
+      const totals=profTotals();
+      let best=null,sum=0;
+      profSpaces().forEach(s=>{const n=totals[s.id]||0;sum+=n;if(!best||n>best.n)best={s,n}});
+      const pct=sum&&best?Math.round(best.n/sum*100):0;
+      const kind=Object.entries(PROF.kinds).sort((a,b)=>b[1]-a[1])[0];
+      const kindLabel=kind?T(...PROF_KINDS[kind[0]]):T("Nothing yet","Пока ничего");
+      const seg=(id,label)=>`<button type="button" data-v="${id}" class="${heat===id?"on":""}">${esc(label)}</button>`;
+      const spaces=`<button type="button" data-pspace="all" class="${filter==="all"?"on":""}">${esc(T("All spaces","Все пространства"))}</button>`+profSpaces().map(s=>`<button type="button" data-pspace="${s.id}" class="${filter===s.id?"on":""}"><i class="prof-swatch" style="background:${s.ink}"></i>${esc(profName(s))}</button>`).join("");
+      const legend=[0.2,0.4,0.65,0.85,1].map(t=>`<i style="background:${profInk("#3f74f0",t,1)}"></i>`).join("");
+      const top=profTop();
+      const maxTop=top.length?top[0].n:1;
+      const topHTML=top.length?top.map(r=>`<div class="prof-row">${r.dev?ic(r.icon):avatar(r.who,"xs")}<em>${esc(r.name)}</em><div class="prof-bar"><i style="width:${Math.max(8,Math.round(r.n/maxTop*100))}%"></i></div><b>${r.n}</b></div>`).join(""):`<div class="prof-empty"><p>${esc(T("No services or devices yet. They show up from the spaces you open.","Пока нет сервисов и устройств. Они появятся из пространств, которые вы откроете."))}</p><button type="button" class="sys-textbtn" data-prof-go>${esc(T("Open a space","Открыть пространство"))}</button></div>`;
+      const kvs=[
+        [T("Most used space","Самое частое пространство"),best?`${profName(best.s)} · ${pct}%`:T("None yet","Пока нет")],
+        [T("Most delegated intent","Чаще всего поручается"),kindLabel],
+        [T("Automations that ran without asking","Сработали без вопроса"),String(autos)],
+        [T("Handoffs this week","Передачи за неделю"),String(hands)]
+      ];
+      return `<div class="prof-id"><span class="prof-ava">${who.a}</span><div><b>${esc(who.n)}</b><em>${esc(who.h)}</em><small>${esc(who.s)}</small></div></div>
+        <div class="prof-stats">${stats.map(([id,n,l])=>`<div data-stat="${id}"><b>${esc(n)}</b><span>${esc(l)}</span></div>`).join("")}</div>
+        <div class="prof-card"><div class="prof-card-h"><div><b>${esc(T("Activity","Активность"))}</b><span class="sub">${esc(T("Intents by day, colored by space","Намерения по дням, цветом пространства"))}</span></div><div class="sys-seg" data-seg="heat">${seg("daily",T("Daily","Дни"))}${seg("weekly",T("Weekly","Недели"))}${seg("cumulative",T("Cumulative","Накопление"))}</div></div>
+        ${profHeat(heat,filter)}
+        <div class="hm-legend"><span>${esc(T("Less","Меньше"))}</span>${legend}<span>${esc(T("More","Больше"))}</span></div>
+        <div class="prof-spaces">${spaces}</div></div>
+        <div class="prof-card"><div class="prof-card-h"><div><b>${esc(T("Top services & devices","Сервисы и устройства"))}</b><span class="sub">${esc(T("From the services and devices in this demo","Из сервисов и устройств этого демо"))}</span></div><button type="button" class="sys-textbtn" data-prof-devices>${esc(T("Devices","Устройства"))}</button></div>${topHTML}</div>
+        <div class="prof-card">${kvs.map(([k,v])=>`<div class="prof-kv"><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join("")}</div>`;
+    }
+    function openProfile(){
+      closePalette();setMenu(false);
+      let w=WINS.find(x=>x.kind==="profile");
+      if(!w){w={kind:"profile",id:++winSeq,heat:"daily",space:"all"};WINS.push(w)}
+      else{const i=WINS.indexOf(w);WINS.push(WINS.splice(i,1)[0])}
+      renderWindows();
+    }
+    $("#profileBtn")?.addEventListener("click",()=>openProfile());
 
     $("#focusChip")?.addEventListener("click",onFocusClick);
     $("#sbFocus")?.addEventListener("click",onFocusClick);
