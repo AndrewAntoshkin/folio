@@ -550,7 +550,7 @@
     .hints button:active{transform:scale(.95);transition-duration:.08s}
     .hints button.on{background:rgba(255,255,255,.55);color:var(--ink)}
     /* notifications stack in the top-right corner, newest on top (below the weather / account popovers) */
-    .toasts{position:absolute;top:58px;right:28px;z-index:39;display:flex;flex-direction:column;align-items:flex-end;gap:8px;max-width:min(380px,calc(100% - 32px));pointer-events:none}
+    .toasts{position:absolute;top:58px;right:28px;z-index:84;display:flex;flex-direction:column;align-items:flex-end;gap:8px;max-width:min(380px,calc(100% - 32px));pointer-events:none}
     .toast{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;background:rgba(40,40,40,.9);color:#fff;font-size:12px;pointer-events:auto;animation:toastIn .45s var(--spring) both;transition:opacity .25s var(--ease),transform .3s var(--ease)}
     .toast.out{opacity:0;transform:translateX(14px) scale(.96);pointer-events:none}
     .toast button{flex:none;border:0;border-radius:999px;background:rgba(255,255,255,.16);padding:4px 10px;color:#fff;font-size:11px}
@@ -756,6 +756,68 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .asm-steps li.done .asm-st{border:0;background:var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4.5 8.2 2.3 2.3 4.7-4.9'/%3E%3C/svg%3E") center/12px no-repeat}
     @keyframes asmSpin{to{transform:rotate(1turn)}}
     @keyframes asmShim{from{background-position:100% 0}to{background-position:-150% 0}}
+
+    /* system windows sit above the desktop and every Space; modules stay in the stream */
+    .cs{cursor:pointer}
+    .perm-open{display:flex;align-items:center;gap:8px;width:100%;margin:2px 0 10px;padding:8px;border:0;border-radius:10px;background:var(--accent-soft);color:var(--ink);text-align:left}
+    .perm-open span{min-width:0}.perm-open b{display:block;font-weight:500;font-size:12px}.perm-open small{display:block;margin-top:2px;color:var(--quiet);font-size:10.5px;line-height:1.35}
+    .perm-open .ic{margin-left:auto;flex:none;color:var(--accent)}
+    .perm-open:hover{filter:brightness(.97)}
+    .sys{position:fixed;inset:0;z-index:72;pointer-events:none}
+    .sys.on{pointer-events:auto}
+    .sys-veil{position:absolute;inset:0;background:rgba(220,220,220,.28);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+    body.night .sys-veil{background:rgba(8,8,8,.42)}
+    .sys-win{position:absolute;left:50%;top:50%;display:flex;width:min(840px,calc(100vw - 40px));height:min(560px,calc(100vh - 72px));border-radius:22px;background:var(--paper);border:1px solid var(--rim);box-shadow:0 1px 2px rgba(0,0,0,.05),0 40px 90px -28px rgba(0,0,0,.38);color:var(--ink);overflow:hidden;-webkit-backdrop-filter:blur(40px) saturate(1.5);backdrop-filter:blur(40px) saturate(1.5);transform:translate(-50%,-50%);animation:sysIn .45s var(--spring) both}
+    .sys-win.back{transform:translate(-50%,calc(-50% - 22px)) scale(.97);filter:saturate(.92)}
+    .sys-win.small{top:calc(50% + 36px);width:min(400px,calc(100vw - 40px));height:min(460px,calc(100vh - 120px))}
+    @keyframes sysIn{from{opacity:0;transform:translate(-50%,calc(-50% + 12px)) scale(.98)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+    .sys-win.back{animation:none}
+    @media (prefers-reduced-motion:reduce){.sys-win{animation:none}}
+    .sys-side{width:200px;flex:none;display:flex;flex-direction:column;gap:2px;padding:16px 10px;border-right:1px solid var(--line);background:rgba(47,47,47,.03)}
+    body.night .sys-side{background:rgba(255,255,255,.03)}
+    .sys-brand{padding:6px 10px 14px;font-size:12px;font-weight:500;color:var(--quiet)}
+    .sys-nav{display:flex;align-items:center;gap:8px;width:100%;padding:8px 10px;border:0;border-radius:10px;background:none;color:var(--ink);font-size:13px;text-align:left}
+    .sys-nav .ic{width:15px;height:15px;color:var(--quiet)}
+    .sys-nav.on{background:var(--accent-soft);color:var(--accent)}.sys-nav.on .ic{color:var(--accent)}
+    .sys-nav:hover:not(.on){background:var(--chip)}
+    .sys-main{flex:1;min-width:0;display:flex;flex-direction:column}
+    .sys-head{display:flex;align-items:center;gap:12px;padding:16px 16px 6px}
+    .sys-head h2{margin:0;flex:1;font-size:17px;font-weight:500;letter-spacing:-.02em}
+    .sys-head .kbd{color:var(--quiet)}
+    .sys-x{width:28px;height:28px;display:grid;place-items:center;border:0;border-radius:50%;background:var(--chip);color:var(--ink)}
+    .sys-x:hover{background:rgba(47,47,47,.1)}body.night .sys-x:hover{background:rgba(255,255,255,.12)}
+    .sys-body{flex:1;overflow:auto;padding:8px 22px 22px;scrollbar-width:thin}
+    .sys-card{display:flex;align-items:center;gap:12px;padding:12px;margin-bottom:8px;border-radius:16px;background:var(--chip)}
+    .sys-card .avatar,.sys-card .me-btn{width:40px;height:40px;font-size:15px}
+    .sys-card b{display:block;font-size:15px;font-weight:500}.sys-card span{display:block;margin-top:1px;color:var(--quiet);font-size:12px}
+    .sys-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px 0;border-top:1px solid var(--line)}
+    .sys-row .meta{flex:1;min-width:0}.sys-row .meta b{display:block;font-size:13px;font-weight:500}.sys-row .meta span{display:block;margin-top:2px;color:var(--quiet);font-size:11.5px;line-height:1.35}
+    .sys-group .sys-row{margin-left:26px}
+    .sys-go{display:flex;align-items:center;gap:8px;border:0;background:none;color:var(--quiet);font-size:12.5px}
+    .sys-go:hover{color:var(--ink)}
+    .sys-seg{display:flex;flex:none;padding:3px;border-radius:999px;background:var(--chip)}
+    .sys-seg button{border:0;border-radius:999px;background:transparent;color:var(--quiet);padding:5px 10px;font-size:12px;white-space:nowrap}
+    .sys-seg button.on{background:var(--paper);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+    body.night .sys-seg button.on{background:#3a3a3c;color:#fff}
+    .sys-swatches{display:flex;gap:8px}
+    .sys-swatch{width:22px;height:22px;padding:0;border:0;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
+    .sys-swatch.on{box-shadow:0 0 0 2px var(--paper),0 0 0 4px var(--accent)}
+    .sys-note{margin:4px 0 12px;color:var(--quiet);font-size:12.5px;line-height:1.45}
+    .sys-group{margin-top:8px;padding-top:4px}
+    .sys-group.focus{margin-left:-8px;margin-right:-8px;padding:8px;border-radius:14px;background:var(--accent-soft)}
+    .sys-group h3{display:flex;align-items:center;gap:8px;margin:8px 0 0;font-size:12.5px;font-weight:500}
+    .sys-group h3 .avatar{width:18px;height:18px;font-size:8px}
+    .sys-search{width:100%;margin-bottom:8px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--chip);outline:0;font:inherit;font-size:14px}
+    .sys-search:focus{box-shadow:0 0 0 3px var(--accent-soft)}
+    .sys-lang{display:flex;align-items:center;justify-content:space-between;width:100%;padding:11px 4px;border:0;border-bottom:1px solid var(--line);background:none;color:inherit;font:inherit;font-size:14px;text-align:left}
+    .sys-lang small{color:var(--faint);font-size:12px}
+    .sys-lang.on{color:var(--accent)}
+    .sys-lang:hover{background:var(--chip)}
+    .sys-empty{padding:18px 4px;color:var(--quiet);font-size:13px}
+    .sys-field{width:min(280px,46vw);padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--chip);outline:0;font:inherit;font-size:13px;text-align:right}
+    .sys-field:focus{box-shadow:0 0 0 3px var(--accent-soft)}
+    .sys-reset{margin-top:8px}
+    body.night .perm-open:hover{filter:brightness(1.08)}
   </style>
 </head>
 <body>
@@ -773,9 +835,8 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
           <button class="me-btn" id="meBtn" aria-haspopup="menu" aria-expanded="false">A</button>
           <div class="umenu" id="userMenu" role="menu">
             <div class="um-head"><span class="me-btn">A</span><div><b>Andrew</b><span id="umSub"></span></div></div>
-            <div class="um-row"><span id="umLang"></span><div class="lang" id="langSwitch"><button data-lang="ru">RU</button><button data-lang="en">EN</button></div></div>
             <button class="um-row" id="notifBtn" role="menuitem"><span id="umNotif"></span><em id="notifCount"></em></button>
-            <button class="um-row" id="nightBtn" role="menuitem"><span id="umTheme"></span><em id="umThemeVal"></em></button>
+            <button class="um-row" id="settingsBtn" role="menuitem"><span id="umSettings"></span></button>
             <div class="um-sep"></div>
             <a class="um-row" id="backLink" href="/intent-os" role="menuitem"></a>
           </div>
@@ -824,6 +885,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     <div class="toasts" id="toasts" aria-live="polite"></div>
     <aside class="notif" id="notifPanel" role="dialog" aria-labelledby="notifTitle"><div class="notif-veil"></div><div class="notif-head"><b id="notifTitle"></b><button id="notifClear"></button></div><div class="notif-list" id="notifList"></div></aside>
   </div>
+  <div class="sys" id="sys"></div>
 
   <script>
     const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
@@ -1567,7 +1629,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         case"product":return A(d.inBag?T("In bag ✓","В корзине ✓"):d.shoe&&!d.size?T("Pick a size","Выберите размер"):d.shoe?`${T("Add to bag","В корзину")} · ${d.size}`:T("Add to bag","В корзину"),"bag",d.inBag?"on":d.shoe&&!d.size?"":"primary")+A(T("Details","Подробнее"),"pdetails");
         case"suggest":return A(T("Dismiss","Скрыть"),"delete");
         case"plan":return d.running?`<span class="act on">${T("Applying in background…","Применяется в фоне…")}</span>`:A(T("Approve and apply","Подтвердить и применить"),"approvePlan","primary")+A(T("Edit plan","Изменить план"),"editPlan")+A(T("Cancel","Отменить"),"delete","flat");
-        case"receipt":return d.undone?A(T("Undo restored","Отмена выполнена"),"undoPlan","on"):A(T("Undo","Отменить"),"undoPlan")+A(T("Hide","Скрыть"),"keepReceipt","flat");
+        case"receipt":return d.deviceDone?A(T("Hide","Скрыть"),"keepReceipt","flat"):d.undone?A(T("Undo restored","Отмена выполнена"),"undoPlan","on"):A(T("Undo","Отменить"),"undoPlan")+A(T("Hide","Скрыть"),"keepReceipt","flat");
         default:return A(T("Done","Готово"),"delete")+A(T("Edit","Изменить"),"edit2");
       }
     }
@@ -1794,6 +1856,15 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       },
       approvePlan:m=>{
         if(m.data.running)return;
+        if(typeof m.data.deviceApply==="function"){
+          const fn=m.data.deviceApply,deviceAsk=!!m.data.deviceAsk;m.data.deviceApply=null;
+          try{fn()}catch(err){}
+          m.kind="receipt";m.item=T("Confirmed","Подтверждено");
+          m.data=deviceAsk
+            ?{deviceDone:true,text:T(`Done · ${whereLabel()}`,`Готово · ${whereLabel()}`),effects:[{text:whereLabel()}]}
+            :{deviceDone:true,text:T("Confirmed. The action was applied.","Подтверждено. Действие выполнено."),effects:[]};
+          refresh(m);showToast(T("Confirmed","Подтверждено"));return;
+        }
         m.data.running=true;m.data.progress=0;refresh(m);
         const finish=()=>{
           let changed=T("The approved change was applied to this Space.","Подтверждённое изменение применено в этом пространстве.");
@@ -1838,9 +1909,11 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         const o=m.data.opts[m.data.sel];if(!o)return;
         if(force!=="budget"&&overBudget(o.p)){showToast(T(`${o.p} is over your ${fmtEur(budgetCap())} limit`,`${o.p} выше вашего лимита ${fmtEur(budgetCap())}`),T("Book anyway","Всё равно"),()=>DO.book(m,el,card,"budget"));return}
         if(force!=="direct"&&notDirect(o.s)){if(offerFlightChoice(m))return;showToast(T(`${o.t} has a stop, and “prefer direct flights” is on.`,`${o.t} с пересадкой, а правило «прямые рейсы» включено.`),T("Book anyway","Всё равно"),()=>DO.book(m,el,card,"direct"));return}
-        m.data.choice=null;
-        m.data.booked=force==="direct"&&notDirect(o.s)?T(`Booked ${o.t} · ${o.p} · direct-flight rule overridden`,`Забронировано: ${o.t} · ${o.p} · правило о прямых рейсах снято для этой брони`):T(`Booked ${o.t} · ${o.p} · confirmation sent to Mail`,`Забронировано: ${o.t} · ${o.p} · подтверждение в почте`);
-        refresh(m,false);showToast(T(`Booked ${o.t}`,`Забронировано: ${o.t}`));logMoment(`${T("Booked","Бронь")} ${o.t}`,S.title)},
+        if(!m.data._bookGo&&SYS.policy.book==="ask"){askDevice(T(`Book ${o.t} · ${o.p}?`,`Забронировать ${o.t} · ${o.p}?`),()=>{m.data._bookGo=true;DO.book(m,el,card,force)});return}
+        m.data._bookGo=false;m.data.choice=null;
+        const where=` · ${whereLabel()}`;
+        m.data.booked=(force==="direct"&&notDirect(o.s)?T(`Booked ${o.t} · ${o.p} · direct-flight rule overridden`,`Забронировано: ${o.t} · ${o.p} · правило о прямых рейсах снято для этой брони`):T(`Booked ${o.t} · ${o.p} · confirmation sent to Mail`,`Забронировано: ${o.t} · ${o.p} · подтверждение в почте`))+where;
+        refresh(m,false);showToast(T(`Booked ${o.t}`,`Забронировано: ${o.t}`)+" · "+whereLabel());logMoment(`${T("Booked","Бронь")} ${o.t}`,S.title)},
       bookDirect:m=>{if(m.data.choice)m.data.sel=m.data.choice.direct;m.data.choice=null;DO.book(m)},
       bookAny:m=>{if(m.data.choice)m.data.sel=m.data.choice.any;m.data.choice=null;DO.book(m,null,null,"direct")},
       track:m=>{m.data.track=m.data.track?null:T("Tracking prices · I’ll book under €150","Слежу за ценой · забронирую до €150");refresh(m,false)},
@@ -1884,13 +1957,15 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         const a=c.querySelector(".acts");if(a)a.innerHTML=actsOf(m);
         if(d.size&&!reduce.matches)b.animate([{transform:"scale(.9)"},{transform:"scale(1)"}],{duration:420,easing:SPRING})},
       gal:(m,b)=>galGo(m,b.dataset.do.split(":")[1]),
-      bag:m=>{const d=m.data;if(d.shoe&&!d.size&&!d.inBag){const sz=cardOf(m)?.querySelector(".sizes");if(sz&&!reduce.matches)sz.animate([{transform:"translateX(0)"},{transform:"translateX(-7px)"},{transform:"translateX(6px)"},{transform:"translateX(-4px)"},{transform:"translateX(0)"}],{duration:380,easing:"ease-out"});showToast(T("Pick a size first","Сначала выберите размер"));return}m.data.inBag=!m.data.inBag;refresh(m,false);showToast(m.data.inBag?T("Added to bag","Добавлено в корзину"):T("Removed from bag","Убрано из корзины"))},
+      bag:(m,el,card,skip)=>{const d=m.data;if(d.shoe&&!d.size&&!d.inBag){const sz=(card||cardOf(m))?.querySelector(".sizes");if(sz&&!reduce.matches)sz.animate([{transform:"translateX(0)"},{transform:"translateX(-7px)"},{transform:"translateX(6px)"},{transform:"translateX(-4px)"},{transform:"translateX(0)"}],{duration:380,easing:"ease-out"});showToast(T("Pick a size first","Сначала выберите размер"));return}if(!d.inBag&&!skip&&SYS.policy.pay==="ask"){askDevice(T(`Pay ${d.price} for ${d.name}?`,`Оплатить ${d.price} · ${d.name}?`),()=>DO.bag(m,el,card,true));return}m.data.inBag=!m.data.inBag;refresh(m,false);showToast((m.data.inBag?T("Added to bag","Добавлено в корзину"):T("Removed from bag","Убрано из корзины"))+(m.data.inBag?" · "+whereLabel():""))},
       pdetails:m=>insertAfter(m,M("summary",`${m.data.brand} · ${m.data.name}`,m.source,{points:m.data.nike?[...T(...NIKE[m.data.nike].spec),T("Free returns within 30 days.","Бесплатный возврат 30 дней.")]:T(["Upper: recycled knit, water-repellent.","Sole: natural rubber, 32 mm.","Free returns within 30 days."],["Верх: переработанный трикотаж, водоотталкивающий.","Подошва: натуральный каучук, 32 мм.","Бесплатный возврат 30 дней."])})),
       edit2:(m,el,card)=>card.querySelector(".line-in").focus()
     };
-    function sendCompose(m,card,useCond){
-      const text=card.querySelector(".text")?.innerText;if(text)m.data.text=text;
-      m.data.sent=useCond&&m.modifier?T(`Scheduled · sends ${m.modifier}`,`Запланировано · отправится ${m.modifier}`):T(`Sent to ${m.data.to} · ${timeStr(new Date())}`,`Отправлено: ${m.data.to} · ${timeStr(new Date())}`);
+    function sendCompose(m,card,useCond,skipAsk){
+      const text=card?.querySelector?.(".text")?.innerText;if(text)m.data.text=text;
+      if(!skipAsk&&SYS.policy.send==="ask"){askDevice(T(`Send to ${m.data.to}?`,`Отправить: ${m.data.to}?`),()=>sendCompose(m,cardOf(m),useCond,true));return}
+      const where=` · ${whereLabel()}`;
+      m.data.sent=(useCond&&m.modifier?T(`Scheduled · sends ${m.modifier}`,`Запланировано · отправится ${m.modifier}`):T(`Sent to ${m.data.to} · ${timeStr(new Date())}`,`Отправлено: ${m.data.to} · ${timeStr(new Date())}`))+where;
       refresh(m,false);showToast(m.data.sent);logMoment(m.item,S.title);
       if(rulesOf("archive").length&&!(useCond&&m.modifier))setTimeout(()=>{if(findModule(m.id))archive(m)},1600);
     }
@@ -1906,6 +1981,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     function setView(v){
       view=v;os.classList.remove("view-home","view-space","view-timeline");os.classList.add("view-"+v);
       closePalette();closeSelBubble();renderHints();
+      if(v!=="home")$("#intentInput")?.blur();
       if(v==="home"){toggleOverview(false,true);setTimeout(()=>$("#intentInput").focus(),300)}
       if(v==="timeline"){renderTimeline();staggerIn($$(".tl-item,.tl-day"),18);setTimeout(()=>$("#tlSearch").focus(),400)}
     }
@@ -1935,8 +2011,8 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     function openSpace(bp,keep){
       clearTimeout(autoTimer);navTok++;
       closePalette();closeSelBubble();$("#palette").innerHTML="";
-      S=bp;S.f=keep?clamp(keep.f,0,S.flows.length-1):0;S.m=S.flows.map((f,i)=>keep?clamp(keep.m[i]??0,0,f.modules.length-1):0);
-      setView("space");renderSpace();if(!keep)logMoment(S.title,S.title,true);
+      S=bp;if(!S.perm)S.perm=clonePerm(GLOBAL_PERM);S.f=keep?clamp(keep.f,0,S.flows.length-1):0;S.m=S.flows.map((f,i)=>keep?clamp(keep.m[i]??0,0,f.modules.length-1):0);
+      setView("space");renderSpace();if(!keep)logMoment(S.title,S.title,true);rememberSpace();
       if(overviewOpen)toggleOverview(false,true);
       fade($("#flows"),"1");$("#overview").style.opacity="";
       allModules().forEach(runSteps);
@@ -1950,12 +2026,8 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       }
       if(S.auto&&!keep){S.autoArmed=true;autoTimer=setTimeout(()=>collaboratorAdds(S.id),S.auto.delay)}
     }
-    function collaboratorAdds(id){
-      if(!S||S.id!==id)return;
-      S.autoArmed=false;
-      if(!autoAllowed())return;
-      S.autoDone=true;
-      const a=S.auto,m=a.make(),fl=S.flows[a.flow];fl.modules.push(m);
+    function pushAuto(m){
+      const a=S.auto,fl=S.flows[a.flow];fl.modules.push(m);
       if(overviewOpen){
         renderOverview();
         morphGhosts.forEach(dropGhost);morphGhosts=[];
@@ -1965,7 +2037,22 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       }
       $$("#flows .flow")[a.flow].querySelector(".track").insertAdjacentHTML("beforeend",moduleHTML(m,a.flow,fl.modules.length-1));
       layout();arrive(m,"down");
-      showToast(T(`${collabName(a.from)} added a module to ${fl.name}`,`${collabName(a.from)}: новый модуль в «${fl.name}»`),T("Show","Показать"),()=>{const l=findModule(m.id);if(l)focusModule(l.fi,l.mi);toggleOverview(false);setTimeout(()=>cardOf(m)?.classList.add("flash"),300)});
+      return m;
+    }
+    function collaboratorAdds(id){
+      if(!S||S.id!==id||S.autoDone)return;
+      S.autoArmed=false;
+      if(!autoAllowed())return;
+      const spec=autoKind(S),mode=spec?permOf(S,spec.who,spec.act):"ask";
+      if(mode==="deny"){S.autoDone=true;showToast(denyText(spec));return}
+      S.autoDone=true;
+      if(mode==="allow"&&spec?.act==="shift"){allowShift();return}
+      if(mode==="ask"&&spec?.act==="move"){pushAuto(moveProposal());return}
+      const m=S.auto.make();
+      pushAuto(m);
+      const fl=S.flows[S.auto.flow];
+      if(mode==="allow")showToast(allowText(spec),T("Undo","Отменить"),()=>{const loc=findModule(m.id);if(!loc)return;S.flows[loc.fi].modules.splice(loc.mi,1);S.m[loc.fi]=clamp(S.m[loc.fi]||0,0,Math.max(0,S.flows[loc.fi].modules.length-1));renderSpace();if(overviewOpen)renderOverview()});
+      else showToast(T(`${collabName(S.auto.from)} added a module to ${fl.name}`,`${collabName(S.auto.from)}: новый модуль в «${fl.name}»`),T("Show","Показать"),()=>{const l=findModule(m.id);if(l)focusModule(l.fi,l.mi);toggleOverview(false);setTimeout(()=>cardOf(m)?.classList.add("flash"),300)});
     }
     let navTok=0;
     function goHome(){
@@ -2067,7 +2154,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     const collabRow=c=>`<div class="collab${c.off?" off":""}" data-collab="${c.id}" title="${c.off?T("Access revoked — click to restore","Доступ отозван — нажмите, чтобы вернуть"):T("Click to revoke access","Нажмите, чтобы отозвать доступ")}">${avatar(c.name,c.kind)}<span>${esc(c.name)}<small class="role">${c.off?T("Access revoked","Доступ отозван"):esc(c.access)}</small></span><button class="rule-x" data-collab-del="${c.id}" title="${T("Remove","Убрать")}">×</button></div>`;
     function renderRules(){
       const box=$("#rules"),top=box.scrollTop,people=S.collabs.filter(c=>c.kind==="person"),activePeople=people.filter(c=>!c.off).length;
-      box.innerHTML=`${secHead(T("Flows","Потоки"),'data-newflow="1"',T("New flow","Новый поток"),1)}${S.flows.map((f,i)=>`<div class="flowlink" data-flow="${i}">${tile(KIND_IC[f.modules[0].kind]||"spark","sm")}<b>${esc(f.name)}</b><small>${f.modules.length}</small></div>`).join("")}${secHead(T("Rules","Правила"),'data-modal="rule"',T("New rule","Новое правило"))}${S.rules.map(ruleRow).join("")}${secHead(T("Collaborators","Участники"),'data-modal="collab"',T("Invite","Пригласить"),0,activePeople)}${people.map(collabRow).join("")}`;
+      box.innerHTML=`${secHead(T("Flows","Потоки"),'data-newflow="1"',T("New flow","Новый поток"),1)}${S.flows.map((f,i)=>`<div class="flowlink" data-flow="${i}">${tile(KIND_IC[f.modules[0].kind]||"spark","sm")}<b>${esc(f.name)}</b><small>${f.modules.length}</small></div>`).join("")}${secHead(T("Rules","Правила"),'data-modal="rule"',T("New rule","Новое правило"))}${S.rules.map(ruleRow).join("")}<button type="button" class="perm-open" data-perms="1"><span><b>${T("Permissions","Разрешения")}</b><small>${T("Ask, allow, or deny in this space","Спросить, разрешить или отклонить в этом пространстве")}</small></span>${ic("chevR")}</button>${secHead(T("Collaborators","Участники"),'data-modal="collab"',T("Invite","Пригласить"),0,activePeople)}${people.map(collabRow).join("")}`;
       box.scrollTop=top;
     }
     /* re-render every module whose content a rule can change, then the places that mirror rules / collaborators */
@@ -2313,6 +2400,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       if(TODAY.some(x=>x.title===title))return;
       const id=S?.id&&BP[S.id]?S.id:null;
       TODAY.unshift({time:timeStr(new Date()),title,desc:isSpace?T("Space generated from your intent","Пространство собрано из намерения"):T(`In “${space}”`,`В «${space}»`),tags:`${title} ${space}`.toLowerCase(),bp:id,intent:S?.intent||space});
+      rememberSpace();
     }
     let tlData=[];
     function renderTimeline(){
@@ -2395,10 +2483,8 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
 
     function applyLang(){
       document.documentElement.lang=LANG;
-      $$("#langSwitch button").forEach(b=>b.classList.toggle("on",b.dataset.lang===LANG));
       $("#backLink").textContent=T("Back to case","Вернуться к кейсу");$("#backLink").href=LANG==="en"?"/en/intent-os":"/intent-os";
-      $("#umSub").textContent=T("Personal","Личный аккаунт");$("#umLang").textContent=T("Language","Язык");$("#umTheme").textContent=T("Theme","Тема");$("#umNotif").textContent=T("Notifications","Уведомления");renderNotifs(false);
-      $("#umThemeVal").textContent=document.body.classList.contains("night")?T("Night","Ночь"):T("Day","День");
+      $("#umSub").textContent=T("Personal","Личный аккаунт");$("#umNotif").textContent=T("Notifications","Уведомления");$("#umSettings").textContent=T("Settings","Настройки");renderNotifs(false);
       $("#intentInput").placeholder=T("What do you intend to do?","Что вы хотите сделать?");
       $("#homeMic").innerHTML=ic("mic");$("#homeSend").innerHTML=ic("arrowUp");$("#homeSend").setAttribute("aria-label",T("Create Space","Собрать пространство"));$("#tlIcon").innerHTML=ic("search");
       renderSignals();
@@ -2420,6 +2506,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       applyLang();renderWx();
       if(view==="space"){renderSpace();if(overviewOpen)renderOverview()}
       else if(view==="timeline")renderTimeline();
+      renderWindows();
       if(coachWas)showCoach();
     }
 
@@ -2439,9 +2526,12 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     function openSignal(card){
       const idx=+card.dataset.sig,g=HOME_SIGNALS()[idx];if(!g)return;
       const st=sigView(g,idx),bp=BP[st.bp]?BP[st.bp]():blueprintFor(st.t);
-      if((card.dataset.auto==="1"||st.needAuto)&&bp.auto&&!bp.autoDone){bp.flows[bp.auto.flow].modules.push(bp.auto.make());bp.autoDone=true}
+      const wantAuto=(card.dataset.auto==="1"||st.needAuto)&&bp.auto&&!bp.autoDone;
       const f=clamp(+(card.dataset.sf??st.f)||0,0,bp.flows.length-1),mi=clamp(+(card.dataset.sm??st.m)||0,0,bp.flows[f].modules.length-1);
-      openSpace(bp,{f,m:bp.flows.map((_,k)=>k===f?mi:0)});
+      openSpace(bp,{f,m:bp.flows.map(()=>0)});
+      if(wantAuto)collaboratorAdds(bp.id);
+      else if(S?.auto&&!S.autoDone&&!S.autoArmed){S.autoArmed=true;const id=S.id;autoTimer=setTimeout(()=>collaboratorAdds(id),S.auto.delay)}
+      if(S&&S.flows[f])focusModule(f,clamp(mi,0,S.flows[f].modules.length-1));
       logMoment(bp.title,bp.title,true);
       setTimeout(()=>cardOf(activeModule())?.classList.add("flash"),260);
     }
@@ -2459,23 +2549,24 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     $("#timelineHint").onclick=()=>setView("timeline");
     $("#tlSearch").addEventListener("input",e=>searchTimeline(e.target.value));
     $("#tlList").addEventListener("click",e=>{const b=e.target.closest(".tl-item");if(!b)return;const it=tlData[b.dataset.g].items[b.dataset.i];openSpace(it.bp?BP[it.bp]():blueprintFor(it.intent))});
-    $("#nightBtn").onclick=()=>{document.body.classList.toggle("night");allModules().filter(x=>x.kind==="map").forEach(syncTiles);$("#umThemeVal").textContent=document.body.classList.contains("night")?T("Night","Ночь"):T("Day","День")};
+    $("#settingsBtn").onclick=()=>{setMenu(false);openSettings({section:"general",scope:"global"})};
     const meWrap=$("#meWrap"),setMenu=o=>{meWrap.classList.toggle("open",o);$("#meBtn").setAttribute("aria-expanded",o)};
     $("#meBtn").onclick=e=>{e.stopPropagation();setMenu(!meWrap.classList.contains("open"))};
     document.addEventListener("click",e=>{if(!e.target.closest("#userMenu"))setMenu(false)});
-    addEventListener("keydown",e=>{if(e.key==="Escape"&&meWrap.classList.contains("open")){e.stopImmediatePropagation();setMenu(false)}},true);
+    addEventListener("keydown",e=>{if(e.key==="Escape"&&winOpen())return;if(e.key==="Escape"&&meWrap.classList.contains("open")){e.stopImmediatePropagation();setMenu(false)}},true);
     $("#notifBtn").onclick=()=>{setMenu(false);showNotifs(!notifOpen())};
     $("#notifClear").onclick=()=>{NOTIFS.length=0;notifUnread=0;renderNotifs(false)};
     $("#notifList").addEventListener("click",e=>{const x=e.target.closest("[data-nx]");if(!x)return;const i=NOTIFS.findIndex(n=>n.id===+x.dataset.nx);if(i>=0)NOTIFS.splice(i,1);renderNotifs(false)});
     /* a click anywhere hides the notifications (capture phase, so handlers that stop propagation — like the avatar — can't swallow it); only the panel's own controls and the menu row are exempt */
     document.addEventListener("click",e=>{if(notifOpen()&&!e.target.closest(".notif-x,#notifClear,#notifBtn"))showNotifs(false)},true);
-    addEventListener("keydown",e=>{if(e.key==="Escape"&&notifOpen()){e.stopImmediatePropagation();showNotifs(false)}},true);
-    $("#langSwitch").onclick=e=>{const b=e.target.closest("button");if(b)setLang(b.dataset.lang)};
+    addEventListener("keydown",e=>{if(e.key==="Escape"&&winOpen())return;if(e.key==="Escape"&&notifOpen()){e.stopImmediatePropagation();showNotifs(false)}},true);
+    $("#collabStack").addEventListener("click",e=>{const cs=e.target.closest(".cs");if(!cs||!S)return;openSettings({section:"permissions",scope:"space",focus:whoId(cs.dataset.name)})});
     $("#ovClose").onclick=()=>toggleOverview(false);
     $("#navdots").addEventListener("click",e=>{const b=e.target.closest("button");if(b){S.f=+b.dataset.f;layout()}});
     $("#palette").addEventListener("mousedown",e=>e.preventDefault());
     $("#palette").addEventListener("click",e=>{const b=e.target.closest(".pi");if(b)runPalette(+b.dataset.pi)});
     $("#rules").addEventListener("click",e=>{
+      if(e.target.closest("[data-perms]")){openSettings({section:"permissions",scope:"space"});return}
       const rd=e.target.closest("[data-rule-del]");if(rd){const i=+rd.dataset.ruleDel,[rule]=S.rules.splice(i,1);renderRules();applyRules();showToast(`${T("Deleted","Удалено")}: ${rule.text}`,T("Undo","Вернуть"),()=>{S.rules.splice(i,0,rule);renderRules();applyRules()});return}
       const cd=e.target.closest("[data-collab-del]");if(cd){const i=S.collabs.findIndex(c=>c.id===cd.dataset.collabDel),[c]=S.collabs.splice(i,1);renderRules();applyRules();showToast(`${T("Removed","Убрано")}: ${c.name}`,T("Undo","Вернуть"),()=>{S.collabs.splice(i,0,c);renderRules();applyRules()});return}
       const rt=e.target.closest(".rt");if(rt){if(rt.isContentEditable)return;const row=rt.closest(".rule"),rule=S.rules[row.dataset.rule];rt.contentEditable="true";rt.dataset.was=rule.text;rt.focus();getSelection().selectAllChildren(rt);return}
@@ -2609,7 +2700,19 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         setTimeout(()=>{m.data.typing=true;refresh(m,false);scrollBody(m)},500);
         /* live mode: the person actually answers (model); otherwise a canned reply from the pool after the same delay */
         const t0=Date.now(),lr=window.Live?.enabled()?Live.chatReply(m):Promise.resolve(null);
-        lr.then(txt=>setTimeout(()=>{m.data.typing=false;const pool=m.data.replies||[T("👍","👍")];m.data.msgs.push([m.data.msgs.find(x=>x[0]!=="me")?.[0]||m.item,txt||pool[(m.data.ri=(m.data.ri||0)+1)%pool.length]]);refresh(m,false);scrollBody(m);const f=cardOf(m)?.querySelector(".chat-form input");f?.focus()},Math.max(0,1700-(Date.now()-t0))));
+        lr.then(txt=>setTimeout(()=>{
+          m.data.typing=false;
+          const pool=m.data.replies||[T("👍","👍")];
+          const author=m.data.msgs.find(x=>x[0]!=="me")?.[0]||m.item;
+          const line=txt||pool[(m.data.ri=(m.data.ri||0)+1)%pool.length];
+          const deliver=()=>{m.data.msgs.push([author,line]);refresh(m,false);scrollBody(m);cardOf(m)?.querySelector(".chat-form input")?.focus()};
+          if(whoId(author)==="maya"){
+            const mode=permOf(S,"maya","send");
+            if(mode==="deny"){refresh(m,false);showToast(denyText({who:"maya",act:"send"}));return}
+            if(mode==="ask"){refresh(m,false);proposal(T("Maya wants to send a message","Майя хочет отправить сообщение"),[line],T("Nothing is sent until you confirm.","Ничего не уйдёт, пока вы не подтвердите."),deliver,"maya");return}
+            deliver();showToast(T("Maya sent a message","Майя отправила сообщение"),T("Undo","Отменить"),()=>{const i=m.data.msgs.findLastIndex(x=>x[0]===author&&x[1]===line);if(i>=0)m.data.msgs.splice(i,1);refresh(m,false)});return}
+          deliver();
+        },Math.max(0,1700-(Date.now()-t0))));
         return;
       }
       if(e.target.matches(".add-form")){m.data.items.push([v,false]);input.value="";refresh(m,false);scrollBody(m);cardOf(m)?.querySelector(".add-form input")?.focus();return}
@@ -2631,7 +2734,8 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     let metaDown=0,metaAlone=false,metaWasOpen=false;
     const modKey=e=>isMac?e.key==="Meta":e.key==="Control";
     addEventListener("keydown",e=>{
-      if(modKey(e)){if(e.repeat)return;if(!metaDown){metaDown=performance.now();metaAlone=true;metaWasOpen=paletteOpen;$("#modKbd")?.classList.add("pressed");if(view==="space"&&!overviewOpen&&!paletteOpen)openPalette()}return}
+      if(winOpen()){if(e.key==="Escape"||modKey(e))return;const inSys=e.target.closest?.("#sys"),typing=inSys&&(e.target.matches?.("input,textarea")||e.target.isContentEditable);if(!typing)return}
+      if(modKey(e)){if(e.repeat)return;if(!metaDown){metaDown=performance.now();metaAlone=true;metaWasOpen=paletteOpen;$("#modKbd")?.classList.add("pressed");if(view==="space"&&!overviewOpen&&!paletteOpen&&!winOpen())openPalette()}return}
       if(e.key!=="Control"&&e.key!=="Meta")metaAlone=false;
       const t=e.target,inField=t.matches?.("input,textarea")||t.isContentEditable,emptyLine=t.matches?.(".line-in")&&!t.value;
       if(e.key==="Escape"){
@@ -2819,7 +2923,8 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     const wxWrap=$("#wxWrap"),setWx=o=>{wxWrap.classList.toggle("open",o);$("#wxBtn").setAttribute("aria-expanded",o);if(o){setMenu(false);renderWxPop()}};
     $("#wxBtn").onclick=e=>{e.stopPropagation();setWx(!wxWrap.classList.contains("open"))};
     document.addEventListener("click",e=>{if(!e.target.closest("#wxPop,#wxBtn"))setWx(false)});
-    addEventListener("keydown",e=>{if(e.key==="Escape"&&wxWrap.classList.contains("open")){e.stopImmediatePropagation();setWx(false)}},true);
+    addEventListener("keydown",e=>{if(e.key==="Escape"&&winOpen())return;if(e.key==="Escape"&&wxWrap.classList.contains("open")){e.stopImmediatePropagation();setWx(false)}},true);
+    addEventListener("keydown",e=>{if(e.key==="Escape"&&winOpen()){e.preventDefault();e.stopImmediatePropagation();closeTopWin()}},true);
     loadWeather();setInterval(loadWeather,15*60e3);
 
     function tickClock(){const d=new Date(),t=timeStr(d);$("#clock").innerHTML=`${mskTime(d)}<span class="tz">MSK</span>`;$("#homeTime").textContent=t;$("#homeDate").textContent=d.toLocaleDateString(LANG==="ru"?"ru-RU":"en-GB",{weekday:"long",day:"numeric",month:"long"})}
@@ -2855,6 +2960,184 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     }
     addEventListener("focusin",e=>{if(isTypeField(e.target))settleTyping(e.target)});
     addEventListener("keydown",e=>{if(!isTypeField(e.target))return;if(e.key==="Enter")flushTypeGuard(e.target);else armTypeGuard(e.target,e)},true);
+
+    /* ── system windows: one frame, above the desktop; Esc closes only the top one ── */
+    const PERM_ACTS={weather:["shift","add"],calendar:["move","add"],maya:["send","add"]};
+    function blankPerm(){const o={};for(const who in PERM_ACTS)for(const act of PERM_ACTS[who])o[who+"."+act]=act==="send"?"allow":"ask";return o}
+    let GLOBAL_PERM=blankPerm();
+    function clonePerm(p){return {...p}}
+    function permOf(space,who,act){const k=who+"."+act;return (space?.perm&&space.perm[k])||GLOBAL_PERM[k]||"ask"}
+    function setPerm(scope,key,val){if(scope==="space"){if(!S)return;if(!S.perm)S.perm=clonePerm(GLOBAL_PERM);S.perm[key]=val}else GLOBAL_PERM[key]=val}
+    function permPhrase(who,act){
+      const name={weather:T("Weather","Погода"),calendar:T("Calendar","Календарь"),maya:T("Maya","Майя")}[who];
+      const verb={shift:T("shift the days","сдвинуть дни"),move:T("move a meeting","перенести встречу"),send:T("send a message","отправить сообщение"),add:T("add a module","добавить модуль")}[act];
+      return T(`When ${name} wants to ${verb}`,`Когда ${name} хочет ${verb}`);
+    }
+    function whoId(name){const n=String(name||"").toLowerCase();if(/maya|майя/.test(n))return"maya";if(/weather|погод/.test(n))return"weather";if(/calendar|календар/.test(n))return"calendar";return null}
+    function autoKind(bp){const from=bp?.auto?.from;if(from==="weather")return{who:"weather",act:"shift"};if(from==="calendar")return{who:"calendar",act:"move"};if(from==="maya")return{who:"maya",act:"add"};return null}
+    function denyText(spec){
+      const k=spec?spec.who+"."+spec.act:"";
+      return {"weather.shift":T("Weather wanted to shift the days — denied","Погода хотела сдвинуть дни — отклонено"),"weather.add":T("Weather wanted to add a module — denied","Погода хотела добавить модуль — отклонено"),"calendar.move":T("Calendar wanted to move a meeting — denied","Календарь хотел перенести встречу — отклонено"),"calendar.add":T("Calendar wanted to add a module — denied","Календарь хотел добавить модуль — отклонено"),"maya.send":T("Maya wanted to send a message — denied","Майя хотела отправить сообщение — отклонено"),"maya.add":T("Maya wanted to add a module — denied","Майя хотела добавить модуль — отклонено")}[k]||T("Action denied","Действие отклонено");
+    }
+    function allowText(spec){
+      const k=spec?spec.who+"."+spec.act:"";
+      return {"calendar.move":T("Calendar moved the meeting","Календарь перенёс встречу"),"maya.add":T("Maya added a module","Майя добавила модуль"),"weather.add":T("Weather added a module","Погода добавила модуль"),"calendar.add":T("Calendar added a module","Календарь добавил модуль")}[k]||T("Applied","Применено");
+    }
+    function allowShift(){
+      const plan={data:{before:{}}};
+      applyWeatherSwap(plan);
+      const m=M("receipt",T("Days shifted","Дни сдвинуты"),"weather",{text:T("Weather moved the museum to Saturday.","Погода перенесла музей на субботу."),effects:[{text:T("Friday → Leo’s workshop, indoors · Saturday → Gulbenkian museum","Пятница → воркшоп с Лео, в помещении · суббота → музей Гюльбенкяна")}],before:plan.data.before,swap:true});
+      pushAuto(m);
+      showToast(T("Weather shifted the days","Погода сдвинула дни"),T("Undo","Отменить"),()=>DO.undoPlan(m));
+    }
+    function moveProposal(){
+      const invite=S.auto.make();
+      return M("plan",T("Calendar wants to move a meeting","Календарь хочет перенести встречу"),"calendar",{
+        steps:[invite.item,invite.data.when,invite.data.note].filter(Boolean),
+        impact:T("The meeting stays where it is until you confirm.","Встреча останется на месте, пока вы не подтвердите."),
+        deviceApply:()=>{pushAuto(invite);showToast(T("Meeting moved","Встреча перенесена"),T("Undo","Отменить"),()=>{const loc=findModule(invite.id);if(!loc)return;S.flows[loc.fi].modules.splice(loc.mi,1);S.m[loc.fi]=clamp(S.m[loc.fi]||0,0,Math.max(0,S.flows[loc.fi].modules.length-1));renderSpace();if(overviewOpen)renderOverview()})}
+      });
+    }
+    function proposal(title,steps,impact,apply,source,extra){
+      const host=activeModule()||allModules().at(-1);if(!host){apply();return null}
+      return insertAfter(host,M("plan",title,source||"intent",{steps,impact,deviceApply:apply,...(extra||{})}));
+    }
+    const SYS={where:"here",policy:{send:"allow",book:"allow",pay:"allow"}};
+    let deviceCustom=null,accentId="blue",spaceSnap=null;
+    function deviceName(){return deviceCustom!=null?deviceCustom:T("Andrew’s computer","Компьютер Андрея")}
+    function whereLabel(){return SYS.where==="service"?T("Via a service","Через сервис"):T("On this computer","На этом компьютере")}
+    function askDevice(title,apply){proposal(title,[whereLabel(),title],T("This computer asks before sending, booking, or paying.","Этот компьютер спрашивает перед отправкой, бронью и оплатой."),apply,"intent",{deviceAsk:true});showToast(T("Confirm on this computer","Подтвердите на этом компьютере"))}
+    const ACCENTS=[
+      {id:"blue",day:"#3f74f0",night:"#86a8ff",soft:"63,116,240",nsoft:"134,168,255",en:"Blue",ru:"Синий"},
+      {id:"teal",day:"#0e8f78",night:"#7dcec0",soft:"14,143,120",nsoft:"125,206,192",en:"Teal",ru:"Бирюзовый"},
+      {id:"amber",day:"#c47a12",night:"#f0c27a",soft:"196,122,18",nsoft:"240,194,122",en:"Amber",ru:"Янтарный"},
+      {id:"rose",day:"#c44569",night:"#f2a0b8",soft:"196,69,105",nsoft:"242,160,184",en:"Rose",ru:"Розовый"}
+    ];
+    function applyAccent(){const a=ACCENTS.find(x=>x.id===accentId)||ACCENTS[0],night=document.body.classList.contains("night");document.body.style.setProperty("--accent",night?a.night:a.day);document.body.style.setProperty("--accent-soft",`rgba(${night?a.nsoft:a.soft},.18)`)}
+    function setNight(on){document.body.classList.toggle("night",!!on);allModules().filter(x=>x.kind==="map").forEach(syncTiles);applyAccent();renderWindows()}
+    function rememberSpace(){
+      if(!S)return;
+      try{
+        const auto=S.auto,plain=JSON.parse(JSON.stringify(S,(k,v)=>typeof v==="function"?undefined:v));
+        if(auto)plain.auto={delay:auto.delay,flow:auto.flow,from:auto.from,make:auto.make,done:!!S.autoDone};
+        spaceSnap={id:S.id,plain,trip:!!tripSwapped};
+      }catch(err){}
+    }
+    function resetSpace(){
+      if(!S||!spaceSnap||spaceSnap.id!==S.id){showToast(T("Open a space to restore it","Откройте пространство, чтобы вернуть его"));return}
+      const src=spaceSnap.plain,plain=JSON.parse(JSON.stringify(src,(k,v)=>typeof v==="function"?undefined:v));
+      S.flows=plain.flows;S.rules=plain.rules;S.collabs=plain.collabs;S.perm=plain.perm;
+      S.f=plain.f||0;S.m=plain.m||S.flows.map(()=>0);S.autoDone=!!src.auto?.done;S.autoArmed=false;
+      if(src.auto)S.auto={delay:src.auto.delay,flow:src.auto.flow,from:src.auto.from,make:src.auto.make};
+      tripSwapped=spaceSnap.trip;clearTimeout(autoTimer);
+      renderSpace();renderSignals();if(overviewOpen)renderOverview();
+      showToast(T("Space restored to the last Timeline moment","Пространство возвращено к последней записи хронологии"));
+    }
+    const LANG_LIST=[
+      {id:"ru",native:"Русский",en:"Russian",ru:"Русский"},
+      {id:"en",native:"English",en:"English",ru:"Английский"},
+      {id:"be",native:"Беларуская",en:"Belarusian",ru:"Белорусский",off:1},
+      {id:"uk",native:"Українська",en:"Ukrainian",ru:"Украинский",off:1},
+      {id:"kk",native:"Қазақша",en:"Kazakh",ru:"Казахский",off:1},
+      {id:"de",native:"Deutsch",en:"German",ru:"Немецкий",off:1},
+      {id:"fr",native:"Français",en:"French",ru:"Французский",off:1},
+      {id:"es",native:"Español",en:"Spanish",ru:"Испанский",off:1},
+      {id:"tr",native:"Türkçe",en:"Turkish",ru:"Турецкий",off:1},
+      {id:"zh",native:"中文",en:"Chinese",ru:"Китайский",off:1}
+    ];
+    let WINS=[],winSeq=0;
+    function winOpen(){return WINS.length>0}
+    function settingsSections(){return[["general",T("General","Общие"),"spark"],["permissions",T("Permissions","Разрешения"),"check"],["computer",T("This computer","Этот компьютер"),"home"]]}
+    function openSettings(opts={}){
+      closePalette();setMenu(false);
+      let w=WINS.find(x=>x.kind==="settings");
+      if(!w){w={kind:"settings",id:++winSeq};WINS.push(w)}
+      else{const i=WINS.indexOf(w);WINS.push(WINS.splice(i,1)[0])}
+      w.section=opts.section||"general";w.scope=(opts.scope==="space"&&S)?"space":"global";w.focus=opts.focus||null;
+      renderWindows();
+      if(w.focus)requestAnimationFrame(()=>$("#sys .sys-group.focus")?.scrollIntoView({block:"nearest"}));
+    }
+    function openLang(){
+      if(!WINS.some(w=>w.kind==="lang"))WINS.push({kind:"lang",id:++winSeq,q:""});
+      else{const i=WINS.findIndex(w=>w.kind==="lang");WINS.push(WINS.splice(i,1)[0])}
+      renderWindows();setTimeout(()=>$("#sysSearch")?.focus(),40);
+    }
+    function closeTopWin(){if(WINS.length)WINS.pop();renderWindows()}
+    function closeWin(id){const i=WINS.findIndex(w=>w.id===id);if(i>=0)WINS.splice(i,1);renderWindows()}
+    function pickLang(id){
+      const row=LANG_LIST.find(l=>l.id===id);
+      if(!row||row.off){showToast(T("This prototype is in Russian and English.","В прототипе есть русский и английский."));return}
+      const i=WINS.findIndex(w=>w.kind==="lang");if(i>=0)WINS.splice(i,1);
+      if(id===LANG)renderWindows();else setLang(id);
+    }
+    function segHTML(name,value,opts){return `<div class="sys-seg" data-seg="${name}">${opts.map(([v,l])=>`<button type="button" data-v="${v}" class="${value===v?"on":""}">${esc(l)}</button>`).join("")}</div>`}
+    function permBody(scope,focus){
+      const src=scope==="space"&&S?.perm?S.perm:GLOBAL_PERM;
+      const note=scope==="space"&&S?T(`This space · ${S.title}. Overrides the defaults for new spaces.`,`Это пространство · ${S.title}. Перекрывает значения для новых пространств.`):T("Defaults for new spaces. Spaces already open keep their own.","Для новых пространств. Уже открытые сохраняют свои.");
+      const groups=[["weather",T("Weather","Погода")],["calendar",T("Calendar","Календарь")],["maya",T("Maya Chen","Майя Чен")]];
+      return `<p class="sys-note">${esc(note)}</p>`+groups.map(([id,label])=>`<section class="sys-group${focus===id?" focus":""}"><h3>${avatar(label,"xs")}${esc(label)}</h3>${PERM_ACTS[id].map(act=>{const v=(src[id+"."+act])||GLOBAL_PERM[id+"."+act]||"ask";return `<div class="sys-row"><div class="meta"><b>${esc(permPhrase(id,act))}</b></div>${segHTML(id+"."+act,v,[["ask",T("Ask","Спросить")],["allow",T("Allow","Разрешить")],["deny",T("Deny","Отклонить")]])}</div>`}).join("")}</section>`).join("");
+    }
+    function generalBody(){
+      const night=document.body.classList.contains("night"),cur=LANG==="ru"?"Русский":"English";
+      return `<div class="sys-card"><span class="me-btn">A</span><div><b>Andrew</b><span>${esc(T("Personal","Личный аккаунт"))}</span></div></div>
+        <div class="sys-row"><div class="meta"><b>${esc(T("Theme","Тема"))}</b><span>${esc(T("Switches the prototype immediately.","Переключает прототип сразу."))}</span></div>${segHTML("theme",night?"night":"day",[["day",T("Day","День")],["night",T("Night","Ночь")]])}</div>
+        <div class="sys-row"><div class="meta"><b>${esc(T("Accent","Акцент"))}</b><span>${esc(T("Rules, focus, and suggestions.","Правила, фокус и предложения."))}</span></div><div class="sys-swatches">${ACCENTS.map(a=>`<button type="button" class="sys-swatch${a.id===accentId?" on":""}" data-accent="${a.id}" title="${esc(LANG==="ru"?a.ru:a.en)}" style="background:${document.body.classList.contains("night")?a.night:a.day}"></button>`).join("")}</div></div>
+        <div class="sys-row"><div class="meta"><b>${esc(T("Language","Язык"))}</b><span>${esc(cur)}</span></div><button type="button" class="sys-go" data-lang-open>${esc(cur)} ${ic("chevR")}</button></div>`;
+    }
+    function computerBody(){
+      const pol=(k,label,sub)=>`<div class="sys-row"><div class="meta"><b>${esc(label)}</b><span>${esc(sub)}</span></div>${segHTML("pol-"+k,SYS.policy[k],[["ask",T("Always ask","Всегда спрашивать")],["allow",T("Allow","Разрешить")]])}</div>`;
+      return `<div class="sys-row"><div class="meta"><b>${esc(T("Device name","Имя устройства"))}</b></div><input class="sys-field" id="sysDevice" value="${esc(deviceName())}" spellcheck="false" autocomplete="off"></div>
+        <div class="sys-row"><div class="meta"><b>${esc(T("Where actions run","Где выполняются действия"))}</b><span>${esc(T("Bookings, messages, and payments.","Брони, сообщения и оплаты."))}</span></div>${segHTML("where",SYS.where,[["here",T("On this computer","На этом компьютере")],["service",T("Via a service","Через сервис")]])}</div>
+        ${pol("send",T("Sending","Отправка"),T("Messages you send from a module.","Сообщения, которые вы отправляете из модуля."))}
+        ${pol("book",T("Booking","Бронь"),T("Flights and other reservations.","Рейсы и другие брони."))}
+        ${pol("pay",T("Payment","Оплата"),T("Paying when something goes into the bag.","Оплата, когда вещь попадает в корзину."))}
+        <div class="sys-row sys-reset"><div class="meta"><b>${esc(T("Reset space","Сбросить пространство"))}</b><span>${esc(T("Restore the last moment written to the Timeline.","Вернуть последнюю запись хронологии."))}</span></div><button type="button" class="act" data-reset>${esc(T("Reset","Сбросить"))}</button></div>`;
+    }
+    function langItems(q){
+      const s=(q||"").trim().toLowerCase();
+      const list=LANG_LIST.filter(l=>!s||l.native.toLowerCase().includes(s)||l.en.toLowerCase().includes(s)||l.ru.toLowerCase().includes(s));
+      if(!list.length)return `<div class="sys-empty">${esc(T("No languages match.","Нет такого языка."))}</div>`;
+      return list.map(l=>`<button type="button" class="sys-lang${l.id===LANG?" on":""}" data-pick-lang="${l.id}"><span>${esc(l.native)}</span><small>${l.off?esc(T("Not in this prototype","Нет в прототипе")):l.id===LANG?esc(T("Current","Сейчас")):""}</small></button>`).join("");
+    }
+    function winHTML(w,front){
+      const small=w.kind==="lang";
+      const title=small?T("Language","Язык"):{general:T("General","Общие"),permissions:T("Permissions","Разрешения"),computer:T("This computer","Этот компьютер")}[w.section]||T("Settings","Настройки");
+      const side=small?"":`<aside class="sys-side"><div class="sys-brand">${esc(T("Settings","Настройки"))}</div>${settingsSections().map(([id,label,icon])=>`<button type="button" class="sys-nav${w.section===id?" on":""}" data-sec="${id}">${ic(icon)}${esc(label)}</button>`).join("")}</aside>`;
+      const body=small?`<input class="sys-search" id="sysSearch" placeholder="${esc(T("Search languages","Найти язык"))}" value="${esc(w.q||"")}" autocomplete="off" spellcheck="false"><div id="sysLangs">${langItems(w.q||"")}</div>`:w.section==="permissions"?permBody(w.scope,w.focus):w.section==="computer"?computerBody():generalBody();
+      return `<section class="sys-win${small?" small":""}${front?"":" back"}" data-win="${w.id}" role="dialog" aria-label="${esc(title)}" style="z-index:${front?3:1}">${side}<div class="sys-main"><header class="sys-head"><h2>${esc(title)}</h2><span class="kbd">Esc</span><button type="button" class="sys-x" data-sys-close="${w.id}" aria-label="${esc(T("Close","Закрыть"))}">${ic("x")}</button></header><div class="sys-body">${body}</div></div></section>`;
+    }
+    function renderWindows(){
+      const root=$("#sys");if(!root)return;
+      const ae=document.activeElement,keep=ae&&root.contains(ae)&&ae.id?{id:ae.id,a:ae.selectionStart,b:ae.selectionEnd}:null;
+      if(!WINS.length){root.classList.remove("on");root.innerHTML="";return}
+      root.classList.add("on");
+      root.innerHTML=`<div class="sys-veil" data-sys-veil></div>`+WINS.map((w,i)=>winHTML(w,i===WINS.length-1)).join("");
+      if(keep){const el=document.getElementById(keep.id);if(el){el.focus();try{el.setSelectionRange(keep.a,keep.b)}catch{}}}
+    }
+    function onSysClick(e){
+      if(e.target.closest("[data-sys-veil]"))return closeTopWin();
+      const winEl=e.target.closest(".sys-win");
+      if(winEl&&+winEl.dataset.win!==WINS.at(-1)?.id&&!e.target.closest("button,input")){const i=WINS.findIndex(w=>w.id===+winEl.dataset.win);if(i>=0){WINS.push(WINS.splice(i,1)[0]);renderWindows()}return}
+      const x=e.target.closest("[data-sys-close]");if(x)return closeWin(+x.dataset.sysClose);
+      const sec=e.target.closest("[data-sec]");if(sec){const w=WINS.find(k=>k.kind==="settings");if(w){w.section=sec.dataset.sec;renderWindows()}return}
+      if(e.target.closest("[data-lang-open]"))return openLang();
+      const accent=e.target.closest("[data-accent]");if(accent){accentId=accent.dataset.accent;applyAccent();renderWindows();return}
+      const pick=e.target.closest("[data-pick-lang]");if(pick)return pickLang(pick.dataset.pickLang);
+      if(e.target.closest("[data-reset]"))return resetSpace();
+      const btn=e.target.closest(".sys-seg button");if(!btn)return;
+      const key=btn.closest("[data-seg]").dataset.seg,val=btn.dataset.v,w=WINS.find(k=>k.kind==="settings");
+      if(key==="theme")return setNight(val==="night");
+      if(key==="where"){SYS.where=val;renderWindows();showToast(whereLabel());return}
+      if(key.startsWith("pol-")){SYS.policy[key.slice(4)]=val;renderWindows();return}
+      setPerm(w?.scope||"global",key,val);renderWindows();
+    }
+    function onSysInput(e){
+      if(e.target.id==="sysDevice"){deviceCustom=e.target.value;return}
+      if(e.target.id==="sysSearch"){const w=WINS.find(x=>x.kind==="lang");if(!w)return;w.q=e.target.value;const list=$("#sysLangs");if(list)list.innerHTML=langItems(w.q)}
+    }
+    $("#sys").addEventListener("click",onSysClick);
+    $("#sys").addEventListener("input",onSysInput);
+    applyAccent();
 
     applyLang();
     T("Wake me at 7:30 unless it snows","Разбуди меня в 7:30, если не будет снега");
