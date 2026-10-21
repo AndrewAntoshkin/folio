@@ -141,30 +141,32 @@
     .tok{flex:none;max-width:100%;overflow:hidden;text-overflow:ellipsis;padding:3px 9px;border-radius:999px;background:var(--chip);color:var(--quiet);font-size:10.5px;white-space:nowrap;animation:pop .35s var(--spring) both}
     .tok b{margin-left:4px;color:var(--ink);font-weight:500}
     @keyframes pop{from{opacity:0;transform:scale(.85)}}
-    .blueprints{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:min(704px,90vw);margin-top:10px}
-    .sig{position:relative;display:block;min-width:0;padding:16px 20px 18px;border-radius:20px;background:var(--glass);border:1px solid var(--glass-edge);border-right-width:0;border-bottom-width:0;box-shadow:var(--glass-shadow);color:var(--ink);text-align:left;cursor:pointer;-webkit-backdrop-filter:blur(40px) saturate(1.6);backdrop-filter:blur(40px) saturate(1.6);transition:background .2s var(--ease),box-shadow .2s var(--ease),opacity .25s var(--ease),transform .2s var(--ease)}
-    .sig:hover,.sig:focus-visible{background:rgba(255,255,255,.8)}
-    .sig:active{transform:scale(.99);transition-duration:.08s}
+    .blueprints{--sig-2:rgba(0,0,0,.56);display:grid;grid-template-columns:1fr 1fr;gap:16px;width:min(704px,90vw);margin-top:8px}
+    body.night .blueprints{--sig-2:rgba(255,255,255,.6)}
+    .sig{position:relative;display:block;min-width:0;padding:20px;border-radius:20px;background:var(--glass);border:1px solid var(--glass-edge);border-right-width:0;border-bottom-width:0;box-shadow:var(--glass-shadow);color:var(--ink);text-align:left;cursor:pointer;-webkit-backdrop-filter:blur(40px) saturate(1.6);backdrop-filter:blur(40px) saturate(1.6);transition:background-color .16s var(--ease),box-shadow .2s var(--ease),opacity .25s var(--ease),transform .2s var(--ease)}
+    .sig:hover,.sig:focus-visible{background:rgba(255,255,255,.76)}
+    .sig:active{transform:scale(.98);background:rgba(255,255,255,.86);transition-duration:.08s}
     .sig:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-    .sig.match{background:rgba(255,255,255,.8);box-shadow:inset 0 0 0 1.5px var(--accent),var(--glass-shadow)}
+    .sig.match{background:rgba(255,255,255,.76);box-shadow:inset 0 0 0 1.5px var(--accent),var(--glass-shadow)}
     .sig.dim{opacity:.4}
-    .sig-top{display:flex;align-items:center;justify-content:space-between;gap:12px;height:16px;margin-bottom:10px;color:var(--quiet);font-size:12px;line-height:16px}
-    .sig-sp{display:flex;align-items:center;gap:6px;min-width:0}
+    .sig-top{display:flex;align-items:center;justify-content:space-between;gap:12px;height:18px;margin-bottom:8px;color:var(--sig-2);font-size:13px;line-height:18px}
+    .sig-sp{display:flex;align-items:center;gap:8px;min-width:0}
     .sig-sp .ic{width:14px;height:14px;color:var(--sc)}
     .sig-sp span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .sig-go{display:flex;align-items:center;gap:4px;flex:none;color:var(--accent);opacity:0;transform:translateX(-4px);transition:opacity .2s var(--ease),transform .2s var(--ease)}
     .sig-go .ic{width:14px;height:14px}
     .sig-go .chev{display:none}
     .sig:hover .sig-go,.sig:focus-visible .sig-go{opacity:1;transform:none}
-    @media(hover:none){.sig-go{opacity:1;transform:none;color:var(--faint)}.sig-go .sig-verb,.sig-go .arrow{display:none}.sig-go .chev{display:block}.sig:hover{background:var(--glass)}}
-    .sig-t{display:block;font-size:15px;font-weight:500;line-height:20px;letter-spacing:-.012em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .sig-d{margin:3px 0 0;color:var(--quiet);font-size:13px;line-height:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    @media(hover:none){.sig-go{opacity:1;transform:none;color:var(--sig-2)}.sig-go .sig-verb,.sig-go .arrow{display:none}.sig-go .chev{display:block}.sig:hover{background:var(--glass)}}
+    .sig-t{display:block;font-size:15px;font-weight:400;line-height:20px;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .sig-d{margin:4px 0 0;color:var(--sig-2);font-size:13px;line-height:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .sig-in.swap{animation:sig-swap .24s var(--ease)}
     @keyframes sig-swap{from{opacity:0;transform:translateY(4px)}}
     body.night .sig:hover,body.night .sig:focus-visible,body.night .sig.match{background:rgba(66,66,70,.72)}
+    body.night .sig:active{background:rgba(74,74,78,.8)}
     body.night .sig-sp .ic{color:var(--sc-n)}
     @media(max-width:640px){
-      .blueprints{grid-template-columns:1fr;gap:10px}
+      .blueprints{grid-template-columns:1fr;gap:12px}
       .home{justify-content:flex-start;overflow-y:auto;padding:76px 0 112px;scrollbar-width:none;-webkit-mask-image:linear-gradient(transparent 52px,#000 84px,#000 calc(100% - 92px),transparent calc(100% - 60px));mask-image:linear-gradient(transparent 52px,#000 84px,#000 calc(100% - 92px),transparent calc(100% - 60px))}
       .home::-webkit-scrollbar{display:none}
       .home>*{flex-shrink:0}
