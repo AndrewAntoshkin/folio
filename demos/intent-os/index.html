@@ -1150,7 +1150,9 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .ff-touch .toast button{min-height:32px;padding:0 12px}
 
     .ff-touch .more-k{display:none}
-    .ff-tablet .home{padding-bottom:120px}
+    .ff-tablet .home{justify-content:flex-start;overflow-y:auto;overscroll-behavior:contain;padding:96px 0 136px;scrollbar-width:none;-webkit-mask-image:linear-gradient(transparent 40px,#000 80px,#000 calc(100% - 128px),transparent calc(100% - 96px));mask-image:linear-gradient(transparent 40px,#000 80px,#000 calc(100% - 128px),transparent calc(100% - 96px))}
+    .ff-tablet .home::-webkit-scrollbar{display:none}
+    .ff-tablet .home>*{flex-shrink:0}
     .ff-tablet .home-line,.ff-phone .home-line{position:fixed;left:0;right:0;z-index:6;margin:0 auto}
     .ff-tablet .home-line{bottom:24px;width:min(620px,calc(100% - 48px))}
     .ff-tablet .home-parse,.ff-phone .home-parse{position:fixed;left:0;right:0;margin:0 auto}
@@ -1173,7 +1175,8 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .ff-phone .space-title span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .ff-phone .home{bottom:100px;padding-top:68px}
     .home-dock{position:absolute;left:12px;right:12px;bottom:28px;z-index:6;display:flex;flex-direction:column-reverse;gap:8px;transition:opacity .3s var(--ease),transform .4s var(--ease),visibility 0s}
-    .ff-phone .home-dock .home-line,.ff-phone .home-dock .home-parse{position:relative;left:auto;right:auto;bottom:auto;width:auto;margin:0}
+    .ff-tablet .home-dock{left:0;right:0;bottom:24px;width:min(620px,calc(100% - 48px));margin:0 auto}
+    .ff-touch .home-dock .home-line,.ff-touch .home-dock .home-parse{position:relative;left:auto;right:auto;bottom:auto;width:auto;margin:0}
     .os:not(.view-home)>.home-dock{opacity:0;visibility:hidden;pointer-events:none;transform:translateY(12px);transition:opacity .2s var(--ease),transform .3s var(--ease),visibility 0s .3s}
     .ff-phone .space{inset:96px 0 100px}
     .ff-phone .timeline{inset:52px 0 100px}
@@ -1237,9 +1240,9 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .cp-p i{display:block;height:100%;background:var(--accent);transition:width .48s cubic-bezier(.2,.8,.2,1)}
 
     /* phone + tablet space view: the module stack is the navigator; the full module opens as a sheet (phone) or in the detail pane (tablet) */
-    .stack{display:none;position:absolute;z-index:3;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}
-    .stack::-webkit-scrollbar{display:none}
-    .ff-phone .os.view-space .stack,.ff-tablet .os.view-space .stack{display:block}
+    .mstack{display:none;position:absolute;z-index:3;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}
+    .mstack::-webkit-scrollbar{display:none}
+    .ff-phone .os.view-space .mstack,.ff-tablet .os.view-space .mstack{display:block}
     .st-head{position:sticky;top:0;z-index:2;display:flex;align-items:center;min-height:48px;margin:0 -16px;padding:0 16px;background:linear-gradient(var(--st-bg,rgba(232,232,232,.92)) 70%,transparent);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
     body.night .st-head{--st-bg:rgba(24,24,26,.9)}
     .st-head .plan-strip{flex:1}
@@ -1248,10 +1251,10 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .st-flow b{color:var(--ink);font-weight:500}
     .st-flow:first-of-type{margin-top:8px}
     .st-list{display:flex;flex-direction:column;gap:8px}
-    .ff-phone .stack{inset:96px 0 0;padding:0 16px 124px}
-    .ff-tablet .stack{top:52px;bottom:88px;left:0;width:40%;padding:0 12px 24px 24px}
-    .ff-tablet .stack .st-head{margin:0 -12px 0 -24px;padding:0 12px 0 24px}
-    .ff-tablet .stack .cp-v{font-size:15px;line-height:20px}
+    .ff-phone .mstack{inset:96px 0 0;padding:0 16px 124px}
+    .ff-tablet .mstack{top:52px;bottom:88px;left:0;width:40%;padding:0 12px 24px 24px}
+    .ff-tablet .mstack .st-head{margin:0 -12px 0 -24px;padding:0 12px 0 24px}
+    .ff-tablet .mstack .cp-v{font-size:15px;line-height:20px}
 
     .ff-tablet .space{left:40%;bottom:88px}
     .ff-tablet .module:not(.active){opacity:0;pointer-events:none}
@@ -1546,7 +1549,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
 
     <div class="assembly" id="assembly" aria-live="polite"></div>
 
-    <section class="stack" id="stack" aria-label="Modules"></section>
+    <section class="mstack" id="stack" aria-label="Modules"></section>
     <div class="ph-scrim" id="phScrim"></div>
     <section class="space" id="space"><div class="sh-grip" id="shGrip"><i></i></div><div class="flows" id="flows"></div><nav class="navdots" id="navdots"></nav></section>
 
@@ -2694,12 +2697,14 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       });
     },500);
 
+    let phFocus=false;
     function setView(v){
       view=v;os.classList.remove("view-home","view-space","view-timeline");os.classList.add("view-"+v);
       closePalette();closeSelBubble();renderHints();
       if(v!=="home")$("#intentInput")?.blur();
       renderFFSwitch();renderFocus();
-      if(v!=="space")document.documentElement.classList.remove("ph-sheet");else if(FF.dev==="phone")document.documentElement.classList.add("ph-sheet");
+      if(v!=="space")document.documentElement.classList.remove("ph-sheet");else if(FF.dev==="phone"&&phFocus)document.documentElement.classList.add("ph-sheet");
+      phFocus=false;
       proj();
       if(v==="home"){toggleOverview(false,true);if(FF.dev!=="car")setTimeout(()=>$("#intentInput").focus(),300)}
       if(v==="timeline"){renderTimeline();staggerIn($$(".tl-item,.tl-day"),18);setTimeout(()=>$("#tlSearch").focus(),400)}
@@ -3272,7 +3277,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     $("#intentInput").addEventListener("input",e=>{const html=parseTokens(e.target.value);$("#homeParse").innerHTML=html;$("#homeParse").classList.toggle("show",!!html);matchSignals(e.target.value)});
     $("#homeMic").onclick=()=>openVoice({from:"home"});
     function openSignal(card){
-      const idx=+card.dataset.sig,g=HOME_SIGNALS()[idx];if(!g)return;
+      const idx=+card.dataset.sig,g=HOME_SIGNALS()[idx];if(!g)return;phFocus=true;
       const st=sigView(g,idx),bp=BP[st.bp]?BP[st.bp]():blueprintFor(st.t);
       const wantAuto=(card.dataset.auto==="1"||st.needAuto)&&bp.auto&&!bp.autoDone;
       const f=clamp(+(card.dataset.sf??st.f)||0,0,bp.flows.length-1),mi=clamp(+(card.dataset.sm??st.m)||0,0,bp.flows[f].modules.length-1);
@@ -4078,7 +4083,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       DEVICES.forEach(d=>html.classList.toggle("ff-"+d.id,d.id===id));
       html.classList.toggle("ff-touch",id==="tablet"||id==="phone");
       if(id!=="phone")html.classList.remove("ph-sheet","ph-drag");
-      FF.dev=id;ffPlace();syncNight();dockHomeLine(id==="phone");
+      FF.dev=id;ffPlace();syncNight();dockHomeLine(id==="phone"||id==="tablet");
       closePalette();closeSelBubble();setWx(false);setMenu(false);
       if(was==="car"&&id!=="car")carOut();
       if(id==="car"&&was!=="car")carIn();
@@ -4397,8 +4402,8 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     function carLand(m){CAR.landed=m.id;CAR.landedT=performance.now()}
 
     function cardFrom(m,sp,o={}){
-      const r=rep(m);
-      return{key:o.key||m.id,m,ic:o.ic||KIND_IC[m.kind]||"spark",k:o.k||`${spShort(sp)} · ${m.item}`,v:o.v??r.v,l:o.l??r.l,ok:r.ok,count:o.count,why:o.why,acts:(o.acts||r.acts).filter(Boolean).slice(0,2),cls:o.cls??(r.alert?"alert":""),now:!!o.now};
+      const r=rep(m),v=o.v??r.v,item=m.item===v&&m.kind==="summary"?T("Weather","Погода"):m.item;
+      return{key:o.key||m.id,m,ic:o.ic||KIND_IC[m.kind]||"spark",k:o.k||`${spShort(sp)} · ${item}`,v,l:o.l??r.l,ok:r.ok,count:o.count,why:o.why,acts:(o.acts||r.acts).filter(Boolean).slice(0,2),cls:o.cls??(r.alert?"alert":""),now:!!o.now};
     }
     function callCard(c,why,now){
       const{ev,secs:s}=c,live=ev.joined||s<=0;
