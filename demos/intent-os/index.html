@@ -185,7 +185,7 @@
     body.night .sig-sp .ic{color:var(--sc-n)}
     @container screen (max-width:640px){
       .blueprints{grid-template-columns:1fr;gap:12px}
-      .home{justify-content:flex-start;overflow-y:auto;padding:76px 0 112px;scrollbar-width:none;-webkit-mask-image:linear-gradient(transparent 52px,#000 84px,#000 calc(100% - 92px),transparent calc(100% - 60px));mask-image:linear-gradient(transparent 52px,#000 84px,#000 calc(100% - 92px),transparent calc(100% - 60px))}
+      .home{justify-content:flex-start;overflow-y:auto;padding:76px 0 112px;scrollbar-width:none;-webkit-mask-image:linear-gradient(transparent 52px,#000 84px,#000 calc(100% - var(--fade-b1,92px)),transparent calc(100% - var(--fade-b0,60px)));mask-image:linear-gradient(transparent 52px,#000 84px,#000 calc(100% - var(--fade-b1,92px)),transparent calc(100% - var(--fade-b0,60px)))}
       .home::-webkit-scrollbar{display:none}
       .home>*{flex-shrink:0}
       .home-time{font-size:60px}
@@ -620,7 +620,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .home-app:focus-visible{outline:1.5px solid var(--quiet);outline-offset:2px}
     /* notification centre: opened from the account menu, slides in from the right over a blurred backdrop */
     .me-btn{position:relative}
-    .me-btn.unread:after{content:"";position:absolute;top:-1px;right:-1px;width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--fog)}
+    .me-btn.unread:after{content:"";position:absolute;top:calc(50% - 14.4px);right:calc(50% - 14.4px);width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--fog)}
     #notifCount{display:none;min-width:18px;height:18px;padding:0 6px;border-radius:999px;background:var(--accent);color:#fff;font-size:10.5px;line-height:18px;text-align:center;font-variant-numeric:tabular-nums}
     #notifCount.on{display:inline-flex;align-items:center;justify-content:center;margin-left:auto}body.night #notifCount{color:#14161c}
     .notif{position:absolute;top:0;right:0;bottom:0;z-index:38;display:flex;flex-direction:column;width:min(460px,100%);color:var(--ink);font-size:12.5px;opacity:0;pointer-events:none;transition:opacity .3s var(--ease)}
@@ -1172,7 +1172,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
 
     .sb-time{display:none;font-size:15px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
     .ff-phone .sb-time{display:block}
-    .ff-phone .statusbar{padding:0 20px 0 32px}
+    .ff-phone .statusbar{padding:0 32px}
     .ff-phone .wx-btn .pill-gap,.ff-phone .wx-btn .clock{display:none}
     .ff-phone .sb-right{gap:4px}
     .ff-phone .sb-left{position:absolute;left:20px;right:20px;top:52px;height:40px;gap:12px}
@@ -1907,6 +1907,21 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       const cards=HOME_SIGNALS();
       box.innerHTML=cards.map((g,i)=>`<article class="sig" data-sig="${i}" tabindex="0" role="button"></article>`).join("");
       $$("#blueprints .sig").forEach((el,i)=>paintSig(el,cards[i],i,false));
+      fitHomeFade();
+    }
+    /* narrow home: the list fades out above the intent line. A card that would show only its glass edge in that fade (its first row not clear of it)
+       is faded out whole instead, and the fade eases back to its stylesheet place over the first 40 px of scrolling */
+    function fitHomeFade(){
+      const h=$("#home");if(!h)return;h.style.removeProperty("--fade-b0");h.style.removeProperty("--fade-b1");
+      const c=getComputedStyle(h);if((c.maskImage&&c.maskImage!=="none"?c.maskImage:c.webkitMaskImage||"none")==="none")return;
+      const blend=Math.min(1,h.scrollTop/40);if(blend>=1)return;
+      for(const el of $$("#blueprints .sig")){
+        let top=0;for(let p=el;p&&p!==h;p=p.offsetParent)top+=p.offsetTop;
+        const bottom=top+el.offsetHeight,d=h.offsetHeight-top;
+        if(d<=60)break;
+        if(bottom<=h.offsetHeight-92||d-48>=92)continue;
+        h.style.setProperty("--fade-b0",d+(60-d)*blend+"px");h.style.setProperty("--fade-b1",d+24+(68-d)*blend+"px");break;
+      }
     }
     function stepSignal(idx, nextState){
       const cards=HOME_SIGNALS(),g=cards[idx],el=$$("#blueprints .sig")[idx];
@@ -3393,8 +3408,10 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         go(dy<0?1:-1,0);
       }
     },{passive:true});
-    addEventListener("resize",()=>{ffPlace();renderFFSwitch();layout()});
-    document.fonts?.ready.then(()=>renderFFSwitch());
+    addEventListener("resize",()=>{ffPlace();renderFFSwitch();fitHomeFade();layout()});
+    document.fonts?.ready.then(()=>{renderFFSwitch();fitHomeFade()});
+    $("#home")?.addEventListener("scroll",fitHomeFade,{passive:true});
+    if(window.ResizeObserver&&$("#home")){const ro=new ResizeObserver(()=>fitHomeFade());ro.observe($("#home"));[...$("#home").children].forEach(c=>ro.observe(c))}
 
     const mskParts=(d=new Date())=>Object.fromEntries(new Intl.DateTimeFormat("en-GB",{timeZone:MSK,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(d).map(p=>[p.type,p.value]));
     const mskTime=timeStr;
@@ -3898,7 +3915,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       if(id==="phone"&&S&&view==="space")html.classList.add("ph-sheet");
       try{fitIntent()}catch{}
       const g=$("#homeGrab");if(g)g.hidden=id!=="phone";
-      renderHints();renderFFSwitch();
+      renderHints();renderFFSwitch();fitHomeFade();
       if(S)layout();
       projNow();
       if(WINS.length)renderWindows();
@@ -4045,7 +4062,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       opts.before?.();applyDevice(id);opts.after?.();
       const R1=rect(FF),bg1=ffBg(),page1=getComputedStyle(document.body).backgroundImage;
       const push=a=>{ffAnims.push(a);return a};
-      const done=()=>{if(tok!==ffTok)return;ffAnims.forEach(a=>a.cancel());ffAnims=[];ffSettle();$$(".ff-morph-shell,.ff-ghost,.ffm-page").forEach(n=>n.remove());ffUndo.splice(0).forEach(f=>f())};
+      const done=()=>{if(tok!==ffTok)return;ffAnims.forEach(a=>a.cancel());ffAnims=[];ffSettle();$$(".ff-morph-shell,.ff-ghost,.ffm-page").forEach(n=>n.remove());ffUndo.splice(0).forEach(f=>f());fitHomeFade()};
       const fadeIn=(n,delay,dur)=>{const o=+getComputedStyle(n).opacity;if(o>0)push(n.animate([{opacity:0},{opacity:o}],{duration:dur,delay,easing:"cubic-bezier(.2,.8,.2,1)",fill:"backwards"}))};
       /* reduced motion: nothing moves or scales – the old device (frame and screen) fades out, then the new one fades in */
       if(calm){
