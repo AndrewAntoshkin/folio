@@ -1221,7 +1221,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     body.night .cp:hover{background:rgba(64,64,66,.72)}
     .cp:active{transform:scale(.98)}
     .cp:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-    .cp.on{box-shadow:inset 0 0 0 2px var(--accent),var(--glass-shadow)}
+    html.kb-used .cp.on{box-shadow:inset 0 0 0 2px var(--accent),var(--glass-shadow)}
     html:is(.ff-morph,.ph-sheet) .cp:is(.on,:focus-visible){outline:0;box-shadow:var(--glass-shadow)}
     .cp.new{animation:cpNew 1.4s cubic-bezier(.2,.8,.2,1)}
     @keyframes cpNew{0%{opacity:0;transform:translateY(12px)}20%{opacity:1;transform:none;box-shadow:inset 0 0 0 2px #f2b84b,var(--glass-shadow)}}
@@ -1433,6 +1433,9 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
 
   <script>
     const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+    /* rings that mark where you are show only once the keyboard is in use; registered first, so no key handler can stop it */
+    addEventListener("keydown",e=>{if(!e.metaKey&&!e.ctrlKey&&!e.altKey)document.documentElement.classList.add("kb-used")},true);
+    addEventListener("pointerdown",()=>document.documentElement.classList.remove("kb-used"),{capture:true,passive:true});
     const SCREEN=$("#ffScreen"),FF={dev:"desktop",s:1,x:0,y:0,w:innerWidth,h:innerHeight};
     const ffPt=(x,y)=>({x:(x-FF.x)/FF.s,y:(y-FF.y)/FF.s});
     function ffRect(r){const s=FF.s,l=(r.left-FF.x)/s,t=(r.top-FF.y)/s,w=r.width/s,h=r.height/s;return{left:l,top:t,width:w,height:h,right:l+w,bottom:t+h}}
