@@ -39,7 +39,16 @@ The keyboard-hints coach only appears on a fresh desktop load; a switch removes 
 ## Phone (Телефон)
 - Home: clock, suggestions, cards (compact) for all spaces, scrollable; intent line as bottom bar. The list fades out above the intent line; a card whose first row would not clear that fade fades out whole (no empty glass edge), and the fade eases back over the first 40px of scrolling.
 - Status bar 32px each side; the unread dot sits on the avatar's edge at 45°, clear of the screen corner.
-- Opening a card = space view: modules as a vertical stack of `compact` cards, tap to expand to `full` in a bottom sheet (drag to dismiss), participants in the header, plan progress as a sticky top strip.
+- Opening a card = space view: modules as a vertical stack of `compact` cards, tap to expand to `full` in a bottom sheet, participants in the header, plan progress as a sticky top strip.
+- **The sheet is the card** (every module kind). No card inside the sheet: no inner border, shadow or second rounded box, no flow label row. Full width, 28px top radius only, opaque paper. Top to bottom:
+  1. Grabber, 36×5 at 8px.
+  2. A compact 48px header row: app icon, context (source · flow, de-duplicated, since the big title follows), mic.
+  3. The big title.
+  4. Content, which scrolls.
+  5. Actions pinned to the bottom of the sheet with a hairline above, 34px clear of the home indicator.
+- **Detents.** Large (56px from the top) and medium (46%). Between them the sheet resizes, so the actions stay pinned. Below medium it slides and dismisses on distance (120px) or a flick. A tap or Enter/Space on the grabber switches detents; the scrim and Esc close it. It always reopens at large.
+- **Backdrop.** A dimmed scrim. What the large sheet covers (the space title row, the stack, the dock) sits out, so neither a morph nor the frozen copy can show it around a moving sheet. Swiping between modules pages their content inside one continuous sheet.
+- **The morph lands in this form.** The module itself is the surface that travels. The sheet's own fill is off while morphing, and the frozen copy hides the stack rows the sheet covered (rows under its top edge are cut there).
 - Control center = full-width pull-down sheet from the top; space switcher = horizontal card carousel (swipe up gesture/button).
 - Every desktop action reachable.
 
