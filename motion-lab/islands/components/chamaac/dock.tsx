@@ -28,6 +28,7 @@ interface DockContextType {
   setHoveredLink: (href: string | null) => void;
   handleDropdownEnter: (id: string) => void;
   handleDropdownLeave: (id: string) => void;
+  toggleDropdown: (id: string) => void;
   activePage?: string;
   isDark: boolean;
 }
@@ -81,6 +82,13 @@ export const Dock = ({
     }, closeDelay);
   };
 
+  const toggleDropdown = (id: string): void => {
+    if (closeTimeoutsRef.current[id]) {
+      clearTimeout(closeTimeoutsRef.current[id]!);
+    }
+    setOpenDropdowns((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
   // Prevent scrolling when mobile menu is open
   useEffect(() => {
     if (isMobileMenuOpen) {
@@ -102,6 +110,7 @@ export const Dock = ({
           setHoveredLink,
           handleDropdownEnter,
           handleDropdownLeave,
+          toggleDropdown,
           activePage,
           isDark,
         }}
@@ -279,6 +288,7 @@ export const DockItem = ({
     openDropdowns,
     handleDropdownEnter,
     handleDropdownLeave,
+    toggleDropdown,
     isDark,
     activePage,
   } = useDock();
@@ -338,6 +348,7 @@ export const DockItem = ({
       )}
       onMouseEnter={() => handleDropdownEnter(itemId)}
       onMouseLeave={() => handleDropdownLeave(itemId)}
+      onClick={() => toggleDropdown(itemId)}
       animate={{
         backgroundColor:
           isOpen || isAnyChildActive
@@ -406,8 +417,17 @@ const DockItemImagePreview = ({ children }: { children: React.ReactNode }) => {
     );
   }) as React.ReactElement<DockDropdownItemProps> | undefined;
 
-  const displayImage = hoveredChild?.props.image || activeChild?.props.image;
-  const shouldShowImage = hoveredLink || activeChild;
+  const firstChild = React.Children.toArray(children).find((child) => {
+    return (
+      React.isValidElement<DockDropdownItemProps>(child) &&
+      (child.type as { displayName?: string }).displayName === "DockDropdownItem" &&
+      child.props.image
+    );
+  }) as React.ReactElement<DockDropdownItemProps> | undefined;
+
+  const displayImage =
+    hoveredChild?.props.image || activeChild?.props.image || firstChild?.props.image;
+  const shouldShowImage = Boolean(hoveredLink || activeChild || firstChild);
 
   if (!displayImage) return null;
 

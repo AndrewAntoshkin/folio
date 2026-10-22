@@ -10,7 +10,7 @@ const EXPERIMENTS = [
   {
     id: "skiper16",
     scroll: true,
-    hero: 0.42,
+    hero: 0.09,
     source: "https://skiper-ui.com/v1/skiper16",
     kicker: { ru: "Скролл", en: "Scroll" },
     title: { ru: "Стопка карточек", en: "Card stack" },
@@ -55,7 +55,7 @@ const EXPERIMENTS = [
   {
     id: "skiper30",
     scroll: true,
-    hero: 0.45,
+    hero: 0.6,
     source: "https://skiper-ui.com/v1/skiper30",
     kicker: { ru: "Параллакс", en: "Parallax" },
     title: { ru: "Четыре колонны", en: "Four columns" },
@@ -100,7 +100,7 @@ const EXPERIMENTS = [
   {
     id: "skiper31",
     scroll: true,
-    hero: 0.28,
+    hero: 0.17,
     source: "https://skiper-ui.com/v1/skiper31",
     kicker: { ru: "Тип", en: "Type" },
     title: { ru: "Буквы собираются", en: "Letters gather" },
@@ -295,7 +295,7 @@ const EXPERIMENTS = [
   {
     id: "skiper19",
     scroll: true,
-    hero: 0.55,
+    hero: 0,
     source: "https://skiper-ui.com/v1/skiper19",
     kicker: { ru: "Скролл", en: "Scroll" },
     title: { ru: "Линия за скроллом", en: "Stroke that follows" },
@@ -310,7 +310,7 @@ const EXPERIMENTS = [
   {
     id: "skiper28",
     scroll: true,
-    hero: 0.5,
+    hero: 0.72,
     source: "https://skiper-ui.com/v1/skiper28",
     kicker: { ru: "3D", en: "3D" },
     title: { ru: "Текст в перспективе", en: "Perspective text" },
@@ -332,8 +332,8 @@ const EXPERIMENTS = [
     line: { ru: "Пять кнопок с разным ходом", en: "Five buttons, five different motions" },
     hint: { ru: "Нажмите переключатель", en: "Click a toggle" },
     idea: {
-      ru: "Свободный компонент Skiper UI. Набор переключателей темы: каждый клик играет свою анимацию иконки.",
-      en: "A free Skiper UI component. A set of theme toggles. Each click plays a different icon motion.",
+      ru: "Свободный компонент Skiper UI. Каждый клик играет свою анимацию иконки и переключает сцену между светлой и тёмной.",
+      en: "A free Skiper UI component. Each click plays its own icon motion and switches the stage between light and dark.",
     },
     tokens: ["layout", "spring", "icon rotate"],
   },
@@ -400,12 +400,34 @@ let returnFocus = null;
 const STAGE_W = 1440;
 const STAGE_H = 900;
 
+// Tile posters. w/h is the iframe stage; z crops empty margin around a centered subject.
+const PRESENTATION = {
+  "chamaac-arrow": { w: 360, h: 225, z: 1.32 },
+  "chamaac-input": { w: 440, h: 275, z: 1 },
+  "chamaac-shimmer": { w: 420, h: 262, z: 1.28 },
+  "chamaac-slide": { w: 360, h: 225, z: 1.32 },
+  "chamaac-focus": { w: 400, h: 250, z: 1.3 },
+  "chamaac-glow": { w: 420, h: 262, z: 1.35 },
+  "chamaac-neo": { w: 360, h: 225, z: 1.32 },
+  "chamaac-premium": { w: 420, h: 262, z: 1.3 },
+  "chamaac-dock": { w: 800, h: 500, z: 1.22 },
+  "chamaac-loop": { w: 980, h: 612, z: 1 },
+  skiper4: { w: 520, h: 325, z: 1.08 },
+  skiper19: { w: 1440, h: 900, z: 0.9 },
+  skiper61: { w: 1080, h: 675, z: 1 },
+};
+
+function presentationOf(mod) {
+  return PRESENTATION[mod.id] || { w: STAGE_W, h: STAGE_H, z: 1 };
+}
+
 function srcFor(mod, { full } = {}) {
   const q = new URLSearchParams({
     id: mod.id,
     autoplay: "0",
     bar: full ? "1" : "0",
   });
+  if (!full && mod.hero) q.set("hero", String(mod.hero));
   return `/motion-lab/preview.html?${q}`;
 }
 
@@ -419,10 +441,15 @@ function hostOf(url) {
 
 function fit(frame) {
   if (frame.__full) return;
+  const stage = frame.__stage || presentationOf(frame.__mod);
   const box = frame.getBoundingClientRect();
-  const scale = Math.min(box.width / STAGE_W, box.height / STAGE_H);
-  frame.__scale = scale > 0 ? scale : 1;
-  frame.style.setProperty("--s", String(frame.__scale));
+  const scale = Math.min(box.width / stage.w, box.height / stage.h);
+  const fitScale = scale > 0 ? scale : 1;
+  frame.__scale = fitScale * (stage.z || 1);
+  frame.style.setProperty("--sw", `${stage.w}px`);
+  frame.style.setProperty("--sh", `${stage.h}px`);
+  frame.style.setProperty("--z", String(stage.z || 1));
+  frame.style.setProperty("--s", String(fitScale));
 }
 
 function bindWheel(frame) {
@@ -449,7 +476,13 @@ function makeFrame(mod, { full } = {}) {
   frame.__iframe = iframe;
   frame.__mod = mod;
   frame.__full = !!full;
+  frame.__stage = presentationOf(mod);
   frame.__scale = 1;
+  if (!full) {
+    frame.style.setProperty("--sw", `${frame.__stage.w}px`);
+    frame.style.setProperty("--sh", `${frame.__stage.h}px`);
+    frame.style.setProperty("--z", String(frame.__stage.z || 1));
+  }
   if (!full) {
     bindWheel(frame);
     const observer = new ResizeObserver(() => fit(frame));
@@ -486,6 +519,7 @@ function replay(frame) {
 
 EXPERIMENTS.forEach((mod, index) => {
   const article = el("article", "lab-tile");
+  if (index === 0) article.classList.add("is-feature");
   article.dataset.exp = mod.id;
   const frame = makeFrame(mod);
   const expand = el("button", "lab-expand", EXPAND);
@@ -532,7 +566,7 @@ function setChrome(locked) {
 
 function finishClose() {
   dialog.hidden = true;
-  dialog.classList.remove("is-open");
+  dialog.classList.remove("is-open", "is-expanded");
   dialog.replaceChildren();
   dialogFrame = null;
   dialogId = null;
@@ -547,7 +581,7 @@ function finishClose() {
 function close() {
   if (!dialogId && !dialogFrame) return;
   const gen = ++generation;
-  dialog.classList.remove("is-open");
+  dialog.classList.remove("is-open", "is-expanded");
   window.clearTimeout(closeTimer);
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (reduce) {
@@ -570,7 +604,7 @@ function open(id, trigger) {
   returnFocus = trigger || document.activeElement;
   dialogId = id;
   dialog.hidden = false;
-  dialog.classList.remove("is-open");
+  dialog.classList.remove("is-open", "is-expanded");
   dialog.replaceChildren();
   dialog.setAttribute("aria-labelledby", "lab-dialog-title");
 
@@ -585,8 +619,23 @@ function open(id, trigger) {
 
   const panel = el("aside", "lab-panel");
   const index = EXPERIMENTS.indexOf(mod);
-  const title = el("h2", "", pick(lang, mod.title.ru, mod.title.en));
+  const peek = el("button", "lab-peek");
+  peek.type = "button";
+  peek.setAttribute("aria-expanded", "false");
+  const title = el("span", "lab-dialog-title", pick(lang, mod.title.ru, mod.title.en));
   title.id = "lab-dialog-title";
+  const grab = el("span", "lab-grab");
+  grab.setAttribute("aria-hidden", "true");
+  peek.append(
+    grab,
+    el("span", "lab-kicker", `${String(index + 1).padStart(2, "0")} · ${pick(lang, mod.kicker.ru, mod.kicker.en)}`),
+    title,
+  );
+  peek.addEventListener("click", () => {
+    if (!window.matchMedia("(max-width: 809px)").matches) return;
+    const expanded = dialog.classList.toggle("is-expanded");
+    peek.setAttribute("aria-expanded", expanded ? "true" : "false");
+  });
   const source = el("a", "lab-source", hostOf(mod.source));
   source.href = mod.source;
   source.target = "_blank";
@@ -596,9 +645,8 @@ function open(id, trigger) {
   const replayBtn = el("button", "lab-replay", pick(lang, "Ещё раз", "Replay"));
   replayBtn.type = "button";
   replayBtn.addEventListener("click", () => replay(frame));
-  panel.append(
-    el("p", "lab-kicker", `${String(index + 1).padStart(2, "0")} · ${pick(lang, mod.kicker.ru, mod.kicker.en)}`),
-    title,
+  const rest = el("div", "lab-sheet-rest");
+  rest.append(
     el("p", "lab-idea", pick(lang, mod.idea.ru, mod.idea.en)),
     el("p", "lab-label", pick(lang, "Как взаимодействовать", "How to interact")),
     el("p", "lab-hint", pick(lang, mod.hint.ru, mod.hint.en)),
@@ -607,6 +655,7 @@ function open(id, trigger) {
     tokens,
     replayBtn,
   );
+  panel.append(peek, rest);
   dialog.append(frame, panel, closeBtn);
 
   main?.setAttribute("inert", "");

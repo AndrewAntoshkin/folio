@@ -18,7 +18,7 @@ const Skiper28 = () => {
   return (
           <div
         ref={targetRef}
-        className="relative z-0 h-[300vh] w-screen bg-[#f5f4f3] text-black"
+        className="relative z-0 h-[300vh] w-full overflow-x-hidden bg-[#f5f4f3] text-black"
       >
         <div className="absolute left-1/2 top-[10%] grid -translate-x-1/2 content-start justify-items-center gap-6 text-center text-black">
           <span className="relative max-w-[12ch] text-xs uppercase leading-tight opacity-40 after:absolute after:left-1/2 after:top-full after:h-16 after:w-px after:bg-gradient-to-b after:from-white after:to-black after:content-['']">
@@ -26,7 +26,7 @@ const Skiper28 = () => {
           </span>
         </div>
         <div
-          className="sticky top-0 mx-auto flex items-center justify-center bg-transparent py-20"
+          className="sticky top-0 mx-auto flex w-full max-w-full items-center justify-center overflow-x-hidden bg-transparent py-20"
           style={{
             transformStyle: "preserve-3d",
             perspective: "200px",

@@ -109,7 +109,7 @@ export function ChamaacPremium() {
 export function ChamaacDock() {
   return (
     <div className="font-grotesk relative h-full w-full bg-white">
-      <Dock bottomOffset="28px">
+      <Dock bottomOffset="calc(50% - 24px)">
         <DockIcon
           icon={
             <svg className="text-black" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -162,8 +162,8 @@ export function ChamaacLetters() {
 
 export function ChamaacLoop() {
   return (
-    <Stage className="px-8">
-      <TextLoop />
+    <Stage className="overflow-hidden px-6">
+      <TextLoop className="max-w-full justify-center text-[clamp(1.75rem,4.6vw,3.25rem)] md:text-[clamp(1.75rem,4.6vw,3.25rem)]" />
     </Stage>
   );
 }

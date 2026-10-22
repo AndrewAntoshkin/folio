@@ -112,7 +112,17 @@ function Preview() {
     if (!SCROLL.has(id) || reduced) return undefined;
     const lenis = new Lenis({ autoRaf: true });
     window.__lenis = lenis;
+    const hero = Number(params.get("hero"));
+    let tries = 0;
+    let timer = 0;
+    const kick = () => {
+      if (hero > 0) window.__preview.seek(hero);
+      tries += 1;
+      if (tries < 12) timer = window.setTimeout(kick, 140);
+    };
+    if (hero > 0) timer = window.setTimeout(kick, 40);
     return () => {
+      window.clearTimeout(timer);
       lenis.destroy();
       window.__lenis = null;
     };
