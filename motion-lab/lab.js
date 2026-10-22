@@ -1,386 +1,215 @@
 /**
  * Motion Lab
- * Free Skiper UI and Chamaac components, one island per experiment.
- * The registry below is the only edit required to add one:
- * drop a component in islands/components, export it from islands/entry.jsx, rebuild.
+ * Original experiments. Each id is a component in islands/original/experiments.jsx.
  */
 import { el, pick, reduced } from "./runtime.js";
 
 const EXPERIMENTS = [
   {
-    id: "skiper16",
-    scroll: true,
-    hero: 0.14,
-    source: "https://skiper-ui.com/v1/skiper16",
+    id: "stack",
+    title: { ru: "Стопка", en: "Stack" },
     kicker: { ru: "Скролл", en: "Scroll" },
-    title: { ru: "Стопка карточек", en: "Card stack" },
-    line: { ru: "Карточки сжимаются, пока идёт скролл", en: "Cards scale down as the page scrolls" },
-    hint: { ru: "Прокрутите внутри кадра", en: "Scroll inside the frame" },
+    line: { ru: "Карточки YaOS уходят в глубину", en: "YaOS cards recede into depth" },
+    hint: { ru: "Крутите колесо внутри плитки.", en: "Scroll inside the tile." },
     idea: {
-      ru: "Свободный компонент Skiper UI. Липкие карточки уменьшаются по мере скролла: каждая следующая чуть меньше предыдущей.",
-      en: "A free Skiper UI component. Sticky cards scale down as you scroll, each one a little smaller than the last.",
+      ru: "Четыре стеклянные карточки — дом, память, город и портфель — сжимаются по мере скролла.",
+      en: "Four glass cards — home, memory, city, and portfolio — tighten as you scroll.",
     },
-    tokens: ["useScroll", "scale 1 → 0.5", "sticky"],
+    tokens: ["scroll", "scale", "sticky"],
   },
   {
-    id: "chamaac-arrow",
-    scroll: false,
-    hero: 0,
-    source: "https://www.chamaac.com/components/buttons/hover-arrow-button",
-    kicker: { ru: "Кнопка", en: "Button" },
-    title: { ru: "Стрелка", en: "Hover arrow" },
-    line: { ru: "Стрелка выезжает слева", en: "The arrow slides in from the left" },
-    hint: { ru: "Наведите на кнопку", en: "Hover the button" },
+    id: "intent",
+    title: { ru: "Намерение", en: "Intent" },
+    kicker: { ru: "YaOS", en: "YaOS" },
+    line: { ru: "Фраза вместо меню", en: "A sentence instead of a menu" },
+    hint: { ru: "Выберите чип или напишите своё.", en: "Pick a chip or type your own." },
     idea: {
-      ru: "Свободная кнопка Chamaac, MIT. Под курсором слева выезжает стрелка, подпись остаётся на месте.",
-      en: "A free Chamaac button, MIT. On hover an arrow slides in from the left and the label stays put.",
+      ru: "Поле намерения YaOS. Чип или свободный текст возвращает спокойный ответ на пружине.",
+      en: "A YaOS intent field. A chip or a free sentence returns a quiet reply on a spring.",
     },
-    tokens: ["width 0 → auto", "0.3s", "whileHover"],
+    tokens: ["spring", "input", "chips"],
   },
   {
-    id: "chamaac-input",
-    scroll: false,
-    hero: 0,
-    source: "https://www.chamaac.com/components/inputs/ai-input",
-    kicker: { ru: "Ввод", en: "Input" },
-    title: { ru: "Поле для ИИ", en: "AI input" },
-    line: { ru: "Текст, меню модели и вложения", en: "Text, a model menu, and attachments" },
-    hint: { ru: "Напишите и откройте меню", en: "Type, then open a menu" },
-    idea: {
-      ru: "Свободный компонент Chamaac, MIT. Поле принимает текст, открывает меню модели и инструментов и показывает ответ.",
-      en: "A free Chamaac component, MIT. The field takes text, opens the model and tools menus, and shows a reply.",
-    },
-    tokens: ["textarea", "dropdown", "spring"],
-  },
-  {
-    id: "skiper30",
-    scroll: true,
-    hero: 0.6,
-    source: "https://skiper-ui.com/v1/skiper30",
-    kicker: { ru: "Параллакс", en: "Parallax" },
-    title: { ru: "Четыре колонны", en: "Four columns" },
-    line: { ru: "Колонны едут с разной скоростью", en: "Columns travel at different speeds" },
-    hint: { ru: "Прокрутите колонны", en: "Scroll the columns" },
-    idea: {
-      ru: "Свободный компонент Skiper UI, по мотивам siena.film. Четыре колонны фотографий смещаются на разную долю скролла.",
-      en: "A free Skiper UI component, adapted from siena.film. Four photo columns shift by different amounts of the scroll.",
-    },
-    tokens: ["useTransform y", "height × 2 / 3.3 / 1.25 / 3", "175vh"],
-  },
-  {
-    id: "chamaac-cards",
-    scroll: false,
-    hero: 0,
-    source: "https://www.chamaac.com/components/sections/stats-cards",
-    kicker: { ru: "Карточки", en: "Cards" },
-    title: { ru: "Наклон", en: "Tilted stats" },
-    line: { ru: "Карточка выпрямляется под курсором", en: "A card straightens under the pointer" },
-    hint: { ru: "Наведите на карточку", en: "Hover a card" },
-    idea: {
-      ru: "Свободный компонент Chamaac, MIT. Четыре карточки стоят под углом и выравниваются, когда на них наводят.",
-      en: "A free Chamaac component, MIT. Four cards sit at an angle and straighten when hovered.",
-    },
-    tokens: ["rotate → 0", "scale 1.05", "0.3s"],
-  },
-  {
-    id: "chamaac-shimmer",
-    scroll: false,
-    hero: 0,
-    source: "https://www.chamaac.com/components/buttons/shimmer-button",
-    kicker: { ru: "Кнопка", en: "Button" },
-    title: { ru: "Блик", en: "Shimmer" },
-    line: { ru: "Блик сам идёт по подписи", en: "A highlight runs across the label" },
-    hint: { ru: "Блик идёт сам, наведите для масштаба", en: "The shimmer runs; hover to scale" },
-    idea: {
-      ru: "Свободная кнопка Chamaac, MIT. Градиент подписи едет сам. Наведение чуть увеличивает кнопку, нажатие уменьшает.",
-      en: "A free Chamaac button, MIT. The label gradient travels on its own. Hover scales the button up, press scales it down.",
-    },
-    tokens: ["backgroundPosition", "1.2s linear", "scale 1.02"],
-  },
-  {
-    id: "skiper31",
-    scroll: true,
-    hero: 0.2,
-    source: "https://skiper-ui.com/v1/skiper31",
-    kicker: { ru: "Тип", en: "Type" },
-    title: { ru: "Буквы собираются", en: "Letters gather" },
-    line: { ru: "Строка и иконки съезжаются к центру", en: "A line and a row of icons meet in the center" },
-    hint: { ru: "Прокрутите, чтобы собрать буквы", en: "Scroll to gather the letters" },
-    idea: {
-      ru: "Свободный компонент Skiper UI. Буквы и иконки разъезжаются от центра и собираются обратно по прогрессу скролла.",
-      en: "A free Skiper UI component. Letters and icons spread from the center and gather back as scroll progresses.",
-    },
-    tokens: ["useScroll", "x = distance × 50", "rotateX"],
-  },
-  {
-    id: "chamaac-letters",
-    scroll: false,
-    hero: 0,
-    source: "https://www.chamaac.com/components/text-animations/dancing-letters",
+    id: "gather",
+    hero: 0.82,
+    title: { ru: "Сборка", en: "Gather" },
     kicker: { ru: "Текст", en: "Type" },
-    title: { ru: "Живые буквы", en: "Dancing letters" },
-    line: { ru: "Буква играет свою физику", en: "Each letter plays its own physics" },
-    hint: { ru: "Наведите на букву", en: "Hover a letter" },
+    line: { ru: "Буквы сходятся в слово", en: "Letters settle into a word" },
+    hint: { ru: "Крутите колесо — слово собирается.", en: "Scroll and the word gathers." },
     idea: {
-      ru: "Свободный компонент Chamaac, MIT. У каждой буквы свой ход: резина, петля, прыжок, падение. Наведение запускает именно её.",
-      en: "A free Chamaac component, MIT. Each letter has its own move: rubber, hinge, jump, fall. Hovering plays that letter.",
+      ru: "Буквы «спокойно» разъехались и сходятся к центру по прогрессу скролла.",
+      en: "The letters of “quietly” start apart and meet as you scroll.",
     },
-    tokens: ["onHoverStart", "spring 300 / 20", "Outfit"],
+    tokens: ["scroll", "type", "reveal"],
   },
   {
-    id: "chamaac-slide",
-    scroll: false,
-    hero: 0,
-    source: "https://www.chamaac.com/components/buttons/slideup-button",
-    kicker: { ru: "Кнопка", en: "Button" },
-    title: { ru: "Слайд подписи", en: "Slide up" },
-    line: { ru: "Подпись уезжает вверх, снизу приходит новая", en: "The label leaves upward, a new one arrives" },
-    hint: { ru: "Наведите на кнопку", en: "Hover the button" },
-    idea: {
-      ru: "Свободная кнопка Chamaac, MIT. Наведение уводит подпись вверх и приводит её копию снизу, с небольшим поворотом.",
-      en: "A free Chamaac button, MIT. Hover sends the label up and brings a copy in from below, with a short rotate.",
-    },
-    tokens: ["y 0 → -200%", "rotate 20° → 0", "0.5s"],
-  },
-  {
-    id: "skiper34",
-    scroll: true,
-    hero: 0.35,
-    source: "https://skiper-ui.com/v1/skiper34",
-    kicker: { ru: "Скролл", en: "Scroll" },
-    title: { ru: "Кадр с поворотом", en: "Rotating frame" },
-    line: { ru: "Карточка липнет, потом поворачивается", en: "A card sticks, then rotates away" },
-    hint: { ru: "Прокрутите, кадр повернётся", en: "Scroll, then the frame rotates" },
-    idea: {
-      ru: "Свободный компонент Skiper UI. Кадр прилипает к экрану и, уходя, одновременно масштабируется и вращается.",
-      en: "A free Skiper UI component. The frame sticks, then scales and rotates as it leaves.",
-    },
-    tokens: ["sticky", "scale", "rotate"],
-  },
-  {
-    id: "chamaac-steps",
-    scroll: false,
-    hero: 0,
-    source: "https://www.chamaac.com/components/sections/feature-steps",
-    kicker: { ru: "Переход", en: "Transition" },
-    title: { ru: "Шаги", en: "Feature steps" },
-    line: { ru: "Кадр сменяется вместе с шагом", en: "The frame changes with the step" },
-    hint: { ru: "Нажмите шаг или дождитесь смены", en: "Click a step, or let it advance" },
-    idea: {
-      ru: "Свободный компонент Chamaac, MIT. Шаг сам переключается, полоска прогресса доходит до края, кадр выезжает снизу. Клик выбирает шаг сразу.",
-      en: "A free Chamaac component, MIT. The step advances on its own, a progress rule runs to the edge, and the frame slides up. A click picks a step now.",
-    },
-    tokens: ["interval 6s", "y 100% → 0", "click"],
-  },
-  {
-    id: "chamaac-focus",
-    scroll: false,
-    hero: 0,
-    source: "https://www.chamaac.com/components/buttons/focus-button",
-    kicker: { ru: "Кнопка", en: "Button" },
-    title: { ru: "Рамка фокуса", en: "Focus frame" },
-    line: { ru: "Углы рамки съезжаются к кнопке", en: "Corner marks draw in toward the button" },
-    hint: { ru: "Наведите на кнопку", en: "Hover the button" },
-    idea: {
-      ru: "Свободная кнопка Chamaac, MIT. Тонкая рамка и уголки. Наведение собирает уголки к краям кнопки.",
-      en: "A free Chamaac button, MIT. A thin frame and corner marks. Hover draws the marks in to the button edges.",
-    },
-    tokens: ["group-hover", "corner translate", "border"],
-  },
-  {
-    id: "skiper39",
-    scroll: false,
-    hero: 0,
-    source: "https://skiper-ui.com/v1/skiper39",
-    kicker: { ru: "Canvas", en: "Canvas" },
-    title: { ru: "Толпа", en: "Crowd" },
-    line: { ru: "Фигурки идут через весь кадр", en: "Figures walk the width of the frame" },
-    hint: { ru: "Толпа идёт сама", en: "The crowd walks on its own" },
-    idea: {
-      ru: "Свободный компонент Skiper UI. Спрайт Open Peeps, логика прогулки с CodePen. Фигурки идут в обе стороны без остановки.",
-      en: "A free Skiper UI component. Open Peeps sprite, walk cycle from a CodePen. Figures cross in both directions.",
-    },
-    tokens: ["gsap.timeline", "canvas", "yoyo 10px"],
-  },
-  {
-    id: "chamaac-glow",
-    scroll: false,
-    hero: 0,
-    source: "https://www.chamaac.com/components/buttons/glowing-border-button",
-    kicker: { ru: "Кнопка", en: "Button" },
-    title: { ru: "Светящаяся рамка", en: "Glowing border" },
-    line: { ru: "Зелёный луч обходит кнопку", en: "A green beam travels the border" },
-    hint: { ru: "Луч идёт сам", en: "The beam travels on its own" },
-    idea: {
-      ru: "Свободная кнопка Chamaac, MIT. Узкий зелёный градиент крутится по контуру без остановки.",
-      en: "A free Chamaac button, MIT. A narrow green gradient spins around the border on its own.",
-    },
-    tokens: ["spin 3s", "#50C878", "blur 2px"],
-  },
-  {
-    id: "skiper47",
-    scroll: false,
-    hero: 0,
-    source: "https://skiper-ui.com/v1/skiper47",
-    kicker: { ru: "Карусель", en: "Carousel" },
-    title: { ru: "Перспектива", en: "Perspective" },
-    line: { ru: "Обложка уходит в глубину", en: "Covers recede in perspective" },
-    hint: { ru: "Потяните обложки", en: "Drag the covers" },
-    idea: {
-      ru: "Свободный компонент Skiper UI. Карусель с эффектом coverflow: боковые слайды меньше, центральный ближе. Иллюстрации AarzooAly.",
-      en: "A free Skiper UI component. A coverflow carousel: side slides shrink, the center one comes forward. Illustrations by AarzooAly.",
-    },
-    tokens: ["swiper coverflow", "rotate 50°", "depth 100"],
-  },
-  {
-    id: "chamaac-neo",
-    scroll: false,
-    hero: 0,
-    source: "https://www.chamaac.com/components/buttons/neo-brutalist-button",
-    kicker: { ru: "Кнопка", en: "Button" },
-    title: { ru: "Нео-брутализм", en: "Neo-brutalist" },
-    line: { ru: "Тень растёт, блик проходит по кнопке", en: "The shadow grows and a shine crosses" },
-    hint: { ru: "Наведите на кнопку", en: "Hover the button" },
-    idea: {
-      ru: "Свободная кнопка Chamaac, MIT. Жёсткая тень 4px становится 8px, и белый блик проходит по розовой плашке.",
-      en: "A free Chamaac button, MIT. The hard shadow grows from 4px to 8px, and a white shine crosses the pink face.",
-    },
-    tokens: ["shadow 4 → 8", "skew -10°", "shimmer 0.2s"],
-  },
-  {
-    id: "skiper52",
-    scroll: false,
-    hero: 0,
-    source: "https://skiper-ui.com/v1/skiper52",
-    kicker: { ru: "Наведение", en: "Hover" },
-    title: { ru: "Раскрытие", en: "Expand on hover" },
-    line: { ru: "Полоска вырастает в кадр", en: "A strip grows into the frame" },
-    hint: { ru: "Наведите на полоску", en: "Hover a strip" },
-    idea: {
-      ru: "Свободный компонент Skiper UI. Под курсором узкая полоска раскрывается в широкий кадр. Иллюстрации AarzooAly.",
-      en: "A free Skiper UI component. Under the pointer a narrow strip opens into a wide frame. Illustrations by AarzooAly.",
-    },
-    tokens: ["width 5rem → 24rem", "easeInOut 0.3s"],
-  },
-  {
-    id: "chamaac-premium",
-    scroll: false,
-    hero: 0,
-    source: "https://www.chamaac.com/components/buttons/premium-button",
-    kicker: { ru: "Кнопка", en: "Button" },
-    title: { ru: "Бегущая стрелка", en: "Running arrow" },
-    line: { ru: "Пиксельная стрелка идёт по красному квадрату", en: "A pixel arrow crosses the red square" },
-    hint: { ru: "Стрелка идёт сама, кнопку можно нажать", en: "The arrow runs; the button can be pressed" },
-    idea: {
-      ru: "Свободная кнопка Chamaac, MIT. Стрелка из точек сама проходит слева направо. Нажатие чуть уменьшает кнопку.",
-      en: "A free Chamaac button, MIT. A dot arrow walks itself from left to right. Press scales the button down.",
-    },
-    tokens: ["interval 100ms", "14 steps", "active scale 0.98"],
-  },
-  {
-    id: "chamaac-dock",
-    scroll: false,
-    hero: 0,
-    source: "https://www.chamaac.com/components/navigation/dock",
-    kicker: { ru: "Меню", en: "Menu" },
+    id: "dock",
     title: { ru: "Док", en: "Dock" },
-    line: { ru: "Пункт раскрывает список и фото", en: "A label opens a list and a photo" },
-    hint: { ru: "Наведите на пункт или нажмите Menu", en: "Hover a label, or tap Menu" },
+    kicker: { ru: "YaOS", en: "YaOS" },
+    line: { ru: "Дом, вещи, город, работа", en: "Home, devices, city, work" },
+    hint: { ru: "Наведите на пункт или нажмите его.", en: "Hover a label or press it." },
     idea: {
-      ru: "Свободный компонент Chamaac, MIT. На широком кадре пункт раскрывается по наведению. На узком — кнопка Menu открывает список.",
-      en: "A free Chamaac component, MIT. On a wide frame a label opens on hover. On a narrow one, Menu opens the list.",
+      ru: "Док YaOS. Наведение открывает стеклянный список устройств, городских дел или кейсов.",
+      en: "A YaOS dock. Hover opens a glass list of devices, city tasks, or cases.",
     },
-    tokens: ["hover height", "easeInOut 0.3s", "image"],
+    tokens: ["hover", "spring", "menu"],
   },
   {
-    id: "skiper19",
-    scroll: true,
-    hero: 0,
-    source: "https://skiper-ui.com/v1/skiper19",
+    id: "melt",
+    title: { ru: "Сплав", en: "Melt" },
+    kicker: { ru: "Жест", en: "Gesture" },
+    line: { ru: "Свет и климат сливаются", en: "Light and climate fuse" },
+    hint: { ru: "Потяните синюю каплю.", en: "Drag the blue blob." },
+    idea: {
+      ru: "Две капли — свет и климат. Перетащите одну: размытие склеивает их в общую форму.",
+      en: "Two blobs, light and climate. Drag one and the blur fuses them into a single shape.",
+    },
+    tokens: ["drag", "spring", "goo"],
+  },
+  {
+    id: "passage",
+    title: { ru: "Переход", en: "Passage" },
+    kicker: { ru: "Кейс", en: "Case" },
+    line: { ru: "Список становится разворотом", en: "A list becomes a spread" },
+    hint: { ru: "Откройте кейс, затем вернитесь.", en: "Open a case, then go back." },
+    idea: {
+      ru: "Общая форма: строка портфеля растягивается в карточку YaOS, Halo или городской услуги.",
+      en: "A shared shape: a portfolio row expands into a YaOS, Halo, or city-service card.",
+    },
+    tokens: ["layout", "spring", "shared"],
+  },
+  {
+    id: "sheet",
+    title: { ru: "Шторка", en: "Sheet" },
+    kicker: { ru: "Москва", en: "Moscow" },
+    line: { ru: "Оплата парковки во дворе", en: "Pay for the courtyard bay" },
+    hint: { ru: "Потяните шторку вниз или подтвердите.", en: "Drag the sheet down, or confirm." },
+    idea: {
+      ru: "Пружинная шторка московской парковки. Жест вниз закрывает её, кнопка открывает снова.",
+      en: "A spring sheet for Moscow parking. A downward drag dismisses it; the button opens it again.",
+    },
+    tokens: ["drag", "spring", "sheet"],
+  },
+  {
+    id: "island",
+    title: { ru: "Остров", en: "Island" },
+    kicker: { ru: "Дом", en: "Home" },
+    line: { ru: "Домофон живёт в острове", en: "The doorbell lives in the island" },
+    hint: { ru: "Нажмите остров.", en: "Tap the island." },
+    idea: {
+      ru: "Остров шириной на пружине: короткое состояние и имя у двери.",
+      en: "An island whose width springs between a compact state and a name at the door.",
+    },
+    tokens: ["spring", "width", "tap"],
+  },
+  {
+    id: "toast",
+    title: { ru: "Заметки", en: "Notes" },
+    kicker: { ru: "Система", en: "System" },
+    line: { ru: "Короткие подтверждения", en: "Short confirmations" },
+    hint: { ru: "Добавьте заметку или нажмите, чтобы убрать.", en: "Add a note, or tap one to dismiss it." },
+    idea: {
+      ru: "Стопка подтверждений: кейс сохранён, свет приглушён, запись стоит. Каждая приезжает на пружине.",
+      en: "A stack of confirmations: case saved, lights dimmed, visit set. Each one arrives on a spring.",
+    },
+    tokens: ["spring", "stack", "dismiss"],
+  },
+  {
+    id: "command",
+    title: { ru: "Команды", en: "Commands" },
+    kicker: { ru: "Поиск", en: "Search" },
+    line: { ru: "Одна строка на весь день", en: "One line for the whole day" },
+    hint: { ru: "Фильтруйте и ходите стрелками.", en: "Filter, then move with the arrow keys." },
+    idea: {
+      ru: "Меню команд: YaOS, новый кейс, парковка, баланс, запись. Стрелки и Enter запускают пункт.",
+      en: "A command menu: YaOS, a new case, parking, balance, a visit. Arrows and Enter run an item.",
+    },
+    tokens: ["keyboard", "filter", "menu"],
+  },
+  {
+    id: "order",
+    title: { ru: "Порядок", en: "Order" },
+    kicker: { ru: "Портфель", en: "Portfolio" },
+    line: { ru: "Перетащите холдинг", en: "Drag a holding" },
+    hint: { ru: "Потяните строку выше или ниже.", en: "Drag a row above or below another." },
+    idea: {
+      ru: "Список холдингов меняет порядок от указателя. Соседние строки пружинят на новое место.",
+      en: "A holdings list reorders from the pointer. Neighbors spring into the new place.",
+    },
+    tokens: ["drag", "layout", "spring"],
+  },
+  {
+    id: "yield",
+    title: { ru: "Баланс", en: "Balance" },
+    kicker: { ru: "Портфель", en: "Portfolio" },
+    line: { ru: "Цифры перетекают", en: "Digits roll into place" },
+    hint: { ru: "Выберите другую сумму.", en: "Pick another amount." },
+    idea: {
+      ru: "Баланс портфеля. Каждая цифра — колонка, которая пружинит к новому значению.",
+      en: "A portfolio balance. Each digit is a column that springs to the next value.",
+    },
+    tokens: ["spring", "digits", "tabular"],
+  },
+  {
+    id: "glass",
+    title: { ru: "Стекло", en: "Glass" },
+    kicker: { ru: "Свет", en: "Light" },
+    line: { ru: "Карточка держит блик", en: "The card holds a sheen" },
+    hint: { ru: "Ведите курсор по стеклу.", en: "Move the pointer across the glass." },
+    idea: {
+      ru: "Жидкое стекло YaOS. Наклон и блик следуют за указателем и возвращаются на пружине.",
+      en: "Liquid glass for YaOS. Tilt and sheen follow the pointer, then spring back.",
+    },
+    tokens: ["pointer", "spring", "tilt"],
+  },
+  {
+    id: "spotlight",
+    title: { ru: "Пятно", en: "Spotlight" },
+    kicker: { ru: "Курсор", en: "Cursor" },
+    line: { ru: "Мята проявляется под рукой", en: "Mint appears under the hand" },
+    hint: { ru: "Ведите курсор по строке.", en: "Move the pointer across the line." },
+    idea: {
+      ru: "Тихая строка. Радиальная маска открывает мятную копию там, где находится указатель.",
+      en: "A quiet line. A radial mask reveals the mint copy where the pointer rests.",
+    },
+    tokens: ["pointer", "mask", "type"],
+  },
+  {
+    id: "rise",
+    hero: 0.42,
+    title: { ru: "Подъём", en: "Rise" },
     kicker: { ru: "Скролл", en: "Scroll" },
-    title: { ru: "Линия за скроллом", en: "Stroke that follows" },
-    line: { ru: "Обводка дорисовывается по прогрессу", en: "The stroke draws itself with the scroll" },
-    hint: { ru: "Прокрутите, линия дорисуется", en: "Scroll to draw the stroke" },
+    line: { ru: "Заголовок встаёт в плоскость", en: "The headline stands up" },
+    hint: { ru: "Крутите колесо внутри плитки.", en: "Scroll inside the tile." },
     idea: {
-      ru: "Свободный компонент Skiper UI. Длина SVG-обводки привязана к прогрессу скролла, от половины контура до целого.",
-      en: "A free Skiper UI component. The SVG stroke length is tied to scroll progress, from half the path to the full path.",
+      ru: "Заголовок о городе лежит в перспективе и выпрямляется по скроллу.",
+      en: "A city headline lies in perspective and stands up as you scroll.",
     },
-    tokens: ["pathLength 0.5 → 1", "350vh"],
+    tokens: ["scroll", "3d", "type"],
   },
   {
-    id: "skiper28",
-    scroll: true,
-    hero: 0,
-    source: "https://skiper-ui.com/v1/skiper28",
-    kicker: { ru: "3D", en: "3D" },
-    title: { ru: "Текст в перспективе", en: "Perspective text" },
-    line: { ru: "Плоскость текста поднимается к зрителю", en: "The text plane rises toward the reader" },
-    hint: { ru: "Прокрутите, текст поднимется", en: "Scroll to lift the text" },
+    id: "magnet",
+    title: { ru: "Магнит", en: "Magnet" },
+    kicker: { ru: "Кнопка", en: "Button" },
+    line: { ru: "«Написать» тянется к руке", en: "“Write” leans toward the hand" },
+    hint: { ru: "Подведите курсор к кнопке.", en: "Bring the pointer near the button." },
     idea: {
-      ru: "Свободный компонент Skiper UI. Блок текста повёрнут на 30° и подъезжает по оси Y, пока идёт скролл.",
-      en: "A free Skiper UI component. The text block sits at 30° and travels up the Y axis as you scroll.",
+      ru: "Кнопка письма чуть смещается к указателю и возвращается на мягкой пружине.",
+      en: "The write button shifts toward the pointer and returns on a soft spring.",
     },
-    tokens: ["rotateX 30°", "translateY 487 → 0", "perspective 200"],
+    tokens: ["pointer", "spring", "magnet"],
   },
   {
-    id: "skiper4",
-    scroll: false,
-    hero: 0,
-    source: "https://skiper-ui.com/v1/skiper4",
-    kicker: { ru: "Кнопки", en: "Buttons" },
-    title: { ru: "Переключатели темы", en: "Theme toggles" },
-    line: { ru: "Пять кнопок с разным ходом", en: "Five buttons, five different motions" },
-    hint: { ru: "Нажмите переключатель", en: "Click a toggle" },
+    id: "tickets",
+    title: { ru: "Талоны", en: "Tickets" },
+    kicker: { ru: "Москва", en: "Moscow" },
+    line: { ru: "Городские карточки в ряд", en: "City cards in a row" },
+    hint: { ru: "Потяните ряд влево.", en: "Drag the row to the left." },
     idea: {
-      ru: "Свободный компонент Skiper UI. Каждый клик играет свою анимацию иконки и переключает сцену между светлой и тёмной.",
-      en: "A free Skiper UI component. Each click plays its own icon motion and switches the stage between light and dark.",
+      ru: "Парковка, запись, пропуск и свет. Ряд стеклянных талонов едет за пальцем.",
+      en: "Parking, a visit, a pass, and the lights. A row of glass tickets follows the finger.",
     },
-    tokens: ["layout", "spring", "icon rotate"],
-  },
-  {
-    id: "chamaac-loop",
-    scroll: false,
-    hero: 0,
-    source: "https://www.chamaac.com/components/text-animations/text-loop",
-    kicker: { ru: "Текст", en: "Type" },
-    title: { ru: "Смена слова", en: "Text loop" },
-    line: { ru: "Фраза ширится и сменяется", en: "A phrase widens, then swaps" },
-    hint: { ru: "Слово меняется само", en: "The word changes on its own" },
-    idea: {
-      ru: "Свободный компонент Chamaac, MIT. Слово само сменяется каждые три секунды: ширина и прозрачность, курсор мигает.",
-      en: "A free Chamaac component, MIT. The word swaps itself every three seconds: width and opacity, with a blinking caret.",
-    },
-    tokens: ["interval 3s", "width 0 → auto", "caret"],
-  },
-  {
-    id: "skiper64",
-    scroll: false,
-    hero: 0,
-    source: "https://skiper-ui.com/v1/skiper64",
-    kicker: { ru: "Фильтр", en: "Filter" },
-    title: { ru: "Липкий контур", en: "Gooey" },
-    line: { ru: "Две формы сливаются через SVG-фильтр", en: "Two shapes melt together through an SVG filter" },
-    hint: { ru: "Потяните каплю", en: "Drag the blob" },
-    idea: {
-      ru: "Свободный компонент Skiper UI. Размытие и цветовая матрица склеивают формы. Верхнюю каплю можно перетащить.",
-      en: "A free Skiper UI component. Blur and a color matrix fuse the shapes. The top blob can be dragged.",
-    },
-    tokens: ["feGaussianBlur 4.4", "spring 300 / 30", "drag"],
-  },
-  {
-    id: "skiper61",
-    scroll: false,
-    hero: 0,
-    source: "https://skiper-ui.com/v1/skiper61",
-    kicker: { ru: "Курсор", en: "Pointer" },
-    title: { ru: "Курсор на пружине", en: "Mouse follow" },
-    line: { ru: "Точка догоняет курсор сразу или с пружиной", en: "A dot follows the pointer, plain or on a spring" },
-    hint: { ru: "Двигайте курсор", en: "Move the pointer" },
-    idea: {
-      ru: "Свободный компонент Skiper UI. Два поля: точка сидит на курсоре сразу, и точка на пружине mass 0.1, damping 10, stiffness 131.",
-      en: "A free Skiper UI component. Two fields: one dot sits on the pointer, one follows on a spring (mass 0.1, damping 10, stiffness 131).",
-    },
-    tokens: ["useSpring", "mass 0.1", "stiffness 131"],
+    tokens: ["drag", "spring", "row"],
   },
 ];
 
@@ -402,22 +231,23 @@ const STAGE_H = 900;
 
 // Tile posters. w/h is the iframe stage; z crops empty margin around a centered subject.
 const PRESENTATION = {
-  "chamaac-arrow": { w: 360, h: 225, z: 1.32 },
-  "chamaac-input": { w: 440, h: 275, z: 1 },
-  "chamaac-shimmer": { w: 420, h: 262, z: 1.4 },
-  "chamaac-slide": { w: 360, h: 225, z: 1.5 },
-  "chamaac-focus": { w: 400, h: 250, z: 1.7 },
-  "chamaac-glow": { w: 420, h: 262, z: 1.35 },
-  "chamaac-neo": { w: 360, h: 225, z: 1.55 },
-  "chamaac-premium": { w: 420, h: 262, z: 1.42 },
-  "chamaac-dock": { w: 800, h: 500, z: 1.55 },
-  "chamaac-loop": { w: 980, h: 612, z: 1.25 },
-  skiper16: { w: 1440, h: 900, z: 0.88 },
-  skiper31: { w: 900, h: 562, z: 1.12 },
-  skiper4: { w: 520, h: 325, z: 1.08 },
-  skiper19: { w: 1440, h: 900, z: 0.86 },
-  skiper28: { w: 1440, h: 900, z: 0.88 },
-  skiper61: { w: 500, h: 312, z: 1 },
+  stack: { w: 760, h: 475, z: 1.22 },
+  intent: { w: 720, h: 450, z: 1.12 },
+  gather: { w: 980, h: 612, z: 1.18 },
+  dock: { w: 680, h: 425, z: 1.16 },
+  melt: { w: 680, h: 425, z: 1.18 },
+  passage: { w: 720, h: 450, z: 1.14 },
+  sheet: { w: 920, h: 575, z: 1.28 },
+  island: { w: 720, h: 450, z: 1.32 },
+  toast: { w: 560, h: 350, z: 1.18 },
+  command: { w: 640, h: 400, z: 1.16 },
+  order: { w: 560, h: 350, z: 1.2 },
+  yield: { w: 860, h: 538, z: 1.16 },
+  glass: { w: 680, h: 425, z: 1.22 },
+  spotlight: { w: 980, h: 612, z: 1.12 },
+  rise: { w: 980, h: 612, z: 1.16 },
+  magnet: { w: 480, h: 300, z: 1.2 },
+  tickets: { w: 980, h: 612, z: 1.08 },
 };
 
 function presentationOf(mod) {
@@ -429,6 +259,7 @@ function srcFor(mod, { full } = {}) {
     id: mod.id,
     autoplay: "0",
     bar: full ? "1" : "0",
+    lang,
   });
   if (!full && mod.hero) q.set("hero", String(mod.hero));
   return `/motion-lab/preview.html?${q}`;
@@ -436,10 +267,6 @@ function srcFor(mod, { full } = {}) {
 
 function post(frame, data) {
   frame?.contentWindow?.postMessage(data, location.origin);
-}
-
-function hostOf(url) {
-  return new URL(url).host.replace(/^www\./, "");
 }
 
 function fit(frame) {
@@ -499,21 +326,6 @@ function wake(frame) {
   const iframe = frame.__iframe;
   if (!iframe.src) iframe.src = srcFor(frame.__mod, { full: frame.__full });
   if (!frame.__full) requestAnimationFrame(() => fit(frame));
-}
-
-function licenseOf(mod) {
-  if (mod.id.startsWith("chamaac")) {
-    return pick(
-      lang,
-      "MIT, © 2026 Amarnath. Использование требует уведомления об авторском праве и разрешении.",
-      "MIT, © 2026 Amarnath. Use requires the copyright and permission notice.",
-    );
-  }
-  return pick(
-    lang,
-    "Свободный компонент Skiper UI. Использование в проекте требует указания Skiper UI.",
-    "Free Skiper UI component. Use in a project requires attribution to Skiper UI.",
-  );
 }
 
 function replay(frame) {
@@ -639,10 +451,6 @@ function open(id, trigger) {
     const expanded = dialog.classList.toggle("is-expanded");
     peek.setAttribute("aria-expanded", expanded ? "true" : "false");
   });
-  const source = el("a", "lab-source", hostOf(mod.source));
-  source.href = mod.source;
-  source.target = "_blank";
-  source.rel = "noopener";
   const tokens = el("ul", "lab-tokens");
   mod.tokens.forEach((token) => tokens.append(el("li", "", token)));
   const replayBtn = el("button", "lab-replay", pick(lang, "Ещё раз", "Replay"));
@@ -653,8 +461,6 @@ function open(id, trigger) {
     el("p", "lab-idea", pick(lang, mod.idea.ru, mod.idea.en)),
     el("p", "lab-label", pick(lang, "Как взаимодействовать", "How to interact")),
     el("p", "lab-hint", pick(lang, mod.hint.ru, mod.hint.en)),
-    source,
-    el("p", "lab-license", licenseOf(mod)),
     tokens,
     replayBtn,
   );
