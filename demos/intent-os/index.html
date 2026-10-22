@@ -1271,6 +1271,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .ff-phone.ph-sheet .os.view-space .space{transform:translateY(var(--sh-dy,0px));pointer-events:auto}
     .ff-phone.ph-sheet .space{transition-duration:.28s;transition-timing-function:cubic-bezier(.2,.8,.2,1)}
     .ff-phone.ph-drag .space{transition:none}
+    .ff-phone.ph-jump .space :is(.flows,.track){transition:none}
     .ff-phone .sh-grip{position:absolute;z-index:5;top:0;left:0;right:0;display:grid;place-items:start center;height:24px;padding-top:8px;touch-action:none;cursor:grab}
     .ff-phone .sh-grip i{width:36px;height:5px;border-radius:3px;background:rgba(47,47,47,.24)}
     .ff-phone body.night .sh-grip i{background:rgba(255,255,255,.28)}
@@ -4424,6 +4425,9 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     function openFull(m,typing){
       const loc=m&&findModule(m.id);if(!loc)return;
       S.f=loc.fi;S.m[loc.fi]=loc.mi;
+      /* a closed sheet is off screen: it takes the card's page at once and only slides up, rather than panning across the cards in between on the way */
+      const h=document.documentElement,jump=FF.dev==="phone"&&!h.classList.contains("ph-sheet");
+      if(jump){h.classList.add("ph-jump");layout();$("#flows").offsetHeight;h.classList.remove("ph-jump")}
       if(FF.dev==="phone")setSheet(true);
       layout();renderHints();
       if(typing)setTimeout(()=>cardOf(m)?.querySelector(".chat-form input")?.focus({preventScroll:true}),320);
