@@ -4069,7 +4069,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       return{bows:best.bows,dir:best.dir,cost:best.c};
     }
     /* keyframes that put n (laid out at B) on a planned path: one drawing scales uniformly (text never distorts); a box that stands for another drawing
-       takes the path's width and is cut at the bottom to its height; the intent line changes its real width and scales only by the height ratio */
+       takes the path's width and hangs from the path's top edge, cut at the bottom to its height; the intent line changes its real width and scales only by the height ratio */
     function ffKf(e,n,B,kind){
       if(kind==="line"){
         const w1=n.offsetWidth,s=B.width/w1;n.style.width=(w1-20)+"px";const al=Math.max(0,Math.min(1,(n.getBoundingClientRect().left-B.left)/(20*s)));n.style.width="";
@@ -4079,8 +4079,8 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       const at=ffXf(n,B),H=n.offsetHeight,r=parseFloat(getComputedStyle(n).borderBottomLeftRadius)||0;
       return e.path.map((V,i)=>{const k=V.w/B.width;
         if(kind==="same")return{offset:i/FF_N,translate:at(V.x,V.y,k),scale:k.toFixed(4)};
-        const fr=Math.min(1,V.h/(B.height*k));
-        return{offset:i/FF_N,translate:at(V.x,V.y+(1-fr)*B.height*k/2,k),scale:k.toFixed(4),clipPath:`inset(-48px -48px ${((1-fr)*H).toFixed(2)}px -48px round 0 0 ${r}px ${r}px)`}});
+        const f=V.h/(B.height*k),fr=Math.min(1,f);
+        return{offset:i/FF_N,translate:at(V.x,V.y+(1-f)*B.height*k/2,k),scale:k.toFixed(4),clipPath:`inset(-48px -48px ${((1-fr)*H).toFixed(2)}px -48px round 0 0 ${r}px ${r}px)`}});
     }
     /* a box's own paint (fill, gradient, shadow, backdrop blur) as keyframes from nothing to what it is. Gradients do not interpolate,
        so for the morph a gradient's alphas are scaled by --ffa (registered as a number, so it animates); undo restores the stylesheet's gradient */
@@ -4186,6 +4186,12 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       const gout=n=>{const o=gop(n);if(o>0)push(n.animate([{opacity:o},{opacity:o*.12,offset:FF_IN/FF_OUT},{opacity:0}],{duration:FF_OUT,fill:"forwards"}))};
       const gwalk=n=>{for(const c of n.children){if(gkeep.has(c))continue;if(ganc.has(c))gwalk(c);else gout(c)}};gwalk(ghost.sc);
       ganc.forEach(e=>{const f=ffPaint(e,[]);if(f)push(e.animate([f.to,f.from],{duration:FF_OUT,easing:"cubic-bezier(.5,0,.2,1)",fill:"forwards"}))});
+      /* a veil that is up in both layouts stays up: the live one is solid throughout, and the frozen copy keeps only what lies above its veil */
+      const veils=new Set([...SCREEN.querySelectorAll(".sys-veil,.ph-scrim")].filter(v=>{const t=ghost.twin(v)||ghost.sc.querySelector("."+v.classList[0]);if(!t||gop(v)<.5||gop(t)<.5)return false;
+        ghost.sc.querySelectorAll("*").forEach(x=>{if(x===t||t.compareDocumentPosition(x)&Node.DOCUMENT_POSITION_PRECEDING&&!x.contains(t))x.style.visibility="hidden"});return true}));
+      /* backdrop blur does not render under the screen's animated clip, so what lies under the veil takes the same blur as a filter until the morph ends */
+      veils.forEach(v=>{const top=[...SCREEN.children].find(c=>c.contains(v)),z=parseInt(getComputedStyle(top).zIndex)||0,bf=getComputedStyle(v).backdropFilter;if(!bf||bf==="none")return;
+        [...SCREEN.children].forEach(c=>{if(c===top||c.matches(".mist,.grain")||(parseInt(getComputedStyle(c).zIndex)||0)>=z)return;const was=c.style.filter;c.style.filter=bf;ffUndo.push(()=>{c.style.filter=was})})});
       const C=r=>({x:r.left+r.width/2,y:r.top+r.height/2,w:r.width,h:r.height});
       const its=pairs.map((p,i)=>{const{a,b}=p,n=b.n,kind=p.k==="line"&&a.n===n?"line":p.same?"same":"box",k=kind==="same"?Math.sqrt(a.r.width/b.r.width*a.r.height/b.r.height):1;
         return{p,n,kind,ink:ffInk(n,kind==="box"&&twins[i]?ffInk(twins[i]):[]),g:kind==="line"?"line":/^(sig|m|win|flow):/.test(p.k)?"card":/^app:/.test(p.k)?"chip":"",from:kind==="box"?FF_SWAP[2]+20:0,clip:ffClip(n,SCREEN),V0:kind==="same"?{...C(a.r),w:b.r.width*k,h:b.r.height*k}:C(a.r),V1:C(b.r)}});
@@ -4202,12 +4208,12 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         push(n.animate(ffKf(e,n,p.b.r,kind),path));
         if(e.op){const o=+getComputedStyle(n).opacity;push(n.animate(e.op.map((v,j)=>({offset:j/FF_N,opacity:+(o*v).toFixed(3)})),path))}
         if(kind!=="box"){if(t)t.classList.add("ffm-hide");return}
+        /* its glass is there from the start, under the old drawing on the same path, so nothing behind shows through while the drawings swap */
         if(n.children.length)[...n.children].forEach(c=>fadeIn(c,FF_SWAP[2],140));else fadeIn(n,FF_SWAP[2],140);
-        const pf=ffPaint(n,ffUndo);if(pf)push(n.animate([pf.from,pf.to],{duration:140,delay:FF_SWAP[2],easing:"cubic-bezier(.2,.8,.2,1)",fill:"backwards"}));
         if(t)push(t.animate(ffKf(e,t,t.getBoundingClientRect(),"box"),path));
       });
       const ease=x=>1-Math.pow(1-Math.max(0,Math.min(1,x)),3);
-      fresh.forEach(c=>{const e=obs.get(c);if(!e?.op)return fadeIn(c,FF_IN,200);const o=+getComputedStyle(c).opacity;
+      fresh.forEach(c=>{if(veils.has(c))return;const e=obs.get(c);if(!e?.op)return fadeIn(c,FF_IN,200);const o=+getComputedStyle(c).opacity;
         push(c.animate(e.op.map((v,j)=>({offset:j/FF_N,opacity:+(o*v*ease((j/FF_N*FF_DUR-FF_IN)/200)).toFixed(3)})),path))});
       /* a box that holds shared elements cannot fade without them: its own paint fades in instead */
       anc.forEach(e=>{const f=ffPaint(e,ffUndo);if(f)push(e.animate([f.from,f.to],{duration:200,delay:FF_IN,easing:"cubic-bezier(.2,.8,.2,1)",fill:"backwards"}))});
