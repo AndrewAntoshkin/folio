@@ -1260,15 +1260,16 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
 
     .flow:not(.current) .flow-label{cursor:pointer}
 
-    .ph-scrim{position:absolute;inset:0;z-index:39;background:rgba(0,0,0,.24);opacity:0;pointer-events:none;transition:opacity .24s cubic-bezier(.2,.8,.2,1)}
-    .ff-phone.ph-sheet .os.view-space .ph-scrim{opacity:1;pointer-events:auto}
+    .ph-scrim{position:absolute;inset:0;z-index:39;background:rgba(0,0,0,.24);opacity:0;pointer-events:none;transition:opacity .18s cubic-bezier(.4,0,1,1)}
+    .ff-phone.ph-sheet .os.view-space .ph-scrim{opacity:1;pointer-events:auto;transition:opacity .24s cubic-bezier(.2,.8,.2,1)}
     .sh-grip{display:none}
     /* phone: the sheet IS the card. .space is only the detent frame (large / medium, drag to dismiss); the active module is the sheet's surface:
        full width, top radius only, no border or shadow of its own; grabber, compact header row, big title, content, actions pinned above the home indicator */
-    .ff-phone .space{inset:56px 0 0;z-index:40;opacity:1;visibility:visible;border-radius:28px 28px 0 0;--sheet-bg:#fafafa;box-shadow:0 -20px 60px -20px rgba(0,0,0,.3);transform:translateY(102%);pointer-events:none;transition:transform .28s cubic-bezier(.2,.8,.2,1),top .28s cubic-bezier(.2,.8,.2,1)}
+    .ff-phone .space{inset:56px 0 0;z-index:40;opacity:1;visibility:visible;border-radius:28px 28px 0 0;--sheet-bg:#fafafa;box-shadow:0 -20px 60px -20px rgba(0,0,0,.3);transform:translateY(102%);pointer-events:none;transition:transform .18s cubic-bezier(.4,0,1,1),top .18s cubic-bezier(.4,0,1,1)}
     .ff-phone body.night .space{--sheet-bg:#212121}
     .ff-phone.ph-mid .space{top:46%}
     .ff-phone.ph-sheet .os.view-space .space{transform:translateY(var(--sh-dy,0px));pointer-events:auto}
+    .ff-phone.ph-sheet .space{transition-duration:.28s;transition-timing-function:cubic-bezier(.2,.8,.2,1)}
     .ff-phone.ph-drag .space{transition:none}
     .ff-phone .sh-grip{position:absolute;z-index:5;top:0;left:0;right:0;display:grid;place-items:start center;height:24px;padding-top:8px;touch-action:none;cursor:grab}
     .ff-phone .sh-grip i{width:36px;height:5px;border-radius:3px;background:rgba(47,47,47,.24)}
