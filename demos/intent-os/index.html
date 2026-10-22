@@ -3964,11 +3964,12 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       ["#meBtn",()=>"me"],["#wxBtn",()=>"wx"],["#spaceTitle",()=>"title"],["#collabStack",()=>"collabs"],["#planChip .plan-strip,#stack .st-head .plan-strip",()=>"plan"],
       [".module[data-id]",n=>"m:"+n.dataset.id],[".cp[data-cid]",n=>"m:"+n.dataset.cid],["#space .flow-label",(n,i)=>"flow:"+i],["#stack .st-flow",(n,i)=>"flow:"+i],[".sys-win[data-kind]",n=>"win:"+n.dataset.kind]];
     function ffShared(){
-      const scr=SCREEN.getBoundingClientRect(),out=new Map();
+      const s0=SCREEN.getBoundingClientRect(),out=new Map();
       const seen=n=>{let o=1;for(let p=n;p&&p!==SCREEN;p=p.parentElement){const c=getComputedStyle(p);if(c.display==="none"||c.visibility==="hidden")return 0;o*=+c.opacity}return o};
       for(const[sel,key]of FF_KEYS)SCREEN.querySelectorAll(sel).forEach((n,i)=>{
         if(n.closest(".leaving"))return;
         const r=n.getBoundingClientRect();if(r.width<2||r.height<2)return;
+        const c=ffClip(n,SCREEN),scr={left:Math.max(s0.left,c.l),right:Math.min(s0.right,c.r),top:Math.max(s0.top,c.t),bottom:Math.min(s0.bottom,c.b)};
         const a=Math.max(0,Math.min(r.right,scr.right)-Math.max(r.left,scr.left))*Math.max(0,Math.min(r.bottom,scr.bottom)-Math.max(r.top,scr.top));
         if(a<r.width*r.height*.2||seen(n)<.5)return;
         const k=key(n,i),cur=out.get(k);if(!cur||a>cur.a)out.set(k,{n,r,a,cut:[n,...n.children].some(x=>x.scrollWidth>x.clientWidth+1)});
@@ -3977,30 +3978,86 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       for(const[k,v]of out)if(els.some(e=>e!==v.n&&e.contains(v.n)))out.delete(k);
       return out;
     }
-    /* where n (now drawn at rect B) must start to look centred on rect A at k× its size; works with the element's own transform and the screen's scale */
-    function ffFlip(n,A,B,k){
+    /* the translate that makes n (laid out at rect B) look centred on (x,y) at k× its size; works with the element's own transform and the screen's scale */
+    function ffXf(n,B){
       const cs=getComputedStyle(n),m=cs.transform==="none"?{a:1,d:1,e:0,f:0}:new DOMMatrixReadOnly(cs.transform),[ox,oy]=cs.transformOrigin.split(" ").map(parseFloat);
-      const s=B.width/((n.offsetWidth||B.width/m.a)*m.a)||1,O={x:B.left+s*(m.a*ox-m.e),y:B.top+s*(m.d*oy-m.f)};
-      return{tx:(A.left+A.width/2-O.x-k*(B.left+B.width/2-O.x))/s,ty:(A.top+A.height/2-O.y-k*(B.top+B.height/2-O.y))/s,k};
+      const s=B.width/((n.offsetWidth||B.width/m.a)*m.a)||1,O={x:B.left+s*(m.a*ox-m.e),y:B.top+s*(m.d*oy-m.f)},cx=B.left+B.width/2,cy=B.top+B.height/2;
+      return(x,y,k)=>`${((x-O.x-k*(cx-O.x))/s).toFixed(2)}px ${((y-O.y-k*(cy-O.y))/s).toFixed(2)}px`;
     }
-    /* the travel, sampled from the spring: one axis leads so a grid can open into a column (or close back) without its cards crossing –
-       when the shared things end up more column-like, rows spread first; otherwise columns spread first. Both land at 450 ms */
-    function ffPath(f,lead,out){
-      const kf=[],N=24;
-      for(let i=0;i<=N;i++){const t=i/N*FF_DUR,pl=ffP(Math.min(FF_DUR,t*1.45)),pt=ffP(Math.max(0,t-50)*FF_DUR/(FF_DUR-50)),pk=ffP(t);
-        const px=lead==="x"?pl:pt,py=lead==="y"?pl:pt,w=p=>out?p:1-p;
-        kf.push({offset:i/N,translate:`${(f.tx*w(px)).toFixed(2)}px ${(f.ty*w(py)).toFixed(2)}px`,scale:(1+(f.k-1)*w(pk)).toFixed(4)})}
-      return kf;
+    /* the part of the page an element can be seen in: its clipping or masked ancestors up to stop; a top/bottom fade mask counts up to the middle of each fade */
+    function ffClip(n,stop){
+      const r={l:-1e5,t:-1e5,r:1e5,b:1e5},avg=a=>a.length?a.reduce((s,v)=>s+v,0)/a.length:0;
+      for(let p=n.parentElement;p&&p!==stop;p=p.parentElement){
+        const c=getComputedStyle(p),m=c.maskImage&&c.maskImage!=="none"?c.maskImage:c.webkitMaskImage||"none";
+        if(c.overflowX==="visible"&&c.overflowY==="visible"&&m==="none")continue;
+        const b=p.getBoundingClientRect(),k=b.height/(p.offsetHeight||b.height)||1;let t=0,u=0;
+        if(/^linear-gradient\((?![\d.-]+deg|to )/.test(m)){t=avg([...m.replace(/calc\([^)]*\)/g,"").matchAll(/([\d.]+)px/g)].map(x=>+x[1]))*k;u=avg([...m.matchAll(/calc\(100% - ([\d.]+)px\)/g)].map(x=>+x[1]))*k}
+        r.l=Math.max(r.l,b.left);r.r=Math.min(r.r,b.right);r.t=Math.max(r.t,b.top+t);r.b=Math.min(r.b,b.bottom-u);
+      }
+      return r;
     }
-    /* two drawings of one thing (a desktop module and its phone card): a container transform. The box matches the other one's width and is cut at the bottom to its height,
-       then opens on the same spring; the old one rides out with the frozen screen, the new one (paint and content) fades in once the old is nearly gone */
-    function ffBox(n,A,B,lead,out){
-      const k=A.width/B.width,f=ffFlip(n,A,B,k),s=B.width/((n.offsetWidth||B.width)*(new DOMMatrixReadOnly(getComputedStyle(n).transform==="none"?undefined:getComputedStyle(n).transform).a)),H=n.offsetHeight,hv=B.height/s;
-      const r=parseFloat(getComputedStyle(n).borderBottomLeftRadius)||0,f0=Math.min(1,A.height/(B.height*k)),kf=[],N=24;
-      for(let i=0;i<=N;i++){const t=i/N*FF_DUR,pl=ffP(Math.min(FF_DUR,t*1.45)),pt=ffP(Math.max(0,t-50)*FF_DUR/(FF_DUR-50)),pk=ffP(t);
-        const px=lead==="x"?pl:pt,py=lead==="y"?pl:pt,w=p=>out?p:1-p,kk=1+(f.k-1)*w(pk),fr=1-(1-f0)*w(pk);
-        kf.push({offset:i/N,translate:`${(f.tx*w(px)).toFixed(2)}px ${(f.ty*w(py)+(1-fr)*hv*kk/2).toFixed(2)}px`,scale:kk.toFixed(4),clipPath:`inset(-48px -48px ${((1-fr)*H).toFixed(2)}px -48px round 0 0 ${r}px ${r}px)`})}
-      return kf;
+    /* the travel, planned before anything moves (page px, centre-based rects). Every shared element rides the one spring along the same kind of path,
+       a quadratic bow from where it was to where it lands; they set off in a short top-to-bottom wave (≤ 64 ms) and all land at 450 ms, so the reflow is one movement.
+       Of a few bows (straight, then leaning more and more to one axis first) the straightest one where the fewest things cross each other's text wins.
+       A path is held inside the moving frame (as far as its two ends allow), so nothing is cut at the frame edge on the way.
+       Whatever would still pass over something else's text – the intent line before anything, otherwise the smaller of the two – fades to 0 for that stretch, 45 ms each way */
+    const FF_N=45,FF_WAVE=64,FF_YIELD=45,FF_LINE=1.6;
+    function ffPlan(its,frame,lead0){
+      const ts=Array.from({length:FF_N+1},(_,i)=>i*FF_DUR/FF_N),M=8,L=(a,b,p)=>a+(b-a)*p,F=ts.map(frame);
+      const top=e=>e.V1.y-e.V1.h/2,mv=its.filter(e=>e.g!=="static"),y0=Math.min(...mv.map(top)),span=Math.max(1,Math.max(...mv.map(top))-y0);
+      const edge=(V,f)=>[f.l+M-(V.x-V.w/2),V.x+V.w/2-(f.r-M),f.t+M-(V.y-V.h/2),V.y+V.h/2-(f.b-M)];
+      const cut=(r,c)=>({l:Math.max(r.l,c.l),t:Math.max(r.t,c.t),r:Math.min(r.r,c.r),b:Math.min(r.b,c.b)});
+      const ins=r=>{const d=Math.min(12,.15*Math.min(r.r-r.l,r.b-r.t));return{l:r.l+d,t:r.t+d,r:r.r-d,b:r.b-d}};
+      const hit=(a,b)=>Math.max(0,Math.min(a.r,b.r)-Math.max(a.l,b.l))*Math.max(0,Math.min(a.b,b.b)-Math.max(a.t,b.t));
+      const fly=(e,beta,lead,dir)=>{
+        if(e.g==="static"){const V=e.V1,r=cut({l:V.x-V.w/2,t:V.y-V.h/2,r:V.x+V.w/2,b:V.y+V.h/2},e.clip);return F.map(f=>({...V,r:cut(r,f)}))}
+        const d=e.g!=="card"&&e.g!=="chip"?0:FF_WAVE*(dir>0?top(e)-y0:y0+span-top(e))/span,v=e.g==="line"?FF_LINE:1,a=e.V0,b=e.V1,c=lead==="y"?{x:a.x,y:b.y}:{x:b.x,y:a.y};
+        const K={x:L((a.x+b.x)/2,c.x,beta),y:L((a.y+b.y)/2,c.y,beta)},o0=edge(a,F[0]),o1=edge(b,F[FF_N]);
+        return ts.map((t,i)=>{const q=t<=d?0:ffP((t-d)*v*FF_DUR/(FF_DUR-d)),u=1-q,V={x:u*u*a.x+2*u*q*K.x+q*q*b.x,y:u*u*a.y+2*u*q*K.y+q*q*b.y,w:L(a.w,b.w,q),h:L(a.h,b.h,q)};
+          const o=edge(V,F[i]).map((v,j)=>Math.max(0,v-Math.max(0,L(o0[j],o1[j],q))));
+          V.x+=o[0]&&o[1]?(o[0]-o[1])/2:o[0]-o[1];V.y+=o[2]&&o[3]?(o[2]-o[3])/2:o[2]-o[3];
+          V.r=cut(cut({l:V.x-V.w/2,t:V.y-V.h/2,r:V.x+V.w/2,b:V.y+V.h/2},e.clip),F[i]);return V});
+      };
+      /* two things that overlap where they land, or where they start when both are seen from the start, are layered by design (a sheet over its list): they never count */
+      const P0=its.map(e=>fly(e,0,lead0,1)),apart=its.map((e,i)=>its.map((o,j)=>(e.from||o.from?[FF_N]:[0,FF_N]).every(k=>!hit(ins(P0[i][k].r),ins(P0[j][k].r)))));
+      const on=(e,k)=>ts[k]>=e.from,pair=(P,i,j)=>{let c=0;if(its[i].g==="line"||its[j].g==="line"||!apart[i][j])return 0;for(let k=0;k<=FF_N;k++)if(on(its[i],k)&&on(its[j],k))c+=hit(ins(P[i][k].r),ins(P[j][k].r));return c};
+      const cost=(P,g)=>{let c=0;for(let i=0;i<its.length;i++)for(let j=i+1;j<its.length;j++)if(!g||its[i].g===g||its[j].g===g)c+=pair(P,i,j);return c};
+      const better=(c,b)=>!b||c<b.c-Math.max(b.c*.1,400),BOWS=[[0,lead0],...[.35,.7,1].flatMap(b=>[[b,lead0],[b,lead0==="y"?"x":"y"]])];
+      let best=null;
+      for(const dir of[1,-1]){
+        const P=its.map(e=>fly(e,0,lead0,dir)),bows={};
+        for(const g of["chip","card"]){const ids=its.flatMap((e,i)=>e.g===g?[i]:[]);if(!ids.length)continue;let b=null;
+          for(const[beta,lead]of BOWS){ids.forEach(i=>{P[i]=fly(its[i],beta,lead,dir)});const c=cost(P,g);if(better(c,b))b={c,beta,lead}}
+          ids.forEach(i=>{P[i]=fly(its[i],b.beta,b.lead,dir)});bows[g]=[b.beta,b.lead];
+          /* chips are small and reshuffle between rows: if their shared bow still crosses, each chip may take its own */
+          if(g==="chip"&&b.c>400)for(let pass=0;pass<2;pass++)for(const i of ids){let m=null;
+            for(const[beta,lead]of BOWS){const T=fly(its[i],beta,lead,dir),Q=P.slice();Q[i]=T;let c=0;its.forEach((o,j)=>{if(j!==i)c+=pair(Q,i,j)});if(better(c,m))m={c,T}}
+            P[i]=m.T}}
+        const c=cost(P);if(better(c,best))best={c,P,dir,bows}}
+      const P=best.P,rank=e=>e.g==="line"?-1:e.g==="static"?0:e.V1.w*e.V1.h;
+      its.forEach((e,i)=>{
+        e.path=P[i];const hid=[];if(e.g==="static"&&!its.some((o,j)=>o.g!=="static"&&o.g!=="line"&&apart[i][j]))return;
+        for(let k=0;k<=FF_N;k++)if(on(e,k)&&its.some((o,j)=>j!==i&&on(o,k)&&apart[i][j]&&(rank(o)>rank(e)||rank(o)===rank(e)&&j<i)&&hit(e.g==="line"?P[i][k].r:ins(P[i][k].r),ins(P[j][k].r))>0))hid.push(k);
+        if(!hid.length)return;
+        const runs=[];hid.forEach(k=>{const r=runs[runs.length-1];if(r&&ts[k]-r[1]<=2*FF_YIELD+ts[1])r[1]=ts[k];else runs.push([ts[k],ts[k]])});
+        runs.forEach(r=>{r[0]=Math.max(0,r[0]-ts[1]);r[1]=Math.min(FF_DUR,r[1]+ts[1])});
+        e.op=ts.map(t=>Math.min(1,...runs.map(([a,b])=>t<a?(a-t)/Math.min(FF_YIELD,a||1):t>b?(t-b)/Math.min(FF_YIELD,FF_DUR-b||1):0)));
+      });
+      return{bows:best.bows,dir:best.dir,cost:best.c};
+    }
+    /* keyframes that put n (laid out at B) on a planned path: one drawing scales uniformly (text never distorts); a box that stands for another drawing
+       takes the path's width and is cut at the bottom to its height; the intent line changes its real width and scales only by the height ratio */
+    function ffKf(e,n,B,kind){
+      if(kind==="line"){
+        const w1=n.offsetWidth,s=B.width/w1;n.style.width=(w1-20)+"px";const al=Math.max(0,Math.min(1,(n.getBoundingClientRect().left-B.left)/(20*s)));n.style.width="";
+        return e.path.map((V,i)=>{const k=V.h/B.height,w=V.w/(s*k),cx=B.left+al*(w1-w)*s+w*s/2;
+          return{offset:i/FF_N,width:w.toFixed(2)+"px",translate:`${((V.x-cx)/s).toFixed(2)}px ${((V.y-B.top-B.height/2)/s).toFixed(2)}px`,scale:k.toFixed(4)}});
+      }
+      const at=ffXf(n,B),H=n.offsetHeight,r=parseFloat(getComputedStyle(n).borderBottomLeftRadius)||0;
+      return e.path.map((V,i)=>{const k=V.w/B.width;
+        if(kind==="same")return{offset:i/FF_N,translate:at(V.x,V.y,k),scale:k.toFixed(4)};
+        const fr=Math.min(1,V.h/(B.height*k));
+        return{offset:i/FF_N,translate:at(V.x,V.y+(1-fr)*B.height*k/2,k),scale:k.toFixed(4),clipPath:`inset(-48px -48px ${((1-fr)*H).toFixed(2)}px -48px round 0 0 ${r}px ${r}px)`}});
     }
     /* a box's own paint (fill, gradient, shadow, backdrop blur) as keyframes from nothing to what it is. Gradients do not interpolate,
        so for the morph a gradient's alphas are scaled by --ffa (registered as a number, so it animates); undo restores the stylesheet's gradient */
@@ -4016,16 +4073,6 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       if(c.boxShadow!=="none"){from.boxShadow="none";to.boxShadow=c.boxShadow}
       if(c.backdropFilter!=="none"){from.backdropFilter="none";to.backdropFilter=c.backdropFilter}
       return{from,to};
-    }
-    /* the intent line reflows for real: one solid element whose width springs between the two layouts while it travels, whichever way its parent anchors it */
-    function ffLine(n,A,B,lead){
-      const w1=n.offsetWidth,s=B.width/w1,k=A.height/B.height;
-      n.style.width=(w1-20)+"px";const al=Math.max(0,Math.min(1,(n.getBoundingClientRect().left-B.left)/(20*s)));n.style.width="";
-      const w0=A.width/(s*k),cA={x:A.left+A.width/2,y:A.top+A.height/2},cy=B.top+B.height/2,kf=[],N=24;
-      for(let i=0;i<=N;i++){const t=i/N*FF_DUR,pl=ffP(Math.min(FF_DUR,t*1.45)),pt=ffP(Math.max(0,t-50)*FF_DUR/(FF_DUR-50)),px=lead==="x"?pl:pt,py=lead==="y"?pl:pt,pk=ffP(t);
-        const w=w0+(w1-w0)*px,cx=B.left+al*(w1-w)*s+w*s/2,tx=cA.x+(B.left+B.width/2-cA.x)*px-cx,ty=cA.y+(cy-cA.y)*py-cy;
-        kf.push({offset:i/N,width:w.toFixed(2)+"px",translate:`${(tx/s).toFixed(2)}px ${(ty/s).toFixed(2)}px`,scale:(k+(1-k)*pk).toFixed(4)})}
-      return kf;
     }
     /* a scroller that would cut a travelling element off at its sides widens for the morph: 2000 px more padding each side and as much negative margin,
        so its content does not move and its own top and bottom fades still apply */
@@ -4044,10 +4091,10 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     /* switching devices, one sequence in every direction (450 ms spring, damping ratio of the DESIGN.md spring):
        – the frame springs from the old device to the new one as an empty shell that cross-fades the real old background into the new one;
        – shared elements (clock, intent line, chips, cards, status items, space title, plan, modules, flow labels, windows) are the live nodes in their new layout,
-         travelling from where they were with a uniform scale, so text never distorts and stays readable every frame. Where the two layouts draw a thing differently
-         (a desktop module and its phone card) the old drawing rides along and fades out by 90 ms while the new one rides in from 90 ms;
+         travelling from where they were with a uniform scale, so text never distorts and stays readable every frame, on paths planned up front (ffPlan).
+         Where the two layouts draw a thing differently (a desktop module and its phone card) the old drawing rides along until 70 ms and is gone at 120, the new one rides in from 90 ms;
        – everything else: the old screen (a frozen copy) is below .15 opacity by 90 ms and gone at 120 ms, the new screen's other parts fade in from 90 ms */
-    let ffTok=0,ffAnims=[],ffUndo=[];
+    let ffTok=0,ffAnims=[],ffUndo=[],ffLast=null;
     function setDevice(id,opts={}){
       if(!devOf(id))return;
       if(id===FF.dev){opts.after?.();return}
@@ -4107,25 +4154,36 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       push(SCREEN.animate([{clipPath:`inset(${q.t}px ${q.r}px ${q.b}px ${q.l}px round ${rad}px)`},{clipPath:`inset(0px 0px 0px 0px round ${FF.r}px)`}],timing)).finished.then(done,()=>{});
       const keep=new Set(),anc=new Set();
       const tall=rs=>(Math.max(...rs.map(r=>r.bottom))-Math.min(...rs.map(r=>r.top)))/Math.max(1,Math.max(...rs.map(r=>r.right))-Math.min(...rs.map(r=>r.left)));
-      const lead=(pairs.length?tall(pairs.map(p=>p.b.r))>tall(pairs.map(p=>p.a.r)):R1.w<R0.w)?"y":"x",path={duration:FF_DUR,easing:"linear",fill:"both"},FF_SWAP=[100,160,140];
+      const lead=(pairs.length?tall(pairs.map(p=>p.b.r))>tall(pairs.map(p=>p.a.r)):R1.w<R0.w)?"y":"x",path={duration:FF_DUR,easing:"linear",fill:"both"},FF_SWAP=[70,120,90];
       /* the frozen screen fades part by part: what is not shared is below .15 by 90 ms and gone at 120; a shared thing drawn differently keeps its old drawing,
-         solid, until 100 ms and is gone at 160, its new drawing fades in from 140 — every frame shows one of the two, readable */
+         solid, until 70 ms and is gone at 120, its new drawing fades in from 90 — the desktop drawing is off the screen before the frame has narrowed much */
       const gkeep=new Set(),ganc=new Set(),gop=n=>+getComputedStyle(n).opacity;
       pairs.forEach((p,i)=>{const t=twins[i];if(!t)return;gkeep.add(t);for(let e=t.parentElement;e&&e!==ghost.sc;e=e.parentElement)ganc.add(e);
         if(!p.same){const o=gop(t);push(t.animate([{opacity:o},{opacity:o,offset:FF_SWAP[0]/FF_SWAP[1]},{opacity:0}],{duration:FF_SWAP[1],fill:"forwards"}))}});
       const gout=n=>{const o=gop(n);if(o>0)push(n.animate([{opacity:o},{opacity:o*.12,offset:FF_IN/FF_OUT},{opacity:0}],{duration:FF_OUT,fill:"forwards"}))};
       const gwalk=n=>{for(const c of n.children){if(gkeep.has(c))continue;if(ganc.has(c))gwalk(c);else gout(c)}};gwalk(ghost.sc);
       ganc.forEach(e=>{const f=ffPaint(e,[]);if(f)push(e.animate([f.to,f.from],{duration:FF_OUT,easing:"cubic-bezier(.5,0,.2,1)",fill:"forwards"}))});
-      pairs.forEach((p,i)=>{
-        const{a,b}=p,n=b.n,t=twins[i];keep.add(n);for(let e=n.parentElement;e&&e!==SCREEN;e=e.parentElement)anc.add(e);
-        if(p.k==="line"&&a.n===n){if(t)t.classList.add("ffm-hide");push(n.animate(ffLine(n,a.r,b.r,"y"),path));return}
-        if(p.same){if(t)t.classList.add("ffm-hide");push(n.animate(ffPath(ffFlip(n,a.r,b.r,Math.sqrt(a.r.width/b.r.width*a.r.height/b.r.height)),lead),path));return}
-        push(n.animate(ffBox(n,a.r,b.r,lead),path));if(n.children.length)[...n.children].forEach(c=>fadeIn(c,FF_SWAP[2],160));else fadeIn(n,FF_SWAP[2],160);
-        const pf=ffPaint(n,ffUndo);if(pf)push(n.animate([pf.from,pf.to],{duration:160,delay:FF_SWAP[2],easing:"cubic-bezier(.2,.8,.2,1)",fill:"backwards"}));
-        if(t)push(t.animate(ffBox(t,b.r,a.r,lead,true),path));
+      const C=r=>({x:r.left+r.width/2,y:r.top+r.height/2,w:r.width,h:r.height});
+      const its=pairs.map(p=>{const{a,b}=p,n=b.n,kind=p.k==="line"&&a.n===n?"line":p.same?"same":"box",k=kind==="same"?Math.sqrt(a.r.width/b.r.width*a.r.height/b.r.height):1;
+        return{p,n,kind,g:kind==="line"?"line":/^(sig|m|win|flow):/.test(p.k)?"card":/^app:/.test(p.k)?"chip":"",from:kind==="box"?FF_SWAP[2]+20:0,clip:ffClip(n,SCREEN),V0:kind==="same"?{...C(a.r),w:b.r.width*k,h:b.r.height*k}:C(a.r),V1:C(b.r)}});
+      its.forEach(e=>{keep.add(e.n);for(let x=e.n.parentElement;x&&x!==SCREEN;x=x.parentElement)anc.add(x)});
+      /* the new screen's other parts fade in where they are; the smaller ones are obstacles the travel plans around (they hold their fade while something passes) */
+      const fresh=[],walk=n=>{for(const c of n.children){if(keep.has(c)||c.matches(".mist,.grain"))continue;if(anc.has(c))walk(c);else fresh.push(c)}};walk(SCREEN);
+      const obs=new Map();fresh.forEach(c=>{const r=c.getBoundingClientRect();if(r.width<2||r.height<2||r.width*r.height>.25*Z.w*Z.h||!(+getComputedStyle(c).opacity))return;
+        obs.set(c,{n:c,kind:"static",g:"static",from:FF_IN+40,clip:ffClip(c,SCREEN),V0:C(r),V1:C(r)})});
+      ffLast=its.length?ffPlan([...its,...obs.values()],t=>{const p=ffP(t);return{l:L(A.x,Z.x,p),t:L(A.y,Z.y,p),r:L(A.x+A.w,Z.x+Z.w,p),b:L(A.y+A.h,Z.y+Z.h,p)}},lead):null;
+      its.forEach((e,i)=>{
+        const{p,n,kind}=e,t=twins[i];
+        push(n.animate(ffKf(e,n,p.b.r,kind),path));
+        if(e.op){const o=+getComputedStyle(n).opacity;push(n.animate(e.op.map((v,j)=>({offset:j/FF_N,opacity:+(o*v).toFixed(3)})),path))}
+        if(kind!=="box"){if(t)t.classList.add("ffm-hide");return}
+        if(n.children.length)[...n.children].forEach(c=>fadeIn(c,FF_SWAP[2],140));else fadeIn(n,FF_SWAP[2],140);
+        const pf=ffPaint(n,ffUndo);if(pf)push(n.animate([pf.from,pf.to],{duration:140,delay:FF_SWAP[2],easing:"cubic-bezier(.2,.8,.2,1)",fill:"backwards"}));
+        if(t)push(t.animate(ffKf(e,t,t.getBoundingClientRect(),"box"),path));
       });
-      const walk=n=>{for(const c of n.children){if(keep.has(c)||c.matches(".mist,.grain"))continue;if(anc.has(c))walk(c);else fadeIn(c,FF_IN,200)}};
-      walk(SCREEN);
+      const ease=x=>1-Math.pow(1-Math.max(0,Math.min(1,x)),3);
+      fresh.forEach(c=>{const e=obs.get(c);if(!e?.op)return fadeIn(c,FF_IN,200);const o=+getComputedStyle(c).opacity;
+        push(c.animate(e.op.map((v,j)=>({offset:j/FF_N,opacity:+(o*v*ease((j/FF_N*FF_DUR-FF_IN)/200)).toFixed(3)})),path))});
       /* a box that holds shared elements cannot fade without them: its own paint fades in instead */
       anc.forEach(e=>{const f=ffPaint(e,ffUndo);if(f)push(e.animate([f.from,f.to],{duration:200,delay:FF_IN,easing:"cubic-bezier(.2,.8,.2,1)",fill:"backwards"}))});
     }
