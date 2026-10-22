@@ -10,7 +10,7 @@ const EXPERIMENTS = [
   {
     id: "skiper16",
     scroll: true,
-    hero: 0.09,
+    hero: 0.14,
     source: "https://skiper-ui.com/v1/skiper16",
     kicker: { ru: "Скролл", en: "Scroll" },
     title: { ru: "Стопка карточек", en: "Card stack" },
@@ -100,7 +100,7 @@ const EXPERIMENTS = [
   {
     id: "skiper31",
     scroll: true,
-    hero: 0.17,
+    hero: 0.2,
     source: "https://skiper-ui.com/v1/skiper31",
     kicker: { ru: "Тип", en: "Type" },
     title: { ru: "Буквы собираются", en: "Letters gather" },
@@ -310,7 +310,7 @@ const EXPERIMENTS = [
   {
     id: "skiper28",
     scroll: true,
-    hero: 0.72,
+    hero: 0,
     source: "https://skiper-ui.com/v1/skiper28",
     kicker: { ru: "3D", en: "3D" },
     title: { ru: "Текст в перспективе", en: "Perspective text" },
@@ -404,17 +404,20 @@ const STAGE_H = 900;
 const PRESENTATION = {
   "chamaac-arrow": { w: 360, h: 225, z: 1.32 },
   "chamaac-input": { w: 440, h: 275, z: 1 },
-  "chamaac-shimmer": { w: 420, h: 262, z: 1.28 },
-  "chamaac-slide": { w: 360, h: 225, z: 1.32 },
-  "chamaac-focus": { w: 400, h: 250, z: 1.3 },
+  "chamaac-shimmer": { w: 420, h: 262, z: 1.4 },
+  "chamaac-slide": { w: 360, h: 225, z: 1.5 },
+  "chamaac-focus": { w: 400, h: 250, z: 1.7 },
   "chamaac-glow": { w: 420, h: 262, z: 1.35 },
-  "chamaac-neo": { w: 360, h: 225, z: 1.32 },
-  "chamaac-premium": { w: 420, h: 262, z: 1.3 },
-  "chamaac-dock": { w: 800, h: 500, z: 1.22 },
-  "chamaac-loop": { w: 980, h: 612, z: 1 },
+  "chamaac-neo": { w: 360, h: 225, z: 1.55 },
+  "chamaac-premium": { w: 420, h: 262, z: 1.42 },
+  "chamaac-dock": { w: 800, h: 500, z: 1.55 },
+  "chamaac-loop": { w: 980, h: 612, z: 1.25 },
+  skiper16: { w: 1440, h: 900, z: 0.88 },
+  skiper31: { w: 900, h: 562, z: 1.12 },
   skiper4: { w: 520, h: 325, z: 1.08 },
-  skiper19: { w: 1440, h: 900, z: 0.9 },
-  skiper61: { w: 1080, h: 675, z: 1 },
+  skiper19: { w: 1440, h: 900, z: 0.86 },
+  skiper28: { w: 1440, h: 900, z: 0.88 },
+  skiper61: { w: 500, h: 312, z: 1 },
 };
 
 function presentationOf(mod) {

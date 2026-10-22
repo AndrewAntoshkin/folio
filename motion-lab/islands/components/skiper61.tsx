@@ -31,7 +31,7 @@ const SimpleMouseFollow = () => {
       onPointerLeave={() => {
         opacity.set(0);
       }}
-      className="rounded-4xl relative h-[min(42vh,320px)] w-full max-w-[420px] cursor-none overflow-hidden border border-black/10 bg-white"
+      className="rounded-4xl relative h-[min(28vh,220px)] w-full max-w-[420px] cursor-none overflow-hidden border border-black/20 bg-white shadow-sm"
     >
       <motion.div
         style={{
@@ -66,7 +66,7 @@ const SpringMouseFollow = () => {
         opacitySpring.set(0);
         scaleSpring.set(0);
       }}
-      className="rounded-4xl relative h-[min(42vh,320px)] w-full max-w-[420px] overflow-hidden border border-black/10 bg-white"
+      className="rounded-4xl relative h-[min(28vh,220px)] w-full max-w-[420px] overflow-hidden border border-black/20 bg-white shadow-sm"
     >
       <motion.div
         style={{
@@ -83,15 +83,15 @@ const SpringMouseFollow = () => {
 
 const Skiper61 = () => {
   return (
-    <section className="flex h-full w-full flex-col items-center justify-center gap-8 overflow-hidden bg-[#f5f4f3] px-6 py-8 md:flex-row md:gap-10">
-      <div className="flex w-full max-w-[420px] flex-col items-center gap-3">
-        <span className="text-xs font-medium uppercase tracking-wide text-black/55">
+    <section className="flex h-full w-full flex-col items-center justify-center gap-4 overflow-hidden bg-[#f5f4f3] px-5 py-4 md:flex-row md:gap-8">
+      <div className="flex w-full max-w-[420px] flex-col items-center gap-2">
+        <span className="text-sm font-semibold uppercase tracking-wide text-black/75">
           Mouse follow simple
         </span>
         <SimpleMouseFollow />
       </div>
       <div className="flex w-full max-w-[420px] flex-col items-center gap-3">
-        <span className="text-xs font-medium uppercase tracking-wide text-black/55">
+        <span className="text-sm font-semibold uppercase tracking-wide text-black/75">
           Mouse follow with Spring
         </span>
         <SpringMouseFollow />
