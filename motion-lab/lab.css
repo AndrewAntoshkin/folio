@@ -115,16 +115,18 @@
   text-align: left;
   cursor: pointer;
 }
-.lab-kicker {
-  font-size: var(--t-1);
-  line-height: var(--lh-1);
+.lab-tile .lab-kicker,
+.lab-tile.is-feature .lab-kicker {
+  font-size: 12px;
+  line-height: 16px;
   font-weight: 500;
   color: var(--quiet);
 }
-.lab-name {
+.lab-tile .lab-name,
+.lab-tile.is-feature .lab-name {
   font-family: var(--serif);
-  font-size: var(--t-4);
-  line-height: var(--lh-4);
+  font-size: 24px;
+  line-height: 32px;
   font-weight: 400;
   letter-spacing: var(--track-h);
 }

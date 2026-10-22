@@ -52,21 +52,26 @@ function useScrollProgress() {
 }
 
 function StackCard({ index, count, progress, kicker, title, note, wash }) {
+  const place = (p) => {
+    const peeled = Math.min(count - 1, p * (count - 1));
+    return index - peeled;
+  };
   const y = useTransform(progress, (p) => {
-    const leave = clamp(p * count - index, 0, 1);
-    return index * 28 - leave * 420;
+    const depth = place(p);
+    return depth < 0 ? depth * 360 : depth * 34;
   });
   const scale = useTransform(progress, (p) => {
-    const leave = clamp(p * count - index, 0, 1);
-    return 1 - index * 0.08 - leave * 0.1;
+    const depth = place(p);
+    return depth < 0 ? 1 + depth * 0.08 : 1 - depth * 0.08;
   });
   const opacity = useTransform(progress, (p) => {
-    const leave = clamp(p * count - index, 0, 1);
-    return 1 - Math.max(0, leave - 0.55) / 0.45;
+    const depth = place(p);
+    return depth >= 0 ? 1 : Math.max(0, 1 + depth * 1.35);
   });
   const filter = useTransform(progress, (p) => {
-    const leave = clamp(p * count - index, 0, 1);
-    return `blur(${(index * 1.7 + leave * 9).toFixed(2)}px)`;
+    const depth = place(p);
+    const blur = depth < 0 ? Math.min(1, -depth) * 8 : depth * 1.8;
+    return `blur(${blur.toFixed(2)}px)`;
   });
   return (
     <motion.article
@@ -82,6 +87,18 @@ function StackCard({ index, count, progress, kicker, title, note, wash }) {
 
 function Stack() {
   const progress = useScrollProgress();
+  useEffect(() => {
+    const onWheel = (event) => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      if (max <= 8) return;
+      if (window.scrollY >= max - 2 && event.deltaY > 0) {
+        event.preventDefault();
+        window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+      }
+    };
+    window.addEventListener("wheel", onWheel, { passive: false });
+    return () => window.removeEventListener("wheel", onWheel);
+  }, []);
   const cards = [
     ["YaOS", tx("Дом слышит намерение", "The home hears an intent"), tx("Свет, климат и замок без меню.", "Light, climate, and the lock, without a menu."), ""],
     ["Halo", tx("Память держит нить", "Memory keeps the thread"), tx("Контекст остаётся между сессиями.", "Context stays between sessions."), "blue"],
@@ -89,7 +106,7 @@ function Stack() {
     ["Портфель", tx("Кейс открывается целиком", "A case opens in full"), tx("От списка к развороту одним жестом.", "From the list to the spread in one gesture."), ""],
   ];
   return (
-    <div className="ol-long" style={{ height: "190vh" }}>
+    <div className="ol-long" style={{ height: "156vh" }}>
       <div className="ol-pin">
         <div className="ol-stack">
           {cards.map(([kicker, title, note, wash], index) => (
@@ -342,7 +359,7 @@ function Passage() {
         </div>
         {view && item && (
           <motion.article
-            className="ol-glass ol-spread ol-wash"
+            className="ol-spread"
             initial={{ left: view.x, top: view.y, width: view.w, height: view.h }}
             animate={view.closing
               ? { left: view.x, top: view.y, width: view.w, height: view.h }
@@ -352,9 +369,9 @@ function Passage() {
           >
             <motion.div
               className="ol-spread-copy"
-              initial={{ opacity: 0 }}
+              initial={{ opacity: 1 }}
               animate={{ opacity: view.closing ? 0 : 1 }}
-              transition={{ duration: reduced ? 0 : 0.22, delay: view.closing || reduced ? 0 : 0.12 }}
+              transition={{ duration: reduced ? 0 : 0.16 }}
             >
               <button type="button" className="ol-back" onClick={shut}>{tx("‹ Назад", "‹ Back")}</button>
               <span className="ol-kicker">{item[1]}</span>
@@ -542,7 +559,7 @@ function Toast() {
               initial={reduced ? false : { opacity: 0, y: -18, scale: 0.96 }}
               animate={{
                 opacity: open || index === 0 ? 1 : 0.55,
-                y: open ? index * 96 : index * 14,
+                y: open ? -index * 96 : -index * 14,
                 scale: open ? 1 : 1 - index * 0.06,
               }}
               transition={SPRING}
@@ -671,11 +688,12 @@ function Order() {
 }
 
 function YieldCell({ char }) {
-  if (char === "\u202f" || char === " ") return <span className="ol-num-gap" />;
+  if (char === "\u202f" || char === " ") return <span className="ol-num-gap" aria-hidden="true" />;
   const n = Number(char);
+  const shift = `${-n}em`;
   return (
     <span className="ol-digit">
-      <motion.span className="ol-reel" initial={false} animate={{ y: `${-n}em` }} transition={reduced ? { duration: 0 } : SPRING}>
+      <motion.span className="ol-reel" initial={{ y: shift }} animate={{ y: shift }} transition={reduced ? { duration: 0 } : SPRING}>
         {"0123456789".split("").map((digit) => <i key={digit}>{digit}</i>)}
       </motion.span>
     </span>
@@ -695,10 +713,10 @@ function Yield() {
             {cells.map((char, index) => <YieldCell key={index} char={char} />)}
             <span className="ol-currency">₽</span>
           </div>
-          <div className="ol-presets">
+          <div className="ol-presets" role="group" aria-label={tx("Сумма", "Amount")}>
             {presets.map((preset) => (
               <button key={preset} type="button" className={preset === value ? "ol-chip is-on" : "ol-chip"} onClick={() => setValue(preset)}>
-                {preset}
+                {preset.replaceAll("\u202f", " ")} ₽
               </button>
             ))}
           </div>
@@ -784,20 +802,22 @@ function MagnetBit({ label, hx, hy, px, py, primary }) {
     homeX.set(hx);
     homeY.set(hy);
   }, [hx, hy, homeX, homeY]);
-  const x = useTransform([px, py, homeX, homeY], ([cx, cy, ox, oy]) => {
+  const pullX = useTransform([px, py, homeX, homeY], ([cx, cy, ox, oy]) => {
     const dx = cx - ox;
     const dy = cy - oy;
     const dist = Math.hypot(dx, dy) || 1;
-    const reach = Math.max(0, 1 - dist / 360);
-    return (dx / dist) * reach * 72;
+    const reach = Math.max(0, 1 - dist / 720);
+    return (dx / dist) * reach * 200;
   });
-  const y = useTransform([px, py, homeX, homeY], ([cx, cy, ox, oy]) => {
+  const pullY = useTransform([px, py, homeX, homeY], ([cx, cy, ox, oy]) => {
     const dx = cx - ox;
     const dy = cy - oy;
     const dist = Math.hypot(dx, dy) || 1;
-    const reach = Math.max(0, 1 - dist / 360);
-    return (dy / dist) * reach * 56;
+    const reach = Math.max(0, 1 - dist / 720);
+    return (dy / dist) * reach * 160;
   });
+  const x = useSpring(pullX, { stiffness: 380, damping: 11, mass: 0.62 });
+  const y = useSpring(pullY, { stiffness: 380, damping: 11, mass: 0.62 });
   return (
     <motion.button type="button" className={primary ? "ol-magnet is-primary" : "ol-magnet"} style={{ x, y, left: `calc(50% + ${hx}px)`, top: `calc(50% + ${hy}px)`, translateX: "-50%", translateY: "-50%" }}>
       {label}
@@ -812,10 +832,10 @@ function Magnet() {
   const py = useMotionValue(9999);
   const bits = [
     [tx("Написать", "Write"), 0, 0, true],
-    [tx("Кейс", "Case"), -0.32, -0.26, false],
-    [tx("Город", "City"), 0.34, -0.22, false],
-    [tx("Портфель", "Portfolio"), -0.3, 0.28, false],
-    [tx("Дом", "Home"), 0.32, 0.3, false],
+    [tx("Кейс", "Case"), -0.38, -0.3, false],
+    [tx("Город", "City"), 0.4, -0.26, false],
+    [tx("Портфель", "Portfolio"), -0.36, 0.32, false],
+    [tx("Дом", "Home"), 0.38, 0.34, false],
   ];
   const move = (event) => {
     const box = event.currentTarget.getBoundingClientRect();
@@ -902,22 +922,24 @@ function FieldBit({ label, hx, hy, px, py }) {
     homeX.set(hx);
     homeY.set(hy);
   }, [hx, hy, homeX, homeY]);
-  const x = useTransform([px, py, homeX, homeY], ([cx, cy, ox, oy]) => {
+  const pushX = useTransform([px, py, homeX, homeY], ([cx, cy, ox, oy]) => {
     const dx = ox - cx;
     const dy = oy - cy;
     const dist = Math.hypot(cx - ox, cy - oy);
-    const push = Math.max(0, 260 - dist) / 260 * 120;
+    const push = Math.max(0, 560 - dist) / 560 * 280;
     const len = Math.hypot(dx, dy) || 1;
     return (dx / len) * push;
   });
-  const y = useTransform([px, py, homeX, homeY], ([cx, cy, ox, oy]) => {
+  const pushY = useTransform([px, py, homeX, homeY], ([cx, cy, ox, oy]) => {
     const dx = ox - cx;
     const dy = oy - cy;
     const dist = Math.hypot(cx - ox, cy - oy);
-    const push = Math.max(0, 260 - dist) / 260 * 96;
+    const push = Math.max(0, 560 - dist) / 560 * 220;
     const len = Math.hypot(dx, dy) || 1;
     return (dy / len) * push;
   });
+  const x = useSpring(pushX, { stiffness: 360, damping: 12, mass: 0.66 });
+  const y = useSpring(pushY, { stiffness: 360, damping: 12, mass: 0.66 });
   return (
     <motion.span className="ol-field-bit" style={{ x, y, left: `calc(50% + ${hx}px)`, top: `calc(50% + ${hy}px)`, translateX: "-50%", translateY: "-50%" }}>{label}</motion.span>
   );

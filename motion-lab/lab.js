@@ -255,7 +255,7 @@ const PRESENTATION = {
   toast: { w: 980, h: 640, z: 1 },
   command: { w: 640, h: 400, z: 1.16 },
   order: { w: 640, h: 400, z: 1.05 },
-  yield: { w: 860, h: 520, z: 1.15 },
+  yield: { w: 980, h: 640, z: 1 },
   glass: { w: 680, h: 425, z: 1.22 },
   spotlight: { w: 900, h: 560, z: 1 },
   rise: { w: 800, h: 500, z: 1.36 },
@@ -320,6 +320,10 @@ function bindWheel(frame) {
     if (max <= 8) return;
     event.preventDefault();
     const dy = event.deltaY / (frame.__scale || 1);
+    if (frame.__mod?.id === "stack" && dy > 0 && win.scrollY >= max - 2) {
+      win.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
     if (win.__lenis) win.__lenis.scrollTo(win.scrollY + dy, { immediate: true });
     else win.scrollBy(0, dy);
   }, { passive: false });
