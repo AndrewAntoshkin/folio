@@ -7,6 +7,26 @@ const tx = (ru, en) => (EN ? en : ru);
 const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const SPRING = { type: "spring", stiffness: 420, damping: 34, mass: 0.7 };
 const SOFT = { type: "spring", stiffness: 280, damping: 28, mass: 0.85 };
+const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+function holdPointer(event) {
+  event.preventDefault();
+  event.currentTarget.setPointerCapture(event.pointerId);
+}
+
+function useBoxSize(ref) {
+  const [size, setSize] = useState({ w: 720, h: 520 });
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return undefined;
+    const read = () => setSize({ w: Math.max(1, node.clientWidth), h: Math.max(1, node.clientHeight) });
+    read();
+    const observer = new ResizeObserver(read);
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [ref]);
+  return size;
+}
 
 function useScrollProgress() {
   const progress = useMotionValue(reduced ? 1 : 0);
@@ -30,19 +50,27 @@ function useScrollProgress() {
   return progress;
 }
 
-function StackCard({ index, progress, kicker, title, note, wash }) {
+function StackCard({ index, count, progress, kicker, title, note, wash }) {
   const y = useTransform(progress, (p) => {
-    const cover = Math.min(1, Math.max(0, p * 3.1 - index));
-    return (index - 3) * 16 - cover * 12;
+    const leave = clamp(p * count - index, 0, 1);
+    return index * 28 - leave * 420;
   });
   const scale = useTransform(progress, (p) => {
-    const cover = Math.min(1, Math.max(0, p * 3.1 - index));
-    return 1 - cover * 0.07;
+    const leave = clamp(p * count - index, 0, 1);
+    return 1 - index * 0.08 - leave * 0.1;
+  });
+  const opacity = useTransform(progress, (p) => {
+    const leave = clamp(p * count - index, 0, 1);
+    return 1 - Math.max(0, leave - 0.55) / 0.45;
+  });
+  const filter = useTransform(progress, (p) => {
+    const leave = clamp(p * count - index, 0, 1);
+    return `blur(${(index * 1.7 + leave * 9).toFixed(2)}px)`;
   });
   return (
     <motion.article
       className={`ol-glass ol-card ol-wash ${wash ? `ol-wash-${wash}` : ""}`}
-      style={{ y, scale, zIndex: index }}
+      style={{ y, scale, opacity, filter, zIndex: count - index }}
     >
       <span className="ol-kicker">{kicker}</span>
       <h2>{title}</h2>
@@ -60,11 +88,11 @@ function Stack() {
     ["Портфель", tx("Кейс открывается целиком", "A case opens in full"), tx("От списка к развороту одним жестом.", "From the list to the spread in one gesture."), ""],
   ];
   return (
-    <div className="ol-long" style={{ height: "220vh" }}>
+    <div className="ol-long" style={{ height: "190vh" }}>
       <div className="ol-pin">
         <div className="ol-stack">
           {cards.map(([kicker, title, note, wash], index) => (
-            <StackCard key={kicker} index={index} progress={progress} kicker={kicker} title={title} note={note} wash={wash} />
+            <StackCard key={kicker} index={index} count={cards.length} progress={progress} kicker={kicker} title={title} note={note} wash={wash} />
           ))}
         </div>
       </div>
@@ -218,34 +246,55 @@ function Dock() {
 }
 
 function Melt() {
-  const x = useSpring(128, { stiffness: 280, damping: 24, mass: 0.7 });
-  const y = useSpring(52, { stiffness: 280, damping: 24, mass: 0.7 });
+  const box = useRef(null);
+  const dragging = useRef(false);
+  const x = useSpring(0, { stiffness: 260, damping: 22, mass: 0.8 });
+  const y = useSpring(0, { stiffness: 260, damping: 22, mass: 0.8 });
+  useEffect(() => {
+    const node = box.current;
+    if (!node) return undefined;
+    const place = () => {
+      if (dragging.current) return;
+      x.set(node.clientWidth * 0.48);
+      y.set(node.clientHeight * 0.28);
+    };
+    place();
+    const observer = new ResizeObserver(place);
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [x, y]);
   const drag = (event) => {
-    const bounds = event.currentTarget.parentElement.getBoundingClientRect();
-    x.set(event.clientX - bounds.left - 70);
-    y.set(event.clientY - bounds.top - 70);
+    const bounds = box.current.getBoundingClientRect();
+    const size = event.currentTarget.getBoundingClientRect().width;
+    x.set(event.clientX - bounds.left - size / 2);
+    y.set(event.clientY - bounds.top - size / 2);
   };
   return (
     <div className="ol-fill">
-      <div className="ol-center">
-        <div className="ol-melt" style={{ filter: "url(#ol-goo)" }}>
-          <div className="ol-blob" style={{ left: 36, top: 78 }}>{tx("Свет", "Light")}</div>
+      <div className="ol-melt" ref={box}>
+        <div className="ol-goo">
+          <div className="ol-blob still">{tx("Свет", "Light")}</div>
           <motion.div
             className="ol-blob dim"
             style={{ x, y }}
-            onPointerDown={(event) => event.currentTarget.setPointerCapture(event.pointerId)}
+            onPointerDown={(event) => {
+              dragging.current = true;
+              holdPointer(event);
+            }}
             onPointerMove={(event) => { if (event.currentTarget.hasPointerCapture(event.pointerId)) drag(event); }}
+            onPointerUp={() => { dragging.current = false; }}
+            onPointerCancel={() => { dragging.current = false; }}
           >
             {tx("Климат", "Climate")}
           </motion.div>
-          <svg width="0" height="0" aria-hidden="true">
-            <filter id="ol-goo">
-              <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur" />
-              <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -10" result="goo" />
-              <feBlend in="SourceGraphic" in2="goo" />
-            </filter>
-          </svg>
         </div>
+        <svg className="ol-goo-svg" aria-hidden="true">
+          <filter id="ol-goo" x="-80%" y="-80%" width="260%" height="260%" colorInterpolationFilters="sRGB">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="blur" />
+            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 24 -10" result="goo" />
+            <feBlend in="SourceGraphic" in2="goo" />
+          </filter>
+        </svg>
       </div>
     </div>
   );
@@ -253,34 +302,68 @@ function Melt() {
 
 function Passage() {
   const cases = [
-    ["yaos", "YaOS", tx("Операционная система намерений", "An operating system of intents"), tx("Дом, город и работа отвечают одной фразой.", "Home, city, and work answer one sentence.")],
-    ["halo", "Halo", tx("Рабочая память", "Working memory"), tx("Нить разговора не рвётся между окнами.", "The thread of a conversation stays across windows.")],
-    ["city", tx("Москва", "Moscow"), tx("Городские услуги", "City services"), tx("Парковка, запись и пропуск в одном жесте.", "Parking, a visit, and a pass in one gesture.")],
+    ["yaos", "YaOS", tx("Операционная система намерений", "An operating system of intents"), tx("Дом, город и работа отвечают одной фразой. Без меню.", "Home, city, and work answer one sentence. No menu."), [tx("Свет", "Light"), tx("Климат", "Climate"), tx("Замок", "Lock")]],
+    ["halo", "Halo", tx("Рабочая память", "Working memory"), tx("Нить разговора не рвётся между окнами и сессиями.", "The thread stays across windows and sessions."), [tx("Контекст", "Context"), tx("Кейсы", "Cases"), tx("Заметки", "Notes")]],
+    ["city", tx("Москва", "Moscow"), tx("Городские услуги", "City services"), tx("Парковка, запись и пропуск собираются в одном жесте.", "Parking, a visit, and a pass gather in one gesture."), [tx("Двор", "Yard"), tx("Поликлиника", "Clinic"), tx("Пропуск", "Pass")]],
   ];
-  const [current, setCurrent] = useState(null);
-  const item = cases.find(([id]) => id === current);
+  const root = useRef(null);
+  const [view, setView] = useState(null);
+  const item = cases.find(([id]) => id === view?.id);
+  const measure = (node) => {
+    const parent = root.current.getBoundingClientRect();
+    const rect = node.getBoundingClientRect();
+    return {
+      x: rect.left - parent.left,
+      y: rect.top - parent.top,
+      w: rect.width,
+      h: rect.height,
+      pw: parent.width,
+      ph: parent.height,
+    };
+  };
+  const open = (id, event) => {
+    const from = measure(event.currentTarget);
+    setView({ id, ...from, closing: false });
+  };
+  const shut = () => setView((current) => (current ? { ...current, closing: true } : current));
   return (
     <div className="ol-fill">
-      <div className="ol-center">
-        {!item && (
-          <div className="ol-list">
-            {cases.map(([id, title, line]) => (
-              <motion.button key={id} type="button" layoutId={`case-${id}`} className="ol-glass ol-project" onClick={() => setCurrent(id)} transition={SPRING}>
-                <span>
-                  <b>{title}</b>
-                  <span className="ol-muted" style={{ display: "block" }}>{line}</span>
-                </span>
-                <span aria-hidden="true">→</span>
-              </motion.button>
-            ))}
-          </div>
-        )}
-        {item && (
-          <motion.article layoutId={`case-${item[0]}`} className="ol-glass ol-detail ol-wash" transition={SPRING}>
-            <button type="button" className="ol-back" onClick={() => setCurrent(null)}>{tx("‹ Назад", "‹ Back")}</button>
-            <span className="ol-kicker">{item[1]}</span>
-            <h2>{item[2]}</h2>
-            <p className="ol-muted">{item[3]}</p>
+      <div className="ol-pass" ref={root}>
+        <div className="ol-list">
+          {cases.map(([id, title, line]) => (
+            <button key={id} type="button" className={view?.id === id && !view.closing ? "ol-glass ol-project is-quiet" : "ol-glass ol-project"} onClick={(event) => open(id, event)}>
+              <span>
+                <b>{title}</b>
+                <span className="ol-muted" style={{ display: "block" }}>{line}</span>
+              </span>
+              <span aria-hidden="true">→</span>
+            </button>
+          ))}
+        </div>
+        {view && item && (
+          <motion.article
+            className="ol-glass ol-spread ol-wash"
+            initial={{ left: view.x, top: view.y, width: view.w, height: view.h }}
+            animate={view.closing
+              ? { left: view.x, top: view.y, width: view.w, height: view.h }
+              : { left: 20, top: 20, width: Math.max(view.w, view.pw - 40), height: Math.max(view.h, view.ph - 40) }}
+            transition={SPRING}
+            onAnimationComplete={() => { if (view.closing) setView(null); }}
+          >
+            <motion.div
+              className="ol-spread-copy"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: view.closing ? 0 : 1 }}
+              transition={{ duration: reduced ? 0 : 0.22, delay: view.closing || reduced ? 0 : 0.12 }}
+            >
+              <button type="button" className="ol-back" onClick={shut}>{tx("‹ Назад", "‹ Back")}</button>
+              <span className="ol-kicker">{item[1]}</span>
+              <h2>{item[2]}</h2>
+              <p className="ol-muted">{item[3]}</p>
+              <div className="ol-facts">
+                {item[4].map((fact) => <span key={fact} className="ol-fact">{fact}</span>)}
+              </div>
+            </motion.div>
           </motion.article>
         )}
       </div>
@@ -297,23 +380,55 @@ function Sheet() {
   return (
     <div className="ol-fill">
       <div className="ol-center">
-        <div className="ol-glass ol-phone ol-wash ol-wash-sand">
-          <div>
+        <div className="ol-glass ol-phone">
+          <svg className="ol-yard" viewBox="0 0 380 640" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs>
+              <linearGradient id="ol-sky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stopColor="#1c2a24" />
+                <stop offset="1" stopColor="#101410" />
+              </linearGradient>
+            </defs>
+            <rect width="380" height="640" fill="url(#ol-sky)" />
+            <rect x="18" y="168" width="78" height="300" rx="10" fill="rgba(255,255,255,0.07)" />
+            <rect x="284" y="140" width="78" height="340" rx="10" fill="rgba(255,255,255,0.07)" />
+            <rect x="36" y="196" width="18" height="22" rx="3" fill="rgba(202,232,189,0.35)" />
+            <rect x="60" y="196" width="18" height="22" rx="3" fill="rgba(202,232,189,0.2)" />
+            <rect x="36" y="232" width="18" height="22" rx="3" fill="rgba(202,232,189,0.2)" />
+            <rect x="302" y="176" width="18" height="22" rx="3" fill="rgba(202,232,189,0.28)" />
+            <rect x="326" y="176" width="18" height="22" rx="3" fill="rgba(202,232,189,0.16)" />
+            <circle cx="70" cy="430" r="28" fill="rgba(202,232,189,0.16)" />
+            <circle cx="308" cy="448" r="34" fill="rgba(202,232,189,0.12)" />
+            <rect x="118" y="250" width="144" height="168" rx="22" fill="rgba(202,232,189,0.14)" stroke="rgba(202,232,189,0.72)" />
+            <rect x="138" y="276" width="46" height="34" rx="8" fill="#cae8bd" />
+            <path d="M190 418v78" stroke="rgba(255,255,255,0.28)" strokeWidth="10" strokeLinecap="round" />
+            <text x="190" y="310" textAnchor="middle" fill="#142016" fontSize="16" fontFamily="Google Sans, sans-serif">14</text>
+          </svg>
+          <div className="ol-phone-copy">
             <span className="ol-kicker">{tx("Москва", "Moscow")}</span>
-            <h2 style={{ margin: "8px 0", fontSize: 32, fontWeight: 400 }}>{tx("Двор, место 14", "Courtyard, bay 14")}</h2>
+            <h2>{tx("Двор, место 14", "Courtyard, bay 14")}</h2>
             <p className="ol-muted">{tx("Свободно до восьми вечера.", "Free until eight in the evening.")}</p>
-            <button type="button" className="ol-send" style={{ marginTop: 18 }} onClick={() => setOpen(true)}>{tx("Оплатить", "Pay")}</button>
+            <button type="button" className="ol-send" onClick={() => setOpen(true)}>{tx("Оплатить", "Pay")}</button>
           </div>
           <motion.div
             className="ol-sheet"
             style={{ y }}
-            drag="y"
-            dragConstraints={{ top: 0, bottom: 0 }}
-            dragElastic={0.18}
-            onDragEnd={(_, info) => {
-              if (info.offset.y > 70 || info.velocity.y > 500) setOpen(false);
-              else animate(y, 0, reduced ? { duration: 0 } : SPRING);
+            onPointerDown={(event) => {
+              if (event.target.closest("button")) return;
+              holdPointer(event);
+              event.currentTarget.dataset.drag = `${event.pointerId}:${event.clientY}:${y.get()}`;
             }}
+            onPointerMove={(event) => {
+              const raw = event.currentTarget.dataset.drag;
+              if (!raw || !event.currentTarget.hasPointerCapture(event.pointerId)) return;
+              const [, start, origin] = raw.split(":");
+              y.set(clamp(Number(origin) + event.clientY - Number(start), 0, 460));
+            }}
+            onPointerUp={(event) => {
+              delete event.currentTarget.dataset.drag;
+              if (y.get() > 88) setOpen(false);
+              else animate(y, open ? 0 : 360, reduced ? { duration: 0 } : SPRING);
+            }}
+            onPointerCancel={(event) => { delete event.currentTarget.dataset.drag; }}
           >
             <div className="ol-handle" />
             <span className="ol-kicker">{tx("Парковка", "Parking")}</span>
@@ -328,66 +443,125 @@ function Sheet() {
 }
 
 function Island() {
-  const [wide, setWide] = useState(true);
+  const states = ["idle", "bell", "live"];
+  const [mode, setMode] = useState("bell");
+  const shape = {
+    idle: { width: 148, height: 44 },
+    bell: { width: 336, height: 78 },
+    live: { width: 348, height: 168 },
+  }[mode];
+  const cycle = () => setMode(states[(states.indexOf(mode) + 1) % states.length]);
   return (
     <div className="ol-fill">
-      <div className="ol-center">
-        <div className="ol-island-wrap">
+      <div className="ol-island-scene">
+        <div className="ol-device">
+          <div className="ol-status"><span>21:40</span><span>{tx("дома", "home")}</span></div>
           <motion.button
             type="button"
-            className="ol-island"
-            onClick={() => setWide((value) => !value)}
-            animate={{ width: wide ? 320 : 148 }}
+            className={`ol-island is-${mode}`}
+            onClick={cycle}
+            animate={shape}
             transition={SPRING}
           >
             <i className="ol-dot" aria-hidden="true" />
-            {wide && (
-              <span>
+            {mode === "idle" && <span className="ol-island-idle">21:40</span>}
+            {mode === "bell" && (
+              <span className="ol-island-copy">
                 <strong>{tx("Домофон", "Doorbell")}</strong>
                 <small>{tx("Марина · у двери", "Marina · at the door")}</small>
               </span>
             )}
+            {mode === "live" && (
+              <span className="ol-island-live">
+                <strong>{tx("Дверь открыта", "Door is open")}</strong>
+                <small>{tx("подъезд 2 · 12 секунд", "entrance 2 · 12 seconds")}</small>
+                <i className="ol-livebar" aria-hidden="true" />
+                <span className="ol-live-actions">
+                  <em>{tx("Закрыть", "Close")}</em>
+                  <em>{tx("Свет", "Light")}</em>
+                </span>
+              </span>
+            )}
           </motion.button>
+          <div className="ol-glyphs" aria-hidden="true">
+            <i /><i /><i /><i />
+          </div>
           <p className="ol-muted">{tx("Нажмите остров", "Tap the island")}</p>
         </div>
+        <aside className="ol-glass ol-island-side">
+          <span className="ol-kicker">{tx("Живая активность", "Live activity")}</span>
+          <h2>{mode === "live" ? tx("Дверь открыта", "Door is open") : mode === "bell" ? tx("Марина у двери", "Marina is at the door") : tx("Дом спокоен", "The home is quiet")}</h2>
+          <p className="ol-muted">{mode === "live" ? tx("Замок держит подъезд двенадцать секунд, затем закроется сам.", "The lock holds the entrance for twelve seconds, then shuts itself.") : tx("Остров разворачивается от времени к звонку и к открытой двери.", "The island unfolds from the clock, to the bell, to the open door.")}</p>
+          <ol>
+            <li><b>21:40</b> {tx("звонок", "ring")}</li>
+            <li><b>21:40</b> {tx("свет в прихожей", "hall light")}</li>
+            <li><b>21:41</b> {mode === "live" ? tx("открыто", "opened") : tx("ждёт", "waiting")}</li>
+          </ol>
+        </aside>
       </div>
     </div>
   );
 }
 
 function Toast() {
-  const notes = [
-    tx("Кейс сохранён", "Case saved"),
-    tx("Свет приглушён", "Lights dimmed"),
-    tx("Запись на четверг", "Visit set for Thursday"),
+  const seed = [
+    [tx("Кейс сохранён", "Case saved"), tx("Halo лежит в портфеле.", "Halo is in the portfolio."), tx("сейчас", "now")],
+    [tx("Свет приглушён", "Lights dimmed"), tx("Гостиная держит 40%.", "The living room holds 40%."), tx("1 мин", "1 min")],
+    [tx("Запись стоит", "Visit is set"), tx("Терапевт, четверг, 11:20.", "Clinic, Thursday, 11:20."), tx("2 мин", "2 min")],
   ];
-  const [items, setItems] = useState([notes[0]]);
+  const [items, setItems] = useState(seed);
+  const [open, setOpen] = useState(false);
   const push = () => {
-    const next = notes[items.length % notes.length];
-    setItems((list) => [...list, `${next} · ${list.length + 1}`].slice(-3));
+    const next = seed[items.length % seed.length];
+    setItems((list) => [[`${next[0]}`, next[1], tx("сейчас", "now")], ...list].slice(0, 4));
+    setOpen(true);
   };
   return (
     <div className="ol-fill">
-      <div className="ol-center">
-        <div className="ol-toast-wrap">
-          <div className="ol-toasts">
-            {items.map((item) => (
-              <motion.button
-                key={item}
-                type="button"
-                className="ol-glass ol-toast"
-                initial={reduced ? false : { opacity: 0, y: -16, scale: 0.96 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={SPRING}
-                onClick={() => setItems((list) => list.filter((entry) => entry !== item))}
-              >
-                <span>{item}</span>
-                <span aria-hidden="true">×</span>
-              </motion.button>
-            ))}
-          </div>
-          <button type="button" className="ol-send" onClick={push}>{tx("Ещё одно", "Another")}</button>
+      <div className="ol-toast-scene">
+        <div className="ol-ghost" aria-hidden="true">
+          <span className="ol-kicker">Halo</span>
+          <h2>{tx("Память сессии", "Session memory")}</h2>
+          <p />
+          <p />
+          <p />
         </div>
+        <div
+          className={open ? "ol-toasts is-open" : "ol-toasts"}
+          onMouseEnter={() => setOpen(true)}
+          onMouseLeave={() => setOpen(false)}
+          onFocus={() => setOpen(true)}
+          onBlur={() => setOpen(false)}
+          onClick={() => setOpen((value) => !value)}
+        >
+          {items.map((item, index) => (
+            <motion.button
+              key={`${item[0]}-${index}`}
+              type="button"
+              className="ol-glass ol-toast"
+              initial={reduced ? false : { opacity: 0, y: -18, scale: 0.96 }}
+              animate={{
+                opacity: open || index === 0 ? 1 : 0.55,
+                y: open ? index * 96 : index * 14,
+                scale: open ? 1 : 1 - index * 0.06,
+              }}
+              transition={SPRING}
+              style={{ zIndex: 10 - index }}
+              onClick={(event) => {
+                event.stopPropagation();
+                setItems((list) => list.filter((_, itemIndex) => itemIndex !== index));
+              }}
+            >
+              <i className="ol-toast-mark" aria-hidden="true" />
+              <span>
+                <strong>{item[0]}</strong>
+                <small>{item[1]}</small>
+              </span>
+              <em>{item[2]}</em>
+            </motion.button>
+          ))}
+        </div>
+        <button type="button" className="ol-send" onClick={push}>{tx("Ещё одно", "Another")}</button>
       </div>
     </div>
   );
@@ -462,8 +636,8 @@ function Order() {
               transition={SPRING}
               className="ol-glass ol-hold"
               onPointerDown={(event) => {
+                holdPointer(event);
                 drag.current = index;
-                event.currentTarget.setPointerCapture(event.pointerId);
               }}
               onPointerMove={(event) => {
                 const from = drag.current;
@@ -497,7 +671,7 @@ function Order() {
 }
 
 function YieldCell({ char }) {
-  if (char < "0" || char > "9") return <span className="ol-num-gap" />;
+  if (char === "\u202f" || char === " ") return <span className="ol-num-gap" />;
   const n = Number(char);
   return (
     <span className="ol-digit">
@@ -509,10 +683,9 @@ function YieldCell({ char }) {
 }
 
 function Yield() {
-  const presets = ["1 240 000", "2 480 000", "860 000"];
-  const width = Math.max(...presets.map((preset) => preset.length));
+  const presets = ["1\u202f240\u202f000", "2\u202f480\u202f000", "860\u202f000"];
   const [value, setValue] = useState(presets[0]);
-  const cells = [...value.padStart(width, " ")];
+  const cells = [...value];
   return (
     <div className="ol-fill">
       <div className="ol-center">
@@ -604,27 +777,57 @@ function Rise() {
   );
 }
 
-function Magnet() {
-  const x = useSpring(0, { stiffness: 260, damping: 18, mass: 0.5 });
-  const y = useSpring(0, { stiffness: 260, damping: 18, mass: 0.5 });
+function MagnetBit({ label, hx, hy, px, py, primary }) {
+  const homeX = useMotionValue(hx);
+  const homeY = useMotionValue(hy);
+  useEffect(() => {
+    homeX.set(hx);
+    homeY.set(hy);
+  }, [hx, hy, homeX, homeY]);
+  const x = useTransform([px, py, homeX, homeY], ([cx, cy, ox, oy]) => {
+    const dx = cx - ox;
+    const dy = cy - oy;
+    const dist = Math.hypot(dx, dy) || 1;
+    const reach = Math.max(0, 1 - dist / 360);
+    return (dx / dist) * reach * 72;
+  });
+  const y = useTransform([px, py, homeX, homeY], ([cx, cy, ox, oy]) => {
+    const dx = cx - ox;
+    const dy = cy - oy;
+    const dist = Math.hypot(dx, dy) || 1;
+    const reach = Math.max(0, 1 - dist / 360);
+    return (dy / dist) * reach * 56;
+  });
   return (
-    <div className="ol-fill">
-      <div className="ol-center">
-        <motion.button
-          type="button"
-          className="ol-magnet"
-          style={{ x, y }}
-          onPointerMove={(event) => {
-            const box = event.currentTarget.getBoundingClientRect();
-            const dx = event.clientX - (box.left + box.width / 2);
-            const dy = event.clientY - (box.top + box.height / 2);
-            x.set(Math.max(-22, Math.min(22, dx * 0.35)));
-            y.set(Math.max(-16, Math.min(16, dy * 0.35)));
-          }}
-          onPointerLeave={() => { x.set(0); y.set(0); }}
-        >
-          {tx("Написать", "Write")}
-        </motion.button>
+    <motion.button type="button" className={primary ? "ol-magnet is-primary" : "ol-magnet"} style={{ x, y, left: `calc(50% + ${hx}px)`, top: `calc(50% + ${hy}px)`, translateX: "-50%", translateY: "-50%" }}>
+      {label}
+    </motion.button>
+  );
+}
+
+function Magnet() {
+  const field = useRef(null);
+  const size = useBoxSize(field);
+  const px = useMotionValue(0);
+  const py = useMotionValue(9999);
+  const bits = [
+    [tx("Написать", "Write"), 0, 0, true],
+    [tx("Кейс", "Case"), -0.32, -0.26, false],
+    [tx("Город", "City"), 0.34, -0.22, false],
+    [tx("Портфель", "Portfolio"), -0.3, 0.28, false],
+    [tx("Дом", "Home"), 0.32, 0.3, false],
+  ];
+  const move = (event) => {
+    const box = event.currentTarget.getBoundingClientRect();
+    px.set(event.clientX - (box.left + box.width / 2));
+    py.set(event.clientY - (box.top + box.height / 2));
+  };
+  return (
+    <div className="ol-fill" onPointerMove={move} onPointerLeave={() => { px.set(0); py.set(9999); }}>
+      <div className="ol-magnet-field" ref={field}>
+        {bits.map(([label, fx, fy, primary]) => (
+          <MagnetBit key={label} label={label} hx={fx * size.w} hy={fy * size.h} px={px} py={py} primary={primary} />
+        ))}
       </div>
     </div>
   );
@@ -637,32 +840,43 @@ function Tickets() {
     [tx("Пропуск", "Pass"), tx("Подъезд 2", "Entrance 2"), tx("сегодня", "today"), "sand"],
     [tx("Свет", "Light"), tx("Гостиная", "Living room"), tx("40%", "40%"), ""],
   ];
+  const stage = useRef(null);
   const rail = useRef(null);
   const x = useMotionValue(0);
-  const [bound, setBound] = useState(0);
+  const drag = useRef(null);
+  const limit = useRef(0);
   useEffect(() => {
-    const node = rail.current;
-    const parent = node?.parentElement;
-    if (!node || !parent) return undefined;
     const measure = () => {
-      setBound(-Math.max(0, node.scrollWidth - parent.clientWidth));
+      const node = rail.current;
+      const parent = stage.current;
+      if (!node || !parent) return;
+      limit.current = Math.max(0, node.scrollWidth - parent.clientWidth);
     };
     measure();
     const observer = new ResizeObserver(measure);
-    observer.observe(node);
-    observer.observe(parent);
+    if (rail.current) observer.observe(rail.current);
+    if (stage.current) observer.observe(stage.current);
     return () => observer.disconnect();
   }, []);
   return (
     <div className="ol-fill">
-      <div className="ol-center ol-center-start" style={{ padding: 0 }}>
+      <div className="ol-ticket-stage" ref={stage}>
         <motion.div
           ref={rail}
           className="ol-rail"
           style={{ x }}
-          drag="x"
-          dragConstraints={{ left: bound, right: 0 }}
-          dragElastic={0.12}
+          onPointerDown={(event) => {
+            holdPointer(event);
+            drag.current = { id: event.pointerId, start: event.clientX, origin: x.get() };
+          }}
+          onPointerMove={(event) => {
+            const active = drag.current;
+            if (!active || active.id !== event.pointerId) return;
+            const next = clamp(active.origin + event.clientX - active.start, -limit.current, 0);
+            x.set(next);
+          }}
+          onPointerUp={() => { drag.current = null; }}
+          onPointerCancel={() => { drag.current = null; }}
         >
           {cards.map(([kicker, title, when, wash]) => (
             <article key={title} className={`ol-glass ol-ticket ol-wash ${wash ? `ol-wash-${wash}` : ""}`}>
@@ -674,6 +888,69 @@ function Tickets() {
             </article>
           ))}
         </motion.div>
+      </div>
+    </div>
+  );
+}
+
+function FieldBit({ label, hx, hy, px, py }) {
+  const homeX = useMotionValue(hx);
+  const homeY = useMotionValue(hy);
+  useEffect(() => {
+    homeX.set(hx);
+    homeY.set(hy);
+  }, [hx, hy, homeX, homeY]);
+  const x = useTransform([px, py, homeX, homeY], ([cx, cy, ox, oy]) => {
+    const dx = ox - cx;
+    const dy = oy - cy;
+    const dist = Math.hypot(cx - ox, cy - oy);
+    const push = Math.max(0, 260 - dist) / 260 * 120;
+    const len = Math.hypot(dx, dy) || 1;
+    return (dx / len) * push;
+  });
+  const y = useTransform([px, py, homeX, homeY], ([cx, cy, ox, oy]) => {
+    const dx = ox - cx;
+    const dy = oy - cy;
+    const dist = Math.hypot(cx - ox, cy - oy);
+    const push = Math.max(0, 260 - dist) / 260 * 96;
+    const len = Math.hypot(dx, dy) || 1;
+    return (dy / len) * push;
+  });
+  return (
+    <motion.span className="ol-field-bit" style={{ x, y, left: `calc(50% + ${hx}px)`, top: `calc(50% + ${hy}px)`, translateX: "-50%", translateY: "-50%" }}>{label}</motion.span>
+  );
+}
+
+function Field() {
+  const scene = useRef(null);
+  const size = useBoxSize(scene);
+  const px = useMotionValue(9999);
+  const py = useMotionValue(9999);
+  const bits = [
+    [tx("Лампа", "Lamp"), -0.36, -0.18],
+    [tx("Замок", "Lock"), -0.14, -0.3],
+    [tx("Парковка", "Parking"), 0.16, -0.26],
+    [tx("Запись", "Visit"), 0.38, -0.06],
+    ["Halo", -0.34, 0.2],
+    [tx("Фонд", "Fund"), 0.02, 0.3],
+    [tx("Климат", "Climate"), 0.34, 0.22],
+  ];
+  const move = (event) => {
+    const box = event.currentTarget.getBoundingClientRect();
+    px.set(event.clientX - (box.left + box.width / 2));
+    py.set(event.clientY - (box.top + box.height / 2));
+  };
+  return (
+    <div className="ol-fill" onPointerMove={move} onPointerLeave={() => { px.set(9999); py.set(9999); }}>
+      <div className="ol-field-scene" ref={scene}>
+        <div className="ol-field-core">
+          <span className="ol-kicker">YaOS</span>
+          <h2>{tx("Поле дома", "The field of the home")}</h2>
+          <p className="ol-muted">{tx("Чипы отступают от руки.", "The chips spring away from the hand.")}</p>
+        </div>
+        {bits.map(([label, fx, fy]) => (
+          <FieldBit key={label} label={label} hx={fx * size.w} hy={fy * size.h} px={px} py={py} />
+        ))}
       </div>
     </div>
   );
@@ -697,4 +974,5 @@ export const Pieces = {
   rise: Rise,
   magnet: Magnet,
   tickets: Tickets,
+  field: Field,
 };

@@ -12,8 +12,8 @@ const EXPERIMENTS = [
     line: { ru: "Карточки YaOS уходят в глубину", en: "YaOS cards recede into depth" },
     hint: { ru: "Крутите колесо внутри плитки.", en: "Scroll inside the tile." },
     idea: {
-      ru: "Четыре стеклянные карточки — дом, память, город и портфель — сжимаются по мере скролла.",
-      en: "Four glass cards — home, memory, city, and portfolio — tighten as you scroll.",
+      ru: "Четыре стеклянные карточки стоят стопкой: масштаб, сдвиг и размытие. Колесо снимает верхнюю.",
+      en: "Four glass cards sit in a stack: scale, offset, and blur. The wheel peels the front one away.",
     },
     tokens: ["scroll", "scale", "sticky"],
   },
@@ -61,8 +61,8 @@ const EXPERIMENTS = [
     line: { ru: "Свет и климат сливаются", en: "Light and climate fuse" },
     hint: { ru: "Потяните синюю каплю.", en: "Drag the blue blob." },
     idea: {
-      ru: "Две капли — свет и климат. Перетащите одну: размытие склеивает их в общую форму.",
-      en: "Two blobs, light and climate. Drag one and the blur fuses them into a single shape.",
+      ru: "Свет и климат. Перетащите синюю каплю: goo-фильтр вытягивает между ними мост.",
+      en: "Light and climate. Drag the blue blob and a goo filter pulls a bridge between them.",
     },
     tokens: ["drag", "spring", "goo"],
   },
@@ -73,8 +73,8 @@ const EXPERIMENTS = [
     line: { ru: "Список становится разворотом", en: "A list becomes a spread" },
     hint: { ru: "Откройте кейс, затем вернитесь.", en: "Open a case, then go back." },
     idea: {
-      ru: "Общая форма: строка портфеля растягивается в карточку YaOS, Halo или городской услуги.",
-      en: "A shared shape: a portfolio row expands into a YaOS, Halo, or city-service card.",
+      ru: "Строка растёт в полный разворот кейса. Контейнер меняет размер, текст проявляется отдельно и не тянется.",
+      en: "A row grows into a full case spread. The container resizes, and the text fades in on its own so it never stretches.",
     },
     tokens: ["layout", "spring", "shared"],
   },
@@ -85,8 +85,8 @@ const EXPERIMENTS = [
     line: { ru: "Оплата парковки во дворе", en: "Pay for the courtyard bay" },
     hint: { ru: "Потяните шторку вниз или подтвердите.", en: "Drag the sheet down, or confirm." },
     idea: {
-      ru: "Пружинная шторка московской парковки. Жест вниз закрывает её, кнопка открывает снова.",
-      en: "A spring sheet for Moscow parking. A downward drag dismisses it; the button opens it again.",
+      ru: "Шторка оплаты закрывает двор. Потяните её вниз — остаётся карта двора и место 14.",
+      en: "The payment sheet covers the courtyard. Drag it down and the yard map with bay 14 stays.",
     },
     tokens: ["drag", "spring", "sheet"],
   },
@@ -94,11 +94,11 @@ const EXPERIMENTS = [
     id: "island",
     title: { ru: "Остров", en: "Island" },
     kicker: { ru: "Дом", en: "Home" },
-    line: { ru: "Домофон живёт в острове", en: "The doorbell lives in the island" },
-    hint: { ru: "Нажмите остров.", en: "Tap the island." },
+    line: { ru: "Часы, звонок, открытая дверь", en: "Clock, bell, open door" },
+    hint: { ru: "Нажмите остров — три состояния.", en: "Tap the island through three states." },
     idea: {
-      ru: "Остров шириной на пружине: короткое состояние и имя у двери.",
-      en: "An island whose width springs between a compact state and a name at the door.",
+      ru: "Остров дома: время, домофон и живая активность с действиями. Ширина и высота пружинят, текст не масштабируется.",
+      en: "A home island: the clock, the doorbell, and a live activity with actions. Width and height spring, the text does not scale.",
     },
     tokens: ["spring", "width", "tap"],
   },
@@ -106,11 +106,11 @@ const EXPERIMENTS = [
     id: "toast",
     title: { ru: "Заметки", en: "Notes" },
     kicker: { ru: "Система", en: "System" },
-    line: { ru: "Короткие подтверждения", en: "Short confirmations" },
-    hint: { ru: "Добавьте заметку или нажмите, чтобы убрать.", en: "Add a note, or tap one to dismiss it." },
+    line: { ru: "Стопка раскрывается под рукой", en: "The stack opens under the hand" },
+    hint: { ru: "Наведите, чтобы раскрыть. Нажмите, чтобы убрать.", en: "Hover to expand. Tap a note to dismiss it." },
     idea: {
-      ru: "Стопка подтверждений: кейс сохранён, свет приглушён, запись стоит. Каждая приезжает на пружине.",
-      en: "A stack of confirmations: case saved, lights dimmed, visit set. Each one arrives on a spring.",
+      ru: "Заметки лежат стопкой поверх документа. Наведение раскрывает их, новая заметка приезжает сверху.",
+      en: "Notes rest in a stack over a document. Hover opens them; a new note arrives from the top.",
     },
     tokens: ["spring", "stack", "dismiss"],
   },
@@ -191,11 +191,11 @@ const EXPERIMENTS = [
     id: "magnet",
     title: { ru: "Магнит", en: "Magnet" },
     kicker: { ru: "Кнопка", en: "Button" },
-    line: { ru: "«Написать» тянется к руке", en: "“Write” leans toward the hand" },
-    hint: { ru: "Подведите курсор к кнопке.", en: "Bring the pointer near the button." },
+    line: { ru: "Кластер кнопок тянется к руке", en: "A cluster of buttons leans in" },
+    hint: { ru: "Ведите курсор сквозь кнопки.", en: "Move the pointer through the buttons." },
     idea: {
-      ru: "Кнопка письма чуть смещается к указателю и возвращается на мягкой пружине.",
-      en: "The write button shifts toward the pointer and returns on a soft spring.",
+      ru: "Магнитное меню: «Написать» и четыре соседние кнопки тянутся к указателю и возвращаются.",
+      en: "A magnetic menu: “Write” and four neighbors lean toward the pointer, then return.",
     },
     tokens: ["pointer", "spring", "magnet"],
   },
@@ -206,10 +206,23 @@ const EXPERIMENTS = [
     line: { ru: "Городские карточки в ряд", en: "City cards in a row" },
     hint: { ru: "Потяните ряд влево.", en: "Drag the row to the left." },
     idea: {
-      ru: "Парковка, запись, пропуск и свет. Ряд стеклянных талонов едет за пальцем.",
-      en: "Parking, a visit, a pass, and the lights. A row of glass tickets follows the finger.",
+      ru: "Парковка, запись, пропуск и свет. Ряд едет за пальцем, края растворяются маской.",
+      en: "Parking, a visit, a pass, and the lights. The row follows the finger, and the edges fade.",
     },
     tokens: ["drag", "spring", "row"],
+  },
+  {
+    wide: true,
+    id: "field",
+    title: { ru: "Поле", en: "Field" },
+    kicker: { ru: "Курсор", en: "Cursor" },
+    line: { ru: "Чипы YaOS отступают от руки", en: "YaOS chips spring away from the hand" },
+    hint: { ru: "Ведите курсор сквозь поле.", en: "Move the pointer through the field." },
+    idea: {
+      ru: "Поле дома. Чипы лампы, замка, парковки и климата пружинят в сторону от указателя.",
+      en: "The field of the home. Chips for the lamp, the lock, parking, and climate spring away from the pointer.",
+    },
+    tokens: ["pointer", "spring", "field"],
   },
 ];
 
@@ -231,23 +244,24 @@ const STAGE_H = 900;
 
 // Tile posters. w/h is the iframe stage; z crops empty margin around a centered subject.
 const PRESENTATION = {
-  stack: { w: 760, h: 475, z: 1.08 },
+  stack: { w: 900, h: 560, z: 1.06 },
   intent: { w: 720, h: 450, z: 1.12 },
   gather: { w: 720, h: 450, z: 1.28 },
   dock: { w: 680, h: 425, z: 1.16 },
-  melt: { w: 560, h: 350, z: 1.12 },
-  passage: { w: 720, h: 450, z: 1.14 },
-  sheet: { w: 880, h: 550, z: 1.06 },
-  island: { w: 720, h: 450, z: 1.32 },
-  toast: { w: 560, h: 350, z: 1.18 },
+  melt: { w: 980, h: 640, z: 1 },
+  passage: { w: 900, h: 560, z: 1 },
+  sheet: { w: 760, h: 860, z: 1.04 },
+  island: { w: 1100, h: 700, z: 1 },
+  toast: { w: 980, h: 640, z: 1 },
   command: { w: 640, h: 400, z: 1.16 },
   order: { w: 640, h: 400, z: 1.05 },
-  yield: { w: 860, h: 538, z: 1.55 },
+  yield: { w: 860, h: 520, z: 1.15 },
   glass: { w: 680, h: 425, z: 1.22 },
-  spotlight: { w: 760, h: 475, z: 1.42 },
+  spotlight: { w: 900, h: 560, z: 1 },
   rise: { w: 800, h: 500, z: 1.36 },
-  magnet: { w: 480, h: 300, z: 1.2 },
-  tickets: { w: 760, h: 475, z: 1.02 },
+  magnet: { w: 980, h: 620, z: 1 },
+  tickets: { w: 980, h: 560, z: 1 },
+  field: { w: 1200, h: 640, z: 1 },
 };
 
 function presentationOf(mod) {
@@ -349,7 +363,7 @@ function replay(frame) {
 
 EXPERIMENTS.forEach((mod, index) => {
   const article = el("article", "lab-tile");
-  if (index === 0) article.classList.add("is-feature");
+  if (index === 0 || mod.wide) article.classList.add("is-feature");
   article.dataset.exp = mod.id;
   const frame = makeFrame(mod);
   const expand = el("button", "lab-expand", EXPAND);
@@ -527,6 +541,16 @@ if (location.hash) {
   const id = location.hash.slice(1);
   if (EXPERIMENTS.some((mod) => mod.id === id)) open(id);
 }
+
+function parkChrome() {
+  const narrow = window.matchMedia("(max-width: 809px)").matches;
+  const box = grid?.getBoundingClientRect();
+  const away = Boolean(narrow && box && box.top < window.innerHeight * 0.72 && box.bottom > 80);
+  document.querySelectorAll(".dock, .float").forEach((node) => node.classList.toggle("lab-chrome-away", away));
+}
+window.addEventListener("scroll", parkChrome, { passive: true });
+window.addEventListener("resize", parkChrome);
+parkChrome();
 
 window.__lab = {
   ids: EXPERIMENTS.map((mod) => mod.id),

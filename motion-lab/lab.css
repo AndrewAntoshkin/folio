@@ -414,6 +414,14 @@
   }
 }
 
+@media (max-width: 809px) {
+  .dock.lab-chrome-away,
+  .float.lab-chrome-away {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .lab-dialog,
   .lab-panel {
