@@ -4038,12 +4038,12 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       }
       return r;
     }
-    /* the travel, planned before anything moves (page px, centre-based rects). Every shared element rides the one spring along the same kind of path,
-       a quadratic bow from where it was to where it lands; they set off in a short top-to-bottom wave (≤ 64 ms) and all land at 450 ms, so the reflow is one movement.
-       Of a few bows (straight, then leaning more and more to one axis first) the straightest one where the fewest things cross each other's text wins.
+    /* the travel, planned before anything moves (page px, centre-based rects). Every shared element rides the one spring on one kind of path:
+       a straight line from where it was to where it lands, all setting off on the same frame and landing at 450 ms, so the reflow reads as one movement.
        A path is held inside the moving frame (as far as its two ends allow), so nothing is cut at the frame edge on the way.
-       Whatever would still pass over something else's text – the intent line before anything, otherwise the smaller of the two – fades to 0 for that stretch, 45 ms each way */
-    const FF_N=45,FF_WAVE=64,FF_YIELD=45,FF_LINE=1.6;
+       Whatever would still pass over something else's text – the intent line before anything, otherwise the smaller of the two – fades to 0 for that stretch, 45 ms each way;
+       a part that only the new screen has holds back while any moving card's glass is over it */
+    const FF_N=45,FF_YIELD=45,FF_LINE=1.6;
     /* where n's ink is (each line of text, each icon or image), as fractions of n's box */
     function ffInk(n,acc){
       const b=n.getBoundingClientRect(),u=acc||[];if(!b.width||!b.height)return u;
@@ -4055,48 +4055,31 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         else if(/^(svg|img|canvas)$/i.test(x.tagName)&&seen(x))add(x.getBoundingClientRect())}
       return u;
     }
-    function ffPlan(its,frame,lead0){
+    function ffPlan(its,frame){
       const ts=Array.from({length:FF_N+1},(_,i)=>i*FF_DUR/FF_N),M=8,L=(a,b,p)=>a+(b-a)*p,F=ts.map(frame);
-      /* the wave runs down the rows they land in (|dir| 1) or the rows they leave (|dir| 2), top first (+) or bottom first (−) */
-      const mv=its.filter(e=>e.g!=="static"),rows=[e=>e.V1.y-e.V1.h/2,e=>e.V0.y-e.V0.h/2].map(top=>{const y0=Math.min(...mv.map(top));return{top,y0,span:Math.max(1,Math.max(...mv.map(top))-y0)}});
-      const wave=(e,dir)=>{const{top,y0,span}=rows[Math.abs(dir)-1];return FF_WAVE*(dir>0?top(e)-y0:y0+span-top(e))/span};
       const edge=(V,f)=>[f.l+M-(V.x-V.w/2),V.x+V.w/2-(f.r-M),f.t+M-(V.y-V.h/2),V.y+V.h/2-(f.b-M)];
       const cut=(r,c)=>({l:Math.max(r.l,c.l),t:Math.max(r.t,c.t),r:Math.min(r.r,c.r),b:Math.min(r.b,c.b)});
       const ins=(r,m=12)=>{const d=Math.min(m,.15*Math.min(r.r-r.l,r.b-r.t));return{l:r.l+d,t:r.t+d,r:r.r-d,b:r.b-d}};
       /* cards may brush glass edges on the way; a chip may not touch anything */
       const tol=(i,j)=>its[i].g==="chip"||its[j].g==="chip"?2:12;
       const hit=(a,b)=>Math.max(0,Math.min(a.r,b.r)-Math.max(a.l,b.l))*Math.max(0,Math.min(a.b,b.b)-Math.max(a.t,b.t));
-      const fly=(e,beta,lead,dir)=>{
+      const fly=e=>{
         if(e.g==="static"){const V=e.V1,r=cut({l:V.x-V.w/2,t:V.y-V.h/2,r:V.x+V.w/2,b:V.y+V.h/2},e.clip);return F.map(f=>({...V,r:cut(r,f)}))}
-        const d=e.g!=="card"&&e.g!=="chip"?0:wave(e,dir),v=e.g==="line"?FF_LINE:1,a=e.V0,b=e.V1,c=lead==="y"?{x:a.x,y:b.y}:{x:b.x,y:a.y};
-        const K={x:L((a.x+b.x)/2,c.x,beta),y:L((a.y+b.y)/2,c.y,beta)},o0=edge(a,F[0]),o1=edge(b,F[FF_N]);
-        return ts.map((t,i)=>{const q=t<=d?0:ffP((t-d)*v*FF_DUR/(FF_DUR-d)),u=1-q,V={x:u*u*a.x+2*u*q*K.x+q*q*b.x,y:u*u*a.y+2*u*q*K.y+q*q*b.y,w:L(a.w,b.w,q),h:L(a.h,b.h,q)};
+        const v=e.g==="line"?FF_LINE:1,a=e.V0,b=e.V1,o0=edge(a,F[0]),o1=edge(b,F[FF_N]);
+        return ts.map((t,i)=>{const q=ffP(t*v),V={x:L(a.x,b.x,q),y:L(a.y,b.y,q),w:L(a.w,b.w,q),h:L(a.h,b.h,q)};
           const o=edge(V,F[i]).map((v,j)=>Math.max(0,v-Math.max(0,L(o0[j],o1[j],q))));
           V.x+=o[0]&&o[1]?(o[0]-o[1])/2:o[0]-o[1];V.y+=o[2]&&o[3]?(o[2]-o[3])/2:o[2]-o[3];
           V.r=cut(cut({l:V.x-V.w/2,t:V.y-V.h/2,r:V.x+V.w/2,b:V.y+V.h/2},e.clip),F[i]);return V});
       };
-      /* two things that overlap where they land, or where they start when both are seen from the start, are layered by design (a sheet over its list): they never count */
-      const P0=its.map(e=>fly(e,0,lead0,1)),apart=its.map((e,i)=>its.map((o,j)=>(e.from||o.from?[FF_N]:[0,FF_N]).every(k=>!hit(ins(P0[i][k].r),ins(P0[j][k].r)))));
-      const on=(e,k)=>ts[k]>=e.from,pair=(P,i,j)=>{let c=0;if(its[i].g==="line"||its[j].g==="line"||!apart[i][j])return 0;const m=tol(i,j);for(let k=0;k<=FF_N;k++)if(on(its[i],k)&&on(its[j],k))c+=hit(ins(P[i][k].r,m),ins(P[j][k].r,m));return c};
-      const cost=(P,g)=>{let c=0;for(let i=0;i<its.length;i++)for(let j=i+1;j<its.length;j++)if(!g||its[i].g===g||its[j].g===g)c+=pair(P,i,j);return c};
-      const better=(c,b)=>!b||c<b.c-Math.max(b.c*.1,400),BOWS=[[0,lead0],...[.35,.7,1].flatMap(b=>[[b,lead0],[b,lead0==="y"?"x":"y"]])];
-      let best=null;
-      for(const dir of[1,-1,2,-2]){
-        const P=its.map(e=>fly(e,0,lead0,dir)),bows={};
-        for(const g of["chip","card"]){const ids=its.flatMap((e,i)=>e.g===g?[i]:[]);if(!ids.length)continue;let b=null;
-          for(const[beta,lead]of BOWS){ids.forEach(i=>{P[i]=fly(its[i],beta,lead,dir)});const c=cost(P,g);if(better(c,b))b={c,beta,lead}}
-          ids.forEach(i=>{P[i]=fly(its[i],b.beta,b.lead,dir)});bows[g]=[b.beta,b.lead];
-          /* chips are small and reshuffle between rows: if their shared bow still crosses, each chip may take its own */
-          if(g==="chip"&&b.c>400)for(let pass=0;pass<2;pass++)for(const i of ids){let m=null;
-            for(const[beta,lead]of BOWS){const T=fly(its[i],beta,lead,dir),Q=P.slice();Q[i]=T;let c=0;its.forEach((o,j)=>{if(j!==i)c+=pair(Q,i,j)});if(better(c,m))m={c,T}}
-            P[i]=m.T}}
-        const c=cost(P);if(better(c,best))best={c,P,dir,bows}}
-      const P=best.P,rank=e=>e.g==="line"?-1:e.g==="static"?0:e.V1.w*e.V1.h;
-      /* the line and chips give way to any touch; two cards only where the upper one's glass (later in the document) would lie over the lower one's ink – brushing glass edges is fine */
+      const P=its.map(fly),on=(e,k)=>ts[k]>=e.from;
+      /* two things that overlap where they land, or where they start when both are seen from the start, are layered by design (a sheet over its list): they never clash */
+      const apart=its.map((e,i)=>its.map((o,j)=>(e.from||o.from?[FF_N]:[0,FF_N]).every(k=>!hit(ins(P[i][k].r),ins(P[j][k].r)))));
+      const rank=e=>e.g==="line"?-1:e.g==="static"?0:e.V1.w*e.V1.h;
+      /* the line and chips give way to any touch, a part only the new screen has to any glass; two cards only where the upper one's glass (later in the document) would lie over the lower one's ink */
       const ink=(i,k)=>{const f=its[i].ink,V=P[i][k],x=V.x-V.w/2,y=V.y-V.h/2;return f?.length?f.map(g=>cut({l:x+g.l*V.w,t:y+g.t*V.h,r:x+g.r*V.w,b:y+g.b*V.h},V.r)):[ins(V.r)]};
       const over=(i,j,k)=>{if(!(its[j].n.compareDocumentPosition(its[i].n)&Node.DOCUMENT_POSITION_FOLLOWING))return false;const g=ins(P[i][k].r,4);return ink(j,k).some(r=>hit(g,r)>0)};
       const clash=(i,j,k)=>{const e=its[i],o=its[j];if(e.g==="line")return hit(P[i][k].r,ins(P[j][k].r,tol(i,j)))>0;
-        if(o.g==="line"||e.g==="chip"||o.g==="chip")return hit(ins(P[i][k].r,tol(i,j)),ins(P[j][k].r,tol(i,j)))>0;
+        if(o.g==="line"||e.g==="chip"||o.g==="chip"||e.g==="static"||o.g==="static")return hit(ins(P[i][k].r,tol(i,j)),ins(P[j][k].r,tol(i,j)))>0;
         return over(i,j,k)||over(j,i,k)};
       its.forEach((e,i)=>{
         e.path=P[i];const hid=[];if(e.g==="static"&&!its.some((o,j)=>o.g!=="static"&&o.g!=="line"&&apart[i][j]))return;
@@ -4106,7 +4089,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         runs.forEach(r=>{r[0]=Math.max(0,r[0]-ts[1]);r[1]=Math.min(FF_DUR,r[1]+ts[1])});
         e.op=ts.map(t=>Math.min(1,...runs.map(([a,b])=>t<a?(a-t)/Math.min(FF_YIELD,a||1):t>b?(t-b)/Math.min(FF_YIELD,FF_DUR-b||1):0)));
       });
-      return{bows:best.bows,dir:best.dir,cost:best.c};
+      return{yields:its.filter(e=>e.op).map(e=>[e.p?.k||e.n.className.toString().slice(0,24),...[e.op.findIndex(v=>v<1),FF_N-[...e.op].reverse().findIndex(v=>v<1)].map(k=>Math.round(ts[k]))])};
     }
     /* keyframes that put n (laid out at B) on a planned path: one drawing scales uniformly (text never distorts); a box that stands for another drawing
        takes the path's width and hangs from the path's top edge, cut at the bottom to its height; the intent line changes its real width and scales only by the height ratio */
@@ -4217,8 +4200,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       push(SCREEN.animate([{clipPath:`inset(${q.t}px ${q.r}px ${q.b}px ${q.l}px round ${rad}px)`},{clipPath:`inset(0px 0px 0px 0px round ${FF.r}px)`}],timing));
       const clock=push(new Animation(new KeyframeEffect(null,[],{duration:FF_DUR,fill:"both"}),document.timeline));FF.clock=clock;clock.finished.then(done,()=>{});
       const keep=new Set(),anc=new Set();
-      const tall=rs=>(Math.max(...rs.map(r=>r.bottom))-Math.min(...rs.map(r=>r.top)))/Math.max(1,Math.max(...rs.map(r=>r.right))-Math.min(...rs.map(r=>r.left)));
-      const lead=(pairs.length?tall(pairs.map(p=>p.b.r))>tall(pairs.map(p=>p.a.r)):R1.w<R0.w)?"y":"x",path={duration:FF_DUR,easing:"linear",fill:"both"},FF_SWAP=[70,120,90];
+      const path={duration:FF_DUR,easing:"linear",fill:"both"},FF_SWAP=[70,120,90];
       /* the frozen screen fades part by part: what is not shared is below .15 by 90 ms and gone at 120; a shared thing drawn differently keeps its old drawing,
          solid, until 70 ms and is gone at 120, its new drawing fades in from 90 — the desktop drawing is off the screen before the frame has narrowed much */
       const gkeep=new Set(),ganc=new Set(),gop=n=>+getComputedStyle(n).opacity;
@@ -4243,7 +4225,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       for(let i=fresh.length;i--;){const c=fresh[i],r=c.getBoundingClientRect();if(r.width&&r.height&&(r.bottom<=Z.y+1||r.top>=Z.y+Z.h-1||r.right<=Z.x+1||r.left>=Z.x+Z.w-1)){const v=c.style.visibility;c.style.visibility="hidden";ffUndo.push(()=>{c.style.visibility=v});fresh.splice(i,1)}}
       const obs=new Map();fresh.forEach(c=>{const r=c.getBoundingClientRect();if(r.width<2||r.height<2||r.width*r.height>.25*Z.w*Z.h||!(+getComputedStyle(c).opacity))return;
         obs.set(c,{n:c,kind:"static",g:"static",ink:ffInk(c),from:FF_IN+40,clip:ffClip(c,SCREEN),V0:C(r),V1:C(r)})});
-      ffLast=its.length?ffPlan([...its,...obs.values()],t=>{const p=ffP(t);return{l:L(A.x,Z.x,p),t:L(A.y,Z.y,p),r:L(A.x+A.w,Z.x+Z.w,p),b:L(A.y+A.h,Z.y+Z.h,p)}},lead):null;
+      ffLast=its.length?ffPlan([...its,...obs.values()],t=>{const p=ffP(t);return{l:L(A.x,Z.x,p),t:L(A.y,Z.y,p),r:L(A.x+A.w,Z.x+Z.w,p),b:L(A.y+A.h,Z.y+Z.h,p)}}):null;
       its.forEach((e,i)=>{
         const{p,n,kind}=e,t=twins[i];
         /* its yield rides in the same keyframes as its path, so fade and motion keep one clock even when a frame runs late */
