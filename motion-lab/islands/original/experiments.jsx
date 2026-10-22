@@ -6,6 +6,7 @@ const EN = params.get("lang") === "en";
 const tx = (ru, en) => (EN ? en : ru);
 const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const SPRING = { type: "spring", stiffness: 420, damping: 34, mass: 0.7 };
+const MORPH = { type: "spring", stiffness: 150, damping: 22, mass: 1 };
 const SOFT = { type: "spring", stiffness: 280, damping: 28, mass: 0.85 };
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
@@ -255,7 +256,7 @@ function Melt() {
     if (!node) return undefined;
     const place = () => {
       if (dragging.current) return;
-      x.set(node.clientWidth * 0.48);
+      x.set(node.clientWidth * 0.485);
       y.set(node.clientHeight * 0.28);
     };
     place();
@@ -273,7 +274,7 @@ function Melt() {
     <div className="ol-fill">
       <div className="ol-melt" ref={box}>
         <div className="ol-goo">
-          <div className="ol-blob still">{tx("Свет", "Light")}</div>
+          <div className="ol-blob still" />
           <motion.div
             className="ol-blob dim"
             style={{ x, y }}
@@ -284,15 +285,14 @@ function Melt() {
             onPointerMove={(event) => { if (event.currentTarget.hasPointerCapture(event.pointerId)) drag(event); }}
             onPointerUp={() => { dragging.current = false; }}
             onPointerCancel={() => { dragging.current = false; }}
-          >
-            {tx("Климат", "Climate")}
-          </motion.div>
+          />
         </div>
+        <div className="ol-blob-label still">{tx("Свет", "Light")}</div>
+        <motion.div className="ol-blob-label" style={{ x, y }}>{tx("Климат", "Climate")}</motion.div>
         <svg className="ol-goo-svg" aria-hidden="true">
-          <filter id="ol-goo" x="-80%" y="-80%" width="260%" height="260%" colorInterpolationFilters="sRGB">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="blur" />
-            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 24 -10" result="goo" />
-            <feBlend in="SourceGraphic" in2="goo" />
+          <filter id="ol-goo" x="-50%" y="-50%" width="200%" height="200%" colorInterpolationFilters="sRGB">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="20" result="blur" />
+            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -6" result="goo" />
           </filter>
         </svg>
       </div>
@@ -347,7 +347,7 @@ function Passage() {
             animate={view.closing
               ? { left: view.x, top: view.y, width: view.w, height: view.h }
               : { left: 20, top: 20, width: Math.max(view.w, view.pw - 40), height: Math.max(view.h, view.ph - 40) }}
-            transition={SPRING}
+            transition={MORPH}
             onAnimationComplete={() => { if (view.closing) setView(null); }}
           >
             <motion.div

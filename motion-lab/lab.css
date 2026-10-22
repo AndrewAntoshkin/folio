@@ -419,6 +419,7 @@
   .float.lab-chrome-away {
     opacity: 0;
     pointer-events: none;
+    transition: none;
   }
 }
 
