@@ -722,17 +722,6 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .hints .kbd{border-color:rgba(47,47,47,.28);background:rgba(255,255,255,.92);color:rgba(47,47,47,.92);box-shadow:0 1px 0 rgba(47,47,47,.2)}
     body.night .hints{color:rgba(236,236,236,.92);background:rgba(28,28,30,.92);border-color:rgba(255,255,255,.18)}
     body.night .hints .kbd{border-color:rgba(255,255,255,.32);background:rgba(255,255,255,.14);color:rgba(236,236,236,.96);box-shadow:none}
-    .coach{position:fixed;left:50%;bottom:74px;z-index:45;transform:translateX(-50%);width:min(560px,calc(100cqw - 28px));padding:16px 16px 16px;border-radius:24px;background:rgba(252,252,252,.94);border:1px solid rgba(47,47,47,.12);box-shadow:0 24px 60px -28px rgba(0,0,0,.35);color:var(--ink);-webkit-backdrop-filter:blur(24px) saturate(1.4);backdrop-filter:blur(24px) saturate(1.4)}
-    .coach b{display:block;margin-bottom:4px;font-size:15px;font-weight:500}
-    .coach p{margin:0 0 8px;color:rgba(47,47,47,.78);font-size:13px;line-height:1.45}
-    .coach .row{display:flex;flex-wrap:wrap;gap:8px 16px;margin-bottom:16px;font-size:13px;color:var(--ink)}
-    .coach kbd{font:11px ui-monospace,SFMono-Regular,Menlo,monospace;padding:0 4px;border:1px solid rgba(47,47,47,.28);border-radius:4px;background:rgba(255,255,255,.9)}
-    .coach .acts{display:flex;justify-content:flex-end}
-    .coach .acts button{border:0;border-radius:999px;background:var(--ink);color:var(--fog);padding:8px 16px;font-size:13px}
-    body.night .coach{background:rgba(32,32,34,.94);border-color:rgba(255,255,255,.14);color:#ececec}
-    body.night .coach p{color:rgba(236,236,236,.78)}
-    body.night .coach kbd{border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.1);color:#ececec}
-    body.night .coach .acts button{background:#fff;color:#171717}
 
     /* rules as switches with a coloured condition */
     .rule{grid-template-columns:28px 1fr 18px}
@@ -1179,7 +1168,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .ff-touch .act{min-height:40px;padding:0 16px;font-size:15px}
     .ff-touch .m-head{height:56px}.ff-touch .m-head .mic{width:40px;height:40px}
     .ff-touch .wx-btn{height:40px}.ff-touch .me-btn{width:40px;height:40px;margin-right:-4px}
-    .ff-touch .timeline-hint,.ff-touch .coach,.ff-touch .os.view-home .hints{display:none}
+    .ff-touch .timeline-hint,.ff-touch .os.view-home .hints{display:none}
     .ff-touch .hints{height:56px;padding:8px;gap:4px;bottom:16px}
     .ff-touch .hints button{height:44px;padding:0 16px;gap:8px;font-size:15px}
     .ff-touch .hints button .ic{width:20px;height:20px}
@@ -3174,7 +3163,6 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     function setLang(l){
       if(l===LANG)return;LANG=l;
       const u=new URL(location.href);if(l==="en")u.searchParams.set("lang","en");else u.searchParams.delete("lang");history.replaceState(null,"",u);
-      const coachWas=coachOpen();if(coachWas)$(".coach")?.remove();
       const seen=new Set();new Set([...(S?[S]:[]),...OPEN.values(),...SYSSP.values()]).forEach(sp=>{sp.rules?.forEach(r=>{delete r._p;delete r._t});translateDeep(sp,seen)});
       TODAY.forEach(it=>{if(typeof it.title==="string")it.title=tr(it.title);if(typeof it.desc==="string")it.desc=tr(it.desc)});
       applyLang();renderWx();
@@ -3182,7 +3170,6 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       if(view==="space"){renderSpace();if(overviewOpen)renderOverview()}
       else if(view==="timeline")renderTimeline();
       renderWindows();proj();
-      if(coachWas)showCoach();
     }
 
     $("#homeLine").addEventListener("submit",e=>{e.preventDefault();flushTypeGuard($("#intentInput"));const v=$("#intentInput").value.trim();if(!v){$("#intentInput").focus();return}
@@ -3456,7 +3443,6 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       if(e.key!=="Control"&&e.key!=="Meta")metaAlone=false;
       const t=e.target,inField=t.matches?.("input,textarea")||t.isContentEditable,emptyLine=t.matches?.(".line-in")&&!t.value;
       if(e.key==="Escape"){
-        if(coachOpen()&&!paletteOpen&&!selBubble.classList.contains("show")&&!overviewOpen&&!$(".modal-wrap")){dismissCoach(true);return}
         if(paletteOpen){closePalette();return}
         if(selBubble.classList.contains("show"))return closeSelBubble();
         if(inField&&t.value){t.blur();return}
@@ -3719,17 +3705,6 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
 
     function tickClock(){const d=new Date(),t=timeStr(d),big=t;$("#clock").textContent=t;$("#homeTime").textContent=t;$("#homeDate").textContent=d.toLocaleDateString(LANG==="ru"?"ru-RU":"en-GB",{weekday:"long",day:"numeric",month:"long",timeZone:MSK});const lk=$("#lockTime");if(lk)lk.textContent=big;$("#sbTime").textContent=t;const id=$("#idleTime");if(id)id.textContent=big}
     (function clockAt(){setTimeout(()=>{tickClock();clockAt()},60000-Date.now()%60000+30)})();
-    const COACH_KEY="intent-os-hints-seen";
-    function coachOpen(){return !!$(".coach")}
-    function dismissCoach(persist){if(persist!==false)try{localStorage.setItem(COACH_KEY,"1")}catch{} $(".coach")?.remove()}
-    function showCoach(){
-      if(view!=="home"||FF.dev!=="desktop"||coachOpen())return;
-      try{if(localStorage.getItem(COACH_KEY))return}catch{}
-      const el=document.createElement("div");el.className="coach";el.setAttribute("role","dialog");
-      el.innerHTML=`<b>${esc(T("A few keys","Несколько клавиш"))}</b><p>${esc(T("Spaces run from the keyboard. Skip this whenever you like.","Пространством можно управлять с клавиатуры. Подсказку можно пропустить."))}</p><div class="row"><span><kbd>Tab</kbd> ${esc(T("or","или"))} <kbd>+</kbd> ${esc(T("new module","новый модуль"))}</span><span><kbd>O</kbd> ${esc(T("overview","обзор"))}</span><span><kbd>${esc(MOD)}</kbd> ${esc(T("actions","действия"))}</span><span>${esc(T("Select text → a module","Выделите текст → модуль"))}</span></div><div class="acts"><button type="button">${esc(T("Got it","Понятно"))}</button></div>`;
-      el.querySelector("button").onclick=()=>dismissCoach(true);
-      SCREEN.appendChild(el);
-    }
     const typeGuard=new WeakMap();
     function isTypeField(el){return !!(el&&(el.id==="intentInput"||el.classList?.contains("line-in")))}
     function settleTyping(el){let n=el;while(n&&n.getAnimations){n.getAnimations().forEach(a=>{try{a.finish()}catch{}});n=n.parentElement}}
@@ -4305,7 +4280,6 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       if(!devOf(id))return;
       if(id===FF.dev){opts.after?.();return}
       if(HANDOFF&&!opts.keepHand){HANDOFF=null;$("#handoff")?.classList.remove("on")}
-      $(".coach")?.remove();
       const html=document.documentElement,calm=reduce.matches,tok=++ffTok,from={...FF};
       ffAnims.forEach(a=>a.cancel());ffAnims=[];$$(".ff-morph-shell,.ff-ghost,.ffm-page").forEach(n=>n.remove());ffUndo.splice(0).forEach(f=>f());ffSettle();
       const rect=g=>({x:g.x-g.b*g.s,y:g.y-g.b*g.s,w:(g.w+2*g.b)*g.s,h:(g.h+2*g.b)*g.s,r:(g.r+g.b)*g.s,b:g.b*g.s});
@@ -5387,7 +5361,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     const qs=params.get("space");
     if(qs&&BP[qs])openSpace(BP[qs]());
     else if(params.get("view")==="timeline")setView("timeline");
-    else{setTimeout(()=>$("#intentInput").focus(),200);staggerIn($$(".home-time,.home-date,.home-line,.blueprints,.home-apps,.timeline-hint"),18,70);showCoach()}
+    else{setTimeout(()=>$("#intentInput").focus(),200);staggerIn($$(".home-time,.home-date,.home-line,.blueprints,.home-apps,.timeline-hint"),18,70)}
   </script>
   <script src="/demos/intent-os/live.js"></script>
 </body>
