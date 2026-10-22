@@ -4263,10 +4263,10 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
          (cards, fades) would run ahead of the ones it cannot (frame, clip, intent line) on a late frame – a card over text the line has not yet left */
       /* the clock starts on the first frame that shows the morph (that frame is 0 ms), not on a pending play that resolves a frame or two later */
       const rest=ffAnims.filter(a=>a!==clock);rest.forEach(a=>a.pause());
-      /* a late frame does not skip the spring: the clock moves on at most ~one frame per frame, so a slow paint delays the morph instead of cutting part of it */
-      let first=true,prev=0;
+      /* the first frames (the costly first paint of both layouts) move the clock on by one frame each however long they take, so the start is never skipped; then it keeps real time */
+      let first=true,prev=0,n=0;
       const tick=ts=>{if(tok!==ffTok)return;if(first){first=false;if(clock.playState==="idle")clock.startTime=ts}else if(clock.playState==="idle")return;
-        if(prev&&ts-prev>34&&clock.playState==="running")clock.startTime+=ts-prev-17;prev=ts;
+        if(n++<4&&prev&&ts-prev>17&&clock.playState==="running")clock.startTime+=ts-prev-17;prev=ts;
         const t=clock.currentTime;if(t!=null)rest.forEach(a=>{if(a.playState==="paused"&&a.currentTime!==t)a.currentTime=t});if(clock.playState!=="finished")requestAnimationFrame(tick)};
       requestAnimationFrame(tick);
       setTimeout(()=>{if(first&&tok===ffTok){first=false;if(clock.playState==="idle")clock.play()}},250);
