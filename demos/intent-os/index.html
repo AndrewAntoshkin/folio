@@ -4174,7 +4174,8 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       push(ghost.animate(kf,{duration:FF_DUR,easing:"linear",fill:"forwards"}));
       const s=FF.s,i0=r=>({t:(r.y+r.b-FF.y)/s,l:(r.x+r.b-FF.x)/s,r:(FF.x+FF.w*s-(r.x+r.w-r.b))/s,b:(FF.y+FF.h*s-(r.y+r.h-r.b))/s});
       const q=i0(R0),rad=Math.max(0,R0.r-R0.b)/s;
-      push(SCREEN.animate([{clipPath:`inset(${q.t}px ${q.r}px ${q.b}px ${q.l}px round ${rad}px)`},{clipPath:`inset(0px 0px 0px 0px round ${FF.r}px)`}],timing)).finished.then(done,()=>{});
+      push(SCREEN.animate([{clipPath:`inset(${q.t}px ${q.r}px ${q.b}px ${q.l}px round ${rad}px)`},{clipPath:`inset(0px 0px 0px 0px round ${FF.r}px)`}],timing));
+      const clock=push(new Animation(new KeyframeEffect(null,[],{duration:FF_DUR,fill:"both"}),document.timeline));clock.play();clock.finished.then(done,()=>{});
       const keep=new Set(),anc=new Set();
       const tall=rs=>(Math.max(...rs.map(r=>r.bottom))-Math.min(...rs.map(r=>r.top)))/Math.max(1,Math.max(...rs.map(r=>r.right))-Math.min(...rs.map(r=>r.left)));
       const lead=(pairs.length?tall(pairs.map(p=>p.b.r))>tall(pairs.map(p=>p.a.r)):R1.w<R0.w)?"y":"x",path={duration:FF_DUR,easing:"linear",fill:"both"},FF_SWAP=[70,120,90];
@@ -4205,8 +4206,9 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       ffLast=its.length?ffPlan([...its,...obs.values()],t=>{const p=ffP(t);return{l:L(A.x,Z.x,p),t:L(A.y,Z.y,p),r:L(A.x+A.w,Z.x+Z.w,p),b:L(A.y+A.h,Z.y+Z.h,p)}},lead):null;
       its.forEach((e,i)=>{
         const{p,n,kind}=e,t=twins[i];
-        push(n.animate(ffKf(e,n,p.b.r,kind),path));
-        if(e.op){const o=+getComputedStyle(n).opacity;push(n.animate(e.op.map((v,j)=>({offset:j/FF_N,opacity:+(o*v).toFixed(3)})),path))}
+        /* its yield rides in the same keyframes as its path, so fade and motion keep one clock even when a frame runs late */
+        const kf=ffKf(e,n,p.b.r,kind);if(e.op){const o=+getComputedStyle(n).opacity;kf.forEach((k,j)=>{k.opacity=+(o*e.op[j]).toFixed(3)})}
+        push(n.animate(kf,path));
         if(kind!=="box"){if(t)t.classList.add("ffm-hide");return}
         /* its glass is there from the start, under the old drawing on the same path, so nothing behind shows through while the drawings swap */
         if(n.children.length)[...n.children].forEach(c=>fadeIn(c,FF_SWAP[2],140));else fadeIn(n,FF_SWAP[2],140);
@@ -4217,6 +4219,12 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         push(c.animate(e.op.map((v,j)=>({offset:j/FF_N,opacity:+(o*v*ease((j/FF_N*FF_DUR-FF_IN)/200)).toFixed(3)})),path))});
       /* a box that holds shared elements cannot fade without them: its own paint fades in instead */
       anc.forEach(e=>{const f=ffPaint(e,ffUndo);if(f)push(e.animate([f.from,f.to],{duration:200,delay:FF_IN,easing:"cubic-bezier(.2,.8,.2,1)",fill:"backwards"}))});
+      /* one clock: a bare timing animation plays and every part is set to its time each frame. Left to play, the parts the compositor can run
+         (cards, fades) would run ahead of the ones it cannot (frame, clip, intent line) on a late frame – a card over text the line has not yet left */
+      const rest=ffAnims.filter(a=>a!==clock);rest.forEach(a=>a.pause());
+      const tick=()=>{if(tok!==ffTok||clock.playState==="idle")return;const t=clock.currentTime;
+        if(t!=null)rest.forEach(a=>{if(a.playState==="paused"&&a.currentTime!==t)a.currentTime=t});if(clock.playState!=="finished")requestAnimationFrame(tick)};
+      requestAnimationFrame(tick);
     }
     /* drop the morph styling without letting the screen's own background transitions replay */
     function ffSettle(){
