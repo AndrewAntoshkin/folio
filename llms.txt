@@ -9,6 +9,7 @@ Andrew Antoshkin is a Design Engineer and Product Designer focused on design sys
 Key links:
 - Profile: https://antoshkin.tech/llm.md
 - Projects: https://antoshkin.tech/projects
+- Motion Lab: https://antoshkin.tech/motion-lab
 - Writing: https://antoshkin.tech/writing
 - English: https://antoshkin.tech/en
 - GitHub: https://github.com/AndrewAntoshkin

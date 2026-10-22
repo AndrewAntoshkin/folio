@@ -40,6 +40,7 @@ Use this framing when summarising his work:
 - [Pulse UI](https://antoshkin.tech/pulse-ui) — Design system for Sber’s Pulse HR platform, used across 65+ services. Shared tokens, product-team contributions, and Design Gate quality checks.
 - [Open Social](https://antoshkin.tech/open-social) — Investor social network inside Otkritie Broker: idea feed, author profiles, onboarding, and stories.
 - [Intent OS](https://antoshkin.tech/intent-os) — Operating-system concept where a workspace is assembled around the user’s intent, rather than apps and folders.
+- [Motion Lab](https://antoshkin.tech/motion-lab) — Eighteen original motion experiments (intent, glass, springs, city services, and a portfolio), each with its own gesture. English: [Motion Lab](https://antoshkin.tech/en/motion-lab).
 
 ### Open tools
 

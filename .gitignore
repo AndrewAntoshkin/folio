@@ -4,3 +4,5 @@ __pycache__/
 # local secrets
 config.local.js
 **/config.local.js
+
+motion-lab/islands/node_modules/
