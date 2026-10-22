@@ -23,6 +23,21 @@ const EXPERIMENTS = [
     tokens: ["useScroll", "scale 1 → 0.5", "sticky"],
   },
   {
+    id: "chamaac-arrow",
+    scroll: false,
+    hero: 0,
+    source: "https://www.chamaac.com/components/buttons/hover-arrow-button",
+    kicker: { ru: "Кнопка", en: "Button" },
+    title: { ru: "Стрелка", en: "Hover arrow" },
+    line: { ru: "Стрелка выезжает слева", en: "The arrow slides in from the left" },
+    hint: { ru: "Наведите на кнопку", en: "Hover the button" },
+    idea: {
+      ru: "Свободная кнопка Chamaac, MIT. Под курсором слева выезжает стрелка, подпись остаётся на месте.",
+      en: "A free Chamaac button, MIT. On hover an arrow slides in from the left and the label stays put.",
+    },
+    tokens: ["width 0 → auto", "0.3s", "whileHover"],
+  },
+  {
     id: "chamaac-input",
     scroll: false,
     hero: 0,
@@ -68,6 +83,21 @@ const EXPERIMENTS = [
     tokens: ["rotate → 0", "scale 1.05", "0.3s"],
   },
   {
+    id: "chamaac-shimmer",
+    scroll: false,
+    hero: 0,
+    source: "https://www.chamaac.com/components/buttons/shimmer-button",
+    kicker: { ru: "Кнопка", en: "Button" },
+    title: { ru: "Блик", en: "Shimmer" },
+    line: { ru: "Блик сам идёт по подписи", en: "A highlight runs across the label" },
+    hint: { ru: "Блик идёт сам, наведите для масштаба", en: "The shimmer runs; hover to scale" },
+    idea: {
+      ru: "Свободная кнопка Chamaac, MIT. Градиент подписи едет сам. Наведение чуть увеличивает кнопку, нажатие уменьшает.",
+      en: "A free Chamaac button, MIT. The label gradient travels on its own. Hover scales the button up, press scales it down.",
+    },
+    tokens: ["backgroundPosition", "1.2s linear", "scale 1.02"],
+  },
+  {
     id: "skiper31",
     scroll: true,
     hero: 0.28,
@@ -96,6 +126,21 @@ const EXPERIMENTS = [
       en: "A free Chamaac component, MIT. Each letter has its own move: rubber, hinge, jump, fall. Hovering plays that letter.",
     },
     tokens: ["onHoverStart", "spring 300 / 20", "Outfit"],
+  },
+  {
+    id: "chamaac-slide",
+    scroll: false,
+    hero: 0,
+    source: "https://www.chamaac.com/components/buttons/slideup-button",
+    kicker: { ru: "Кнопка", en: "Button" },
+    title: { ru: "Слайд подписи", en: "Slide up" },
+    line: { ru: "Подпись уезжает вверх, снизу приходит новая", en: "The label leaves upward, a new one arrives" },
+    hint: { ru: "Наведите на кнопку", en: "Hover the button" },
+    idea: {
+      ru: "Свободная кнопка Chamaac, MIT. Наведение уводит подпись вверх и приводит её копию снизу, с небольшим поворотом.",
+      en: "A free Chamaac button, MIT. Hover sends the label up and brings a copy in from below, with a short rotate.",
+    },
+    tokens: ["y 0 → -200%", "rotate 20° → 0", "0.5s"],
   },
   {
     id: "skiper34",
@@ -128,6 +173,21 @@ const EXPERIMENTS = [
     tokens: ["interval 6s", "y 100% → 0", "click"],
   },
   {
+    id: "chamaac-focus",
+    scroll: false,
+    hero: 0,
+    source: "https://www.chamaac.com/components/buttons/focus-button",
+    kicker: { ru: "Кнопка", en: "Button" },
+    title: { ru: "Рамка фокуса", en: "Focus frame" },
+    line: { ru: "Углы рамки съезжаются к кнопке", en: "Corner marks draw in toward the button" },
+    hint: { ru: "Наведите на кнопку", en: "Hover the button" },
+    idea: {
+      ru: "Свободная кнопка Chamaac, MIT. Тонкая рамка и уголки. Наведение собирает уголки к краям кнопки.",
+      en: "A free Chamaac button, MIT. A thin frame and corner marks. Hover draws the marks in to the button edges.",
+    },
+    tokens: ["group-hover", "corner translate", "border"],
+  },
+  {
     id: "skiper39",
     scroll: false,
     hero: 0,
@@ -141,6 +201,21 @@ const EXPERIMENTS = [
       en: "A free Skiper UI component. Open Peeps sprite, walk cycle from a CodePen. Figures cross in both directions.",
     },
     tokens: ["gsap.timeline", "canvas", "yoyo 10px"],
+  },
+  {
+    id: "chamaac-glow",
+    scroll: false,
+    hero: 0,
+    source: "https://www.chamaac.com/components/buttons/glowing-border-button",
+    kicker: { ru: "Кнопка", en: "Button" },
+    title: { ru: "Светящаяся рамка", en: "Glowing border" },
+    line: { ru: "Зелёный луч обходит кнопку", en: "A green beam travels the border" },
+    hint: { ru: "Луч идёт сам", en: "The beam travels on its own" },
+    idea: {
+      ru: "Свободная кнопка Chamaac, MIT. Узкий зелёный градиент крутится по контуру без остановки.",
+      en: "A free Chamaac button, MIT. A narrow green gradient spins around the border on its own.",
+    },
+    tokens: ["spin 3s", "#50C878", "blur 2px"],
   },
   {
     id: "skiper47",
@@ -158,19 +233,19 @@ const EXPERIMENTS = [
     tokens: ["swiper coverflow", "rotate 50°", "depth 100"],
   },
   {
-    id: "chamaac-buttons",
+    id: "chamaac-neo",
     scroll: false,
     hero: 0,
-    source: "https://www.chamaac.com/components/buttons",
-    kicker: { ru: "Кнопки", en: "Buttons" },
-    title: { ru: "Семь ходов", en: "Seven motions" },
-    line: { ru: "Стрелка, блик, слайд, рамка, свечение", en: "Arrow, shimmer, slide, frame, and glow" },
-    hint: { ru: "Наведите или нажмите кнопку", en: "Hover or press a button" },
+    source: "https://www.chamaac.com/components/buttons/neo-brutalist-button",
+    kicker: { ru: "Кнопка", en: "Button" },
+    title: { ru: "Нео-брутализм", en: "Neo-brutalist" },
+    line: { ru: "Тень растёт, блик проходит по кнопке", en: "The shadow grows and a shine crosses" },
+    hint: { ru: "Наведите на кнопку", en: "Hover the button" },
     idea: {
-      ru: "Свободные кнопки Chamaac, MIT. У каждой свой ход: стрелка, блик текста, слайд подписи, рамка фокуса, светящаяся обводка, нео-брутализм и бегущая стрелка.",
-      en: "Free Chamaac buttons, MIT. Each has its own motion: an arrow, a text shimmer, a sliding label, a focus frame, a glowing border, neo-brutalism, and a running arrow.",
+      ru: "Свободная кнопка Chamaac, MIT. Жёсткая тень 4px становится 8px, и белый блик проходит по розовой плашке.",
+      en: "A free Chamaac button, MIT. The hard shadow grows from 4px to 8px, and a white shine crosses the pink face.",
     },
-    tokens: ["whileHover", "shimmer", "press"],
+    tokens: ["shadow 4 → 8", "skew -10°", "shimmer 0.2s"],
   },
   {
     id: "skiper52",
@@ -186,6 +261,21 @@ const EXPERIMENTS = [
       en: "A free Skiper UI component. Under the pointer a narrow strip opens into a wide frame. Illustrations by AarzooAly.",
     },
     tokens: ["width 5rem → 24rem", "easeInOut 0.3s"],
+  },
+  {
+    id: "chamaac-premium",
+    scroll: false,
+    hero: 0,
+    source: "https://www.chamaac.com/components/buttons/premium-button",
+    kicker: { ru: "Кнопка", en: "Button" },
+    title: { ru: "Бегущая стрелка", en: "Running arrow" },
+    line: { ru: "Пиксельная стрелка идёт по красному квадрату", en: "A pixel arrow crosses the red square" },
+    hint: { ru: "Стрелка идёт сама, кнопку можно нажать", en: "The arrow runs; the button can be pressed" },
+    idea: {
+      ru: "Свободная кнопка Chamaac, MIT. Стрелка из точек сама проходит слева направо. Нажатие чуть уменьшает кнопку.",
+      en: "A free Chamaac button, MIT. A dot arrow walks itself from left to right. Press scales the button down.",
+    },
+    tokens: ["interval 100ms", "14 steps", "active scale 0.98"],
   },
   {
     id: "chamaac-dock",
@@ -307,8 +397,15 @@ let dialogFrame = null;
 let dialogId = null;
 let returnFocus = null;
 
-function srcFor(mod) {
-  const q = new URLSearchParams({ id: mod.id, autoplay: "0" });
+const STAGE_W = 1440;
+const STAGE_H = 900;
+
+function srcFor(mod, { full } = {}) {
+  const q = new URLSearchParams({
+    id: mod.id,
+    autoplay: "0",
+    bar: full ? "1" : "0",
+  });
   return `/motion-lab/preview.html?${q}`;
 }
 
@@ -320,32 +417,77 @@ function hostOf(url) {
   return new URL(url).host.replace(/^www\./, "");
 }
 
-function makeFrame(mod, { chip, tall } = {}) {
-  const frame = el("div", tall ? "lab-frame frame-tall" : "lab-frame");
+function fit(frame) {
+  if (frame.__full) return;
+  const box = frame.getBoundingClientRect();
+  const scale = Math.min(box.width / STAGE_W, box.height / STAGE_H);
+  frame.__scale = scale > 0 ? scale : 1;
+  frame.style.setProperty("--s", String(frame.__scale));
+}
+
+function bindWheel(frame) {
+  frame.addEventListener("wheel", (event) => {
+    if (frame.__full) return;
+    const win = frame.__iframe?.contentWindow;
+    if (!win) return;
+    const max = win.document.documentElement.scrollHeight - win.innerHeight;
+    if (max <= 8) return;
+    event.preventDefault();
+    const dy = event.deltaY / (frame.__scale || 1);
+    if (win.__lenis) win.__lenis.scrollTo(win.scrollY + dy, { immediate: true });
+    else win.scrollBy(0, dy);
+  }, { passive: false });
+}
+
+function makeFrame(mod, { full } = {}) {
+  const frame = el("div", full ? "lab-stage" : "lab-frame");
   const iframe = el("iframe");
   iframe.title = pick(lang, mod.title.ru, mod.title.en);
-  iframe.tabIndex = chip ? -1 : 0;
+  iframe.tabIndex = full ? 0 : -1;
   iframe.setAttribute("loading", "lazy");
   frame.append(iframe);
-  if (chip) frame.append(el("span", "lab-hint-chip", pick(lang, mod.hint.ru, mod.hint.en)));
   frame.__iframe = iframe;
   frame.__mod = mod;
+  frame.__full = !!full;
+  frame.__scale = 1;
+  if (!full) {
+    bindWheel(frame);
+    const observer = new ResizeObserver(() => fit(frame));
+    observer.observe(frame);
+    frame.__observer = observer;
+  }
   return frame;
 }
 
 function wake(frame) {
   const iframe = frame.__iframe;
-  if (!iframe.src) iframe.src = srcFor(frame.__mod);
+  if (!iframe.src) iframe.src = srcFor(frame.__mod, { full: frame.__full });
+  if (!frame.__full) requestAnimationFrame(() => fit(frame));
+}
+
+function licenseOf(mod) {
+  if (mod.id.startsWith("chamaac")) {
+    return pick(
+      lang,
+      "MIT, © 2026 Amarnath. Использование требует уведомления об авторском праве и разрешении.",
+      "MIT, © 2026 Amarnath. Use requires the copyright and permission notice.",
+    );
+  }
+  return pick(
+    lang,
+    "Свободный компонент Skiper UI. Использование в проекте требует указания Skiper UI.",
+    "Free Skiper UI component. Use in a project requires attribution to Skiper UI.",
+  );
 }
 
 function replay(frame) {
-  frame.__iframe.src = srcFor(frame.__mod);
+  frame.__iframe.src = srcFor(frame.__mod, { full: frame.__full });
 }
 
 EXPERIMENTS.forEach((mod, index) => {
   const article = el("article", "lab-tile");
   article.dataset.exp = mod.id;
-  const frame = makeFrame(mod, { chip: true });
+  const frame = makeFrame(mod);
   const expand = el("button", "lab-expand", EXPAND);
   expand.type = "button";
   expand.setAttribute("aria-label", pick(lang, `Открыть «${mod.title.ru}»`, `Open “${mod.title.en}”`));
@@ -376,27 +518,59 @@ EXPERIMENTS.forEach((mod, index) => {
   io.observe(frame);
 });
 
-function close() {
-  if (!dialogFrame) return;
+let generation = 0;
+let closeTimer = 0;
+const chrome = [document.querySelector(".dock"), document.querySelector(".float"), document.querySelector(".cta")];
+
+function setChrome(locked) {
+  chrome.forEach((node) => {
+    if (!node) return;
+    if (locked) node.setAttribute("inert", "");
+    else node.removeAttribute("inert");
+  });
+}
+
+function finishClose() {
+  dialog.hidden = true;
+  dialog.classList.remove("is-open");
+  dialog.replaceChildren();
   dialogFrame = null;
   dialogId = null;
-  dialog.hidden = true;
-  dialog.replaceChildren();
-  main.removeAttribute("inert");
+  main?.removeAttribute("inert");
+  setChrome(false);
   document.body.style.overflow = "";
   history.replaceState(null, "", location.pathname + location.search);
   returnFocus?.focus();
   returnFocus = null;
 }
 
+function close() {
+  if (!dialogId && !dialogFrame) return;
+  const gen = ++generation;
+  dialog.classList.remove("is-open");
+  window.clearTimeout(closeTimer);
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce) {
+    finishClose();
+    return;
+  }
+  closeTimer = window.setTimeout(() => {
+    if (gen !== generation) return;
+    finishClose();
+  }, 340);
+}
+
 function open(id, trigger) {
   const mod = EXPERIMENTS.find((item) => item.id === id);
   if (!mod || !dialog) return;
+  generation += 1;
+  window.clearTimeout(closeTimer);
   if (dialogId && frames.has(dialogId)) post(frames.get(dialogId).__iframe, { type: "pause" });
   if (frames.has(id)) post(frames.get(id).__iframe, { type: "pause" });
   returnFocus = trigger || document.activeElement;
   dialogId = id;
   dialog.hidden = false;
+  dialog.classList.remove("is-open");
   dialog.replaceChildren();
   dialog.setAttribute("aria-labelledby", "lab-dialog-title");
 
@@ -405,44 +579,45 @@ function open(id, trigger) {
   closeBtn.setAttribute("aria-label", pick(lang, "Закрыть", "Close"));
   closeBtn.addEventListener("click", close);
 
-  const gridEl = el("div", "lab-dialog-grid");
-  const frame = makeFrame(mod, { tall: !mod.scroll });
+  const frame = makeFrame(mod, { full: true });
   wake(frame);
   dialogFrame = frame;
 
-  const note = el("div", "lab-note");
+  const panel = el("aside", "lab-panel");
   const index = EXPERIMENTS.indexOf(mod);
-  note.append(
-    el("p", "lab-kicker", `${String(index + 1).padStart(2, "0")} · ${pick(lang, mod.kicker.ru, mod.kicker.en)}`),
-    el("h2", "", pick(lang, mod.title.ru, mod.title.en)),
-  );
-  note.querySelector("h2").id = "lab-dialog-title";
-  note.append(
-    el("p", "lab-hint", pick(lang, mod.hint.ru, mod.hint.en)),
-    el("p", "lab-idea", pick(lang, mod.idea.ru, mod.idea.en)),
-  );
-  const tokens = el("ul", "lab-tokens");
-  mod.tokens.forEach((token) => tokens.append(el("li", "", token)));
+  const title = el("h2", "", pick(lang, mod.title.ru, mod.title.en));
+  title.id = "lab-dialog-title";
   const source = el("a", "lab-source", hostOf(mod.source));
   source.href = mod.source;
   source.target = "_blank";
   source.rel = "noopener";
+  const tokens = el("ul", "lab-tokens");
+  mod.tokens.forEach((token) => tokens.append(el("li", "", token)));
   const replayBtn = el("button", "lab-replay", pick(lang, "Ещё раз", "Replay"));
   replayBtn.type = "button";
   replayBtn.addEventListener("click", () => replay(frame));
-  note.append(tokens, source, replayBtn);
-  gridEl.append(frame, note);
-  dialog.append(closeBtn, gridEl);
+  panel.append(
+    el("p", "lab-kicker", `${String(index + 1).padStart(2, "0")} · ${pick(lang, mod.kicker.ru, mod.kicker.en)}`),
+    title,
+    el("p", "lab-idea", pick(lang, mod.idea.ru, mod.idea.en)),
+    el("p", "lab-label", pick(lang, "Как взаимодействовать", "How to interact")),
+    el("p", "lab-hint", pick(lang, mod.hint.ru, mod.hint.en)),
+    source,
+    el("p", "lab-license", licenseOf(mod)),
+    tokens,
+    replayBtn,
+  );
+  dialog.append(frame, panel, closeBtn);
 
-  main.setAttribute("inert", "");
+  main?.setAttribute("inert", "");
+  setChrome(true);
   document.body.style.overflow = "hidden";
   history.replaceState(null, "", `#${id}`);
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => dialog.classList.add("is-open"));
+  });
   closeBtn.focus();
 }
-
-dialog?.addEventListener("click", (event) => {
-  if (event.target === dialog) close();
-});
 
 window.addEventListener("message", (event) => {
   if (event.origin !== location.origin || event.data?.type !== "close" || !dialogId) return;

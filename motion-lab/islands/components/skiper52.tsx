@@ -6,47 +6,47 @@ import { cn } from "@/lib/utils";
 const Skiper52 = () => {
   const images = [
     {
-      src: "https://skiper-ui.com/images/x.com/13.jpeg",
+      src: "/motion-lab/media/skiper/x/13.jpeg",
       alt: "Illustrations by my fav AarzooAly",
       code: "# 23",
     },
     {
-      src: "https://skiper-ui.com/images/x.com/32.jpeg",
+      src: "/motion-lab/media/skiper/x/32.jpeg",
       alt: "Illustrations by my fav AarzooAly",
       code: "# 23",
     },
     {
-      src: "https://skiper-ui.com/images/x.com/20.jpeg",
+      src: "/motion-lab/media/skiper/x/20.jpeg",
       alt: "Illustrations by my fav AarzooAly",
       code: "# 23",
     },
     {
-      src: "https://skiper-ui.com/images/x.com/21.jpeg",
+      src: "/motion-lab/media/skiper/x/21.jpeg",
       alt: "Illustrations by my fav AarzooAly",
       code: "# 23",
     },
     {
-      src: "https://skiper-ui.com/images/x.com/19.jpeg",
+      src: "/motion-lab/media/skiper/x/19.jpeg",
       alt: "Illustrations by my fav AarzooAly",
       code: "# 23",
     },
     {
-      src: "https://skiper-ui.com/images/x.com/1.jpeg",
+      src: "/motion-lab/media/skiper/x/1.jpeg",
       alt: "Illustrations by my fav AarzooAly",
       code: "# 23",
     },
     {
-      src: "https://skiper-ui.com/images/x.com/2.jpeg",
+      src: "/motion-lab/media/skiper/x/2.jpeg",
       alt: "Illustrations by my fav AarzooAly",
       code: "# 23",
     },
     {
-      src: "https://skiper-ui.com/images/x.com/3.jpeg",
+      src: "/motion-lab/media/skiper/x/3.jpeg",
       alt: "Illustrations by my fav AarzooAly",
       code: "# 23",
     },
     {
-      src: "https://skiper-ui.com/images/x.com/4.jpeg",
+      src: "/motion-lab/media/skiper/x/4.jpeg",
       alt: "Illustrations by my fav AarzooAly",
       code: "# 23",
     },

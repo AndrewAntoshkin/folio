@@ -15,12 +15,18 @@ import { Skiper52 } from "./components/skiper52.tsx";
 import { Skiper61 } from "./components/skiper61.tsx";
 import { Skiper64 } from "./components/skiper64.tsx";
 import {
-  ChamaacButtons,
+  ChamaacArrow,
   ChamaacCards,
   ChamaacDock,
+  ChamaacFocus,
+  ChamaacGlow,
   ChamaacInput,
   ChamaacLetters,
   ChamaacLoop,
+  ChamaacNeo,
+  ChamaacPremium,
+  ChamaacShimmer,
+  ChamaacSlide,
   ChamaacSteps,
 } from "./components/chamaac/stage.jsx";
 
@@ -38,7 +44,13 @@ const COMPONENTS = {
   skiper61: Skiper61,
   skiper64: Skiper64,
   "chamaac-input": ChamaacInput,
-  "chamaac-buttons": ChamaacButtons,
+  "chamaac-arrow": ChamaacArrow,
+  "chamaac-shimmer": ChamaacShimmer,
+  "chamaac-slide": ChamaacSlide,
+  "chamaac-focus": ChamaacFocus,
+  "chamaac-glow": ChamaacGlow,
+  "chamaac-neo": ChamaacNeo,
+  "chamaac-premium": ChamaacPremium,
   "chamaac-dock": ChamaacDock,
   "chamaac-cards": ChamaacCards,
   "chamaac-letters": ChamaacLetters,
@@ -61,6 +73,7 @@ const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const Comp = COMPONENTS[id];
 
 document.body.classList.add("theme-light");
+if (params.get("bar") === "0") document.documentElement.classList.add("tile-view");
 
 function maxScroll() {
   return Math.max(0, document.documentElement.scrollHeight - window.innerHeight);

@@ -140,15 +140,15 @@ const Skiper31 = () => {
   const centerIndex = Math.floor(characters.length / 2);
 
   const macIcon = [
-    "https://skiper-ui.com/mac/Discord.png",
-    "https://skiper-ui.com/mac/figma.png",
-    "https://skiper-ui.com/mac/Framer.png",
-    "https://skiper-ui.com/mac/Github.png",
-    "https://skiper-ui.com/mac/Monog.png",
-    "https://skiper-ui.com/mac/notion.png",
-    "https://skiper-ui.com/mac/Pieces.png",
-    "https://skiper-ui.com/mac/Postman.png",
-    "https://skiper-ui.com/mac/vsCode.png",
+    "/motion-lab/media/skiper/mac/Discord.png",
+    "/motion-lab/media/skiper/mac/figma.png",
+    "/motion-lab/media/skiper/mac/Framer.png",
+    "/motion-lab/media/skiper/mac/Github.png",
+    "/motion-lab/media/skiper/mac/Monog.png",
+    "/motion-lab/media/skiper/mac/notion.png",
+    "/motion-lab/media/skiper/mac/Pieces.png",
+    "/motion-lab/media/skiper/mac/Postman.png",
+    "/motion-lab/media/skiper/mac/vsCode.png",
   ];
   const iconCenterIndex = Math.floor(macIcon.length / 2);
 

@@ -21,7 +21,7 @@ Fog and glass on black. Soft gradients, large type, one calm mint accent. Motion
 | space.8 | 64 |
 | space.10 | 80 |
 
-Tiles are 16:10 frames, not phone shells. A component that is not mobile-shaped fills the frame.
+Tiles are 16:10 cards. Each card holds a 1440×900 iframe, scaled with `transform` so the component lays out at desktop size and sits centered, with nothing clipped. The fullscreen view is the viewport: the live component fills everything except a 360px panel on the right (a bottom sheet on a narrow screen). Close sits at the top-right. Esc closes it.
 
 ## Type
 
@@ -81,8 +81,9 @@ Duration tokens exist for holds between poses, not for the travel itself.
 The page shell (hero, grid, dialog) uses transform and opacity. The experiments themselves keep the original Skiper motion, including scroll-linked transforms, springs, SVG filters, and canvas.
 
 - Load an experiment only once its frame is near the viewport.
-- Do not drive the tiles from one autoplay loop. Scroll, hover, click, type, and drag stay inside the component. A component that animates itself (a crowd, a text loop, feature steps) keeps that timer.
-- `prefers-reduced-motion: reduce`: Framer Motion snaps its own transitions.
+- Do not drive the tiles from one autoplay loop. Scroll, hover, click, type, and drag stay inside the component. A component that animates itself (a crowd, a text loop, feature steps, a shimmer) keeps that timer.
+- A scrollable tile forwards the wheel into the scaled iframe. The fullscreen iframe is unscaled, so the wheel stays native.
+- `prefers-reduced-motion: reduce`: Framer Motion snaps its own transitions, and the fullscreen open and close skip their fade.
 
 ## Why React islands
 

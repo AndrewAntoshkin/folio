@@ -13,7 +13,8 @@ export function IconArrowRight({ size = 24, className }) {
       aria-hidden="true"
     >
       <path d="M5 12h14" />
-      <path d="m13 6 6 6-6 6" />
+      <path d="m13 16 4-4" />
+      <path d="m13 8 4 4" />
     </svg>
   );
 }

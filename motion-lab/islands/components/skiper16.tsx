@@ -4,23 +4,23 @@ import React, { useRef } from "react";
 const projects = [
   {
     title: "Project 1",
-    src: "https://skiper-ui.com/images/lummi/img8.png",
+    src: "/motion-lab/media/skiper/lummi/img8.png",
   },
   {
     title: "Project 2",
-    src: "https://skiper-ui.com/images/lummi/img14.png",
+    src: "/motion-lab/media/skiper/lummi/img14.png",
   },
   {
     title: "Project 3",
-    src: "https://skiper-ui.com/images/lummi/img10.png",
+    src: "/motion-lab/media/skiper/lummi/img10.png",
   },
   {
     title: "Project 4",
-    src: "https://skiper-ui.com/images/lummi/img15.png",
+    src: "/motion-lab/media/skiper/lummi/img15.png",
   },
   {
     title: "Project 5",
-    src: "https://skiper-ui.com/images/lummi/img12.png",
+    src: "/motion-lab/media/skiper/lummi/img12.png",
   },
 ];
 

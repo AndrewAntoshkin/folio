@@ -16,7 +16,7 @@ export function StatsCards({
   className,
   width = "w-70",
   height = "h-84",
-  images = ["/images/models/1.png", "/images/models/2.png"],
+  images = ["/motion-lab/media/chamaac/models/1.png", "/motion-lab/media/chamaac/models/2.png"],
 }: StatsCardsProps) {
   return (
     <LazyMotion features={domAnimation}>

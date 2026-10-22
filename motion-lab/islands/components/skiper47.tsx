@@ -14,27 +14,27 @@ import { cn } from "@/lib/utils";
 const Skiper47 = () => {
   const images = [
     {
-      src: "https://skiper-ui.com/images/x.com/11.jpeg",
+      src: "/motion-lab/media/skiper/x/11.jpeg",
       alt: "Illustrations by my fav AarzooAly",
     },
     {
-      src: "https://skiper-ui.com/images/x.com/13.jpeg",
+      src: "/motion-lab/media/skiper/x/13.jpeg",
       alt: "Illustrations by my fav AarzooAly",
     },
     {
-      src: "https://skiper-ui.com/images/x.com/32.jpeg",
+      src: "/motion-lab/media/skiper/x/32.jpeg",
       alt: "Illustrations by my fav AarzooAly",
     },
     {
-      src: "https://skiper-ui.com/images/x.com/20.jpeg",
+      src: "/motion-lab/media/skiper/x/20.jpeg",
       alt: "Illustrations by my fav AarzooAly",
     },
     {
-      src: "https://skiper-ui.com/images/x.com/21.jpeg",
+      src: "/motion-lab/media/skiper/x/21.jpeg",
       alt: "Illustrations by my fav AarzooAly",
     },
     {
-      src: "https://skiper-ui.com/images/x.com/19.jpeg",
+      src: "/motion-lab/media/skiper/x/19.jpeg",
       alt: "Illustrations by my fav AarzooAly",
     },
   ];

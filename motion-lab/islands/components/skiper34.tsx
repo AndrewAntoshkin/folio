@@ -8,13 +8,13 @@ import {
 import { useEffect, useRef, useState } from "react";
 
 const images = [
-  "https://skiper-ui.com/images/lummi/img14.png",
-  "https://skiper-ui.com/images/lummi/img30.png",
-  "https://skiper-ui.com/images/lummi/img19.png",
-  "https://skiper-ui.com/images/lummi/img21.png",
-  "https://skiper-ui.com/images/lummi/img23.png",
-  "https://skiper-ui.com/images/lummi/imgp2.png",
-  "https://skiper-ui.com/images/lummi/img27.png",
+  "/motion-lab/media/skiper/lummi/img14.png",
+  "/motion-lab/media/skiper/lummi/img30.png",
+  "/motion-lab/media/skiper/lummi/img19.png",
+  "/motion-lab/media/skiper/lummi/img21.png",
+  "/motion-lab/media/skiper/lummi/img23.png",
+  "/motion-lab/media/skiper/lummi/imgp2.png",
+  "/motion-lab/media/skiper/lummi/img27.png",
 ];
 
 const Skiper34 = () => {

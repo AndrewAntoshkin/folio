@@ -2,19 +2,19 @@ import { motion, MotionValue, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 const images = [
-  "https://skiper-ui.com/images/lummi/img15.png",
-  "https://skiper-ui.com/images/lummi/img21.png",
-  "https://skiper-ui.com/images/lummi/img3.png",
-  "https://skiper-ui.com/images/lummi/img4.png",
-  "https://skiper-ui.com/images/lummi/img5.png",
-  "https://skiper-ui.com/images/lummi/img6.png",
-  "https://skiper-ui.com/images/lummi/img7.png",
-  "https://skiper-ui.com/images/lummi/img8.png",
-  "https://skiper-ui.com/images/lummi/img24.png",
-  "https://skiper-ui.com/images/lummi/img10.png",
-  "https://skiper-ui.com/images/lummi/img11.png",
-  "https://skiper-ui.com/images/lummi/img12.png",
-  "https://skiper-ui.com/images/lummi/img13.png",
+  "/motion-lab/media/skiper/lummi/img15.png",
+  "/motion-lab/media/skiper/lummi/img21.png",
+  "/motion-lab/media/skiper/lummi/img3.png",
+  "/motion-lab/media/skiper/lummi/img4.png",
+  "/motion-lab/media/skiper/lummi/img5.png",
+  "/motion-lab/media/skiper/lummi/img6.png",
+  "/motion-lab/media/skiper/lummi/img7.png",
+  "/motion-lab/media/skiper/lummi/img8.png",
+  "/motion-lab/media/skiper/lummi/img24.png",
+  "/motion-lab/media/skiper/lummi/img10.png",
+  "/motion-lab/media/skiper/lummi/img11.png",
+  "/motion-lab/media/skiper/lummi/img12.png",
+  "/motion-lab/media/skiper/lummi/img13.png",
 ];
 
 const Skiper30 = () => {

@@ -12,7 +12,7 @@ import DancingLetters from "./dancing-letters.tsx";
 import TextLoop from "./text-loop.tsx";
 import FeatureSteps from "./feature-steps.tsx";
 
-const ASSET = "https://raw.githubusercontent.com/amarnathdhumal/chamaacui/main/public";
+const MEDIA = "/motion-lab/media/chamaac";
 
 const STEPS = [
   {
@@ -20,52 +20,95 @@ const STEPS = [
     title: "Mountain Adventure",
     content:
       "A stunning mountain landscape captured at sunrise. The peaks are illuminated by the golden light of the morning sun.",
-    image:
-      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2070&auto=format&fit=crop",
+    image: `${MEDIA}/steps/1.jpg`,
   },
   {
     step: "Step 2",
     title: "City Lights",
     content:
       "Night view of a vibrant city glowing with lights. The urban skyline reflects the energy and bustle of city life.",
-    image:
-      "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?q=80&w=2144&auto=format&fit=crop",
+    image: `${MEDIA}/steps/2.jpg`,
   },
   {
     step: "Step 3",
     title: "Forest Path",
     content:
       "A peaceful walking trail surrounded by lush greenery. The path winds through the dense forest, offering a serene escape.",
-    image:
-      "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2071&auto=format&fit=crop",
+    image: `${MEDIA}/steps/3.jpg`,
   },
 ];
 
+function Stage({ children, className = "" }) {
+  return <div className={`font-grotesk flex h-full w-full items-center justify-center bg-white ${className}`}>{children}</div>;
+}
+
 export function ChamaacInput() {
   return (
-    <div className="h-full bg-white text-zinc-900">
+    <div className="font-grotesk h-full bg-white text-zinc-900">
       <AIInput placeholder="Ask anything..." className="bg-white" />
     </div>
   );
 }
 
-export function ChamaacButtons() {
+export function ChamaacArrow() {
   return (
-    <div className="flex h-full w-full flex-wrap content-start items-center justify-center gap-4 overflow-auto bg-white p-6">
-      <HoverArrowButton text="Get Started" duration={0.3} iconSize={20} />
+    <Stage>
+      <HoverArrowButton text="Get Started" duration={0.3} iconSize={20} className="bg-black text-white" />
+    </Stage>
+  );
+}
+
+export function ChamaacShimmer() {
+  return (
+    <Stage>
       <ShimmerButton text="Book a Free Call" />
+    </Stage>
+  );
+}
+
+export function ChamaacSlide() {
+  return (
+    <Stage>
       <SlideUpButton className="bg-[#f73b20] text-white">Learn More</SlideUpButton>
+    </Stage>
+  );
+}
+
+export function ChamaacFocus() {
+  return (
+    <Stage>
       <FocusButton>Contact us</FocusButton>
+    </Stage>
+  );
+}
+
+export function ChamaacGlow() {
+  return (
+    <Stage>
       <GlowingBorderButton>Book a Call</GlowingBorderButton>
+    </Stage>
+  );
+}
+
+export function ChamaacNeo() {
+  return (
+    <Stage>
       <NeoBrutalistButton text="Click Me" />
+    </Stage>
+  );
+}
+
+export function ChamaacPremium() {
+  return (
+    <Stage>
       <PremiumButton text="Premium Button" />
-    </div>
+    </Stage>
   );
 }
 
 export function ChamaacDock() {
   return (
-    <div className="relative h-full w-full bg-white">
+    <div className="font-grotesk relative h-full w-full bg-white">
       <Dock bottomOffset="28px">
         <DockIcon
           icon={
@@ -77,8 +120,8 @@ export function ChamaacDock() {
           href="/"
         />
         <DockItem label="Personal">
-          <DockDropdownItem label="Jeton Card" href="/jeton-card" image={`${ASSET}/personal/1.jpg`} />
-          <DockDropdownItem label="Fees" href="/fees" image={`${ASSET}/personal/2.jpg`} />
+          <DockDropdownItem label="Jeton Card" href="/jeton-card" image={`${MEDIA}/personal/1.jpg`} />
+          <DockDropdownItem label="Fees" href="/fees" image={`${MEDIA}/personal/2.jpg`} />
         </DockItem>
         <DockLink
           label="Business"
@@ -90,11 +133,11 @@ export function ChamaacDock() {
           }
         />
         <DockItem label="Company">
-          <DockDropdownItem label="About" href="/about" image={`${ASSET}/company/1.jpg`} />
-          <DockDropdownItem label="Newsroom" href="/newsroom" image={`${ASSET}/company/2.jpg`} />
-          <DockDropdownItem label="Partnerships" href="/partnerships" image={`${ASSET}/company/3.jpg`} />
-          <DockDropdownItem label="Media Assets" href="/media-assets" image={`${ASSET}/company/4.jpg`} />
-          <DockDropdownItem label="Release Notes" href="/release-notes" image={`${ASSET}/company/5.jpg`} />
+          <DockDropdownItem label="About" href="/about" image={`${MEDIA}/company/1.jpg`} />
+          <DockDropdownItem label="Newsroom" href="/newsroom" image={`${MEDIA}/company/2.jpg`} />
+          <DockDropdownItem label="Partnerships" href="/partnerships" image={`${MEDIA}/company/3.jpg`} />
+          <DockDropdownItem label="Media Assets" href="/media-assets" image={`${MEDIA}/company/4.jpg`} />
+          <DockDropdownItem label="Release Notes" href="/release-notes" image={`${MEDIA}/company/5.jpg`} />
         </DockItem>
       </Dock>
     </div>
@@ -103,35 +146,31 @@ export function ChamaacDock() {
 
 export function ChamaacCards() {
   return (
-    <div className="h-full w-full overflow-auto bg-orange-50">
-      <StatsCards
-        width="w-70"
-        height="h-84"
-        images={[`${ASSET}/images/models/1.png`, `${ASSET}/images/models/2.png`]}
-      />
+    <div className="font-grotesk flex min-h-full w-full items-center justify-center bg-orange-50 py-4">
+      <StatsCards width="w-64" height="h-78" />
     </div>
   );
 }
 
 export function ChamaacLetters() {
   return (
-    <div className="flex h-full w-full items-center justify-center bg-white">
+    <Stage>
       <DancingLetters text="ANIMATE" />
-    </div>
+    </Stage>
   );
 }
 
 export function ChamaacLoop() {
   return (
-    <div className="flex h-full w-full items-center justify-center bg-white p-6">
+    <Stage className="px-8">
       <TextLoop />
-    </div>
+    </Stage>
   );
 }
 
 export function ChamaacSteps() {
   return (
-    <div className="h-full w-full overflow-auto bg-white">
+    <div className="font-grotesk flex min-h-full w-full items-center justify-center bg-white px-4 py-4 md:px-12">
       <FeatureSteps features={STEPS} autoPlayInterval={6000} imageClassName="h-[300px] md:h-auto" />
     </div>
   );

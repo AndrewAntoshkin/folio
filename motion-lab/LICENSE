@@ -38,9 +38,9 @@ Each island runs in its own document (motion-lab/preview.html) so viewport
 units, sticky positioning, and scroll progress match a Skiper preview.
 Lenis is attached once to that document instead of to the portfolio page.
 
-Demo photographs and illustrations stay on skiper-ui.com and are loaded
-from there. They are not copied into this repository. Credits that ship
-inside the components:
+Demo photographs and illustrations are stored under motion-lab/media/skiper
+so the page does not depend on a hotlink. They are the same files the free
+components reference on skiper-ui.com. Credits that ship inside the components:
 
 - skiper30, inspired by https://www.siena.film/films/my-project-x
 - skiper39, Open Peeps (https://www.openpeeps.com/) and a CodePen walk cycle
@@ -203,19 +203,25 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-Ported (7)
-----------
+Ported (13)
+-----------
 - ai-input — https://www.chamaac.com/components/inputs/ai-input
-- buttons — hover arrow, shimmer, slide up, focus, glowing border, neo-brutalist, premium — https://www.chamaac.com/components/buttons
+- hover-arrow-button — https://www.chamaac.com/components/buttons/hover-arrow-button
+- shimmer-button — https://www.chamaac.com/components/buttons/shimmer-button
+- slideup-button — https://www.chamaac.com/components/buttons/slideup-button
+- focus-button — https://www.chamaac.com/components/buttons/focus-button
+- glowing-border-button — https://www.chamaac.com/components/buttons/glowing-border-button
+- neo-brutalist-button — https://www.chamaac.com/components/buttons/neo-brutalist-button
+- premium-button — https://www.chamaac.com/components/buttons/premium-button
 - dock — https://www.chamaac.com/components/navigation/dock
 - stats-cards — https://www.chamaac.com/components/sections/stats-cards
 - dancing-letters — https://www.chamaac.com/components/text-animations/dancing-letters
 - text-loop — https://www.chamaac.com/components/text-animations/text-loop
 - feature-steps — https://www.chamaac.com/components/sections/feature-steps
 
-Photographs for the stats cards and the dock stay on the Chamaac repository
-and are loaded from GitHub. They are not copied into this repository.
-Feature-step photographs are the Unsplash URLs from the Chamaac demo.
+Photographs for the stats cards, the dock, and the feature steps are stored
+under motion-lab/media/chamaac. The feature-step frames are the Unsplash
+photographs from the Chamaac demo.
 
 Not ported
 ----------

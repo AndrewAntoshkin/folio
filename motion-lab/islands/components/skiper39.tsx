@@ -289,7 +289,7 @@ const Skiper39 = () => {
         </span>
       </div>
       <div className="absolute bottom-0 h-full w-screen">
-        <CrowdCanvas src="https://skiper-ui.com/images/peeps/all-peeps.png" rows={15} cols={7} />
+        <CrowdCanvas src="/motion-lab/media/skiper/peeps/all-peeps.png" rows={15} cols={7} />
       </div>
     </div>
   );
