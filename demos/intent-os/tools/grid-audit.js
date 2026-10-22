@@ -63,7 +63,7 @@ function surfaces(dev) {
 const AUDIT = () => {
   window.__gridAudit = (cfg) => {
     const SCALE = [11, 13, 15, 17, 20, 26, 34, 48, 72];
-    const ART = ".map svg, .map .tiles, .map-tiles, .leaflet-pane, .bars i, .bar, .spark, .wave, .art, .album, .scene, .illus, .clock-hands, .ph, [data-art], .ff-ghost, .hm-grid, .hm-months, .ps-bar, .mp-bars, .mp-leg, .bars";
+    const ART = ".map svg, .map .tiles, .map-tiles, .leaflet-pane, .bars i, .bar, .spark, .wave, .art, .album, .scene, .illus, .clock-hands, .ph, [data-art], .ff-ghost, .sw-screen, .hm-grid, .hm-months, .ps-bar, .mp-bars, .mp-leg, .bars";
     const V = [];
     const near = (a, b, t = 0.51) => Math.abs(a - b) < t;
     const on8 = v => { const a = Math.abs(v); return a < 0.01 || near(a, 4, 0.01) || near(a % 8, 0, 0.01) || near(a % 8, 8, 0.01) };
