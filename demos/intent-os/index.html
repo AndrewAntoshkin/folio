@@ -4089,12 +4089,16 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       const layer=b=>{const l=document.createElement("i");l.className="ffm-bg";l.style.backgroundColor=b.color;
         if(b.img!=="none"){const m=document.createElement("b");m.style.backgroundImage=b.img;if(b.tf&&b.tf!=="none")m.style.transform=b.tf;l.append(m)}return l};
       const l1=layer(bg1),l0=layer(bg0);shell.append(l1,l0);$("#ffDevice").before(shell);
-      const box=r=>({transform:`translate(${r.x+r.b}px,${r.y+r.b}px)`,width:(r.w-2*r.b)+"px",height:(r.h-2*r.b)+"px",borderRadius:Math.max(0,r.r-r.b)+"px",boxShadow:ffRing({b:r.b})});
-      const timing={duration:FF_DUR,easing:FF_EASE,fill:"both"};
-      push(shell.animate([box(R0),box(R1)],timing));
+      const timing={duration:FF_DUR,easing:FF_EASE,fill:"both"},L=(a,b,p)=>a+(b-a)*p;
+      /* the bezel thins on the spring and its ink fades while it is thin (gone below a third of its width), so it never leaves a hairline round the screen */
+      const bm=Math.max(R0.b,R1.b)||1,sk=[];
+      for(let i=0;i<=24;i++){const p=ffP(i*FF_DUR/24),r={x:L(R0.x,R1.x,p),y:L(R0.y,R1.y,p),w:L(R0.w,R1.w,p),h:L(R0.h,R1.h,p),r:L(R0.r,R1.r,p),b:L(R0.b,R1.b,p)},rel=r.b/bm,ink=Math.max(0,Math.min(1,(rel-.35)/.45));
+        sk.push({offset:i/24,transform:`translate(${r.x+r.b}px,${r.y+r.b}px)`,width:(r.w-2*r.b)+"px",height:(r.h-2*r.b)+"px",borderRadius:Math.max(0,r.r-r.b)+"px",
+          boxShadow:`0 0 0 ${r.b.toFixed(2)}px rgba(12,12,14,${ink.toFixed(3)}),0 0 0 ${(r.b+1).toFixed(2)}px rgba(255,255,255,${(.08*ink).toFixed(3)}),0 40px 100px -30px rgba(0,0,0,${(.5*rel).toFixed(3)})`})}
+      push(shell.animate(sk,{duration:FF_DUR,easing:"linear",fill:"both"}));
       push(l0.animate([{opacity:1},{opacity:0}],{duration:400,easing:"cubic-bezier(.5,0,.2,1)",fill:"forwards"}));
       /* the frozen copy stays where it was, clipped to the moving frame (sampled from the same spring) */
-      const I=r=>({x:r.x+r.b,y:r.y+r.b,w:r.w-2*r.b,h:r.h-2*r.b,r:Math.max(0,r.r-r.b)}),A=I(R0),Z=I(R1),L=(a,b,p)=>a+(b-a)*p,kf=[],k0=from.s;
+      const I=r=>({x:r.x+r.b,y:r.y+r.b,w:r.w-2*r.b,h:r.h-2*r.b,r:Math.max(0,r.r-r.b)}),A=I(R0),Z=I(R1),kf=[],k0=from.s;
       for(let i=0;i<=12;i++){const p=ffP(i*FF_DUR/12),x=L(A.x,Z.x,p),y=L(A.y,Z.y,p),w=L(A.w,Z.w,p),h=L(A.h,Z.h,p),rr=L(A.r,Z.r,p),c=v=>(v/k0).toFixed(2);
         kf.push({offset:i/12,clipPath:`inset(${c(y-from.y)}px ${c(from.x+from.w*k0-(x+w))}px ${c(from.y+from.h*k0-(y+h))}px ${c(x-from.x)}px round ${c(rr)}px)`})}
       push(ghost.animate(kf,{duration:FF_DUR,easing:"linear",fill:"forwards"}));
