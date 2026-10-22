@@ -3950,7 +3950,9 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       Object.assign(host.style,{width:g.w+"px",height:g.h+"px",transform:`translate(${g.x}px,${g.y}px) scale(${g.s})`});
       document.documentElement.append(host);
       const a=SCREEN.querySelectorAll("*"),b=sc.querySelectorAll("*");
-      for(let i=0;i<a.length;i++){const n=a[i];if(n.scrollTop||n.scrollLeft){b[i].scrollTop=n.scrollTop;b[i].scrollLeft=n.scrollLeft}if(n.tagName==="INPUT"||n.tagName==="TEXTAREA")b[i].value=n.value}
+      const s0=SCREEN.getBoundingClientRect(),out=r=>r.width&&r.height&&(r.bottom<=s0.top+1||r.top>=s0.bottom-1||r.right<=s0.left+1||r.left>=s0.right-1);
+      for(let i=0;i<a.length;i++){const n=a[i];if(n.scrollTop||n.scrollLeft){b[i].scrollTop=n.scrollTop;b[i].scrollLeft=n.scrollLeft}if(n.tagName==="INPUT"||n.tagName==="TEXTAREA")b[i].value=n.value;
+        if(bare&&out(n.getBoundingClientRect())&&getComputedStyle(n).position==="fixed")b[i].style.visibility="hidden"}
       const all=[...a];host.sc=sc;host.twin=n=>{const k=all.indexOf(n);return k<0?null:b[k]};
       return host;
     }
@@ -4169,6 +4171,8 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       its.forEach(e=>{keep.add(e.n);for(let x=e.n.parentElement;x&&x!==SCREEN;x=x.parentElement)anc.add(x)});
       /* the new screen's other parts fade in where they are; the smaller ones are obstacles the travel plans around (they hold their fade while something passes) */
       const fresh=[],walk=n=>{for(const c of n.children){if(keep.has(c)||c.matches(".mist,.grain"))continue;if(anc.has(c))walk(c);else fresh.push(c)}};walk(SCREEN);
+      /* parked panels (the phone's control centre above the screen) are clipped once the screen clips again; the morph screen does not clip, so they sit out */
+      for(let i=fresh.length;i--;){const c=fresh[i],r=c.getBoundingClientRect();if(r.width&&r.height&&(r.bottom<=Z.y+1||r.top>=Z.y+Z.h-1||r.right<=Z.x+1||r.left>=Z.x+Z.w-1)){const v=c.style.visibility;c.style.visibility="hidden";ffUndo.push(()=>{c.style.visibility=v});fresh.splice(i,1)}}
       const obs=new Map();fresh.forEach(c=>{const r=c.getBoundingClientRect();if(r.width<2||r.height<2||r.width*r.height>.25*Z.w*Z.h||!(+getComputedStyle(c).opacity))return;
         obs.set(c,{n:c,kind:"static",g:"static",from:FF_IN+40,clip:ffClip(c,SCREEN),V0:C(r),V1:C(r)})});
       ffLast=its.length?ffPlan([...its,...obs.values()],t=>{const p=ffP(t);return{l:L(A.x,Z.x,p),t:L(A.y,Z.y,p),r:L(A.x+A.w,Z.x+Z.w,p),b:L(A.y+A.h,Z.y+Z.h,p)}},lead):null;
