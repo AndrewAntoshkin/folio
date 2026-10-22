@@ -1222,6 +1222,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .cp:active{transform:scale(.98)}
     .cp:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     .cp.on{box-shadow:inset 0 0 0 2px var(--accent),var(--glass-shadow)}
+    html:is(.ff-morph,.ph-sheet) .cp:is(.on,:focus-visible){outline:0;box-shadow:var(--glass-shadow)}
     .cp.new{animation:cpNew 1.4s cubic-bezier(.2,.8,.2,1)}
     @keyframes cpNew{0%{opacity:0;transform:translateY(12px)}20%{opacity:1;transform:none;box-shadow:inset 0 0 0 2px #f2b84b,var(--glass-shadow)}}
     .cp-h{grid-area:h;display:flex;align-items:center;gap:8px;min-width:0;margin-bottom:8px;color:var(--quiet);font-size:13px;line-height:18px}
@@ -3959,7 +3960,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       const css=[...document.querySelectorAll("style")].map(n=>n.textContent).join("\n").replace(/:root\b/g,".gh-html").replace(/(^|[\s,>+~{}(])(html|body)(?=[\s.,:#\[{>+~)])/g,(m,a,b)=>`${a}.gh-${b}`);
       GH_CSS=new CSSStyleSheet();
       GH_CSS.replaceSync(css+"\n.gh-html,.gh-body{position:absolute;inset:0;margin:0;background:none!important;overflow:visible}.gh-html *,.gh-html *::before,.gh-html *::after{animation:none!important;transition:none!important}.gh-html .wz-line,.gh-html .map .route,.gh-html .map .route-c{stroke-dashoffset:0!important}.gh-html .wz-area{opacity:1!important}"+
-        ".gh-html.bare .ff-screen{background:transparent!important;overflow:visible!important;contain:none!important}.gh-html.bare .mist,.gh-html.bare .grain{display:none!important}.gh-html .ffm-hide{visibility:hidden!important}.gh-html #space .flow-label{z-index:3}.gh-html .ph-scrim,.gh-html .sys-veil{inset:-2000px}");
+        ".gh-html.bare .ff-screen{background:transparent!important;overflow:visible!important;contain:none!important}.gh-html.bare .mist,.gh-html.bare .grain{display:none!important}.gh-html .ffm-hide{visibility:hidden!important}.gh-html .cp:is(.on,:focus-visible){outline:0!important;box-shadow:var(--glass-shadow)!important}.gh-html #space .flow-label{z-index:3}.gh-html .ph-scrim,.gh-html .sys-veil{inset:-2000px}");
       return GH_CSS;
     }
     function ffGhost(g,bare){
