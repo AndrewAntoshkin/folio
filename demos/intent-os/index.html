@@ -648,6 +648,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .notif-x{position:absolute;top:-7px;left:-7px;width:20px;height:20px;padding:0;display:grid;place-items:center;border:1px solid var(--glass-edge);border-radius:50%;background:var(--paper);color:var(--quiet);font-size:13px;line-height:1;opacity:0;transform:scale(.8);transition:opacity .15s,transform .25s var(--spring)}
     .notif-item:hover .notif-x{opacity:1;transform:none}
     .ff-touch .notif-item{touch-action:pan-y}.notif-item.drag{transition:none!important}
+    .ff-phone .notif-veil{background:#ececec}.ff-phone body.night .notif-veil{background:#141414}
     .ff-phone body.notif-open .sb-left{visibility:hidden}.notif-x:hover{color:var(--ink)}
     .notif.empty .notif-head{display:none}
     @container screen (max-width:520px){.notif-head,.notif-list{padding-left:16px;padding-right:16px}}
@@ -1047,7 +1048,9 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .sw-bar span{color:var(--quiet);font-size:13px}
     .sw-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;align-content:start;overflow:auto;scrollbar-gutter:stable}
     .sw-card{position:relative;display:flex;flex-direction:column;gap:8px;min-height:132px;padding:16px 16px 16px;border:1px solid var(--rim);border-radius:24px;background:var(--paper);text-align:left;box-shadow:0 16px 40px -24px rgba(0,0,0,.35)}
-    .sw-card.cur,.sw-card.sel{box-shadow:inset 0 0 0 1.5px var(--accent),0 16px 40px -24px rgba(0,0,0,.35)}
+    .sw-card.sel{box-shadow:inset 0 0 0 1.5px rgba(47,47,47,.4),0 16px 40px -24px rgba(0,0,0,.35)}
+    body.night .sw-card.sel{box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.4),0 16px 40px -24px rgba(0,0,0,.35)}
+    .ff-touch .sw-card.sel{box-shadow:0 16px 40px -24px rgba(0,0,0,.35)}
     .sw-card:hover{background:rgba(255,255,255,.72)}
     body.night .sw-card:hover{background:rgba(255,255,255,.06)}
     .sw-card>b{min-width:0;font-size:15px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sw-card:has(.sw-badge)>b{padding-right:24px}
@@ -1347,7 +1350,15 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
 
     .sw-mods,.sw-plan{display:none}
     .sw-card .plan-strip{margin-top:auto}
-    .ff-phone .switcher{padding:64px 0 32px}
+    .sw-live{position:relative;flex:1;min-height:0;margin:0 -8px;border-radius:16px;background:var(--fog);box-shadow:inset 0 0 0 1px var(--line);overflow:hidden;pointer-events:none}
+    .sw-screen{position:absolute;top:0;left:0;width:var(--sw-w,390px);padding:8px 16px;transform-origin:0 0;scale:var(--k,.74)}
+    .sw-screen :is(.cp,.st-head){-webkit-backdrop-filter:none;backdrop-filter:none}
+    .sw-screen .cp{background:rgba(255,255,255,.72)}
+    body.night .sw-screen .cp{background:rgba(50,50,52,.8)}
+    .sw-screen .st-head{position:static;background:none}
+    .ff-phone .sw-card>small{display:none}
+    .ff-phone .switcher{padding:64px 0 32px;background:#ececec}
+    .ff-phone body.night .switcher{background:#141414}
     .ff-phone .sw-bar{padding:0 16px}
     .ff-phone .sw-grid{display:flex;gap:16px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;padding:8px 16px 24px;scrollbar-width:none;flex:1;align-items:stretch}
     .ff-phone .sw-grid::-webkit-scrollbar{display:none}
@@ -4581,11 +4592,12 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       renderStack();renderHomeSpaces();
       if(switcherOn())renderSwitcher();
     }
+    function stackHTML(sp,am){const pl=planHTML(sp);return `<div class="st-head">${pl||`<span class="st-t">${esc(sp.title)}</span>`}</div>`+sp.flows.map(fl=>`<div class="st-flow"><b>${esc(fl.name)}</b><span>${fl.modules.length}</span></div><div class="st-list">${fl.modules.map(m=>compactHTML(m,m===am)).join("")}</div>`).join("")}
     function renderStack(){
       const el=$("#stack");if(!el)return;
       if(!S||view!=="space"||(FF.dev!=="phone")){if(el.firstChild)el.innerHTML="";return}
-      const am=activeModule(),pl=planHTML(S);
-      morphHTML(el,`<div class="st-head">${pl||`<span class="st-t">${esc(S.title)}</span>`}</div>`+S.flows.map(fl=>`<div class="st-flow"><b>${esc(fl.name)}</b><span>${fl.modules.length}</span></div><div class="st-list">${fl.modules.map(m=>compactHTML(m,m===am)).join("")}</div>`).join(""));
+      const am=activeModule();
+      morphHTML(el,stackHTML(S,am));
       if(el.dataset.am!==am?.id){el.dataset.am=am?.id||"";el.querySelector(".cp.on")?.scrollIntoView({block:"nearest",behavior:reduce.matches?"auto":"smooth"})}
     }
     function homeSpaceIds(){return SPACE_CAT.filter(s=>USER!=="guest"||s[3]).map(s=>s[0])}
@@ -4831,9 +4843,13 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       root.innerHTML=`<div class="sw-bar"><b>${esc(T("Spaces","Пространства"))}</b><span>${esc(T("Most recent first","Сначала недавние"))}</span></div><div class="sw-grid">${entries.map((e,i)=>{
         const title=e.live?e.live.title:T(e.cat[1],e.cat[2]);
         const sub=e.live?e.live.flows.map(f=>f.name).slice(0,3).join(" · "):T("Not opened yet","Ещё не открыто");
-        const badge=swBadge(e.live);
-        return `<article class="sw-card${S?.id===e.id?" cur":""}${i===swIndex?" sel":""}" data-open="${e.id}"><b>${esc(title)}</b><small>${esc(sub)}</small>${e.live?`${planHTML(e.live)}<div class="sw-mods">${e.live.flows.flatMap(f=>f.modules).slice(0,3).map(m=>{const r=rep(m);return `<div><b>${esc(r.v)}</b><span>${esc(r.l||m.item)}</span></div>`}).join("")}</div>`:""}${badge?`<span class="sw-badge">${esc(badge)}</span>`:""}<div class="sw-tools">${e.live?`<button type="button" data-pin="${e.id}">${esc(e.live.pinned?T("Pinned","Закреплено"):T("Pin","Закрепить"))}</button><button type="button" data-close="${e.id}">${esc(T("Close","Закрыть"))}</button>`:""}</div></article>`;
+        const badge=swBadge(e.live),shot=FF.dev==="phone"&&(e.live||spaceOf(e.id));
+        const body=shot?`<div class="sw-live" inert aria-hidden="true"><div class="sw-screen">${stackHTML(shot)}</div></div>`:e.live?`${planHTML(e.live)}<div class="sw-mods">${e.live.flows.flatMap(f=>f.modules).slice(0,3).map(m=>{const r=rep(m);return `<div><b>${esc(r.v)}</b><span>${esc(r.l||m.item)}</span></div>`}).join("")}</div>`:"";
+        return `<article class="sw-card${S?.id===e.id?" cur":""}${i===swIndex?" sel":""}" data-open="${e.id}"><b>${esc(title)}</b><small>${esc(sub)}</small>${body}${badge?`<span class="sw-badge">${esc(badge)}</span>`:""}<div class="sw-tools">${e.live?`<button type="button" data-pin="${e.id}">${esc(e.live.pinned?T("Pinned","Закреплено"):T("Pin","Закрепить"))}</button><button type="button" data-close="${e.id}">${esc(T("Close","Закрыть"))}</button>`:""}</div></article>`;
       }).join("")}</div>`;
+      /* each preview is the space's real phone screen, laid out at full screen width and shrunk to the card */
+      const W=SCREEN.clientWidth||390;
+      $$("#switcher .sw-live").forEach(l=>{l.style.setProperty("--sw-w",W+"px");l.style.setProperty("--k",(l.clientWidth/W).toFixed(4))});
     }
     function openSwitcher(){
       if(document.body.classList.contains("locked"))return;
@@ -5178,7 +5194,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     $("#switcher")?.addEventListener("click",e=>{
       if(performance.now()-swDragAt<400)return;
       const pin=e.target.closest("[data-pin]"),x=e.target.closest("[data-close]"),card=e.target.closest("[data-open]");
-      if(!pin&&!x&&!card&&!e.target.closest(".sw-bar")){closeSwitcher();return}
+      if(!pin&&!x&&!card){closeSwitcher();return}
       if(pin){const sp=OPEN.get(pin.dataset.pin);if(sp){sp.pinned=!sp.pinned;renderSwitcher()}return}
       if(x){closeSpaceId(x.dataset.close);return}
       if(card)openFromSwitcher(card.dataset.open);
