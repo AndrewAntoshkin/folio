@@ -1262,16 +1262,34 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .ph-scrim{position:absolute;inset:0;z-index:39;background:rgba(0,0,0,.24);opacity:0;pointer-events:none;transition:opacity .24s cubic-bezier(.2,.8,.2,1)}
     .ff-phone.ph-sheet .os.view-space .ph-scrim{opacity:1;pointer-events:auto}
     .sh-grip{display:none}
-    .ff-phone .space{inset:56px 0 0;z-index:40;opacity:1;visibility:visible;border-radius:28px 28px 0 0;background:var(--sheet-bg,rgba(236,236,236,.96));box-shadow:0 -20px 60px -20px rgba(0,0,0,.3);transform:translateY(102%);pointer-events:none;transition:transform .28s cubic-bezier(.2,.8,.2,1)}
-    body.night .ff-phone .space,.ff-phone body.night .space{--sheet-bg:rgba(30,30,32,.97)}
+    /* phone: the sheet IS the card. .space is only the detent frame (large / medium, drag to dismiss); the active module is the sheet's surface:
+       full width, top radius only, no border or shadow of its own; grabber, compact header row, big title, content, actions pinned above the home indicator */
+    .ff-phone .space{inset:56px 0 0;z-index:40;opacity:1;visibility:visible;border-radius:28px 28px 0 0;--sheet-bg:#fafafa;box-shadow:0 -20px 60px -20px rgba(0,0,0,.3);transform:translateY(102%);pointer-events:none;transition:transform .28s cubic-bezier(.2,.8,.2,1),top .28s cubic-bezier(.2,.8,.2,1)}
+    .ff-phone body.night .space{--sheet-bg:#212121}
+    .ff-phone.ph-mid .space{top:46%}
     .ff-phone.ph-sheet .os.view-space .space{transform:translateY(var(--sh-dy,0px));pointer-events:auto}
     .ff-phone.ph-drag .space{transition:none}
-    .ff-phone .sh-grip{position:absolute;z-index:5;top:0;left:0;right:0;display:grid;place-items:center;height:28px;touch-action:none;cursor:grab}
+    .ff-phone .sh-grip{position:absolute;z-index:5;top:0;left:0;right:0;display:grid;place-items:start center;height:24px;padding-top:8px;touch-action:none;cursor:grab}
     .ff-phone .sh-grip i{width:36px;height:5px;border-radius:3px;background:rgba(47,47,47,.24)}
-    body.night .ff-phone .sh-grip i{background:rgba(255,255,255,.28)}
+    .ff-phone body.night .sh-grip i{background:rgba(255,255,255,.28)}
+    .ff-phone .sh-grip:focus-visible{outline:0}.ff-phone .sh-grip:focus-visible i{box-shadow:0 0 0 2px var(--accent)}
+    .ff-phone .space .flows{inset:0}
+    .ff-phone .space .flow,.ff-phone .space .track,.ff-phone .space .module{height:100%}
+    .ff-phone .space .module{border:0;border-radius:28px 28px 0 0;background:var(--sheet-bg);box-shadow:none}
+    .ff-phone .space .module:not(.active){opacity:1;transform:none}
+    .ff-phone .space{background:var(--sheet-bg)}
+    html.ff-morph.ff-phone .space{background:none}
+    /* what the large sheet covers (the space title row, the stack, the dock) sits out, so a morph or the frozen copy never shows it round a moving sheet */
+    .ff-phone.ph-sheet:not(.ph-mid):not(.ph-drag) .os.view-space :is(.mstack,.sb-left){visibility:hidden;transition:visibility 0s .28s}
+    .ff-phone.ph-sheet .os.view-space .hints{visibility:hidden}
+    .ff-phone .space .m-head{height:48px;margin-top:20px;padding:0 12px 0 20px;border:0;border-radius:0;background:none}
+    .ff-phone .space .m-head input{font-size:14px}
+    .ff-phone .space .parse{padding:0 20px;background:none}
+    .ff-phone .space .m-body{padding:8px 20px 16px}
+    .ff-phone .space .m-foot{padding:12px 20px 34px}
     .ff-phone .flow:not(.current){visibility:hidden}
     .ff-phone .navdots{display:none}
-    .ff-phone .space .flow-label{top:-26px}
+    .ff-phone .space .flow-label{display:none}
 
     .home-spaces{display:none;width:min(704px,90cqw);margin-top:8px}
     .ff-touch .home-spaces{display:block}
@@ -1364,7 +1382,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
 
     <section class="mstack" id="stack" aria-label="Modules"></section>
     <div class="ph-scrim" id="phScrim"></div>
-    <section class="space" id="space"><div class="sh-grip" id="shGrip"><i></i></div><div class="flows" id="flows"></div><nav class="navdots" id="navdots"></nav></section>
+    <section class="space" id="space"><div class="sh-grip" id="shGrip" role="button" tabindex="0"><i></i></div><div class="flows" id="flows"></div><nav class="navdots" id="navdots"></nav></section>
 
     <section class="overview" id="overview">
       <div class="ov-shell">
@@ -2212,16 +2230,21 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       proj();
       const sp=$("#space"),w=sp.clientWidth,h=sp.clientHeight,phone=FF.dev==="phone";
       let mw,mh,gap,y0;
-      if(phone){mw=w-32;y0=40;mh=h-y0-100;gap=16}
+      if(phone){mw=w;y0=0;mh=h;gap=0}
       else{mw=Math.min(440,w-96);mh=Math.min(580,Math.round(h*.8));gap=80;y0=(h-mh)/2}
-      const fh=mh+70;
+      const fh=phone?h:mh+70;
       sp.style.setProperty("--mw",mw+"px");sp.style.setProperty("--mh",mh+"px");sp.style.setProperty("--gap",gap+"px");sp.style.setProperty("--lx",(w/2-mw/2+6)+"px");
       $("#flows").style.transform=`translateY(${y0-S.f*fh}px)`;
       $$("#flows .flow").forEach((el,fi)=>{
         el.style.top=fi*fh+"px";el.classList.toggle("current",fi===S.f);
         el.querySelector(".track").style.transform=`translateX(${w/2-mw/2-S.m[fi]*(mw+gap)}px)`;
         el.querySelector(".count").textContent=`${S.m[fi]+1} / ${S.flows[fi].modules.length}`;
-        el.querySelectorAll(".module").forEach((c,mi)=>c.classList.toggle("active",fi===S.f&&mi===S.m[fi]));
+        el.querySelectorAll(".module").forEach((c,mi)=>{
+          c.classList.toggle("active",fi===S.f&&mi===S.m[fi]);
+          /* the phone sheet shows the big title right below, so its header row carries context (source · flow) instead of repeating it */
+          const m=S.flows[fi].modules[mi],inp=c.querySelector(".line-in");
+          if(m&&inp&&!inp.closest(".listening"))inp.placeholder=phone?[...new Set([collabName(m.source),S.flows[fi].name])].join(" · "):heading(m);
+        });
       });
       renderNavdots();
       if(paletteOpen)setTimeout(positionPalette,0);
@@ -2527,7 +2550,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       closePalette();closeSelBubble();renderHints();
       if(v!=="home")$("#intentInput")?.blur();
       renderFFSwitch();renderFocus();
-      if(v!=="space")document.documentElement.classList.remove("ph-sheet");else if(FF.dev==="phone"&&phFocus)document.documentElement.classList.add("ph-sheet");
+      if(v!=="space")document.documentElement.classList.remove("ph-sheet","ph-mid");else if(FF.dev==="phone"&&phFocus)document.documentElement.classList.add("ph-sheet");
       phFocus=false;
       proj();
       if(v==="home"){toggleOverview(false,true);setTimeout(()=>$("#intentInput").focus(),300)}
@@ -3909,7 +3932,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       const html=document.documentElement,was=FF.dev;
       DEVICES.forEach(d=>html.classList.toggle("ff-"+d.id,d.id===id));
       html.classList.toggle("ff-touch",id==="phone");
-      if(id!=="phone")html.classList.remove("ph-sheet","ph-drag");
+      if(id!=="phone")html.classList.remove("ph-sheet","ph-drag","ph-mid");
       FF.dev=id;ffPlace();syncNight();dockHomeLine(id==="phone");
       closePalette();closeSelBubble();setWx(false);setMenu(false);
       if(id==="phone"&&S&&view==="space")html.classList.add("ph-sheet");
@@ -3953,7 +3976,12 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       const s0=SCREEN.getBoundingClientRect(),out=r=>r.width&&r.height&&(r.bottom<=s0.top+1||r.top>=s0.bottom-1||r.right<=s0.left+1||r.left>=s0.right-1);
       for(let i=0;i<a.length;i++){const n=a[i];if(n.scrollTop||n.scrollLeft){b[i].scrollTop=n.scrollTop;b[i].scrollLeft=n.scrollLeft}if(n.tagName==="INPUT"||n.tagName==="TEXTAREA")b[i].value=n.value;
         if(bare&&out(n.getBoundingClientRect())&&getComputedStyle(n).position==="fixed")b[i].style.visibility="hidden"}
-      const all=[...a];host.sc=sc;host.twin=n=>{const k=all.indexOf(n);return k<0?null:b[k]};
+      const all=[...a];
+      /* the frozen copy fades part by part, so whatever the open card sheet covered must not surface through it: covered stack rows are hidden, rows under its top edge are cut there */
+      if(bare&&FF.dev==="phone"&&document.documentElement.classList.contains("ph-sheet")){
+        const st=$("#space").getBoundingClientRect().top;
+        $$("#stack>:not(.st-list),#stack .st-list>*").forEach(n=>{const r=n.getBoundingClientRect(),k=all.indexOf(n);if(k<0||r.bottom<=st)return;
+          if(r.top>=st-1)b[k].style.visibility="hidden";else b[k].style.clipPath=`inset(0 0 ${(r.bottom-st)/g.s}px 0)`})}host.sc=sc;host.twin=n=>{const k=all.indexOf(n);return k<0?null:b[k]};
       return host;
     }
     /* what the screen is painted with, as real layers: the fog with its mist, or the night fog */
@@ -4398,9 +4426,10 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       if(typing)setTimeout(()=>cardOf(m)?.querySelector(".chat-form input")?.focus({preventScroll:true}),320);
     }
     function setSheet(on){
-      const h=document.documentElement;on=!!on&&FF.dev==="phone"&&!!S&&view==="space";
-      $("#space").style.removeProperty("--sh-dy");h.classList.remove("ph-drag");
+      const h=document.documentElement,sp=$("#space");on=!!on&&FF.dev==="phone"&&!!S&&view==="space";
+      sp.style.removeProperty("--sh-dy");sp.style.removeProperty("top");h.classList.remove("ph-drag");
       if(h.classList.contains("ph-sheet")===on)return;
+      if(on){if(h.classList.contains("ph-mid")){h.classList.add("ph-drag");h.classList.remove("ph-mid");sp.offsetHeight;h.classList.remove("ph-drag")}$("#shGrip").setAttribute("aria-label",T("Sheet size: medium or large","Высота листа: средняя или большая"))}
       h.classList.toggle("ph-sheet",on);if(!on)closePalette();renderHints();if(on)requestAnimationFrame(layout);
     }
 
@@ -5027,14 +5056,32 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     $("#stack")?.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.matches(".cp")){e.preventDefault();openFull(findModuleById(e.target.dataset.cid))}});
     $("#homeSpaces")?.addEventListener("click",e=>{const b=e.target.closest("[data-hs]");if(b)enterSpace(b.dataset.hs)});
     $("#phScrim")?.addEventListener("click",()=>setSheet(false));
+    /* sheet detents: large (56px from the top) and medium (46%); between them the sheet resizes, so its actions stay pinned to the bottom;
+       below medium it slides and dismisses on distance or a flick; a tap (or Enter/Space) on the grabber switches detents */
+    const shDetents=sp=>({big:56,mid:Math.round(sp.offsetParent.clientHeight*.46)});
+    const shToggle=()=>{if(document.documentElement.classList.contains("ph-sheet"))document.documentElement.classList.toggle("ph-mid")};
     $("#shGrip")?.addEventListener("pointerdown",e=>{
       if(e.button!==0)return;
-      const sp=$("#space"),h=document.documentElement,y0=e.clientY;let dy=0;
+      const sp=$("#space"),h=document.documentElement,{big,mid}=shDetents(sp),t0=h.classList.contains("ph-mid")?mid:big,y0=e.clientY;
+      let t=t0,v=0,ly=e.clientY,lt=e.timeStamp;
       h.classList.add("ph-drag");
-      const mv=ev=>{dy=Math.max(0,(ev.clientY-y0)/FF.s);sp.style.setProperty("--sh-dy",dy+"px")};
-      const up=()=>{removeEventListener("pointermove",mv);removeEventListener("pointerup",up);h.classList.remove("ph-drag");if(dy>120)setSheet(false);else sp.style.removeProperty("--sh-dy")};
-      addEventListener("pointermove",mv);addEventListener("pointerup",up);
+      const mv=ev=>{
+        t=t0+(ev.clientY-y0)/FF.s;
+        const dt=ev.timeStamp-lt;if(dt>0){v=.7*((ev.clientY-ly)/FF.s/dt)+.3*v;ly=ev.clientY;lt=ev.timeStamp}
+        sp.style.top=(t<big?big-(big-t)/4:Math.min(t,mid))+"px";sp.style.setProperty("--sh-dy",Math.max(0,t-mid)+"px");
+      };
+      const up=()=>{
+        removeEventListener("pointermove",mv);removeEventListener("pointerup",up);removeEventListener("pointercancel",up);
+        h.classList.remove("ph-drag");sp.style.removeProperty("top");
+        if(Math.abs(t-t0)<4){sp.style.removeProperty("--sh-dy");shToggle();return}
+        const end=t+v*160;
+        if(t>mid&&(end>mid+120||v>.6)){h.classList.add("ph-mid");setSheet(false);return}
+        sp.style.removeProperty("--sh-dy");
+        h.classList.toggle("ph-mid",Math.abs(end-mid)<Math.abs(end-big));
+      };
+      addEventListener("pointermove",mv);addEventListener("pointerup",up);addEventListener("pointercancel",up);
     });
+    $("#shGrip")?.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();shToggle()}});
     $("#homeGrab")?.addEventListener("pointerdown",e=>{const y0=e.clientY,up=ev=>{removeEventListener("pointerup",up);const d=y0-ev.clientY;if(d>24||Math.abs(d)<6)openSwitcher()};addEventListener("pointerup",up)});
     $("#space")?.addEventListener("pointerdown",e=>{
       const tile=e.target.closest(".module .m-head .kt");
