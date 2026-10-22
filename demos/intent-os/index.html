@@ -20,7 +20,7 @@
     body.night{background:radial-gradient(120% 90% at 50% 0%,#1b1b1d,#09090a)}
     /* view-as stage: the OS renders inside one screen; the screen is the size container and the containing block for its overlays */
     .ff-device{position:absolute;left:0;top:0;transform-origin:0 0}
-    .ff-screen{position:absolute;inset:0;overflow:hidden;contain:layout paint;container:screen/size;background:var(--fog);transition:background .7s var(--ease)}
+    .ff-screen{position:absolute;inset:0;overflow:clip;contain:layout paint;container:screen/size;background:var(--fog);transition:background .7s var(--ease)}
     .ff-shell{position:absolute;display:none;border-radius:calc(var(--ffr) + var(--ffb));inset:calc(var(--ffb) * -1);background:#0c0c0e;box-shadow:0 0 0 1px rgba(255,255,255,.08),0 40px 100px -30px rgba(0,0,0,.5)}
     html:not(.ff-desktop) .ff-shell{display:block}
     html:not(.ff-desktop) .ff-screen{border-radius:var(--ffr)}
@@ -195,7 +195,7 @@
     .timeline-hint span{animation:bob 2.4s var(--ease) infinite}.timeline-hint .ic{width:16px;height:16px}.timeline-hint:hover{color:var(--ink)}
     @keyframes bob{50%{transform:translateY(-4px)}}
 
-    .space{position:absolute;inset:52px 0 56px;overflow:hidden;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .45s var(--ease),visibility 0s .45s}
+    .space{position:absolute;inset:52px 0 56px;overflow:clip;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .45s var(--ease),visibility 0s .45s}
     .view-space .space{opacity:1;visibility:visible;pointer-events:auto;transition:opacity .45s var(--ease),visibility 0s}
     .space.notrans,.space.notrans *{transition:none!important}
     .flows{position:absolute;inset:0 0 auto;transition:transform .7s var(--ease);will-change:transform}
