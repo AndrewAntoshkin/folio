@@ -63,6 +63,7 @@ html.tile-view::-webkit-scrollbar { width: 0; height: 0; }
   place-items: center;
   padding: 28px;
 }
+.ol-center-start { place-items: center start; overflow: hidden; }
 .ol-kicker {
   display: block;
   margin: 0 0 8px;
@@ -203,7 +204,7 @@ html.tile-view::-webkit-scrollbar { width: 0; height: 0; }
 }
 .ol-pill button.is-on { background: rgba(255, 255, 255, 0.1); }
 
-.ol-melt { width: min(520px, 92vw); height: 320px; position: relative; touch-action: none; }
+.ol-melt { width: 340px; height: 280px; position: relative; touch-action: none; }
 .ol-blob {
   position: absolute;
   width: 140px;
@@ -247,7 +248,7 @@ html.tile-view::-webkit-scrollbar { width: 0; height: 0; }
   padding: 22px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: flex-start;
   position: relative;
   overflow: hidden;
 }
@@ -410,8 +411,8 @@ html.tile-view::-webkit-scrollbar { width: 0; height: 0; }
 }
 .ol-spot p {
   margin: 0;
-  font-size: clamp(32px, 5vw, 56px);
-  line-height: 1.15;
+  font-size: clamp(40px, 6vw, 64px);
+  line-height: 1.12;
   font-weight: 400;
 }
 .ol-spot .base { color: rgba(243, 246, 242, 0.18); }
@@ -447,10 +448,10 @@ html.tile-view::-webkit-scrollbar { width: 0; height: 0; }
 }
 
 .ol-rail {
-  width: min(860px, 100%);
+  width: max-content;
   display: flex;
   gap: 16px;
-  padding: 8px 8vw;
+  padding: 8px 28px;
   cursor: grab;
   touch-action: pan-y;
 }

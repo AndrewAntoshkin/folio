@@ -231,23 +231,23 @@ const STAGE_H = 900;
 
 // Tile posters. w/h is the iframe stage; z crops empty margin around a centered subject.
 const PRESENTATION = {
-  stack: { w: 760, h: 475, z: 1.22 },
+  stack: { w: 760, h: 475, z: 1.08 },
   intent: { w: 720, h: 450, z: 1.12 },
-  gather: { w: 980, h: 612, z: 1.18 },
+  gather: { w: 720, h: 450, z: 1.28 },
   dock: { w: 680, h: 425, z: 1.16 },
-  melt: { w: 680, h: 425, z: 1.18 },
+  melt: { w: 560, h: 350, z: 1.12 },
   passage: { w: 720, h: 450, z: 1.14 },
-  sheet: { w: 920, h: 575, z: 1.28 },
+  sheet: { w: 880, h: 550, z: 1.06 },
   island: { w: 720, h: 450, z: 1.32 },
   toast: { w: 560, h: 350, z: 1.18 },
   command: { w: 640, h: 400, z: 1.16 },
-  order: { w: 560, h: 350, z: 1.2 },
-  yield: { w: 860, h: 538, z: 1.16 },
+  order: { w: 640, h: 400, z: 1.05 },
+  yield: { w: 860, h: 538, z: 1.55 },
   glass: { w: 680, h: 425, z: 1.22 },
-  spotlight: { w: 980, h: 612, z: 1.12 },
-  rise: { w: 980, h: 612, z: 1.16 },
+  spotlight: { w: 760, h: 475, z: 1.42 },
+  rise: { w: 800, h: 500, z: 1.36 },
   magnet: { w: 480, h: 300, z: 1.2 },
-  tickets: { w: 980, h: 612, z: 1.08 },
+  tickets: { w: 760, h: 475, z: 1.02 },
 };
 
 function presentationOf(mod) {
@@ -267,6 +267,21 @@ function srcFor(mod, { full } = {}) {
 
 function post(frame, data) {
   frame?.contentWindow?.postMessage(data, location.origin);
+}
+
+function sendWhenReady(iframe, data) {
+  if (!iframe) return;
+  let tries = 0;
+  const kick = () => {
+    const ready = iframe.contentWindow?.__preview && iframe.contentDocument?.readyState === "complete";
+    if (ready) post(iframe, data);
+    else if (tries < 40) {
+      tries += 1;
+      window.setTimeout(kick, 40);
+    }
+  };
+  if (iframe.src && iframe.contentDocument?.readyState === "complete") kick();
+  else iframe.addEventListener("load", kick, { once: true });
 }
 
 function fit(frame) {
@@ -520,9 +535,7 @@ window.__lab = {
     const frame = frames.get(id);
     if (!frame) return;
     wake(frame);
-    const send = () => post(frame.__iframe, { type: "seek", p });
-    if (frame.__iframe.contentDocument?.readyState === "complete" && frame.__iframe.src) send();
-    else frame.__iframe.addEventListener("load", send, { once: true });
+    sendWhenReady(frame.__iframe, { type: "seek", p });
   },
   open(id) {
     open(id);
@@ -530,10 +543,6 @@ window.__lab = {
   close,
   seekOpen(id, p) {
     open(id);
-    const send = () => post(dialogFrame?.__iframe, { type: "seek", p });
-    const iframe = dialogFrame?.__iframe;
-    if (!iframe) return;
-    if (iframe.contentDocument?.readyState === "complete") iframe.addEventListener("load", send, { once: true });
-    iframe.addEventListener("load", send, { once: true });
+    sendWhenReady(dialogFrame?.__iframe, { type: "seek", p });
   },
 };

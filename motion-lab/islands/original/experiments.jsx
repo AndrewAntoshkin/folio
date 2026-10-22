@@ -33,7 +33,7 @@ function useScrollProgress() {
 function StackCard({ index, progress, kicker, title, note, wash }) {
   const y = useTransform(progress, (p) => {
     const cover = Math.min(1, Math.max(0, p * 3.1 - index));
-    return index * 18 - cover * 14;
+    return (index - 3) * 16 - cover * 12;
   });
   const scale = useTransform(progress, (p) => {
     const cover = Math.min(1, Math.max(0, p * 3.1 - index));
@@ -218,8 +218,8 @@ function Dock() {
 }
 
 function Melt() {
-  const x = useSpring(148, { stiffness: 280, damping: 24, mass: 0.7 });
-  const y = useSpring(62, { stiffness: 280, damping: 24, mass: 0.7 });
+  const x = useSpring(128, { stiffness: 280, damping: 24, mass: 0.7 });
+  const y = useSpring(52, { stiffness: 280, damping: 24, mass: 0.7 });
   const drag = (event) => {
     const bounds = event.currentTarget.parentElement.getBoundingClientRect();
     x.set(event.clientX - bounds.left - 70);
@@ -229,7 +229,7 @@ function Melt() {
     <div className="ol-fill">
       <div className="ol-center">
         <div className="ol-melt" style={{ filter: "url(#ol-goo)" }}>
-          <div className="ol-blob" style={{ left: 70, top: 90 }}>{tx("Свет", "Light")}</div>
+          <div className="ol-blob" style={{ left: 36, top: 78 }}>{tx("Свет", "Light")}</div>
           <motion.div
             className="ol-blob dim"
             style={{ x, y }}
@@ -655,7 +655,7 @@ function Tickets() {
   }, []);
   return (
     <div className="ol-fill">
-      <div className="ol-center" style={{ padding: 0 }}>
+      <div className="ol-center ol-center-start" style={{ padding: 0 }}>
         <motion.div
           ref={rail}
           className="ol-rail"
