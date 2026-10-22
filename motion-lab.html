@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru" class="nojs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Motion Lab — Андрей Антошкин</title>
+  <meta name="description" content="Живые прототипы интерфейсной анимации: карта, перевод, общий элемент, пружинные цифры, стопка и стеклянное меню.">
+  <meta property="og:title" content="Motion Lab — Андрей Антошкин">
+  <meta property="og:description" content="Живые прототипы интерфейсной анимации: карта, перевод, общий элемент, пружинные цифры, стопка и стеклянное меню.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://antoshkin.tech/motion-lab">
+  <meta property="og:image" content="https://antoshkin.tech/og/motion-lab.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="627">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Motion Lab — Андрей Антошкин">
+  <meta name="twitter:description" content="Живые прототипы интерфейсной анимации: карта, перевод, общий элемент, пружинные цифры, стопка и стеклянное меню.">
+  <meta name="twitter:image" content="https://antoshkin.tech/og/motion-lab.jpg">
+  <link rel="canonical" href="https://antoshkin.tech/motion-lab">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
+  <script>document.documentElement.classList.remove('nojs');try{if(sessionStorage.getItem('dock-seen'))document.documentElement.classList.add('dock-seen');else sessionStorage.setItem('dock-seen','1')}catch(e){}</script>
+  <link rel="stylesheet" href="/style.css?v=50">
+  <link rel="stylesheet" href="/motion-lab/tokens.css">
+  <link rel="stylesheet" href="/motion-lab/lab.css">
+</head>
+<body>
+
+<div class="dock"><nav aria-label="Навигация"><i aria-hidden="true"></i><a href="/" aria-label="Главная"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg></a><a href="/projects" aria-label="Проекты" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 13h16"/></svg></a><a href="/writing" aria-label="Статьи"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M14 5.5 18.5 10 9 19.5H4.5V15L14 5.5Z"/><path d="m12 7.5 4.5 4.5"/></svg></a><a href="/approach" aria-label="Подход"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.25"/><path d="M5.5 19.5c1.2-3 3.4-4.5 6.5-4.5s5.3 1.5 6.5 4.5"/></svg></a><a href="/collab" aria-label="Связь"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></nav><a class="lang" href="/en/motion-lab" aria-label="English">En</a></div>
+<a class="float" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Написать<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+<main><div class="col lab">
+  <header class="page-head lab-hero">
+    <div class="lab-fog" aria-hidden="true"></div>
+    <a class="back" href="/projects" data-r>‹ Назад</a>
+    <h1 data-split>Motion Lab</h1>
+    <div class="tags" data-r style="--d:.25s"><span class="tag">Анимация</span><span class="tag">6 прототипов</span></div>
+    <p class="sub" data-r style="--d:.3s">Шесть живых прототипов. Пин вырастает в карточку, сумма пружинит по цифрам, жест двигает стопку. Только transform и opacity.</p>
+  </header>
+  <section class="stack" aria-labelledby="lab-exp">
+    <div class="sec-head"><h2 id="lab-exp">Эксперименты</h2><sup>(6)</sup><span class="rule"></span></div>
+    <p class="sec-note" data-r>Каждый телефон играет, когда попадает в кадр. Откройте его, чтобы прочитать приём и токены движения.</p>
+    <div class="lab-grid" id="lab-grid"></div>
+  </section>
+</div></main>
+<div class="lab-dialog" id="lab-dialog" role="dialog" aria-modal="true" hidden></div>
+<noscript><p style="max-width:40em;margin:24px auto;color:#fff">Чтобы прототипы заигрались, нужен JavaScript.</p></noscript>
+  <section class="cta" data-r>
+    <div class="cta-grid">
+      <div class="cta-card">
+        <div class="shader" aria-hidden="true"></div>
+        <div class="mid"><h2>Есть задача?</h2></div>
+        <div class="bot"><p>Напишите мне. Вместе разберёмся, с чего начать.</p></div>
+      </div>
+      <form class="cta-form" data-subject="Сотрудничество">
+        <input name="name" required placeholder="Имя" aria-label="Имя" autocomplete="name">
+        <input name="email" type="email" required placeholder="Почта" aria-label="Почта" autocomplete="email">
+        <textarea name="question" required placeholder="Пару слов о задаче" aria-label="Пару слов о задаче"></textarea>
+        <button type="submit">Написать</button>
+      </form>
+    </div>
+    </section>
+  <footer class="foot">
+    <div class="foot-in">
+      <p class="foot-mark">© 2026 <a href="/">antoshkin.tech</a></p>
+      <p class="foot-agent"><span>For agents</span><a class="foot-llm" href="/llm.md" target="_blank" rel="noopener" aria-label="Machine-readable profile">llm.md</a></p>
+    </div>
+  </footer>
+  <script src="/motion.js?v=4"></script>
+  <script type="module" src="/motion-lab/lab.js"></script>
+</body>
+</html>
