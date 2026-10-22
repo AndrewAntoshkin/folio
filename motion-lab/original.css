@@ -708,16 +708,16 @@ html.tile-view::-webkit-scrollbar { width: 0; height: 0; }
 .ol-rail {
   width: max-content;
   display: flex;
-  gap: 16px;
-  padding: 8px 12% 8px 6%;
+  gap: 18px;
+  padding: 8px 28vw 8px 0;
   cursor: grab;
   touch-action: none;
   user-select: none;
 }
 .ol-ticket {
   flex: none;
-  width: 260px;
-  height: min(340px, 64dvh);
+  width: 300px;
+  height: min(420px, 68dvh);
   padding: 22px;
   display: flex;
   flex-direction: column;

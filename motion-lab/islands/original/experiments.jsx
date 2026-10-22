@@ -839,6 +839,8 @@ function Tickets() {
     [tx("Запись", "Visit"), tx("Терапевт", "Clinic"), tx("четверг, 11:20", "Thursday, 11:20"), "blue"],
     [tx("Пропуск", "Pass"), tx("Подъезд 2", "Entrance 2"), tx("сегодня", "today"), "sand"],
     [tx("Свет", "Light"), tx("Гостиная", "Living room"), tx("40%", "40%"), ""],
+    [tx("Тепло", "Heat"), tx("Квартира 42", "Apartment 42"), tx("счётчик", "meter"), "sand"],
+    [tx("Гость", "Guest"), tx("Марина", "Marina"), tx("до 22:00", "until 10 pm"), "blue"],
   ];
   const stage = useRef(null);
   const rail = useRef(null);
