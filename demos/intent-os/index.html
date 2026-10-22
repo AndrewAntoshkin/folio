@@ -4198,8 +4198,9 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       }
       return r;
     }
-    /* the content does a fade-through: the old screen is gone by 100 ms, the new one fades in from 120 ms, rising 8 px from 0.96 scale, every part on the one curve */
-    const FF_OUT=100,FF_GONE=60,FF_IN=120,FF_FADE=240,FF_N=45,FF_YIELD=45,FF_LEAD=1.8;
+    /* the content cross-fades with no empty beat: the old screen holds to 70 ms and is gone by 160 (under a tenth at 145), the new one fades in from 90 ms,
+       rising 8 px from 0.96 scale, every part on the one curve */
+    const FF_HOLD=70,FF_OUT=160,FF_GONE=145,FF_IN=90,FF_FADE=240,FF_N=45,FF_YIELD=45,FF_LEAD=1.8;
     /* what n paints, as page rects inside clip: a box with a fill, border or blur (whole – its contents are under it), else each line of its text.
        A box of big px² or more (the phone sheet) only counts by its contents */
     const ffRg=document.createRange(),ffClear=v=>/^(transparent|rgba\([^)]*,\s*0\))$/.test(v);
@@ -4213,8 +4214,9 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     }
     /* the shared elements' travel, planned before anything moves (page px, centre-based rects): a straight line from where each was to where it lands on the one spring,
        run 1.8× ahead of the frame (home by 250 ms) so they are all but there before the new content shows; held inside the moving frame as far as its two ends allow, so nothing is cut at the frame edge on the way.
-       Wherever a shared element would pass over the content on screen at that moment (the old screen until it is under a tenth at 60 ms, the new one once past a tenth at 130) – the intent line
-       also over another shared element – it fades to 0 for that stretch, 45 ms each way. An overlap with the old screen inside its start box, or with the new one inside its landing box, is layered by design (the dock over the list) */
+       Wherever a shared element would pass over the content on screen at that moment (the old screen until it is under a tenth at 145 ms, the new one once past a tenth at 100) – the intent line
+       also over another shared element – it fades to 0 for that stretch, 45 ms each way. An overlap with the old screen inside its start box, or with the new one inside its landing box, is layered by design (the dock over the list).
+       Pinned elements (the account avatar) ride the frame's top-right corner on the frame's own spring, their inset going from the old one to the new, and never fade */
     function ffPlan(its,obs,frame){
       const ts=Array.from({length:FF_N+1},(_,i)=>i*FF_DUR/FF_N),M=8,L=(a,b,p)=>a+(b-a)*p,F=ts.map(frame);
       const edge=(V,f)=>[f.l+M-(V.x-V.w/2),V.x+V.w/2-(f.r-M),f.t+M-(V.y-V.h/2),V.y+V.h/2-(f.b-M)];
@@ -4222,6 +4224,9 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       const hit=(a,b)=>Math.max(0,Math.min(a.r,b.r)-Math.max(a.l,b.l))*Math.max(0,Math.min(a.b,b.b)-Math.max(a.t,b.t));
       its.forEach(e=>{
         const a=e.V0,b=e.V1,o0=edge(a,F[0]),o1=edge(b,F[FF_N]);
+        if(e.pin){const f0=F[0],f1=F[FF_N],rx0=f0.r-a.x,rx1=f1.r-b.x,ty0=a.y-f0.t,ty1=b.y-f1.t;
+          e.path=ts.map((t,i)=>{const q=ffP(t),f=F[i],V={x:f.r-L(rx0,rx1,q),y:f.t+L(ty0,ty1,q),w:L(a.w,b.w,q),h:L(a.h,b.h,q)};
+            V.r=cut(cut({l:V.x-V.w/2,t:V.y-V.h/2,r:V.x+V.w/2,b:V.y+V.h/2},e.clip),f);return V});return}
         e.path=ts.map((t,i)=>{const q=ffP(t*FF_LEAD),V={x:L(a.x,b.x,q),y:L(a.y,b.y,q),w:L(a.w,b.w,q),h:L(a.h,b.h,q)};
           const o=edge(V,F[i]).map((v,j)=>Math.max(0,v-Math.max(0,L(o0[j],o1[j],q))));
           V.x+=o[0]&&o[1]?(o[0]-o[1])/2:o[0]-o[1];V.y+=o[2]&&o[3]?(o[2]-o[3])/2:o[2]-o[3];
@@ -4231,6 +4236,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       const clash=(e,r,o,old)=>{const I=cut(r,o);return I.r-I.l>1&&I.b-I.t>1&&!(old===undefined?home(I,e.path[0].r)||home(I,e.path[FF_N].r):home(I,e.path[old?0:FF_N].r))};
       const out={};
       its.forEach(e=>{
+        if(e.pin)return;
         const hid=[];
         for(let k=0;k<=FF_N;k++){const t=ts[k],r=e.path[k].r;
           if(obs.some(o=>t>=o.from&&t<o.to&&clash(e,r,cut(o.r,F[k]),!!o.old))||e.kind==="line"&&its.some(x=>x!==e&&clash(e,r,x.path[k].r)))hid.push(k)}
@@ -4285,7 +4291,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
        – the frame springs from the old device to the new one as an empty shell that cross-fades the real old background into the new one;
        – shared elements (the clock, the intent line, the status items) are the live nodes in their new layout, travelling from where they were with a uniform scale,
          so text never distorts, on paths planned up front (ffPlan);
-       – the content does a fade-through: the old screen (a frozen copy) fades out as one and is gone at 100 ms; the new screen's parts fade in together from 120 ms
+       – the content cross-fades: the old screen (a frozen copy) holds to 70 ms and fades out as one by 160 ms; the new screen's parts fade in together from 90 ms
          on one curve, rising 8 px from 0.96 scale. Nothing else travels, so no card can cross another or leave a gap */
     let ffTok=0,ffAnims=[],ffUndo=[],ffLast=null;
     function setDevice(id,opts={}){
@@ -4347,7 +4353,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       push(SCREEN.animate([{clipPath:`inset(${q.t}px ${q.r}px ${q.b}px ${q.l}px round ${rad}px)`},{clipPath:`inset(0px 0px 0px 0px round ${FF.r}px)`}],timing));
       const clock=push(new Animation(new KeyframeEffect(null,[],{duration:FF_DUR,fill:"both"}),document.timeline));FF.clock=clock;clock.finished.then(done,()=>{});
       const keep=new Set(),anc=new Set(),path={duration:FF_DUR,easing:"linear",fill:"both"};
-      /* the old screen fades out as one: everything but the shared elements (whose frozen copies are hidden – the live ones travel) is gone at 100 ms */
+      /* the old screen fades out as one: everything but the shared elements (whose frozen copies are hidden – the live ones travel) holds to 70 ms and is gone at 160 ms */
       const gkeep=new Set(),ganc=new Set(),gop=n=>+getComputedStyle(n).opacity,gone=[];
       pairs.forEach(p=>{const t=ghost.twin(p.a.n);if(!t)return;t.classList.add("ffm-hide");gkeep.add(t);for(let e=t.parentElement;e&&e!==ghost.sc;e=e.parentElement)ganc.add(e)});
       const gwalk=n=>{for(const c of n.children){if(gkeep.has(c))continue;if(ganc.has(c))gwalk(c);else gone.push(c)}};gwalk(ghost.sc);
@@ -4359,7 +4365,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         [...SCREEN.children].forEach(c=>{if(c===top||c.matches(".mist,.grain")||(parseInt(getComputedStyle(c).zIndex)||0)>=z)return;const was=c.style.filter;c.style.filter=bf;ffUndo.push(()=>{c.style.filter=was})})});
       const C=r=>({x:r.left+r.width/2,y:r.top+r.height/2,w:r.width,h:r.height});
       const its=pairs.map(p=>{const{a,b,kind}=p,n=b.n,k=kind==="same"?Math.sqrt(a.r.width/b.r.width*a.r.height/b.r.height):1;
-        return{k:p.k,n,kind,B:b.r,clip:ffClip(n,SCREEN),V0:kind==="same"?{...C(a.r),w:b.r.width*k,h:b.r.height*k}:C(a.r),V1:C(b.r)}});
+        return{k:p.k,n,kind,pin:p.k==="me",B:b.r,clip:ffClip(n,SCREEN),V0:kind==="same"?{...C(a.r),w:b.r.width*k,h:b.r.height*k}:C(a.r),V1:C(b.r)}});
       its.forEach(e=>{keep.add(e.n);for(let x=e.n.parentElement;x&&x!==SCREEN;x=x.parentElement)anc.add(x)});
       const fresh=[],walk=n=>{for(const c of n.children){if(keep.has(c)||c.matches(".mist,.grain"))continue;if(anc.has(c))walk(c);else fresh.push(c)}};walk(SCREEN);
       /* parked panels (the phone's control centre above the screen) are clipped once the screen clips again; the morph screen does not clip and the fade-in's rise would bring them in, so they sit out */
@@ -4367,10 +4373,9 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       for(let i=fresh.length;i--;)if(park(fresh[i]))fresh.splice(i,1);
       fresh.forEach(f=>f.querySelectorAll("*").forEach(c=>{if(getComputedStyle(c).position==="fixed")park(c)}));
       /* what is on screen for the intent line to steer round: the old content until it is gone, the new content once it starts to show */
-      /* when the frame does not move (a phone-width window, where both layouts fill it) no moving frame bridges the gap, so the two screens cross-fade instead */
-      const still=Math.abs(A.x-Z.x)+Math.abs(A.y-Z.y)+Math.abs(A.w-Z.w)+Math.abs(A.h-Z.h)<2,fIn=still?40:FF_IN,fOut=FF_OUT;
+      const fIn=FF_IN,fOut=FF_OUT;
       const obs=[];
-      gone.forEach(n=>ffBlots(n,.6*A.w*A.h,ffClip(n,ghost.sc,false)).forEach(r=>obs.push({r,from:0,to:still?fOut:FF_GONE,old:1})));
+      gone.forEach(n=>ffBlots(n,.6*A.w*A.h,ffClip(n,ghost.sc,false)).forEach(r=>obs.push({r,from:0,to:FF_GONE,old:1})));
       fresh.forEach(c=>{if(!veils.has(c))ffBlots(c,.6*Z.w*Z.h,ffClip(c,SCREEN,false)).forEach(r=>obs.push({r,from:fIn+10,to:Infinity}))});
       ffLast=ffPlan(its,obs,t=>{const p=ffP(t);return{l:L(A.x,Z.x,p),t:L(A.y,Z.y,p),r:L(A.x+A.w,Z.x+Z.w,p),b:L(A.y+A.h,Z.y+Z.h,p)}});
       its.forEach(e=>{
@@ -4378,9 +4383,9 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         const kf=ffKf(e,e.n,e.B,e.kind);if(e.op){const o=+getComputedStyle(e.n).opacity;kf.forEach((k,j)=>{k.opacity=+(o*e.op[j]).toFixed(3)})}
         push(e.n.animate(kf,path));
       });
-      const out={duration:fOut,easing:still?"cubic-bezier(.4,0,.6,1)":"cubic-bezier(.2,0,0,1)",fill:"forwards"};
-      gone.forEach(n=>{const o=gop(n);if(o>0)push(n.animate([{opacity:o},{opacity:0}],out))});
-      ganc.forEach(e=>{const f=ffPaint(e,[]);if(f)push(e.animate([f.to,f.from],out))});
+      const out={duration:fOut,easing:"linear",fill:"forwards"},io="cubic-bezier(.4,0,.6,1)",outKf=(a,b)=>[a,{...a,offset:FF_HOLD/FF_OUT,easing:io},b];
+      gone.forEach(n=>{const o=gop(n);if(o>0)push(n.animate(outKf({opacity:o},{opacity:0}),out))});
+      ganc.forEach(e=>{const f=ffPaint(e,[]);if(f)push(e.animate(outKf(f.to,f.from),out))});
       /* the new content: every part on the one curve. Full-screen layers (and anything with its own translate or scale) only fade */
       const fade={duration:FF_FADE,delay:fIn,easing:"cubic-bezier(.2,.8,.2,1)",fill:"backwards"};
       fresh.forEach(c=>{if(veils.has(c))return;const cs=getComputedStyle(c),o=+cs.opacity;if(!(o>0))return;const r=c.getBoundingClientRect();
@@ -4388,6 +4393,13 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         push(c.animate(flat?[{opacity:0},{opacity:o}]:[{opacity:0,translate:"0px 8px",scale:"0.96"},{opacity:o,translate:"0px 0px",scale:"1"}],fade))});
       /* a box that holds shared elements cannot fade without them: its own paint fades in instead */
       anc.forEach(e=>{const f=ffPaint(e,ffUndo);if(f)push(e.animate([f.from,f.to],fade))});
+      /* the status items beside the pinned avatar (old and new) ride the same corner, so the avatar never crosses them; added on top of their fades */
+      const corner=t=>{const p=ffP(t);return[L(A.x+A.w,Z.x+Z.w,p),L(A.y,Z.y,p)]},c0=corner(0),c1=corner(FF_DUR);
+      const ride=(n,[x0,y0],k)=>push(n.animate(Array.from({length:25},(_,i)=>{const[x,y]=corner(i*FF_DUR/24);return{offset:i/24,translate:`${((x-x0)/k).toFixed(2)}px ${((y-y0)/k).toFixed(2)}px`}}),{...path,composite:"add"}));
+      if(its.some(e=>e.pin)){
+        fresh.forEach(c=>{if(c.closest(".sb-right"))ride(c.id==="wxWrap"?$("#wxBtn"):c,c1,s)});
+        const gs=ghost.sc.querySelector(".sb-right");if(gs)ride(gs,c0,k0);
+      }
       /* one clock: a bare timing animation plays and every part is set to its time each frame. Left to play, the parts the compositor can run
          (cards, fades) would run ahead of the ones it cannot (frame, clip, intent line) on a late frame – a card over text the line has not yet left */
       /* the clock starts on the first frame that shows the morph (that frame is 0 ms), not on a pending play that resolves a frame or two later */
