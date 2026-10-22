@@ -1218,6 +1218,11 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     .ff-phone .home{bottom:100px;padding-top:64px}
     .home-dock{position:absolute;left:16px;right:16px;bottom:24px;z-index:6;display:flex;flex-direction:column-reverse;gap:8px;transition:opacity .3s var(--ease),transform .4s var(--ease),visibility 0s}
     .ff-touch .home-dock .home-line,.ff-touch .home-dock .home-parse{position:relative;left:auto;right:auto;bottom:auto;width:auto;margin:0}
+    /* while typing, the parse chips sit on the intent line's own surface (its top grows by 32), so they move with it and never float over the cards */
+    .ff-touch .home-dock .home-line{transition:box-shadow .4s var(--ease),transform .4s var(--ease),padding-top .2s var(--ease)}
+    .ff-touch .home-dock:has(.home-parse.show) .home-line{padding-top:40px}
+    .ff-touch .home-dock .home-parse{z-index:7;justify-content:flex-start;margin-bottom:-42px;padding:0 16px 0 24px;flex-wrap:nowrap;overflow:hidden}
+    .ff-touch .home-dock .home-parse:not(.show){visibility:hidden;transition:opacity .25s,visibility 0s .25s}
     .os:not(.view-home)>.home-dock{opacity:0;visibility:hidden;pointer-events:none;transform:translateY(12px);transition:opacity .2s var(--ease),transform .3s var(--ease),visibility 0s .3s}
     .ff-phone .space{inset:96px 0 100px}
     .ff-phone .timeline{inset:52px 0 100px}
@@ -2679,8 +2684,13 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       layout();arrive(m,"down");
       return m;
     }
+    /* an unprompted sheet or module must not take the keyboard from someone mid-sentence: it waits for a pause in typing */
+    let lastTypedAt=0;
+    addEventListener("input",e=>{if(e.target.matches?.("input,textarea"))lastTypedAt=performance.now()},true);
+    const typingNow=()=>{const a=document.activeElement;return !!a?.matches?.("input:not([type=range]):not([type=checkbox]),textarea")&&(!!a.value||performance.now()-lastTypedAt<2500)};
     function collaboratorAdds(id){
       if(!S||S.id!==id||S.autoDone)return;
+      if(typingNow()){autoTimer=setTimeout(()=>collaboratorAdds(id),1500);return}
       S.autoArmed=false;
       if(!autoAllowed())return;
       const spec=autoKind(S),mode=spec?permOf(S,spec.who,spec.act):"ask";
@@ -3065,7 +3075,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
         const D={
           home:[],
           timeline:[["home",T("Home","Домой"),()=>setView("home")]],
-          space:[FF.dev==="phone"&&document.documentElement.classList.contains("ph-sheet")?["chevD",T("Close","Свернуть"),()=>setSheet(false)]:["home",T("Home","Домой"),()=>goHome()],["devices",T("Spaces","Пространства"),()=>openSwitcher()],["grid",T("Overview","Обзор"),()=>toggleOverview()],["plus",T("Module","Модуль"),()=>addAdjacent()],["sparkle",T("Actions","Действия"),()=>paletteOpen?closePalette():openPalette()]],
+          space:[FF.dev==="phone"&&document.documentElement.classList.contains("ph-sheet")?["chevD",T("Close","Свернуть"),()=>setSheet(false)]:["home",T("Home","Домой"),()=>goHome()],["devices",T("Spaces","Пространства"),()=>openSwitcher()],["grid",T("Overview","Обзор"),()=>toggleOverview()],["plus",T("Module","Модуль"),()=>addAdjacent()],["sparkle",T("Actions","Действия"),()=>{if(paletteOpen)return closePalette();if(!document.documentElement.classList.contains("ph-sheet")){setSheet(true);setTimeout(openPalette,200)}else openPalette()}]],
           overview:[["x",T("Close","Закрыть"),()=>toggleOverview(false)],["plus",T("New flow","Новый поток"),()=>newFlow()]]
         }[overviewOpen?"overview":view];
         $("#hints").innerHTML=D.map(([i,l],k)=>`<button type="button" data-h="${k}" aria-label="${esc(l)}">${ic(i)}<span class="lbl">${esc(l)}</span></button>`).join("");
@@ -3723,23 +3733,24 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     const typeGuard=new WeakMap();
     function isTypeField(el){return !!(el&&(el.id==="intentInput"||el.classList?.contains("line-in")))}
     function settleTyping(el){let n=el;while(n&&n.getAnimations){n.getAnimations().forEach(a=>{try{a.finish()}catch{}});n=n.parentElement}}
+    /* a key whose keydown came but whose text never landed (the field was mid-animation) is put back – only on that evidence: no input event
+       followed and the field is exactly as it was at the keydown. Text that arrives with no keydown (IME, phone keyboards, inserted text) is never touched */
     function flushTypeGuard(el){
-      if(!el)return;const st=typeGuard.get(el);if(!st)return;
-      if(st.raf){cancelAnimationFrame(st.raf);st.raf=0}
-      if(st.expected!=null&&el.value!==st.expected){const pos=st.start;el.value=st.expected;try{el.setSelectionRange(pos,pos)}catch{}el.dispatchEvent(new Event("input",{bubbles:true}))}
-      st.expected=null;
+      const st=el&&typeGuard.get(el);if(!st?.key)return;
+      clearTimeout(st.timer);const{key,before,start,end,ev}=st;st.key=null;
+      if(ev.defaultPrevented||document.activeElement!==el||el.value!==before)return;
+      el.value=before.slice(0,start)+key+before.slice(end);try{el.setSelectionRange(start+1,start+1)}catch{}el.dispatchEvent(new Event("input",{bubbles:true}));
     }
     function armTypeGuard(el,e){
       if(!isTypeField(el)||e.isComposing||e.ctrlKey||e.metaKey||e.altKey||e.defaultPrevented||e.key.length!==1)return;
-      settleTyping(el);
-      const st=typeGuard.get(el)||{expected:null,start:0,end:0,raf:0};
-      const base=st.expected??el.value,a=st.expected!=null?st.start:(el.selectionStart??base.length),b=st.expected!=null?st.end:(el.selectionEnd??base.length);
-      st.expected=base.slice(0,a)+e.key+base.slice(b);st.start=a+1;st.end=a+1;typeGuard.set(el,st);
-      if(st.raf)return;
-      st.raf=requestAnimationFrame(()=>{st.raf=0;const exp=st.expected;st.expected=null;if(exp==null||el.value===exp)return;const pos=st.start;el.value=exp;try{el.setSelectionRange(pos,pos)}catch{}el.dispatchEvent(new Event("input",{bubbles:true}))});
+      settleTyping(el);flushTypeGuard(el);
+      const st=typeGuard.get(el)||{};typeGuard.set(el,st);
+      Object.assign(st,{key:e.key,ev:e,before:el.value,start:el.selectionStart??el.value.length,end:el.selectionEnd??el.value.length});
+      st.timer=setTimeout(()=>flushTypeGuard(el),120);
     }
     addEventListener("focusin",e=>{if(isTypeField(e.target))settleTyping(e.target)});
     addEventListener("keydown",e=>{if(!isTypeField(e.target))return;if(e.key==="Enter")flushTypeGuard(e.target);else armTypeGuard(e.target,e)},true);
+    addEventListener("beforeinput",e=>{const st=isTypeField(e.target)&&typeGuard.get(e.target);if(st?.key){clearTimeout(st.timer);st.key=null}},true);
 
     /* ── system windows: one frame, above the desktop; Esc closes only the top one ── */
     const PERM_ACTS={weather:["shift","add"],calendar:["move","add"],maya:["send","add"]};
