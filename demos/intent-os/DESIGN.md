@@ -26,10 +26,15 @@ You are the design lead and the engineer. A senior Apple/Linear-level designer r
 - Copy: short. "Когда Погода хочет сдвинуть дни" -> group title "Погода", rows "Сдвинуть дни", "Добавить модуль".
 
 ## Control centre
-- Fog/glass, never a saturated fill. A tile at rest is a 5% ink wash; an active tile turns to the raised glass (white 80%, hairline inner edge) and only its icon takes the accent (accent-soft circle, accent glyph). Night: 6% / 16% white.
+- Fog/glass, never a saturated fill. White means one thing: *on*. A tile at rest is a 5% ink wash with a neutral icon circle; an active tile turns to the raised glass (white 80%, hairline inner edge) and only its icon takes the accent (accent-soft circle, accent glyph). Night: 6% / 20% white. The weather tile is not a toggle, so its icon circle stays neutral.
+- Sliders are never white: the track is the 5% wash with an 8% ink hairline edge, the level is a 10% ink fill whose leading edge is a 2px 32% ink line that follows the fill's round end, so the level reads at a glance without a thumb crossing the label or value. Night: 6% track, 10% white fill, 50% white edge.
+- On phone the panel is opaque (#f3f3f3, night #232325): nothing on the screen behind it (a dark button, a progress bar) shows through, whether or not backdrop blur renders.
 - Composition, top to bottom, all in one 8px column: the weather tile (condition 13/500, «city · ↑max ↓min» 11 quiet, temperature 26/300, chevron to the forecast), a pair of tiles (Wi-Fi, Focus), the brightness and volume sliders, then in a space a section label (the space title, 11) with its own tiles: a full-width player when the space has music, and a pair (Lights, Rules «N of M on»). Tiles always come in pairs or full width, so no row is ever orphaned.
 - Tile: 56 tall, radius 16, grid 40 + 8 + text, padding 8 / 16 / 8 / 8; icon 40 circle with a 20 glyph; title 13/16 500, subtitle 11/16 quiet. Slider: 48 tall pill, icon 40 + 8 + label + value; the fill never goes under the icon cell (56px minimum).
 - Tiles toggle on click (so a scroll never toggles, and Enter/Space work); a still press of 480ms, or the context menu, expands a tile in place. Sliders drag horizontally (a vertical drag scrolls), a tap jumps, arrows / PageUp / PageDown / Home / End step them. The forecast's back button sits in its header row.
+
+## Calm states in modules
+- A toggled action (Repeat, Tracking, Route, Mute…) is a white chip with a 24% ink hairline and ink text (night: 12% white, 28% white hairline), never an accent fill. A module's condition chip is ink at 78% on white, not accent text. Accent stays for progress and the one primary signal.
 
 ## Motion & responsiveness
 - Open: scrim fades 0->1 and backdrop blur 0->24px in 240ms; window scale 0.96->1 + opacity, spring (stiffness ~300, damping ~30) or cubic-bezier(0.2,0.8,0.2,1) 280ms, from the invoking element's origin when possible.
