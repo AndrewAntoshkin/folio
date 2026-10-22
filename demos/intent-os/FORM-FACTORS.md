@@ -2,42 +2,36 @@
 
 Principle: ONE Intent OS, same spaces/modules/rules/participants/plan state. A form factor changes the *projection*: what is shown, density, input, and safety, never the data. Every module the desktop has must exist on every device (possibly in a reduced representation), and every action must work.
 
+Devices: desktop, tablet, phone. `?device=desktop|tablet|phone`, keys 1/2/3 (no modifier), or the «Вид» switcher.
+
 ## Shared contract per module
-Each module type defines 3 representations: `full` (desktop/tablet space), `compact` (phone card / tablet grid), `glance` (car: 1 big value + 1 line + max 2 actions). Implement once in the module registry, render per device. No device-specific fake content.
+Each module type defines 2 representations: `full` (desktop/tablet space) and `compact` (phone card / tablet grid). Implement once in the module registry, render per device. No device-specific fake content.
 
-## Car (Авто): deliberately reduced
-User decision, overrides the earlier draft: the car does NOT project everything. No parked grid, no dock of all spaces, no lists, no typing.
+## The switcher («Вид»)
+A glass bar in its own 56px band above the OS (it never covers the device), DESIGN.md tokens throughout:
+- Label left («Вид» / «View as»), segmented control right, 16px between them; 8pt grid (40px bar = 4 + 32 + 4, 16px left padding).
+- Segmented control 32px high, equal-width segments (min 96px), icon 16 + 8 gap + label 13px. A white thumb slides under the choice in 160ms (cubic-bezier(.2,.8,.2,1)).
+- States: hover +4% fill, pressed .98 scale and +8% fill, focus-visible 2px accent ring. Arrow keys move the choice (radiogroup, roving tabindex).
+- A small accent dot marks the device the current context suggests (trip → phone). While a module is dragged the bar gets an accent ring and a segment lights up as a drop target (handoff).
+- At ≤ 520px viewport it compacts to icons only and the phone bleeds full screen under it (no bezel).
 
-The car screen is a 16:9 cockpit display (1280×720), dark smoked glass over cool dark with a soft warm glow, big light numerals with small units, one warm amber accent, thin icons. It shows only these, never a grid of everything:
-- **Navigation (the hero, full-bleed behind the tiles).** A dark live map with parks, a river, two building tones, quiet street labels and metro stations (their markers stay upright as the map turns): the puck moves along the route heading-up, the driven part dims, the street grid and buildings scroll under it. A maneuver tile on the map counts the distance down (big «240 м» plus a thin arrow, then the next maneuver) and flips when the turn is passed. «Добавить остановку» is a voice intent.
-- **Trip tile.** Big ETA minutes and arrival time; destination, km left and traffic on one line. Updates live.
-- **Media tile.** Album art disc (spins while playing), title, artist, a ticking progress bar with elapsed/remaining, previous/play-pause/next.
-- **ONE context card at a time**, chosen by the OS, under the trip and media tiles (the right column is ~32%). One big value, one line, an «почему» of up to two lines that names the concrete reason («Почему: созвон через 14 мин, вы приедете к 18:41, подключитесь из машины») and at most 2 actions (targets ≥ 64px). The card's glass never moves or fades; only its content swaps: the old content slides out to the left over 180ms, then the new content slides in from the right over 320ms and changes at most every 10s unless something urgent happens. Priority, highest first: handed-off module → spoken-confirm result → rule suggestion (rain Friday) → call/meeting within 25 min (live «мин/с» countdown) → unread message (read aloud on request) → next call/meeting → «Дорога свободна». When nothing urgent is pending, the ambient cards rotate every ~15s: the meeting, the rain rule, then the arrival (ETA with «Сообщить» and a coffee stop).
-- **A mic.** A breathing mic orb at the bottom of the thin icon rail opens the voice overlay (listening → thinking → speaking, live transcript, suggested phrases). Voice is the only way to reach spaces: «открой Лиссабон» switches the context to that space and shows its one relevant glance card.
+## The switch: one shared-element morph
+Switching devices never remounts the page. The same windows and intents reflow from one layout into the other in 450ms on the DESIGN.md spring (stiffness ~300, damping ~30). Nothing cuts, nothing washes grey, and every frame shows readable content.
+1. **The frame** springs from the old device to the new one (an empty shell with the bezel ring); the real old background (fog with its mist, or the night fog) crossfades into the new one over 400ms, and the page around the frame does the same.
+2. **Shared elements are the live nodes in their new layout**, travelling from where they were: clock, date, intent line, suggestion chips, home cards, status items, space title, collaborators, plan, modules, flow labels, settings/profile windows. They keep a uniform scale so text never distorts. A grid opening into a column (or closing back) staggers its axes so cards never cross: when the shared elements end up more column-like, rows spread first; otherwise columns spread first.
+3. **The intent line reflows for real**: one solid element whose width springs between the two layouts while it travels, above everything else.
+4. **Two drawings of one thing** (a desktop module and its phone card) are a container transform: the box matches the other one's width and is cut at the bottom to its height, then opens on the same spring. The old drawing stays solid until 100ms and is gone at 160ms; the new one (glass and content) fades in from 140ms. Every frame shows one of the two.
+5. **Everything else**: a frozen copy of the old screen (a shadow-root clone under the old device classes) is below 0.15 opacity by 90ms and gone at 120ms; the new screen's other parts fade in from 90ms. Scrims and veils cover the whole moving frame, so no device-shaped column appears.
+6. Interrupting a switch settles the running one and starts the next from its layout; no frozen copies, shells or inline styles are left behind.
 
-Plus a 48px status strip: clock (the same clock as every other device), temperature, current space name, plan progress, held-notification counter.
+Reduced motion: nothing moves or scales. The old device (frame and screen) fades out in 160ms, the new one fades in from 120ms.
 
-Switching devices never remounts the page and runs one sequence in every direction, so old and new content are never on screen together:
-1. **0–120ms:** a frozen copy of the old screen (rendered in a shadow root under the old device and theme classes) fades and shrinks 2.5%, clipped to the moving frame. It is below 0.15 opacity by 90ms.
-2. **0–450ms, underneath:** an empty shell springs from the old frame to the new one (FLIP). Its real old background (fog with mist, or the car's dark glass) crossfades into the new one over 400ms, and the page around the frame does the same.
-3. **From 90ms:** the new screen's first layer fades in (the map and status strip in the car, the background and status bar elsewhere), so the frame is never empty; then its parts stagger in 40ms apart (car: rail, maneuver, trip, media, card).
-
-The keyboard-hints coach only appears on a fresh desktop load; a switch removes it and never brings it back. Reduced motion turns all of this into fades.
-
-Only driving-relevant module types have a `glance` view: route/map, media, call/meeting, messages/chat, rule suggestions/plans. Other types (checklists, documents, charts, listings…) simply don't appear in the car. The exception is a module the user hands off explicitly: it lands as the context card with «Продолжено в Авто · Вернуть», reduced to one value and ≤ 2 actions (e.g. the TAP option with «Забронировать»).
-
-Kept from the full model:
-- **Same underlying state.** The car reads and writes the same modules; nothing is duplicated.
-- **Spoken confirm.** Outward actions (send/book/pay) always get a spoken confirmation with big Да/Нет, by voice or by tap.
-- **Held notifications.** Non-urgent ones are held while driving (a counter in the status strip) and released when the user leaves the car; urgent ones are a banner plus voice.
-- **Handoff in/out.** A module dragged from desktop/phone becomes the context card; «Вернуть» sends it back to the device it came from, in focus.
-- Dark high-contrast theme, no blur over the route itself, press scale on every control.
-- No screensaver while driving; the idle clock only exists on the other devices.
+The keyboard-hints coach only appears on a fresh desktop load; a switch removes it and never brings it back.
 
 ## Phone (Телефон)
 - Home: clock, suggestions, cards (compact) for all spaces, scrollable; intent line as bottom bar.
 - Opening a card = space view: modules as a vertical stack of `compact` cards, tap to expand to `full` in a bottom sheet (drag to dismiss), participants in the header, plan progress as a sticky top strip.
-- Control center = pull-down sheet from the top-right; space switcher = horizontal card carousel (swipe up gesture/button).
+- Control center = full-width pull-down sheet from the top; space switcher = horizontal card carousel (swipe up gesture/button).
 - Every desktop action reachable.
 
 ## Tablet (Планшет)
@@ -45,8 +39,8 @@ Kept from the full model:
 - Settings as a centered modal 640 wide.
 
 ## Acceptance (must demo end-to-end on each device)
-1. Open Лиссабон -> see flights, stay, weather modules -> book TAP (with confirm) -> plan progress updates -> profile counters update. Car: hand the flights module off (or say «открой Лиссабон», then «забронируй TAP») -> the TAP card -> «Забронировать» -> spoken confirm Да -> the card shows «Забронировано» and «План 1 из 4».
-2. Rule fires (rain Friday) -> suggestion appears in the right place for that device (car: voice + the one context card, accepted by «да» or a tap).
-3. Drag/handoff desktop -> car -> Вернуть.
-4. Switch devices mid-flow: state identical, the same module stays in focus (car: the module is the context card if it has a glance view, otherwise the space is kept and the module is back in focus when leaving the car).
+1. Open Лиссабон -> see flights, stay, weather modules -> book TAP (with confirm) -> plan progress updates -> profile counters update.
+2. Rule fires (rain Friday) -> suggestion appears in the right place for that device.
+3. Drag/handoff a module from desktop onto «Телефон» in the switcher -> it lands in focus on the phone.
+4. Switch devices mid-flow (home, space, settings open): state identical, the same module stays in focus, and the freeze frames at 0/90/180/270/360/450ms show readable content with no double exposure.
 Record a video per device of the flow. Critique loop per DESIGN.md.
