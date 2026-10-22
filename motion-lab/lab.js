@@ -1,102 +1,246 @@
 /**
  * Motion Lab
- * To add an experiment, create experiments/<id>.js and append it to EXPERIMENTS.
- * Tokens and the file contract live in DESIGN.md.
+ * Free Skiper UI components, one island per experiment.
+ * The registry below is the only edit required to add one:
+ * drop a component in islands/components, export it from islands/entry.jsx, rebuild.
  */
-import { STAGE, el, injectStyle, pick, reduced } from "./runtime.js";
-import mapSheet from "./experiments/map-sheet.js";
-import payment from "./experiments/payment.js";
-import shared from "./experiments/shared.js";
-import digits from "./experiments/digits.js";
-import stack from "./experiments/stack.js";
-import morph from "./experiments/morph.js";
+import { el, pick, reduced } from "./runtime.js";
 
-const EXPERIMENTS = [mapSheet, payment, shared, digits, stack, morph];
+const EXPERIMENTS = [
+  {
+    id: "skiper16",
+    scroll: true,
+    hero: 0.42,
+    source: "https://skiper-ui.com/v1/skiper16",
+    kicker: { ru: "Скролл", en: "Scroll" },
+    title: { ru: "Стопка карточек", en: "Card stack" },
+    line: { ru: "Карточки сжимаются, пока идёт скролл", en: "Cards scale down as the page scrolls" },
+    idea: {
+      ru: "Свободный компонент Skiper UI. Липкие карточки уменьшаются по мере скролла: каждая следующая чуть меньше предыдущей.",
+      en: "A free Skiper UI component. Sticky cards scale down as you scroll, each one a little smaller than the last.",
+    },
+    tokens: ["useScroll", "scale 1 → 0.5", "sticky"],
+  },
+  {
+    id: "skiper30",
+    scroll: true,
+    hero: 0.45,
+    source: "https://skiper-ui.com/v1/skiper30",
+    kicker: { ru: "Параллакс", en: "Parallax" },
+    title: { ru: "Четыре колонны", en: "Four columns" },
+    line: { ru: "Колонны едут с разной скоростью", en: "Columns travel at different speeds" },
+    idea: {
+      ru: "Свободный компонент Skiper UI, по мотивам siena.film. Четыре колонны фотографий смещаются на разную долю скролла.",
+      en: "A free Skiper UI component, adapted from siena.film. Four photo columns shift by different amounts of the scroll.",
+    },
+    tokens: ["useTransform y", "height × 2 / 3.3 / 1.25 / 3", "175vh"],
+  },
+  {
+    id: "skiper31",
+    scroll: true,
+    hero: 0.28,
+    source: "https://skiper-ui.com/v1/skiper31",
+    kicker: { ru: "Тип", en: "Type" },
+    title: { ru: "Буквы собираются", en: "Letters gather" },
+    line: { ru: "Строка и иконки съезжаются к центру", en: "A line and a row of icons meet in the center" },
+    idea: {
+      ru: "Свободный компонент Skiper UI. Буквы и иконки разъезжаются от центра и собираются обратно по прогрессу скролла.",
+      en: "A free Skiper UI component. Letters and icons spread from the center and gather back as scroll progresses.",
+    },
+    tokens: ["useScroll", "x = distance × 50", "rotateX"],
+  },
+  {
+    id: "skiper34",
+    scroll: true,
+    hero: 0.35,
+    source: "https://skiper-ui.com/v1/skiper34",
+    kicker: { ru: "Скролл", en: "Scroll" },
+    title: { ru: "Кадр с поворотом", en: "Rotating frame" },
+    line: { ru: "Карточка липнет, потом поворачивается", en: "A card sticks, then rotates away" },
+    idea: {
+      ru: "Свободный компонент Skiper UI. Кадр прилипает к экрану и, уходя, одновременно масштабируется и вращается.",
+      en: "A free Skiper UI component. The frame sticks, then scales and rotates as it leaves.",
+    },
+    tokens: ["sticky", "scale", "rotate"],
+  },
+  {
+    id: "skiper39",
+    scroll: false,
+    hero: 0,
+    source: "https://skiper-ui.com/v1/skiper39",
+    kicker: { ru: "Canvas", en: "Canvas" },
+    title: { ru: "Толпа", en: "Crowd" },
+    line: { ru: "Фигурки идут через весь кадр", en: "Figures walk the width of the frame" },
+    idea: {
+      ru: "Свободный компонент Skiper UI. Спрайт Open Peeps, логика прогулки с CodePen. Фигурки идут в обе стороны без остановки.",
+      en: "A free Skiper UI component. Open Peeps sprite, walk cycle from a CodePen. Figures cross in both directions.",
+    },
+    tokens: ["gsap.timeline", "canvas", "yoyo 10px"],
+  },
+  {
+    id: "skiper47",
+    scroll: false,
+    hero: 0,
+    source: "https://skiper-ui.com/v1/skiper47",
+    kicker: { ru: "Карусель", en: "Carousel" },
+    title: { ru: "Перспектива", en: "Perspective" },
+    line: { ru: "Обложка уходит в глубину", en: "Covers recede in perspective" },
+    idea: {
+      ru: "Свободный компонент Skiper UI. Карусель с эффектом coverflow: боковые слайды меньше, центральный ближе. Иллюстрации AarzooAly.",
+      en: "A free Skiper UI component. A coverflow carousel: side slides shrink, the center one comes forward. Illustrations by AarzooAly.",
+    },
+    tokens: ["swiper coverflow", "rotate 50°", "depth 100"],
+  },
+  {
+    id: "skiper52",
+    scroll: false,
+    hero: 0,
+    source: "https://skiper-ui.com/v1/skiper52",
+    kicker: { ru: "Наведение", en: "Hover" },
+    title: { ru: "Раскрытие", en: "Expand on hover" },
+    line: { ru: "Полоска вырастает в кадр", en: "A strip grows into the frame" },
+    idea: {
+      ru: "Свободный компонент Skiper UI. Под курсором узкая полоска раскрывается в широкий кадр. Иллюстрации AarzooAly.",
+      en: "A free Skiper UI component. Under the pointer a narrow strip opens into a wide frame. Illustrations by AarzooAly.",
+    },
+    tokens: ["width 5rem → 24rem", "easeInOut 0.3s"],
+  },
+  {
+    id: "skiper19",
+    scroll: true,
+    hero: 0.55,
+    source: "https://skiper-ui.com/v1/skiper19",
+    kicker: { ru: "Скролл", en: "Scroll" },
+    title: { ru: "Линия за скроллом", en: "Stroke that follows" },
+    line: { ru: "Обводка дорисовывается по прогрессу", en: "The stroke draws itself with the scroll" },
+    idea: {
+      ru: "Свободный компонент Skiper UI. Длина SVG-обводки привязана к прогрессу скролла, от половины контура до целого.",
+      en: "A free Skiper UI component. The SVG stroke length is tied to scroll progress, from half the path to the full path.",
+    },
+    tokens: ["pathLength 0.5 → 1", "350vh"],
+  },
+  {
+    id: "skiper28",
+    scroll: true,
+    hero: 0.5,
+    source: "https://skiper-ui.com/v1/skiper28",
+    kicker: { ru: "3D", en: "3D" },
+    title: { ru: "Текст в перспективе", en: "Perspective text" },
+    line: { ru: "Плоскость текста поднимается к зрителю", en: "The text plane rises toward the reader" },
+    idea: {
+      ru: "Свободный компонент Skiper UI. Блок текста повёрнут на 30° и подъезжает по оси Y, пока идёт скролл.",
+      en: "A free Skiper UI component. The text block sits at 30° and travels up the Y axis as you scroll.",
+    },
+    tokens: ["rotateX 30°", "translateY 487 → 0", "perspective 200"],
+  },
+  {
+    id: "skiper4",
+    scroll: false,
+    hero: 0,
+    source: "https://skiper-ui.com/v1/skiper4",
+    kicker: { ru: "Кнопки", en: "Buttons" },
+    title: { ru: "Переключатели темы", en: "Theme toggles" },
+    line: { ru: "Пять кнопок с разным ходом", en: "Five buttons, five different motions" },
+    idea: {
+      ru: "Свободный компонент Skiper UI. Набор переключателей темы: каждый клик играет свою анимацию иконки.",
+      en: "A free Skiper UI component. A set of theme toggles. Each click plays a different icon motion.",
+    },
+    tokens: ["layout", "spring", "icon rotate"],
+  },
+  {
+    id: "skiper64",
+    scroll: false,
+    hero: 0,
+    source: "https://skiper-ui.com/v1/skiper64",
+    kicker: { ru: "Фильтр", en: "Filter" },
+    title: { ru: "Липкий контур", en: "Gooey" },
+    line: { ru: "Две формы сливаются через SVG-фильтр", en: "Two shapes melt together through an SVG filter" },
+    idea: {
+      ru: "Свободный компонент Skiper UI. Размытие и цветовая матрица склеивают формы. Верхнюю каплю можно перетащить.",
+      en: "A free Skiper UI component. Blur and a color matrix fuse the shapes. The top blob can be dragged.",
+    },
+    tokens: ["feGaussianBlur 4.4", "spring 300 / 30", "drag"],
+  },
+  {
+    id: "skiper61",
+    scroll: false,
+    hero: 0,
+    source: "https://skiper-ui.com/v1/skiper61",
+    kicker: { ru: "Курсор", en: "Pointer" },
+    title: { ru: "Курсор на пружине", en: "Mouse follow" },
+    line: { ru: "Точка догоняет курсор сразу или с пружиной", en: "A dot follows the pointer, plain or on a spring" },
+    idea: {
+      ru: "Свободный компонент Skiper UI. Два поля: точка сидит на курсоре сразу, и точка на пружине mass 0.1, damping 10, stiffness 131.",
+      en: "A free Skiper UI component. Two fields: one dot sits on the pointer, one follows on a spring (mass 0.1, damping 10, stiffness 131).",
+    },
+    tokens: ["useSpring", "mass 0.1", "stiffness 131"],
+  },
+];
 
 const lang = document.documentElement.lang === "en" ? "en" : "ru";
 const grid = document.getElementById("lab-grid");
 const dialog = document.getElementById("lab-dialog");
 const main = document.querySelector("main");
 
-const live = new Set();
-let raf = 0;
-let last = 0;
-
-function loop(t) {
-  const dt = Math.min(0.032, last ? (t - last) / 1000 : 0.016);
-  last = t;
-  live.forEach((inst) => inst.tick(dt));
-  if (live.size && !document.hidden) raf = requestAnimationFrame(loop);
-  else raf = 0;
-}
-
-function wake(inst) {
-  live.add(inst);
-  if (!raf && !document.hidden) {
-    last = 0;
-    raf = requestAnimationFrame(loop);
-  }
-}
-
-function sleep(inst) {
-  live.delete(inst);
-}
-
-document.addEventListener("visibilitychange", () => {
-  if (document.hidden) {
-    cancelAnimationFrame(raf);
-    raf = 0;
-    return;
-  }
-  if (live.size) {
-    last = 0;
-    raf = requestAnimationFrame(loop);
-  }
-});
-
-function fit(phone) {
-  const scale = phone.clientWidth / STAGE.w;
-  const node = phone.querySelector(".lab-scale");
-  if (node && scale > 0) node.style.transform = `scale(${scale})`;
-}
-
-function shell() {
-  const phone = el("div", "lab-phone");
-  const scale = el("div", "lab-scale");
-  const stage = el("div", "lab-stage");
-  const island = el("div", "lab-island");
-  const status = el("div", "lab-status");
-  status.append(el("span", "", "9:41"), el("i"));
-  const home = el("div", "lab-home");
-  const mountPoint = el("div", "lab-root");
-  stage.append(island, status, mountPoint, home);
-  scale.append(stage);
-  phone.append(scale);
-  return { phone, stage, mountPoint };
-}
-
 const EXPAND = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4H4v4M16 4h4v4M4 16v4h4M20 16v4h-4"/></svg>`;
 const CLOSE = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>`;
 
-const tiles = new Map();
-let dialogInst = null;
+const frames = new Map();
+let dialogFrame = null;
 let dialogId = null;
 let returnFocus = null;
 
-function mountExperiment(mod, mountPoint, detail) {
-  injectStyle(mod.id, mod.css);
-  return mod.mount(mountPoint, { lang, reduced, detail });
+function srcFor(mod, playing) {
+  const q = new URLSearchParams({
+    id: mod.id,
+    autoplay: playing && mod.scroll && !reduced ? "1" : "0",
+  });
+  return `/motion-lab/preview.html?${q}`;
+}
+
+function post(frame, data) {
+  frame?.contentWindow?.postMessage(data, location.origin);
+}
+
+function makeFrame(mod, playing) {
+  const frame = el("div", "lab-frame");
+  const iframe = el("iframe");
+  iframe.title = pick(lang, mod.title.ru, mod.title.en);
+  iframe.tabIndex = -1;
+  iframe.setAttribute("loading", "lazy");
+  frame.append(iframe);
+  frame.__iframe = iframe;
+  frame.__mod = mod;
+  frame.__playing = playing;
+  frame.addEventListener("pointerenter", () => {
+    if (mod.scroll) post(iframe, { type: "pause" });
+  });
+  frame.addEventListener("pointerleave", () => {
+    const tileBlocked = frame !== dialogFrame && dialogId === mod.id;
+    if (playing && mod.scroll && !reduced && !tileBlocked) post(iframe, { type: "play" });
+  });
+  return frame;
+}
+
+function wake(frame) {
+  const iframe = frame.__iframe;
+  if (!iframe.src) iframe.src = srcFor(frame.__mod, frame.__playing);
+}
+
+function replay(frame) {
+  const iframe = frame.__iframe;
+  iframe.src = srcFor(frame.__mod, frame.__playing);
 }
 
 EXPERIMENTS.forEach((mod, index) => {
   const article = el("article", "lab-tile");
   article.dataset.exp = mod.id;
-  const { phone, mountPoint } = shell();
+  const frame = makeFrame(mod, true);
   const expand = el("button", "lab-expand", EXPAND);
   expand.type = "button";
   expand.setAttribute("aria-label", pick(lang, `Открыть «${mod.title.ru}»`, `Open “${mod.title.en}”`));
   expand.addEventListener("click", () => open(mod.id, expand));
-  phone.append(expand);
+  frame.append(expand);
 
   const foot = el("div", "lab-foot");
   const openBtn = el("button", "lab-open");
@@ -107,48 +251,32 @@ EXPERIMENTS.forEach((mod, index) => {
     el("span", "lab-line", pick(lang, mod.line.ru, mod.line.en)),
   );
   openBtn.addEventListener("click", () => open(mod.id, openBtn));
-  const replay = el("button", "lab-replay", pick(lang, "Ещё раз", "Replay"));
-  replay.type = "button";
-  replay.addEventListener("click", () => tiles.get(mod.id).replay());
-  foot.append(openBtn, replay);
-  article.append(phone, foot);
+  const replayBtn = el("button", "lab-replay", pick(lang, "Ещё раз", "Replay"));
+  replayBtn.type = "button";
+  replayBtn.addEventListener("click", () => replay(frame));
+  foot.append(openBtn, replayBtn);
+  article.append(frame, foot);
   grid.append(article);
+  frames.set(mod.id, frame);
 
-  const inst = mountExperiment(mod, mountPoint, false);
-  inst.seek(reduced ? mod.hero : index * 1400);
-  tiles.set(mod.id, inst);
-  fit(phone);
-  article.__phone = phone;
-
-  const io = new IntersectionObserver(
-    ([entry]) => {
-      if (entry.isIntersecting && dialogId !== mod.id) wake(inst);
-      else sleep(inst);
-    },
-    { threshold: 0.2, rootMargin: "0px 0px -8% 0px" },
-  );
-  io.observe(phone);
+  const io = new IntersectionObserver(([entry]) => {
+    if (entry.isIntersecting) wake(frame);
+  }, { threshold: 0.2, rootMargin: "0px 0px -8% 0px" });
+  io.observe(frame);
 });
-
-const ro = new ResizeObserver((entries) => {
-  entries.forEach((entry) => fit(entry.target));
-});
-document.querySelectorAll(".lab-phone").forEach((phone) => ro.observe(phone));
 
 function close() {
-  if (!dialogInst) return;
-  sleep(dialogInst);
-  dialogInst.destroy();
-  dialogInst = null;
+  if (!dialogFrame) return;
   const id = dialogId;
+  dialogFrame = null;
   dialogId = null;
   dialog.hidden = true;
   dialog.replaceChildren();
   main.removeAttribute("inert");
   document.body.style.overflow = "";
-  if (id && tiles.has(id)) {
-    const phone = document.querySelector(`[data-exp="${id}"] .lab-phone`);
-    if (phone && phone.getBoundingClientRect().bottom > 0) wake(tiles.get(id));
+  if (id && frames.has(id)) {
+    const tile = frames.get(id);
+    if (!reduced && tile.__mod.scroll) post(tile.__iframe, { type: "play" });
   }
   history.replaceState(null, "", location.pathname + location.search);
   returnFocus?.focus();
@@ -158,12 +286,8 @@ function close() {
 function open(id, trigger) {
   const mod = EXPERIMENTS.find((item) => item.id === id);
   if (!mod || !dialog) return;
-  if (dialogInst) {
-    sleep(dialogInst);
-    dialogInst.destroy();
-    dialogInst = null;
-  }
-  if (tiles.has(id)) sleep(tiles.get(id));
+  if (dialogId && frames.has(dialogId)) post(frames.get(dialogId).__iframe, { type: "pause" });
+  if (frames.has(id)) post(frames.get(id).__iframe, { type: "pause" });
   returnFocus = trigger || document.activeElement;
   dialogId = id;
   dialog.hidden = false;
@@ -176,7 +300,10 @@ function open(id, trigger) {
   closeBtn.addEventListener("click", close);
 
   const gridEl = el("div", "lab-dialog-grid");
-  const { phone, mountPoint } = shell();
+  const frame = makeFrame(mod, true);
+  wake(frame);
+  dialogFrame = frame;
+
   const note = el("div", "lab-note");
   const index = EXPERIMENTS.indexOf(mod);
   note.append(
@@ -187,19 +314,16 @@ function open(id, trigger) {
   note.append(el("p", "lab-idea", pick(lang, mod.idea.ru, mod.idea.en)));
   const tokens = el("ul", "lab-tokens");
   mod.tokens.forEach((token) => tokens.append(el("li", "", token)));
-  const replay = el("button", "lab-replay", pick(lang, "Ещё раз", "Replay"));
-  replay.type = "button";
-  replay.addEventListener("click", () => dialogInst?.replay());
-  note.append(tokens, replay);
-  gridEl.append(phone, note);
+  const source = el("a", "lab-source", "skiper-ui.com");
+  source.href = mod.source;
+  source.target = "_blank";
+  source.rel = "noopener";
+  const replayBtn = el("button", "lab-replay", pick(lang, "Ещё раз", "Replay"));
+  replayBtn.type = "button";
+  replayBtn.addEventListener("click", () => replay(frame));
+  note.append(tokens, source, replayBtn);
+  gridEl.append(frame, note);
   dialog.append(closeBtn, gridEl);
-
-  dialogInst = mountExperiment(mod, mountPoint, true);
-  if (reduced) dialogInst.seek(mod.hero);
-  else dialogInst.replay();
-  wake(dialogInst);
-  fit(phone);
-  ro.observe(phone);
 
   main.setAttribute("inert", "");
   document.body.style.overflow = "hidden";
@@ -245,15 +369,24 @@ if (location.hash) {
 window.__lab = {
   ids: EXPERIMENTS.map((mod) => mod.id),
   reduced,
-  seek(id, ms) {
-    tiles.get(id)?.seek(ms);
+  seek(id, p) {
+    const frame = frames.get(id);
+    if (!frame) return;
+    wake(frame);
+    const send = () => post(frame.__iframe, { type: "seek", p });
+    if (frame.__iframe.contentDocument?.readyState === "complete" && frame.__iframe.src) send();
+    else frame.__iframe.addEventListener("load", send, { once: true });
   },
   open(id) {
     open(id);
   },
   close,
-  seekOpen(id, ms) {
+  seekOpen(id, p) {
     open(id);
-    dialogInst?.seek(ms);
+    const send = () => post(dialogFrame?.__iframe, { type: "seek", p });
+    const iframe = dialogFrame?.__iframe;
+    if (!iframe) return;
+    if (iframe.contentDocument?.readyState === "complete") iframe.addEventListener("load", send, { once: true });
+    iframe.addEventListener("load", send, { once: true });
   },
 };

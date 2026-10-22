@@ -1,6 +1,6 @@
 # Motion Lab
 
-Visual rules for prototypes on this page. New experiments use these tokens and nothing else.
+The page shell follows the tokens below. The twelve live experiments are free Skiper UI components, kept visually identical to the originals. See `LICENSE` for what may be used.
 
 ## Character
 
@@ -21,7 +21,7 @@ Fog and glass on black. Soft gradients, large type, one calm mint accent. Motion
 | space.8 | 64 |
 | space.10 | 80 |
 
-Stage: 392 × 640. Padding inside a phone is space.3 (24).
+Tiles are 16:10 frames, not phone shells. A component that is not mobile-shaped fills the frame.
 
 ## Type
 
@@ -78,17 +78,20 @@ Duration tokens exist for holds between poses, not for the travel itself.
 
 ## Motion rules
 
-- Animate `transform` and `opacity` only.
-- Never scale from 0. Closed surfaces start at 0.08 or the folded pose.
-- A gesture under the finger is 1:1 (`direct.drag`). The spring runs on release.
-- Opacity may lag the surface so type does not appear while the shape is still folded (`opacity.reveal`, `opacity.crossfade`, `opacity.stagger`).
-- Start the loop only while the phone is in view. Pause it offscreen.
-- `prefers-reduced-motion: reduce`: snap to the hero pose, do not loop. Replay and taps still change the pose, instantly.
+The page shell (hero, grid, dialog) uses transform and opacity. The experiments themselves keep the original Skiper motion, including scroll-linked transforms, springs, SVG filters, and canvas.
+
+- Load an experiment only once its frame is near the viewport.
+- `prefers-reduced-motion: reduce`: do not auto-scroll. Framer Motion snaps its own transitions.
+
+## Why React islands
+
+The free components are React, Framer Motion, GSAP, and Swiper. Rewriting that motion in vanilla JS would drift from the original springs, scroll offsets, and coverflow. `motion-lab/islands/` builds one static bundle (`islands.js`, `islands.css`) with esbuild and Tailwind. The portfolio stays a static site. Each tile is an iframe pointed at `preview.html`, so `vh`, sticky, and scroll progress use that frame as the viewport and do not take over the page.
 
 ## Adding an experiment
 
-1. Add `motion-lab/experiments/<id>.js`.
-2. Export `{ id, kicker, title, line, idea, tokens, hero, css, mount }`.
-3. Append the module to the list in `motion-lab/lab.js`.
+1. Add the free component at `motion-lab/islands/components/<id>.tsx`.
+2. Export it from `motion-lab/islands/entry.jsx`.
+3. Run `npm run build` in `motion-lab/islands/`.
+4. Append `{ id, scroll, hero, source, kicker, title, line, idea, tokens }` in `motion-lab/lab.js`.
 
-`mount(root, ctx)` returns `{ tick(dt), seek(ms), replay(), destroy() }`. `ctx` has `lang`, `reduced`, `detail`. Copy is `{ ru, en }`. The hero value is the still frame, in milliseconds, used when motion is reduced.
+Only components marked free on skiper-ui.com. Do not add a paid id.
