@@ -51,6 +51,8 @@ function surfaces(dev) {
   list.push({ id: "profile", setup: `openProfile()`, scope: [".sys-win"], frames: [{ sel: ".sys-win", m: D ? [24] : [16] }] });
   list.push({ id: "account-menu", setup: `setMenu(true)`, scope: ["#meWrap .umenu"], frames: [{ sel: "#meWrap .umenu", m: [8, 16] }] });
   list.push({ id: "control-centre", setup: `setWx(true)`, scope: ["#cc"], frames: [{ sel: "#cc", m: [16] }] });
+  list.push({ id: "control-centre-space", setup: `enterSpace("trip");setTimeout(()=>setWx(true),800)`, wait: 2200, scope: ["#cc"], frames: [{ sel: "#cc", m: [16] }] });
+  list.push({ id: "control-centre-music", setup: `enterSpace("gym");setTimeout(()=>{setWx(true);setTimeout(()=>{CC.expand="lights";renderCC()},300)},800)`, wait: 2400, scope: ["#cc"], frames: [{ sel: "#cc", m: [16] }] });
   list.push({ id: "control-centre-forecast", setup: `setWx(true);setTimeout(()=>toggleTile("weather"),400)`, wait: 1900, scope: ["#cc.show-wx"], frames: [{ sel: "#cc", m: [16] }] });
   list.push({ id: "notifications", setup: `showNotifs(true)`, scope: [".notif-head", ".notif-list"], frames: [{ sel: "#notifPanel", m: M }] });
   list.push({ id: "switcher", setup: `enterSpace("trip");setTimeout(()=>openSwitcher(),800)`, wait: 2200, scope: ["#switcher"], frames: [{ sel: "body", m: M }] });
