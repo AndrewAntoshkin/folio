@@ -127,6 +127,27 @@
   font-size: var(--t-2);
   line-height: var(--lh-2);
 }
+.lab-hint {
+  color: var(--mint);
+  font-size: var(--t-1);
+  line-height: var(--lh-1);
+  font-weight: 500;
+}
+.lab-hint-chip {
+  position: absolute;
+  z-index: 6;
+  top: 12px;
+  left: 12px;
+  max-width: calc(100% - 72px);
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(8, 10, 8, 0.62);
+  color: #fff;
+  font-size: var(--t-1);
+  line-height: var(--lh-1);
+  font-weight: 500;
+  pointer-events: none;
+}
 .lab-open:hover .lab-name {
   color: var(--mint);
 }
@@ -175,6 +196,10 @@
 .lab-dialog .lab-frame {
   aspect-ratio: 16 / 10;
   width: 100%;
+}
+.lab-dialog .lab-frame.frame-tall {
+  aspect-ratio: auto;
+  height: min(72vh, 780px);
 }
 .lab-dialog .lab-frame:hover {
   transform: none;
@@ -258,7 +283,8 @@
     gap: var(--s-2);
     justify-items: center;
   }
-  .lab-dialog .lab-frame {
+  .lab-dialog .lab-frame,
+  .lab-dialog .lab-frame.frame-tall {
     aspect-ratio: auto;
     width: 100%;
     height: 52vh;

@@ -1,6 +1,6 @@
 # Motion Lab
 
-The page shell follows the tokens below. The twelve live experiments are free Skiper UI components, kept visually identical to the originals. See `LICENSE` for what may be used.
+The page shell follows the tokens below. The live experiments are free Skiper UI components and MIT Chamaac components, kept visually identical to the originals. See `LICENSE` for what may be used. Each tile keeps that component's own gesture and shows a short hint. Nothing auto-scrolls the frame for you.
 
 ## Character
 
@@ -81,17 +81,18 @@ Duration tokens exist for holds between poses, not for the travel itself.
 The page shell (hero, grid, dialog) uses transform and opacity. The experiments themselves keep the original Skiper motion, including scroll-linked transforms, springs, SVG filters, and canvas.
 
 - Load an experiment only once its frame is near the viewport.
-- `prefers-reduced-motion: reduce`: do not auto-scroll. Framer Motion snaps its own transitions.
+- Do not drive the tiles from one autoplay loop. Scroll, hover, click, type, and drag stay inside the component. A component that animates itself (a crowd, a text loop, feature steps) keeps that timer.
+- `prefers-reduced-motion: reduce`: Framer Motion snaps its own transitions.
 
 ## Why React islands
 
-The free components are React, Framer Motion, GSAP, and Swiper. Rewriting that motion in vanilla JS would drift from the original springs, scroll offsets, and coverflow. `motion-lab/islands/` builds one static bundle (`islands.js`, `islands.css`) with esbuild and Tailwind. The portfolio stays a static site. Each tile is an iframe pointed at `preview.html`, so `vh`, sticky, and scroll progress use that frame as the viewport and do not take over the page.
+The free components are React, Framer Motion, GSAP, and Swiper. Chamaac uses the same motion package. Rewriting that motion in vanilla JS would drift from the original springs, scroll offsets, and coverflow. `motion-lab/islands/` builds one static bundle (`islands.js`, `islands.css`) with esbuild and Tailwind. The portfolio stays a static site. Each tile is an iframe pointed at `preview.html`, so `vh`, sticky, and scroll progress use that frame as the viewport and do not take over the page. `next/image`, `next/link`, `next/font`, and `motion/react` are shimmed at build time.
 
 ## Adding an experiment
 
 1. Add the free component at `motion-lab/islands/components/<id>.tsx`.
 2. Export it from `motion-lab/islands/entry.jsx`.
 3. Run `npm run build` in `motion-lab/islands/`.
-4. Append `{ id, scroll, hero, source, kicker, title, line, idea, tokens }` in `motion-lab/lab.js`.
+4. Append `{ id, scroll, hero, source, kicker, title, line, hint, idea, tokens }` in `motion-lab/lab.js`. `hint` is the short line on the tile and in the fullscreen note.
 
-Only components marked free on skiper-ui.com. Do not add a paid id.
+Only components marked free on skiper-ui.com, or MIT components from Chamaac. Do not add a paid Skiper id.

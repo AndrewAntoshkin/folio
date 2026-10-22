@@ -14,6 +14,15 @@ import { Skiper47 } from "./components/skiper47.tsx";
 import { Skiper52 } from "./components/skiper52.tsx";
 import { Skiper61 } from "./components/skiper61.tsx";
 import { Skiper64 } from "./components/skiper64.tsx";
+import {
+  ChamaacButtons,
+  ChamaacCards,
+  ChamaacDock,
+  ChamaacInput,
+  ChamaacLetters,
+  ChamaacLoop,
+  ChamaacSteps,
+} from "./components/chamaac/stage.jsx";
 
 const COMPONENTS = {
   skiper4: Skiper4,
@@ -28,6 +37,13 @@ const COMPONENTS = {
   skiper52: Skiper52,
   skiper61: Skiper61,
   skiper64: Skiper64,
+  "chamaac-input": ChamaacInput,
+  "chamaac-buttons": ChamaacButtons,
+  "chamaac-dock": ChamaacDock,
+  "chamaac-cards": ChamaacCards,
+  "chamaac-letters": ChamaacLetters,
+  "chamaac-loop": ChamaacLoop,
+  "chamaac-steps": ChamaacSteps,
 };
 
 const SCROLL = new Set([
@@ -41,7 +57,6 @@ const SCROLL = new Set([
 
 const params = new URLSearchParams(location.search);
 const id = params.get("id") || "";
-const autoplay = params.get("autoplay") === "1" && SCROLL.has(id);
 const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const Comp = COMPONENTS[id];
 
@@ -58,50 +73,18 @@ function setScroll(y) {
   return next;
 }
 
-let paused = false;
-let raf = 0;
-let y = 0;
-let dir = 1;
-
-function tick() {
-  raf = 0;
-  if (!autoplay || reduced || paused) return;
-  const max = maxScroll();
-  if (max > 8) {
-    const speed = Math.max(1.4, max / 420);
-    y += dir * speed;
-    if (y >= max) {
-      y = max;
-      dir = -1;
-    } else if (y <= 0) {
-      y = 0;
-      dir = 1;
-    }
-    y = setScroll(y);
-  }
-  raf = requestAnimationFrame(tick);
-}
-
-function start() {
-  if (raf || !autoplay || reduced) return;
-  raf = requestAnimationFrame(tick);
-}
-
 window.__preview = {
   seek(p) {
-    paused = true;
-    cancelAnimationFrame(raf);
-    raf = 0;
-    y = setScroll(Math.max(0, Math.min(1, Number(p) || 0)) * maxScroll());
+    setScroll(Math.max(0, Math.min(1, Number(p) || 0)) * maxScroll());
   },
-  play() {
-    paused = false;
-    start();
-  },
-  pause() {
-    paused = true;
-  },
+  play() {},
+  pause() {},
 };
+
+window.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape" || window.parent === window) return;
+  window.parent.postMessage({ type: "close" }, location.origin);
+});
 
 window.addEventListener("message", (event) => {
   if (event.origin !== location.origin || !event.data) return;
@@ -111,20 +94,12 @@ window.addEventListener("message", (event) => {
   if (event.data.type === "replay") location.reload();
 });
 
-window.addEventListener("wheel", () => window.__preview.pause(), { passive: true });
-window.addEventListener("pointerdown", () => {
-  if (SCROLL.has(id)) window.__preview.pause();
-});
-
 function Preview() {
   useEffect(() => {
     if (!SCROLL.has(id) || reduced) return undefined;
     const lenis = new Lenis({ autoRaf: true });
     window.__lenis = lenis;
-    const kick = window.setTimeout(start, 700);
     return () => {
-      window.clearTimeout(kick);
-      cancelAnimationFrame(raf);
       lenis.destroy();
       window.__lenis = null;
     };

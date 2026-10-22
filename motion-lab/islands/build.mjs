@@ -22,6 +22,13 @@ await build({
   loader: { ".tsx": "tsx" },
   alias: {
     "@/lib/utils": path.join(dir, "shims/lib/utils.js"),
+    "motion/react": path.join(dir, "shims/motion-react.js"),
+    "next/image": path.join(dir, "shims/next-image.jsx"),
+    "next/link": path.join(dir, "shims/next-link.jsx"),
+    "next/navigation": path.join(dir, "shims/next-navigation.js"),
+    "next/font/google": path.join(dir, "shims/next-font.js"),
+    "next-themes": path.join(dir, "shims/next-themes.js"),
+    "@tabler/icons-react": path.join(dir, "shims/tabler-icons.jsx"),
   },
   define: {
     "process.env.NODE_ENV": '"production"',
