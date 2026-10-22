@@ -1116,16 +1116,16 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       .cc,.umenu,.sheet-card,.handoff{transform:none}
     }
 
-    /* view as: a glass bar in its own 56px band above the OS, label left, segmented control right; the OS below morphs into the chosen form factor */
-    .ffs{position:fixed;z-index:200;top:8px;left:50%;display:flex;align-items:center;gap:16px;height:40px;padding:4px 4px 4px 16px;border-radius:13px;background:rgba(250,250,250,.62);box-shadow:inset 0 0 0 1px rgba(0,0,0,.06),0 16px 40px -20px rgba(0,0,0,.28);color:rgba(47,47,47,.88);transform:translateX(-50%);-webkit-backdrop-filter:blur(24px) saturate(1.6);backdrop-filter:blur(24px) saturate(1.6);transition:box-shadow .16s cubic-bezier(.2,.8,.2,1),background-color .42s ease,color .42s ease}
+    /* view as: a 36px glass bar (4 + 28 + 4) centred in its own 52px band above the OS; a label cell (12px each side) left, a 28px segmented control right — the active pill is the segment itself; the OS below morphs into the chosen form factor */
+    .ffs{position:fixed;z-index:200;top:8px;left:50%;display:flex;align-items:center;gap:4px;height:36px;padding:4px;border-radius:12px;background:rgba(250,250,250,.62);box-shadow:inset 0 0 0 1px rgba(0,0,0,.06),0 16px 40px -20px rgba(0,0,0,.28);color:rgba(47,47,47,.88);transform:translateX(-50%);-webkit-backdrop-filter:blur(24px) saturate(1.6);backdrop-filter:blur(24px) saturate(1.6);transition:box-shadow .16s cubic-bezier(.2,.8,.2,1),background-color .42s ease,color .42s ease}
     body.night .ffs{background:rgba(44,44,46,.62);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 16px 40px -20px rgba(0,0,0,.6);color:rgba(255,255,255,.88)}
-    .ffs-l{font-size:13px;line-height:16px;font-weight:500;color:rgba(47,47,47,.5);white-space:nowrap}
+    .ffs-l{box-sizing:border-box;padding:0 12px;text-align:center;font-size:13px;line-height:28px;font-weight:500;color:rgba(47,47,47,.5);white-space:nowrap}
     body.night .ffs-l{color:rgba(255,255,255,.5)}
-    .ffs-seg{position:relative;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;height:32px;padding:2px;border-radius:9px;background:rgba(47,47,47,.06)}
+    .ffs-seg{position:relative;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;height:28px;border-radius:8px;background:rgba(47,47,47,.06)}
     body.night .ffs-seg{background:rgba(255,255,255,.08)}
-    .ffs-thumb{position:absolute;top:2px;bottom:2px;left:0;width:0;border-radius:7px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.1),0 0 0 .5px rgba(0,0,0,.04);transition:transform .16s cubic-bezier(.2,.8,.2,1),width .16s cubic-bezier(.2,.8,.2,1),background-color .42s ease;pointer-events:none}
+    .ffs-thumb{position:absolute;top:0;bottom:0;left:0;width:0;border-radius:8px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.1),0 0 0 .5px rgba(0,0,0,.04);transition:transform .16s cubic-bezier(.2,.8,.2,1),width .16s cubic-bezier(.2,.8,.2,1),background-color .42s ease;pointer-events:none}
     body.night .ffs-thumb{background:#636366;box-shadow:none}
-    .ffs-b{position:relative;display:flex;align-items:center;justify-content:center;gap:8px;height:28px;min-width:96px;padding:0 12px;border:0;border-radius:7px;background:transparent;color:rgba(47,47,47,.55);font-size:13px;line-height:16px;white-space:nowrap;transition:color .16s,background-color .12s,transform .12s cubic-bezier(.2,.8,.2,1)}
+    .ffs-b{position:relative;display:flex;align-items:center;justify-content:center;gap:8px;height:28px;min-width:104px;padding:0 12px;border:0;border-radius:8px;background:transparent;color:rgba(47,47,47,.55);font-size:13px;line-height:16px;white-space:nowrap;transition:color .16s,background-color .12s,transform .12s cubic-bezier(.2,.8,.2,1)}
     body.night .ffs-b{color:rgba(255,255,255,.55)}
     .ffs-b .ic{width:16px;height:16px}
     .ffs-b.on{color:rgba(47,47,47,.88)}
@@ -1135,10 +1135,10 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     body.night .ffs-b:hover:not(.on){color:#fff;background:rgba(255,255,255,.06)}
     .ffs-b:active{transform:scale(.98)}
     .ffs-b:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
-    .ffs.compact{gap:8px;padding-left:12px}
+    .ffs.compact .ffs-l{padding:0 8px}
     .ffs.compact .ffs-b{min-width:40px;padding:0 8px}
     .ffs.compact .ffs-b span{display:none}
-    .ffs-b.sug::after{content:"";position:absolute;top:4px;right:6px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+    .ffs-b.sug::after{content:"";position:absolute;top:4px;right:4px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
     .ffs.drop{box-shadow:inset 0 0 0 1.5px var(--accent),0 16px 40px -16px rgba(0,0,0,.3)}
     .ffs.drop .ffs-b span{display:inline}
     .ffs-b.hot,.ffs-b.hot:hover:not(.on){background:var(--accent);color:#fff}
@@ -3394,6 +3394,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       }
     },{passive:true});
     addEventListener("resize",()=>{ffPlace();renderFFSwitch();layout()});
+    document.fonts?.ready.then(()=>renderFFSwitch());
 
     const mskParts=(d=new Date())=>Object.fromEntries(new Intl.DateTimeFormat("en-GB",{timeZone:MSK,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(d).map(p=>[p.type,p.value]));
     const mskTime=timeStr;
@@ -3873,7 +3874,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     const FF_DUR=450,FF_OUT=120,FF_IN=90,ffP=ms=>{if(ms>=FF_DUR)return 1;const z=.85,w=11,wd=w*Math.sqrt(1-z*z),t=ms/1000;return 1-Math.exp(-z*w*t)*(Math.cos(wd*t)+z*w/wd*Math.sin(wd*t))};
     const FF_EASE=`linear(${Array.from({length:41},(_,i)=>+ffP(i/40*FF_DUR).toFixed(4)).join(",")})`;
     document.documentElement.style.setProperty("--ff-ease",FF_EASE);
-    const FF_BAND=56;
+    const FF_BAND=52;
     function ffGeo(id){
       const d=devOf(id),vw=innerWidth,vh=innerHeight,top=FF_BAND;
       if(id==="desktop"||(id==="phone"&&vw<=520))return{x:0,y:top,w:vw,h:vh-top,s:1,b:0,r:0};
@@ -4114,13 +4115,15 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
       html.classList.remove("ff-morph");ns.forEach(n=>getComputedStyle(n).opacity);ns.forEach(n=>n.style.transition="");
     }
     const ffCompact=()=>innerWidth<=520;
-    function ffThumb(){const seg=$("#ffSeg"),b=seg?.querySelector(".ffs-b.on"),t=seg?.querySelector(".ffs-thumb");if(!b||!t)return;t.style.width=b.offsetWidth+"px";t.style.transform=`translateX(${b.offsetLeft}px)`}
+    function ffThumb(){const seg=$("#ffSeg"),b=seg?.querySelector(".ffs-b.on"),t=seg?.querySelector(".ffs-thumb");if(!b||!t)return;const sr=seg.getBoundingClientRect(),br=b.getBoundingClientRect();t.style.width=br.width+"px";t.style.transform=`translateX(${br.left-sr.left}px)`}
     function renderFFSwitch(){
       const box=$("#ffSwitch"),seg=$("#ffSeg");if(!box||!seg)return;
       const sug=suggestDev();
       $("#ffsLabel").textContent=T("View as","Вид");
       morphHTML(seg,`<i class="ffs-thumb"></i>`+DEVICES.map((d,i)=>{const on=FF.dev===d.id;return `<button type="button" role="radio" aria-checked="${on}" aria-label="${esc(devName(d))}" tabindex="${on?0:-1}" class="ffs-b${on?" on":""}${hotDev===d.id?" hot":""}${sug===d.id?" sug":""}" data-dev="${d.id}" title="${esc(devName(d))} · ${i+1}">${ic(d.icon)}<span>${esc(devName(d))}</span></button>`}).join(""));
       box.classList.toggle("compact",ffCompact());box.classList.toggle("drop",!!modDrag?.on);
+      const lb=$("#ffsLabel");lb.style.width="";const bw=box.getBoundingClientRect().width,snap=Math.ceil(bw/2-.01)*2;
+      if(snap-bw>.01)lb.style.width=lb.getBoundingClientRect().width+snap-bw+"px";
       ffThumb();
     }
     function handNote(){return ""}
