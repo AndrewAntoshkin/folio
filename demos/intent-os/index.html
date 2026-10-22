@@ -5054,8 +5054,7 @@ body.night .map .pin text{fill:#ececec}body.night .map .pin:not(.you) .dot{fill:
     addEventListener("keydown",e=>{
       if(e.metaKey||e.ctrlKey||e.altKey||e.repeat||e.isComposing)return;
       const i="12".indexOf(e.key);if(i<0||e.key.length!==1)return;
-      const t=e.target,typing=t.matches?.("input,textarea,select")||t.isContentEditable;
-      if(typing&&!(isTypeField(t)&&!t.value))return;
+      const a=document.activeElement;if(a?.matches?.("input,textarea,select")||a?.isContentEditable)return;
       if(document.body.classList.contains("locked"))return;
       e.preventDefault();e.stopImmediatePropagation();setDevice(DEVICES[i].id);
     },true);
