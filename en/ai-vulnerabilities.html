@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" class="nojs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI made finding vulnerabilities easier. Patching didn&#x27;t get faster</title>
+  <meta name="description" content="Finding a serious hole in software used to be expensive. AI is driving that cost down. And both sides are taking advantage of it. If vulnerabilities start getting found faster than they get closed, the window of risk grows.">
+  <meta property="og:title" content="AI made finding vulnerabilities easier. Patching didn&#x27;t get faster">
+  <meta property="og:description" content="Finding a serious hole in software used to be expensive. AI is driving that cost down. And both sides are taking advantage of it. If vulnerabilities start getting found faster than they get closed, the window of risk grows.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://antoshkin.tech/en/ai-vulnerabilities">
+  <meta property="og:image" content="https://antoshkin.tech/assets/ai-vulnerabilities-en.png">
+  <meta property="og:image:width" content="2400">
+  <meta property="og:image:height" content="1254">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AI made finding vulnerabilities easier. Patching didn&#x27;t get faster">
+  <meta name="twitter:description" content="Finding a serious hole in software used to be expensive. AI is driving that cost down. And both sides are taking advantage of it. If vulnerabilities start getting found faster than they get closed, the window of risk grows.">
+  <meta name="twitter:image" content="https://antoshkin.tech/assets/ai-vulnerabilities-en.png">
+  <link rel="canonical" href="https://antoshkin.tech/en/ai-vulnerabilities">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
+  <script>document.documentElement.classList.remove('nojs');try{if(sessionStorage.getItem('dock-seen'))document.documentElement.classList.add('dock-seen');else sessionStorage.setItem('dock-seen','1')}catch(e){}</script>
+  <link rel="stylesheet" href="/style.css?v=50">
+</head>
+<body>
+
+<div class="dock"><nav aria-label="Navigation"><i aria-hidden="true"></i><a href="/en" aria-label="Home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg></a><a href="/en/projects" aria-label="Projects"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 13h16"/></svg></a><a href="/en/writing" aria-label="Writing" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M14 5.5 18.5 10 9 19.5H4.5V15L14 5.5Z"/><path d="m12 7.5 4.5 4.5"/></svg></a><a href="/en/approach" aria-label="Approach"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.25"/><path d="M5.5 19.5c1.2-3 3.4-4.5 6.5-4.5s5.3 1.5 6.5 4.5"/></svg></a><a href="/en/collab" aria-label="Contact"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></nav><a class="lang" href="/ai-vulnerabilities" aria-label="Русский">Ru</a></div>
+<a class="float" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Say hello<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+<main><div class="col"><article class="art">
+  <header class="art-top">
+    <a class="back" href="/en/writing" data-r>‹ Back</a>
+    <h1 data-split class="long">AI made finding vulnerabilities easier. Patching didn&rsquo;t get faster</h1>
+    <div class="tags" data-r style="--d:.3s"><span class="tag">AI</span><span class="tag">security</span><span class="tag">PHP</span></div>
+  </header>
+  <div class="art-intro" data-r style="--d:.35s"><p>Finding a serious hole in software used to be expensive. AI is driving that cost down. And both sides are taking advantage of it. If vulnerabilities start getting found faster than they get closed, the window of risk grows.</p><div class="art-meta"><span>Oct 24, 2026</span><i></i><span>3 min</span></div></div>
+  <div class="prose"><img src="/assets/ai-vulnerabilities-en.png" alt="A crack runs through a grid, with a closed lock beside it"><p><em>Andrey, Design Engineer</em></p>
+
+<p>In October, <a href="https://www.wiz.io/blog/php2shell-php-rce" target="_blank" rel="noopener">Wiz</a> and Calif disclosed critical vulnerabilities in the PHP core, including unauthenticated remote code execution. They had been sitting in every version since 5.4, for more than ten years. The first one was found with the help of Gemini 4 Argon and GPT-5.6 Sol. After the patch, the NSA, the FBI and European agencies advised taking offline any sites that couldn't update in time, and the UK switched off 32 government services.</p>
+
+<p>Finding a serious hole in software used to be expensive. It took time, money and rare specialists. AI is driving that cost down. And both sides are taking advantage of it.</p>
+
+<h2>It's not that AI knows how to hack</h2>
+
+<p>It's about speed and scale.</p>
+
+<p>Bugs in software pile up for years: old libraries, sloppy data handling, components that are safe on their own but not together.</p>
+
+<p>AI reads code, finds suspicious spots, suggests how they could be exploited and helps test a hypothesis quickly. It can't hack anything it wants on its own. But the barrier to entry gets lower.</p>
+
+<h2>One tool, two teams</h2>
+
+<p>The first team uses AI to check its own infrastructure and fix bugs before an attack.</p>
+
+<p>The second uses the same approach to look for vulnerable servers to break into.</p>
+
+<p>Their tools are similar. Only their goals, resources and speed differ.</p>
+
+<p>And defense has the harder job. Finding a bug isn't enough. You have to verify the finding, assess the risk, fix the code, test it and not break anything in a live product. Finding a hole and safely closing it are two different jobs.</p>
+
+<h2>Why this is a problem for the whole internet</h2>
+
+<p>A single service pulls in dozens of libraries, those pull in their own packages, and companies run systems nobody has updated in years.</p>
+
+<p>A developer can ship a fix, but users don't have to install it. AI speeds up finding bugs, but it can't make the whole internet update.</p>
+
+<p>If vulnerabilities start getting found faster than they get closed, the window of risk grows. That is more interesting than arguing about whether AI will one day hack everything.</p>
+
+<h2>Should we switch off the internet?</h2>
+
+<p>No. But we can no longer count on a complex vulnerability being slow and expensive to find.</p>
+
+<p>Defense rests on boring, regular work: code gets reviewed constantly, tests run automatically, patches ship fast, dependencies are under control, and someone watches the infrastructure every day.</p>
+
+<p>Defense needs AI too: to find bugs, check patches and take load off people. But a human still has to check its results, especially when the system has access to infrastructure.</p>
+
+<h2>What follows from this</h2>
+
+<p>AI makes hard things accessible to many people. In security, that means the work of an entire team of experts is now available to defenders and attackers alike.</p>
+
+<p>So the question isn't whether to switch off the internet. The question is whether we can rebuild our defenses before finding a vulnerability becomes much cheaper than closing it.</p>
+
+<h2>Sources</h2>
+
+<ul>
+  <li><a href="https://www.wiz.io/blog/php2shell-php-rce" target="_blank" rel="noopener">Wiz</a></li>
+  <li><a href="https://www.bbc.com/news/articles/cmly0lg3w5x2o" target="_blank" rel="noopener">BBC</a></li>
+  <li><a href="https://www.theguardian.com/technology/2026/oct/22/websites-across-world-hit-by-millions-of-attempts-to-exploit-php-code-flaw" target="_blank" rel="noopener">The Guardian</a></li>
+  <li><a href="https://apnews.com/article/php-websites-fbi-europe-vulnerability-a0af9576808a0963efca8df14d4b5183" target="_blank" rel="noopener">AP</a></li>
+</ul>
+</div>
+</article></div></main>
+  <section class="cta" data-r>
+    <div class="cta-grid">
+      <div class="cta-card">
+        <div class="shader" aria-hidden="true"></div>
+        <div class="mid"><h2>Got a task?</h2></div>
+        <div class="bot"><p>Write to me. We’ll figure out where to start together.</p></div>
+      </div>
+      <form class="cta-form" data-subject="Collaboration">
+        <input name="name" required placeholder="Name" aria-label="Name" autocomplete="name">
+        <input name="email" type="email" required placeholder="Email" aria-label="Email" autocomplete="email">
+        <textarea name="question" required placeholder="A few words about the task" aria-label="A few words about the task"></textarea>
+        <button type="submit">Write</button>
+      </form>
+    </div>
+    </section>
+  <footer class="foot">
+    <div class="foot-in">
+      <p class="foot-mark">© 2026 <a href="/">antoshkin.tech</a></p>
+      <p class="foot-agent"><span>For agents</span><a class="foot-llm" href="/llm.md" target="_blank" rel="noopener" aria-label="Machine-readable profile">llm.md</a></p>
+    </div>
+  </footer>
+  <script src="/motion.js?v=4"></script>
+</body></html>

@@ -1,0 +1,13 @@
+{
+  "date": "2026-10-24",
+  "title": "AI made finding vulnerabilities easier. Patching didn't get faster",
+  "h1": "AI made finding vulnerabilities easier. Patching didn&rsquo;t get faster",
+  "cover": {
+    "src": "assets/ai-vulnerabilities-en.png",
+    "alt": "A crack runs through a grid, with a closed lock beside it",
+    "width": 2400,
+    "height": 1254
+  },
+  "tldr": "Finding a serious hole in software used to be expensive. AI is driving that cost down. And both sides are taking advantage of it. If vulnerabilities start getting found faster than they get closed, the window of risk grows.",
+  "tags": "<div class=\"article-meta\">\n                <span class=\"tag\">AI</span>\n                <span class=\"tag\">security</span>\n                <span class=\"tag\">PHP</span>\n            </div>"
+}

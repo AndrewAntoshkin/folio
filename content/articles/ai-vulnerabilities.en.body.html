@@ -1,0 +1,54 @@
+<p><em>Andrey, Design Engineer</em></p>
+
+<p>In October, <a href="https://www.wiz.io/blog/php2shell-php-rce" target="_blank" rel="noopener">Wiz</a> and Calif disclosed critical vulnerabilities in the PHP core, including unauthenticated remote code execution. They had been sitting in every version since 5.4, for more than ten years. The first one was found with the help of Gemini 4 Argon and GPT-5.6 Sol. After the patch, the NSA, the FBI and European agencies advised taking offline any sites that couldn't update in time, and the UK switched off 32 government services.</p>
+
+<p>Finding a serious hole in software used to be expensive. It took time, money and rare specialists. AI is driving that cost down. And both sides are taking advantage of it.</p>
+
+<h2>It's not that AI knows how to hack</h2>
+
+<p>It's about speed and scale.</p>
+
+<p>Bugs in software pile up for years: old libraries, sloppy data handling, components that are safe on their own but not together.</p>
+
+<p>AI reads code, finds suspicious spots, suggests how they could be exploited and helps test a hypothesis quickly. It can't hack anything it wants on its own. But the barrier to entry gets lower.</p>
+
+<h2>One tool, two teams</h2>
+
+<p>The first team uses AI to check its own infrastructure and fix bugs before an attack.</p>
+
+<p>The second uses the same approach to look for vulnerable servers to break into.</p>
+
+<p>Their tools are similar. Only their goals, resources and speed differ.</p>
+
+<p>And defense has the harder job. Finding a bug isn't enough. You have to verify the finding, assess the risk, fix the code, test it and not break anything in a live product. Finding a hole and safely closing it are two different jobs.</p>
+
+<h2>Why this is a problem for the whole internet</h2>
+
+<p>A single service pulls in dozens of libraries, those pull in their own packages, and companies run systems nobody has updated in years.</p>
+
+<p>A developer can ship a fix, but users don't have to install it. AI speeds up finding bugs, but it can't make the whole internet update.</p>
+
+<p>If vulnerabilities start getting found faster than they get closed, the window of risk grows. That is more interesting than arguing about whether AI will one day hack everything.</p>
+
+<h2>Should we switch off the internet?</h2>
+
+<p>No. But we can no longer count on a complex vulnerability being slow and expensive to find.</p>
+
+<p>Defense rests on boring, regular work: code gets reviewed constantly, tests run automatically, patches ship fast, dependencies are under control, and someone watches the infrastructure every day.</p>
+
+<p>Defense needs AI too: to find bugs, check patches and take load off people. But a human still has to check its results, especially when the system has access to infrastructure.</p>
+
+<h2>What follows from this</h2>
+
+<p>AI makes hard things accessible to many people. In security, that means the work of an entire team of experts is now available to defenders and attackers alike.</p>
+
+<p>So the question isn't whether to switch off the internet. The question is whether we can rebuild our defenses before finding a vulnerability becomes much cheaper than closing it.</p>
+
+<h2>Sources</h2>
+
+<ul>
+  <li><a href="https://www.wiz.io/blog/php2shell-php-rce" target="_blank" rel="noopener">Wiz</a></li>
+  <li><a href="https://www.bbc.com/news/articles/cmly0lg3w5x2o" target="_blank" rel="noopener">BBC</a></li>
+  <li><a href="https://www.theguardian.com/technology/2026/oct/22/websites-across-world-hit-by-millions-of-attempts-to-exploit-php-code-flaw" target="_blank" rel="noopener">The Guardian</a></li>
+  <li><a href="https://apnews.com/article/php-websites-fbi-europe-vulnerability-a0af9576808a0963efca8df14d4b5183" target="_blank" rel="noopener">AP</a></li>
+</ul>

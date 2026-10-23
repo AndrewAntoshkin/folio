@@ -20,7 +20,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from project_docs import load_doc  # noqa: E402
 from project_pages import PROJECTS  # noqa: E402
 
-ORDER = ["site-for-agents", "agent-experience", "apres-prompt", "ai-changes-processes", "halo-working-memory", "cursor-figma", "design-md", "dev-for-designers"]
+ORDER = ["ai-vulnerabilities", "site-for-agents", "agent-experience", "apres-prompt", "ai-changes-processes", "halo-working-memory", "cursor-figma", "design-md", "dev-for-designers"]
 TG = "https://t.me/andrewaitken"
 
 HEAD = """<!DOCTYPE html>
@@ -203,13 +203,25 @@ def cta_and_footer(lang: str, cta: bool = True) -> str:
 '''
 
 
-def og_for(stem: str) -> tuple[str, int, int]:
-    """Home and project pages get their own card from og/ (built by scripts/build_og.py)."""
+def og_for(stem: str, lang: str = "ru") -> tuple[str, int, int]:
+    """Home and project pages get their own card from og/ (built by scripts/build_og.py).
+
+    An article cover is used as the social image only when the article metadata
+    records its pixel size. Other essays keep the shared default card.
+    """
     if stem == "home" or any(p["slug"] == stem for p in PROJECTS):
         path = ROOT / "og" / f"{stem}.jpg"
         if not path.exists():
             raise SystemExit(f"Missing {path.relative_to(ROOT)}; run scripts/build_og.py")
         return (f"og/{stem}.jpg", *OG_CARD_SIZE)
+    suffix = "" if lang == "ru" else ".en"
+    meta_path = ARTICLES / f"{stem}{suffix}.json"
+    if meta_path.exists():
+        meta = json.loads(meta_path.read_text(encoding="utf-8"))
+        cover = meta.get("cover") or {}
+        src, width, height = cover.get("src"), cover.get("width"), cover.get("height")
+        if src and width and height:
+            return (src, int(width), int(height))
     return OG_DEFAULT
 
 
@@ -221,7 +233,7 @@ def shell(lang: str, title: str, active: str, stem: str, inner: str, cta: bool =
     )
     clean_desc = html.escape(plain(desc or default_desc), quote=True)
     clean_title = html.escape(plain(title), quote=True)
-    og_path, og_w, og_h = og_for(stem)
+    og_path, og_w, og_h = og_for(stem, lang)
     return HEAD.format(
         lang=lang,
         title=clean_title,
@@ -742,7 +754,7 @@ def projects_page(lang: str) -> str:
 def writing_page(lang: str) -> str:
     ru = lang == "ru"
     sub = "Эссе и практические разборы о дизайн-системах, процессах и работе с AI-агентами." if ru else "Essays and field notes on design systems, engineering workflows, and AI coding agents."
-    core = ["site-for-agents", "agent-experience", "apres-prompt", "ai-changes-processes", "halo-working-memory"]
+    core = ["ai-vulnerabilities", "site-for-agents", "agent-experience", "apres-prompt", "ai-changes-processes", "halo-working-memory"]
     guides = ["cursor-figma", "design-md", "dev-for-designers"]
     return (
         f'<main><div class="col">{page_head("Статьи" if ru else "Writing", sub)}'
