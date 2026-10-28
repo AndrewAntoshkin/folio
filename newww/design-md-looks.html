@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru" class="nojs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DESIGN.md: как объяснить агенту, как выглядит ваш продукт</title>
+  <meta name="description" content="Что такое DESIGN.md от Google, чем он отличается от AGENTS.md и чего от него пока не ждать.">
+  <meta property="og:title" content="DESIGN.md: как объяснить агенту, как выглядит ваш продукт">
+  <meta property="og:description" content="Что такое DESIGN.md от Google, чем он отличается от AGENTS.md и чего от него пока не ждать.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://antoshkin.tech/design-md-looks">
+  <meta property="og:image" content="https://antoshkin.tech/og/design-md-looks.ru.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="627">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="DESIGN.md: как объяснить агенту, как выглядит ваш продукт">
+  <meta name="twitter:description" content="Что такое DESIGN.md от Google, чем он отличается от AGENTS.md и чего от него пока не ждать.">
+  <meta name="twitter:image" content="https://antoshkin.tech/og/design-md-looks.ru.png">
+  <link rel="canonical" href="https://antoshkin.tech/design-md-looks">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
+  <script>document.documentElement.classList.remove('nojs');try{if(sessionStorage.getItem('dock-seen'))document.documentElement.classList.add('dock-seen');else sessionStorage.setItem('dock-seen','1')}catch(e){}</script>
+  <link rel="stylesheet" href="/style.css?v=50">
+</head>
+<body>
+
+<div class="dock"><nav aria-label="Навигация"><i aria-hidden="true"></i><a href="/" aria-label="Главная"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg></a><a href="/projects" aria-label="Проекты"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 13h16"/></svg></a><a href="/writing" aria-label="Статьи" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M14 5.5 18.5 10 9 19.5H4.5V15L14 5.5Z"/><path d="m12 7.5 4.5 4.5"/></svg></a><a href="/approach" aria-label="Подход"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.25"/><path d="M5.5 19.5c1.2-3 3.4-4.5 6.5-4.5s5.3 1.5 6.5 4.5"/></svg></a><a href="/collab" aria-label="Связь"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></nav><a class="lang" href="/en/design-md-looks" aria-label="English">En</a></div>
+<a class="float" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Написать<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+<main><div class="col"><article class="art">
+  <header class="art-top">
+    <a class="back" href="/writing" data-r>‹ Назад</a>
+    <h1 data-split class="long">DESIGN.md: как объяснить агенту, как выглядит ваш продукт</h1>
+    <div class="tags" data-r style="--d:.3s"><span class="tag">DESIGN.md</span><span class="tag">AGENTS.md</span><span class="tag">agents</span></div>
+  </header>
+  <div class="art-intro" data-r style="--d:.35s"><p>Что такое DESIGN.md от Google, чем он отличается от AGENTS.md и чего от него пока не ждать.</p><div class="art-meta"><span>28 октября 2026</span><i></i><span>4 мин</span></div></div>
+  <div class="prose"><img src="/og/design-md-looks.ru.png" alt="Ваш агент не знает вашу дизайн-систему"><p>Ваш агент не&nbsp;знает вашу дизайн-систему. Он&nbsp;знает среднее по&nbsp;интернету.</p>
+
+<p>Я&nbsp;столкнулся с&nbsp;этим сам. Мы&nbsp;написали скиллы и&nbsp;правила, но&nbsp;не&nbsp;связали их&nbsp;между собой и&nbsp;не&nbsp;привязали скиллы к&nbsp;ролям. Агент собирал похожие компоненты вместо наших: выглядело правдоподобно, но&nbsp;это была его выдумка.</p>
+
+<p>Отсюда вопрос: где хранить правила дизайна, чтобы агент их&nbsp;прочитал? Один из&nbsp;ответов сейчас DESIGN.md. Разберу, что это за&nbsp;файл, что о&nbsp;нём известно и&nbsp;где его границы.</p>
+
+<h2>Откуда он&nbsp;взялся</h2>
+
+<p>DESIGN.md появился в&nbsp;Google Stitch. 18&nbsp;марта 2026 Google анонсировал в&nbsp;Stitch «vibe design» и&nbsp;вместе с&nbsp;ним DESIGN.md. Это markdown-файл для агентов: через него правила дизайна выгружают из&nbsp;Stitch и&nbsp;загружают в&nbsp;другие инструменты для дизайна и&nbsp;кода.</p>
+
+<p>21&nbsp;апреля Google открыл черновик спецификации. Идея анонса: агенту не&nbsp;нужно угадывать, зачем нужен цвет. Он&nbsp;может это знать и&nbsp;проверять свой выбор по&nbsp;WCAG. Спецификация лежит на&nbsp;GitHub в&nbsp;google-labs-code/design.md под лицензией Apache 2.0. Статус формата alpha, авторы предупреждают, что он&nbsp;будет меняться. На&nbsp;28&nbsp;октября у&nbsp;репозитория около 28,6&nbsp;тысячи звёзд.</p>
+
+<h2>Как он&nbsp;устроен</h2>
+
+<p>В&nbsp;файле два слоя:</p>
+
+<ul>
+  <li>YAML-токены задают точные значения: цвета, типографику, скругления, отступы, компоненты</li>
+  <li>Текст в&nbsp;markdown объясняет, зачем эти значения и&nbsp;как их&nbsp;применять</li>
+</ul>
+
+<p>Токены могут ссылаться друг на&nbsp;друга, например <code>{colors.primary}</code>. Формат опирается на&nbsp;W3C Design Tokens. По&nbsp;словам авторов, токены легко переводятся в&nbsp;tokens.json, переменные Figma и&nbsp;тему Tailwind и&nbsp;обратно.</p>
+
+<p>Разделы идут в&nbsp;таком порядке: Overview, Colors, Typography, Layout, Elevation &amp; Depth, Shapes, Components, Do's and Don'ts. Последний мне ближе всего: примеры «так делай, так не&nbsp;делай» для каждого компонента я&nbsp;и&nbsp;сам советую писать.</p>
+
+<p>Есть линтер: <code>npx @google/design.md lint DESIGN.md</code>. Он&nbsp;ловит битые ссылки, циклы и&nbsp;неверные значения, проверяет контраст по&nbsp;WCAG. Команда <code>diff</code> сравнивает версии файла.</p>
+
+<p>Свои DESIGN.md уже выложили Vercel, Atlassian, Ant Design и&nbsp;Microsoft FAST. Есть и&nbsp;большие подборки от&nbsp;сообщества, но&nbsp;там в&nbsp;основном реконструкции чужих дизайн-систем, собранные с&nbsp;сайтов брендов. Структуру подсмотреть полезно, копировать не&nbsp;стоит.</p>
+
+<h2>Чего он&nbsp;не&nbsp;умеет</h2>
+
+<p>У&nbsp;компонента в&nbsp;спецификации мало свойств: цвет фона, цвет текста, типографика, скругление, внутренние отступы и&nbsp;размеры. Состояния вроде hover описываются отдельными записями.</p>
+
+<p>Поведение, доступность и&nbsp;то, как компоненты собираются вместе, в&nbsp;токены не&nbsp;ложатся. Их&nbsp;можно описать только текстом. А&nbsp;как раз здесь агент у&nbsp;меня и&nbsp;ошибался: собирал похожие компоненты вместо наших.</p>
+
+<p>Поэтому для меня дизайн-система это дизайн, документация и&nbsp;код вместе. DESIGN.md отвечает за&nbsp;то, как продукт выглядит. Про реальные компоненты агенту лучше расскажут другие инструменты:</p>
+
+<ul>
+  <li>Figma MCP отдаёт структуру выделенного фрейма и&nbsp;переменные: цвета, отступы, типографику</li>
+  <li>Code Connect добавляет импорт и&nbsp;сниппет вашего настоящего компонента. Figma называет его самым надёжным способом заставить агента переиспользовать ваши компоненты</li>
+  <li>15&nbsp;октября на&nbsp;Config India Figma показала Guidelines (открытая бета) и&nbsp;Code sources (на&nbsp;28&nbsp;октября закрытая бета): правила прямо в&nbsp;опубликованных библиотеках и&nbsp;импорт кода из&nbsp;GitHub или npm</li>
+</ul>
+
+<h2>Кто его читает</h2>
+
+<p>Подтверждения, что DESIGN.md сам читает какой-то&nbsp;агент, кроме Stitch, я&nbsp;не&nbsp;нашёл. Ни&nbsp;agents.md, ни&nbsp;документация Cursor и&nbsp;Claude Code его не&nbsp;упоминают.</p>
+
+<p>С&nbsp;AGENTS.md иначе. OpenAI выпустил его в&nbsp;2025&nbsp;году для Codex, а&nbsp;9&nbsp;декабря 2025&nbsp;передал в&nbsp;Agentic AI Foundation при Linux Foundation. Его читают Codex, Cursor, GitHub Copilot, Gemini CLI и&nbsp;другие. По&nbsp;данным сайта agents.md, формат используют больше 60&nbsp;тысяч open-source проектов.</p>
+
+<p>Поэтому DESIGN.md подключают вручную: ссылкой из&nbsp;AGENTS.md или CLAUDE.md либо прямо в&nbsp;промпте. AGENTS.md говорит агенту, как собирать проект, DESIGN.md говорит, как результат должен выглядеть.</p>
+
+<h2>Что говорят данные</h2>
+
+<p>Замеров эффекта от&nbsp;DESIGN.md я&nbsp;не&nbsp;нашёл. Stitch пишет, что дизайн-система сильно улучшает консистентность, но&nbsp;это маркетинг: данных за&nbsp;фразой нет.</p>
+
+<p>Замеры есть только для AGENTS.md, и&nbsp;они отрезвляют:</p>
+
+<ul>
+  <li>Январское исследование на&nbsp;arXiv (10&nbsp;репозиториев, 124 PR): с&nbsp;AGENTS.md медианное время работы ниже на&nbsp;28,6%, доля решённых задач сопоставима</li>
+  <li>Февральское: контекст-файлы, написанные моделью, не&nbsp;подняли успех, но&nbsp;сделали работу дороже на&nbsp;20-23%. Файлы, написанные разработчиком, дали +2,4%, это статистически незначимо</li>
+  <li>Июльское, на&nbsp;Claude Code и&nbsp;Codex: эффекта на&nbsp;корректность нет, хотя авторы признают, что выборка мала</li>
+</ul>
+
+<p>Выходит, такой файл экономит агенту время, но&nbsp;умнее его не&nbsp;делает. Скорее всего, с&nbsp;DESIGN.md так же, но&nbsp;проверенных цифр пока нет.</p>
+
+<h2>Как начать</h2>
+
+<ul>
+  <li>Пишите файл руками и&nbsp;коротко. Сгенерированный моделью, судя по&nbsp;данным, не&nbsp;помогает и&nbsp;делает работу дороже</li>
+  <li>Кладите туда только то, чего агент не&nbsp;угадает: ваши собственные решения</li>
+  <li>Для каждого компонента дайте пример «так / не&nbsp;так»</li>
+  <li>Прогоните линтер: контраст он&nbsp;проверит бесплатно</li>
+  <li>Сошлитесь на&nbsp;DESIGN.md из&nbsp;AGENTS.md, сам агент его, скорее всего, не&nbsp;найдёт</li>
+  <li>Реальные компоненты отдавайте через код и&nbsp;Figma MCP, а&nbsp;не&nbsp;скриншотами</li>
+</ul>
+
+<p>Живые примеры смотрите в&nbsp;файлах Vercel и&nbsp;Atlassian.</p>
+
+<p>DESIGN.md хорошо объясняет агенту, как выглядит ваш продукт. Но&nbsp;собирать продукт из&nbsp;ваших компонентов его всё равно учит код.</p>
+</div>
+</article></div></main>
+  <section class="cta" data-r>
+    <div class="cta-grid">
+      <div class="cta-card">
+        <div class="shader" aria-hidden="true"></div>
+        <div class="mid"><h2>Есть задача?</h2></div>
+        <div class="bot"><p>Напишите мне. Вместе разберёмся, с чего начать.</p></div>
+      </div>
+      <form class="cta-form" data-subject="Сотрудничество">
+        <input name="name" required placeholder="Имя" aria-label="Имя" autocomplete="name">
+        <input name="email" type="email" required placeholder="Почта" aria-label="Почта" autocomplete="email">
+        <textarea name="question" required placeholder="Пару слов о задаче" aria-label="Пару слов о задаче"></textarea>
+        <button type="submit">Написать</button>
+      </form>
+    </div>
+    </section>
+  <footer class="foot">
+    <div class="foot-in">
+      <p class="foot-mark">© 2026 <a href="/">antoshkin.tech</a></p>
+      <p class="foot-agent"><span>For agents</span><a class="foot-llm" href="/llm.md" target="_blank" rel="noopener" aria-label="Machine-readable profile">llm.md</a></p>
+    </div>
+  </footer>
+  <script src="/motion.js?v=4"></script>
+</body></html>

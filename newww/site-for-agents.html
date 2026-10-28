@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru" class="nojs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Зачем сайту llms.txt и как его собрать</title>
+  <meta name="description" content="Когда о вас или продукте спрашивают AI-агента, он не считывает композицию страницы и не догадывается, какие факты важнее. llms.txt и связанный с ним профиль дают ему короткую, проверяемую точку входа. Это не замена сайту, SEO или документации — а способ сделать уже существующую информацию понятнее машине.">
+  <meta property="og:title" content="Зачем сайту llms.txt и как его собрать">
+  <meta property="og:description" content="Когда о вас или продукте спрашивают AI-агента, он не считывает композицию страницы и не догадывается, какие факты важнее. llms.txt и связанный с ним профиль дают ему короткую, проверяемую точку входа. Это не замена сайту, SEO или документации — а способ сделать уже существующую информацию понятнее машине.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://antoshkin.tech/site-for-agents">
+  <meta property="og:image" content="https://antoshkin.tech/img/gen/hero.jpg">
+  <meta property="og:image:width" content="1600">
+  <meta property="og:image:height" content="900">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Зачем сайту llms.txt и как его собрать">
+  <meta name="twitter:description" content="Когда о вас или продукте спрашивают AI-агента, он не считывает композицию страницы и не догадывается, какие факты важнее. llms.txt и связанный с ним профиль дают ему короткую, проверяемую точку входа. Это не замена сайту, SEO или документации — а способ сделать уже существующую информацию понятнее машине.">
+  <meta name="twitter:image" content="https://antoshkin.tech/img/gen/hero.jpg">
+  <link rel="canonical" href="https://antoshkin.tech/site-for-agents">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
+  <script>document.documentElement.classList.remove('nojs');try{if(sessionStorage.getItem('dock-seen'))document.documentElement.classList.add('dock-seen');else sessionStorage.setItem('dock-seen','1')}catch(e){}</script>
+  <link rel="stylesheet" href="/style.css?v=50">
+</head>
+<body>
+
+<div class="dock"><nav aria-label="Навигация"><i aria-hidden="true"></i><a href="/" aria-label="Главная"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg></a><a href="/projects" aria-label="Проекты"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 13h16"/></svg></a><a href="/writing" aria-label="Статьи" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M14 5.5 18.5 10 9 19.5H4.5V15L14 5.5Z"/><path d="m12 7.5 4.5 4.5"/></svg></a><a href="/approach" aria-label="Подход"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.25"/><path d="M5.5 19.5c1.2-3 3.4-4.5 6.5-4.5s5.3 1.5 6.5 4.5"/></svg></a><a href="/collab" aria-label="Связь"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></nav><a class="lang" href="/en/site-for-agents" aria-label="English">En</a></div>
+<a class="float" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Написать<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+<main><div class="col"><article class="art">
+  <header class="art-top">
+    <a class="back" href="/writing" data-r>‹ Назад</a>
+    <h1 data-split>Зачем сайту llms.txt и&nbsp;как его собрать</h1>
+    <div class="tags" data-r style="--d:.3s"><span class="tag">agents</span><span class="tag">llms.txt</span><span class="tag">documentation</span></div>
+  </header>
+  <div class="art-intro" data-r style="--d:.35s"><p>Когда о вас или продукте спрашивают AI-агента, он не считывает композицию страницы и не догадывается, какие факты важнее. llms.txt и связанный с ним профиль дают ему короткую, проверяемую точку входа. Это не замена сайту, SEO или документации — а способ сделать уже существующую информацию понятнее машине.</p><div class="art-meta"><span>20 октября 2026</span><i></i><span>4 мин</span></div></div>
+  <div class="prose"><img src="/assets/site-for-agents.jpg" alt="Сайт передаёт llms.txt AI-агенту, который формирует ответ"><p>У сайта появился ещё один читатель. Не&nbsp;тот, кто открывает страницу, замечает крупный заголовок, смотрит на&nbsp;кейс и&nbsp;за&nbsp;пару секунд понимает, чем занимается автор. Этот читатель приходит по&nbsp;запросу: «кто это?», «какой инструмент выбрать?», «где документация?»&nbsp;— и&nbsp;пытается собрать ответ из&nbsp;HTML, ссылок, сниппетов и&nbsp;доступных ему файлов.</p>
+
+<p>Это AI&#8209;агент. Он&nbsp;уже ищет информацию, сравнивает продукты, читает документацию, готовит черновики и&nbsp;передаёт человеку ссылки. И&nbsp;делает это не&nbsp;так, как мы&nbsp;читаем сайт глазами.</p>
+
+<h2>Хорошая страница не&nbsp;всегда понятна агенту</h2>
+
+<p>Человек быстро считывает контекст из&nbsp;формы. Он&nbsp;видит, что «Проекты»&nbsp;— это раздел, карточка&nbsp;— отдельный кейс, а&nbsp;большая цифра рядом с&nbsp;логотипом&nbsp;— скорее всего результат работы. Он&nbsp;понимает иронию, замечает, что старый пост уже не&nbsp;актуален, и&nbsp;может открыть соседнюю вкладку, если не&nbsp;хватает деталей.</p>
+
+<p>Агенту доступна другая версия той&nbsp;же страницы: текст в&nbsp;DOM, метаданные, ссылки и&nbsp;то, что удалось извлечь за&nbsp;один или несколько запросов. Если ответ на&nbsp;важный вопрос размазан между главной, тремя кейсами и&nbsp;профилем в&nbsp;соцсети, модель может не&nbsp;найти его вовсе&nbsp;— или уверенно склеить неточный пересказ.</p>
+
+<p>Проблема не&nbsp;в&nbsp;том, что агент «плохо читает». Просто визуальная иерархия&nbsp;— очень плотный способ передать смысл человеку. Машине нужны более явные опоры: кто говорит, что именно делает, какие утверждения можно повторять и&nbsp;куда идти за&nbsp;деталями.</p>
+
+<h2>Что такое llms.txt</h2>
+
+<p><code>llms.txt</code>&nbsp;— это короткий текстовый файл в&nbsp;корне сайта. Его идея похожа на&nbsp;<code>robots.txt</code> или <code>sitemap.xml</code>: дать машине понятную точку входа. В&nbsp;нём можно назвать сайт, объяснить его назначение и&nbsp;дать ссылки на&nbsp;несколько наиболее полезных страниц или более подробный профиль.</p>
+
+<p>Важно не&nbsp;приписывать формату лишнего. Это не&nbsp;общепринятый обязательный стандарт, не&nbsp;кнопка «попасть в&nbsp;ответы ChatGPT» и&nbsp;не&nbsp;замена нормальному HTML, SEO или документации. Разные агенты и&nbsp;краулеры могут его не&nbsp;искать или не&nbsp;переходить по&nbsp;всем ссылкам. Но&nbsp;когда инструмент умеет его читать, файл снимает с&nbsp;него лишнюю работу по&nbsp;догадкам.</p>
+
+<p>На&nbsp;своём сайте я&nbsp;сделал два уровня:</p>
+
+<ul>
+  <li><strong><code>llms.txt</code></strong>&nbsp;— короткий вход: кто я, чем занимаюсь, где проекты, статьи, GitHub и&nbsp;контакты.</li>
+  <li><strong><code>llm.md</code></strong>&nbsp;— подробный профиль: опыт, принципы работы, выбранные инструменты, ссылки и&nbsp;правила атрибуции.</li>
+</ul>
+
+<p>Такой раздел не&nbsp;конкурирует с&nbsp;главной страницей. Главная помогает человеку почувствовать контекст. Профиль помогает агенту не&nbsp;потерять его по&nbsp;дороге.</p>
+
+<h2>Что туда писать</h2>
+
+<p>Полезный файл не&nbsp;пытается пересказать весь сайт. Его задача&nbsp;— ответить на&nbsp;базовые вопросы до&nbsp;того, как агент начал строить версию сам:</p>
+
+<ul>
+  <li>кто автор, команда или организация;</li>
+  <li>чем они занимаются сейчас и&nbsp;в&nbsp;каком контексте это важно;</li>
+  <li>какие проекты или страницы считать источниками правды;</li>
+  <li>какие формулировки допустимо использовать в&nbsp;коротком описании;</li>
+  <li>как связаться и&nbsp;какие публичные ссылки актуальны.</li>
+</ul>
+
+<p>Для портфолио это может быть профессиональное описание, опыт, несколько кейсов и&nbsp;контакты. Для продукта&nbsp;— назначение, ключевые сценарии, документация, API и&nbsp;страница статуса. Для open&#8209;source&nbsp;— README, установка, поддерживаемые версии, репозиторий и&nbsp;лицензия.</p>
+
+<p>Главное правило&nbsp;— писать только то, что можно проверить по&nbsp;сайту или публичным источникам. Не&nbsp;нужны «лидер рынка», «революционный продукт» и&nbsp;прочие фразы, которые агент потом разнесёт как факт. Лучше конкретная роль, ссылка и&nbsp;граница утверждения.</p>
+
+<h2>Это задача не&nbsp;только для личного сайта</h2>
+
+<p>Личный сайт&nbsp;— удобный маленький пример, но&nbsp;смысл шире. Любая система, с&nbsp;которой должен работать агент, выигрывает от&nbsp;явного контекста. Мы&nbsp;уже давно делаем это в&nbsp;дизайн&#8209;системах: не&nbsp;надеемся, что разработчик угадает смысл по&nbsp;картинке компонента, а&nbsp;описываем состояния, токены, API и&nbsp;ограничения.</p>
+
+<p>Сайт&nbsp;— такая&nbsp;же система. У&nbsp;него есть сущности, актуальные версии, публичные обещания и&nbsp;маршруты к&nbsp;источникам правды. Если всё это существует только в&nbsp;голове автора и&nbsp;в&nbsp;красивой композиции, человек ещё разберётся. Агенту придётся импровизировать.</p>
+
+<p>Поэтому хороший вопрос не&nbsp;«нужен&nbsp;ли каждому сайту llms.txt?». Небольшой лендинг с&nbsp;одной формой вряд&nbsp;ли выиграет от&nbsp;ещё одного файла. Лучше спросить иначе: <strong>есть&nbsp;ли у&nbsp;сайта важный контекст, который машина должна воспроизвести без догадок?</strong> Если да&nbsp;— его стоит собрать.</p>
+
+<h2>Файл&nbsp;— только начало</h2>
+
+<p>Сам по&nbsp;себе <code>llms.txt</code> ничего не&nbsp;исправит. Он&nbsp;не&nbsp;заменит понятные заголовки, хорошие метаданные, работающие ссылки, доступный HTML и&nbsp;актуальную документацию. Если сайт противоречит собственному профилю, агенту станет не&nbsp;легче, а&nbsp;сложнее.</p>
+
+<p>Но&nbsp;как дисциплина этот маленький файл полезен уже сегодня. Он&nbsp;заставляет сформулировать, что именно о&nbsp;вас, продукте или проекте должен понять новый тип читателя. А&nbsp;когда это сформулировано для машины, людям обычно тоже становится понятнее.</p>
+
+<p><strong>Раньше мы&nbsp;проектировали страницу так, чтобы человек быстро понял, куда смотреть. Теперь стоит ещё подумать, что должен понять агент, когда на&nbsp;странице смотреть некому.</strong></p>
+</div>
+</article></div></main>
+  <section class="cta" data-r>
+    <div class="cta-grid">
+      <div class="cta-card">
+        <div class="shader" aria-hidden="true"></div>
+        <div class="mid"><h2>Есть задача?</h2></div>
+        <div class="bot"><p>Напишите мне. Вместе разберёмся, с чего начать.</p></div>
+      </div>
+      <form class="cta-form" data-subject="Сотрудничество">
+        <input name="name" required placeholder="Имя" aria-label="Имя" autocomplete="name">
+        <input name="email" type="email" required placeholder="Почта" aria-label="Почта" autocomplete="email">
+        <textarea name="question" required placeholder="Пару слов о задаче" aria-label="Пару слов о задаче"></textarea>
+        <button type="submit">Написать</button>
+      </form>
+    </div>
+    </section>
+  <footer class="foot">
+    <div class="foot-in">
+      <p class="foot-mark">© 2026 <a href="/">antoshkin.tech</a></p>
+      <p class="foot-agent"><span>For agents</span><a class="foot-llm" href="/llm.md" target="_blank" rel="noopener" aria-label="Machine-readable profile">llm.md</a></p>
+    </div>
+  </footer>
+  <script src="/motion.js?v=4"></script>
+</body></html>

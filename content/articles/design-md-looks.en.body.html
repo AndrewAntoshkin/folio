@@ -1,0 +1,79 @@
+<p>Your agent doesn't know your design system. It knows the average of the internet.</p>
+
+<p>I ran into this myself. We wrote skills and rules, but never linked them together or tied skills to roles. The agent built look-alikes instead of using our components. They looked plausible, but the agent made them up.</p>
+
+<p>So the question is: where should design rules live so an agent actually reads them? One current answer is DESIGN.md. Here is what it is, what we know about it, and where it stops.</p>
+
+<h2>Where it came from</h2>
+
+<p>DESIGN.md started in Google Stitch. On March 18, 2026, Google announced "vibe design" in Stitch along with DESIGN.md. It's a markdown file for agents: you export design rules from Stitch with it and import them into other design and code tools.</p>
+
+<p>On April 21, Google open-sourced a draft spec. The idea: an agent doesn't have to guess what a color is for. It can know it and check its choices against WCAG. The spec lives on GitHub at google-labs-code/design.md under Apache 2.0. It's marked alpha, and the authors warn it will change. As of October 28 the repo has about 28.6k stars.</p>
+
+<h2>How it works</h2>
+
+<p>The file has two layers:</p>
+
+<ul>
+  <li>YAML tokens hold the exact values: colors, typography, radii, spacing, components</li>
+  <li>Markdown prose explains why those values exist and how to apply them</li>
+</ul>
+
+<p>Tokens can reference each other, like <code>{colors.primary}</code>. The format builds on W3C Design Tokens. The authors say tokens convert easily to and from tokens.json, Figma variables and Tailwind themes.</p>
+
+<p>Sections go in this order: Overview, Colors, Typography, Layout, Elevation &amp; Depth, Shapes, Components, Do's and Don'ts. The last one is my favorite: I recommend do/don't examples for every component anyway.</p>
+
+<p>There's a linter: <code>npx @google/design.md lint DESIGN.md</code>. It catches broken references, cycles and bad values, and checks WCAG contrast. A <code>diff</code> command compares versions.</p>
+
+<p>Vercel, Atlassian, Ant Design and Microsoft FAST already publish their own DESIGN.md. There are big community collections too, but most are reconstructions scraped from brand websites. Good for studying structure, not for copying.</p>
+
+<h2>What it can't do</h2>
+
+<p>A component in the spec has few properties: background color, text color, typography, radius, padding and size. States like hover are separate entries.</p>
+
+<p>Behavior, accessibility and how components fit together don't fit into tokens. You can only describe them in prose. And that's exactly where my agent went wrong: it built look-alikes instead of using our components.</p>
+
+<p>That's why to me a design system is design, docs and code together. DESIGN.md covers how the product looks. Other tools tell the agent more about real components:</p>
+
+<ul>
+  <li>Figma MCP returns the structure of the selected frame plus variables: color, spacing, type</li>
+  <li>Code Connect adds the import and snippet for your actual component. Figma calls it the most effective way to get an agent to reuse your components</li>
+  <li>At Config India on October 15, Figma showed Guidelines (open beta) and Code sources (closed beta as of October 28): rules inside published libraries, and code imported from GitHub or npm</li>
+</ul>
+
+<h2>Who reads it</h2>
+
+<p>I found no confirmation that any agent other than Stitch reads DESIGN.md on its own. Neither agents.md nor the Cursor and Claude Code docs mention it.</p>
+
+<p>AGENTS.md is different. OpenAI released it for Codex in 2025 and moved it to the Agentic AI Foundation under the Linux Foundation on December 9, 2025. Codex, Cursor, GitHub Copilot, Gemini CLI and others read it. The agents.md site says over 60,000 open-source projects use it.</p>
+
+<p>So you wire DESIGN.md in by hand: link it from AGENTS.md or CLAUDE.md, or put it in the prompt. AGENTS.md tells the agent how to build the project. DESIGN.md tells it what the result should look like.</p>
+
+<h2>What the data says</h2>
+
+<p>I found no measurement of DESIGN.md's effect. Stitch says a design system greatly improves consistency, but that's marketing: there's no data behind it.</p>
+
+<p>The only numbers are for AGENTS.md, and they're sobering:</p>
+
+<ul>
+  <li>January, arXiv (10 repos, 124 PRs): with AGENTS.md, median run time dropped 28.6% and the success rate stayed comparable</li>
+  <li>February: model-written context files didn't raise success and made runs 20-23% more expensive. Developer-written ones gave +2.4%, not statistically significant</li>
+  <li>July, on Claude Code and Codex: no effect on correctness, though the authors admit the sample is small</li>
+</ul>
+
+<p>So these files save the agent time but don't make it smarter. DESIGN.md is probably the same, but nobody has measured it yet.</p>
+
+<h2>How to start</h2>
+
+<ul>
+  <li>Write it by hand and keep it short. Per the data, generated files don't help and make runs more expensive</li>
+  <li>Include only what the agent can't guess: your own decisions</li>
+  <li>Give a do/don't example for every component</li>
+  <li>Run the linter: it checks contrast for free</li>
+  <li>Link DESIGN.md from AGENTS.md, most agents won't find it on their own</li>
+  <li>Feed real components through code and Figma MCP, not screenshots</li>
+</ul>
+
+<p>For live examples, see Vercel's and Atlassian's files.</p>
+
+<p>DESIGN.md explains to an agent how your product looks. But building it from your components is still something the code teaches.</p>

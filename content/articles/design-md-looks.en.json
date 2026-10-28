@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-28",
+  "title": "DESIGN.md: telling an agent what your product looks like",
+  "h1": "DESIGN.md: telling an agent what your product looks like",
+  "cover": {
+    "src": "og/design-md-looks.en.png",
+    "alt": "Your AI agent doesn't know your design system"
+  },
+  "og": {
+    "src": "og/design-md-looks.en.png",
+    "width": 1200,
+    "height": 627
+  },
+  "tldr": "What Google's DESIGN.md is, how it differs from AGENTS.md, and what not to expect from it yet.",
+  "tags": "<div class=\"article-meta\">\n                <span class=\"tag\">DESIGN.md</span>\n                <span class=\"tag\">AGENTS.md</span>\n                <span class=\"tag\">agents</span>\n            </div>"
+}

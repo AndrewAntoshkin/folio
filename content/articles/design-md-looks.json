@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-28",
+  "title": "DESIGN.md: как объяснить агенту, как выглядит ваш продукт",
+  "h1": "DESIGN.md: как объяснить агенту, как выглядит ваш продукт",
+  "cover": {
+    "src": "og/design-md-looks.ru.png",
+    "alt": "Ваш агент не знает вашу дизайн-систему"
+  },
+  "og": {
+    "src": "og/design-md-looks.ru.png",
+    "width": 1200,
+    "height": 627
+  },
+  "tldr": "Что такое DESIGN.md от Google, чем он отличается от AGENTS.md и чего от него пока не ждать.",
+  "tags": "<div class=\"article-meta\">\n                <span class=\"tag\">DESIGN.md</span>\n                <span class=\"tag\">AGENTS.md</span>\n                <span class=\"tag\">agents</span>\n            </div>"
+}
