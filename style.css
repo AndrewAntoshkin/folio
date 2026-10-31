@@ -1120,8 +1120,8 @@ main.approach { padding-top: 176px; }
 .letter-fog {
   position: absolute;
   z-index: 0;
-  top: -72px;
-  right: -48px;
+  top: -40px;
+  right: 0;
   width: 320px;
   height: 240px;
   background:
