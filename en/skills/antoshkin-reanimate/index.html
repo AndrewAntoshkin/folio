@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" class="nojs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Port an animation — Andrew Antoshkin</title>
+  <meta name="description" content="A Cursor skill that takes an animation you like from a site, video or gif and rebuilds it in my site's style: glass, soft gradients, a mint accent. It checks the timing frame by frame.">
+  <meta property="og:title" content="Port an animation — Andrew Antoshkin">
+  <meta property="og:description" content="A Cursor skill that takes an animation you like from a site, video or gif and rebuilds it in my site's style: glass, soft gradients, a mint accent. It checks the timing frame by frame.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://antoshkin.tech/en/skills/antoshkin-reanimate">
+  <meta property="og:image" content="https://antoshkin.tech/img/gen/hero.jpg">
+  <meta property="og:image:width" content="1600">
+  <meta property="og:image:height" content="900">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Port an animation — Andrew Antoshkin">
+  <meta name="twitter:description" content="A Cursor skill that takes an animation you like from a site, video or gif and rebuilds it in my site's style: glass, soft gradients, a mint accent. It checks the timing frame by frame.">
+  <meta name="twitter:image" content="https://antoshkin.tech/img/gen/hero.jpg">
+  <link rel="canonical" href="https://antoshkin.tech/en/skills/antoshkin-reanimate">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
+  <script>document.documentElement.classList.remove('nojs');try{if(sessionStorage.getItem('dock-seen'))document.documentElement.classList.add('dock-seen');else sessionStorage.setItem('dock-seen','1')}catch(e){}</script>
+  <link rel="stylesheet" href="/style.css?v=50">
+</head>
+<body>
+
+<div class="dock"><nav aria-label="Navigation"><i aria-hidden="true"></i><a href="/en" aria-label="Home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg></a><a href="/en/projects" aria-label="Projects" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 13h16"/></svg></a><a href="/en/writing" aria-label="Writing"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M14 5.5 18.5 10 9 19.5H4.5V15L14 5.5Z"/><path d="m12 7.5 4.5 4.5"/></svg></a><a href="/en/approach" aria-label="Approach"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.25"/><path d="M5.5 19.5c1.2-3 3.4-4.5 6.5-4.5s5.3 1.5 6.5 4.5"/></svg></a><a href="/en/collab" aria-label="Contact"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></nav><a class="lang" href="/skills/antoshkin-reanimate" aria-label="Русский">Ru</a></div>
+<a class="float" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Say hello<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+<main><div class="col"><article class="art skill-page">
+  <header class="art-top">
+    <nav class="crumbs" data-r aria-label="breadcrumb"><a href="/en/projects">Projects</a><span>›</span><a href="/en/projects#skills">Skills</a><span>›</span><span>antoshkin-reanimate</span></nav>
+    <h1 data-split>Port an animation</h1>
+    <div class="tags" data-r style="--d:.25s"><span class="tag">Cursor skill</span><span class="tag">SKILL.md + scripts</span><span class="tag">MIT</span></div>
+  </header>
+  <div class="art-intro" data-r style="--d:.3s"><p>A Cursor skill that takes an animation you like from a site, video or gif and rebuilds it in my site's style: glass, soft gradients, a mint accent. It checks the timing frame by frame.</p><div class="actions" style="justify-content:flex-start"><a class="btn mint" href="/skills/antoshkin-reanimate/antoshkin-reanimate.zip" download>Download .zip</a></div></div>
+  <div class="prose">
+<section id="how"><h2>How it works</h2>
+<ol><li><strong>Record.</strong> Opens the reference in headless Chromium and records frames, CSS and WAAPI animations, and where each element is on every frame. The source can be a site, a video, a gif or a Lottie file.</li>
+<li><strong>Spec.</strong> Breaks the motion into a table: start, duration, stagger, easing. Next to each value it notes what that becomes on the site.</li>
+<li><strong>Build.</strong> Writes plain HTML, CSS and a block in <code>motion.js</code>, using only tokens: <code>--glass</code>, <code>--mint</code>, <code>--ease</code>. A reduced motion fallback is required.</li>
+<li><strong>Verify.</strong> Records the clone with the same command and compares the tracks. It keeps fixing until timings match within 80&nbsp;ms, usually in 2 to 5 rounds.</li></ol></section>
+<section id="modes"><h2>Modes</h2>
+<table><thead><tr><th>Mode</th><th>Matches</th><th>Stays yours</th></tr></thead><tbody>
+<tr><td>site style (default)</td><td>trigger, order, stagger, timing, distances</td><td>colors, font, glass, the <code>--ease</code> curve</td></tr>
+<tr><td>motion exact</td><td>all of the above plus the reference curve</td><td>the look</td></tr>
+<tr><td>1:1</td><td>everything, down to pixels</td><td>nothing</td></tr></tbody></table></section>
+<section id="install"><h2>Install</h2>
+<pre><code># 1. unzip into your project (or ~/.cursor/skills/ for every project)
+unzip antoshkin-reanimate.zip -d .cursor/skills/
+
+# 2. Bun 1.1+ and a one-time setup (~250 MB: Chromium + ffmpeg)
+curl -fsSL https://bun.sh/install | bash
+bash .cursor/skills/antoshkin-reanimate/scripts/setup.sh
+
+# 3. keep the artifacts out of git
+echo ".reanimate/" &gt;&gt; .gitignore</code></pre>
+<p>Then just ask the agent in Cursor: "port the card hover from https://… into the projects block".</p></section>
+<section id="skill"><h2>SKILL.md</h2>
+<pre><code>---
+name: antoshkin-reanimate
+description: Reverse-engineer an animation, interaction or section from a reference (live URL, screen recording, mp4/mov/webm, gif, Lottie) and rebuild it inside the antoshkin.tech site in its house style (black fog-and-glass, soft breathing gradients, large tight Google Sans type, single mint accent, --ease cubic-bezier(0.22,1,0.36,1), vanilla HTML/CSS + motion.js). Records the reference and the clone the same way, compares frame by frame and iterates until timing, easing and sequence match. Use when Andrey says &quot;сделай как тут&quot;, &quot;склонируй анимацию&quot;, &quot;хочу такой hover/hero/reveal/marquee на сайт&quot;, &quot;reanimate&quot;, or drops a link/gif/video and wants that motion on antoshkin.tech.
+---</code></pre>
+<p><a href="/skills/antoshkin-reanimate/SKILL.md" download="antoshkin-reanimate-SKILL.md">Open the full SKILL.md</a></p></section>
+<section id="credit"><h2>Credit</h2>
+<p>This is an adaptation of <a href="https://github.com/NiazMorshed2007/reanimate" target="_blank" rel="noopener">reanimate</a> by Niaz Morshed. The recording and comparison scripts come from it unchanged, under the <a href="https://github.com/NiazMorshed2007/reanimate/blob/main/LICENSE" target="_blank" rel="noopener">MIT license</a>. My part is the house style, the site style mode and track-based verification. The skill instructions are written in Russian.</p></section>
+</div>
+</article></div></main>
+  <footer class="foot">
+    <div class="foot-in">
+      <p class="foot-mark">© 2026 <a href="/">antoshkin.tech</a></p>
+      <p class="foot-agent"><span>For agents</span><a class="foot-llm" href="/llm.md" target="_blank" rel="noopener" aria-label="Machine-readable profile">llm.md</a></p>
+    </div>
+  </footer>
+  <script src="/motion.js?v=4"></script>
+</body></html>

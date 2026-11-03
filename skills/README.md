@@ -12,3 +12,4 @@ Portable instructions for design-engineering and AI-native design-system work. C
 - [Add animation](motion/SKILL.md) — Adds motion only where it helps, and respects reduced motion.
 - [Check accessibility](a11y-pass/SKILL.md) — Checks contrast, focus, names, and readable type in the running UI.
 - [Describe an action](interaction-spec/SKILL.md) — Writes down what happens on click, on error, and on cancel.
+- [Перенести анимацию](antoshkin-reanimate/SKILL.md) — Clones motion from a site/video into the antoshkin.tech house style, verified frame by frame (adapted from NiazMorshed2007/reanimate, MIT).
