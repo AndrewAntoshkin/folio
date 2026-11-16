@@ -326,19 +326,27 @@ window.Motion = (() => {
 
   const comps = [];
   let last = performance.now();
-  let labOn = true;
-  addEventListener('message', e => { if (e.data === 'lab:stop') labOn = false; });
+  const labStill = new URLSearchParams(location.search).get('still') === '1';
+  let labOn = !labStill;
+  addEventListener('message', e => {
+    if (!e.data) return;
+    if (e.data === 'lab:stop') labOn = false;
+    if (e.data === 'lab:play') { labOn = true; last = performance.now(); requestAnimationFrame(loop); }
+  });
   window.__labStop = () => { labOn = false; };
   function loop(now) {
-    if (!labOn) return;
-    const dt = Math.min((now - last) / 1000, 1 / 30) * timeScale; last = now;
-    for (let i = timers.length - 1; i >= 0; i--) {
-      if ((timers[i].t -= dt) <= 0) timers.splice(i, 1)[0].fn();
+    const live = labOn;
+    const dt = live ? Math.min((now - last) / 1000, 1 / 30) * timeScale : 0;
+    last = now;
+    if (live) {
+      for (let i = timers.length - 1; i >= 0; i--) {
+        if ((timers[i].t -= dt) <= 0) timers.splice(i, 1)[0].fn();
+      }
+      const sub = 4;
+      for (let k = 0; k < sub; k++) comps.forEach(c => c.frame(dt / sub));
     }
-    const sub = 4;
-    for (let k = 0; k < sub; k++) comps.forEach(c => c.frame(dt / sub));
-    comps.forEach(c => c.render());
-    requestAnimationFrame(loop);
+    comps.forEach(c => { if (c.render) c.render(); });
+    if (live) requestAnimationFrame(loop);
   }
   requestAnimationFrame(loop);
 
