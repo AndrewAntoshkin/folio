@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ru" class="nojs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UI Lab — Андрей Антошкин</title>
+  <meta name="description" content="Личная полка из двадцати живых кусочков интерфейса: переключатели, жесты, меню и текст. Источник каждого примера записан в комментарии в начале его файла.">
+  <meta property="og:title" content="UI Lab — Андрей Антошкин">
+  <meta property="og:description" content="Личная полка из двадцати живых кусочков интерфейса: переключатели, жесты, меню и текст. Источник каждого примера записан в комментарии в начале его файла.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://antoshkin.tech/ui-lab">
+  <meta property="og:image" content="https://antoshkin.tech/img/gen/hero.jpg">
+  <meta property="og:image:width" content="1600">
+  <meta property="og:image:height" content="900">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="UI Lab — Андрей Антошкин">
+  <meta name="twitter:description" content="Личная полка из двадцати живых кусочков интерфейса: переключатели, жесты, меню и текст. Источник каждого примера записан в комментарии в начале его файла.">
+  <meta name="twitter:image" content="https://antoshkin.tech/img/gen/hero.jpg">
+  <link rel="canonical" href="https://antoshkin.tech/ui-lab">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23111312%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-family=%22system-ui,sans-serif%22 font-size=%2218%22 font-weight=%22600%22 fill=%22%234cf2a7%22>A</text></svg>">
+  <script>document.documentElement.classList.remove('nojs');try{if(sessionStorage.getItem('dock-seen'))document.documentElement.classList.add('dock-seen');else sessionStorage.setItem('dock-seen','1')}catch(e){}</script>
+  <link rel="stylesheet" href="/style.css?v=50">
+  <style>
+.lab-lead { max-width: 40em; color: var(--muted); font-size: 18px; line-height: 28px; }
+.lab-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px 16px; }
+.lab-cell { margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.lab-stage { position: relative; border-radius: 16px; background: #000; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(255,255,255,.1); }
+.lab-stage iframe { display: block; width: 100%; height: 460px; border: 0; background: #000; }
+.lab-replay { position: absolute; top: 12px; right: 12px; z-index: 2; height: 32px; padding: 0 12px; border: 0; border-radius: 999px; background: rgba(255,255,255,.14); color: #fff; font: 500 13px/32px var(--sans); cursor: pointer; }
+.lab-replay:hover { background: rgba(255,255,255,.24); }
+.lab-cell figcaption { font-size: 14px; line-height: 20px; color: var(--muted); }
+@media (max-width: 809px) {
+  .lab-grid { grid-template-columns: 1fr; }
+  .lab-stage iframe { height: 420px; }
+}
+</style>
+</head>
+<body>
+<!-- UI Lab. Each demo keeps the source comment on its first line. See ui-lab/SOURCES.md. -->
+<div class="dock"><nav aria-label="Навигация"><i aria-hidden="true"></i><a href="/" aria-label="Главная"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg></a><a href="/projects" aria-label="Проекты" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 13h16"/></svg></a><a href="/writing" aria-label="Статьи"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M14 5.5 18.5 10 9 19.5H4.5V15L14 5.5Z"/><path d="m12 7.5 4.5 4.5"/></svg></a><a href="/approach" aria-label="Подход"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.25"/><path d="M5.5 19.5c1.2-3 3.4-4.5 6.5-4.5s5.3 1.5 6.5 4.5"/></svg></a><a href="/collab" aria-label="Связь"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7.5h16v10H4v-10Z"/><path d="m5 8 7 6 7-6"/></svg></a></nav><a class="lang" href="/en/ui-lab" aria-label="English">En</a></div>
+<a class="float" href="https://t.me/andrewaitken" target="_blank" rel="noopener">Написать<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+<main><div class="col" style="--col:1120px"><article class="art">
+  <header class="art-top">
+    <a class="back" href="/projects" data-r>‹ Назад</a>
+    <h1 data-split>UI Lab</h1>
+    <div class="tags" data-r style="--d:.25s"><span class="tag">Анимации</span><span class="tag">20</span></div>
+  </header>
+  <p class="lab-lead" data-r style="--d:.3s">Наведите на карточку: ролик проиграется один раз и остановится. «Обновить» справа сверху запускает его снова. Источник каждого файла — в комментарии на первой строке.</p>
+  <div class="lab-grid">
+<figure class="lab-cell"><div class="lab-stage"><iframe data-src="/ui-lab/focus-mode.html" title="Focus mode"></iframe><button type="button" class="lab-replay">Обновить</button></div><figcaption>Focus mode</figcaption></figure>
+<figure class="lab-cell"><div class="lab-stage"><iframe data-src="/ui-lab/plan-switch.html" title="Plan switch"></iframe><button type="button" class="lab-replay">Обновить</button></div><figcaption>Plan switch</figcaption></figure>
+<figure class="lab-cell"><div class="lab-stage"><iframe data-src="/ui-lab/pull-cord.html" title="Pull cord"></iframe><button type="button" class="lab-replay">Обновить</button></div><figcaption>Pull cord</figcaption></figure>
+<figure class="lab-cell"><div class="lab-stage"><iframe data-src="/ui-lab/morph-tooltip.html" title="Morph tooltip"></iframe><button type="button" class="lab-replay">Обновить</button></div><figcaption>Morph tooltip</figcaption></figure>
+<figure class="lab-cell"><div class="lab-stage"><iframe data-src="/ui-lab/morph-island.html" title="Morph island"></iframe><button type="button" class="lab-replay">Обновить</button></div><figcaption>Morph island</figcaption></figure>
+<figure class="lab-cell"><div class="lab-stage"><iframe data-src="/ui-lab/goo-menu.html" title="Goo menu"></iframe><button type="button" class="lab-replay">Обновить</button></div><figcaption>Goo menu</figcaption></figure>
+<figure class="lab-cell"><div class="lab-stage"><iframe data-src="/ui-lab/jelly-slider.html" title="Jelly slider"></iframe><button type="button" class="lab-replay">Обновить</button></div><figcaption>Jelly slider</figcaption></figure>
+<figure class="lab-cell"><div class="lab-stage"><iframe data-src="/ui-lab/hold-button.html" title="Hold to publish"></iframe><button type="button" class="lab-replay">Обновить</button></div><figcaption>Hold to publish</figcaption></figure>
+<figure class="lab-cell"><div class="lab-stage"><iframe data-src="/ui-lab/swipe-deck.html" title="Swipe deck"></iframe><button type="button" class="lab-replay">Обновить</button></div><figcaption>Swipe deck</figcaption></figure>
+<figure class="lab-cell"><div class="lab-stage"><iframe data-src="/ui-lab/rubber-dock.html" title="Rubber dock"></iframe><button type="button" class="lab-replay">Обновить</button></div><figcaption>Rubber dock</figcaption></figure>
+<figure class="lab-cell"><div class="lab-stage"><iframe data-src="/ui-lab/parallax-ticket.html" title="Parallax ticket"></iframe><button type="button" class="lab-replay">Обновить</button></div><figcaption>Parallax ticket</figcaption></figure>
+<figure class="lab-cell"><div class="lab-stage"><iframe data-src="/ui-lab/glass-lens.html" title="Glass lens"></iframe><button type="button" class="lab-replay">Обновить</button></div><figcaption>Glass lens</figcaption></figure>
+<figure class="lab-cell"><div class="lab-stage"><iframe data-src="/ui-lab/pull-refresh.html" title="Pull to refresh"></iframe><button type="button" class="lab-replay">Обновить</button></div><figcaption>Pull to refresh</figcaption></figure>
+<figure class="lab-cell"><div class="lab-stage"><iframe data-src="/ui-lab/word-roll.html" title="Word roll"></iframe><button type="button" class="lab-replay">Обновить</button></div><figcaption>Word roll</figcaption></figure>
+<figure class="lab-cell"><div class="lab-stage"><iframe data-src="/ui-lab/weight-wave.html" title="Weight wave"></iframe><button type="button" class="lab-replay">Обновить</button></div><figcaption>Weight wave</figcaption></figure>
+<figure class="lab-cell"><div class="lab-stage"><iframe data-src="/ui-lab/goo-morph.html" title="Goo morph"></iframe><button type="button" class="lab-replay">Обновить</button></div><figcaption>Goo morph</figcaption></figure>
+<figure class="lab-cell"><div class="lab-stage"><iframe data-src="/ui-lab/scramble-text.html" title="Scramble text"></iframe><button type="button" class="lab-replay">Обновить</button></div><figcaption>Scramble text</figcaption></figure>
+<figure class="lab-cell"><div class="lab-stage"><iframe data-src="/ui-lab/magnetic-button.html" title="Magnetic button"></iframe><button type="button" class="lab-replay">Обновить</button></div><figcaption>Magnetic button</figcaption></figure>
+<figure class="lab-cell"><div class="lab-stage"><iframe data-src="/ui-lab/like-burst.html" title="Like burst"></iframe><button type="button" class="lab-replay">Обновить</button></div><figcaption>Like burst</figcaption></figure>
+<figure class="lab-cell"><div class="lab-stage"><iframe data-src="/ui-lab/dynamic-menu.html" title="Dynamic menu"></iframe><button type="button" class="lab-replay">Обновить</button></div><figcaption>Dynamic menu</figcaption></figure>
+  </div>
+</article></div></main>
+  <section class="cta" data-r>
+    <div class="cta-grid">
+      <div class="cta-card">
+        <div class="shader" aria-hidden="true"></div>
+        <div class="mid"><h2>Есть задача?</h2></div>
+        <div class="bot"><p>Напишите мне. Вместе разберёмся, с чего начать.</p></div>
+      </div>
+      <form class="cta-form" data-subject="Сотрудничество">
+        <input name="name" required placeholder="Имя" aria-label="Имя" autocomplete="name">
+        <input name="email" type="email" required placeholder="Почта" aria-label="Почта" autocomplete="email">
+        <textarea name="question" required placeholder="Пару слов о задаче" aria-label="Пару слов о задаче"></textarea>
+        <button type="submit">Написать</button>
+      </form>
+    </div>
+    </section>
+  <footer class="foot">
+    <div class="foot-in">
+      <p class="foot-mark">© 2026 <a href="/">antoshkin.tech</a></p>
+      <p class="foot-agent"><span>For agents</span><a class="foot-llm" href="/llm.md" target="_blank" rel="noopener" aria-label="Machine-readable profile">llm.md</a></p>
+    </div>
+  </footer>
+  <script>
+(function () {
+  var cells = [].slice.call(document.querySelectorAll('.lab-cell'));
+  function halt(frame) {
+    try { if (frame.contentWindow) frame.contentWindow.postMessage('lab:stop', '*'); } catch (e) {}
+  }
+  function start(frame) {
+    cells.forEach(function (cell) {
+      var other = cell.querySelector('iframe');
+      if (other !== frame) halt(other);
+    });
+    frame.src = frame.getAttribute('data-src') + '?r=' + Date.now();
+  }
+  cells.forEach(function (cell) {
+    var frame = cell.querySelector('iframe');
+    var btn = cell.querySelector('.lab-replay');
+    cell.addEventListener('pointerenter', function () {
+      if (frame.dataset.played === '1') return;
+      frame.dataset.played = '1';
+      start(frame);
+    });
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      frame.dataset.played = '1';
+      start(frame);
+    });
+  });
+  document.addEventListener('pointermove', function (e) {
+    if (e.target.closest && e.target.closest('.lab-cell')) return;
+    cells.forEach(function (cell) { halt(cell.querySelector('iframe')); });
+  });
+})();
+</script>
+
+  <script src="/motion.js?v=4"></script>
+</body></html>

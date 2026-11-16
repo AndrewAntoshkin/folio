@@ -1,0 +1,684 @@
+<!-- Rubber Dock, by DesignBookmark (https://designbookmark.com/motion#db-rubber-dock). One file: open it in a browser. -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rubber Dock</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Motion Studies design tokens.
+   Single source of truth for color, type, radius and motion.
+   Edit here (or in Claude Design) and every component follows. */
+:root{
+  /* ---------- color ---------- */
+  --stage:#000;                         /* page background */
+  --card:#171717;                       /* component stage card (= white 9% on black) */
+  --surface:#262626;                    /* component body */
+  --fill-1:rgba(255,255,255,.05);       /* tiles, fields */
+  --fill-2:rgba(255,255,255,.09);       /* chips, badges */
+  --fill-3:rgba(255,255,255,.14);       /* tracks, avatars, bars */
+  --line:rgba(255,255,255,.12);
+  --text:#fff;
+  --text-2:rgba(255,255,255,.78);
+  --muted:#9a9a9a;
+  --muted-2:#828282;
+  --chip-text:#b4b4b4;
+  --white:#fff;
+  --black:#000;
+  --green:#34d17a;
+  --green-text:#3ce085;
+  --orange:#ff9f0a;
+  --orange-text:#ff9f0a;                /* orange used as text: darker in light */
+  --red:#ff5a5f;
+  --yellow:#ffd23f;
+  --blue:#3ec9ff;
+  --purple:#c69bff;
+  --pink:#ff6ad5;
+  --heart:#ff4d6d;                      /* like, favourite */
+  --green-soft:rgba(52,209,122,.14);    /* tinted chip behind green text */
+  --on-green:#04140a;                   /* text and checks on --green, same in both themes */
+  --object:#2c2c2c;                     /* a free-standing grey object with no card under it: island, goo bubbles */
+  --inverse:#fff;                       /* primary pills, thumbs, drops */
+  --on-inverse:#000;                    /* content on top of --inverse */
+  --rim:transparent;          /* no strokes anywhere (Noah, 9 Nov 2026) */ /* 1px inner edge on surfaces */
+  --focus-rim:transparent;
+  --glow:rgba(255,255,255,.16);         /* cursor light on tiles */
+  --sh:0;                               /* drop shadow strength multiplier; 0 = no shadows anywhere (Noah, 9 Nov 2026) */
+  color-scheme:dark;
+
+  /* ---------- type ---------- */
+  --font:Inter,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --fs-2xs:11px;
+  --fs-xs:12px;
+  --fs-sm:13px;
+  --fs-md:14px;
+  --fs-base:15px;
+  --fs-lg:16px;
+  --fs-xl:17px;
+  --fw-regular:400;
+  --fw-medium:500;
+  --fw-bold:600;
+
+  /* ---------- radius ---------- */
+  --r-card:28px;
+  --r-tile:14px;
+  --r-bar:5px;
+  --r-pill:999px;
+  /* inner radius = outer radius - the padding between them. Usual steps: */
+  --r-xs:6px;                           /* keys, tiny chips */
+  --r-row:12px;                         /* rows, icon buttons, highlights inside a panel */
+  --r-panel:18px;                       /* bars, menus, small panels */
+  --r-sheet:24px;                       /* large panels */
+
+  /* ---------- motion: springs are "stiffness damping" ---------- */
+  /* Shared presets. A new component starts from these and only adds its own token when it truly needs a different feel. */
+  --spring-follow:900 50;      /* something held by the pointer: no overshoot, no lag */
+  --spring-settle:280 22;      /* letting go, landing on a value: one small overshoot */
+  --spring-soft:260 24;        /* large moves: panels, sheets, the whole component shifting */
+  --spring-lead:620 36;        /* stretchy highlight: the edge facing the move */
+  --spring-trail:190 19;       /* stretchy highlight: the edge that lags, this makes the stretch */
+  --spring-pop:520 16;         /* icon or number pop on select */
+  --spring-fade:420 32;        /* opacity and small slides */
+  --stagger:45;                /* ms between items entering one after another */
+  /* Rubber Dock */
+  --dock-lead:640 38;          /* edge of the pill that leads the move */
+  --dock-trail:150 16;         /* edge that lags behind: lower = more stretch */
+  --dock-drag-lead:1100 56;
+  --dock-drag-trail:320 26;
+  --dock-open-w:340 21;        /* dock -> card, width */
+  --dock-open-h:230 21;        /* dock -> card, height */
+  --dock-close:420 30;
+  --dock-pop:520 16;           /* icon pop on select */
+  --dock-expanded-w:340;       /* px */
+
+  /* Goo Menu */
+  --goo-out:230 15;            /* bubbles flying out */
+  --goo-in:520 34;             /* bubbles returning */
+  --goo-release:300 12;        /* snap back after a drag */
+  --goo-toast:260 17;          /* + morphing into the toast pill */
+  --goo-radius:112;            /* px, distance of bubbles from + */
+  --goo-stagger:45;            /* ms between bubbles */
+  --goo-toast-ms:2600;         /* how long the toast stays */
+  --goo-blur:10;               /* goo strength: higher = bubbles fuse from further away */
+
+  /* Morph Island */
+  --island-w:380 24;           /* width morph */
+  --island-h:300 22;           /* height morph, a bit softer so it lands after the width */
+  --island-radius:32;          /* px, max corner radius when tall */
+  --island-cycle-ms:2800;      /* autoplay step until the viewer interacts */
+
+  /* Hold Button */
+  --hold-ms:1200;              /* how long to hold */
+  --hold-release:260 14;       /* fill springing back when let go early */
+  --hold-morph:320 20;         /* pill <-> circle */
+  --hold-done-ms:1700;         /* how long the done state stays */
+
+  /* Jelly Slider */
+  --slider-follow:900 50;      /* thumb following the pointer */
+  --slider-bubble:420 22;      /* value bubble rising out of the thumb */
+  --slider-release:300 14;     /* snap back after over-drag */
+  --slider-blur:8;             /* goo strength between thumb and bubble */
+
+  /* Swipe Deck */
+  --deck-drag:900 50;          /* top card following the pointer */
+  --deck-return:280 16;        /* snapping back when not thrown far enough */
+  --deck-threshold:110;        /* px of drag that counts as a decision */
+
+  /* Springy Input */
+  --input-caret:700 32;        /* caret travel; it stretches with speed */
+  --input-morph:300 20;        /* field <-> success pill */
+
+  /* Pull to Refresh */
+  --pull-threshold:88;         /* px of pull that triggers a refresh */
+  --pull-return:260 18;        /* list springing back */
+  --pull-hold-ms:1300;         /* how long the spinner runs */
+
+  /* Magnetic Tiles */
+  --tile-pull:12;              /* px a tile moves toward the cursor */
+  --tile-tilt:12;              /* deg of 3D tilt */
+  --tile-open:300 24;          /* tile -> card morph */
+
+  /* Glass Lens */
+  --lens-follow:180 17;        /* lens chasing the cursor, a little lazy like a drop of water */
+  --lens-zoom:1.7;             /* magnification at rest */
+  --lens-zoom-press:2.4;       /* magnification while pressed */
+  --lens-size:150;             /* px */
+
+  /* Morph Select */
+  --select-open:360 24;        /* trigger <-> menu */
+  --select-hl:620 34;          /* highlight pill edges (leading edge) */
+  --select-reorder:260 21;     /* rows sliding to their new place */
+
+  /* Parallax Ticket */
+  --ticket-tilt:14;            /* deg */
+  --ticket-depth:12;           /* px of parallax for the front layer */
+  --ticket-flip:170 15;        /* flip spring, a little overshoot */
+
+  /* Wheel Picker */
+  --wheel-snap:240 24;         /* settling on the nearest value */
+  --wheel-decay:5;             /* momentum decay per second: lower = spins longer */
+
+  /* Trends */
+  --trend-menu:330 25;         /* "..." button growing into the menu */
+  --trend-fly:260 20;          /* the three dots flying into the menu icons */
+  --trend-row:300 28;          /* row height: dismiss, undo, show more */
+  --trend-live-ms:2200;        /* how often a post count rolls */
+  --trend-tick-ms:1100;        /* how often the charts get a new point */
+  --trend-expand:280 24;       /* row opening into the big chart */
+  --trend-rank:260 22;         /* rows swapping places when the ranking changes */
+
+  /* Side Nav */
+  --nav-lead:560 34;           /* hover pill: edge moving toward the new item */
+  --nav-trail:220 21;          /* hover pill: edge catching up, this makes it stretch */
+
+  /* Rolling Counter */
+  --count-roll:320 24;         /* each digit column rolling to its value: lower damping = more bounce */
+  --count-width:380 22;        /* columns growing in and folding away, this stretches the pill */
+  --count-press:600 18;        /* button squash, number pop and lean */
+  --count-stagger:45;          /* ms each higher column waits, so a carry ripples left */
+  --count-blur:1;              /* motion blur strength, 0 = off */
+  --count-decay:3.5;           /* fling decay per second: lower = coasts longer */
+  --count-snap:260 24;         /* ruler settling on the nearest tick */
+  --count-gap:14;              /* ruler: px between ticks */
+  --count-fisheye:60;          /* ruler: how much ticks swell near the marker, 0..100 */
+  --count-flip:140;            /* split flap: ms per fold */
+}
+
+/* ---------- light mode ---------- */
+:root[data-theme="light"]{
+  --stage:#fff;
+  --card:#f7f7f6;
+  --surface:#fff;
+  --fill-1:rgba(23,24,26,.04);
+  --fill-2:rgba(23,24,26,.07);
+  --fill-3:rgba(23,24,26,.12);
+  --line:rgba(23,24,26,.16);
+  --text:#17181a;
+  --text-2:#3c3b37;
+  --muted:#6f6e68;
+  --muted-2:#85847e;
+  --chip-text:#5c5b56;
+  --green-text:#15803d;
+  --orange-text:#c2660a;
+  --object:#e6e5e2;
+  --inverse:#0e0f11;
+  --on-inverse:#f4f3f1;
+  --rim:transparent;
+  --focus-rim:transparent;
+  --glow:rgba(23,24,26,.06);
+  --sh:0;
+  color-scheme:light;
+}
+
+/* ---------- both themes at once ----------
+   For a component that shows the dark and the light look side by side (Pull cord:
+   the light floods out of the bulb). Same values as the two blocks above, colour only. */
+.theme-dark{
+  --card:#171717;--surface:#262626;--object:#2c2c2c;
+  --fill-1:rgba(255,255,255,.05);--fill-2:rgba(255,255,255,.09);--fill-3:rgba(255,255,255,.14);
+  --text:#fff;--text-2:rgba(255,255,255,.78);--muted:#9a9a9a;--muted-2:#828282;
+  --inverse:#fff;--on-inverse:#000;color-scheme:dark;
+}
+.theme-light{
+  --card:#f7f7f6;--surface:#fff;--object:#e6e5e2;
+  --fill-1:rgba(23,24,26,.04);--fill-2:rgba(23,24,26,.07);--fill-3:rgba(23,24,26,.12);
+  --text:#17181a;--text-2:#3c3b37;--muted:#6f6e68;--muted-2:#85847e;
+  --inverse:#0e0f11;--on-inverse:#f4f3f1;color-scheme:light;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--card);color:var(--text);overflow:hidden;
+  font-family:var(--font);-webkit-font-smoothing:antialiased;
+  user-select:none;-webkit-user-select:none;
+}
+.badge{
+  position:absolute;left:14px;top:14px;z-index:3;
+  font-size:var(--fs-xs);font-weight:var(--fw-medium);color:var(--text);
+  background:var(--fill-2);border-radius:var(--r-pill);padding:4px 10px;
+}
+
+/* Avatars and card art: grainy mesh, mixed (Noah, 12 Nov 2026).
+   Three soft spots of colour melt over a main colour, under a fine grain.
+   Each family is turned a different way (--p1..3), so the light spot and the deep spot
+   never sit in the same corner twice and a row of them does not read as one recipe. */
+[data-av]{background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),radial-gradient(70% 70% at var(--p1),var(--av-l) 0,transparent 70%),radial-gradient(60% 60% at var(--p2),var(--av-p) 0,transparent 70%),radial-gradient(75% 75% at var(--p3),var(--av-b) 0,transparent 72%),var(--av-a)!important;background-blend-mode:overlay,normal,normal,normal,normal!important}
+[data-av="1"]{--av-l:#ff8fd0;--av-a:#ff3fa6;--av-b:#6a35ff;--av-p:#ffd3ec;--p1:12.0% 10.0%;--p2:92.0% 8.0%;--p3:88.0% 96.0%}
+[data-av="2"]{--av-l:#7fe3ff;--av-a:#2b8cff;--av-b:#5a35ff;--av-p:#cdf3ff;--p1:102.9% 65.6%;--p2:34.6% 107.4%;--p3:-5.9% 29.2%}
+[data-av="3"]{--av-l:#d6ff5a;--av-a:#22d39a;--av-b:#0a8a8f;--av-p:#efffb0;--p1:65.6% -2.9%;--p2:107.4% 65.4%;--p3:29.2% 105.9%}
+[data-av="4"]{--av-l:#ffb866;--av-a:#ff4a5e;--av-b:#c31f86;--av-p:#ffe0b8;--p1:34.4% 102.9%;--p2:-7.4% 34.6%;--p3:70.8% -5.9%}
+[data-av="5"]{--av-l:#fff27a;--av-a:#ffa51f;--av-b:#ff4a2e;--av-p:#fff3bf;--p1:-3.6% 62.9%;--p2:34.6% -7.4%;--p3:108.8% 40.1%}
+[data-av="6"]{--av-l:#7dffea;--av-a:#1fa8ff;--av-b:#3a3cff;--av-p:#c9fff5;--p1:90.0% 12.0%;--p2:92.0% 92.0%;--p3:4.0% 88.0%}
+[data-av="7"]{--av-l:#ffd3f1;--av-a:#c07bff;--av-b:#ff4f9a;--av-p:#f0dcff;--p1:62.9% 103.6%;--p2:-7.4% 65.4%;--p3:40.1% -8.8%}
+[data-av="8"]{--av-l:#c2ffd6;--av-a:#2fe08a;--av-b:#0a9a6a;--av-p:#e2ffec;--p1:37.1% -3.6%;--p2:107.4% 34.6%;--p3:59.9% 108.8%}
+[data-av="9"]{--av-l:#ffe3b5;--av-a:#ff8a6a;--av-b:#ff3f86;--av-p:#ffe6d8;--p1:10.0% 88.0%;--p2:8.0% 8.0%;--p3:96.0% 12.0%}
+[data-av="10"]{--av-l:#bfa0ff;--av-a:#5a3cff;--av-b:#1a1ab0;--av-p:#e0d2ff;--p1:103.6% 37.1%;--p2:65.4% 107.4%;--p3:-8.8% 59.9%}
+[data-av="11"]{--av-l:#f6ff86;--av-a:#8ae83a;--av-b:#1fb86a;--av-p:#fbffc8;--p1:-2.9% 34.4%;--p2:65.4% -7.4%;--p3:105.9% 70.8%}
+[data-av="12"]{--av-l:#ffa3cd;--av-a:#e03cff;--av-b:#6a2cff;--av-p:#ffd2ea;--p1:88.0% 90.0%;--p2:8.0% 92.0%;--p3:12.0% 4.0%}
+
+/* Rubber Dock: a tab bar whose pill stretches like rubber and morphs into a card */
+.ground{
+  position:absolute;left:50%;bottom:50%;height:22px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(0,0,0,calc(.55*var(--sh))),transparent);
+  transform:translateX(-50%);filter:blur(6px);pointer-events:none;
+}
+.dock{
+  /* Centered in its stage (Noah, 9 Nov 2026): bottom sits on the middle and the
+     render pushes it down by half its height, so it grows both ways. */
+  position:absolute;left:50%;bottom:50%;
+  width:68px;height:68px;border-radius:34px;background:var(--surface);
+  box-shadow:0 0 0 1px var(--rim) inset,0 24px 50px -24px rgba(0,0,0,calc(.8*var(--sh)));
+  overflow:hidden;transform:translateX(-50%);will-change:width,height,transform;
+}
+.tabs{position:absolute;left:50%;bottom:6px;width:236px;height:56px;transform:translateX(-50%);touch-action:none;cursor:grab}
+.tabs.dragging{cursor:grabbing}
+.icons{position:absolute;inset:0;display:flex;gap:4px}
+.icons > *{width:56px;height:56px;display:grid;place-items:center;flex:none}
+.icons.base button{background:none;border:0;color:var(--muted);cursor:inherit;border-radius:28px;outline:none}
+.icons.top{pointer-events:none;color:var(--on-inverse)}
+.icons svg{width:22px;height:22px;display:block}
+.indicator{position:absolute;left:0;top:0;width:56px;height:56px;border-radius:28px;background:var(--inverse);pointer-events:none;
+  box-shadow:0 6px 16px -6px rgba(0,0,0,calc(.7*var(--sh)))}
+
+.panels{position:absolute;left:50%;top:0;width:calc(var(--dock-expanded-w) * 1px);height:300px;transform:translateX(-50%)}
+.panel{position:absolute;left:0;right:0;top:0;padding:20px 20px 8px;pointer-events:none}
+.panel.on{pointer-events:auto}
+.it{
+  opacity:0;filter:blur(5px);
+  transform:translate3d(var(--x,0px),var(--y,10px),0) scale(.98);
+  transition:opacity .16s ease,transform .28s ease,filter .16s ease;
+}
+.panel.on .it{
+  opacity:1;filter:none;transform:none;
+  transition:
+    opacity .4s ease calc(var(--i,0)*45ms + 70ms),
+    transform .7s cubic-bezier(.16,1,.3,1) calc(var(--i,0)*45ms + 70ms),
+    filter .4s ease calc(var(--i,0)*45ms + 70ms);
+}
+.prep .it{transition:none!important}
+
+.head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px}
+.head h3{font-size:var(--fs-lg);font-weight:var(--fw-bold);letter-spacing:-.01em}
+.head small{font-size:var(--fs-xs);color:var(--muted)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.tile{background:var(--fill-1);border-radius:var(--r-tile);padding:12px}
+.tile small{display:block;font-size:var(--fs-2xs);color:var(--muted);margin-bottom:6px}
+.tile b{font-size:var(--fs-xl);font-weight:var(--fw-bold);letter-spacing:-.02em}
+.tile em{font-style:normal;font-size:var(--fs-2xs);color:var(--green-text);margin-left:4px}
+.chart{height:118px;background:var(--fill-1);border-radius:var(--r-tile);padding:14px 14px 12px;display:flex;align-items:flex-end;gap:6px}
+.bar{flex:1;height:var(--h);border-radius:var(--r-bar);background:var(--fill-3);transform:scaleY(0);transform-origin:bottom;transition:transform .2s ease}
+.bar.hi{background:var(--green)}
+.panel.on .bar{transform:scaleY(1);transition:transform .8s cubic-bezier(.34,1.56,.64,1) calc(var(--b)*35ms + 220ms)}
+
+.field{display:flex;align-items:center;gap:10px;height:44px;border-radius:var(--r-tile);background:var(--fill-1);padding:0 14px;margin-bottom:12px;font-size:var(--fs-md)}
+.field svg{width:18px;height:18px;color:var(--muted);flex:none}
+.typed::after{content:"";display:inline-block;width:1.5px;height:16px;background:var(--text);margin-left:2px;vertical-align:-3px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.chip{font-size:var(--fs-xs);font-weight:var(--fw-medium);padding:6px 10px;border-radius:var(--r-pill);background:var(--fill-2);color:var(--chip-text)}
+.row{display:flex;align-items:center;gap:12px;padding:9px 0}
+
+.av{width:36px;height:36px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:var(--fs-xs);font-weight:var(--fw-bold);color:var(--text);background:var(--fill-3)}
+.row .tx{flex:1;min-width:0}
+.row .tx b{display:block;font-size:var(--fs-sm);font-weight:var(--fw-medium)}
+.row .tx span{display:block;font-size:var(--fs-xs);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row time{font-size:var(--fs-2xs);color:var(--muted)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--orange)}
+.me{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.me .av{width:52px;height:52px;font-size:var(--fs-lg);background:var(--inverse);color:var(--on-inverse)}
+.me b{display:block;font-size:var(--fs-lg);font-weight:var(--fw-bold)}
+.me span{font-size:var(--fs-xs);color:var(--muted)}
+.set{display:flex;justify-content:space-between;align-items:center;height:46px;font-size:var(--fs-md);color:var(--text-2)}
+
+.sw{width:42px;height:26px;border-radius:var(--r-pill);background:var(--fill-3);position:relative;border:0;cursor:pointer;transition:background .25s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--white);transition:transform .45s cubic-bezier(.34,1.56,.64,1),width .2s}
+.sw:active::after{width:26px}
+.sw[aria-checked="true"]{background:var(--green)}
+.sw[aria-checked="true"]::after{transform:translateX(16px)}
+.sw[aria-checked="true"]:active::after{transform:translateX(10px)}
+
+</style>
+</head>
+<body>
+<div class="ground" id="ground"></div>
+<div class="dock" id="dock">
+  <div class="panels">
+    <section class="panel" data-i="0">
+      <div class="head it" style="--i:0"><h3>Overview</h3><small>This week</small></div>
+      <div class="tiles">
+        <div class="tile it" style="--i:1"><small>Visits</small><b>12.4k</b><em>+8%</em></div>
+        <div class="tile it" style="--i:2"><small>Sales</small><b>318</b><em>+21%</em></div>
+        <div class="tile it" style="--i:3"><small>Rate</small><b>3.9%</b></div>
+      </div>
+      <div class="chart it" style="--i:4" id="chart"></div>
+    </section>
+    <section class="panel" data-i="1">
+      <div class="field it" style="--i:0">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <span class="typed" id="typed"></span>
+      </div>
+      <div class="chips it" style="--i:1"><span class="chip">Springs</span><span class="chip">Morph</span><span class="chip">Elastic</span><span class="chip">Drag</span></div>
+      <div class="row it" style="--i:2"><div class="av" data-av="7" aria-hidden="true"></div><div class="tx"><b>Spring physics, explained</b><span>Stiffness, damping and why mass matters</span></div></div>
+      <div class="row it" style="--i:3"><div class="av" data-av="8" aria-hidden="true"></div><div class="tx"><b>Morphing containers</b><span>One surface, many states</span></div></div>
+      <div class="row it" style="--i:4"><div class="av" data-av="9" aria-hidden="true"></div><div class="tx"><b>Rubber banding at the edges</b><span>Resistance that feels physical</span></div></div>
+    </section>
+    <section class="panel" data-i="2">
+      <div class="head it" style="--i:0"><h3>Inbox</h3><small>3 new</small></div>
+      <div class="row it" style="--i:1"><div class="av" data-av="10" aria-hidden="true"></div><div class="tx"><b>New template order</b><span>Someone just bought the full kit</span></div><time>2m</time><span class="dot"></span></div>
+      <div class="row it" style="--i:2"><div class="av" data-av="11" aria-hidden="true"></div><div class="tx"><b>Feedback on v2</b><span>The dock feels so good, can we…</span></div><time>18m</time><span class="dot"></span></div>
+      <div class="row it" style="--i:3"><div class="av" data-av="12" aria-hidden="true"></div><div class="tx"><b>Invoice paid</b><span>Payment received, thank you</span></div><time>1h</time><span class="dot"></span></div>
+      <div class="row it" style="--i:4"><div class="av" data-av="1" aria-hidden="true"></div><div class="tx"><b>Weekly digest</b><span>Your numbers for the week</span></div><time>3h</time></div>
+    </section>
+    <section class="panel" data-i="3">
+      <div class="me it" style="--i:0"><div class="av" data-av="2" aria-hidden="true"></div><div><b>Lina Hart</b><span>@linahart</span></div></div>
+      <div class="set it" style="--i:1">Slow motion <button class="sw" id="sw-slow" role="switch" aria-checked="false" aria-label="Slow motion"></button></div>
+      <div class="set it" style="--i:2">Haptics <button class="sw" role="switch" aria-checked="true" aria-label="Haptics"></button></div>
+      <div class="set it" style="--i:3">Sounds <button class="sw" role="switch" aria-checked="false" aria-label="Sounds"></button></div>
+    </section>
+  </div>
+  <div class="tabs" id="tabs">
+    <div class="icons base" id="baseIcons" role="tablist" aria-label="Sections"></div>
+    <div class="indicator" id="ind"></div>
+    <div class="icons top" id="topIcons" aria-hidden="true"></div>
+  </div>
+</div>
+<script>
+// Tiny spring engine shared by every component.
+// Springs, sim-time timers (so slow-mo slows them too), one rAF loop, and token readers.
+window.Motion = (() => {
+  // theme: shared by every page through localStorage, live-updated by the gallery
+  const setTheme = t => { document.documentElement.dataset.theme = t === 'light' ? 'light' : 'dark'; };
+  try { setTheme(localStorage.getItem('ms-theme')); } catch { setTheme('dark'); }
+  addEventListener('storage', e => { if (e.key === 'ms-theme') setTheme(e.newValue); });
+
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const S = (x, k = 400, c = 30) => ({ x, v: 0, t: x, k, c });
+  const tune = (s, k, c) => { s.k = k; s.c = reduce ? 2 * Math.sqrt(k) : c; };
+  const step = (s, dt) => { const a = -s.k * (s.x - s.t) - s.c * s.v; s.v += a * dt; s.x += s.v * dt; };
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+  // tokens from shared/tokens.css
+  const token = (name, fallback = '') =>
+    getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+  const num = (name, fallback) => parseFloat(token(name, String(fallback)));
+  const spring = (name, fallback) => token(name, fallback).split(/\s+/).map(Number);
+
+  let timeScale = 1;
+  const timers = [];
+  const after = (sec, fn) => { const t = { t: sec, fn }; timers.push(t); return t; };
+  const cancel = t => { const i = timers.indexOf(t); if (i > -1) timers.splice(i, 1); };
+
+  // slow motion, synced with a parent page when embedded
+  const slowListeners = [];
+  function setSlow(v, fromParent = false) {
+    timeScale = v ? .25 : 1;
+    slowListeners.forEach(f => f(v));
+    if (!fromParent && parent !== window) parent.postMessage({ type: 'motion:slow-changed', on: v }, '*');
+  }
+  addEventListener('message', e => {
+    if (e.data && e.data.type === 'motion:slow') setSlow(!!e.data.on, true);
+    if (e.data && e.data.type === 'motion:theme') setTheme(e.data.theme);
+  });
+
+  const comps = [];
+  let last = performance.now();
+  let labOn = true;
+  addEventListener('message', e => { if (e.data === 'lab:stop') labOn = false; });
+  window.__labStop = () => { labOn = false; };
+  function loop(now) {
+    if (!labOn) return;
+    const dt = Math.min((now - last) / 1000, 1 / 30) * timeScale; last = now;
+    for (let i = timers.length - 1; i >= 0; i--) {
+      if ((timers[i].t -= dt) <= 0) timers.splice(i, 1)[0].fn();
+    }
+    const sub = 4;
+    for (let k = 0; k < sub; k++) comps.forEach(c => c.frame(dt / sub));
+    comps.forEach(c => c.render());
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+
+  return {
+    S, tune, step, clamp, token, num, spring, after, cancel,
+    register: c => comps.push(c),
+    get timeScale() { return timeScale; },
+    get slow() { return timeScale !== 1; },
+    setSlow, onSlow: f => slowListeners.push(f),
+    svg: (p, sw = 1.8) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`,
+  };
+})();
+
+</script>
+<script>
+// Rubber Dock
+// The pill's two edges are separate springs: the leading edge is stiff, the trailing
+// edge is lazy, so moving between tabs stretches the pill like rubber. Clicking the
+// active tab morphs the whole dock into a card.
+(() => {
+  const { S, tune, step, clamp, spring, num, svg, after } = Motion;
+  const $ = id => document.getElementById(id);
+
+  const ICONS = [
+    ['Overview', '<path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/>'],
+    ['Search', '<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4-4"/>'],
+    ['Inbox', '<path d="M4 13.5 6.2 5.6A1 1 0 0 1 7.2 5h9.6a1 1 0 0 1 1 .6L20 13.5V18a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><path d="M4 13.5h4.5l1.2 2h4.6l1.2-2H20"/>'],
+    ['Profile', '<circle cx="12" cy="8.5" r="3.5"/><path d="M5 19.5c1.2-3.2 3.8-5 7-5s5.8 1.8 7 5"/>'],
+  ];
+  const dock = $('dock'), tabs = $('tabs'), ind = $('ind'), ground = $('ground');
+  const baseIcons = $('baseIcons'), topIcons = $('topIcons');
+  const panels = [...document.querySelectorAll('.panel')];
+
+  ICONS.forEach(([name, p]) => {
+    const b = document.createElement('button');
+    b.setAttribute('role', 'tab'); b.setAttribute('aria-label', name); b.innerHTML = svg(p);
+    baseIcons.appendChild(b);
+    const d = document.createElement('div'); d.innerHTML = svg(p); topIcons.appendChild(d);
+  });
+  const btns = [...baseIcons.children], tops = [...topIcons.children];
+
+  const chart = $('chart');
+  [38, 52, 44, 70, 58, 82, 64, 90, 72, 100, 86, 78].forEach((h, i) => {
+    const b = document.createElement('div');
+    b.className = 'bar' + (i === 9 ? ' hi' : '');
+    b.style.setProperty('--h', h + '%'); b.style.setProperty('--b', i);
+    chart.appendChild(b);
+  });
+
+  // motion tokens
+  const T = {
+    lead: spring('--dock-lead', '640 38'), trail: spring('--dock-trail', '150 16'),
+    dragLead: spring('--dock-drag-lead', '1100 56'), dragTrail: spring('--dock-drag-trail', '320 26'),
+    openW: spring('--dock-open-w', '340 21'), openH: spring('--dock-open-h', '230 21'),
+    close: spring('--dock-close', '420 30'), pop: spring('--dock-pop', '520 16'),
+    expW: num('--dock-expanded-w', 340),
+  };
+
+  // geometry
+  const TAB = 56, GAP = 4, N = 4, TW = N * TAB + (N - 1) * GAP;
+  const cx = i => TAB / 2 + i * (TAB + GAP);
+  const COL = { W: TW + 12, H: TAB + 12 };
+  const PANEL_H = 300;
+  let panelH = [];
+  const measure = () => { panelH = panels.map(p => Math.min(PANEL_H, p.offsetHeight)); };
+  const expW = () => Math.min(T.expW, innerWidth - 24);
+
+  const L = S(cx(0) - TAB / 2), R = S(cx(0) + TAB / 2);
+  const W = S(TAB + 12, 260, 20), H = S(COL.H, 400, 34);
+  const nudge = S(0, 300, 18);
+  const pops = btns.map(() => S(1, ...T.pop));
+  const all = [L, R, W, H, nudge, ...pops];
+
+  let active = 0, expanded = false;
+
+  function moveTo(center, dir, drag = false) {
+    const lead = drag ? T.dragLead : T.lead;
+    const trail = drag ? T.dragTrail : T.trail;
+    if (dir === 0) { tune(L, 600, 44); tune(R, 600, 44); }
+    else {
+      const [l, r] = dir > 0 ? [trail, lead] : [lead, trail];
+      tune(L, ...l); tune(R, ...r);
+    }
+    L.t = center - TAB / 2; R.t = center + TAB / 2;
+  }
+
+  function setActive(i, dirHint) {
+    i = clamp(i, 0, N - 1);
+    const dir = dirHint ?? Math.sign(cx(i) - (L.x + R.x) / 2);
+    moveTo(cx(i), dir);
+    const prev = active;
+    active = i;
+    pops[i].v -= 3.2;
+    btns.forEach((b, j) => { b.setAttribute('aria-selected', j === i); b.tabIndex = j === i ? 0 : -1; });
+    if (expanded && prev !== i) swapPanel(prev, i, Math.sign(i - prev));
+  }
+
+  function setExpanded(v) {
+    if (v === expanded) return;
+    expanded = v;
+    if (v) {
+      measure();
+      W.t = expW(); H.t = COL.H + panelH[active];
+      tune(W, ...T.openW); tune(H, ...T.openH);   // width lands first, height overshoots after
+      showPanel(active, 0, true);
+    } else {
+      W.t = COL.W; H.t = COL.H;
+      tune(W, T.close[0] * .72, T.close[1] * .66); tune(H, ...T.close);
+      hidePanel(active, 0);
+    }
+    pops[active].v -= 2.4;
+  }
+
+  function prep(p, x, y) {
+    p.classList.add('prep');
+    p.style.setProperty('--x', x + 'px'); p.style.setProperty('--y', y + 'px');
+    void p.offsetWidth;
+    p.classList.remove('prep');
+  }
+  function showPanel(i, dir, fromClosed) {
+    const p = panels[i];
+    prep(p, dir * 28, fromClosed ? 14 : 0);
+    requestAnimationFrame(() => p.classList.add('on'));
+    if (i === 1) typeIn();
+  }
+  function hidePanel(i, dir) {
+    const p = panels[i];
+    p.style.setProperty('--x', -dir * 28 + 'px'); p.style.setProperty('--y', dir ? '0px' : '6px');
+    p.classList.remove('on');
+  }
+  function swapPanel(from, to, dir) {
+    hidePanel(from, dir); showPanel(to, dir, false);
+    tune(H, 260, 20); H.t = COL.H + panelH[to];   // the card re-morphs to fit each tab
+  }
+
+  // typewriter in the search field
+  let typeRun = 0;
+  function typeIn() {
+    const el = $('typed'), word = 'elastic morph', run = ++typeRun;
+    el.textContent = '';
+    const tick = n => after(.07, () => {
+      if (run !== typeRun) return;
+      el.textContent = word.slice(0, n);
+      if (n < word.length) tick(n + 1);
+    });
+    after(.26, () => tick(1));
+  }
+
+  // input
+  let drag = null, suppressClick = false;
+  const rubber = (x, min, max, d = 46) =>
+    x < min ? min - (1 - 1 / ((min - x) * .55 / d + 1)) * d :
+    x > max ? max + (1 - 1 / ((x - max) * .55 / d + 1)) * d : x;
+  const localX = e => {
+    const r = dock.getBoundingClientRect();
+    return e.clientX - (r.left + r.width / 2 - nudge.x) + TW / 2;
+  };
+  tabs.addEventListener('pointerdown', e => {
+    drag = { id: e.pointerId, x0: e.clientX, last: localX(e), live: false, dir: 0 };
+  });
+  tabs.addEventListener('pointermove', e => {
+    if (!drag || e.pointerId !== drag.id) return;
+    if (!drag.live && Math.abs(e.clientX - drag.x0) > 4) {
+      drag.live = true; tabs.setPointerCapture(e.pointerId); tabs.classList.add('dragging');
+    }
+    if (!drag.live) return;
+    const raw = localX(e);
+    const d = raw - drag.last; drag.last = raw;
+    if (Math.abs(d) > .5) drag.dir = Math.sign(d);
+    const c = rubber(raw, cx(0), cx(N - 1));
+    moveTo(c, drag.dir, true);
+    nudge.t = (c - clamp(c, cx(0), cx(N - 1))) * .35;
+  });
+  const endDrag = e => {
+    if (!drag || e.pointerId !== drag.id) return;
+    if (drag.live) {
+      const c = (L.t + R.t) / 2;
+      nudge.t = 0;
+      setActive(Math.round((c - cx(0)) / (TAB + GAP) + drag.dir * .18), drag.dir || 0);
+      suppressClick = true; setTimeout(() => suppressClick = false, 0);
+      tabs.classList.remove('dragging');
+    }
+    drag = null;
+  };
+  tabs.addEventListener('pointerup', endDrag);
+  tabs.addEventListener('pointercancel', endDrag);
+
+  btns.forEach((b, i) => b.addEventListener('click', e => {
+    e.stopPropagation();
+    if (suppressClick) return;
+    if (i === active) setExpanded(!expanded); else setActive(i);
+  }));
+  document.addEventListener('click', e => { if (expanded && !dock.contains(e.target)) setExpanded(false); });
+  addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') { setActive(active + 1); btns[active].focus(); }
+    else if (e.key === 'ArrowLeft') { setActive(active - 1); btns[active].focus(); }
+    else if (e.key === 'Escape') setExpanded(false);
+  });
+  addEventListener('resize', () => { if (expanded) W.t = expW(); });
+
+  // switches
+  const swSlow = $('sw-slow');
+  swSlow.addEventListener('click', () => Motion.setSlow(!Motion.slow));
+  Motion.onSlow(v => swSlow.setAttribute('aria-checked', v));
+  document.querySelectorAll('.sw:not(#sw-slow)').forEach(s =>
+    s.addEventListener('click', () => s.setAttribute('aria-checked', s.getAttribute('aria-checked') !== 'true')));
+
+  Motion.register({
+    frame: dt => all.forEach(s => step(s, dt)),
+    render() {
+      const w = W.x, h = Math.max(H.x, 40);
+      const open = clamp((h - COL.H) / PANEL_H, 0, 1);
+      const give = clamp(-H.v / 9000, -.04, .04);   // height racing => width gives a little
+      dock.style.width = w * (1 + give) + 'px';
+      dock.style.height = h + 'px';
+      dock.style.borderRadius = Math.min(h / 2, 34 - 8 * open) + 'px';
+      dock.style.transform = `translate(calc(-50% + ${nudge.x}px),${h / 2}px)`;
+      ground.style.width = w * .86 + 'px';
+      ground.style.transform = `translate(calc(-50% + ${nudge.x * .6}px),${h / 2 + 22}px) scaleY(${1 + open * .5})`;
+
+      let l = L.x, r = R.x; if (r < l) [l, r] = [r, l];
+      const iw = Math.max(r - l, 24);
+      const ih = TAB * clamp(1 / Math.sqrt(iw / TAB), .66, 1.1);   // area preserving
+      const top = (TAB - ih) / 2;
+      ind.style.width = iw + 'px'; ind.style.height = ih + 'px';
+      ind.style.borderRadius = ih / 2 + 'px';
+      ind.style.transform = `translate3d(${l}px,${top}px,0)`;
+      // dark icon layer clipped to the pill, so icons invert exactly where the pill is
+      topIcons.style.clipPath = `inset(${top}px ${TW - l - iw}px ${TAB - top - ih}px ${l}px round ${ih / 2}px)`;
+      pops.forEach((p, i) => {
+        const t = `scale(${p.x})`;
+        btns[i].firstChild.style.transform = t; tops[i].firstChild.style.transform = t;
+      });
+    },
+  });
+
+  setActive(0, 0);
+  after(.35, () => { W.t = COL.W; tune(W, 220, 15); });   // intro: one pill grows into the dock
+})();
+
+</script>
+</body>
+</html>

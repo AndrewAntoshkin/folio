@@ -1,0 +1,552 @@
+<!-- Pull Cord, by DesignBookmark (https://designbookmark.com/motion#db-pull-cord). One file: open it in a browser. -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pull Cord</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Motion Studies design tokens.
+   Single source of truth for color, type, radius and motion.
+   Edit here (or in Claude Design) and every component follows. */
+:root{
+  /* ---------- color ---------- */
+  --stage:#000;                         /* page background */
+  --card:#171717;                       /* component stage card (= white 9% on black) */
+  --surface:#262626;                    /* component body */
+  --fill-1:rgba(255,255,255,.05);       /* tiles, fields */
+  --fill-2:rgba(255,255,255,.09);       /* chips, badges */
+  --fill-3:rgba(255,255,255,.14);       /* tracks, avatars, bars */
+  --line:rgba(255,255,255,.12);
+  --text:#fff;
+  --text-2:rgba(255,255,255,.78);
+  --muted:#9a9a9a;
+  --muted-2:#828282;
+  --chip-text:#b4b4b4;
+  --white:#fff;
+  --black:#000;
+  --green:#34d17a;
+  --green-text:#3ce085;
+  --orange:#ff9f0a;
+  --orange-text:#ff9f0a;                /* orange used as text: darker in light */
+  --red:#ff5a5f;
+  --yellow:#ffd23f;
+  --blue:#3ec9ff;
+  --purple:#c69bff;
+  --pink:#ff6ad5;
+  --heart:#ff4d6d;                      /* like, favourite */
+  --green-soft:rgba(52,209,122,.14);    /* tinted chip behind green text */
+  --on-green:#04140a;                   /* text and checks on --green, same in both themes */
+  --object:#2c2c2c;                     /* a free-standing grey object with no card under it: island, goo bubbles */
+  --inverse:#fff;                       /* primary pills, thumbs, drops */
+  --on-inverse:#000;                    /* content on top of --inverse */
+  --rim:transparent;          /* no strokes anywhere (Noah, 9 Nov 2026) */ /* 1px inner edge on surfaces */
+  --focus-rim:transparent;
+  --glow:rgba(255,255,255,.16);         /* cursor light on tiles */
+  --sh:0;                               /* drop shadow strength multiplier; 0 = no shadows anywhere (Noah, 9 Nov 2026) */
+  color-scheme:dark;
+
+  /* ---------- type ---------- */
+  --font:Inter,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --fs-2xs:11px;
+  --fs-xs:12px;
+  --fs-sm:13px;
+  --fs-md:14px;
+  --fs-base:15px;
+  --fs-lg:16px;
+  --fs-xl:17px;
+  --fw-regular:400;
+  --fw-medium:500;
+  --fw-bold:600;
+
+  /* ---------- radius ---------- */
+  --r-card:28px;
+  --r-tile:14px;
+  --r-bar:5px;
+  --r-pill:999px;
+  /* inner radius = outer radius - the padding between them. Usual steps: */
+  --r-xs:6px;                           /* keys, tiny chips */
+  --r-row:12px;                         /* rows, icon buttons, highlights inside a panel */
+  --r-panel:18px;                       /* bars, menus, small panels */
+  --r-sheet:24px;                       /* large panels */
+
+  /* ---------- motion: springs are "stiffness damping" ---------- */
+  /* Shared presets. A new component starts from these and only adds its own token when it truly needs a different feel. */
+  --spring-follow:900 50;      /* something held by the pointer: no overshoot, no lag */
+  --spring-settle:280 22;      /* letting go, landing on a value: one small overshoot */
+  --spring-soft:260 24;        /* large moves: panels, sheets, the whole component shifting */
+  --spring-lead:620 36;        /* stretchy highlight: the edge facing the move */
+  --spring-trail:190 19;       /* stretchy highlight: the edge that lags, this makes the stretch */
+  --spring-pop:520 16;         /* icon or number pop on select */
+  --spring-fade:420 32;        /* opacity and small slides */
+  --stagger:45;                /* ms between items entering one after another */
+  /* Rubber Dock */
+  --dock-lead:640 38;          /* edge of the pill that leads the move */
+  --dock-trail:150 16;         /* edge that lags behind: lower = more stretch */
+  --dock-drag-lead:1100 56;
+  --dock-drag-trail:320 26;
+  --dock-open-w:340 21;        /* dock -> card, width */
+  --dock-open-h:230 21;        /* dock -> card, height */
+  --dock-close:420 30;
+  --dock-pop:520 16;           /* icon pop on select */
+  --dock-expanded-w:340;       /* px */
+
+  /* Goo Menu */
+  --goo-out:230 15;            /* bubbles flying out */
+  --goo-in:520 34;             /* bubbles returning */
+  --goo-release:300 12;        /* snap back after a drag */
+  --goo-toast:260 17;          /* + morphing into the toast pill */
+  --goo-radius:112;            /* px, distance of bubbles from + */
+  --goo-stagger:45;            /* ms between bubbles */
+  --goo-toast-ms:2600;         /* how long the toast stays */
+  --goo-blur:10;               /* goo strength: higher = bubbles fuse from further away */
+
+  /* Morph Island */
+  --island-w:380 24;           /* width morph */
+  --island-h:300 22;           /* height morph, a bit softer so it lands after the width */
+  --island-radius:32;          /* px, max corner radius when tall */
+  --island-cycle-ms:2800;      /* autoplay step until the viewer interacts */
+
+  /* Hold Button */
+  --hold-ms:1200;              /* how long to hold */
+  --hold-release:260 14;       /* fill springing back when let go early */
+  --hold-morph:320 20;         /* pill <-> circle */
+  --hold-done-ms:1700;         /* how long the done state stays */
+
+  /* Jelly Slider */
+  --slider-follow:900 50;      /* thumb following the pointer */
+  --slider-bubble:420 22;      /* value bubble rising out of the thumb */
+  --slider-release:300 14;     /* snap back after over-drag */
+  --slider-blur:8;             /* goo strength between thumb and bubble */
+
+  /* Swipe Deck */
+  --deck-drag:900 50;          /* top card following the pointer */
+  --deck-return:280 16;        /* snapping back when not thrown far enough */
+  --deck-threshold:110;        /* px of drag that counts as a decision */
+
+  /* Springy Input */
+  --input-caret:700 32;        /* caret travel; it stretches with speed */
+  --input-morph:300 20;        /* field <-> success pill */
+
+  /* Pull to Refresh */
+  --pull-threshold:88;         /* px of pull that triggers a refresh */
+  --pull-return:260 18;        /* list springing back */
+  --pull-hold-ms:1300;         /* how long the spinner runs */
+
+  /* Magnetic Tiles */
+  --tile-pull:12;              /* px a tile moves toward the cursor */
+  --tile-tilt:12;              /* deg of 3D tilt */
+  --tile-open:300 24;          /* tile -> card morph */
+
+  /* Glass Lens */
+  --lens-follow:180 17;        /* lens chasing the cursor, a little lazy like a drop of water */
+  --lens-zoom:1.7;             /* magnification at rest */
+  --lens-zoom-press:2.4;       /* magnification while pressed */
+  --lens-size:150;             /* px */
+
+  /* Morph Select */
+  --select-open:360 24;        /* trigger <-> menu */
+  --select-hl:620 34;          /* highlight pill edges (leading edge) */
+  --select-reorder:260 21;     /* rows sliding to their new place */
+
+  /* Parallax Ticket */
+  --ticket-tilt:14;            /* deg */
+  --ticket-depth:12;           /* px of parallax for the front layer */
+  --ticket-flip:170 15;        /* flip spring, a little overshoot */
+
+  /* Wheel Picker */
+  --wheel-snap:240 24;         /* settling on the nearest value */
+  --wheel-decay:5;             /* momentum decay per second: lower = spins longer */
+
+  /* Trends */
+  --trend-menu:330 25;         /* "..." button growing into the menu */
+  --trend-fly:260 20;          /* the three dots flying into the menu icons */
+  --trend-row:300 28;          /* row height: dismiss, undo, show more */
+  --trend-live-ms:2200;        /* how often a post count rolls */
+  --trend-tick-ms:1100;        /* how often the charts get a new point */
+  --trend-expand:280 24;       /* row opening into the big chart */
+  --trend-rank:260 22;         /* rows swapping places when the ranking changes */
+
+  /* Side Nav */
+  --nav-lead:560 34;           /* hover pill: edge moving toward the new item */
+  --nav-trail:220 21;          /* hover pill: edge catching up, this makes it stretch */
+
+  /* Rolling Counter */
+  --count-roll:320 24;         /* each digit column rolling to its value: lower damping = more bounce */
+  --count-width:380 22;        /* columns growing in and folding away, this stretches the pill */
+  --count-press:600 18;        /* button squash, number pop and lean */
+  --count-stagger:45;          /* ms each higher column waits, so a carry ripples left */
+  --count-blur:1;              /* motion blur strength, 0 = off */
+  --count-decay:3.5;           /* fling decay per second: lower = coasts longer */
+  --count-snap:260 24;         /* ruler settling on the nearest tick */
+  --count-gap:14;              /* ruler: px between ticks */
+  --count-fisheye:60;          /* ruler: how much ticks swell near the marker, 0..100 */
+  --count-flip:140;            /* split flap: ms per fold */
+}
+
+/* ---------- light mode ---------- */
+:root[data-theme="light"]{
+  --stage:#fff;
+  --card:#f7f7f6;
+  --surface:#fff;
+  --fill-1:rgba(23,24,26,.04);
+  --fill-2:rgba(23,24,26,.07);
+  --fill-3:rgba(23,24,26,.12);
+  --line:rgba(23,24,26,.16);
+  --text:#17181a;
+  --text-2:#3c3b37;
+  --muted:#6f6e68;
+  --muted-2:#85847e;
+  --chip-text:#5c5b56;
+  --green-text:#15803d;
+  --orange-text:#c2660a;
+  --object:#e6e5e2;
+  --inverse:#0e0f11;
+  --on-inverse:#f4f3f1;
+  --rim:transparent;
+  --focus-rim:transparent;
+  --glow:rgba(23,24,26,.06);
+  --sh:0;
+  color-scheme:light;
+}
+
+/* ---------- both themes at once ----------
+   For a component that shows the dark and the light look side by side (Pull cord:
+   the light floods out of the bulb). Same values as the two blocks above, colour only. */
+.theme-dark{
+  --card:#171717;--surface:#262626;--object:#2c2c2c;
+  --fill-1:rgba(255,255,255,.05);--fill-2:rgba(255,255,255,.09);--fill-3:rgba(255,255,255,.14);
+  --text:#fff;--text-2:rgba(255,255,255,.78);--muted:#9a9a9a;--muted-2:#828282;
+  --inverse:#fff;--on-inverse:#000;color-scheme:dark;
+}
+.theme-light{
+  --card:#f7f7f6;--surface:#fff;--object:#e6e5e2;
+  --fill-1:rgba(23,24,26,.04);--fill-2:rgba(23,24,26,.07);--fill-3:rgba(23,24,26,.12);
+  --text:#17181a;--text-2:#3c3b37;--muted:#6f6e68;--muted-2:#85847e;
+  --inverse:#0e0f11;--on-inverse:#f4f3f1;color-scheme:light;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--card);color:var(--text);overflow:hidden;
+  font-family:var(--font);-webkit-font-smoothing:antialiased;
+  user-select:none;-webkit-user-select:none;
+}
+.badge{
+  position:absolute;left:14px;top:14px;z-index:3;
+  font-size:var(--fs-xs);font-weight:var(--fw-medium);color:var(--text);
+  background:var(--fill-2);border-radius:var(--r-pill);padding:4px 10px;
+}
+
+/* Avatars and card art: grainy mesh, mixed (Noah, 12 Nov 2026).
+   Three soft spots of colour melt over a main colour, under a fine grain.
+   Each family is turned a different way (--p1..3), so the light spot and the deep spot
+   never sit in the same corner twice and a row of them does not read as one recipe. */
+[data-av]{background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),radial-gradient(70% 70% at var(--p1),var(--av-l) 0,transparent 70%),radial-gradient(60% 60% at var(--p2),var(--av-p) 0,transparent 70%),radial-gradient(75% 75% at var(--p3),var(--av-b) 0,transparent 72%),var(--av-a)!important;background-blend-mode:overlay,normal,normal,normal,normal!important}
+[data-av="1"]{--av-l:#ff8fd0;--av-a:#ff3fa6;--av-b:#6a35ff;--av-p:#ffd3ec;--p1:12.0% 10.0%;--p2:92.0% 8.0%;--p3:88.0% 96.0%}
+[data-av="2"]{--av-l:#7fe3ff;--av-a:#2b8cff;--av-b:#5a35ff;--av-p:#cdf3ff;--p1:102.9% 65.6%;--p2:34.6% 107.4%;--p3:-5.9% 29.2%}
+[data-av="3"]{--av-l:#d6ff5a;--av-a:#22d39a;--av-b:#0a8a8f;--av-p:#efffb0;--p1:65.6% -2.9%;--p2:107.4% 65.4%;--p3:29.2% 105.9%}
+[data-av="4"]{--av-l:#ffb866;--av-a:#ff4a5e;--av-b:#c31f86;--av-p:#ffe0b8;--p1:34.4% 102.9%;--p2:-7.4% 34.6%;--p3:70.8% -5.9%}
+[data-av="5"]{--av-l:#fff27a;--av-a:#ffa51f;--av-b:#ff4a2e;--av-p:#fff3bf;--p1:-3.6% 62.9%;--p2:34.6% -7.4%;--p3:108.8% 40.1%}
+[data-av="6"]{--av-l:#7dffea;--av-a:#1fa8ff;--av-b:#3a3cff;--av-p:#c9fff5;--p1:90.0% 12.0%;--p2:92.0% 92.0%;--p3:4.0% 88.0%}
+[data-av="7"]{--av-l:#ffd3f1;--av-a:#c07bff;--av-b:#ff4f9a;--av-p:#f0dcff;--p1:62.9% 103.6%;--p2:-7.4% 65.4%;--p3:40.1% -8.8%}
+[data-av="8"]{--av-l:#c2ffd6;--av-a:#2fe08a;--av-b:#0a9a6a;--av-p:#e2ffec;--p1:37.1% -3.6%;--p2:107.4% 34.6%;--p3:59.9% 108.8%}
+[data-av="9"]{--av-l:#ffe3b5;--av-a:#ff8a6a;--av-b:#ff3f86;--av-p:#ffe6d8;--p1:10.0% 88.0%;--p2:8.0% 8.0%;--p3:96.0% 12.0%}
+[data-av="10"]{--av-l:#bfa0ff;--av-a:#5a3cff;--av-b:#1a1ab0;--av-p:#e0d2ff;--p1:103.6% 37.1%;--p2:65.4% 107.4%;--p3:-8.8% 59.9%}
+[data-av="11"]{--av-l:#f6ff86;--av-a:#8ae83a;--av-b:#1fb86a;--av-p:#fbffc8;--p1:-2.9% 34.4%;--p2:65.4% -7.4%;--p3:105.9% 70.8%}
+[data-av="12"]{--av-l:#ffa3cd;--av-a:#e03cff;--av-b:#6a2cff;--av-p:#ffd2ea;--p1:88.0% 90.0%;--p2:8.0% 92.0%;--p3:12.0% 4.0%}
+
+/* Pull Cord: a lamp on a wire with a cord you can really pull. The cord is a
+   rope with weight, the lamp swings when you tug it, and a pull past the click
+   turns the light on: it floods out of the bulb and the whole card goes light.
+   Read DESIGN.md first. Tokens only: no colours, small font sizes, strokes or shadows by hand. */
+.scene{position:absolute;inset:0;overflow:hidden}
+/* the same room twice, once in each theme; the light one is cut to a circle around the bulb */
+.room{position:absolute;inset:0;background:var(--card);overflow:hidden}
+.room.theme-light{will-change:clip-path}
+
+.lamp{position:absolute;left:50%;top:0;width:0;height:0;transform-origin:0 0;will-change:transform}
+.head{position:absolute;left:0;top:0;will-change:transform}
+.cap{position:absolute;left:-9px;top:-10px;width:18px;height:14px;border-radius:5px 5px 0 0;background:var(--muted-2)}
+.shade{position:absolute;left:-62px;top:0;width:124px;height:66px;border-radius:62px 62px 12px 12px / 58px 58px 12px 12px;background:var(--object)}
+.bulb{position:absolute;left:-19px;top:44px;width:38px;height:38px;border-radius:50%;background:var(--fill-3);will-change:transform}
+/* lit: the system yellow on the bulb in a plain light room. The colour stays on the bulb, never a halo behind it (Noah, 12 Nov 2026) */
+.theme-light .bulb{background:var(--yellow)}
+
+.rope{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.rope path{fill:none;stroke:var(--muted-2);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.bead{position:absolute;left:-8px;top:-3px;width:16px;height:30px;border-radius:var(--r-pill);background:var(--inverse);transform-origin:8px 3px;will-change:transform}
+
+/* the one real control: it sits on the bead and follows it */
+.grab{
+  position:absolute;left:-22px;top:-12px;width:44px;height:52px;border:0;border-radius:var(--r-row);background:transparent;
+  cursor:grab;touch-action:none;will-change:transform;-webkit-tap-highlight-color:transparent;
+}
+.grab.is-held{cursor:grabbing}
+.grab:focus-visible{outline:2px solid var(--muted);outline-offset:0}
+
+</style>
+</head>
+<body>
+<div class="scene" id="scene">
+  <div class="room theme-dark" aria-hidden="true"></div>
+  <div class="room theme-light" id="lit" aria-hidden="true"></div>
+  <button class="grab" id="grab" role="switch" aria-checked="false" aria-label="Light"></button>
+</div>
+<script>
+// Tiny spring engine shared by every component.
+// Springs, sim-time timers (so slow-mo slows them too), one rAF loop, and token readers.
+window.Motion = (() => {
+  // theme: shared by every page through localStorage, live-updated by the gallery
+  const setTheme = t => { document.documentElement.dataset.theme = t === 'light' ? 'light' : 'dark'; };
+  try { setTheme(localStorage.getItem('ms-theme')); } catch { setTheme('dark'); }
+  addEventListener('storage', e => { if (e.key === 'ms-theme') setTheme(e.newValue); });
+
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const S = (x, k = 400, c = 30) => ({ x, v: 0, t: x, k, c });
+  const tune = (s, k, c) => { s.k = k; s.c = reduce ? 2 * Math.sqrt(k) : c; };
+  const step = (s, dt) => { const a = -s.k * (s.x - s.t) - s.c * s.v; s.v += a * dt; s.x += s.v * dt; };
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+  // tokens from shared/tokens.css
+  const token = (name, fallback = '') =>
+    getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+  const num = (name, fallback) => parseFloat(token(name, String(fallback)));
+  const spring = (name, fallback) => token(name, fallback).split(/\s+/).map(Number);
+
+  let timeScale = 1;
+  const timers = [];
+  const after = (sec, fn) => { const t = { t: sec, fn }; timers.push(t); return t; };
+  const cancel = t => { const i = timers.indexOf(t); if (i > -1) timers.splice(i, 1); };
+
+  // slow motion, synced with a parent page when embedded
+  const slowListeners = [];
+  function setSlow(v, fromParent = false) {
+    timeScale = v ? .25 : 1;
+    slowListeners.forEach(f => f(v));
+    if (!fromParent && parent !== window) parent.postMessage({ type: 'motion:slow-changed', on: v }, '*');
+  }
+  addEventListener('message', e => {
+    if (e.data && e.data.type === 'motion:slow') setSlow(!!e.data.on, true);
+    if (e.data && e.data.type === 'motion:theme') setTheme(e.data.theme);
+  });
+
+  const comps = [];
+  let last = performance.now();
+  let labOn = true;
+  addEventListener('message', e => { if (e.data === 'lab:stop') labOn = false; });
+  window.__labStop = () => { labOn = false; };
+  function loop(now) {
+    if (!labOn) return;
+    const dt = Math.min((now - last) / 1000, 1 / 30) * timeScale; last = now;
+    for (let i = timers.length - 1; i >= 0; i--) {
+      if ((timers[i].t -= dt) <= 0) timers.splice(i, 1)[0].fn();
+    }
+    const sub = 4;
+    for (let k = 0; k < sub; k++) comps.forEach(c => c.frame(dt / sub));
+    comps.forEach(c => c.render());
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+
+  return {
+    S, tune, step, clamp, token, num, spring, after, cancel,
+    register: c => comps.push(c),
+    get timeScale() { return timeScale; },
+    get slow() { return timeScale !== 1; },
+    setSlow, onSlow: f => slowListeners.push(f),
+    svg: (p, sw = 1.8) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`,
+  };
+})();
+
+</script>
+<script>
+// Pull Cord
+// The cord is a chain of points with weight, kept at length by soft links, so
+// it hangs, swings and whips like a rope. Held, the bead follows the pointer
+// until the cord is tight; past that it stretches like rubber and tugs the
+// lamp, which leans toward the pull on its wire. A pull past the click flips
+// the switch: the light room opens as a circle from the bulb (and closes back
+// into it), the bulb pops and the lamp bounces. Let go and the cord whips back
+// while the lamp swings to rest. It pulls itself when idle, a tap or Enter
+// pulls it too. It follows the card's own light and dark setting, and sends
+// a 'motion:theme' event when it flips so the page around it can follow.
+(() => {
+  const { S, tune, step, clamp, after } = Motion;
+  const $ = id => document.getElementById(id);
+  const scene = $('scene'), lit = $('lit'), grab = $('grab');
+
+  const WIRE = 122, SHADE = 66, AX = 34, AY = SHADE - 3;   // wire length; where the cord leaves the shade
+  const N = 12, SEG = 9, L = N * SEG;                      // links in the cord, and its length
+  const CLICK = 22, MAXS = 54;                             // stretch that flips the switch; the most it gives
+
+  const ROOM = `<svg class="rope"><path/></svg><div class="lamp"><div class="head"><i class="bulb"></i><i class="shade"></i><i class="cap"></i></div></div><svg class="rope"><path/></svg><i class="bead"></i>`;
+  const rooms = [...document.querySelectorAll('.room')].map(r => {
+    r.innerHTML = ROOM;
+    const q = s => r.querySelector(s);
+    return { lamp: q('.lamp'), wire: q('.rope path'), head: q('.head'), bulb: q('.bulb'), path: q('.rope + .lamp ~ .rope path'), bead: q('.bead') };
+  });
+
+  const TH = S(0, 46, 3), TUG = S(0, 300, 13), R = S(0, 120, 21), BP = S(1, 420, 13);   // lamp angle, drop, light radius, bulb pop
+  tune(TH, 46, 3); tune(TUG, 300, 13); tune(R, 120, 21); tune(BP, 420, 13);
+  const HX = S(0, 210, 22), HY = S(0, 210, 22);            // the hand that pulls when nobody does
+  const K = S(1, 300, 17); tune(K, 300, 17);              // how far the cord is stretched: it eases back, so letting go is a bounce and not a whip
+  let on = false, armed = true, held = null, ghost = false, stretch = 0, lean = 0, clock = 0, userUntil = 0, side = 1, W = 0, H = 0, scheme = '';
+
+  const pts = [];
+  const anchor = () => {
+    const c = Math.cos(TH.x), s = Math.sin(TH.x), y = WIRE + TUG.x + AY;
+    return [W / 2 + AX * c - y * s, AX * s + y * c];
+  };
+  const bulbAt = () => {
+    const c = Math.cos(TH.x), s = Math.sin(TH.x), y = WIRE + TUG.x + 63;
+    return [W / 2 - y * s, y * c];
+  };
+  function measure() {
+    W = document.body.clientWidth; H = document.body.clientHeight;
+    if (!pts.length) { const [ax, ay] = anchor(); for (let i = 0; i <= N; i++) pts.push({ x: ax, y: ay + i * SEG, vx: 0, vy: 0 }); }
+  }
+  measure();
+
+  function flip(to = !on) {
+    if (to === on) return;
+    on = to;
+    grab.setAttribute('aria-checked', on);
+    BP.x = on ? 1.35 : .8; TUG.v += 150;
+    // tell the page around it, so anything drawn over the lamp can change with the light
+    const now = on;
+    after(.14, () => { if (now === on) scene.dispatchEvent(new CustomEvent('motion:theme', { bubbles: true, composed: true, detail: { light: on } })); });
+  }
+
+  // what holds the bead: a real pointer, or the idle hand
+  const pin = () => held ? [held.x, held.y] : ghost ? [HX.x, HY.x] : null;
+  function pull() {                                  // one pull by the idle hand (also a tap, Enter or Space)
+    if (ghost || held) return;
+    const b = pts[N];
+    ghost = true; armed = true; side = -side;
+    HX.x = b.x; HY.x = b.y; HX.v = b.vx; HY.v = b.vy;
+    const [ax, ay] = anchor();
+    HX.t = ax + side * 26; HY.t = ay + L + 64;
+    after(1.1, () => { ghost = false; });             // let go even if it never clicked
+  }
+
+  const local = e => { const r = document.body.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+  grab.addEventListener('pointerdown', e => {
+    const [x, y] = local(e), b = pts[N];
+    held = { id: e.pointerId, x: b.x, y: b.y, ox: b.x - x, oy: b.y - y, moved: 0, sx: x, sy: y, flipped: false };
+    ghost = false; armed = true; userUntil = clock + 7;
+    try { grab.setPointerCapture(e.pointerId); } catch {}
+    grab.classList.add('is-held');
+  });
+  grab.addEventListener('pointermove', e => {
+    if (!held || e.pointerId !== held.id) return;
+    const [x, y] = local(e);
+    held.x = x + held.ox; held.y = y + held.oy;
+    held.moved = Math.max(held.moved, Math.hypot(x - held.sx, y - held.sy));
+    userUntil = clock + 7;
+  });
+  function drop(e) {
+    if (!held || e.pointerId !== held.id) return;
+    const tap = held.moved < 5 && !held.flipped && e.type === 'pointerup';
+    held = null;
+    grab.classList.remove('is-held');
+    if (tap) pull();
+  }
+  grab.addEventListener('pointerup', drop);
+  grab.addEventListener('pointercancel', drop);
+  grab.addEventListener('click', e => { if (!e.detail) { userUntil = clock + 7; pull(); } });   // keyboard
+
+  (function auto() {
+    if (clock >= userUntil && !held && !ghost) pull();
+    after(2.4, () => window.__labStop());
+  })();
+  // the card's own sun and moon button: the lamp follows it
+  (function watch() {
+    const now = getComputedStyle(document.documentElement).colorScheme === 'light' ? 'light' : 'dark';
+    if (now !== scheme) { if (scheme) flip(now === 'light'); else if (now === 'light') { on = true; grab.setAttribute('aria-checked', 'true'); R.x = R.t = 1; } scheme = now; }
+    after(.4, watch);
+  })();
+
+  Motion.register({
+    frame(dt) {
+      clock += dt;
+      [TH, TUG, R, BP, HX, HY, K].forEach(s => step(s, dt));
+      if (dt <= 0) return;
+      const [ax, ay] = anchor(), p = pin(), b = pts[N];
+
+      // the held end: free inside the cord's reach, rubber past it
+      let px = 0, py = 0;
+      stretch = 0; lean = 0;
+      if (p) {
+        const dx = p[0] - ax, dy = p[1] - ay, d = Math.hypot(dx, dy) || 1;
+        const over = Math.max(0, d - L), give = MAXS * (1 - Math.exp(-over / 70)), r = Math.min(d, L) + give;
+        px = ax + dx / d * r; py = ay + dy / d * r;
+        stretch = give; lean = over > 0 ? dx / d : 0;
+        if (over > 0) { K.x = K.t = r / L; K.v = 0; }
+        if (armed && give > CLICK) {
+          armed = false; flip();
+          if (held) held.flipped = true; else after(.12, () => { ghost = false; });
+        }
+      }
+      if (!p || !stretch) K.t = 1;
+      const seg = SEG * Math.max(1, K.x);
+      TUG.t = stretch * .22;
+      TH.t = clamp(-lean * stretch / MAXS * .5, -.3, .3);
+
+      // the rope: gravity, then links pulled back to length a few times
+      const prev = pts.map(q => [q.x, q.y]);
+      for (let i = 1; i <= N; i++) {
+        const q = pts[i], k = Math.exp(-(i === N ? 1.1 : 2.4) * dt);
+        q.vy += 2600 * dt; q.vx *= k; q.vy *= k;
+        const sp = Math.hypot(q.vx, q.vy);
+        if (sp > 2600) { q.vx *= 2600 / sp; q.vy *= 2600 / sp; }
+        q.x += q.vx * dt; q.y += q.vy * dt;
+      }
+      for (let it = 0; it < 8; it++) {
+        pts[0].x = ax; pts[0].y = ay;
+        if (p) { b.x = px; b.y = py; }
+        for (let i = 0; i < N; i++) {
+          const a = pts[i], c = pts[i + 1], dx = c.x - a.x, dy = c.y - a.y, d = Math.hypot(dx, dy) || 1e-6, f = (d - seg) / d * .5;
+          const wa = i === 0 ? 0 : 1, wc = i + 1 === N ? (p ? 0 : .3) : 1, sum = wa + wc || 1;   // the bead is heavy
+          a.x += dx * f * wa / sum * 2; a.y += dy * f * wa / sum * 2;
+          c.x -= dx * f * wc / sum * 2; c.y -= dy * f * wc / sum * 2;
+        }
+      }
+      pts[0].x = ax; pts[0].y = ay;
+      if (p) { b.x = px; b.y = py; }
+      for (let i = 1; i <= N; i++) { pts[i].vx = (pts[i].x - prev[i][0]) / dt; pts[i].vy = (pts[i].y - prev[i][1]) / dt; }
+      R.t = on ? 1 : 0;
+      if (on) tune(R, 120, 21); else tune(R, 170, 27);   // it opens wide and closes a little faster
+    },
+    render() {
+      if (document.body.clientWidth !== W || document.body.clientHeight !== H) measure();
+      const th = TH.x, tug = TUG.x, b = pts[N], e = pts[N - 1];
+      let d = `M${pts[0].x.toFixed(1)} ${pts[0].y.toFixed(1)}`;
+      for (let i = 1; i < N; i++) d += `Q${pts[i].x.toFixed(1)} ${pts[i].y.toFixed(1)} ${((pts[i].x + pts[i + 1].x) / 2).toFixed(1)} ${((pts[i].y + pts[i + 1].y) / 2).toFixed(1)}`;
+      d += `L${b.x.toFixed(1)} ${b.y.toFixed(1)}`;
+      const ang = Math.atan2(e.x - b.x, b.y - e.y);
+      const wl = WIRE + tug - 4, wd = `M${(W / 2).toFixed(1)} -4L${(W / 2 - Math.sin(th) * wl).toFixed(2)} ${(Math.cos(th) * wl).toFixed(2)}`;
+      rooms.forEach(o => {
+        o.lamp.style.transform = `rotate(${th.toFixed(4)}rad)`;
+        o.wire.setAttribute('d', wd);
+        o.head.style.transform = `translateY(${(WIRE + tug).toFixed(2)}px)`;
+        o.bulb.style.transform = `scale(${BP.x.toFixed(4)})`;
+        o.path.setAttribute('d', d);
+        o.bead.style.transform = `translate(${b.x.toFixed(2)}px,${b.y.toFixed(2)}px) rotate(${ang.toFixed(4)}rad)`;
+      });
+      grab.style.transform = `translate(${b.x.toFixed(2)}px,${b.y.toFixed(2)}px)`;
+      // light: a circle from the bulb, big enough to pass the far corner
+      const [bx, by] = bulbAt(), far = Math.hypot(Math.max(bx, W - bx), Math.max(by, H - by)) + 24, r = Math.max(0, R.x) * far;
+      lit.style.visibility = r < 4 ? 'hidden' : 'visible';
+      lit.style.clipPath = `circle(${r.toFixed(1)}px at ${bx.toFixed(1)}px ${by.toFixed(1)}px)`;
+    },
+  });
+})();
+
+</script>
+</body>
+</html>

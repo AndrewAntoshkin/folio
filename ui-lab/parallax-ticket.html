@@ -1,0 +1,454 @@
+<!-- Parallax Ticket, by DesignBookmark (https://designbookmark.com/motion#db-parallax-ticket). One file: open it in a browser. -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Parallax Ticket</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Motion Studies design tokens.
+   Single source of truth for color, type, radius and motion.
+   Edit here (or in Claude Design) and every component follows. */
+:root{
+  /* ---------- color ---------- */
+  --stage:#000;                         /* page background */
+  --card:#171717;                       /* component stage card (= white 9% on black) */
+  --surface:#262626;                    /* component body */
+  --fill-1:rgba(255,255,255,.05);       /* tiles, fields */
+  --fill-2:rgba(255,255,255,.09);       /* chips, badges */
+  --fill-3:rgba(255,255,255,.14);       /* tracks, avatars, bars */
+  --line:rgba(255,255,255,.12);
+  --text:#fff;
+  --text-2:rgba(255,255,255,.78);
+  --muted:#9a9a9a;
+  --muted-2:#828282;
+  --chip-text:#b4b4b4;
+  --white:#fff;
+  --black:#000;
+  --green:#34d17a;
+  --green-text:#3ce085;
+  --orange:#ff9f0a;
+  --orange-text:#ff9f0a;                /* orange used as text: darker in light */
+  --red:#ff5a5f;
+  --yellow:#ffd23f;
+  --blue:#3ec9ff;
+  --purple:#c69bff;
+  --pink:#ff6ad5;
+  --heart:#ff4d6d;                      /* like, favourite */
+  --green-soft:rgba(52,209,122,.14);    /* tinted chip behind green text */
+  --on-green:#04140a;                   /* text and checks on --green, same in both themes */
+  --object:#2c2c2c;                     /* a free-standing grey object with no card under it: island, goo bubbles */
+  --inverse:#fff;                       /* primary pills, thumbs, drops */
+  --on-inverse:#000;                    /* content on top of --inverse */
+  --rim:transparent;          /* no strokes anywhere (Noah, 9 Nov 2026) */ /* 1px inner edge on surfaces */
+  --focus-rim:transparent;
+  --glow:rgba(255,255,255,.16);         /* cursor light on tiles */
+  --sh:0;                               /* drop shadow strength multiplier; 0 = no shadows anywhere (Noah, 9 Nov 2026) */
+  color-scheme:dark;
+
+  /* ---------- type ---------- */
+  --font:Inter,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --fs-2xs:11px;
+  --fs-xs:12px;
+  --fs-sm:13px;
+  --fs-md:14px;
+  --fs-base:15px;
+  --fs-lg:16px;
+  --fs-xl:17px;
+  --fw-regular:400;
+  --fw-medium:500;
+  --fw-bold:600;
+
+  /* ---------- radius ---------- */
+  --r-card:28px;
+  --r-tile:14px;
+  --r-bar:5px;
+  --r-pill:999px;
+  /* inner radius = outer radius - the padding between them. Usual steps: */
+  --r-xs:6px;                           /* keys, tiny chips */
+  --r-row:12px;                         /* rows, icon buttons, highlights inside a panel */
+  --r-panel:18px;                       /* bars, menus, small panels */
+  --r-sheet:24px;                       /* large panels */
+
+  /* ---------- motion: springs are "stiffness damping" ---------- */
+  /* Shared presets. A new component starts from these and only adds its own token when it truly needs a different feel. */
+  --spring-follow:900 50;      /* something held by the pointer: no overshoot, no lag */
+  --spring-settle:280 22;      /* letting go, landing on a value: one small overshoot */
+  --spring-soft:260 24;        /* large moves: panels, sheets, the whole component shifting */
+  --spring-lead:620 36;        /* stretchy highlight: the edge facing the move */
+  --spring-trail:190 19;       /* stretchy highlight: the edge that lags, this makes the stretch */
+  --spring-pop:520 16;         /* icon or number pop on select */
+  --spring-fade:420 32;        /* opacity and small slides */
+  --stagger:45;                /* ms between items entering one after another */
+  /* Rubber Dock */
+  --dock-lead:640 38;          /* edge of the pill that leads the move */
+  --dock-trail:150 16;         /* edge that lags behind: lower = more stretch */
+  --dock-drag-lead:1100 56;
+  --dock-drag-trail:320 26;
+  --dock-open-w:340 21;        /* dock -> card, width */
+  --dock-open-h:230 21;        /* dock -> card, height */
+  --dock-close:420 30;
+  --dock-pop:520 16;           /* icon pop on select */
+  --dock-expanded-w:340;       /* px */
+
+  /* Goo Menu */
+  --goo-out:230 15;            /* bubbles flying out */
+  --goo-in:520 34;             /* bubbles returning */
+  --goo-release:300 12;        /* snap back after a drag */
+  --goo-toast:260 17;          /* + morphing into the toast pill */
+  --goo-radius:112;            /* px, distance of bubbles from + */
+  --goo-stagger:45;            /* ms between bubbles */
+  --goo-toast-ms:2600;         /* how long the toast stays */
+  --goo-blur:10;               /* goo strength: higher = bubbles fuse from further away */
+
+  /* Morph Island */
+  --island-w:380 24;           /* width morph */
+  --island-h:300 22;           /* height morph, a bit softer so it lands after the width */
+  --island-radius:32;          /* px, max corner radius when tall */
+  --island-cycle-ms:2800;      /* autoplay step until the viewer interacts */
+
+  /* Hold Button */
+  --hold-ms:1200;              /* how long to hold */
+  --hold-release:260 14;       /* fill springing back when let go early */
+  --hold-morph:320 20;         /* pill <-> circle */
+  --hold-done-ms:1700;         /* how long the done state stays */
+
+  /* Jelly Slider */
+  --slider-follow:900 50;      /* thumb following the pointer */
+  --slider-bubble:420 22;      /* value bubble rising out of the thumb */
+  --slider-release:300 14;     /* snap back after over-drag */
+  --slider-blur:8;             /* goo strength between thumb and bubble */
+
+  /* Swipe Deck */
+  --deck-drag:900 50;          /* top card following the pointer */
+  --deck-return:280 16;        /* snapping back when not thrown far enough */
+  --deck-threshold:110;        /* px of drag that counts as a decision */
+
+  /* Springy Input */
+  --input-caret:700 32;        /* caret travel; it stretches with speed */
+  --input-morph:300 20;        /* field <-> success pill */
+
+  /* Pull to Refresh */
+  --pull-threshold:88;         /* px of pull that triggers a refresh */
+  --pull-return:260 18;        /* list springing back */
+  --pull-hold-ms:1300;         /* how long the spinner runs */
+
+  /* Magnetic Tiles */
+  --tile-pull:12;              /* px a tile moves toward the cursor */
+  --tile-tilt:12;              /* deg of 3D tilt */
+  --tile-open:300 24;          /* tile -> card morph */
+
+  /* Glass Lens */
+  --lens-follow:180 17;        /* lens chasing the cursor, a little lazy like a drop of water */
+  --lens-zoom:1.7;             /* magnification at rest */
+  --lens-zoom-press:2.4;       /* magnification while pressed */
+  --lens-size:150;             /* px */
+
+  /* Morph Select */
+  --select-open:360 24;        /* trigger <-> menu */
+  --select-hl:620 34;          /* highlight pill edges (leading edge) */
+  --select-reorder:260 21;     /* rows sliding to their new place */
+
+  /* Parallax Ticket */
+  --ticket-tilt:14;            /* deg */
+  --ticket-depth:12;           /* px of parallax for the front layer */
+  --ticket-flip:170 15;        /* flip spring, a little overshoot */
+
+  /* Wheel Picker */
+  --wheel-snap:240 24;         /* settling on the nearest value */
+  --wheel-decay:5;             /* momentum decay per second: lower = spins longer */
+
+  /* Trends */
+  --trend-menu:330 25;         /* "..." button growing into the menu */
+  --trend-fly:260 20;          /* the three dots flying into the menu icons */
+  --trend-row:300 28;          /* row height: dismiss, undo, show more */
+  --trend-live-ms:2200;        /* how often a post count rolls */
+  --trend-tick-ms:1100;        /* how often the charts get a new point */
+  --trend-expand:280 24;       /* row opening into the big chart */
+  --trend-rank:260 22;         /* rows swapping places when the ranking changes */
+
+  /* Side Nav */
+  --nav-lead:560 34;           /* hover pill: edge moving toward the new item */
+  --nav-trail:220 21;          /* hover pill: edge catching up, this makes it stretch */
+
+  /* Rolling Counter */
+  --count-roll:320 24;         /* each digit column rolling to its value: lower damping = more bounce */
+  --count-width:380 22;        /* columns growing in and folding away, this stretches the pill */
+  --count-press:600 18;        /* button squash, number pop and lean */
+  --count-stagger:45;          /* ms each higher column waits, so a carry ripples left */
+  --count-blur:1;              /* motion blur strength, 0 = off */
+  --count-decay:3.5;           /* fling decay per second: lower = coasts longer */
+  --count-snap:260 24;         /* ruler settling on the nearest tick */
+  --count-gap:14;              /* ruler: px between ticks */
+  --count-fisheye:60;          /* ruler: how much ticks swell near the marker, 0..100 */
+  --count-flip:140;            /* split flap: ms per fold */
+}
+
+/* ---------- light mode ---------- */
+:root[data-theme="light"]{
+  --stage:#fff;
+  --card:#f7f7f6;
+  --surface:#fff;
+  --fill-1:rgba(23,24,26,.04);
+  --fill-2:rgba(23,24,26,.07);
+  --fill-3:rgba(23,24,26,.12);
+  --line:rgba(23,24,26,.16);
+  --text:#17181a;
+  --text-2:#3c3b37;
+  --muted:#6f6e68;
+  --muted-2:#85847e;
+  --chip-text:#5c5b56;
+  --green-text:#15803d;
+  --orange-text:#c2660a;
+  --object:#e6e5e2;
+  --inverse:#0e0f11;
+  --on-inverse:#f4f3f1;
+  --rim:transparent;
+  --focus-rim:transparent;
+  --glow:rgba(23,24,26,.06);
+  --sh:0;
+  color-scheme:light;
+}
+
+/* ---------- both themes at once ----------
+   For a component that shows the dark and the light look side by side (Pull cord:
+   the light floods out of the bulb). Same values as the two blocks above, colour only. */
+.theme-dark{
+  --card:#171717;--surface:#262626;--object:#2c2c2c;
+  --fill-1:rgba(255,255,255,.05);--fill-2:rgba(255,255,255,.09);--fill-3:rgba(255,255,255,.14);
+  --text:#fff;--text-2:rgba(255,255,255,.78);--muted:#9a9a9a;--muted-2:#828282;
+  --inverse:#fff;--on-inverse:#000;color-scheme:dark;
+}
+.theme-light{
+  --card:#f7f7f6;--surface:#fff;--object:#e6e5e2;
+  --fill-1:rgba(23,24,26,.04);--fill-2:rgba(23,24,26,.07);--fill-3:rgba(23,24,26,.12);
+  --text:#17181a;--text-2:#3c3b37;--muted:#6f6e68;--muted-2:#85847e;
+  --inverse:#0e0f11;--on-inverse:#f4f3f1;color-scheme:light;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--card);color:var(--text);overflow:hidden;
+  font-family:var(--font);-webkit-font-smoothing:antialiased;
+  user-select:none;-webkit-user-select:none;
+}
+.badge{
+  position:absolute;left:14px;top:14px;z-index:3;
+  font-size:var(--fs-xs);font-weight:var(--fw-medium);color:var(--text);
+  background:var(--fill-2);border-radius:var(--r-pill);padding:4px 10px;
+}
+
+/* Avatars and card art: grainy mesh, mixed (Noah, 12 Nov 2026).
+   Three soft spots of colour melt over a main colour, under a fine grain.
+   Each family is turned a different way (--p1..3), so the light spot and the deep spot
+   never sit in the same corner twice and a row of them does not read as one recipe. */
+[data-av]{background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),radial-gradient(70% 70% at var(--p1),var(--av-l) 0,transparent 70%),radial-gradient(60% 60% at var(--p2),var(--av-p) 0,transparent 70%),radial-gradient(75% 75% at var(--p3),var(--av-b) 0,transparent 72%),var(--av-a)!important;background-blend-mode:overlay,normal,normal,normal,normal!important}
+[data-av="1"]{--av-l:#ff8fd0;--av-a:#ff3fa6;--av-b:#6a35ff;--av-p:#ffd3ec;--p1:12.0% 10.0%;--p2:92.0% 8.0%;--p3:88.0% 96.0%}
+[data-av="2"]{--av-l:#7fe3ff;--av-a:#2b8cff;--av-b:#5a35ff;--av-p:#cdf3ff;--p1:102.9% 65.6%;--p2:34.6% 107.4%;--p3:-5.9% 29.2%}
+[data-av="3"]{--av-l:#d6ff5a;--av-a:#22d39a;--av-b:#0a8a8f;--av-p:#efffb0;--p1:65.6% -2.9%;--p2:107.4% 65.4%;--p3:29.2% 105.9%}
+[data-av="4"]{--av-l:#ffb866;--av-a:#ff4a5e;--av-b:#c31f86;--av-p:#ffe0b8;--p1:34.4% 102.9%;--p2:-7.4% 34.6%;--p3:70.8% -5.9%}
+[data-av="5"]{--av-l:#fff27a;--av-a:#ffa51f;--av-b:#ff4a2e;--av-p:#fff3bf;--p1:-3.6% 62.9%;--p2:34.6% -7.4%;--p3:108.8% 40.1%}
+[data-av="6"]{--av-l:#7dffea;--av-a:#1fa8ff;--av-b:#3a3cff;--av-p:#c9fff5;--p1:90.0% 12.0%;--p2:92.0% 92.0%;--p3:4.0% 88.0%}
+[data-av="7"]{--av-l:#ffd3f1;--av-a:#c07bff;--av-b:#ff4f9a;--av-p:#f0dcff;--p1:62.9% 103.6%;--p2:-7.4% 65.4%;--p3:40.1% -8.8%}
+[data-av="8"]{--av-l:#c2ffd6;--av-a:#2fe08a;--av-b:#0a9a6a;--av-p:#e2ffec;--p1:37.1% -3.6%;--p2:107.4% 34.6%;--p3:59.9% 108.8%}
+[data-av="9"]{--av-l:#ffe3b5;--av-a:#ff8a6a;--av-b:#ff3f86;--av-p:#ffe6d8;--p1:10.0% 88.0%;--p2:8.0% 8.0%;--p3:96.0% 12.0%}
+[data-av="10"]{--av-l:#bfa0ff;--av-a:#5a3cff;--av-b:#1a1ab0;--av-p:#e0d2ff;--p1:103.6% 37.1%;--p2:65.4% 107.4%;--p3:-8.8% 59.9%}
+[data-av="11"]{--av-l:#f6ff86;--av-a:#8ae83a;--av-b:#1fb86a;--av-p:#fbffc8;--p1:-2.9% 34.4%;--p2:65.4% -7.4%;--p3:105.9% 70.8%}
+[data-av="12"]{--av-l:#ffa3cd;--av-a:#e03cff;--av-b:#6a2cff;--av-p:#ffd2ea;--p1:88.0% 90.0%;--p2:8.0% 92.0%;--p3:12.0% 4.0%}
+
+/* Parallax Ticket: layered card that tilts with depth and flips to its back */
+.t-stage{position:absolute;left:50%;top:50%;width:264px;height:356px;margin:-178px 0 0 -132px;perspective:900px}
+.ticket{position:relative;width:100%;height:100%;transform-style:preserve-3d;cursor:pointer;outline:none;will-change:transform}
+.side{
+  position:absolute;inset:0;border-radius:var(--r-card);background:var(--surface);overflow:hidden;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  box-shadow:0 0 0 1px var(--rim) inset,0 40px 70px -30px rgba(0,0,0,calc(.95*var(--sh)));
+}
+.back{transform:rotateY(180deg)}
+.layer{position:absolute;inset:0;will-change:transform;pointer-events:none}
+.l-bg{inset:-20px;background-image:linear-gradient(var(--fill-1) 1px,transparent 1px),linear-gradient(90deg,var(--fill-1) 1px,transparent 1px);background-size:24px 24px}
+/* Simplified (Noah, 9 Nov 2026): just the picture, the title and one line. */
+.shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.5))}
+.l-text{padding:24px}
+.title{position:absolute;left:24px;bottom:62px;font-size:44px;line-height:.95;font-weight:var(--fw-bold);letter-spacing:-.04em;color:#fff}
+.meta{position:absolute;left:24px;right:24px;bottom:26px;display:flex;justify-content:space-between;align-items:center;font-size:var(--fs-sm);color:rgba(255,255,255,.75)}
+.meta b{color:#fff;font-weight:var(--fw-medium);font-variant-numeric:tabular-nums}
+.glare{position:absolute;inset:0;pointer-events:none;opacity:var(--g,0);
+  background:radial-gradient(240px circle at var(--gx,50%) var(--gy,30%),rgba(255,255,255,.22),transparent 60%);mix-blend-mode:screen}
+
+.back{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px}
+.qr{width:168px;height:168px;border-radius:18px;background:var(--white);padding:12px}
+.qr svg{width:100%;height:100%;display:block}
+.seat{display:flex;gap:22px;text-align:center}
+.seat div{font-size:var(--fs-2xs);color:var(--muted)}
+.seat b{display:block;font-size:var(--fs-lg);font-weight:var(--fw-bold);color:var(--text);margin-top:2px}
+.flip-hint{font-size:var(--fs-xs);color:var(--muted-2)}
+
+/* Front image (Recraft, generated for Motion Studies) */
+.l-bg{background:#000 url(img/hills-8.webp) center/cover no-repeat}
+
+</style>
+</head>
+<body>
+<div class="t-stage" id="stage">
+  <div class="ticket" id="ticket" role="button" tabindex="0" aria-pressed="false" aria-label="Motion Night ticket. Press to flip">
+    <div class="side front">
+      <div class="layer l-bg" data-depth=".25"></div>
+      <div class="shade"></div>
+      <div class="layer l-text" data-depth=".9">
+        <div class="title">Motion<br>Night</div>
+        <div class="meta">
+          <span>Oct 30 · 20:00 · Lisbon</span>
+          <b>No. 0042</b>
+        </div>
+      </div>
+      <div class="glare" id="glare"></div>
+    </div>
+    <div class="side back">
+      <div class="qr" id="qr"></div>
+      <div class="seat"><div>Row<b>C</b></div><div>Seat<b>12</b></div><div>Gate<b>2</b></div></div>
+      <span class="flip-hint">Tap to flip back</span>
+    </div>
+  </div>
+</div>
+<script>
+// Tiny spring engine shared by every component.
+// Springs, sim-time timers (so slow-mo slows them too), one rAF loop, and token readers.
+window.Motion = (() => {
+  // theme: shared by every page through localStorage, live-updated by the gallery
+  const setTheme = t => { document.documentElement.dataset.theme = t === 'light' ? 'light' : 'dark'; };
+  try { setTheme(localStorage.getItem('ms-theme')); } catch { setTheme('dark'); }
+  addEventListener('storage', e => { if (e.key === 'ms-theme') setTheme(e.newValue); });
+
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const S = (x, k = 400, c = 30) => ({ x, v: 0, t: x, k, c });
+  const tune = (s, k, c) => { s.k = k; s.c = reduce ? 2 * Math.sqrt(k) : c; };
+  const step = (s, dt) => { const a = -s.k * (s.x - s.t) - s.c * s.v; s.v += a * dt; s.x += s.v * dt; };
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+  // tokens from shared/tokens.css
+  const token = (name, fallback = '') =>
+    getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+  const num = (name, fallback) => parseFloat(token(name, String(fallback)));
+  const spring = (name, fallback) => token(name, fallback).split(/\s+/).map(Number);
+
+  let timeScale = 1;
+  const timers = [];
+  const after = (sec, fn) => { const t = { t: sec, fn }; timers.push(t); return t; };
+  const cancel = t => { const i = timers.indexOf(t); if (i > -1) timers.splice(i, 1); };
+
+  // slow motion, synced with a parent page when embedded
+  const slowListeners = [];
+  function setSlow(v, fromParent = false) {
+    timeScale = v ? .25 : 1;
+    slowListeners.forEach(f => f(v));
+    if (!fromParent && parent !== window) parent.postMessage({ type: 'motion:slow-changed', on: v }, '*');
+  }
+  addEventListener('message', e => {
+    if (e.data && e.data.type === 'motion:slow') setSlow(!!e.data.on, true);
+    if (e.data && e.data.type === 'motion:theme') setTheme(e.data.theme);
+  });
+
+  const comps = [];
+  let last = performance.now();
+  let labOn = true;
+  addEventListener('message', e => { if (e.data === 'lab:stop') labOn = false; });
+  window.__labStop = () => { labOn = false; };
+  function loop(now) {
+    if (!labOn) return;
+    const dt = Math.min((now - last) / 1000, 1 / 30) * timeScale; last = now;
+    for (let i = timers.length - 1; i >= 0; i--) {
+      if ((timers[i].t -= dt) <= 0) timers.splice(i, 1)[0].fn();
+    }
+    const sub = 4;
+    for (let k = 0; k < sub; k++) comps.forEach(c => c.frame(dt / sub));
+    comps.forEach(c => c.render());
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+
+  return {
+    S, tune, step, clamp, token, num, spring, after, cancel,
+    register: c => comps.push(c),
+    get timeScale() { return timeScale; },
+    get slow() { return timeScale !== 1; },
+    setSlow, onSlow: f => slowListeners.push(f),
+    svg: (p, sw = 1.8) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`,
+  };
+})();
+
+</script>
+<script>
+// Parallax Ticket
+// The card tilts toward the cursor; each layer moves by its own depth, so the green orb,
+// the title and the VIP badge separate in space. A glare follows the cursor.
+// Click flips it on a spring that overshoots a little, showing the QR on the back.
+// Untouched, it floats gently so the depth is visible even without a cursor.
+(() => {
+  const { S, tune, step, clamp, spring, num } = Motion;
+  const $ = id => document.getElementById(id);
+  const stage = $('stage'), ticket = $('ticket'), glare = $('glare');
+  const layers = [...ticket.querySelectorAll('.layer')].map(el => ({ el, depth: parseFloat(el.dataset.depth) }));
+
+  const T = { tilt: num('--ticket-tilt', 14), depth: num('--ticket-depth', 18), flip: spring('--ticket-flip', '170 15') };
+
+  // a QR-looking pattern: three finder squares and a stable pseudo random field
+  (function qr() {
+    const N = 25; let seed = 42, cells = '';
+    const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+    const finder = (x, y) => `<rect x="${x}" y="${y}" width="7" height="7" fill="#000"/><rect x="${x + 1}" y="${y + 1}" width="5" height="5" fill="#fff"/><rect x="${x + 2}" y="${y + 2}" width="3" height="3" fill="#000"/>`;
+    const inFinder = (x, y) => (x < 8 && y < 8) || (x > N - 9 && y < 8) || (x < 8 && y > N - 9);
+    for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) if (!inFinder(x, y) && rnd() > .52) cells += `<rect x="${x}" y="${y}" width="1" height="1"/>`;
+    $('qr').innerHTML = `<svg viewBox="0 0 ${N} ${N}" shape-rendering="crispEdges"><g fill="#000">${cells}</g>${finder(0, 0)}${finder(N - 7, 0)}${finder(0, N - 7)}</svg>`;
+  })();
+
+  const RX = S(0, 220, 18), RY = S(0, 220, 18), F = S(0, ...T.flip), G = S(0, 300, 26), LIFT = S(1, 300, 18);
+  let hover = false, nx = 0, ny = 0, flipped = false, clock = 0, gx = 50, gy = 30;
+
+  stage.addEventListener('pointermove', e => {
+    const r = stage.getBoundingClientRect();
+    nx = clamp((e.clientX - r.left) / r.width * 2 - 1, -1, 1);
+    ny = clamp((e.clientY - r.top) / r.height * 2 - 1, -1, 1);
+    gx = (nx + 1) * 50; gy = (ny + 1) * 50;
+    hover = true;
+  });
+  stage.addEventListener('pointerleave', () => { hover = false; });
+  stage.addEventListener('pointerdown', () => { LIFT.t = .97; });
+  addEventListener('pointerup', () => { LIFT.t = 1; });
+
+  function flip() {
+    flipped = !flipped;
+    F.t = flipped ? 180 : 0;
+    LIFT.v += 1.5;
+    ticket.setAttribute('aria-pressed', flipped);
+  }
+  ticket.addEventListener('click', flip);
+  ticket.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flip(); } });
+
+  Motion.register({
+    frame(dt) {
+      clock += dt;
+      if (hover) { RX.t = -ny * T.tilt; RY.t = nx * T.tilt; G.t = 1; }
+      else if (clock < 4) { RX.t = Math.sin(clock * .9) * 4; RY.t = Math.cos(clock * .7) * 7; G.t = .25; }
+      else { RX.t = 0; RY.t = 0; G.t = .15; window.__labStop(); }
+      [RX, RY, F, G, LIFT].forEach(s => step(s, dt));
+    },
+    render() {
+      ticket.style.transform = `rotateX(${RX.x}deg) rotateY(${RY.x + F.x}deg) scale(${LIFT.x})`;
+      // parallax: layers slide by depth against the tilt
+      const ox = RY.x / T.tilt, oy = -RX.x / T.tilt;
+      layers.forEach(l => { l.el.style.transform = `translate(${ox * T.depth * l.depth}px,${oy * T.depth * l.depth}px)`; });
+      glare.style.setProperty('--g', clamp(G.x, 0, 1));
+      glare.style.setProperty('--gx', (hover ? gx : 50 + ox * 30) + '%');
+      glare.style.setProperty('--gy', (hover ? gy : 30 + oy * 30) + '%');
+    },
+  });
+})();
+
+</script>
+</body>
+</html>

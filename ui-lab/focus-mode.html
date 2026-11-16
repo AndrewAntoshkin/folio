@@ -1,0 +1,530 @@
+<!-- Focus Mode, by DesignBookmark (https://designbookmark.com/motion#db-focus-mode). One file: open it in a browser. -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Focus Mode</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Motion Studies design tokens.
+   Single source of truth for color, type, radius and motion.
+   Edit here (or in Claude Design) and every component follows. */
+:root{
+  /* ---------- color ---------- */
+  --stage:#000;                         /* page background */
+  --card:#171717;                       /* component stage card (= white 9% on black) */
+  --surface:#262626;                    /* component body */
+  --fill-1:rgba(255,255,255,.05);       /* tiles, fields */
+  --fill-2:rgba(255,255,255,.09);       /* chips, badges */
+  --fill-3:rgba(255,255,255,.14);       /* tracks, avatars, bars */
+  --line:rgba(255,255,255,.12);
+  --text:#fff;
+  --text-2:rgba(255,255,255,.78);
+  --muted:#9a9a9a;
+  --muted-2:#828282;
+  --chip-text:#b4b4b4;
+  --white:#fff;
+  --black:#000;
+  --green:#34d17a;
+  --green-text:#3ce085;
+  --orange:#ff9f0a;
+  --orange-text:#ff9f0a;                /* orange used as text: darker in light */
+  --red:#ff5a5f;
+  --yellow:#ffd23f;
+  --blue:#3ec9ff;
+  --purple:#c69bff;
+  --pink:#ff6ad5;
+  --heart:#ff4d6d;                      /* like, favourite */
+  --green-soft:rgba(52,209,122,.14);    /* tinted chip behind green text */
+  --on-green:#04140a;                   /* text and checks on --green, same in both themes */
+  --object:#2c2c2c;                     /* a free-standing grey object with no card under it: island, goo bubbles */
+  --inverse:#fff;                       /* primary pills, thumbs, drops */
+  --on-inverse:#000;                    /* content on top of --inverse */
+  --rim:transparent;          /* no strokes anywhere (Noah, 9 Nov 2026) */ /* 1px inner edge on surfaces */
+  --focus-rim:transparent;
+  --glow:rgba(255,255,255,.16);         /* cursor light on tiles */
+  --sh:0;                               /* drop shadow strength multiplier; 0 = no shadows anywhere (Noah, 9 Nov 2026) */
+  color-scheme:dark;
+
+  /* ---------- type ---------- */
+  --font:Inter,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --fs-2xs:11px;
+  --fs-xs:12px;
+  --fs-sm:13px;
+  --fs-md:14px;
+  --fs-base:15px;
+  --fs-lg:16px;
+  --fs-xl:17px;
+  --fw-regular:400;
+  --fw-medium:500;
+  --fw-bold:600;
+
+  /* ---------- radius ---------- */
+  --r-card:28px;
+  --r-tile:14px;
+  --r-bar:5px;
+  --r-pill:999px;
+  /* inner radius = outer radius - the padding between them. Usual steps: */
+  --r-xs:6px;                           /* keys, tiny chips */
+  --r-row:12px;                         /* rows, icon buttons, highlights inside a panel */
+  --r-panel:18px;                       /* bars, menus, small panels */
+  --r-sheet:24px;                       /* large panels */
+
+  /* ---------- motion: springs are "stiffness damping" ---------- */
+  /* Shared presets. A new component starts from these and only adds its own token when it truly needs a different feel. */
+  --spring-follow:900 50;      /* something held by the pointer: no overshoot, no lag */
+  --spring-settle:280 22;      /* letting go, landing on a value: one small overshoot */
+  --spring-soft:260 24;        /* large moves: panels, sheets, the whole component shifting */
+  --spring-lead:620 36;        /* stretchy highlight: the edge facing the move */
+  --spring-trail:190 19;       /* stretchy highlight: the edge that lags, this makes the stretch */
+  --spring-pop:520 16;         /* icon or number pop on select */
+  --spring-fade:420 32;        /* opacity and small slides */
+  --stagger:45;                /* ms between items entering one after another */
+  /* Rubber Dock */
+  --dock-lead:640 38;          /* edge of the pill that leads the move */
+  --dock-trail:150 16;         /* edge that lags behind: lower = more stretch */
+  --dock-drag-lead:1100 56;
+  --dock-drag-trail:320 26;
+  --dock-open-w:340 21;        /* dock -> card, width */
+  --dock-open-h:230 21;        /* dock -> card, height */
+  --dock-close:420 30;
+  --dock-pop:520 16;           /* icon pop on select */
+  --dock-expanded-w:340;       /* px */
+
+  /* Goo Menu */
+  --goo-out:230 15;            /* bubbles flying out */
+  --goo-in:520 34;             /* bubbles returning */
+  --goo-release:300 12;        /* snap back after a drag */
+  --goo-toast:260 17;          /* + morphing into the toast pill */
+  --goo-radius:112;            /* px, distance of bubbles from + */
+  --goo-stagger:45;            /* ms between bubbles */
+  --goo-toast-ms:2600;         /* how long the toast stays */
+  --goo-blur:10;               /* goo strength: higher = bubbles fuse from further away */
+
+  /* Morph Island */
+  --island-w:380 24;           /* width morph */
+  --island-h:300 22;           /* height morph, a bit softer so it lands after the width */
+  --island-radius:32;          /* px, max corner radius when tall */
+  --island-cycle-ms:2800;      /* autoplay step until the viewer interacts */
+
+  /* Hold Button */
+  --hold-ms:1200;              /* how long to hold */
+  --hold-release:260 14;       /* fill springing back when let go early */
+  --hold-morph:320 20;         /* pill <-> circle */
+  --hold-done-ms:1700;         /* how long the done state stays */
+
+  /* Jelly Slider */
+  --slider-follow:900 50;      /* thumb following the pointer */
+  --slider-bubble:420 22;      /* value bubble rising out of the thumb */
+  --slider-release:300 14;     /* snap back after over-drag */
+  --slider-blur:8;             /* goo strength between thumb and bubble */
+
+  /* Swipe Deck */
+  --deck-drag:900 50;          /* top card following the pointer */
+  --deck-return:280 16;        /* snapping back when not thrown far enough */
+  --deck-threshold:110;        /* px of drag that counts as a decision */
+
+  /* Springy Input */
+  --input-caret:700 32;        /* caret travel; it stretches with speed */
+  --input-morph:300 20;        /* field <-> success pill */
+
+  /* Pull to Refresh */
+  --pull-threshold:88;         /* px of pull that triggers a refresh */
+  --pull-return:260 18;        /* list springing back */
+  --pull-hold-ms:1300;         /* how long the spinner runs */
+
+  /* Magnetic Tiles */
+  --tile-pull:12;              /* px a tile moves toward the cursor */
+  --tile-tilt:12;              /* deg of 3D tilt */
+  --tile-open:300 24;          /* tile -> card morph */
+
+  /* Glass Lens */
+  --lens-follow:180 17;        /* lens chasing the cursor, a little lazy like a drop of water */
+  --lens-zoom:1.7;             /* magnification at rest */
+  --lens-zoom-press:2.4;       /* magnification while pressed */
+  --lens-size:150;             /* px */
+
+  /* Morph Select */
+  --select-open:360 24;        /* trigger <-> menu */
+  --select-hl:620 34;          /* highlight pill edges (leading edge) */
+  --select-reorder:260 21;     /* rows sliding to their new place */
+
+  /* Parallax Ticket */
+  --ticket-tilt:14;            /* deg */
+  --ticket-depth:12;           /* px of parallax for the front layer */
+  --ticket-flip:170 15;        /* flip spring, a little overshoot */
+
+  /* Wheel Picker */
+  --wheel-snap:240 24;         /* settling on the nearest value */
+  --wheel-decay:5;             /* momentum decay per second: lower = spins longer */
+
+  /* Trends */
+  --trend-menu:330 25;         /* "..." button growing into the menu */
+  --trend-fly:260 20;          /* the three dots flying into the menu icons */
+  --trend-row:300 28;          /* row height: dismiss, undo, show more */
+  --trend-live-ms:2200;        /* how often a post count rolls */
+  --trend-tick-ms:1100;        /* how often the charts get a new point */
+  --trend-expand:280 24;       /* row opening into the big chart */
+  --trend-rank:260 22;         /* rows swapping places when the ranking changes */
+
+  /* Side Nav */
+  --nav-lead:560 34;           /* hover pill: edge moving toward the new item */
+  --nav-trail:220 21;          /* hover pill: edge catching up, this makes it stretch */
+
+  /* Rolling Counter */
+  --count-roll:320 24;         /* each digit column rolling to its value: lower damping = more bounce */
+  --count-width:380 22;        /* columns growing in and folding away, this stretches the pill */
+  --count-press:600 18;        /* button squash, number pop and lean */
+  --count-stagger:45;          /* ms each higher column waits, so a carry ripples left */
+  --count-blur:1;              /* motion blur strength, 0 = off */
+  --count-decay:3.5;           /* fling decay per second: lower = coasts longer */
+  --count-snap:260 24;         /* ruler settling on the nearest tick */
+  --count-gap:14;              /* ruler: px between ticks */
+  --count-fisheye:60;          /* ruler: how much ticks swell near the marker, 0..100 */
+  --count-flip:140;            /* split flap: ms per fold */
+}
+
+/* ---------- light mode ---------- */
+:root[data-theme="light"]{
+  --stage:#fff;
+  --card:#f7f7f6;
+  --surface:#fff;
+  --fill-1:rgba(23,24,26,.04);
+  --fill-2:rgba(23,24,26,.07);
+  --fill-3:rgba(23,24,26,.12);
+  --line:rgba(23,24,26,.16);
+  --text:#17181a;
+  --text-2:#3c3b37;
+  --muted:#6f6e68;
+  --muted-2:#85847e;
+  --chip-text:#5c5b56;
+  --green-text:#15803d;
+  --orange-text:#c2660a;
+  --object:#e6e5e2;
+  --inverse:#0e0f11;
+  --on-inverse:#f4f3f1;
+  --rim:transparent;
+  --focus-rim:transparent;
+  --glow:rgba(23,24,26,.06);
+  --sh:0;
+  color-scheme:light;
+}
+
+/* ---------- both themes at once ----------
+   For a component that shows the dark and the light look side by side (Pull cord:
+   the light floods out of the bulb). Same values as the two blocks above, colour only. */
+.theme-dark{
+  --card:#171717;--surface:#262626;--object:#2c2c2c;
+  --fill-1:rgba(255,255,255,.05);--fill-2:rgba(255,255,255,.09);--fill-3:rgba(255,255,255,.14);
+  --text:#fff;--text-2:rgba(255,255,255,.78);--muted:#9a9a9a;--muted-2:#828282;
+  --inverse:#fff;--on-inverse:#000;color-scheme:dark;
+}
+.theme-light{
+  --card:#f7f7f6;--surface:#fff;--object:#e6e5e2;
+  --fill-1:rgba(23,24,26,.04);--fill-2:rgba(23,24,26,.07);--fill-3:rgba(23,24,26,.12);
+  --text:#17181a;--text-2:#3c3b37;--muted:#6f6e68;--muted-2:#85847e;
+  --inverse:#0e0f11;--on-inverse:#f4f3f1;color-scheme:light;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--card);color:var(--text);overflow:hidden;
+  font-family:var(--font);-webkit-font-smoothing:antialiased;
+  user-select:none;-webkit-user-select:none;
+}
+.badge{
+  position:absolute;left:14px;top:14px;z-index:3;
+  font-size:var(--fs-xs);font-weight:var(--fw-medium);color:var(--text);
+  background:var(--fill-2);border-radius:var(--r-pill);padding:4px 10px;
+}
+
+/* Avatars and card art: grainy mesh, mixed (Noah, 12 Nov 2026).
+   Three soft spots of colour melt over a main colour, under a fine grain.
+   Each family is turned a different way (--p1..3), so the light spot and the deep spot
+   never sit in the same corner twice and a row of them does not read as one recipe. */
+[data-av]{background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),radial-gradient(70% 70% at var(--p1),var(--av-l) 0,transparent 70%),radial-gradient(60% 60% at var(--p2),var(--av-p) 0,transparent 70%),radial-gradient(75% 75% at var(--p3),var(--av-b) 0,transparent 72%),var(--av-a)!important;background-blend-mode:overlay,normal,normal,normal,normal!important}
+[data-av="1"]{--av-l:#ff8fd0;--av-a:#ff3fa6;--av-b:#6a35ff;--av-p:#ffd3ec;--p1:12.0% 10.0%;--p2:92.0% 8.0%;--p3:88.0% 96.0%}
+[data-av="2"]{--av-l:#7fe3ff;--av-a:#2b8cff;--av-b:#5a35ff;--av-p:#cdf3ff;--p1:102.9% 65.6%;--p2:34.6% 107.4%;--p3:-5.9% 29.2%}
+[data-av="3"]{--av-l:#d6ff5a;--av-a:#22d39a;--av-b:#0a8a8f;--av-p:#efffb0;--p1:65.6% -2.9%;--p2:107.4% 65.4%;--p3:29.2% 105.9%}
+[data-av="4"]{--av-l:#ffb866;--av-a:#ff4a5e;--av-b:#c31f86;--av-p:#ffe0b8;--p1:34.4% 102.9%;--p2:-7.4% 34.6%;--p3:70.8% -5.9%}
+[data-av="5"]{--av-l:#fff27a;--av-a:#ffa51f;--av-b:#ff4a2e;--av-p:#fff3bf;--p1:-3.6% 62.9%;--p2:34.6% -7.4%;--p3:108.8% 40.1%}
+[data-av="6"]{--av-l:#7dffea;--av-a:#1fa8ff;--av-b:#3a3cff;--av-p:#c9fff5;--p1:90.0% 12.0%;--p2:92.0% 92.0%;--p3:4.0% 88.0%}
+[data-av="7"]{--av-l:#ffd3f1;--av-a:#c07bff;--av-b:#ff4f9a;--av-p:#f0dcff;--p1:62.9% 103.6%;--p2:-7.4% 65.4%;--p3:40.1% -8.8%}
+[data-av="8"]{--av-l:#c2ffd6;--av-a:#2fe08a;--av-b:#0a9a6a;--av-p:#e2ffec;--p1:37.1% -3.6%;--p2:107.4% 34.6%;--p3:59.9% 108.8%}
+[data-av="9"]{--av-l:#ffe3b5;--av-a:#ff8a6a;--av-b:#ff3f86;--av-p:#ffe6d8;--p1:10.0% 88.0%;--p2:8.0% 8.0%;--p3:96.0% 12.0%}
+[data-av="10"]{--av-l:#bfa0ff;--av-a:#5a3cff;--av-b:#1a1ab0;--av-p:#e0d2ff;--p1:103.6% 37.1%;--p2:65.4% 107.4%;--p3:-8.8% 59.9%}
+[data-av="11"]{--av-l:#f6ff86;--av-a:#8ae83a;--av-b:#1fb86a;--av-p:#fbffc8;--p1:-2.9% 34.4%;--p2:65.4% -7.4%;--p3:105.9% 70.8%}
+[data-av="12"]{--av-l:#ffa3cd;--av-a:#e03cff;--av-b:#6a2cff;--av-p:#ffd2ea;--p1:88.0% 90.0%;--p2:8.0% 92.0%;--p3:12.0% 4.0%}
+
+/* Focus Mode: pings keep landing and shaking until Focus goes on. Then each one
+   drops into a small "held" chip in the bar and the count rolls; turn it off
+   and the held ones spill back up into the list.
+   Read DESIGN.md first. Tokens only: no colours, small font sizes, strokes or shadows by hand. */
+.wrap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(300px,calc(100vw - 32px));height:256px}
+.list{position:relative;z-index:1;height:184px}
+.note{position:absolute;left:0;right:0;top:0;height:56px;padding:0 12px;border-radius:var(--r-panel);background:var(--surface);
+  display:flex;align-items:center;gap:10px;transform-origin:50% 50%;will-change:transform,opacity}
+.note .av{width:32px;height:32px;border-radius:50%;flex:none}
+.tx{flex:1;min-width:0;display:grid;gap:1px}
+.tx b{font-size:var(--fs-sm);font-weight:var(--fw-bold);color:var(--text)}
+.tx span{font-size:var(--fs-sm);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tm{align-self:flex-start;margin-top:11px;font-size:var(--fs-xs);color:var(--muted-2)}
+.bar{position:absolute;z-index:2;left:0;right:0;bottom:0;height:56px;padding:0 8px;border-radius:var(--r-pill);background:var(--surface);display:flex;align-items:center;gap:10px}
+.moon{width:40px;height:40px;border-radius:50%;background:var(--fill-2);display:grid;place-items:center;color:var(--muted);transition:color .3s}
+.moon svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linejoin:round;transition:fill .3s}
+.is-on .moon{color:var(--text)}
+.is-on .moon svg{fill:currentColor}
+.lbl{font-size:var(--fs-base);font-weight:var(--fw-bold);letter-spacing:-.01em;color:var(--text)}
+.chip{position:relative;flex:none;height:24px;min-width:24px;padding:0 7px;border-radius:var(--r-pill);background:var(--fill-2);overflow:hidden;will-change:transform,opacity}
+.roll-line{position:absolute;inset:0}
+.roll-line span{position:absolute;left:0;right:0;top:0;line-height:24px;text-align:center;font-size:var(--fs-xs);font-weight:var(--fw-medium);color:var(--text-2);white-space:nowrap;font-variant-numeric:tabular-nums;will-change:transform,opacity}
+.sw{margin-left:auto;position:relative;width:52px;height:32px;border:0;border-radius:var(--r-pill);background:var(--fill-3);cursor:pointer;transition:background .25s;-webkit-tap-highlight-color:transparent}
+.sw[aria-checked="true"]{background:var(--green)}
+.sw:focus-visible{outline:2px solid var(--text-2);outline-offset:2px}
+.knob{position:absolute;left:3px;top:3px;width:26px;height:26px;border-radius:50%;background:var(--white);will-change:transform}
+.calm{position:absolute;left:0;right:0;top:78px;text-align:center;font-size:var(--fs-sm);color:var(--muted);will-change:transform,opacity}
+
+</style>
+</head>
+<body>
+<div class="wrap" id="wrap">
+  <div class="list" id="list" aria-live="polite"></div>
+  <p class="calm" id="calm">Notifications silenced</p>
+  <div class="bar">
+    <span class="moon" id="moon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9a9 9 0 1 1 -9 -9z"/></svg></span>
+    <span class="lbl">Focus</span>
+    <span class="chip" id="chip" aria-hidden="true"><span class="roll-line" id="cnt"></span></span>
+    <button class="sw" id="sw" role="switch" aria-checked="false" aria-label="Focus"><span class="knob" id="knob"></span></button>
+  </div>
+</div>
+<script>
+// Tiny spring engine shared by every component.
+// Springs, sim-time timers (so slow-mo slows them too), one rAF loop, and token readers.
+window.Motion = (() => {
+  // theme: shared by every page through localStorage, live-updated by the gallery
+  const setTheme = t => { document.documentElement.dataset.theme = t === 'light' ? 'light' : 'dark'; };
+  try { setTheme(localStorage.getItem('ms-theme')); } catch { setTheme('dark'); }
+  addEventListener('storage', e => { if (e.key === 'ms-theme') setTheme(e.newValue); });
+
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const S = (x, k = 400, c = 30) => ({ x, v: 0, t: x, k, c });
+  const tune = (s, k, c) => { s.k = k; s.c = reduce ? 2 * Math.sqrt(k) : c; };
+  const step = (s, dt) => { const a = -s.k * (s.x - s.t) - s.c * s.v; s.v += a * dt; s.x += s.v * dt; };
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+  // tokens from shared/tokens.css
+  const token = (name, fallback = '') =>
+    getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+  const num = (name, fallback) => parseFloat(token(name, String(fallback)));
+  const spring = (name, fallback) => token(name, fallback).split(/\s+/).map(Number);
+
+  let timeScale = 1;
+  const timers = [];
+  const after = (sec, fn) => { const t = { t: sec, fn }; timers.push(t); return t; };
+  const cancel = t => { const i = timers.indexOf(t); if (i > -1) timers.splice(i, 1); };
+
+  // slow motion, synced with a parent page when embedded
+  const slowListeners = [];
+  function setSlow(v, fromParent = false) {
+    timeScale = v ? .25 : 1;
+    slowListeners.forEach(f => f(v));
+    if (!fromParent && parent !== window) parent.postMessage({ type: 'motion:slow-changed', on: v }, '*');
+  }
+  addEventListener('message', e => {
+    if (e.data && e.data.type === 'motion:slow') setSlow(!!e.data.on, true);
+    if (e.data && e.data.type === 'motion:theme') setTheme(e.data.theme);
+  });
+
+  const comps = [];
+  let last = performance.now();
+  let labOn = true;
+  addEventListener('message', e => { if (e.data === 'lab:stop') labOn = false; });
+  window.__labStop = () => { labOn = false; };
+  function loop(now) {
+    if (!labOn) return;
+    const dt = Math.min((now - last) / 1000, 1 / 30) * timeScale; last = now;
+    for (let i = timers.length - 1; i >= 0; i--) {
+      if ((timers[i].t -= dt) <= 0) timers.splice(i, 1)[0].fn();
+    }
+    const sub = 4;
+    for (let k = 0; k < sub; k++) comps.forEach(c => c.frame(dt / sub));
+    comps.forEach(c => c.render());
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+
+  return {
+    S, tune, step, clamp, token, num, spring, after, cancel,
+    register: c => comps.push(c),
+    get timeScale() { return timeScale; },
+    get slow() { return timeScale !== 1; },
+    setSlow, onSlow: f => slowListeners.push(f),
+    svg: (p, sw = 1.8) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`,
+  };
+})();
+
+</script>
+<script>
+// Focus Mode
+// Every ping has y, scale, opacity and a wobble on springs. A new ping drops in
+// on top with a kick on its wobble (the shake), the others are pushed down and
+// the fourth slides out. Focus on: the older pings slide up under the newest
+// one into a stack, then the whole stack drops under the bar (the bar sits above
+// the list, so the cards tuck away behind it) and the chip count rolls once.
+// A ping that lands during Focus shows in place, then tucks under the bar too.
+// Off: the last three held ones rise from under the bar as a stack and fan out.
+(() => {
+  const { S, tune, step, clamp, spring, after } = Motion;
+  const $ = id => document.getElementById(id);
+  const wrap = $('wrap'), list = $('list'), sw = $('sw'), knob = $('knob'), chip = $('chip');
+
+  const T = { soft: spring('--spring-soft', '260 24'), pop: spring('--spring-pop', '520 16'), fade: spring('--spring-fade', '420 32'), settle: spring('--spring-settle', '280 22') };
+  const POOL = [[1, 'Maya', 'Are you still coming tonight?'], [6, 'Design team', 'Ali left 3 comments'], [3, 'Calendar', 'Standup in 10 min'],
+    [9, 'Omar', 'Sent you a file'], [10, 'Bank', 'Card payment of $24.00'], [4, 'Lina', 'haha look at this one'], [11, 'Launch', '12 new replies'], [7, 'Mom', 'Call me when you can']];
+  const ROW = 56, GAP = 8, UNDER = 256 - 56;   // card top flush with the bar top = fully behind the bar
+  const BOT = 2 * (ROW + GAP);
+  const stackAt = (n, k) => { n.y.t = k * 7; n.s.t = 1 - k * .05; n.r.t = 0; };
+
+  function roll(el, h) {
+    let items = [], cur = null;
+    return {
+      set(w) {
+        if (w === cur) return;
+        items.forEach(o => { o.y.t = -h; o.o.t = 0; o.dead = true; });
+        const sp = document.createElement('span'); sp.textContent = w; el.appendChild(sp);
+        const o = { el: sp, y: S(cur == null ? 0 : h), o: S(cur == null ? 1 : 0) };
+        tune(o.y, ...T.fade); tune(o.o, ...T.fade); o.y.t = 0; o.o.t = 1; items.push(o); cur = w;
+      },
+      step(dt) { items.forEach(o => { step(o.y, dt); step(o.o, dt); }); items = items.filter(o => { if (o.dead && o.o.x < .02) { o.el.remove(); return false; } return true; }); },
+      render() { items.forEach(o => { o.el.style.transform = `translateY(${o.y.x.toFixed(2)}px)`; const v = clamp(o.o.x, 0, 1); o.el.style.opacity = v.toFixed(3); o.el.style.filter = v > .98 ? '' : `blur(${((1 - v) * 2).toFixed(2)}px)`; }); },
+    };
+  }
+  const cnt = roll($('cnt'), 24);
+
+  let pi = 0, notes = [], all = [], held = [], pending = [], on = false, clock = 0, userUntil = 0;
+  const calm = $('calm'), CA = S(0, ...T.fade);
+  const K = S(0, ...T.settle), CH = S(0, ...T.pop), CP = S(1, ...T.pop);
+  tune(CH, ...T.pop); tune(CP, ...T.pop);
+
+  function make(idx, ago) {
+    const [av, name, text] = POOL[idx % POOL.length];
+    const el = document.createElement('div'); el.className = 'note';
+    el.innerHTML = `<span class="av" data-av="${av}"></span><span class="tx"><b>${name}</b><span>${text}</span></span><span class="tm">${ago}</span>`;
+    list.appendChild(el);
+    const n = { el, idx, y: S(-ROW), s: S(.9), o: S(0), r: S(0), dead: false };
+    tune(n.y, ...T.soft); tune(n.s, ...T.pop); tune(n.o, ...T.fade); tune(n.r, 700, 9);
+    all.push(n); return n;
+  }
+  function layout() {
+    notes.forEach((m, i) => {
+      if (i < 3) { m.y.t = i * (ROW + GAP); m.s.t = 1; m.o.t = 1; }
+      else { m.y.t = UNDER; m.s.t = .96; m.o.t = 0; m.dead = true; }   // oldest slides away under the bar
+    });
+    notes = notes.slice(0, 3);
+    notes.forEach((m, i) => { if (i) m.el.querySelector('.tm').textContent = `${i * 2}m`; });
+  }
+  function count() { cnt.set(`${held.length}`); CH.t = 1; CP.x = 1.18; }   // just the number; the chip shows once something is held
+  // Slide a group of pings under the bar together, then count them once.
+  function tuck(group) {
+    held.push(...group.map(m => m.idx).reverse());     // held from the moment it starts down
+    group.forEach((m, k) => { m.y.t = UNDER; m.s.t = .92; if (k) m.o.t = 0; });   // cards behind go first, no text showing through
+    after(.22, () => group.forEach(m => { m.o.t = 0; }));        // the top one stays solid, the bar hides it
+    after(.2, () => { group.forEach(m => { m.dead = true; }); if (on) count(); });
+  }
+
+  function arrive() {
+    const n = make(pi++, 'now');
+    if (on) {
+      n.y.x = BOT - 12; n.y.t = BOT; n.s.x = .94; n.s.t = 1; n.o.t = 1;
+      pending.push(n);
+      after(.6, () => { if (!pending.includes(n)) return; pending = pending.filter(m => m !== n); tuck([n]); });
+      return;
+    }
+    // short drop, fade and unblur, no overshoot: the old shake read as jitter
+    n.y.x = n.y.t = -14; n.s.x = n.s.t = .96; n.o.t = 0; tune(n.s, ...T.fade);
+    notes.unshift(n); layout(); n.y.t = -14; n.s.t = .96; n.o.t = 0;   // the others make room first
+    after(.07, () => { if (!n.dead) { n.y.t = 0; n.s.t = 1; n.o.t = 1; } });
+  }
+
+  function setOn(v) {
+    if (v === on) return;
+    on = v; sw.setAttribute('aria-checked', v); wrap.classList.toggle('is-on', v);
+    K.t = v ? 1 : 0; CA.t = 0; if (v) after(.7, () => { if (on) CA.t = 1; });
+    if (v) {
+      const group = notes; notes = [];
+      group.forEach((m, k) => stackAt(m, k));          // older ones slide up under the newest
+      after(.24, () => tuck(group));                    // then the stack drops under the bar
+    } else {
+      // a ping still showing in place joins the stack as the newest card
+      const keep = pending.reverse(); pending = [];
+      const back = held.slice(-Math.max(0, 3 - keep.length)).reverse(); held = [];
+      // make oldest first so the newest sits on top of the stack
+      const made = back.map((idx, i) => ({ idx, i })).reverse().map(({ idx, i }) => {
+        const n = make(idx, i ? `${i * 2}m` : 'now');
+        n.y.x = UNDER; n.s.x = .92; n.o.x = 0; n.o.t = 1; stackAt(n, i + keep.length);
+        return n;
+      }).reverse();
+      keep.forEach((m, k) => { list.appendChild(m.el); stackAt(m, k); });   // keep it on top
+      notes = keep.concat(made, notes);
+      after(.26, () => layout());                       // fan the stack out into the slots
+      after(.3, () => { CH.t = 0; });
+      after(.7, () => { if (!on) cnt.set(''); });       // clear once hidden, so the next count rolls in fresh
+    }
+  }
+  sw.addEventListener('click', () => { userUntil = clock + 8; setOn(!on); });
+
+  [2, 1, 0].forEach(i => { const n = make(pi++, 'now'); n.y.x = 0; n.s.x = 1; n.o.x = 1; notes.unshift(n); });
+  pi = 3; layout(); notes.forEach(n => { n.y.x = n.y.t; });
+  CP.x = 1;
+
+  let beat = 0;
+  (function auto() {
+    beat++;
+    arrive();
+    if (clock >= userUntil) { if (!on && beat % 4 === 0) after(.9, () => setOn(true)); else if (on && beat % 4 === 2) after(.9, () => setOn(false)); }
+    if (beat >= 4) { after(1.6, () => window.__labStop()); return; }
+    after(2.1, auto);
+  })();
+
+  // Press feedback: any button dips to .97 on press and springs back on release
+  // (the scale property, so it stacks on top of transforms set in render).
+  function press(any) {
+    const root = any.getRootNode(), ease = 'cubic-bezier(.23,1,.32,1)';
+    root.addEventListener('pointerdown', e => {
+      const b = e.target.closest && e.target.closest('button'); if (!b || b.disabled) return;
+      b._pa && b._pa.cancel(); b._pa = b.animate([{ scale: '1' }, { scale: '.97' }], { duration: 120, easing: ease, fill: 'forwards' });
+      const up = () => { removeEventListener('pointerup', up); removeEventListener('pointercancel', up); b._pa && b._pa.cancel(); b._pa = b.animate([{ scale: '.97' }, { scale: '1' }], { duration: 220, easing: ease }); };
+      addEventListener('pointerup', up); addEventListener('pointercancel', up);
+    });
+  }
+  press($('wrap'));
+
+  Motion.register({
+    frame(dt) {
+      clock += dt;
+      all.forEach(n => { step(n.y, dt); step(n.s, dt); step(n.o, dt); step(n.r, dt); });
+      all = all.filter(n => { if (n.dead && n.o.x < .02 && n.o.t === 0) { n.el.remove(); return false; } return true; });
+      [K, CH, CP, CA].forEach(s => step(s, dt)); cnt.step(dt);
+    },
+    render() {
+      all.forEach(n => {
+        n.el.style.transform = `translateY(${n.y.x.toFixed(2)}px) scale(${Math.max(0, n.s.x).toFixed(4)}) rotate(${n.r.x.toFixed(2)}deg)`;
+        const op = clamp(n.o.x, 0, 1); n.el.style.opacity = op.toFixed(3);
+        n.el.style.filter = op > .98 ? '' : `blur(${((1 - op) * 4).toFixed(2)}px)`;
+      });
+      knob.style.transform = `translateX(${(20 * K.x).toFixed(2)}px) scaleX(${(1 + Math.abs(K.v) * .03).toFixed(3)})`;
+      const c = Math.max(0, CH.x) * CP.x;
+      chip.style.transform = `scale(${c.toFixed(4)})`; chip.style.opacity = clamp(CH.x * 1.5, 0, 1).toFixed(3);
+      cnt.render();
+      calm.style.opacity = clamp(CA.x, 0, 1).toFixed(3); calm.style.transform = `translateY(${((1 - CA.x) * 8).toFixed(2)}px)`;
+    },
+  });
+})();
+
+</script>
+</body>
+</html>
