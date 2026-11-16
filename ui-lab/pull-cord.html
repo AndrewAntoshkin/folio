@@ -1,4 +1,3 @@
-<!-- Pull Cord, by DesignBookmark (https://designbookmark.com/motion#db-pull-cord). One file: open it in a browser. -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -26,25 +25,25 @@
   --chip-text:#b4b4b4;
   --white:#fff;
   --black:#000;
-  --green:#34d17a;
-  --green-text:#3ce085;
-  --orange:#ff9f0a;
-  --orange-text:#ff9f0a;                /* orange used as text: darker in light */
-  --red:#ff5a5f;
-  --yellow:#ffd23f;
-  --blue:#3ec9ff;
-  --purple:#c69bff;
-  --pink:#ff6ad5;
-  --heart:#ff4d6d;                      /* like, favourite */
-  --green-soft:rgba(52,209,122,.14);    /* tinted chip behind green text */
-  --on-green:#04140a;                   /* text and checks on --green, same in both themes */
+  --green:#bfe8a8;
+  --green-text:#c6ecb2;
+  --orange:#f2b06b;
+  --orange-text:#f2b06b;                /* orange used as text: darker in light */
+  --red:#f27c78;
+  --yellow:#f0d27c;
+  --blue:#8fb6ff;
+  --purple:#b9a6f2;
+  --pink:#efa3cf;
+  --heart:#f2708a;                      /* like, favourite */
+  --green-soft:rgba(191,232,168,.14);    /* tinted chip behind green text */
+  --on-green:#10190c;                   /* text and checks on --green, same in both themes */
   --object:#2c2c2c;                     /* a free-standing grey object with no card under it: island, goo bubbles */
   --inverse:#fff;                       /* primary pills, thumbs, drops */
   --on-inverse:#000;                    /* content on top of --inverse */
-  --rim:transparent;          /* no strokes anywhere (Noah, 9 Nov 2026) */ /* 1px inner edge on surfaces */
+  --rim:transparent;          /* no strokes anywhere */ /* 1px inner edge on surfaces */
   --focus-rim:transparent;
   --glow:rgba(255,255,255,.16);         /* cursor light on tiles */
-  --sh:0;                               /* drop shadow strength multiplier; 0 = no shadows anywhere (Noah, 9 Nov 2026) */
+  --sh:0;                               /* drop shadow strength multiplier; 0 = no shadows anywhere */
   color-scheme:dark;
 
   /* ---------- type ---------- */
@@ -199,8 +198,8 @@
   --muted:#6f6e68;
   --muted-2:#85847e;
   --chip-text:#5c5b56;
-  --green-text:#15803d;
-  --orange-text:#c2660a;
+  --green-text:#3f7d2c;
+  --orange-text:#a8590c;
   --object:#e6e5e2;
   --inverse:#0e0f11;
   --on-inverse:#f4f3f1;
@@ -240,39 +239,57 @@ body{
   background:var(--fill-2);border-radius:var(--r-pill);padding:4px 10px;
 }
 
-/* Avatars and card art: grainy mesh, mixed (Noah, 12 Nov 2026).
+/* Avatars and card art: grainy mesh, mixed.
    Three soft spots of colour melt over a main colour, under a fine grain.
    Each family is turned a different way (--p1..3), so the light spot and the deep spot
    never sit in the same corner twice and a row of them does not read as one recipe. */
 [data-av]{background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),radial-gradient(70% 70% at var(--p1),var(--av-l) 0,transparent 70%),radial-gradient(60% 60% at var(--p2),var(--av-p) 0,transparent 70%),radial-gradient(75% 75% at var(--p3),var(--av-b) 0,transparent 72%),var(--av-a)!important;background-blend-mode:overlay,normal,normal,normal,normal!important}
-[data-av="1"]{--av-l:#ff8fd0;--av-a:#ff3fa6;--av-b:#6a35ff;--av-p:#ffd3ec;--p1:12.0% 10.0%;--p2:92.0% 8.0%;--p3:88.0% 96.0%}
-[data-av="2"]{--av-l:#7fe3ff;--av-a:#2b8cff;--av-b:#5a35ff;--av-p:#cdf3ff;--p1:102.9% 65.6%;--p2:34.6% 107.4%;--p3:-5.9% 29.2%}
-[data-av="3"]{--av-l:#d6ff5a;--av-a:#22d39a;--av-b:#0a8a8f;--av-p:#efffb0;--p1:65.6% -2.9%;--p2:107.4% 65.4%;--p3:29.2% 105.9%}
-[data-av="4"]{--av-l:#ffb866;--av-a:#ff4a5e;--av-b:#c31f86;--av-p:#ffe0b8;--p1:34.4% 102.9%;--p2:-7.4% 34.6%;--p3:70.8% -5.9%}
-[data-av="5"]{--av-l:#fff27a;--av-a:#ffa51f;--av-b:#ff4a2e;--av-p:#fff3bf;--p1:-3.6% 62.9%;--p2:34.6% -7.4%;--p3:108.8% 40.1%}
-[data-av="6"]{--av-l:#7dffea;--av-a:#1fa8ff;--av-b:#3a3cff;--av-p:#c9fff5;--p1:90.0% 12.0%;--p2:92.0% 92.0%;--p3:4.0% 88.0%}
-[data-av="7"]{--av-l:#ffd3f1;--av-a:#c07bff;--av-b:#ff4f9a;--av-p:#f0dcff;--p1:62.9% 103.6%;--p2:-7.4% 65.4%;--p3:40.1% -8.8%}
-[data-av="8"]{--av-l:#c2ffd6;--av-a:#2fe08a;--av-b:#0a9a6a;--av-p:#e2ffec;--p1:37.1% -3.6%;--p2:107.4% 34.6%;--p3:59.9% 108.8%}
-[data-av="9"]{--av-l:#ffe3b5;--av-a:#ff8a6a;--av-b:#ff3f86;--av-p:#ffe6d8;--p1:10.0% 88.0%;--p2:8.0% 8.0%;--p3:96.0% 12.0%}
-[data-av="10"]{--av-l:#bfa0ff;--av-a:#5a3cff;--av-b:#1a1ab0;--av-p:#e0d2ff;--p1:103.6% 37.1%;--p2:65.4% 107.4%;--p3:-8.8% 59.9%}
-[data-av="11"]{--av-l:#f6ff86;--av-a:#8ae83a;--av-b:#1fb86a;--av-p:#fbffc8;--p1:-2.9% 34.4%;--p2:65.4% -7.4%;--p3:105.9% 70.8%}
-[data-av="12"]{--av-l:#ffa3cd;--av-a:#e03cff;--av-b:#6a2cff;--av-p:#ffd2ea;--p1:88.0% 90.0%;--p2:8.0% 92.0%;--p3:12.0% 4.0%}
+[data-av="1"]{--av-l:#ffa68f;--av-a:#ff6e3f;--av-b:#ff35f6;--av-p:#ffdcd3;--p1:12.0% 10.0%;--p2:92.0% 8.0%;--p3:88.0% 96.0%}
+[data-av="2"]{--av-l:#7f7fff;--av-a:#702bff;--av-b:#f835ff;--av-p:#cecdff;--p1:102.9% 65.6%;--p2:34.6% 107.4%;--p3:-5.9% 29.2%}
+[data-av="3"]{--av-l:#5aff5f;--av-a:#2281d3;--av-b:#0a228f;--av-p:#b1ffb0;--p1:65.6% -2.9%;--p2:107.4% 65.4%;--p3:29.2% 105.9%}
+[data-av="4"]{--av-l:#ceff66;--av-a:#ffc44a;--av-b:#c3381f;--av-p:#e6ffb8;--p1:34.4% 102.9%;--p2:-7.4% 34.6%;--p3:70.8% -5.9%}
+[data-av="5"]{--av-l:#a4ff7a;--av-a:#aaff1f;--av-b:#ffee2e;--av-p:#d9ffbf;--p1:-3.6% 62.9%;--p2:34.6% -7.4%;--p3:108.8% 40.1%}
+[data-av="6"]{--av-l:#7daeff;--av-a:#451fff;--av-b:#d23aff;--av-p:#c9dfff;--p1:90.0% 12.0%;--p2:92.0% 92.0%;--p3:4.0% 88.0%}
+[data-av="7"]{--av-l:#ffd7d3;--av-a:#ff7bd7;--av-b:#ff8e4f;--av-p:#ffdcf3;--p1:62.9% 103.6%;--p2:-7.4% 65.4%;--p3:40.1% -8.8%}
+[data-av="8"]{--av-l:#c2f8ff;--av-a:#2fabe0;--av-b:#0a599a;--av-p:#e2fbff;--p1:37.1% -3.6%;--p2:107.4% 34.6%;--p3:59.9% 108.8%}
+[data-av="9"]{--av-l:#e1ffb5;--av-a:#ffff6a;--av-b:#ff8e3f;--av-p:#f9ffd8;--p1:10.0% 88.0%;--p2:8.0% 8.0%;--p3:96.0% 12.0%}
+[data-av="10"]{--av-l:#ffa0f5;--av-a:#f33cff;--av-b:#901ab0;--av-p:#ffd2fb;--p1:103.6% 37.1%;--p2:65.4% 107.4%;--p3:-8.8% 59.9%}
+[data-av="11"]{--av-l:#97ff86;--av-a:#3ae872;--av-b:#1f8eb8;--av-p:#d0ffc8;--p1:-2.9% 34.4%;--p2:65.4% -7.4%;--p3:105.9% 70.8%}
+[data-av="12"]{--av-l:#ffc1a3;--av-a:#ff3c85;--av-b:#ff2cef;--av-p:#ffddd2;--p1:88.0% 90.0%;--p2:8.0% 92.0%;--p3:12.0% 4.0%}
 
-/* Pull Cord: a lamp on a wire with a cord you can really pull. The cord is a
-   rope with weight, the lamp swings when you tug it, and a pull past the click
-   turns the light on: it floods out of the bulb and the whole card goes light.
-   Read DESIGN.md first. Tokens only: no colours, small font sizes, strokes or shadows by hand. */
+/* Pull Cord: a floor lamp in a room, with a cord you can really pull. The cord is a
+   rope with weight, the lamp rocks on its base when you tug it, and a pull past the click
+   turns the light on: it floods out of the bulb and the whole room goes light.
+   Tokens only: no colours, small font sizes, strokes or shadows by hand. */
 .scene{position:absolute;inset:0;overflow:hidden}
 /* the same room twice, once in each theme; the light one is cut to a circle around the bulb */
 .room{position:absolute;inset:0;background:var(--card);overflow:hidden}
 .room.theme-light{will-change:clip-path}
 
-.lamp{position:absolute;left:50%;top:0;width:0;height:0;transform-origin:0 0;will-change:transform}
-.head{position:absolute;left:0;top:0;will-change:transform}
-.cap{position:absolute;left:-9px;top:-10px;width:18px;height:14px;border-radius:5px 5px 0 0;background:var(--muted-2)}
-.shade{position:absolute;left:-62px;top:0;width:124px;height:66px;border-radius:62px 62px 12px 12px / 58px 58px 12px 12px;background:var(--object)}
-.bulb{position:absolute;left:-19px;top:44px;width:38px;height:38px;border-radius:50%;background:var(--fill-3);will-change:transform}
-/* lit: the system yellow on the bulb in a plain light room. The colour stays on the bulb, never a halo behind it (Noah, 12 Nov 2026) */
+/* the room: wall, floor, skirting, rug, a frame on the wall, a plant on the floor */
+.floor{position:absolute;left:0;right:0;top:var(--wb);bottom:0;background:var(--surface)}
+.skirt{position:absolute;left:0;right:0;top:calc(var(--wb) - 10px);height:10px;background:var(--fill-2)}
+.rug{position:absolute;left:calc(var(--lx) - 160px);top:calc(var(--fy) - 24px);width:320px;height:60px;border-radius:50%;background:var(--fill-2)}
+.frame{position:absolute;left:calc(var(--lx) + 150px);top:calc(var(--wb) - 210px);width:78px;height:104px;border-radius:8px;background:var(--object)}
+.frame::after{content:"";position:absolute;inset:9px;border-radius:4px;background:var(--fill-2)}
+.frame::before{content:"";position:absolute;z-index:1;left:26px;top:34px;width:26px;height:26px;border-radius:50%;background:var(--fill-3)}
+.pot{position:absolute;left:calc(var(--lx) - 176px);top:calc(var(--fy) - 62px);width:48px;height:52px;background:var(--object);clip-path:polygon(0 0,100% 0,84% 100%,16% 100%)}
+.leaf{position:absolute;width:20px;height:54px;border-radius:50% 50% 50% 50% / 80% 80% 20% 20%;background:var(--fill-3);transform-origin:50% 100%}
+.theme-light .leaf{background:var(--green)}
+.leaf.a{left:calc(var(--lx) - 170px);top:calc(var(--fy) - 112px);transform:rotate(-24deg)}
+.leaf.b{left:calc(var(--lx) - 161px);top:calc(var(--fy) - 124px)}
+.leaf.c{left:calc(var(--lx) - 152px);top:calc(var(--fy) - 108px);transform:rotate(26deg)}
+.small .frame,.small .pot,.small .leaf{display:none}
+
+/* the lamp stands on the floor and rocks around the foot of its base */
+.lamp{position:absolute;left:var(--lx);top:var(--fy);width:0;height:0;transform-origin:0 0;will-change:transform}
+.base{position:absolute;left:-44px;top:-9px;width:88px;height:18px;border-radius:50%;background:var(--muted-2)}
+.pole{position:absolute;left:-3px;top:calc(var(--pole) * -1 + 22px);width:6px;height:calc(var(--pole) - 22px);border-radius:3px;background:var(--muted-2)}
+.head{position:absolute;left:0;top:calc(var(--pole) * -1)}
+.shade{position:absolute;left:-56px;top:-68px;width:112px;height:68px;border-radius:14px 14px 8px 8px;background:var(--object)}
+.cap{position:absolute;left:-9px;top:-76px;width:18px;height:10px;border-radius:5px 5px 0 0;background:var(--muted-2)}
+.bulb{position:absolute;left:-19px;top:-13px;width:38px;height:38px;border-radius:50%;background:var(--fill-3);will-change:transform}
+/* lit: the system yellow on the bulb in a plain light room. The colour stays on the bulb, never a halo behind it */
 .theme-light .bulb{background:var(--yellow)}
 
 .rope{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none}
@@ -318,7 +335,7 @@ window.Motion = (() => {
 
   let timeScale = 1;
   const timers = [];
-  const after = (sec, fn) => { const t = { t: sec, fn }; timers.push(t); return t; };
+  const after = (sec, fn) => { const t = { t: sec, fn }; timers.push(t); hold(sec); return t; };
   const cancel = t => { const i = timers.indexOf(t); if (i > -1) timers.splice(i, 1); };
 
   // slow motion, synced with a parent page when embedded
@@ -335,19 +352,30 @@ window.Motion = (() => {
 
   const comps = [];
   let last = performance.now();
+  // Lab embedding (?still=1): the study paints one still frame and sleeps. It wakes for real input
+  // (pointer, touch, keys, resize) and sleeps again once nothing has moved for a moment. The lab page
+  // can also hold it awake ('lab:play') for studies that play by themselves while they are on screen.
+  // Opened on its own, it simply runs.
   const labStill = new URLSearchParams(location.search).get('still') === '1';
-  let labOn = !labStill;
+  let forced = !labStill, awakeUntil = 0, lastInput = 0, lastTouch = -1e9, running = false;
+  const awake = () => forced || performance.now() < awakeUntil;
+  function kick() { if (running) return; running = true; last = performance.now(); requestAnimationFrame(loop); }
+  function wake(ms) { const n = performance.now(); lastInput = lastTouch = n; awakeUntil = Math.max(awakeUntil, n + ms); kick(); }
+  // a timer started by a gesture keeps the study awake until it fires, but never for long after the last input
+  function hold(sec) { const n = performance.now(); awakeUntil = Math.max(awakeUntil, Math.min(n + sec * 1000 + 600, lastInput + 8000)); }
+  ['pointerdown', 'touchstart', 'keydown'].forEach(t => addEventListener(t, () => wake(4000), { passive: true, capture: true }));
+  ['pointermove', 'wheel'].forEach(t => addEventListener(t, () => wake(2500), { passive: true, capture: true }));
+  addEventListener('resize', () => wake(1500));
   addEventListener('message', e => {
-    if (!e.data) return;
-    if (e.data === 'lab:stop') labOn = false;
-    if (e.data === 'lab:play') { labOn = true; last = performance.now(); requestAnimationFrame(loop); }
+    if (e.data === 'lab:play') { forced = true; kick(); }
+    if (e.data === 'lab:stop') forced = false;
   });
-  window.__labStop = () => { labOn = false; };
+  window.__labStop = () => {};   // kept for older call sites: nothing has to be stopped by hand any more
   function loop(now) {
-    const live = labOn;
-    const dt = live ? Math.min((now - last) / 1000, 1 / 30) * timeScale : 0;
+    const on = awake();
+    const dt = on ? Math.min((now - last) / 1000, 1 / 30) * timeScale : 0;
     last = now;
-    if (live) {
+    if (on) {
       for (let i = timers.length - 1; i >= 0; i--) {
         if ((timers[i].t -= dt) <= 0) timers.splice(i, 1)[0].fn();
       }
@@ -355,12 +383,26 @@ window.Motion = (() => {
       for (let k = 0; k < sub; k++) comps.forEach(c => c.frame(dt / sub));
     }
     comps.forEach(c => { if (c.render) c.render(); });
-    if (live) requestAnimationFrame(loop);
+    if (on) requestAnimationFrame(loop); else running = false;
   }
-  requestAnimationFrame(loop);
+  kick();
+
+  // ---- settings from the URL (the lab modal's live controls) ----
+  //   ?t.--goo-out=230%2015   sets a CSS token before the study reads it
+  //   ?p.melt=1.4             a plain number the study asks for with Motion.param('melt', default)
+  //   ?p.lead=620%2036        a spring ("stiffness damping") asked for with Motion.pspring('lead', [620, 36])
+  const qp = new URLSearchParams(location.search);
+  qp.forEach((v, k) => { if (k.startsWith('t.')) document.documentElement.style.setProperty(k.slice(2), v); });
+  const param = (n, d) => { const v = parseFloat(qp.get('p.' + n)); return Number.isFinite(v) ? v : d; };
+  const pspring = (n, d) => {
+    const a = (qp.get('p.' + n) || '').trim().split(/\s+/).map(Number);
+    return a.length === 2 && a.every(Number.isFinite) ? a : d;
+  };
+  // true while nobody has touched the study for a few seconds: self-playing demos use it to step aside
+  const idle = (sec = 5) => performance.now() - lastTouch > sec * 1000;
 
   return {
-    S, tune, step, clamp, token, num, spring, after, cancel,
+    S, tune, step, clamp, token, num, spring, after, cancel, param, pspring, idle,
     register: c => comps.push(c),
     get timeScale() { return timeScale; },
     get slow() { return timeScale !== 1; },
@@ -372,48 +414,56 @@ window.Motion = (() => {
 </script>
 <script>
 // Pull Cord
-// The cord is a chain of points with weight, kept at length by soft links, so
-// it hangs, swings and whips like a rope. Held, the bead follows the pointer
-// until the cord is tight; past that it stretches like rubber and tugs the
-// lamp, which leans toward the pull on its wire. A pull past the click flips
-// the switch: the light room opens as a circle from the bulb (and closes back
-// into it), the bulb pops and the lamp bounces. Let go and the cord whips back
-// while the lamp swings to rest. It pulls itself when idle, a tap or Enter
+// A floor lamp in a room. The cord is a chain of points with weight, kept at
+// length by soft links, so it hangs, swings and whips like a rope. Held, the
+// bead follows the pointer until the cord is tight; past that it stretches
+// like rubber and the lamp leans toward the pull, rocking on its base. A pull
+// past the click flips the switch: the light room opens as a circle from the
+// bulb (and closes back into it), the bulb pops and the lamp rocks. Let go and
+// the cord whips back while the lamp settles. It waits for you: a tap or Enter
 // pulls it too. It follows the card's own light and dark setting, and sends
 // a 'motion:theme' event when it flips so the page around it can follow.
 (() => {
-  const { S, tune, step, clamp, after } = Motion;
+  const { S, tune, step, clamp, after, param } = Motion;
   const $ = id => document.getElementById(id);
   const scene = $('scene'), lit = $('lit'), grab = $('grab');
 
-  const WIRE = 122, SHADE = 66, AX = 34, AY = SHADE - 3;   // wire length; where the cord leaves the shade
+  const SHADE = 68, AX = 46;                               // shade height; where the cord leaves the shade rim
   const N = 12, SEG = 9, L = N * SEG;                      // links in the cord, and its length
-  const CLICK = 22, MAXS = 54;                             // stretch that flips the switch; the most it gives
+  const CLICK = param('click', 22), MAXS = param('max', 54), GRAV = param('gravity', 2600);   // stretch that flips the switch; the most it gives
+  const TILT = .06;                                        // how far the lamp may lean (radians)
 
-  const ROOM = `<svg class="rope"><path/></svg><div class="lamp"><div class="head"><i class="bulb"></i><i class="shade"></i><i class="cap"></i></div></div><svg class="rope"><path/></svg><i class="bead"></i>`;
+  const ROOM = `<div class="floor"></div><div class="skirt"></div><div class="rug"></div><div class="frame"></div><div class="pot"></div><i class="leaf a"></i><i class="leaf b"></i><i class="leaf c"></i>`
+    + `<div class="lamp"><i class="base"></i><i class="pole"></i><div class="head"><i class="bulb"></i><i class="shade"></i><i class="cap"></i></div></div><svg class="rope"><path/></svg><i class="bead"></i>`;
   const rooms = [...document.querySelectorAll('.room')].map(r => {
     r.innerHTML = ROOM;
     const q = s => r.querySelector(s);
-    return { lamp: q('.lamp'), wire: q('.rope path'), head: q('.head'), bulb: q('.bulb'), path: q('.rope + .lamp ~ .rope path'), bead: q('.bead') };
+    return { lamp: q('.lamp'), bulb: q('.bulb'), path: q('.rope path'), bead: q('.bead') };
   });
 
-  const TH = S(0, 46, 3), TUG = S(0, 300, 13), R = S(0, 120, 21), BP = S(1, 420, 13);   // lamp angle, drop, light radius, bulb pop
-  tune(TH, 46, 3); tune(TUG, 300, 13); tune(R, 120, 21); tune(BP, 420, 13);
+  const TH = S(0, 90, 4), R = S(0, 120, 21), BP = S(1, 420, 13);   // lamp angle, light radius, bulb pop
+  tune(TH, 90, 4); tune(R, 120, 21); tune(BP, 420, 13);
   const HX = S(0, 210, 22), HY = S(0, 210, 22);            // the hand that pulls when nobody does
   const K = S(1, 300, 17); tune(K, 300, 17);              // how far the cord is stretched: it eases back, so letting go is a bounce and not a whip
   let on = false, armed = true, held = null, ghost = false, stretch = 0, lean = 0, clock = 0, userUntil = 0, side = 1, W = 0, H = 0, scheme = '';
+  let LX = 0, FY = 0, POLE = 0;                            // the lamp's foot, and how tall its pole is
 
   const pts = [];
-  const anchor = () => {
-    const c = Math.cos(TH.x), s = Math.sin(TH.x), y = WIRE + TUG.x + AY;
-    return [W / 2 + AX * c - y * s, AX * s + y * c];
+  // the lamp is drawn upright at (LX, FY) and rotated around its foot: these map a point on the lamp into the scene
+  const onLamp = (x, y) => {
+    const c = Math.cos(TH.x), s = Math.sin(TH.x);
+    return [LX + x * c - y * s, FY + x * s + y * c];
   };
-  const bulbAt = () => {
-    const c = Math.cos(TH.x), s = Math.sin(TH.x), y = WIRE + TUG.x + 63;
-    return [W / 2 - y * s, y * c];
-  };
+  const anchor = () => onLamp(AX, -POLE);
+  const bulbAt = () => onLamp(0, -POLE + 6);
+
   function measure() {
     W = document.body.clientWidth; H = document.body.clientHeight;
+    LX = W * .44; FY = H * .84; POLE = clamp(FY - SHADE - 84, 110, 270);
+    const st = scene.style;
+    st.setProperty('--lx', LX.toFixed(1) + 'px'); st.setProperty('--fy', FY.toFixed(1) + 'px');
+    st.setProperty('--wb', (H * .66).toFixed(1) + 'px'); st.setProperty('--pole', POLE.toFixed(1) + 'px');
+    scene.classList.toggle('small', W < 440);
     if (!pts.length) { const [ax, ay] = anchor(); for (let i = 0; i <= N; i++) pts.push({ x: ax, y: ay + i * SEG, vx: 0, vy: 0 }); }
   }
   measure();
@@ -422,7 +472,7 @@ window.Motion = (() => {
     if (to === on) return;
     on = to;
     grab.setAttribute('aria-checked', on);
-    BP.x = on ? 1.35 : .8; TUG.v += 150;
+    BP.x = on ? 1.35 : .8; TH.v += (on ? .4 : -.4) * (side || 1);   // the click rocks the lamp
     // tell the page around it, so anything drawn over the lamp can change with the light
     const now = on;
     after(.14, () => { if (now === on) scene.dispatchEvent(new CustomEvent('motion:theme', { bubbles: true, composed: true, detail: { light: on } })); });
@@ -466,21 +516,23 @@ window.Motion = (() => {
   grab.addEventListener('pointercancel', drop);
   grab.addEventListener('click', e => { if (!e.detail) { userUntil = clock + 7; pull(); } });   // keyboard
 
-  (function auto() {
-    if (clock >= userUntil && !held && !ghost) pull();
-    after(2.4, () => window.__labStop());
-  })();
+  // plays by itself until you touch it: one pull now and then
+  after(1.2, function auto() {
+    if (Motion.idle() && !held && !ghost) pull();
+    after(3.6, auto);
+  });
   // the card's own sun and moon button: the lamp follows it
-  (function watch() {
+  function watch() {
     const now = getComputedStyle(document.documentElement).colorScheme === 'light' ? 'light' : 'dark';
     if (now !== scheme) { if (scheme) flip(now === 'light'); else if (now === 'light') { on = true; grab.setAttribute('aria-checked', 'true'); R.x = R.t = 1; } scheme = now; }
-    after(.4, watch);
-  })();
+  }
+  watch();
+  addEventListener('message', e => { if (e.data && e.data.type === 'motion:theme') after(.05, watch); });
 
   Motion.register({
     frame(dt) {
       clock += dt;
-      [TH, TUG, R, BP, HX, HY, K].forEach(s => step(s, dt));
+      [TH, R, BP, HX, HY, K].forEach(s => step(s, dt));
       if (dt <= 0) return;
       const [ax, ay] = anchor(), p = pin(), b = pts[N];
 
@@ -500,14 +552,13 @@ window.Motion = (() => {
       }
       if (!p || !stretch) K.t = 1;
       const seg = SEG * Math.max(1, K.x);
-      TUG.t = stretch * .22;
-      TH.t = clamp(-lean * stretch / MAXS * .5, -.3, .3);
+      TH.t = clamp(lean * stretch / MAXS * TILT, -TILT, TILT);   // the top leans toward the pull
 
       // the rope: gravity, then links pulled back to length a few times
       const prev = pts.map(q => [q.x, q.y]);
       for (let i = 1; i <= N; i++) {
         const q = pts[i], k = Math.exp(-(i === N ? 1.1 : 2.4) * dt);
-        q.vy += 2600 * dt; q.vx *= k; q.vy *= k;
+        q.vy += GRAV * dt; q.vx *= k; q.vy *= k;
         const sp = Math.hypot(q.vx, q.vy);
         if (sp > 2600) { q.vx *= 2600 / sp; q.vy *= 2600 / sp; }
         q.x += q.vx * dt; q.y += q.vy * dt;
@@ -530,16 +581,13 @@ window.Motion = (() => {
     },
     render() {
       if (document.body.clientWidth !== W || document.body.clientHeight !== H) measure();
-      const th = TH.x, tug = TUG.x, b = pts[N], e = pts[N - 1];
+      const th = TH.x, b = pts[N], e = pts[N - 1];
       let d = `M${pts[0].x.toFixed(1)} ${pts[0].y.toFixed(1)}`;
       for (let i = 1; i < N; i++) d += `Q${pts[i].x.toFixed(1)} ${pts[i].y.toFixed(1)} ${((pts[i].x + pts[i + 1].x) / 2).toFixed(1)} ${((pts[i].y + pts[i + 1].y) / 2).toFixed(1)}`;
       d += `L${b.x.toFixed(1)} ${b.y.toFixed(1)}`;
       const ang = Math.atan2(e.x - b.x, b.y - e.y);
-      const wl = WIRE + tug - 4, wd = `M${(W / 2).toFixed(1)} -4L${(W / 2 - Math.sin(th) * wl).toFixed(2)} ${(Math.cos(th) * wl).toFixed(2)}`;
       rooms.forEach(o => {
         o.lamp.style.transform = `rotate(${th.toFixed(4)}rad)`;
-        o.wire.setAttribute('d', wd);
-        o.head.style.transform = `translateY(${(WIRE + tug).toFixed(2)}px)`;
         o.bulb.style.transform = `scale(${BP.x.toFixed(4)})`;
         o.path.setAttribute('d', d);
         o.bead.style.transform = `translate(${b.x.toFixed(2)}px,${b.y.toFixed(2)}px) rotate(${ang.toFixed(4)}rad)`;

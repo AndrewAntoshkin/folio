@@ -1,4 +1,3 @@
-<!-- Parallax Ticket, by DesignBookmark (https://designbookmark.com/motion#db-parallax-ticket). One file: open it in a browser. -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -26,25 +25,25 @@
   --chip-text:#b4b4b4;
   --white:#fff;
   --black:#000;
-  --green:#34d17a;
-  --green-text:#3ce085;
-  --orange:#ff9f0a;
-  --orange-text:#ff9f0a;                /* orange used as text: darker in light */
-  --red:#ff5a5f;
-  --yellow:#ffd23f;
-  --blue:#3ec9ff;
-  --purple:#c69bff;
-  --pink:#ff6ad5;
-  --heart:#ff4d6d;                      /* like, favourite */
-  --green-soft:rgba(52,209,122,.14);    /* tinted chip behind green text */
-  --on-green:#04140a;                   /* text and checks on --green, same in both themes */
+  --green:#bfe8a8;
+  --green-text:#c6ecb2;
+  --orange:#f2b06b;
+  --orange-text:#f2b06b;                /* orange used as text: darker in light */
+  --red:#f27c78;
+  --yellow:#f0d27c;
+  --blue:#8fb6ff;
+  --purple:#b9a6f2;
+  --pink:#efa3cf;
+  --heart:#f2708a;                      /* like, favourite */
+  --green-soft:rgba(191,232,168,.14);    /* tinted chip behind green text */
+  --on-green:#10190c;                   /* text and checks on --green, same in both themes */
   --object:#2c2c2c;                     /* a free-standing grey object with no card under it: island, goo bubbles */
   --inverse:#fff;                       /* primary pills, thumbs, drops */
   --on-inverse:#000;                    /* content on top of --inverse */
-  --rim:transparent;          /* no strokes anywhere (Noah, 9 Nov 2026) */ /* 1px inner edge on surfaces */
+  --rim:transparent;          /* no strokes anywhere */ /* 1px inner edge on surfaces */
   --focus-rim:transparent;
   --glow:rgba(255,255,255,.16);         /* cursor light on tiles */
-  --sh:0;                               /* drop shadow strength multiplier; 0 = no shadows anywhere (Noah, 9 Nov 2026) */
+  --sh:0;                               /* drop shadow strength multiplier; 0 = no shadows anywhere */
   color-scheme:dark;
 
   /* ---------- type ---------- */
@@ -199,8 +198,8 @@
   --muted:#6f6e68;
   --muted-2:#85847e;
   --chip-text:#5c5b56;
-  --green-text:#15803d;
-  --orange-text:#c2660a;
+  --green-text:#3f7d2c;
+  --orange-text:#a8590c;
   --object:#e6e5e2;
   --inverse:#0e0f11;
   --on-inverse:#f4f3f1;
@@ -240,26 +239,26 @@ body{
   background:var(--fill-2);border-radius:var(--r-pill);padding:4px 10px;
 }
 
-/* Avatars and card art: grainy mesh, mixed (Noah, 12 Nov 2026).
+/* Avatars and card art: grainy mesh, mixed.
    Three soft spots of colour melt over a main colour, under a fine grain.
    Each family is turned a different way (--p1..3), so the light spot and the deep spot
    never sit in the same corner twice and a row of them does not read as one recipe. */
 [data-av]{background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),radial-gradient(70% 70% at var(--p1),var(--av-l) 0,transparent 70%),radial-gradient(60% 60% at var(--p2),var(--av-p) 0,transparent 70%),radial-gradient(75% 75% at var(--p3),var(--av-b) 0,transparent 72%),var(--av-a)!important;background-blend-mode:overlay,normal,normal,normal,normal!important}
-[data-av="1"]{--av-l:#ff8fd0;--av-a:#ff3fa6;--av-b:#6a35ff;--av-p:#ffd3ec;--p1:12.0% 10.0%;--p2:92.0% 8.0%;--p3:88.0% 96.0%}
-[data-av="2"]{--av-l:#7fe3ff;--av-a:#2b8cff;--av-b:#5a35ff;--av-p:#cdf3ff;--p1:102.9% 65.6%;--p2:34.6% 107.4%;--p3:-5.9% 29.2%}
-[data-av="3"]{--av-l:#d6ff5a;--av-a:#22d39a;--av-b:#0a8a8f;--av-p:#efffb0;--p1:65.6% -2.9%;--p2:107.4% 65.4%;--p3:29.2% 105.9%}
-[data-av="4"]{--av-l:#ffb866;--av-a:#ff4a5e;--av-b:#c31f86;--av-p:#ffe0b8;--p1:34.4% 102.9%;--p2:-7.4% 34.6%;--p3:70.8% -5.9%}
-[data-av="5"]{--av-l:#fff27a;--av-a:#ffa51f;--av-b:#ff4a2e;--av-p:#fff3bf;--p1:-3.6% 62.9%;--p2:34.6% -7.4%;--p3:108.8% 40.1%}
-[data-av="6"]{--av-l:#7dffea;--av-a:#1fa8ff;--av-b:#3a3cff;--av-p:#c9fff5;--p1:90.0% 12.0%;--p2:92.0% 92.0%;--p3:4.0% 88.0%}
-[data-av="7"]{--av-l:#ffd3f1;--av-a:#c07bff;--av-b:#ff4f9a;--av-p:#f0dcff;--p1:62.9% 103.6%;--p2:-7.4% 65.4%;--p3:40.1% -8.8%}
-[data-av="8"]{--av-l:#c2ffd6;--av-a:#2fe08a;--av-b:#0a9a6a;--av-p:#e2ffec;--p1:37.1% -3.6%;--p2:107.4% 34.6%;--p3:59.9% 108.8%}
-[data-av="9"]{--av-l:#ffe3b5;--av-a:#ff8a6a;--av-b:#ff3f86;--av-p:#ffe6d8;--p1:10.0% 88.0%;--p2:8.0% 8.0%;--p3:96.0% 12.0%}
-[data-av="10"]{--av-l:#bfa0ff;--av-a:#5a3cff;--av-b:#1a1ab0;--av-p:#e0d2ff;--p1:103.6% 37.1%;--p2:65.4% 107.4%;--p3:-8.8% 59.9%}
-[data-av="11"]{--av-l:#f6ff86;--av-a:#8ae83a;--av-b:#1fb86a;--av-p:#fbffc8;--p1:-2.9% 34.4%;--p2:65.4% -7.4%;--p3:105.9% 70.8%}
-[data-av="12"]{--av-l:#ffa3cd;--av-a:#e03cff;--av-b:#6a2cff;--av-p:#ffd2ea;--p1:88.0% 90.0%;--p2:8.0% 92.0%;--p3:12.0% 4.0%}
+[data-av="1"]{--av-l:#ffa68f;--av-a:#ff6e3f;--av-b:#ff35f6;--av-p:#ffdcd3;--p1:12.0% 10.0%;--p2:92.0% 8.0%;--p3:88.0% 96.0%}
+[data-av="2"]{--av-l:#7f7fff;--av-a:#702bff;--av-b:#f835ff;--av-p:#cecdff;--p1:102.9% 65.6%;--p2:34.6% 107.4%;--p3:-5.9% 29.2%}
+[data-av="3"]{--av-l:#5aff5f;--av-a:#2281d3;--av-b:#0a228f;--av-p:#b1ffb0;--p1:65.6% -2.9%;--p2:107.4% 65.4%;--p3:29.2% 105.9%}
+[data-av="4"]{--av-l:#ceff66;--av-a:#ffc44a;--av-b:#c3381f;--av-p:#e6ffb8;--p1:34.4% 102.9%;--p2:-7.4% 34.6%;--p3:70.8% -5.9%}
+[data-av="5"]{--av-l:#a4ff7a;--av-a:#aaff1f;--av-b:#ffee2e;--av-p:#d9ffbf;--p1:-3.6% 62.9%;--p2:34.6% -7.4%;--p3:108.8% 40.1%}
+[data-av="6"]{--av-l:#7daeff;--av-a:#451fff;--av-b:#d23aff;--av-p:#c9dfff;--p1:90.0% 12.0%;--p2:92.0% 92.0%;--p3:4.0% 88.0%}
+[data-av="7"]{--av-l:#ffd7d3;--av-a:#ff7bd7;--av-b:#ff8e4f;--av-p:#ffdcf3;--p1:62.9% 103.6%;--p2:-7.4% 65.4%;--p3:40.1% -8.8%}
+[data-av="8"]{--av-l:#c2f8ff;--av-a:#2fabe0;--av-b:#0a599a;--av-p:#e2fbff;--p1:37.1% -3.6%;--p2:107.4% 34.6%;--p3:59.9% 108.8%}
+[data-av="9"]{--av-l:#e1ffb5;--av-a:#ffff6a;--av-b:#ff8e3f;--av-p:#f9ffd8;--p1:10.0% 88.0%;--p2:8.0% 8.0%;--p3:96.0% 12.0%}
+[data-av="10"]{--av-l:#ffa0f5;--av-a:#f33cff;--av-b:#901ab0;--av-p:#ffd2fb;--p1:103.6% 37.1%;--p2:65.4% 107.4%;--p3:-8.8% 59.9%}
+[data-av="11"]{--av-l:#97ff86;--av-a:#3ae872;--av-b:#1f8eb8;--av-p:#d0ffc8;--p1:-2.9% 34.4%;--p2:65.4% -7.4%;--p3:105.9% 70.8%}
+[data-av="12"]{--av-l:#ffc1a3;--av-a:#ff3c85;--av-b:#ff2cef;--av-p:#ffddd2;--p1:88.0% 90.0%;--p2:8.0% 92.0%;--p3:12.0% 4.0%}
 
-/* Parallax Ticket: layered card that tilts with depth and flips to its back */
-.t-stage{position:absolute;left:50%;top:50%;width:264px;height:356px;margin:-178px 0 0 -132px;perspective:900px}
+/* Parallax Ticket: a holographic foil card that tilts with depth, heats up under the pointer and flips to its back */
+.t-stage{position:absolute;left:50%;top:50%;width:min(300px,calc(100% - 40px));aspect-ratio:1/1;transform:translate(-50%,-50%);perspective:900px}
 .ticket{position:relative;width:100%;height:100%;transform-style:preserve-3d;cursor:pointer;outline:none;will-change:transform}
 .side{
   position:absolute;inset:0;border-radius:var(--r-card);background:var(--surface);overflow:hidden;
@@ -268,48 +267,49 @@ body{
 }
 .back{transform:rotateY(180deg)}
 .layer{position:absolute;inset:0;will-change:transform;pointer-events:none}
-.l-bg{inset:-20px;background-image:linear-gradient(var(--fill-1) 1px,transparent 1px),linear-gradient(90deg,var(--fill-1) 1px,transparent 1px);background-size:24px 24px}
-/* Simplified (Noah, 9 Nov 2026): just the picture, the title and one line. */
-.shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.5))}
+.l-bg{inset:-20px}
+.foil{display:block;width:100%;height:100%;background:linear-gradient(135deg,#d9dade,#f4f4f6 40%,#b9bbc2 70%,#ecedf0)}
+.front{box-shadow:0 0 0 1px rgba(255,255,255,.55) inset,0 40px 70px -30px rgba(0,0,0,calc(.95*var(--sh)))}
 .l-text{padding:24px}
-.title{position:absolute;left:24px;bottom:62px;font-size:44px;line-height:.95;font-weight:var(--fw-bold);letter-spacing:-.04em;color:#fff}
-.meta{position:absolute;left:24px;right:24px;bottom:26px;display:flex;justify-content:space-between;align-items:center;font-size:var(--fs-sm);color:rgba(255,255,255,.75)}
-.meta b{color:#fff;font-weight:var(--fw-medium);font-variant-numeric:tabular-nums}
+.title{position:absolute;left:24px;bottom:62px;font-size:40px;line-height:.98;font-weight:var(--fw-bold);letter-spacing:-.04em;color:#111214}
+.meta{position:absolute;left:24px;right:24px;bottom:26px;display:flex;justify-content:space-between;align-items:center;font-size:var(--fs-sm);color:rgba(17,18,20,.68)}
+.meta b{color:#111214;font-weight:var(--fw-medium);font-variant-numeric:tabular-nums}
 .glare{position:absolute;inset:0;pointer-events:none;opacity:var(--g,0);
-  background:radial-gradient(240px circle at var(--gx,50%) var(--gy,30%),rgba(255,255,255,.22),transparent 60%);mix-blend-mode:screen}
+  background:radial-gradient(240px circle at var(--gx,50%) var(--gy,30%),rgba(255,255,255,.3),transparent 60%);mix-blend-mode:soft-light}
 
-.back{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px}
-.qr{width:168px;height:168px;border-radius:18px;background:var(--white);padding:12px}
-.qr svg{width:100%;height:100%;display:block}
-.seat{display:flex;gap:22px;text-align:center}
-.seat div{font-size:var(--fs-2xs);color:var(--muted)}
-.seat b{display:block;font-size:var(--fs-lg);font-weight:var(--fw-bold);color:var(--text);margin-top:2px}
-.flip-hint{font-size:var(--fs-xs);color:var(--muted-2)}
+.back{display:flex;flex-direction:column;justify-content:flex-start;gap:0;padding:22px 24px}
+.b-kicker{font-size:var(--fs-xs);color:var(--muted-2)}
+.b-lead{margin-top:6px;font-size:var(--fs-md);line-height:20px;font-weight:var(--fw-medium);color:var(--text);letter-spacing:-.01em}
+.b-list{margin-top:14px;display:grid;gap:0;list-style:none}
+.b-list li{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:8px 0;border-top:1px solid var(--fill-2);font-size:var(--fs-sm);color:var(--text)}
+.b-list li i{font-style:normal;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.b-foot{margin-top:auto;display:flex;justify-content:space-between;font-size:var(--fs-xs);color:var(--muted-2)}
 
-/* Front image (Recraft, generated for Motion Studies) */
-.l-bg{background:#000 url(img/hills-8.webp) center/cover no-repeat}
+/* Front: a grainy mesh from the shared [data-av] palettes */
 
 </style>
 </head>
 <body>
 <div class="t-stage" id="stage">
-  <div class="ticket" id="ticket" role="button" tabindex="0" aria-pressed="false" aria-label="Motion Night ticket. Press to flip">
+  <div class="ticket" id="ticket" role="button" tabindex="0" aria-pressed="false" aria-label="Andrew Antoshkin, Design Engineer. Press to flip">
     <div class="side front">
-      <div class="layer l-bg" data-depth=".25"></div>
-      <div class="shade"></div>
+      <div class="layer l-bg" data-depth=".25"><canvas class="foil" id="foil"></canvas></div>
       <div class="layer l-text" data-depth=".9">
-        <div class="title">Motion<br>Night</div>
+        <div class="title">Andrew<br>Antoshkin</div>
         <div class="meta">
-          <span>Oct 30 · 20:00 · Lisbon</span>
-          <b>No. 0042</b>
+          <span>Design Engineer</span>
+          <b>antoshkin.tech</b>
         </div>
       </div>
       <div class="glare" id="glare"></div>
     </div>
     <div class="side back">
-      <div class="qr" id="qr"></div>
-      <div class="seat"><div>Row<b>C</b></div><div>Seat<b>12</b></div><div>Gate<b>2</b></div></div>
-      <span class="flip-hint">Tap to flip back</span>
+      <div class="b-kicker">Design systems, agentic UI</div>
+      <div class="b-lead">Components, tokens and the checks that keep agents honest.</div>
+      <ul class="b-list">
+        <li>Yandex HR Tech<i>now</i></li><li>Sber<i>2021–2025</i></li><li>Otkritie Broker<i>2020–2021</i></li><li>MTS<i>2019–2020</i></li>
+      </ul>
+      <div class="b-foot"><span>t.me/andrewaitken</span><span>Tap to flip back</span></div>
     </div>
   </div>
 </div>
@@ -336,7 +336,7 @@ window.Motion = (() => {
 
   let timeScale = 1;
   const timers = [];
-  const after = (sec, fn) => { const t = { t: sec, fn }; timers.push(t); return t; };
+  const after = (sec, fn) => { const t = { t: sec, fn }; timers.push(t); hold(sec); return t; };
   const cancel = t => { const i = timers.indexOf(t); if (i > -1) timers.splice(i, 1); };
 
   // slow motion, synced with a parent page when embedded
@@ -353,19 +353,30 @@ window.Motion = (() => {
 
   const comps = [];
   let last = performance.now();
+  // Lab embedding (?still=1): the study paints one still frame and sleeps. It wakes for real input
+  // (pointer, touch, keys, resize) and sleeps again once nothing has moved for a moment. The lab page
+  // can also hold it awake ('lab:play') for studies that play by themselves while they are on screen.
+  // Opened on its own, it simply runs.
   const labStill = new URLSearchParams(location.search).get('still') === '1';
-  let labOn = !labStill;
+  let forced = !labStill, awakeUntil = 0, lastInput = 0, lastTouch = -1e9, running = false;
+  const awake = () => forced || performance.now() < awakeUntil;
+  function kick() { if (running) return; running = true; last = performance.now(); requestAnimationFrame(loop); }
+  function wake(ms) { const n = performance.now(); lastInput = lastTouch = n; awakeUntil = Math.max(awakeUntil, n + ms); kick(); }
+  // a timer started by a gesture keeps the study awake until it fires, but never for long after the last input
+  function hold(sec) { const n = performance.now(); awakeUntil = Math.max(awakeUntil, Math.min(n + sec * 1000 + 600, lastInput + 8000)); }
+  ['pointerdown', 'touchstart', 'keydown'].forEach(t => addEventListener(t, () => wake(4000), { passive: true, capture: true }));
+  ['pointermove', 'wheel'].forEach(t => addEventListener(t, () => wake(2500), { passive: true, capture: true }));
+  addEventListener('resize', () => wake(1500));
   addEventListener('message', e => {
-    if (!e.data) return;
-    if (e.data === 'lab:stop') labOn = false;
-    if (e.data === 'lab:play') { labOn = true; last = performance.now(); requestAnimationFrame(loop); }
+    if (e.data === 'lab:play') { forced = true; kick(); }
+    if (e.data === 'lab:stop') forced = false;
   });
-  window.__labStop = () => { labOn = false; };
+  window.__labStop = () => {};   // kept for older call sites: nothing has to be stopped by hand any more
   function loop(now) {
-    const live = labOn;
-    const dt = live ? Math.min((now - last) / 1000, 1 / 30) * timeScale : 0;
+    const on = awake();
+    const dt = on ? Math.min((now - last) / 1000, 1 / 30) * timeScale : 0;
     last = now;
-    if (live) {
+    if (on) {
       for (let i = timers.length - 1; i >= 0; i--) {
         if ((timers[i].t -= dt) <= 0) timers.splice(i, 1)[0].fn();
       }
@@ -373,12 +384,26 @@ window.Motion = (() => {
       for (let k = 0; k < sub; k++) comps.forEach(c => c.frame(dt / sub));
     }
     comps.forEach(c => { if (c.render) c.render(); });
-    if (live) requestAnimationFrame(loop);
+    if (on) requestAnimationFrame(loop); else running = false;
   }
-  requestAnimationFrame(loop);
+  kick();
+
+  // ---- settings from the URL (the lab modal's live controls) ----
+  //   ?t.--goo-out=230%2015   sets a CSS token before the study reads it
+  //   ?p.melt=1.4             a plain number the study asks for with Motion.param('melt', default)
+  //   ?p.lead=620%2036        a spring ("stiffness damping") asked for with Motion.pspring('lead', [620, 36])
+  const qp = new URLSearchParams(location.search);
+  qp.forEach((v, k) => { if (k.startsWith('t.')) document.documentElement.style.setProperty(k.slice(2), v); });
+  const param = (n, d) => { const v = parseFloat(qp.get('p.' + n)); return Number.isFinite(v) ? v : d; };
+  const pspring = (n, d) => {
+    const a = (qp.get('p.' + n) || '').trim().split(/\s+/).map(Number);
+    return a.length === 2 && a.every(Number.isFinite) ? a : d;
+  };
+  // true while nobody has touched the study for a few seconds: self-playing demos use it to step aside
+  const idle = (sec = 5) => performance.now() - lastTouch > sec * 1000;
 
   return {
-    S, tune, step, clamp, token, num, spring, after, cancel,
+    S, tune, step, clamp, token, num, spring, after, cancel, param, pspring, idle,
     register: c => comps.push(c),
     get timeScale() { return timeScale; },
     get slow() { return timeScale !== 1; },
@@ -390,29 +415,21 @@ window.Motion = (() => {
 </script>
 <script>
 // Parallax Ticket
-// The card tilts toward the cursor; each layer moves by its own depth, so the green orb,
-// the title and the VIP badge separate in space. A glare follows the cursor.
-// Click flips it on a spring that overshoots a little, showing the QR on the back.
+// The card tilts toward the cursor; the foil and the type move by their own depth, so they separate in space.
+// The foil is a fragment shader: noise warped through itself twice gives slow liquid folds of silver with a
+// faint pastel sheen. Under the pointer the foil heats up into saturated bands that follow the folds, and
+// tilting the card shifts the hues. Click flips it on a spring that overshoots a little.
 // Untouched, it floats gently so the depth is visible even without a cursor.
 (() => {
   const { S, tune, step, clamp, spring, num } = Motion;
   const $ = id => document.getElementById(id);
-  const stage = $('stage'), ticket = $('ticket'), glare = $('glare');
+  const stage = $('stage'), ticket = $('ticket'), glare = $('glare'), foil = $('foil');
   const layers = [...ticket.querySelectorAll('.layer')].map(el => ({ el, depth: parseFloat(el.dataset.depth) }));
 
   const T = { tilt: num('--ticket-tilt', 14), depth: num('--ticket-depth', 18), flip: spring('--ticket-flip', '170 15') };
 
-  // a QR-looking pattern: three finder squares and a stable pseudo random field
-  (function qr() {
-    const N = 25; let seed = 42, cells = '';
-    const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
-    const finder = (x, y) => `<rect x="${x}" y="${y}" width="7" height="7" fill="#000"/><rect x="${x + 1}" y="${y + 1}" width="5" height="5" fill="#fff"/><rect x="${x + 2}" y="${y + 2}" width="3" height="3" fill="#000"/>`;
-    const inFinder = (x, y) => (x < 8 && y < 8) || (x > N - 9 && y < 8) || (x < 8 && y > N - 9);
-    for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) if (!inFinder(x, y) && rnd() > .52) cells += `<rect x="${x}" y="${y}" width="1" height="1"/>`;
-    $('qr').innerHTML = `<svg viewBox="0 0 ${N} ${N}" shape-rendering="crispEdges"><g fill="#000">${cells}</g>${finder(0, 0)}${finder(N - 7, 0)}${finder(0, N - 7)}</svg>`;
-  })();
-
   const RX = S(0, 220, 18), RY = S(0, 220, 18), F = S(0, ...T.flip), G = S(0, 300, 26), LIFT = S(1, 300, 18);
+  const HEAT = S(0, ...spring('--ticket-heat', '90 15')), PX = S(.5, 160, 22), PY = S(.4, 160, 22);
   let hover = false, nx = 0, ny = 0, flipped = false, clock = 0, gx = 50, gy = 30;
 
   stage.addEventListener('pointermove', e => {
@@ -435,13 +452,75 @@ window.Motion = (() => {
   ticket.addEventListener('click', flip);
   ticket.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flip(); } });
 
+  // ---- foil
+  const VS = 'attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}';
+  const FS = `precision highp float;
+uniform vec2 R;uniform float T;uniform vec2 P;uniform float H;uniform vec2 L;
+float hash(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
+float noise(vec2 p){vec2 i=floor(p),f=fract(p),u=f*f*(3.-2.*f);
+  return mix(mix(hash(i),hash(i+vec2(1,0)),u.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),u.x),u.y);}
+float fbm(vec2 p){float v=0.,a=.5;mat2 m=mat2(1.6,1.2,-1.2,1.6);for(int i=0;i<5;i++){v+=a*noise(p);p=m*p;a*=.5;}return v;}
+vec3 spectrum(float h){return .5+.5*cos(6.2832*(h+vec3(0.,.33,.67)));}
+float height(vec2 uv,out vec2 r){
+  vec2 q=vec2(fbm(uv*1.5+T*.03),fbm(uv*1.5+vec2(5.2,1.3)-T*.025));
+  r=vec2(fbm(uv*1.3+q*1.8+vec2(1.7,9.2)),fbm(uv*1.3+q*1.8+vec2(8.3,2.8)));
+  return fbm(uv*1.2+r*2.);
+}
+void main(){
+  vec2 uv=gl_FragCoord.xy/R;uv.y=1.-uv.y;
+  vec2 r,r2;float e=1.5/R.x;
+  float f=height(uv,r),fx=height(uv+vec2(e,0.),r2),fy=height(uv+vec2(0.,e),r2);
+  vec3 n=normalize(vec3((f-fx)/e*.026,(f-fy)/e*.026,1.));
+  vec3 l=normalize(vec3(-.35+L.x*.03+(P.x-.5)*.6,-.45-L.y*.03+(P.y-.5)*.6,.85));
+  float dif=max(dot(n,l),0.),spec=pow(max(reflect(-l,n).z,0.),18.);
+  vec3 col=vec3(.36,.37,.41)+vec3(.5)*dif+spec*.6;
+  float film=dot(n.xy,vec2(.9,.6))*1.4+f*1.6+dot(L,vec2(.03,.02));
+  col=mix(col,col*(.78+.44*spectrum(film)),.3);
+  float d=length(uv-P);
+  float heat=clamp(H*(.3+.95*exp(-d*d/.08)),0.,1.);
+  vec3 hot=spectrum(film*1.3-d*1.1-T*.05)*(.35+.75*dif)+spec*.45;
+  col=mix(col,hot,heat*.85);
+  col+=(hash(gl_FragCoord.xy+fract(T))-.5)*.03;
+  gl_FragColor=vec4(col,1.);
+}`;
+  const gl = foil.getContext('webgl', { antialias: false, premultipliedAlpha: false });
+  let U = null, fw = 0, fh = 0;
+  if (gl) {
+    const sh = (type, src) => { const o = gl.createShader(type); gl.shaderSource(o, src); gl.compileShader(o); return o; };
+    const pr = gl.createProgram(); gl.attachShader(pr, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FS)); gl.linkProgram(pr);
+    if (gl.getProgramParameter(pr, gl.LINK_STATUS)) {
+      gl.useProgram(pr);
+      gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+      const a = gl.getAttribLocation(pr, 'a'); gl.enableVertexAttribArray(a); gl.vertexAttribPointer(a, 2, gl.FLOAT, false, 0, 0);
+      U = Object.fromEntries(['R', 'T', 'P', 'H', 'L'].map(k => [k, gl.getUniformLocation(pr, k)]));
+    }
+  }
+  function sizeFoil() {
+    const d = Math.min(devicePixelRatio || 1, 2);
+    fw = Math.max(1, Math.round(foil.clientWidth * d)); fh = Math.max(1, Math.round(foil.clientHeight * d));
+    foil.width = fw; foil.height = fh;
+  }
+  addEventListener('resize', sizeFoil); sizeFoil();
+  // the foil canvas overhangs the card by 20px on every side, so pointer coordinates are mapped into it
+  function paint() {
+    if (!U) return;
+    const cw = foil.clientWidth || 1, side = cw - 40;
+    gl.viewport(0, 0, fw, fh);
+    gl.uniform2f(U.R, fw, fh); gl.uniform1f(U.T, clock);
+    gl.uniform2f(U.P, (PX.x * side + 20) / cw, (PY.x * side + 20) / cw);
+    gl.uniform1f(U.H, clamp(HEAT.x, 0, 1)); gl.uniform2f(U.L, RY.x, RX.x);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  }
+
   Motion.register({
     frame(dt) {
       clock += dt;
       if (hover) { RX.t = -ny * T.tilt; RY.t = nx * T.tilt; G.t = 1; }
-      else if (clock < 4) { RX.t = Math.sin(clock * .9) * 4; RY.t = Math.cos(clock * .7) * 7; G.t = .25; }
-      else { RX.t = 0; RY.t = 0; G.t = .15; window.__labStop(); }
-      [RX, RY, F, G, LIFT].forEach(s => step(s, dt));
+      else { RX.t = Math.sin(clock * .9) * 4; RY.t = Math.cos(clock * .7) * 7; G.t = .25; }
+      HEAT.t = hover ? 1 : 0;
+      if (hover) { PX.t = gx / 100; PY.t = gy / 100; } else { PX.t = .5 + Math.cos(clock * .4) * .3; PY.t = .4 + Math.sin(clock * .5) * .25; }
+      [RX, RY, F, G, LIFT, HEAT, PX, PY].forEach(s => step(s, dt));
     },
     render() {
       ticket.style.transform = `rotateX(${RX.x}deg) rotateY(${RY.x + F.x}deg) scale(${LIFT.x})`;
@@ -451,6 +530,7 @@ window.Motion = (() => {
       glare.style.setProperty('--g', clamp(G.x, 0, 1));
       glare.style.setProperty('--gx', (hover ? gx : 50 + ox * 30) + '%');
       glare.style.setProperty('--gy', (hover ? gy : 30 + oy * 30) + '%');
+      paint();
     },
   });
 })();

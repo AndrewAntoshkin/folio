@@ -1,4 +1,3 @@
-<!-- Plan Switch, by DesignBookmark (https://designbookmark.com/motion#db-plan-switch). One file: open it in a browser. -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -26,25 +25,25 @@
   --chip-text:#b4b4b4;
   --white:#fff;
   --black:#000;
-  --green:#34d17a;
-  --green-text:#3ce085;
-  --orange:#ff9f0a;
-  --orange-text:#ff9f0a;                /* orange used as text: darker in light */
-  --red:#ff5a5f;
-  --yellow:#ffd23f;
-  --blue:#3ec9ff;
-  --purple:#c69bff;
-  --pink:#ff6ad5;
-  --heart:#ff4d6d;                      /* like, favourite */
-  --green-soft:rgba(52,209,122,.14);    /* tinted chip behind green text */
-  --on-green:#04140a;                   /* text and checks on --green, same in both themes */
+  --green:#bfe8a8;
+  --green-text:#c6ecb2;
+  --orange:#f2b06b;
+  --orange-text:#f2b06b;                /* orange used as text: darker in light */
+  --red:#f27c78;
+  --yellow:#f0d27c;
+  --blue:#8fb6ff;
+  --purple:#b9a6f2;
+  --pink:#efa3cf;
+  --heart:#f2708a;                      /* like, favourite */
+  --green-soft:rgba(191,232,168,.14);    /* tinted chip behind green text */
+  --on-green:#10190c;                   /* text and checks on --green, same in both themes */
   --object:#2c2c2c;                     /* a free-standing grey object with no card under it: island, goo bubbles */
   --inverse:#fff;                       /* primary pills, thumbs, drops */
   --on-inverse:#000;                    /* content on top of --inverse */
-  --rim:transparent;          /* no strokes anywhere (Noah, 9 Nov 2026) */ /* 1px inner edge on surfaces */
+  --rim:transparent;          /* no strokes anywhere */ /* 1px inner edge on surfaces */
   --focus-rim:transparent;
   --glow:rgba(255,255,255,.16);         /* cursor light on tiles */
-  --sh:0;                               /* drop shadow strength multiplier; 0 = no shadows anywhere (Noah, 9 Nov 2026) */
+  --sh:0;                               /* drop shadow strength multiplier; 0 = no shadows anywhere */
   color-scheme:dark;
 
   /* ---------- type ---------- */
@@ -199,8 +198,8 @@
   --muted:#6f6e68;
   --muted-2:#85847e;
   --chip-text:#5c5b56;
-  --green-text:#15803d;
-  --orange-text:#c2660a;
+  --green-text:#3f7d2c;
+  --orange-text:#a8590c;
   --object:#e6e5e2;
   --inverse:#0e0f11;
   --on-inverse:#f4f3f1;
@@ -240,23 +239,23 @@ body{
   background:var(--fill-2);border-radius:var(--r-pill);padding:4px 10px;
 }
 
-/* Avatars and card art: grainy mesh, mixed (Noah, 12 Nov 2026).
+/* Avatars and card art: grainy mesh, mixed.
    Three soft spots of colour melt over a main colour, under a fine grain.
    Each family is turned a different way (--p1..3), so the light spot and the deep spot
    never sit in the same corner twice and a row of them does not read as one recipe. */
 [data-av]{background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),radial-gradient(70% 70% at var(--p1),var(--av-l) 0,transparent 70%),radial-gradient(60% 60% at var(--p2),var(--av-p) 0,transparent 70%),radial-gradient(75% 75% at var(--p3),var(--av-b) 0,transparent 72%),var(--av-a)!important;background-blend-mode:overlay,normal,normal,normal,normal!important}
-[data-av="1"]{--av-l:#ff8fd0;--av-a:#ff3fa6;--av-b:#6a35ff;--av-p:#ffd3ec;--p1:12.0% 10.0%;--p2:92.0% 8.0%;--p3:88.0% 96.0%}
-[data-av="2"]{--av-l:#7fe3ff;--av-a:#2b8cff;--av-b:#5a35ff;--av-p:#cdf3ff;--p1:102.9% 65.6%;--p2:34.6% 107.4%;--p3:-5.9% 29.2%}
-[data-av="3"]{--av-l:#d6ff5a;--av-a:#22d39a;--av-b:#0a8a8f;--av-p:#efffb0;--p1:65.6% -2.9%;--p2:107.4% 65.4%;--p3:29.2% 105.9%}
-[data-av="4"]{--av-l:#ffb866;--av-a:#ff4a5e;--av-b:#c31f86;--av-p:#ffe0b8;--p1:34.4% 102.9%;--p2:-7.4% 34.6%;--p3:70.8% -5.9%}
-[data-av="5"]{--av-l:#fff27a;--av-a:#ffa51f;--av-b:#ff4a2e;--av-p:#fff3bf;--p1:-3.6% 62.9%;--p2:34.6% -7.4%;--p3:108.8% 40.1%}
-[data-av="6"]{--av-l:#7dffea;--av-a:#1fa8ff;--av-b:#3a3cff;--av-p:#c9fff5;--p1:90.0% 12.0%;--p2:92.0% 92.0%;--p3:4.0% 88.0%}
-[data-av="7"]{--av-l:#ffd3f1;--av-a:#c07bff;--av-b:#ff4f9a;--av-p:#f0dcff;--p1:62.9% 103.6%;--p2:-7.4% 65.4%;--p3:40.1% -8.8%}
-[data-av="8"]{--av-l:#c2ffd6;--av-a:#2fe08a;--av-b:#0a9a6a;--av-p:#e2ffec;--p1:37.1% -3.6%;--p2:107.4% 34.6%;--p3:59.9% 108.8%}
-[data-av="9"]{--av-l:#ffe3b5;--av-a:#ff8a6a;--av-b:#ff3f86;--av-p:#ffe6d8;--p1:10.0% 88.0%;--p2:8.0% 8.0%;--p3:96.0% 12.0%}
-[data-av="10"]{--av-l:#bfa0ff;--av-a:#5a3cff;--av-b:#1a1ab0;--av-p:#e0d2ff;--p1:103.6% 37.1%;--p2:65.4% 107.4%;--p3:-8.8% 59.9%}
-[data-av="11"]{--av-l:#f6ff86;--av-a:#8ae83a;--av-b:#1fb86a;--av-p:#fbffc8;--p1:-2.9% 34.4%;--p2:65.4% -7.4%;--p3:105.9% 70.8%}
-[data-av="12"]{--av-l:#ffa3cd;--av-a:#e03cff;--av-b:#6a2cff;--av-p:#ffd2ea;--p1:88.0% 90.0%;--p2:8.0% 92.0%;--p3:12.0% 4.0%}
+[data-av="1"]{--av-l:#ffa68f;--av-a:#ff6e3f;--av-b:#ff35f6;--av-p:#ffdcd3;--p1:12.0% 10.0%;--p2:92.0% 8.0%;--p3:88.0% 96.0%}
+[data-av="2"]{--av-l:#7f7fff;--av-a:#702bff;--av-b:#f835ff;--av-p:#cecdff;--p1:102.9% 65.6%;--p2:34.6% 107.4%;--p3:-5.9% 29.2%}
+[data-av="3"]{--av-l:#5aff5f;--av-a:#2281d3;--av-b:#0a228f;--av-p:#b1ffb0;--p1:65.6% -2.9%;--p2:107.4% 65.4%;--p3:29.2% 105.9%}
+[data-av="4"]{--av-l:#ceff66;--av-a:#ffc44a;--av-b:#c3381f;--av-p:#e6ffb8;--p1:34.4% 102.9%;--p2:-7.4% 34.6%;--p3:70.8% -5.9%}
+[data-av="5"]{--av-l:#a4ff7a;--av-a:#aaff1f;--av-b:#ffee2e;--av-p:#d9ffbf;--p1:-3.6% 62.9%;--p2:34.6% -7.4%;--p3:108.8% 40.1%}
+[data-av="6"]{--av-l:#7daeff;--av-a:#451fff;--av-b:#d23aff;--av-p:#c9dfff;--p1:90.0% 12.0%;--p2:92.0% 92.0%;--p3:4.0% 88.0%}
+[data-av="7"]{--av-l:#ffd7d3;--av-a:#ff7bd7;--av-b:#ff8e4f;--av-p:#ffdcf3;--p1:62.9% 103.6%;--p2:-7.4% 65.4%;--p3:40.1% -8.8%}
+[data-av="8"]{--av-l:#c2f8ff;--av-a:#2fabe0;--av-b:#0a599a;--av-p:#e2fbff;--p1:37.1% -3.6%;--p2:107.4% 34.6%;--p3:59.9% 108.8%}
+[data-av="9"]{--av-l:#e1ffb5;--av-a:#ffff6a;--av-b:#ff8e3f;--av-p:#f9ffd8;--p1:10.0% 88.0%;--p2:8.0% 8.0%;--p3:96.0% 12.0%}
+[data-av="10"]{--av-l:#ffa0f5;--av-a:#f33cff;--av-b:#901ab0;--av-p:#ffd2fb;--p1:103.6% 37.1%;--p2:65.4% 107.4%;--p3:-8.8% 59.9%}
+[data-av="11"]{--av-l:#97ff86;--av-a:#3ae872;--av-b:#1f8eb8;--av-p:#d0ffc8;--p1:-2.9% 34.4%;--p2:65.4% -7.4%;--p3:105.9% 70.8%}
+[data-av="12"]{--av-l:#ffc1a3;--av-a:#ff3c85;--av-b:#ff2cef;--av-p:#ffddd2;--p1:88.0% 90.0%;--p2:8.0% 92.0%;--p3:12.0% 4.0%}
 
 /* Plan Switch: a pricing card that answers the only question people have.
    Monthly / Yearly slides a highlight with a stiff front edge and a soft back
@@ -315,14 +314,14 @@ body{
     <button role="radio" aria-checked="true" id="bYear">Yearly</button>
   </div>
   <div class="plan">
-    <div class="name"><span>Pro</span><span class="save" id="save">Save 20%</span></div>
+    <div class="name"><span>Team</span><span class="save" id="save">Save 17%</span></div>
     <div class="price"><span class="cur">$</span><span class="num" id="price" aria-hidden="true"></span><span class="per">/mo</span></div>
     <div class="bill roll-line" id="bill" aria-live="polite"></div>
   </div>
   <ul class="feats" id="feats">
-    <li><span class="ck"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4 8-9"/></svg></span>Unlimited projects</li>
-    <li><span class="ck"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4 8-9"/></svg></span>Team seats and roles</li>
-    <li class="extra" id="extra"><span class="ck is-green"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4 8-9"/></svg></span>Two months free</li>
+    <li><span class="ck"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4 8-9"/></svg></span>Unlimited boards</li>
+    <li><span class="ck"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4 8-9"/></svg></span>Shared libraries and roles</li>
+    <li class="extra" id="extra"><span class="ck is-green"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4 8-9"/></svg></span>2 months on us</li>
   </ul>
   <button class="cta" id="cta"><span class="cta-in" id="ctaIn"></span></button>
 </div>
@@ -349,7 +348,7 @@ window.Motion = (() => {
 
   let timeScale = 1;
   const timers = [];
-  const after = (sec, fn) => { const t = { t: sec, fn }; timers.push(t); return t; };
+  const after = (sec, fn) => { const t = { t: sec, fn }; timers.push(t); hold(sec); return t; };
   const cancel = t => { const i = timers.indexOf(t); if (i > -1) timers.splice(i, 1); };
 
   // slow motion, synced with a parent page when embedded
@@ -366,19 +365,30 @@ window.Motion = (() => {
 
   const comps = [];
   let last = performance.now();
+  // Lab embedding (?still=1): the study paints one still frame and sleeps. It wakes for real input
+  // (pointer, touch, keys, resize) and sleeps again once nothing has moved for a moment. The lab page
+  // can also hold it awake ('lab:play') for studies that play by themselves while they are on screen.
+  // Opened on its own, it simply runs.
   const labStill = new URLSearchParams(location.search).get('still') === '1';
-  let labOn = !labStill;
+  let forced = !labStill, awakeUntil = 0, lastInput = 0, lastTouch = -1e9, running = false;
+  const awake = () => forced || performance.now() < awakeUntil;
+  function kick() { if (running) return; running = true; last = performance.now(); requestAnimationFrame(loop); }
+  function wake(ms) { const n = performance.now(); lastInput = lastTouch = n; awakeUntil = Math.max(awakeUntil, n + ms); kick(); }
+  // a timer started by a gesture keeps the study awake until it fires, but never for long after the last input
+  function hold(sec) { const n = performance.now(); awakeUntil = Math.max(awakeUntil, Math.min(n + sec * 1000 + 600, lastInput + 8000)); }
+  ['pointerdown', 'touchstart', 'keydown'].forEach(t => addEventListener(t, () => wake(4000), { passive: true, capture: true }));
+  ['pointermove', 'wheel'].forEach(t => addEventListener(t, () => wake(2500), { passive: true, capture: true }));
+  addEventListener('resize', () => wake(1500));
   addEventListener('message', e => {
-    if (!e.data) return;
-    if (e.data === 'lab:stop') labOn = false;
-    if (e.data === 'lab:play') { labOn = true; last = performance.now(); requestAnimationFrame(loop); }
+    if (e.data === 'lab:play') { forced = true; kick(); }
+    if (e.data === 'lab:stop') forced = false;
   });
-  window.__labStop = () => { labOn = false; };
+  window.__labStop = () => {};   // kept for older call sites: nothing has to be stopped by hand any more
   function loop(now) {
-    const live = labOn;
-    const dt = live ? Math.min((now - last) / 1000, 1 / 30) * timeScale : 0;
+    const on = awake();
+    const dt = on ? Math.min((now - last) / 1000, 1 / 30) * timeScale : 0;
     last = now;
-    if (live) {
+    if (on) {
       for (let i = timers.length - 1; i >= 0; i--) {
         if ((timers[i].t -= dt) <= 0) timers.splice(i, 1)[0].fn();
       }
@@ -386,12 +396,26 @@ window.Motion = (() => {
       for (let k = 0; k < sub; k++) comps.forEach(c => c.frame(dt / sub));
     }
     comps.forEach(c => { if (c.render) c.render(); });
-    if (live) requestAnimationFrame(loop);
+    if (on) requestAnimationFrame(loop); else running = false;
   }
-  requestAnimationFrame(loop);
+  kick();
+
+  // ---- settings from the URL (the lab modal's live controls) ----
+  //   ?t.--goo-out=230%2015   sets a CSS token before the study reads it
+  //   ?p.melt=1.4             a plain number the study asks for with Motion.param('melt', default)
+  //   ?p.lead=620%2036        a spring ("stiffness damping") asked for with Motion.pspring('lead', [620, 36])
+  const qp = new URLSearchParams(location.search);
+  qp.forEach((v, k) => { if (k.startsWith('t.')) document.documentElement.style.setProperty(k.slice(2), v); });
+  const param = (n, d) => { const v = parseFloat(qp.get('p.' + n)); return Number.isFinite(v) ? v : d; };
+  const pspring = (n, d) => {
+    const a = (qp.get('p.' + n) || '').trim().split(/\s+/).map(Number);
+    return a.length === 2 && a.every(Number.isFinite) ? a : d;
+  };
+  // true while nobody has touched the study for a few seconds: self-playing demos use it to step aside
+  const idle = (sec = 5) => performance.now() - lastTouch > sec * 1000;
 
   return {
-    S, tune, step, clamp, token, num, spring, after, cancel,
+    S, tune, step, clamp, token, num, spring, after, cancel, param, pspring, idle,
     register: c => comps.push(c),
     get timeScale() { return timeScale; },
     get slow() { return timeScale !== 1; },
@@ -463,8 +487,8 @@ window.Motion = (() => {
     const right = !first && y;                       // moving right: the right edge leads
     tune(L, ...(right ? T.trail : T.lead)); tune(R, ...(right ? T.lead : T.trail));
     L.t = l; R.t = r; if (first) { L.x = l; R.x = r; }
-    price.set(y ? 16 : 20);
-    bill.set(y ? 'Billed $192 yearly' : 'Billed monthly, cancel anytime');
+    price.set(y ? 24 : 29);
+    bill.set(y ? 'Billed $288 yearly' : 'Billed monthly, pause anytime');
     SV.t = y ? 1 : 0; if (y) SV.x = Math.min(SV.x, .3);
     EX.t = y ? 1 : 0;
     if (y) { EK.x = .3; EK.t = 0; after(.16, () => { EK.t = 1; }); }
@@ -481,9 +505,9 @@ window.Motion = (() => {
   let state = 'idle';
   function setBtn(s) {
     state = s;
-    if (s === 'idle') { cta.classList.remove('is-done'); CW.t = 1; btn.set('idle', 'Upgrade to Pro'); cta.setAttribute('aria-label', 'Upgrade to Pro'); }
-    if (s === 'busy') { CW.t = 0; btn.set('busy', '<span class="spin" aria-hidden="true"></span>'); cta.setAttribute('aria-label', 'Upgrading'); }
-    if (s === 'done') { cta.classList.add('is-done'); CW.t = 1; CP.x = .92; btn.set('done', `${CHECK}You're on Pro`); cta.setAttribute('aria-label', "You're on Pro"); }
+    if (s === 'idle') { cta.classList.remove('is-done'); CW.t = 1; btn.set('idle', 'Start Team plan'); cta.setAttribute('aria-label', 'Start Team plan'); }
+    if (s === 'busy') { CW.t = 0; btn.set('busy', '<span class="spin" aria-hidden="true"></span>'); cta.setAttribute('aria-label', 'Starting'); }
+    if (s === 'done') { cta.classList.add('is-done'); CW.t = 1; CP.x = .92; btn.set('done', `${CHECK}You're on Team`); cta.setAttribute('aria-label', "You're on Team"); }
   }
   function upgrade() {
     if (state !== 'idle') return;
@@ -498,7 +522,6 @@ window.Motion = (() => {
       cycles++;
       if (cycles % 5 === 0) upgrade(); else pick(!yearly);
     }
-    if (cycles >= 5) { after(4, () => window.__labStop()); return; }
     after(2.6, auto);
   }
   after(2, auto);
