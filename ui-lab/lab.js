@@ -223,6 +223,16 @@
       ru: { what: 'Мармеладные кнопки, у которых форма стала состоянием. Пока кнопку не трогают, она круг. Зажали, и углы стягиваются в плотный скруглённый квадрат, будто её сжали пальцами. Выбрали, и она остаётся квадратной, но мягче, чтобы выбранное читалось даже без цвета. Углами управляет отдельная пружина с небольшим перелётом, поэтому форма чуть проскакивает и садится. Кнопка с фильтром ведёт себя так же: пилюля, пока ничего не выбрано, и прямоугольник со скруглением, когда выбрано. Счётчик на ней ставится по текущему радиусу угла, ровно на дугу.', how: 'Играет само. Зажимайте и отпускайте кружки, затем нажмите Filter.' },
       en: { what: 'Gummy buttons where shape is a state. Untouched, a button is a circle. Hold it and the corners pull into a tight rounded square, as if pinched. Choose it and it stays square, only softer, so the choice reads even without colour. The corners run on their own spring with a little overshoot, so the shape skips past and settles. The Filter button does the same: a pill while nothing is chosen, a rounded rectangle once something is. Its counter is placed from the live corner radius, right on the arc.', how: 'Plays by itself. Hold and release the circles, then press Filter.' },
       settings: [sp('p.shape', 'Пружина формы', 'Shape spring', [300, 18]), sp('p.wobble', 'Покачивание', 'Wobble', [420, 9])]
+    },
+    'distortion-wave': {
+      ru: { what: 'DistortionWave из distortion-waves (Jakub Antalik, MIT, libraries.dev/waves). Цветная волна уносит один экран в другой: карточка тянется к кнопке, волна выходит из точки нажатия, кренится в её сторону и оставляет цвет на краях. Кнопка в overlay, поэтому не гнётся. Повторное нажатие сворачивает волну обратно.', how: 'Играет само. Нажмите Confirm. Undo возвращает первый экран.' },
+      en: { what: 'DistortionWave from distortion-waves (Jakub Antalik, MIT, libraries.dev/waves). A colour wave carries one screen into the next: the card pulls toward the button, the wave leaves from the press and leans that way, and the colour stays on the edges. The button sits in the overlay, so it stays sharp. Press again and the wave collapses back into it.', how: 'Plays by itself. Press Confirm. Undo brings the first screen back.' },
+      settings: [nm('p.amp', 'Высота волны', 'Wave height', 1, .2, 2, .05), nm('p.travel', 'Длительность', 'Travel', .95, .4, 2.2, .05, 's'), nm('p.lean', 'Крен к нажатию', 'Lean toward the press', .85, 0, 1.5, .05)]
+    },
+    'thinking-orbs': {
+      ru: { what: 'Четыре состояния ThinkingOrb из thinking-orbs (Jakub Antalik, MIT, libraries.dev/orbs) в одной карточке: Searching, Thinking, Solving и Listening. Каждая точка рисуется библиотекой, не спиннером.', how: 'Играет само, когда карточка на экране.' },
+      en: { what: 'Four ThinkingOrb states from thinking-orbs (Jakub Antalik, MIT, libraries.dev/orbs) in one card: Searching, Thinking, Solving and Listening. Each orb is drawn by the library, not a spinner.', how: 'Plays by itself while the card is on screen.' },
+      settings: []
     }
   };
 
