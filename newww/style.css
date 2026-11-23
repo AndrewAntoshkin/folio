@@ -1089,3 +1089,113 @@ main.approach { padding-top: 176px; }
 .tab-panel { display: flex; flex-direction: column; gap: 24px; }
 .tab-panel[hidden] { display: none; }
 @media (max-width: 809px) { .tabs { gap: 10px 20px; } .tabs button { font-size: 18px; line-height: 24px; } .tabs button[aria-selected="true"]::after { bottom: -4px; } .skill-card-bar > div { justify-content: flex-start; } }
+
+/* ── Gallery tone layer ───────────────────────────────
+   Warm graphite greys, hairline edges, quiet raised buttons and one snappy easing curve,
+   after a1.gallery. Pure overrides: delete this block to restore the previous look. */
+:root {
+  --bg: #101211;
+  --g-50: #171918;
+  --g-100: #1d1f1e;
+  --g-150: #242625;
+  --g-200: #2b2e2d;
+  --text: #f3f5f4;
+  --muted: #8f9e99;
+  --soft: #b4bdba;
+  --line: rgba(255, 255, 255, 0.08);
+  --glass: rgba(255, 255, 255, 0.06);
+  --glass-hover: rgba(255, 255, 255, 0.1);
+  --card: var(--g-100);
+  --card-2: var(--g-50);
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --spring: cubic-bezier(0.34, 1.3, 0.64, 1);
+  --lift: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 0 0 1px rgba(0, 0, 0, 0.12), 0 2px 2px rgba(0, 0, 0, 0.12), 0 4px 4px rgba(0, 0, 0, 0.12), 0 8px 8px rgba(0, 0, 0, 0.12);
+  --hair: inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+  --col: 880px;
+}
+html { background: var(--bg); }
+body { background: var(--bg); color: var(--text); }
+::selection { background: rgba(202, 232, 189, 0.3); color: #fff; }
+.hero-frame { mix-blend-mode: lighten; }
+
+/* surfaces */
+.foot { background: var(--bg); border-top-color: var(--line); }
+.svc, .price, .contact-shell { background: var(--g-100); box-shadow: var(--hair); }
+.svc:hover { background: var(--g-150); transform: translateY(-2px); }
+.svc-in, .price-in, .contact-in, .contact-card.cta-form { background: var(--bg); }
+.vcard, .qa, .handoff article { background: var(--g-50); box-shadow: var(--hair); border: 0; }
+.vcard:hover, .qa:hover { background: var(--g-100); transform: none; }
+.vava, .info-ico { background: var(--g-150); }
+.cta-card { background: var(--g-50); border-color: var(--line); }
+.cta-form { background: linear-gradient(135deg, var(--g-100) 0%, var(--bg) 100%); border-color: var(--line); }
+.cta-form input, .cta-form textarea { background: var(--glass); box-shadow: inset 0 0 0 1px var(--line); border-radius: 12px; }
+.cta-form input:focus, .cta-form textarea:focus { background: var(--glass-hover); box-shadow: 0 0 0 1px rgba(202, 232, 189, 0.55); }
+.prose pre, .cmd, .skill-card { background: var(--g-50); border-color: var(--line); border-radius: 12px; }
+.prose code { background: var(--glass); box-shadow: inset 0 0 0 1px var(--line); border-radius: 6px; }
+.pcover, .prod-img { border-radius: 16px; outline: 1px solid rgba(255, 255, 255, 0.07); outline-offset: -1px; background: var(--g-50); }
+.pcover { clip-path: inset(0 round 16px); }
+.workflow .pcover { border-radius: 12px; clip-path: inset(0 round 12px); }
+.prod-img, .prod:hover .prod-img { box-shadow: none; }
+.prose img, .prose figure.case-fig img, .prose figure.case-fig iframe.case-demo { border-radius: 12px; }
+.jrow::before, .proof::before { border-radius: 12px; background: var(--glass); }
+
+/* greys for text */
+.prose p, .prose li, .prose dd { color: var(--soft); }
+.prose strong, .prose dt, .prose a:not(.btn) { color: var(--text); }
+.prose li::marker { color: var(--muted); opacity: 0.6; }
+.layer p, .plain li, .hold, .approach-top .stance { color: var(--soft); }
+.ticker-track span { color: rgba(233, 235, 234, 0.4); }
+.skill-modal { background: var(--g-50); }
+
+/* chips and tags */
+.tag { height: 30px; padding: 0 12px; border-radius: 10px; background: var(--glass); border-color: var(--line); backdrop-filter: none; -webkit-backdrop-filter: none; font-size: 13px; }
+.pcover .tag { background: rgba(16, 18, 17, 0.55); border-color: rgba(255, 255, 255, 0.16); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.pill { height: 30px; padding: 0 12px; border-radius: 10px; background: var(--glass); font-size: 13px; }
+
+/* tabs: grey chips, active chip is light with dark text */
+.tabs { gap: 6px; padding-bottom: 0; border-bottom: 0; align-items: center; }
+.tabs button { align-items: center; gap: 6px; padding: 8px 14px; border-radius: 12px; font: 500 15px/20px var(--sans); letter-spacing: var(--track-b); color: var(--soft); background: var(--glass); transition: background 0.2s var(--ease), color 0.2s var(--ease), transform 0.3s var(--spring); }
+.tabs button sup { margin: 0; font-size: 12px; line-height: 16px; opacity: 0.6; }
+.tabs button:hover { color: var(--text); background: var(--glass-hover); }
+.tabs button:active { transform: scale(0.96); }
+.tabs button[aria-selected="true"] { color: var(--bg); background: #e9ebea; }
+.tabs button[aria-selected="true"]::after { display: none; }
+.tabs-wrap { gap: 32px; }
+
+/* buttons: raised, compact, quick */
+.btn { height: 48px; padding: 0 28px; font-size: 15px; border-radius: 14px; transition: transform 0.3s var(--spring), box-shadow 0.2s var(--ease), background 0.2s var(--ease), border-color 0.2s var(--ease); }
+.btn.mint { background: linear-gradient(180deg, #d6efca 0%, #bfe0b0 100%); box-shadow: var(--lift); }
+.btn.mint:hover { transform: translateY(-1px); box-shadow: var(--lift), 0 10px 24px -8px rgba(202, 232, 189, 0.4); }
+.btn.dark { background: var(--glass); border-color: var(--line); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); }
+.btn.dark:hover { background: var(--glass-hover); border-color: rgba(255, 255, 255, 0.16); transform: translateY(-1px); }
+.btn:active { transform: scale(0.97); transition-duration: 0.1s; }
+.float { height: 40px; border-radius: 12px; background: linear-gradient(180deg, #d6efca 0%, #bfe0b0 100%); box-shadow: var(--lift); }
+.float:hover { box-shadow: var(--lift), 0 10px 24px -8px rgba(202, 232, 189, 0.4); transform: translateY(-1px); }
+.cta-form button { height: 52px; border-radius: 14px; background: linear-gradient(180deg, #d6efca 0%, #bfe0b0 100%); box-shadow: var(--lift); }
+.cta-form button:hover { box-shadow: var(--lift), 0 10px 24px -8px rgba(202, 232, 189, 0.4); transform: translateY(-1px); }
+.arrow-btn { width: 40px; height: 40px; border-color: var(--line); }
+.pcard:hover .arrow-btn, .jrow:hover .arrow-btn, .proof:hover .arrow-btn { background: var(--glass-hover); border-color: rgba(255, 255, 255, 0.18); }
+.qa .plus { background: var(--glass); }
+.qa button:hover .plus { background: var(--glass-hover); }
+
+/* dock */
+.dock nav, .lang { background: rgba(23, 25, 24, 0.6); border-color: rgba(255, 255, 255, 0.1); box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.25); }
+.dock i { background: var(--glass-hover); }
+.lang:hover { background: var(--glass-hover); }
+
+/* motion: shorter, one curve */
+[data-r] { transform: translateY(24px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); transition-delay: var(--d, 0s); }
+.jtitle, .proof-n { transition: transform 0.35s var(--ease); }
+.jrow:hover .jtitle { transform: translateX(6px); }
+.pcover .bg { transition: transform 0.9s var(--ease); }
+.prod-img img { transition: transform 0.9s var(--ease); }
+.prose a:not(.btn), .sec-head a, .back, .crumbs a { transition-duration: 0.2s; }
+
+/* type: crisper headings */
+.hero h1 { line-height: 0.96; }
+.art h1, .page-head h1 { font-size: 56px; line-height: 1.02; }
+.art h1.long { font-size: 46px; line-height: 1.06; }
+.sec-head h2 { font-size: 28px; line-height: 32px; }
+.sec-head .rule { background: var(--line); }
+.col { gap: 128px; }
+.plist { gap: 56px; }
