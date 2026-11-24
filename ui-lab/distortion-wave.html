@@ -8,7 +8,7 @@
 :root{color-scheme:dark}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body,#root{height:100%}
-/* every size below is in rem, and rem is set from the window height so the whole phone scales as one piece */
+/* every size below is in rem, and rem follows the window, so the card scales as one piece */
 html{font-size:var(--k,1px)}
 body{
   background:#171717;color:#fff;overflow:hidden;
@@ -17,49 +17,38 @@ body{
 }
 .stage{height:100%;display:grid;place-items:center}
 
-/* phone: a plain frame and its side buttons */
-.phone{position:relative;width:300rem;height:620rem;border-radius:54rem;background:#3b3b3f;box-shadow:inset 0 0 0 1.5rem #505055}
-.phone .key{position:absolute;width:5rem;border-radius:2rem;background:#34343a;z-index:-1}
-.phone .key.l{left:-3rem}
-.phone .key.r{right:-3rem}
-.bezel{position:absolute;inset:5rem;border-radius:49rem;background:#000;padding:7rem}
-.bezel>.screen{border-radius:42rem}
+.deal{position:relative;width:300rem;height:367rem;border-radius:26rem;overflow:hidden;background:#1d1e26;
+  box-shadow:0 0 0 1rem rgba(255,255,255,.12),0 24rem 48rem rgba(0,0,0,.35)}
+.card{width:100%;height:100%;padding:25rem;background:#1d1e26;color:#fff}
 
-/* screen */
-.screen{position:relative;width:100%;height:100%;background:#e7e7e9;color:#111;padding:26rem 12rem 0;overflow:hidden}
-.nav{position:relative;height:38rem;display:flex;align-items:center;justify-content:center}
-.nav .back{position:absolute;left:2rem;top:1rem;width:36rem;height:36rem;border-radius:50%;background:#f6f6f7;display:grid;place-items:center}
-.nav .back svg{width:16rem;height:16rem}
-.nav b{font-size:15rem;font-weight:600;letter-spacing:-.01em}
-.plan-wave{position:relative;margin-top:14rem;height:359rem;border-radius:26rem;overflow:hidden;background:#1d1d1f}
-.plan{height:100%;padding:18rem 14rem 12rem;background:#1d1d1f;color:#f3f3f3}
-.plan h3{font-size:27rem;font-weight:500;letter-spacing:-.03em}
-.plan .about{margin-top:8rem;font-size:11rem;line-height:1.45;color:#8d8d90}
-.price{margin-top:24rem;display:flex;align-items:baseline;gap:6rem}
-.price .cur{font-size:27rem;font-weight:500;letter-spacing:-.02em;margin-right:-3rem}
-.price .num{font-size:47rem;font-weight:500;letter-spacing:-.045em;line-height:1}
-.price .per{font-size:17rem;font-weight:400;color:#c4c4c6;letter-spacing:-.02em}
-.next{margin-top:6rem;font-size:11rem;line-height:1.3;min-height:29rem;color:#626265}
-.pay{margin-top:14rem;padding:12rem 12rem;border-radius:16rem;border:1rem solid rgba(255,255,255,.1);display:flex;align-items:center;gap:10rem}
-.pay .dots{font-size:14rem;letter-spacing:.02em;color:#d0d0d2;flex:1}
-.pay .chg{flex:none;width:80rem;height:26rem;border-radius:9rem;background:#7be04b;color:#0f1a08;font:600 10.5rem/26rem system-ui,-apple-system,sans-serif;text-align:center}
-.plan .slot{margin-top:8rem;height:46rem;visibility:hidden}
-.visa{width:30rem;height:20rem;border-radius:3rem;background:#1b4a9d;color:#fff;font:italic 800 9.5rem/20rem system-ui,sans-serif;text-align:center;letter-spacing:-.02em}
-.mc{position:relative;width:30rem;height:20rem}
-.mc i{position:absolute;top:1rem;width:18rem;height:18rem;border-radius:50%}
-.mc i:first-child{left:2rem;background:#eb001b}
-.mc i:last-child{left:10rem;background:#f79e1b;mix-blend-mode:screen;opacity:.92}
-.edit{display:flex;align-items:center;justify-content:center;gap:9rem;border:0;font:500 14rem/1 system-ui,-apple-system,"Segoe UI",Inter,sans-serif;color:#ececee;background:#2b2b2e;border-radius:16rem}
-.edit svg{width:16rem;height:16rem}
-.peek{margin-top:10rem;padding:18rem 16rem;border-radius:26rem;background:#f4f4f5}
-.peek b{display:block;font-size:24rem;font-weight:500;letter-spacing:-.03em}
-.peek span{display:block;margin-top:6rem;font-size:11rem;line-height:1.4;color:#79797c}
+.who{display:flex;align-items:center;gap:16rem}
+.who .pic{flex:none;width:54rem;height:54rem;border-radius:14rem;object-fit:cover;background:#2d2f3b;display:block}
+.who b{display:block;font-size:18rem;font-weight:600;letter-spacing:-.015em;line-height:1.1}
+.who span{display:block;margin-top:6rem;font-size:12.5rem;line-height:1.2;color:#707285}
+.rule{height:1rem;margin-top:28rem;background:rgba(255,255,255,.09)}
+
+.sub{margin-top:30rem;height:16rem;display:flex;align-items:center;justify-content:space-between;
+  font-size:13rem;font-weight:600;letter-spacing:.11em;text-transform:uppercase}
+.sub i{font-style:normal;color:#7b7d8f}
+.sub em{font-style:normal;color:#f3d58d}
+
+.price{margin-top:22rem;height:42rem;display:flex;align-items:baseline;gap:12rem}
+.price .now{font-size:38rem;font-weight:700;letter-spacing:-.03em;line-height:42rem}
+.price .was{font-size:18rem;font-weight:500;color:#6d6f80;text-decoration:line-through;text-decoration-thickness:1.5rem;letter-spacing:-.01em}
+
+.tags{margin-top:12rem;height:24rem;display:flex;align-items:center;gap:8rem}
+.tag{height:24rem;padding:0 10rem;border-radius:8rem;background:#2c2e3a;color:#8fdb5c;font-size:12rem;line-height:24rem;white-space:nowrap}
+.info{width:24rem;height:24rem;border-radius:7rem;border:1rem solid #30323f;display:grid;place-items:center;color:#6d6f80;
+  font:italic 400 13rem/1 Georgia,"Times New Roman",serif}
+
+.slot{margin-top:34rem;height:48rem;visibility:hidden}
 
 /* the button lives in the overlay, so the wave does not bend it */
-button.edit{position:absolute;left:0;top:0;cursor:pointer;opacity:0;transition:opacity .2s,background .2s}
-button.edit.ready{opacity:1}
-button.edit:active{background:#353539}
-button.edit:focus-visible{outline:2rem solid #fff;outline-offset:2rem}
+.pay{position:absolute;left:0;top:0;border:0;border-radius:12rem;background:#f6d58b;color:#15161b;cursor:pointer;
+  font:600 14.5rem/1 system-ui,-apple-system,"Segoe UI",Inter,sans-serif;letter-spacing:-.005em;opacity:0;transition:opacity .2s,filter .2s}
+.pay.ready{opacity:1}
+.pay:active{filter:brightness(.94)}
+.pay:focus-visible{outline:2rem solid #fff;outline-offset:2rem}
 </style>
 </head>
 <body>
