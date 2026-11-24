@@ -225,8 +225,8 @@
       settings: [sp('p.shape', 'Пружина формы', 'Shape spring', [300, 18]), sp('p.wobble', 'Покачивание', 'Wobble', [420, 9])]
     },
     'distortion-wave': {
-      ru: { what: 'Цветная волна переносит одну карточку в другую. На карточке коуча с ценой нажимаете Proceed to Payment: волна выходит из кнопки, наклоняется в её сторону, оставляет цвет по краям и на ходу меняет коуча, цену и скидку. Кнопка лежит в overlay и не искажается. Повторное нажатие сворачивает волну обратно.', how: 'Играет само. Нажмите Proceed to Payment.' },
-      en: { what: 'A colour wave carries one card into another. On a coach card with a price, press Proceed to Payment: the wave starts at the button, leans toward it, leaves colour at the edges and swaps the coach, the price and the discount on its way. The button sits in the overlay, so it is not distorted. Pressing again collapses the wave.', how: 'Plays by itself. Press Proceed to Payment.' },
+      ru: { what: 'Цветная волна меняет содержимое одной и той же карточки. Нажимаете Proceed to Payment: волна выходит из кнопки, наклоняется в её сторону, оставляет цвет по краям и на ходу превращает счёт в квитанцию: «Subtotal» становится «Total», скидка уходит, появляется карта и «Paid». Кнопка лежит в overlay и не искажается, она только меняет подпись и цвет. Undo payment сворачивает волну обратно.', how: 'Играет само. Нажмите Proceed to Payment.' },
+      en: { what: 'A colour wave changes the contents of one and the same card. Press Proceed to Payment: the wave starts at the button, leans toward it, leaves colour at the edges and turns the bill into a receipt on its way: Subtotal becomes Total, the discount goes, the card and Paid appear. The button sits in the overlay, so it is not distorted; it only changes its label and colour. Undo payment collapses the wave.', how: 'Plays by itself. Press Proceed to Payment.' },
       settings: [nm('p.amp', 'Высота волны', 'Wave height', 1, .2, 2, .05), nm('p.travel', 'Длительность', 'Travel', .95, .4, 2.2, .05, 's'), nm('p.lean', 'Крен к нажатию', 'Lean toward the press', .85, 0, 1.5, .05)]
     },
     'thinking-orbs': {

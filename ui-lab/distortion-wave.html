@@ -5,7 +5,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Distortion wave</title>
 <style>
-:root{color-scheme:dark}
+:root{color-scheme:dark;
+  --surface:#262626;--fill-2:rgba(255,255,255,.09);--fill-3:rgba(255,255,255,.14);--line:rgba(255,255,255,.12);
+  --text:#fff;--muted:#9a9a9a;--muted-2:#828282;--yellow:#f0d27c;--green:#bfe8a8;--green-text:#c6ecb2;--on-green:#10190c;--inverse:#fff;--on-inverse:#000;
+}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body,#root{height:100%}
 /* every size below is in rem, and rem follows the window, so the card scales as one piece */
@@ -17,36 +20,38 @@ body{
 }
 .stage{height:100%;display:grid;place-items:center}
 
-.deal{position:relative;width:300rem;height:367rem;border-radius:26rem;overflow:hidden;background:#1d1e26;
-  box-shadow:0 0 0 1rem rgba(255,255,255,.12),0 24rem 48rem rgba(0,0,0,.35)}
-.card{width:100%;height:100%;padding:25rem;background:#1d1e26;color:#fff}
+.deal{position:relative;width:300rem;height:367rem;border-radius:26rem;overflow:hidden;background:var(--surface);
+  box-shadow:0 0 0 1rem rgba(255,255,255,.14),0 24rem 48rem rgba(0,0,0,.35)}
+.card{width:100%;height:100%;padding:25rem;background:var(--surface);color:var(--text)}
 
 .who{display:flex;align-items:center;gap:16rem}
-.who .pic{flex:none;width:54rem;height:54rem;border-radius:14rem;object-fit:cover;background:#2d2f3b;display:block}
+.who .pic{flex:none;width:54rem;height:54rem;border-radius:14rem;object-fit:cover;background:var(--fill-3);display:block}
 .who b{display:block;font-size:18rem;font-weight:600;letter-spacing:-.015em;line-height:1.1}
-.who span{display:block;margin-top:6rem;font-size:12.5rem;line-height:1.2;color:#707285}
-.rule{height:1rem;margin-top:28rem;background:rgba(255,255,255,.09)}
+.who span{display:block;margin-top:6rem;font-size:12.5rem;line-height:1.2;color:var(--muted)}
+.rule{height:1rem;margin-top:28rem;background:var(--line)}
 
 .sub{margin-top:30rem;height:16rem;display:flex;align-items:center;justify-content:space-between;
   font-size:13rem;font-weight:600;letter-spacing:.11em;text-transform:uppercase}
-.sub i{font-style:normal;color:#7b7d8f}
-.sub em{font-style:normal;color:#f3d58d}
+.sub i{font-style:normal;color:var(--muted)}
+.sub em{font-style:normal;color:var(--yellow)}
+.sub em.ok{color:var(--green-text)}
 
 .price{margin-top:22rem;height:42rem;display:flex;align-items:baseline;gap:12rem}
-.price .now{font-size:38rem;font-weight:700;letter-spacing:-.03em;line-height:42rem}
-.price .was{font-size:18rem;font-weight:500;color:#6d6f80;text-decoration:line-through;text-decoration-thickness:1.5rem;letter-spacing:-.01em}
+.price .now{font-size:38rem;font-weight:600;letter-spacing:-.03em;line-height:42rem}
+.price .was{font-size:18rem;font-weight:500;color:var(--muted-2);text-decoration:line-through;text-decoration-thickness:1.5rem;letter-spacing:-.01em}
+.price .via{font-size:13rem;font-weight:500;color:var(--muted);letter-spacing:0}
 
 .tags{margin-top:12rem;height:24rem;display:flex;align-items:center;gap:8rem}
-.tag{height:24rem;padding:0 10rem;border-radius:8rem;background:#2c2e3a;color:#8fdb5c;font-size:12rem;line-height:24rem;white-space:nowrap}
-.info{width:24rem;height:24rem;border-radius:7rem;border:1rem solid #30323f;display:grid;place-items:center;color:#6d6f80;
+.tag{height:24rem;padding:0 10rem;border-radius:8rem;background:var(--fill-2);color:var(--green-text);font-size:12rem;line-height:24rem;white-space:nowrap}
+.info{width:24rem;height:24rem;border-radius:7rem;border:1rem solid var(--line);display:grid;place-items:center;color:var(--muted-2);
   font:italic 400 13rem/1 Georgia,"Times New Roman",serif}
 
 .slot{margin-top:34rem;height:48rem;visibility:hidden}
 
 /* the button lives in the overlay, so the wave does not bend it */
-.pay{position:absolute;left:0;top:0;border:0;border-radius:12rem;background:#f6d58b;color:#15161b;cursor:pointer;
-  font:600 14.5rem/1 system-ui,-apple-system,"Segoe UI",Inter,sans-serif;letter-spacing:-.005em;opacity:0;transition:opacity .2s,filter .2s}
-.pay.ready{opacity:1}
+.pay{position:absolute;left:0;top:0;border:0;border-radius:12rem;background:var(--inverse);color:var(--on-inverse);cursor:pointer;
+  font:600 14.5rem/1 system-ui,-apple-system,"Segoe UI",Inter,sans-serif;letter-spacing:-.005em;opacity:0;transition:opacity .2s,background .35s,color .35s,filter .2s}
+.pay.done{background:var(--green);color:var(--on-green)}
 .pay:active{filter:brightness(.94)}
 .pay:focus-visible{outline:2rem solid #fff;outline-offset:2rem}
 </style>

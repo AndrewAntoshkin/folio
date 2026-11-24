@@ -10,10 +10,7 @@ const num = (key, fallback) => {
 const held = parseFloat(params.get("at"));
 const scrub = Number.isFinite(held) ? held : undefined;
 
-const COACHES = [
-  { name: "Cruecial", role: "Super Smash Bros. Coach", pic: "/ui-lab/img/avatars/a4.jpg", count: "6 matches", now: "$216", was: "$240" },
-  { name: "Mira Volkova", role: "Interface Motion Coach", pic: "/ui-lab/img/avatars/a3.jpg", count: "4 sessions", now: "$135", was: "$150" },
-];
+const COACH = { name: "Cruecial", role: "Super Smash Bros. Coach", pic: "/ui-lab/img/avatars/a4.jpg" };
 
 function fit() {
   const k = Math.min(1, (innerHeight - 24) / 367, (innerWidth - 24) / 300);
@@ -22,27 +19,27 @@ function fit() {
 fit();
 addEventListener("resize", fit);
 
-function Card({ coach }) {
+function Card({ paid }) {
   return (
     <div className="card">
       <div className="who">
-        <img className="pic" src={coach.pic} alt="" draggable="false" />
+        <img className="pic" src={COACH.pic} alt="" draggable="false" />
         <div>
-          <b>{coach.name}</b>
-          <span>{coach.role}</span>
+          <b>{COACH.name}</b>
+          <span>{COACH.role}</span>
         </div>
       </div>
       <div className="rule" />
       <div className="sub">
-        <i>Subtotal</i>
-        <em>{coach.count}</em>
+        <i>{paid ? "Total" : "Subtotal"}</i>
+        {paid ? <em className="ok">Paid</em> : <em>6 matches</em>}
       </div>
       <div className="price">
-        <span className="now">{coach.now}</span>
-        <span className="was">{coach.was}</span>
+        <span className="now">$216</span>
+        {paid ? <span className="via">Visa •••• 7044</span> : <span className="was">$240</span>}
       </div>
       <div className="tags">
-        <span className="tag">10% discount applied</span>
+        <span className="tag">{paid ? "Receipt sent to your email" : "10% discount applied"}</span>
         <span className="info">i</span>
       </div>
       <div className="slot" />
@@ -69,7 +66,7 @@ function App() {
       b.style.top = s.top - w.top + "px";
       b.style.width = s.width + "px";
       b.style.height = s.height + "px";
-      b.classList.add("ready");
+      b.style.opacity = "1";
     };
     place();
     const raf = requestAnimationFrame(place);
@@ -133,22 +130,22 @@ function App() {
             orientation: num("lean", 1),
           }}
           style={{ width: "100%", height: "100%" }}
-          revealedContent={<Card coach={COACHES[1]} />}
+          revealedContent={<Card paid />}
           overlay={
             <button
               ref={button}
-              className="pay"
+              className={second ? "pay done" : "pay"}
               type="button"
               onClick={() => {
                 touched.current = true;
                 setSecond((value) => !value);
               }}
             >
-              Proceed to Payment
+              {second ? "Undo payment" : "Proceed to Payment"}
             </button>
           }
         >
-          <Card coach={COACHES[0]} />
+          <Card />
         </DistortionWave>
       </div>
     </div>
