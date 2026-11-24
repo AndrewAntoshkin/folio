@@ -29,38 +29,23 @@ function fit() {
 fit();
 addEventListener("resize", fit);
 
-function Screen({ plan }) {
+function PlanCard({ plan }) {
   return (
-    <div className="screen">
-      <div className="nav">
-        <span className="back">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#111" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 6 8.5 12l6 6" /></svg>
-        </span>
-        <b>Installment Payments</b>
+    <div className="plan">
+      <h3>{plan.name}</h3>
+      <p className="about">The monthly payment is distributed automatically between digital product selected by the automated system.</p>
+      <div className="price">
+        <span className="cur">{plan.cur}</span>
+        <span className="num">{plan.amount}</span>
+        <span className="per">/month</span>
       </div>
-      <div className="plan">
-        <h3>{plan.name}</h3>
-        <p className="about">The monthly payment is distributed automatically between digital product selected by the automated system.</p>
-        <div className="price">
-          <span className="cur">{plan.cur}</span>
-          <span className="num">{plan.amount}</span>
-          <span className="per">/month</span>
-        </div>
-        <p className="next">{plan.next}</p>
-        <div className="pay">
-          {plan.card === "visa" ? <span className="visa">VISA</span> : <span className="mc"><i /><i /></span>}
-          <span className="dots">•••• {plan.last}</span>
-          <span className="slot" />
-        </div>
-        <div className="edit">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M15.5 4.5 19.5 8.5 8.5 19.5 4 20l.5-4.5L15.5 4.5Z" /><path d="M13 20h7" /></svg>
-          Edit Settings
-        </div>
+      <p className="next">{plan.next}</p>
+      <div className="pay">
+        {plan.card === "visa" ? <span className="visa">VISA</span> : <span className="mc"><i /><i /></span>}
+        <span className="dots">•••• {plan.last}</span>
+        <span className="chg">Show/Change</span>
       </div>
-      <div className="peek">
-        <b>Authorized Dealer</b>
-        <span>Your purchase is covered for the whole length of the plan.</span>
-      </div>
+      <div className="slot" />
     </div>
   );
 }
@@ -74,7 +59,7 @@ function App() {
 
   useLayoutEffect(() => {
     const place = () => {
-      const wave = frame.current?.querySelector(".wave");
+      const wave = frame.current?.querySelector(".plan-wave");
       const slot = wave?.querySelector(".slot");
       const b = button.current;
       if (!wave || !slot || !b) return;
@@ -139,36 +124,49 @@ function App() {
           <i key={i} className={"key " + side} style={{ top: top + "rem", height: h + "rem" }} />
         ))}
         <div className="bezel">
-          <DistortionWave
-            className="wave"
-            type="vertical"
-            revealed={scrub == null ? second : scrub > 0}
-            source={button}
-            palette="colorful"
-            scrub={scrub}
-            cornerRadius={42}
-            waveStyle={{
-              amplitude: num("amp", 1),
-              travel: num("travel", 0.9),
-              orientation: num("lean", 1),
-            }}
-            revealedContent={<Screen plan={PLANS[1]} />}
-            overlay={
-              <button
-                ref={button}
-                className="chg"
-                type="button"
-                onClick={() => {
-                  touched.current = true;
-                  setSecond((value) => !value);
-                }}
-              >
-                Show/Change
-              </button>
-            }
-          >
-            <Screen plan={PLANS[0]} />
-          </DistortionWave>
+          <div className="screen">
+            <div className="nav">
+              <span className="back">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#111" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 6 8.5 12l6 6" /></svg>
+              </span>
+              <b>Installment Payments</b>
+            </div>
+            <DistortionWave
+              className="plan-wave"
+              type="vertical"
+              revealed={scrub == null ? second : scrub > 0}
+              source={button}
+              palette="colorful"
+              scrub={scrub}
+              cornerRadius={26}
+              waveStyle={{
+                amplitude: num("amp", 1),
+                travel: num("travel", 0.9),
+                orientation: num("lean", 1),
+              }}
+              revealedContent={<PlanCard plan={PLANS[1]} />}
+              overlay={
+                <button
+                  ref={button}
+                  className="edit"
+                  type="button"
+                  onClick={() => {
+                    touched.current = true;
+                    setSecond((value) => !value);
+                  }}
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M15.5 4.5 19.5 8.5 8.5 19.5 4 20l.5-4.5L15.5 4.5Z" /><path d="M13 20h7" /></svg>
+                  Edit Settings
+                </button>
+              }
+            >
+              <PlanCard plan={PLANS[0]} />
+            </DistortionWave>
+            <div className="peek">
+              <b>Authorized Dealer</b>
+              <span>Your purchase is covered for the whole length of the plan.</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
