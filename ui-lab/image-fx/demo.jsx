@@ -11,44 +11,17 @@ const IMAGES = [
 ];
 
 const VARIANTS = [
-  { preset: "pixels-organic", label: "Organic", delay: [1.6, 2.6] },
-  { preset: "pixels-mechanic", label: "Mechanic", delay: [2.4, 3.6] },
-  { preset: "sweep-gradient", label: "Sweep", delay: [3.2, 4.4] },
+  { preset: "pixels-organic", label: "Organic" },
+  { preset: "pixels-mechanic", label: "Mechanic" },
+  { preset: "sweep-gradient", label: "Sweep" },
 ];
 
 const still = new URLSearchParams(location.search).get("still") === "1";
 
-function Tile({ preset, label, delay, paused }) {
-  const ref = useRef(null);
-  const onClick = () => {
-    const h = ref.current;
-    if (!h) return;
-    if (h.isImageActive()) h.triggerRegenerate({ durationMs: 2200 });
-    else h.triggerReveal();
-  };
-  return (
-    <figure className="tile">
-      <button className="hit" onClick={onClick} aria-label={label + ": generate an image"}>
-        <ImageGeneration
-          ref={ref}
-          preset={preset}
-          theme="dark"
-          images={IMAGES}
-          autoReveal
-          revealDelayRange={delay}
-          revealHoldMs={2600}
-          paused={paused}
-        >
-          <div className="face" />
-        </ImageGeneration>
-      </button>
-      <figcaption>{label}</figcaption>
-    </figure>
-  );
-}
-
 function App() {
   const [paused, setPaused] = useState(still);
+  const [preset, setPreset] = useState(VARIANTS[0].preset);
+  const ref = useRef(null);
 
   useEffect(() => {
     const onMessage = (event) => {
@@ -61,12 +34,44 @@ function App() {
     return () => removeEventListener("message", onMessage);
   }, []);
 
+  const onTile = () => {
+    const h = ref.current;
+    if (!h) return;
+    if (h.isImageActive()) h.triggerRegenerate({ durationMs: 2200 });
+    else h.triggerReveal();
+  };
+
   return (
     <div className="stage">
       <div className="col">
-        {VARIANTS.map((v) => (
-          <Tile key={v.preset} {...v} paused={paused} />
-        ))}
+        <button className="hit" onClick={onTile} aria-label="Generate an image">
+          <ImageGeneration
+            key={preset}
+            ref={ref}
+            preset={preset}
+            theme="dark"
+            images={IMAGES}
+            autoReveal
+            revealDelayRange={[1.2, 2.2]}
+            revealHoldMs={3000}
+            paused={paused}
+          >
+            <div className="face" />
+          </ImageGeneration>
+        </button>
+        <div className="pills" role="tablist" aria-label="Loader style">
+          {VARIANTS.map((v) => (
+            <button
+              key={v.preset}
+              role="tab"
+              aria-selected={preset === v.preset}
+              className={"pill" + (preset === v.preset ? " on" : "")}
+              onClick={() => setPreset(v.preset)}
+            >
+              {v.label}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );

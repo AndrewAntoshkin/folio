@@ -245,8 +245,8 @@
       settings: [sp('t.--peel-follow', 'Угол за пальцем', 'Corner following', [520, 34]), sp('t.--peel-back', 'Возврат угла', 'Corner returning', [240, 15]), sp('t.--peel-away', 'Отлёт наклейки', 'Sticker leaving', [90, 17]), nm('t.--peel-threshold', 'Порог отрыва', 'Tear-off distance', .62, .3, .9, .02)]
     },
     'image-fx': {
-      ru: { what: 'Три загрузчика картинки в одной карточке: Organic, Mechanic и Sweep. Пока картинки нет, шейдер на WebGL гоняет мозаику из пикселей, потом она растворяется и проявляет настоящее изображение, а через пару секунд картинка снова рассыпается.', how: 'Играет само. Нажмите на плитку: если картинка видна, она рассыплется и проявится новая, если нет, проявится сразу.' },
-      en: { what: 'Three image loaders in one card: Organic, Mechanic and Sweep. While there is no picture, a WebGL shader churns a mosaic of pixels, then the mosaic dissolves into a real image, and a few seconds later the picture breaks apart again.', how: 'Plays by itself. Tap a tile: if a picture is showing it breaks up and a new one comes in, otherwise one comes in right away.' },
+      ru: { what: 'Квадратная картинка, которая «генерируется» на глазах. Пока изображения нет, шейдер на WebGL гоняет мозаику из пикселей, потом она растворяется и проявляет настоящую картинку, а через пару секунд картинка снова рассыпается. Три вида мозаики переключаются таблетками под квадратом: Organic, Mechanic и Sweep.', how: 'Играет само. Выберите вид внизу. Нажмите на квадрат: если картинка видна, она рассыпется и проявится новая, если нет, проявится сразу.' },
+      en: { what: 'A square picture that appears to be generated in front of you. While there is no image, a WebGL shader churns a mosaic of pixels, then the mosaic dissolves into a real picture, and a few seconds later the picture breaks apart again. Three mosaic styles switch with the pills under the square: Organic, Mechanic and Sweep.', how: 'Plays by itself. Pick a style below. Tap the square: if a picture is showing it breaks up and a new one comes in, otherwise one comes in right away.' },
       settings: []
     },
     'cursor-trail': {
