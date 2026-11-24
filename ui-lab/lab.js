@@ -225,8 +225,8 @@
       settings: [sp('p.shape', 'Пружина формы', 'Shape spring', [300, 18]), sp('p.wobble', 'Покачивание', 'Wobble', [420, 9])]
     },
     'distortion-wave': {
-      ru: { what: 'Цветная волна переносит один экран в другой. Карточка тянется к кнопке, волна выходит из точки нажатия, наклоняется в её сторону и оставляет цвет по краям. Кнопка лежит в overlay и не искажается. Повторное нажатие сворачивает волну обратно.', how: 'Играет само. Нажмите Confirm. Undo возвращает первый экран.' },
-      en: { what: 'A colour wave carries one screen into another. The card pulls toward the button, the wave starts at the press, leans in that direction and leaves colour at the edges. The button sits in the overlay, so it is not distorted. Pressing again collapses the wave.', how: 'Plays by itself. Press Confirm. Undo brings the first screen back.' },
+      ru: { what: 'Цветная волна переносит один экран в другой. Внутри телефона экран с платёжным тарифом: нажимаете Show/Change, волна выходит из кнопки, наклоняется в её сторону, оставляет цвет по краям и на ходу меняет тариф и карту. Кнопка лежит в overlay и не искажается. Повторное нажатие сворачивает волну обратно.', how: 'Играет само. Нажмите Show/Change.' },
+      en: { what: 'A colour wave carries one screen into another. Inside the phone is a payment plan screen: press Show/Change and the wave starts at the button, leans toward it, leaves colour at the edges and swaps the plan and the card on its way. The button sits in the overlay, so it is not distorted. Pressing again collapses the wave.', how: 'Plays by itself. Press Show/Change.' },
       settings: [nm('p.amp', 'Высота волны', 'Wave height', 1, .2, 2, .05), nm('p.travel', 'Длительность', 'Travel', .95, .4, 2.2, .05, 's'), nm('p.lean', 'Крен к нажатию', 'Lean toward the press', .85, 0, 1.5, .05)]
     },
     'thinking-orbs': {
