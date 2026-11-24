@@ -281,12 +281,17 @@ body{
 .face span{font-size:var(--fs-sm);font-weight:var(--fw-medium);opacity:.85}
 .flap{pointer-events:none;background:#ebe9e4}
 
+.ico{display:grid;place-items:center;color:var(--c,var(--text-2));background:color-mix(in srgb,var(--c,#fff) 17%,transparent)}
+.ico svg{width:54%;height:54%;display:block}
+.ico.green{--c:var(--green-text)}.ico.blue{--c:var(--blue)}.ico.purple{--c:var(--purple)}.ico.orange{--c:var(--orange-text)}.ico.red{--c:var(--red)}.ico.yellow{--c:var(--yellow)}.ico.pink{--c:var(--pink)}
+.under .top{display:flex;align-items:center;gap:10px}
+.under .top .ico{width:30px;height:30px;border-radius:50%}
 </style>
 </head>
 <body>
 <div class="peel-wrap">
   <div class="peel" id="peel" tabindex="0" role="button">
-    <div class="under"><small>YOUR CODE</small><div class="code">FOLIO-20</div><div class="off"><span>First month</span><b>20% off</b></div></div>
+    <div class="under"><div class="top"><span class="ico green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="9.5" width="16" height="10.5" rx="2.2"/><path d="M12 9.5V20M4 13.5h16M12 9.5C9 9.5 7.5 8.2 7.5 6.8S9.6 5 12 9.5ZM12 9.5c3 0 4.5-1.3 4.5-2.7S14.4 5 12 9.5Z"/></svg></span><small>YOUR CODE</small></div><div class="code">FOLIO-20</div><div class="off"><span>First month</span><b>20% off</b></div></div>
     <div class="face" id="face" data-av="6"><span>New here?</span><b>Peel the corner<br>for a code</b></div>
     <div class="flap" id="flap"></div>
   </div>
@@ -410,7 +415,7 @@ window.Motion = (() => {
   };
   // rest: a lifted corner, so there is something to grab
   const REST = [W - 15, H - 15];
-  const px = S(REST[0], ...T.back), py = S(REST[1], ...T.back), fade = S(1, 200, 26);
+  const px = S(REST[0], ...T.back), py = S(REST[1], ...T.back), exit = S(0, 160, 22);
   let away = false;
 
   // rectangle clipped by the half plane (X - M).n >= 0 (side = 1) or <= 0 (side = -1)
@@ -464,14 +469,17 @@ window.Motion = (() => {
   function tearOff() {
     away = true; root.setAttribute('aria-label', 'Sticker removed. Press Enter to put it back.');
     tune(px, ...T.away); tune(py, ...T.away);
-    px.t = -W * .7; py.t = -H * .7;
-    after(1.1, () => { fade.t = 0; });
+    // keep going in the direction of the pull until the fold has swept the whole sticker
+    let dx = W - px.x, dy = H - py.x;
+    if (Math.hypot(dx, dy) < 20) { dx = W; dy = H; }
+    const k = DIAG * 2.4 / Math.hypot(dx, dy);
+    px.t = W - dx * k; py.t = H - dy * k;
   }
   function reset() {
     away = false; root.setAttribute('aria-label', 'Peel the sticker. Press Enter to remove it.');
     px.x = px.t = REST[0]; py.x = py.t = REST[1]; px.v = py.v = 0;
     tune(px, ...T.back); tune(py, ...T.back);
-    fade.t = 1;
+    exit.x = exit.t = 0; exit.v = 0;
   }
   root.setAttribute('aria-label', 'Peel the sticker. Press Enter to remove it.');
 
@@ -494,19 +502,21 @@ window.Motion = (() => {
   timer = after(1.4, autoStep);
 
   Motion.register({
-    frame(dt) { step(px, dt); step(py, dt); step(fade, dt); },
+    frame(dt) { step(px, dt); step(py, dt); step(exit, dt); },
     render() {
       const cx = W, cy = H;
       let dx = px.x - cx, dy = py.x - cy;
       const len = Math.hypot(dx, dy);
-      const o = clamp(fade.x, 0, 1);
-      face.style.opacity = flap.style.opacity = o;
-      if (len < .5) { face.style.clipPath = 'none'; flap.style.display = 'none'; return; }
-      if (o <= 0) { flap.style.display = 'none'; face.style.display = 'none'; return; }
-      face.style.display = '';
+      if (len < .5) { face.style.display = ''; face.style.clipPath = 'none'; flap.style.display = 'none'; return; }
       const nx = dx / len, ny = dy / len;
       const mx = cx + dx / 2, my = cy + dy / 2;
-      face.style.clipPath = poly(clipRect(mx, my, nx, ny, 1));
+      const front = clipRect(mx, my, nx, ny, 1);
+      if (away && front.length < 3) exit.t = 1;
+      face.style.display = front.length < 3 ? 'none' : '';
+      face.style.clipPath = poly(front);
+      const o = clamp(1 - exit.x, 0, 1);
+      if (o <= .01) { flap.style.display = 'none'; return; }
+      flap.style.opacity = o;
       const back = clipRect(mx, my, nx, ny, -1);
       flap.style.display = '';
       flap.style.clipPath = poly(back);

@@ -285,6 +285,19 @@ body{
 .knob{position:absolute;left:3px;top:3px;width:26px;height:26px;border-radius:50%;background:var(--white);will-change:transform}
 .calm{position:absolute;left:0;right:0;top:78px;text-align:center;font-size:var(--fs-sm);color:var(--muted);will-change:transform,opacity}
 
+/* People are photos, things are icons in a circle */
+[data-photo]{background:var(--object) center/cover no-repeat}
+[data-photo="1"]{background-image:url(/ui-lab/img/avatars/a1.jpg)}
+[data-photo="2"]{background-image:url(/ui-lab/img/avatars/a2.jpg)}
+[data-photo="3"]{background-image:url(/ui-lab/img/avatars/a3.jpg)}
+[data-photo="4"]{background-image:url(/ui-lab/img/avatars/a4.jpg)}
+[data-photo="5"]{background-image:url(/ui-lab/img/avatars/a5.jpg)}
+[data-photo="6"]{background-image:url(/ui-lab/img/avatars/a6.jpg)}
+[data-photo="7"]{background-image:url(/ui-lab/img/avatars/a7.jpg)}
+[data-photo="8"]{background-image:url(/ui-lab/img/avatars/a8.jpg)}
+.ico{display:grid;place-items:center;color:var(--c,var(--text-2));background:color-mix(in srgb,var(--c,#fff) 17%,transparent)}
+.ico svg{width:54%;height:54%;display:block}
+.ico.green{--c:var(--green-text)}.ico.blue{--c:var(--blue)}.ico.purple{--c:var(--purple)}.ico.orange{--c:var(--orange-text)}.ico.red{--c:var(--red)}.ico.yellow{--c:var(--yellow)}.ico.pink{--c:var(--pink)}
 </style>
 </head>
 <body>
@@ -413,8 +426,10 @@ window.Motion = (() => {
   const wrap = $('wrap'), list = $('list'), sw = $('sw'), knob = $('knob'), chip = $('chip');
 
   const T = { soft: spring('--spring-soft', '260 24'), pop: spring('--spring-pop', '520 16'), fade: spring('--spring-fade', '420 32'), settle: spring('--spring-settle', '280 22') };
-  const POOL = [[1, 'Agent', 'Refactor finished in 42s'], [6, 'Design team', 'Mira left 3 comments'], [3, 'Calendar', 'Design sync in 10 min'],
-    [9, 'Deploy', 'Preview is live'], [10, 'Linter', '12 off-token colors found'], [4, 'Sasha', 'Can we ship the dock today?'], [11, 'Review', 'PR #214 is ready for a look'], [7, 'Studio', 'Invoice sent to the client']];
+  const ICONS = {'bot': '<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><rect x=\"5\" y=\"8.5\" width=\"14\" height=\"10\" rx=\"3.5\"/><path d=\"M12 8.5V5.5M9.5 13v1M14.5 13v1\"/><circle cx=\"12\" cy=\"4.5\" r=\"1\"/></svg>', 'calendar': '<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><rect x=\"4\" y=\"5.5\" width=\"16\" height=\"14\" rx=\"3\"/><path d=\"M4 10h16M8.5 3.5v4M15.5 3.5v4\"/></svg>', 'deploy': '<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 16.5V5.5M7.5 10 12 5.5l4.5 4.5M5 19.5h14\"/></svg>', 'warning': '<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 4.5 21 19.5H3L12 4.5Z\"/><path d=\"M12 10v4M12 16.8h.01\"/></svg>', 'pr': '<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"6.5\" cy=\"6.5\" r=\"2\"/><circle cx=\"6.5\" cy=\"17.5\" r=\"2\"/><circle cx=\"17.5\" cy=\"17.5\" r=\"2\"/><path d=\"M6.5 8.5v7M17.5 15.5V11a3 3 0 0 0-3-3H11M13 5.5 10.5 8 13 10.5\"/></svg>', 'file': '<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M7 3.5h7l4 4V20a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z\"/><path d=\"M14 3.5V8h4M9 13h6M9 16.5h4\"/></svg>'};
+  const avatar = a => typeof a === 'string' ? `<span class="av ico ${a.split(':')[1]}" aria-hidden="true">${ICONS[a.split(':')[0]]}</span>` : `<span class="av" data-photo="${a}" aria-hidden="true"></span>`;
+  const POOL = [['bot:purple', 'Agent', 'Refactor finished in 42s'], [3, 'Design team', 'Mira left 3 comments'], ['calendar:red', 'Calendar', 'Design sync in 10 min'],
+    ['deploy:green', 'Deploy', 'Preview is live'], ['warning:orange', 'Linter', '12 off-token colors found'], [7, 'Sasha', 'Can we ship the dock today?'], ['pr:blue', 'Review', 'PR #214 is ready for a look'], ['file:yellow', 'Studio', 'Invoice sent to the client']];
   const ROW = 56, GAP = 8, UNDER = 256 - 56;   // card top flush with the bar top = fully behind the bar
   const BOT = 2 * (ROW + GAP);
   const stackAt = (n, k) => { n.y.t = k * 7; n.s.t = 1 - k * .05; n.r.t = 0; };
@@ -443,7 +458,7 @@ window.Motion = (() => {
   function make(idx, ago) {
     const [av, name, text] = POOL[idx % POOL.length];
     const el = document.createElement('div'); el.className = 'note';
-    el.innerHTML = `<span class="av" data-av="${av}"></span><span class="tx"><b>${name}</b><span>${text}</span></span><span class="tm">${ago}</span>`;
+    el.innerHTML = `${avatar(av)}<span class="tx"><b>${name}</b><span>${text}</span></span><span class="tm">${ago}</span>`;
     list.appendChild(el);
     const n = { el, idx, y: S(-ROW), s: S(.9), o: S(0), r: S(0), dead: false };
     tune(n.y, ...T.soft); tune(n.s, ...T.pop); tune(n.o, ...T.fade); tune(n.r, 700, 9);

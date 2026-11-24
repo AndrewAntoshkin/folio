@@ -261,7 +261,7 @@ body{
 .vc{position:absolute;left:0;top:0;background:var(--surface);box-shadow:0 0 0 1px var(--fill-1),0 18px 40px rgba(0,0,0,calc(.28 * var(--sh)));outline:0;cursor:pointer;will-change:transform,width,height;-webkit-tap-highlight-color:transparent}
 .vc.open{cursor:default}
 .vc:focus-visible{box-shadow:0 0 0 2px var(--muted)}
-.av{position:absolute;left:0;top:0;width:60px;height:60px;border-radius:50%;display:grid;place-items:center;font-size:24px;font-weight:var(--fw-bold);color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.25);box-shadow:0 0 0 3px var(--surface);pointer-events:none;will-change:transform,opacity;background-size:cover;background-position:center}
+.av{position:absolute;left:0;top:0;width:60px;height:60px;border-radius:50%;display:grid;place-items:center;background-color:var(--object);box-shadow:0 0 0 3px var(--surface);pointer-events:none;will-change:transform,opacity;background-size:cover;background-position:center}
 .av.you{background-color:var(--object);background-image:url(/assets/avatar.png)}
 .bdg{position:absolute;right:-4px;top:-4px;width:24px;height:24px;border-radius:50%;background:var(--green);box-shadow:0 0 0 3px var(--surface);display:flex;align-items:center;justify-content:center;gap:2px;transform:scale(0);will-change:transform}
 .bdg i{width:2.5px;height:12px;border-radius:2px;background:var(--on-green);will-change:transform}
@@ -405,10 +405,10 @@ window.Motion = (() => {
   const MORPH = pspring('morph', [300, 26]), BOX = pspring('box', [240, 26]), STAGGER = param('stagger', .03);
   const STILL = new URLSearchParams(location.search).get('still') === '1';
 
-  const PEOPLE = [['Mila', 1], ['Artem', 3], ['Sofia', 7], ['Lev', 6], ['Nika', 9], ['Timur', 11], ['Dana', 2], ['You', 0]];
+  const PEOPLE = [['Mila', 1], ['Artem', 2], ['Sofia', 3], ['Lev', 4], ['Nika', 8], ['Timur', 5], ['Dana', 6], ['You', 0]];
   const people = PEOPLE.map(([name, av], i) => {
     const el = document.createElement('div'); el.className = 'av' + (av ? '' : ' you');
-    if (av) { el.dataset.av = av; el.textContent = name[0]; }
+    if (av) el.style.backgroundImage = `url(/ui-lab/img/avatars/a${av}.jpg)`;
     const bdg = document.createElement('b'); bdg.className = 'bdg';
     const bars = [0, 1, 2, 3].map(() => { const b = document.createElement('i'); bdg.appendChild(b); return { el: b, s: S(.4, 700, 22) }; });
     el.appendChild(bdg); faces.appendChild(el);

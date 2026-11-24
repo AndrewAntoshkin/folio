@@ -326,7 +326,7 @@ body{
 .row time{font-size:var(--fs-2xs);color:var(--muted)}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--orange)}
 .me{display:flex;align-items:center;gap:14px;margin-bottom:16px}
-.me .av{width:52px;height:52px;font-size:var(--fs-lg);background:var(--inverse);color:var(--on-inverse)}
+.me .av{width:52px;height:52px}
 .me b{display:block;font-size:var(--fs-lg);font-weight:var(--fw-bold)}
 .me span{font-size:var(--fs-xs);color:var(--muted)}
 .set{display:flex;justify-content:space-between;align-items:center;height:46px;font-size:var(--fs-md);color:var(--text-2)}
@@ -338,6 +338,19 @@ body{
 .sw[aria-checked="true"]::after{transform:translateX(16px)}
 .sw[aria-checked="true"]:active::after{transform:translateX(10px)}
 
+/* People are photos, things are icons in a circle */
+[data-photo]{background:var(--object) center/cover no-repeat}
+[data-photo="1"]{background-image:url(/ui-lab/img/avatars/a1.jpg)}
+[data-photo="2"]{background-image:url(/ui-lab/img/avatars/a2.jpg)}
+[data-photo="3"]{background-image:url(/ui-lab/img/avatars/a3.jpg)}
+[data-photo="4"]{background-image:url(/ui-lab/img/avatars/a4.jpg)}
+[data-photo="5"]{background-image:url(/ui-lab/img/avatars/a5.jpg)}
+[data-photo="6"]{background-image:url(/ui-lab/img/avatars/a6.jpg)}
+[data-photo="7"]{background-image:url(/ui-lab/img/avatars/a7.jpg)}
+[data-photo="8"]{background-image:url(/ui-lab/img/avatars/a8.jpg)}
+.ico{display:grid;place-items:center;color:var(--c,var(--text-2));background:color-mix(in srgb,var(--c,#fff) 17%,transparent)}
+.ico svg{width:54%;height:54%;display:block}
+.ico.green{--c:var(--green-text)}.ico.blue{--c:var(--blue)}.ico.purple{--c:var(--purple)}.ico.orange{--c:var(--orange-text)}.ico.red{--c:var(--red)}.ico.yellow{--c:var(--yellow)}.ico.pink{--c:var(--pink)}
 </style>
 </head>
 <body>
@@ -359,19 +372,19 @@ body{
         <span class="typed" id="typed"></span>
       </div>
       <div class="chips it" style="--i:1"><span class="chip">Tokens</span><span class="chip">Spacing</span><span class="chip">Radius</span><span class="chip">Color</span></div>
-      <div class="row it" style="--i:2"><div class="av" data-av="7" aria-hidden="true"></div><div class="tx"><b>Hardcoded colors</b><span>Seven values outside the palette</span></div></div>
-      <div class="row it" style="--i:3"><div class="av" data-av="8" aria-hidden="true"></div><div class="tx"><b>Spacing drift</b><span>Gaps that skip the 4px scale</span></div></div>
-      <div class="row it" style="--i:4"><div class="av" data-av="9" aria-hidden="true"></div><div class="tx"><b>Radius mismatch</b><span>Cards using three different corners</span></div></div>
+      <div class="row it" style="--i:2"><div class="av ico pink" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4a8 8 0 1 0 0 16c1.3 0 2-.8 2-1.8 0-1.2-1-1.4-1-2.6 0-1 .8-1.6 1.8-1.6H17a3 3 0 0 0 3-3C20 6.8 16.5 4 12 4Z"/><circle cx="8" cy="11" r=".9"/><circle cx="11.5" cy="8" r=".9"/><circle cx="15.5" cy="9.5" r=".9"/></svg></div><div class="tx"><b>Hardcoded colors</b><span>Seven values outside the palette</span></div></div>
+      <div class="row it" style="--i:3"><div class="av ico blue" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8v8M20 8v8M4 12h16M8 9.5 4 12l4 2.5M16 9.5 20 12l-4 2.5"/></svg></div><div class="tx"><b>Spacing drift</b><span>Gaps that skip the 4px scale</span></div></div>
+      <div class="row it" style="--i:4"><div class="av ico orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20v-8a7 7 0 0 1 7-7h8"/></svg></div><div class="tx"><b>Radius mismatch</b><span>Cards using three different corners</span></div></div>
     </section>
     <section class="panel" data-i="2">
       <div class="head it" style="--i:0"><h3>Activity</h3><small>3 new</small></div>
-      <div class="row it" style="--i:1"><div class="av" data-av="10" aria-hidden="true"></div><div class="tx"><b>Agent finished</b><span>The dock refactor is ready</span></div><time>2m</time><span class="dot"></span></div>
-      <div class="row it" style="--i:2"><div class="av" data-av="11" aria-hidden="true"></div><div class="tx"><b>Review requested</b><span>Mira wants a look at the tokens</span></div><time>18m</time><span class="dot"></span></div>
-      <div class="row it" style="--i:3"><div class="av" data-av="12" aria-hidden="true"></div><div class="tx"><b>Checks passed</b><span>All 212 are green on main</span></div><time>1h</time><span class="dot"></span></div>
-      <div class="row it" style="--i:4"><div class="av" data-av="1" aria-hidden="true"></div><div class="tx"><b>Design sync</b><span>Moved to 15:30</span></div><time>3h</time></div>
+      <div class="row it" style="--i:1"><div class="av ico purple" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="8.5" width="14" height="10" rx="3.5"/><path d="M12 8.5V5.5M9.5 13v1M14.5 13v1"/><circle cx="12" cy="4.5" r="1"/></svg></div><div class="tx"><b>Agent finished</b><span>The dock refactor is ready</span></div><time>2m</time><span class="dot"></span></div>
+      <div class="row it" style="--i:2"><div class="av" data-photo="3" aria-hidden="true"></div><div class="tx"><b>Review requested</b><span>Mira wants a look at the tokens</span></div><time>18m</time><span class="dot"></span></div>
+      <div class="row it" style="--i:3"><div class="av ico green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><div class="tx"><b>Checks passed</b><span>All 212 are green on main</span></div><time>1h</time><span class="dot"></span></div>
+      <div class="row it" style="--i:4"><div class="av ico red" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14" rx="3"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/></svg></div><div class="tx"><b>Design sync</b><span>Moved to 15:30</span></div><time>3h</time></div>
     </section>
     <section class="panel" data-i="3">
-      <div class="me it" style="--i:0"><div class="av" data-av="2" aria-hidden="true"></div><div><b>Mira Volkova</b><span>@mira</span></div></div>
+      <div class="me it" style="--i:0"><div class="av" data-photo="3" aria-hidden="true"></div><div><b>Mira Volkova</b><span>@mira</span></div></div>
       <div class="set it" style="--i:1">Slow motion <button class="sw" id="sw-slow" role="switch" aria-checked="false" aria-label="Slow motion"></button></div>
       <div class="set it" style="--i:2">Notifications <button class="sw" role="switch" aria-checked="true" aria-label="Notifications"></button></div>
       <div class="set it" style="--i:3">Auto-save <button class="sw" role="switch" aria-checked="false" aria-label="Auto-save"></button></div>

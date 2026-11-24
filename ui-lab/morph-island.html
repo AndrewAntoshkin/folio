@@ -299,7 +299,7 @@ body{
 
 /* call */
 .ic-call{width:312px;gap:12px}
-.ic-call .av{width:48px;height:48px;border-radius:50%;background:var(--white);color:var(--black);display:grid;place-items:center;font-size:var(--fs-lg);font-weight:var(--fw-bold);flex:none}
+.ic-call .av{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:var(--fs-lg);font-weight:var(--fw-bold);flex:none}
 .ic-call .tx{flex:1;min-width:0}
 .ic-call b{display:block;font-size:var(--fs-lg);font-weight:var(--fw-bold);color:var(--text)}
 .ic-call span{display:block;font-size:var(--fs-xs);color:var(--muted)}
@@ -318,6 +318,9 @@ body{
 .ctl:active{transform:scale(.95)}
 .ctl[aria-pressed="true"]{background:var(--inverse);color:var(--on-inverse)}
 
+.ico{display:grid;place-items:center;color:var(--c,var(--text-2));background:color-mix(in srgb,var(--c,#fff) 17%,transparent)}
+.ico svg{width:54%;height:54%;display:block}
+.ico.green{--c:var(--green-text)}.ico.blue{--c:var(--blue)}.ico.purple{--c:var(--purple)}.ico.orange{--c:var(--orange-text)}.ico.red{--c:var(--red)}.ico.yellow{--c:var(--yellow)}.ico.pink{--c:var(--pink)}
 </style>
 </head>
 <body>
@@ -339,7 +342,7 @@ body{
   </div>
 
   <div class="ic ic-call" data-s="call">
-    <span class="av" data-av="3" aria-hidden="true"></span>
+    <span class="av ico purple" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="8.5" width="14" height="10" rx="3.5"/><path d="M12 8.5V5.5M9.5 13v1M14.5 13v1"/><circle cx="12" cy="4.5" r="1"/></svg></span>
     <span class="tx"><b>Agent</b><span>Run the migration?</span></span>
     <button class="cbtn no" id="decline" aria-label="Deny">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 7l10 10M17 7 7 17"/></svg>
