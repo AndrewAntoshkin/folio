@@ -243,6 +243,16 @@
       ru: { what: 'Наклейка, которую отклеивают за уголок. Угол, за который тянете, и его исходное место задают линию сгиба: по одну сторону остаётся лицевая часть, другая отражается поверх и показывает оборот. Если оттянуть достаточно далеко, наклейка отлетает и открывает код. Если отпустить раньше, угол возвращается на пружине.', how: 'Играет само. Потяните за уголок. Если наклейка отлетела, нажмите на карточку, и она вернётся. С клавиатуры: Enter.' },
       en: { what: 'A sticker you peel by its corner. The corner you hold and its starting place define the fold line: the front stays on one side and the other side is mirrored over it to show the back. Pull far enough and the sticker comes off and shows the code. Let go early and the corner springs back.', how: 'Plays by itself. Pull the corner. If the sticker came off, click the card to put it back. Keyboard: Enter.' },
       settings: [sp('t.--peel-follow', 'Угол за пальцем', 'Corner following', [520, 34]), sp('t.--peel-back', 'Возврат угла', 'Corner returning', [240, 15]), sp('t.--peel-away', 'Отлёт наклейки', 'Sticker leaving', [90, 17]), nm('t.--peel-threshold', 'Порог отрыва', 'Tear-off distance', .62, .3, .9, .02)]
+    },
+    'image-fx': {
+      ru: { what: 'Три загрузчика картинки в одной карточке: Organic, Mechanic и Sweep. Пока картинки нет, шейдер на WebGL гоняет мозаику из пикселей, потом она растворяется и проявляет настоящее изображение, а через пару секунд картинка снова рассыпается.', how: 'Играет само. Нажмите на плитку: если картинка видна, она рассыплется и проявится новая, если нет, проявится сразу.' },
+      en: { what: 'Three image loaders in one card: Organic, Mechanic and Sweep. While there is no picture, a WebGL shader churns a mosaic of pixels, then the mosaic dissolves into a real image, and a few seconds later the picture breaks apart again.', how: 'Plays by itself. Tap a tile: if a picture is showing it breaks up and a new one comes in, otherwise one comes in right away.' },
+      settings: []
+    },
+    'cursor-trail': {
+      ru: { what: 'Фотографии, которые остаются за курсором. Каждые несколько пикселей на месте указателя появляется карточка: она выскакивает, наклоняется по направлению движения и чуть сдвигается вперёд, а через пару секунд уходит. Старые исчезают первыми.', how: 'Играет само, пока по карточке водит призрачный курсор. Проведите указателем или пальцем по полю.' },
+      en: { what: 'Photos that stay behind the cursor. Every few pixels a card is dropped where the pointer is: it pops in, leans the way you are moving and slides a little further along it, then leaves after a couple of seconds. The oldest ones go first.', how: 'Plays by itself while a ghost cursor walks across the card. Move your pointer or finger over the field.' },
+      settings: [nm('p.spacing', 'Шаг между фото', 'Distance between photos', 68, 30, 160, 2, 'px'), nm('p.keep', 'Сколько держится', 'Photos on screen', 7, 3, 12, 1), nm('p.life', 'Время жизни', 'Lifetime', 1.7, .6, 4, .1, 's'), sp('t.--trail-pop', 'Появление', 'Pop in', [380, 20]), sp('t.--trail-exit', 'Уход', 'Leaving', [260, 30])]
     }
   };
 
