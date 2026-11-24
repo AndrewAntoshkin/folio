@@ -10,8 +10,8 @@
 
    Two ways to use it:
 
-   - Opaque (the default): the canvas is the whole picture, as the phone
-     preview on libraries.dev draws it.
+   - Opaque (the default): the canvas is the whole picture, as the reference
+     preview draws it.
    - Over a page (`alpha: true`): the canvas lies over live DOM and only
      covers the pixels the wave is changing — where the lens moves or blurs
      them, and where the revealed screen shows. Everywhere else it stays
