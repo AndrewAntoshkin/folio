@@ -271,16 +271,30 @@
 
   function frameOf(cell) { return cell.querySelector('iframe'); }
   function post(cell, msg) { try { frameOf(cell).contentWindow.postMessage(msg, '*'); } catch (e) {} }
+  // Studies start one after another, 120 ms apart, so a fast scroll does not boot six pages in the same frame.
+  var queue = [], draining = false;
+  function drain() {
+    var cell = queue.shift();
+    if (!cell) { draining = false; return; }
+    var f = frameOf(cell);
+    if (f.dataset.mounted === '1' && f.dataset.pending === '1') {
+      f.dataset.pending = '';
+      f.src = withV(f.dataset.base + '?still=1');
+    }
+    setTimeout(drain, queue.length ? 120 : 0);
+  }
   function mount(cell) {
     var f = frameOf(cell);
     if (f.dataset.mounted === '1') return;
-    f.dataset.mounted = '1'; f.dataset.booted = '';
-    f.src = withV(f.dataset.base + '?still=1');
+    f.dataset.mounted = '1'; f.dataset.booted = ''; f.dataset.pending = '1';
+    queue.push(cell);
+    if (!draining) { draining = true; drain(); }
   }
   function unmount(cell) {
     var f = frameOf(cell);
     if (f.dataset.mounted !== '1') return;
-    f.dataset.mounted = ''; f.dataset.booted = ''; cell._on = false;
+    f.dataset.mounted = ''; f.dataset.booted = ''; f.dataset.pending = ''; cell._on = false;
+    var i = queue.indexOf(cell); if (i > -1) queue.splice(i, 1);
     f.src = 'about:blank';
   }
   function apply() {

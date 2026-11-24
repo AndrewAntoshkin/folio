@@ -391,7 +391,7 @@ window.Motion = (() => {
   const SPACING = param('spacing', 68), KEEP = Math.round(param('keep', 7)), LIFE = param('life', 1.7);
 
   const AV = [1, 2, 3, 4, 5, 6, 7, 8].map(n => `/ui-lab/img/avatars/a${n}.jpg`);
-  const COVERS = ['agents-gently', 'quiet-interfaces', 'spring-cheatsheet', 'tokens-at-scale', 'type-on-screens'].map(n => `/ui-lab/img/cover-${n}.jpg`);
+  const COVERS = ['agents-gently', 'quiet-interfaces', 'spring-cheatsheet', 'tokens-at-scale', 'type-on-screens'].map(n => `/ui-lab/img/cover-${n}-s.jpg`);
   const POOL = [];
   for (let i = 0; i < 8; i++) { POOL.push(AV[i]); if (i < 5) POOL.push(COVERS[i]); }
   POOL.forEach(u => { const i = new Image(); i.src = u; });
