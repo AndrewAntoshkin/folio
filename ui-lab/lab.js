@@ -233,6 +233,16 @@
       ru: { what: 'Четыре состояния орба в одной карточке: Searching, Thinking, Solving и Listening. Каждый орб рисуется на canvas.', how: 'Играет само, когда карточка на экране.' },
       en: { what: 'Four orb states in one card: Searching, Thinking, Solving and Listening. Each orb is drawn on a canvas.', how: 'Plays by itself while the card is on screen.' },
       settings: []
+    },
+    'reorder-list': {
+      ru: { what: 'Список, строки которого можно переставлять. Взятая строка идёт за пальцем и чуть наклоняется, если вести её в сторону, а остальные расступаются, каждая на своей пружине. Отпущенная строка садится в свой слот с небольшим отскоком.', how: 'Играет само. Перетащите строку вверх или вниз. С клавиатуры: стрелки вверх и вниз на выбранной строке.' },
+      en: { what: 'A list with rows you can reorder. The row you hold follows your finger and leans a little when you move it sideways, and the other rows make room, each on its own spring. When you let go it lands in its slot with a small overshoot.', how: 'Plays by itself. Drag a row up or down. With the keyboard: the up and down arrows on a focused row.' },
+      settings: [sp('t.--reorder-follow', 'Строка за пальцем', 'Row following', [900, 50]), sp('t.--reorder-slide', 'Остальные строки', 'Other rows', [260, 24]), sp('t.--reorder-settle', 'Посадка строки', 'Row landing', [300, 20]), nm('t.--reorder-tilt', 'Наклон', 'Tilt', 3, 0, 8, .5, '°')]
+    },
+    'peel-sticker': {
+      ru: { what: 'Наклейка, которую отклеивают за уголок. Угол, за который тянете, и его исходное место задают линию сгиба: по одну сторону остаётся лицевая часть, другая отражается поверх и показывает оборот. Если оттянуть достаточно далеко, наклейка отлетает и открывает код. Если отпустить раньше, угол возвращается на пружине.', how: 'Играет само. Потяните за уголок. Если наклейка отлетела, нажмите на карточку, и она вернётся. С клавиатуры: Enter.' },
+      en: { what: 'A sticker you peel by its corner. The corner you hold and its starting place define the fold line: the front stays on one side and the other side is mirrored over it to show the back. Pull far enough and the sticker comes off and shows the code. Let go early and the corner springs back.', how: 'Plays by itself. Pull the corner. If the sticker came off, click the card to put it back. Keyboard: Enter.' },
+      settings: [sp('t.--peel-follow', 'Угол за пальцем', 'Corner following', [520, 34]), sp('t.--peel-back', 'Возврат угла', 'Corner returning', [240, 15]), sp('t.--peel-away', 'Отлёт наклейки', 'Sticker leaving', [90, 17]), nm('t.--peel-threshold', 'Порог отрыва', 'Tear-off distance', .62, .3, .9, .02)]
     }
   };
 
